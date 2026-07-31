@@ -8,6 +8,7 @@ import { getUserById } from "@/lib/auth/user-store";
 import type { SessionUser } from "@/lib/auth/types";
 import { dbEnabled } from "@/lib/db/enabled";
 import {
+  backfillDefaultNickname,
   ensureUserFromOAuth,
   fetchUserByClerkId,
   fetchUserByEmail,
@@ -42,6 +43,18 @@ async function materializeOAuthUser(user: SessionUser): Promise<SessionUser> {
 
 /** Garante linha em `eldarin_users` para o usuário da sessão (OAuth efêmero, usr_*). */
 export async function materializeSessionUser(user: SessionUser): Promise<SessionUser> {
+  const resolved = await resolveSessionUser(user);
+  if (resolved.nickname?.trim() || !dbEnabled()) return resolved;
+  try {
+    const backfilled = await backfillDefaultNickname(resolved.id);
+    return backfilled ?? resolved;
+  } catch (err) {
+    console.error("[materializeSessionUser] backfill de apelido falhou:", err);
+    return resolved;
+  }
+}
+
+async function resolveSessionUser(user: SessionUser): Promise<SessionUser> {
   const oauth = oauthIdentityFromSession(user);
   if (oauth) {
     try {

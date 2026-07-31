@@ -71,7 +71,7 @@ export async function GET(req: Request, { params }: Params) {
     let touch: { userId: string; label: string } | undefined;
     const user = auth.user;
     if (user && (await canTrackRoomPresence(auth.room, user))) {
-      const label = user.nickname?.trim() || user.name?.trim() || "Jogador";
+      const label = user.nickname?.trim() || "Jogador";
       touch = { userId: user.id, label };
     }
 
@@ -97,7 +97,7 @@ export async function POST(req: Request, { params }: Params) {
       return NextResponse.json({ error: "Participantes logados apenas" }, { status: 403 });
     }
 
-    const label = user.nickname?.trim() || user.name?.trim() || "Jogador";
+    const label = user.nickname?.trim() || "Jogador";
     return presenceResponse(roomId, invite, { userId: user.id, label });
   } catch (err) {
     console.error("[presence] POST failed:", err);

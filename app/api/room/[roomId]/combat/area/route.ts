@@ -27,14 +27,14 @@ function authorFromSession(
   if (session && room) {
     return {
       authorId: session.user.id,
-      authorName: session.user.nickname?.trim() || session.user.name,
+      authorName: session.user.nickname?.trim() || "Jogador",
       authorRole: chatRoleForUser(room, session.user),
     };
   }
   if (session) {
     return {
       authorId: session.user.id,
-      authorName: session.user.nickname?.trim() || session.user.name,
+      authorName: session.user.nickname?.trim() || "Jogador",
       authorRole: "jogador" as const,
     };
   }

@@ -52,8 +52,7 @@ export async function GET(req: Request, { params }: Params) {
 
   const entries = await listPlayerBestiaryEntries(userId, adventureId);
   const profile = await fetchUserById(userId);
-  const playerName =
-    profile?.nickname?.trim() || profile?.name?.trim() || "Jogador";
+  const playerName = profile?.nickname?.trim() || "Jogador";
 
   const bestiary = buildPlayerBestiaryGmView({
     playerUserId: userId,

@@ -37,7 +37,7 @@ type UserPresenceRow = {
 };
 
 function displayNameFromRow(row: UserPresenceRow): string {
-  return row.nickname?.trim() || row.name?.trim() || "Jogador";
+  return row.nickname?.trim() || "Jogador";
 }
 
 function characterForUser(

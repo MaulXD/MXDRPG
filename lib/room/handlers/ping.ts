@@ -20,7 +20,7 @@ export async function addRoomPing(
   if (!canManageRoom(room, user) && !settings.allowPlayerPing) return null;
   if (!inGrid({ q, r }, room.scene.gridRadius)) return null;
 
-  const author = user?.nickname?.trim() || user?.name?.trim() || "Jogador";
+  const author = user?.nickname?.trim() || "Jogador";
   const pings = prunePings([...(room.pings ?? []), createPing(q, r, author, color)]).slice(
     -PING_MAX_ACTIVE
   );

@@ -1,5 +1,5 @@
 import { hashPassword } from "@/lib/auth/password";
-import { normalizeNickname, validateNickname } from "@/lib/auth/nickname";
+import { generateUniqueDefaultNickname, normalizeNickname, validateNickname } from "@/lib/auth/nickname";
 import { normalizeUserRole } from "@/lib/auth/roles";
 import type { SessionUser, UserRole } from "@/lib/auth/types";
 import {
@@ -202,7 +202,9 @@ function oauthSessionFallback(input: {
     id: `${input.provider}-${input.subject}`,
     email: input.email,
     name: input.name,
-    nickname: null,
+    // Sessão efêmera (sem banco pra checar unicidade) — ainda assim nunca null,
+    // pra nunca cair no fallback pro nome real enquanto o banco estiver fora do ar.
+    nickname: `jogador${Date.now().toString(36)}`,
     role: "member",
     oauthAvatarUrl: input.oauthAvatarUrl ?? null,
     oauthProvider: input.provider,
@@ -265,7 +267,7 @@ export async function ensureUserFromOAuth(
       oauthProvider: input.provider,
       oauthSubject: input.subject,
       email,
-      nickname: null,
+      nickname: await generateUniqueDefaultNickname((n) => fetchUserByNickname(n).then(Boolean)),
       name: input.name.slice(0, 80),
       passwordHash: null,
       role: "member",
@@ -416,13 +418,15 @@ export async function insertUser(
   if (!sql) throw new Error("DATABASE_URL não configurada");
 
   const key = slugEmail(email);
-  let nick: string | null = null;
+  let nick: string;
   if (nickname) {
     const v = validateNickname(nickname);
     if (!v.ok) throw new Error(v.error);
     nick = v.nickname;
     const taken = await fetchUserByNickname(nick);
     if (taken) throw new Error("Este apelido já está em uso");
+  } else {
+    nick = await generateUniqueDefaultNickname((n) => fetchUserByNickname(n).then(Boolean));
   }
 
   const user: StoredUser = {
@@ -449,6 +453,20 @@ export async function insertUser(
     )
   `;
   return user;
+}
+
+/**
+ * Repara contas antigas (de antes da geração automática de apelido) que ainda
+ * têm nickname null no banco — chamada uma vez por conta a partir de
+ * materializeSessionUser. Guard `nickname IS NULL` evita sobrescrever uma
+ * troca concorrente feita pelo próprio usuário em /conta.
+ */
+export async function backfillDefaultNickname(userId: string): Promise<SessionUser | null> {
+  const sql = getSql();
+  if (!sql) return null;
+  const nickname = await generateUniqueDefaultNickname((n) => fetchUserByNickname(n).then(Boolean));
+  await sql`UPDATE eldarin_users SET nickname = ${nickname} WHERE id = ${userId} AND nickname IS NULL`;
+  return fetchUserById(userId);
 }
 
 export async function setUserNickname(userId: string, nickname: string): Promise<SessionUser> {

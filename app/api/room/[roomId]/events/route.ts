@@ -27,7 +27,7 @@ export async function GET(request: Request, { params }: Params) {
   let lastSent = since;
   let lastHeartbeat = Date.now();
   const user = auth.user;
-  const presenceLabel = user?.nickname?.trim() || user?.name?.trim() || "Jogador";
+  const presenceLabel = user?.nickname?.trim() || "Jogador";
   let tracksPresence = false;
   if (user) {
     tracksPresence = await canTrackRoomPresence(auth.room, user);

@@ -1,7 +1,7 @@
 import fs from "fs";
 import path from "path";
 import { dbSqlReady } from "@/lib/db/sql-ready";
-import { normalizeNickname, validateNickname } from "@/lib/auth/nickname";
+import { generateUniqueDefaultNickname, normalizeNickname, validateNickname } from "@/lib/auth/nickname";
 import {
   completeUserPasswordRegistration,
   fetchUserByEmail,
@@ -281,7 +281,7 @@ export async function registerUser(
     return loginExistingWithPassword(existingLocal, password, displayName, nickname);
   }
 
-  let nick: string | null = null;
+  let nick: string;
   if (nickname?.trim()) {
     const v = validateNickname(nickname);
     if (!v.ok) return { ok: false, error: v.error };
@@ -289,6 +289,8 @@ export async function registerUser(
     if (findLocalUser(nick)) {
       return { ok: false, error: "Este apelido já está em uso" };
     }
+  } else {
+    nick = await generateUniqueDefaultNickname((n) => Boolean(findLocalUser(n)));
   }
 
   const user: StoredUser = {

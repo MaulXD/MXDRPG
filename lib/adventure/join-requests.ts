@@ -35,7 +35,7 @@ function newRequestId(): string {
 }
 
 function displayName(user: { nickname?: string | null; name: string }): string {
-  return user.nickname?.trim() || user.name?.trim() || "Jogador";
+  return user.nickname?.trim() || "Jogador";
 }
 
 async function rowToSummary(row: dbJoinRequests.JoinRequestRow): Promise<JoinRequestSummary | null> {

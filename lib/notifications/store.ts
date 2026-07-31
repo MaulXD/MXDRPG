@@ -83,8 +83,7 @@ async function listGmSheetEditNotifications(ownerId: string): Promise<Notificati
     for (const r of pending) {
       const character = await resolveCharacter(r.characterId);
       const requester = await fetchUserById(r.requesterUserId);
-      const requesterName =
-        requester?.nickname?.trim() || requester?.name?.trim() || "Jogador";
+      const requesterName = requester?.nickname?.trim() || "Jogador";
       items.push({
         id: `sheet-gm:${r.id}`,
         type: "sheet_edit_gm",

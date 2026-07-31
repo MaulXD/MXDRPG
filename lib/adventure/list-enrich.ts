@@ -23,7 +23,7 @@ type UserRow = {
 };
 
 function displayNameFromRow(row: UserRow): string {
-  return row.nickname?.trim() || row.name?.trim() || "Jogador";
+  return row.nickname?.trim() || "Jogador";
 }
 
 async function fetchUserRows(userIds: string[]): Promise<Map<string, UserRow>> {

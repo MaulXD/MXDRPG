@@ -1,9 +1,23 @@
+import { createHmac, timingSafeEqual } from "crypto";
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 import { normalizeUserRole } from "./roles";
 import type { SessionPayload, SessionUser, UserRole } from "./types";
 
 export const SESSION_COOKIE = "vinite_session";
+
+/** Mesmo segredo/padrão HMAC de lib/auth/oauth/state.ts — mantém as duas assinaturas em sincronia. */
+function secret(): string {
+  const s = process.env.SESSION_SECRET?.trim() || process.env.OAUTH_STATE_SECRET?.trim();
+  if (!s || s.length < 16) {
+    throw new Error("SESSION_SECRET (ou OAUTH_STATE_SECRET) é obrigatório para sessão");
+  }
+  return s;
+}
+
+function sign(payload: string): string {
+  return createHmac("sha256", secret()).update(payload).digest("base64url");
+}
 
 function encode(payload: SessionPayload): string {
   // Data URLs can be hundreds of KB — exceeds browser cookie limit (~4KB).
@@ -12,12 +26,39 @@ function encode(payload: SessionPayload): string {
     payload.user.avatarUrl?.startsWith("data:")
       ? { ...payload, user: { ...payload.user, avatarUrl: null } }
       : payload;
-  return Buffer.from(JSON.stringify(safe), "utf8").toString("base64url");
+  const body = Buffer.from(JSON.stringify(safe), "utf8").toString("base64url");
+  return `${body}.${sign(body)}`;
 }
 
+/**
+ * Cookie sem "." (formato pré-assinatura) é rejeitado de propósito — força
+ * relogin em vez de aceitar uma sessão forjável. Ver auditoria de segurança
+ * de 2026-07-31: vinite_session era só base64url(JSON), sem verificação de
+ * integridade nenhuma.
+ */
 function decode(raw: string): SessionPayload | null {
+  const sepIndex = raw.lastIndexOf(".");
+  if (sepIndex < 0) return null;
+  const body = raw.slice(0, sepIndex);
+  const sig = raw.slice(sepIndex + 1);
+  if (!body || !sig) return null;
+
+  let expected: string;
   try {
-    const json = Buffer.from(raw, "base64url").toString("utf8");
+    expected = sign(body);
+  } catch {
+    return null;
+  }
+  try {
+    const a = Buffer.from(sig);
+    const b = Buffer.from(expected);
+    if (a.length !== b.length || !timingSafeEqual(a, b)) return null;
+  } catch {
+    return null;
+  }
+
+  try {
+    const json = Buffer.from(body, "base64url").toString("utf8");
     const data = JSON.parse(json) as SessionPayload;
     if (!data?.user?.id) return null;
     data.user.role = normalizeUserRole(data.user.role as string);
