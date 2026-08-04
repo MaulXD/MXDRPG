@@ -288,7 +288,9 @@ const TOR_ADVERSARIES_RAW: TorAdversaryStats[] = [
   },
   {
     id: "cave-troll-furtivo",
-    name: "Cave-troll Furtivo",
+    // Estava meio em inglês ("Cave-troll"); o vizinho já usava a forma PT-BR
+    // "Grande Troll das Cavernas", então segue a mesma.
+    name: "Troll das Cavernas Furtivo",
     traits: "Furtivo, Precavido",
     tier: "elite",
     attributeLevel: 6,
@@ -358,7 +360,9 @@ const TOR_ADVERSARIES_RAW: TorAdversaryStats[] = [
   // ——— Mortos-Vivos (todos: Sem Morte + Sem Coração + Golpe de Pavor) ———
   {
     id: "barrow-wight",
-    name: "Barrow-wight",
+    // Nome de exibição em PT-BR (convenção do projeto). O `id` fica em inglês
+    // de propósito — é chave estável, e renomear quebraria salas salvas.
+    name: "Tumulário",
     traits: "Astuto, Vingativo",
     tier: "elite",
     attributeLevel: 6,

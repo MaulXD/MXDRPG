@@ -163,5 +163,69 @@ ok(
   /attackRoll\.featDie\.numeric === 10/.test(attackCode)
 );
 
+
+/* ── Nomes de exibição em PT-BR (convenção do projeto) ───────────────
+   `docs/CLAUDE-PROJETO.md`: "Textos de UI em PT-BR". Nome de adversário
+   aparece no compêndio E no nameplate do token no mapa, então um nome em
+   inglês vaza direto para a mesa.
+
+   Achado na rodada 2 do loop: "Barrow-wight" e "Cave-troll Furtivo" tinham
+   escapado (20 dos 22 já estavam certos). Os `id` seguem em inglês de
+   propósito — são chave estável e renomear quebraria salas salvas. */
+
+const ADV = readFileSync(
+  join(__dirname, "..", "lib", "character", "um-anel", "adversaries.ts"),
+  "utf8"
+);
+
+/** Palavras que só aparecem em nome não traduzido. Não inclui termos que
+ *  ficam no original de propósito (Orc, Goblin, Troll, Warg são usados em
+ *  PT-BR na tradução brasileira de Tolkien). */
+const ENGLISH_MARKERS = [
+  "Barrow",
+  "wight",
+  "Cave-troll",
+  "Hound",
+  "Slayer",
+  "Chieftain",
+  "Bandit",
+  "Marsh-dweller",
+  "Wolf",
+  "Spider",
+  "Bodyguard",
+  "Archer",
+  "Soldier",
+  "Guard",
+  "Thief",
+  "Robber",
+];
+
+const names = [...ADV.matchAll(/^\s{4}name: "([^"]+)",/gm)].map((m) => m[1]);
+
+ok("adversaries.ts tem nomes de exibição", names.length >= 20, `achou ${names.length}`);
+
+const englishNames = names.filter((n) =>
+  // Fronteira de palavra nas DUAS pontas. Sem a do final, "Guard" casa com
+  // "Guarda"/"Guarda-costas" e "Bandit" com "Bandido" — todas portuguesas.
+  // Erro cometido ao escrever este próprio teste.
+  ENGLISH_MARKERS.some((w) => new RegExp(`\\b${w}\\b`, "i").test(n))
+);
+ok(
+  "nenhum nome de adversário em inglês",
+  englishNames.length === 0,
+  englishNames.join(" | ")
+);
+
+// Os dois casos concretos corrigidos, para a regressão ser nomeada.
+ok('"Barrow-wight" virou "Tumulário"', names.includes("Tumulário"));
+ok(
+  '"Cave-troll Furtivo" virou "Troll das Cavernas Furtivo"',
+  names.includes("Troll das Cavernas Furtivo")
+);
+
+// Os ids continuam em inglês — chave estável, não rótulo.
+ok('id "barrow-wight" preservado', /id: "barrow-wight"/.test(ADV));
+ok('id "cave-troll-furtivo" preservado', /id: "cave-troll-furtivo"/.test(ADV));
+
 console.log(`\nverify-um-anel-stances: ${pass} passaram, ${fail} falharam`);
 if (fail > 0) process.exit(1);
