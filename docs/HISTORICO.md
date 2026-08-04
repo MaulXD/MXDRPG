@@ -146,6 +146,12 @@ npm run sync:data:check       # após editar livros/
 
 13. **Prop renomeada por honestidade:** `showJourney` passou a controlar dois painéis, então virou `showTorGmTools` — o nome antigo mentiria sobre o escopo e alguém acabaria adicionando um terceiro painel sob um nome que fala de Jornada.
 
+**Na mesma sessão — painel de Fase de Companhia (fecha os três motores com UI)**
+
+14. **`components/vtt/TorFellowshipPanel.tsx`** — Yule é **derivado do calendário**, não um botão: o painel mostra `Ano N · Fase X/3` e avisa quando encerrar vai virar o ano. Orçamento de Empreitadas se ajusta sozinho (Fase comum: 1 + 1 grátis; Yule: 1 por herói + 1 grátis), e as marcadas (Yule) aparecem desabilitadas fora do Yule em vez de escondidas — o jogador precisa saber que existem e por que não pode escolher agora. Validação usa `validateTorUndertakings`, então estourar orçamento ou repetir Empreitada não-Yule bloqueia o botão. Tabela de custos de XP num `<details>`, com o lembrete dos bolsos separados e do "Valor OU Sabedoria".
+
+**Limitação conhecida dos três painéis:** o estado vive no `useState` do Mestre e é narrado no chat. A mesa acompanha tudo, mas recarregar a página perde o progresso. Persistir em `RoomState` exigiria mudança de schema e rotas novas — deliberadamente fora do v1, e registrado aqui para não ser descoberto no meio de uma sessão.
+
 **Ainda pendente do mesmo diagnóstico (depende do servidor, não do código):**
 
 - **`SESSION_SECRET` estável em produção.** O commit `be69f6f` (31/07) passou a exigir HMAC no cookie e rejeita o formato antigo de propósito — isso deslogou todo mundo **uma vez**, o que é esperado. Se estiver repetindo a cada deploy, o segredo não está estável no Contabo (`scripts/local/setup.sh` gera um aleatório; se algo parecido roda no servidor, cada recriação invalida todas as sessões).

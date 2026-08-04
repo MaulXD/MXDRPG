@@ -82,6 +82,7 @@ export function MesaIconBar({
     // Jornada é conduzida pelo Mestre e só existe em mesa do Um Anel.
     { id: "torJourney", label: "Jornada", icon: "torJourney", section: "gm", show: showTorGmTools },
     { id: "torCouncil", label: "Conselho", icon: "torCouncil", section: "gm", show: showTorGmTools },
+    { id: "torFellowship", label: "Companhia", icon: "torFellowship", section: "gm", show: showTorGmTools },
     { id: "invite", label: "Convite", icon: "invite", section: "play", show: showInvite },
     { id: "dungeon", label: "Mapa", icon: "dungeon", section: "gm", show: showGm },
     { id: "gm", label: "Mestre", icon: "gm", section: "gm", show: showGm },

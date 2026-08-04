@@ -17,6 +17,7 @@ export type MesaWindowId =
   | "torFicha"
   | "torJourney"
   | "torCouncil"
+  | "torFellowship"
   | "compendium";
 
 export type FoundryWindowLayout = {

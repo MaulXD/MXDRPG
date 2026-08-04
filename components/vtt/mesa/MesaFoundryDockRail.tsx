@@ -32,6 +32,11 @@ const TorCouncilPanel = dynamic(
   { ssr: false }
 );
 
+const TorFellowshipPanel = dynamic(
+  () => import("@/components/vtt/TorFellowshipPanel").then((m) => m.TorFellowshipPanel),
+  { ssr: false }
+);
+
 const TorCompendiumPage = dynamic(
   () => import("@/components/compendium/TorCompendiumPage").then((m) => m.TorCompendiumPage),
   { ssr: false }
@@ -320,6 +325,29 @@ export function MesaFoundryDockRail({
         >
           <div className="mesa-panel-scroll mesa-panel-scroll--rail">
             <TorCouncilPanel
+              roomId={roomId}
+              canManage={Boolean(effectiveIsGm)}
+              onUpdate={() => void onRefresh()}
+            />
+          </div>
+        </FoundryDockPanel>
+      ) : null}
+
+      {rpgSystemId === "um-anel" && !isFloating("torFellowship") ? (
+        <FoundryDockPanel
+          title="Fase de Companhia"
+          open={panel("torFellowship").open}
+          minimized={panel("torFellowship").minimized}
+          className="foundry-dock-panel--tor-fellowship"
+          onClose={() => onClosePanel("torFellowship")}
+          onMinimize={() =>
+            panel("torFellowship").minimized
+              ? onRestorePanel("torFellowship")
+              : onMinimizePanel("torFellowship")
+          }
+        >
+          <div className="mesa-panel-scroll mesa-panel-scroll--rail">
+            <TorFellowshipPanel
               roomId={roomId}
               canManage={Boolean(effectiveIsGm)}
               onUpdate={() => void onRefresh()}

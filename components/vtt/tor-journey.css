@@ -154,3 +154,83 @@
     min-height: var(--touch-target);
   }
 }
+
+/* ══════════════════════════════════════════════════════════════════
+   Fase de Companhia — reaproveita as primitivas acima
+   ══════════════════════════════════════════════════════════════════ */
+
+.tor-fellowship__undertakings {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  max-height: 14rem;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.tor-fellowship__undertakings label {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.25rem 0.3rem;
+  border-radius: 5px;
+  font-family: var(--font-ui);
+  font-size: 0.78rem;
+  color: var(--text);
+  cursor: pointer;
+}
+
+.tor-fellowship__undertakings label:hover {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+/* Empreitada de Yule fora do Yule: visível, mas inalcançável — o jogador
+   precisa saber que existe e por que não pode escolher agora. */
+.tor-fellowship__undertakings label.is-blocked {
+  color: var(--text-dim);
+  cursor: not-allowed;
+}
+
+.tor-fellowship__yule {
+  margin-left: auto;
+  padding: 0.05rem 0.3rem;
+  border: 1px solid color-mix(in srgb, var(--accent) 45%, transparent);
+  border-radius: 3px;
+  font-family: var(--font-display);
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.tor-fellowship__costs {
+  margin-top: 0.25rem;
+}
+
+.tor-fellowship__costs summary {
+  font-family: var(--font-display);
+  font-size: 0.74rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  cursor: pointer;
+}
+
+.tor-fellowship__costs summary:hover {
+  color: var(--accent);
+}
+
+.tor-fellowship__costs > * + * {
+  margin-top: 0.5rem;
+}
+
+@media (pointer: coarse) {
+  .tor-fellowship__undertakings label {
+    min-height: 2.5rem;
+  }
+}
