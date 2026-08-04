@@ -11,8 +11,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "sync:data": "node scripts/generate-compendium.mjs && node scripts/sync-monster-book-tamanhos.mjs && node scripts/sync-monster-assimilation-abilities.mjs && python scripts/gen-equipment-compendium.py && python scripts/gen-tabela-ids.py && node scripts/generate-subclass-tracks.mjs && python scripts/gen-loot-catalog-ts.py",
-    "sync:data:check": "node scripts/verify-compendium-ids.mjs && node scripts/verify-monster-spawn.mjs",
+    "sync:data": "node scripts/generate-compendium.mjs && node scripts/sync-monster-book-tamanhos.mjs && node scripts/sync-monster-assimilation-abilities.mjs && python scripts/gen-equipment-compendium.py && python scripts/gen-tabela-ids.py && node scripts/generate-subclass-tracks.mjs && python scripts/gen-loot-catalog-ts.py && node scripts/gen-um-anel.mjs",
+    "sync:data:check": "node scripts/verify-compendium-ids.mjs && node scripts/verify-monster-spawn.mjs && node scripts/verify-um-anel-compendium.mjs",
+    "sync:um-anel": "node scripts/gen-um-anel.mjs",
     "db:migrate": "node scripts/db/migrate.mjs",
     "db:check": "node scripts/db/check.mjs",
     "db:setup": "node scripts/db/setup.mjs",
@@ -28,6 +29,7 @@
     "smoke:a1": "node scripts/smoke/a1-persistence.mjs",
     "test:a1": "node scripts/db/check.mjs && node scripts/smoke/a1-persistence.mjs",
     "test:pa": "node scripts/verify-pa-bank.mjs",
+    "test:auth": "node scripts/verify-oauth-session-cost.mjs",
     "test:move": "node scripts/verify-movement-pa.mjs",
     "test:pdf": "node scripts/verify-sheet-pdf.mjs",
     "test:consumables": "node scripts/verify-consumables.mjs",
@@ -37,7 +39,8 @@
     "smoke:p9-inventory": "node scripts/smoke/p9-inventory-five-steps.mjs",
     "smoke:level-up-pa": "node scripts/smoke/level-up-pa-sync.mjs",
     "smoke:combat-core": "node scripts/smoke/combat-core.mjs",
-    "test": "node scripts/verify-pa-bank.mjs && node scripts/verify-movement-pa.mjs && node scripts/verify-grid-path.mjs && node scripts/verify-sheet-pdf.mjs && node scripts/verify-consumables.mjs && npm run sync:data:check"
+    "test": "node scripts/verify-pa-bank.mjs && node scripts/verify-movement-pa.mjs && node scripts/verify-grid-path.mjs && node scripts/verify-sheet-pdf.mjs && node scripts/verify-consumables.mjs && node scripts/verify-um-anel-stances.mjs && node scripts/verify-um-anel-shadow.mjs && node scripts/verify-um-anel-journey.mjs && node scripts/verify-um-anel-council.mjs && node scripts/verify-um-anel-progression.mjs && node scripts/verify-oauth-session-cost.mjs && npm run sync:data:check",
+    "test:um-anel": "node scripts/verify-um-anel-stances.mjs && node scripts/verify-um-anel-shadow.mjs && node scripts/verify-um-anel-journey.mjs && node scripts/verify-um-anel-council.mjs && node scripts/verify-um-anel-progression.mjs && node scripts/verify-um-anel-compendium.mjs"
   },
   "dependencies": {
     "@3d-dice/dice-box": "^1.1.4",

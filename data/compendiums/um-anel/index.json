@@ -1,0 +1,32 @@
+[
+  {
+    "id": "conselho",
+    "label": "Conselho",
+    "description": "Resistência, Introdução, Interação e as perícias do encontro social.",
+    "count": 13
+  },
+  {
+    "id": "jornada",
+    "label": "Jornada",
+    "description": "Papéis da Companhia, Testes de Marcha, eventos por região e Fadiga de viagem.",
+    "count": 26
+  },
+  {
+    "id": "posturas",
+    "label": "Combate e Posturas",
+    "description": "As quatro posturas de combate, limites de engajamento e regras de rodada.",
+    "count": 8
+  },
+  {
+    "id": "progressao",
+    "label": "Progressão e Companhia",
+    "description": "Custos de Experiência, limites por Fase, Valor e Sabedoria, Yule, Empreitadas e Nível de Companhia.",
+    "count": 23
+  },
+  {
+    "id": "sombra",
+    "label": "Sombra e Miséria",
+    "description": "Fontes de Sombra, Testes de Sombra, Miserável, Cicatrizes e Acesso de Loucura.",
+    "count": 27
+  }
+]

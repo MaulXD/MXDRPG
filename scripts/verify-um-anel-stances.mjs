@@ -1,0 +1,100 @@
+/**
+ * Verifica as posturas de combate do Um Anel (D17) — entra em `npm run test`.
+ *
+ * Reimplementa a tabela do livro aqui de propósito: se alguém "simplificar"
+ * lib/combat/um-anel/stances.ts, este teste acusa. Mesmo padrão de
+ * scripts/verify-pa-bank.mjs para o PA do Eldarin.
+ *
+ * Fonte: livros/um-anel/compendio/posturas.md
+ */
+import { readFileSync } from "fs";
+import { join, dirname } from "path";
+import { fileURLToPath } from "url";
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
+const SRC = readFileSync(join(__dirname, "..", "lib", "combat", "um-anel", "stances.ts"), "utf8");
+
+let pass = 0;
+let fail = 0;
+
+function ok(name, cond, detail = "") {
+  if (cond) {
+    pass++;
+    console.log(`  ✓ ${name}`);
+  } else {
+    fail++;
+    console.error(`  ✗ ${name}${detail ? ` — ${detail}` : ""}`);
+  }
+}
+
+/** Extrai um número de campo do TOR_STANCE_META no fonte (evita build TS no teste). */
+function metaField(stance, field) {
+  const block = SRC.split(new RegExp(`\\b${stance}:\\s*\\{`))[1];
+  if (!block) return null;
+  const body = block.split(/\n  \},/)[0];
+  const m = body.match(new RegExp(`${field}:\\s*(-?\\d+)`));
+  return m ? Number(m[1]) : null;
+}
+
+console.log("verify-um-anel-stances: tabela de posturas (livro p.99-104)");
+
+// Avançada: ataque ganha 1d; ataques contra você ganham 1d.
+ok("Avançada: ataque +1d", metaField("avancada", "attackRankDelta") === 1);
+ok("Avançada: ser atingido +1d", metaField("avancada", "incomingCloseRankDelta") === 1);
+
+// Aberta: neutra nos dois sentidos.
+ok("Aberta: ataque neutro", metaField("aberta", "attackRankDelta") === 0);
+ok("Aberta: ser atingido neutro", metaField("aberta", "incomingCloseRankDelta") === 0);
+
+// Defensiva: ataques contra você perdem 1d; seu ataque perde 1d por engajador.
+ok("Defensiva: ser atingido -1d", metaField("defensiva", "incomingCloseRankDelta") === -1);
+ok("Defensiva: -1d por engajador", metaField("defensiva", "attackRankPerEngager") === -1);
+ok("Defensiva: sem bônus de ataque próprio", metaField("defensiva", "attackRankDelta") === 0);
+
+// Retaguarda: alcance à distância.
+ok("Retaguarda: alcance à distância", /retaguarda:[\s\S]*?range:\s*"ranged"/.test(SRC));
+ok(
+  "Avançada/Aberta/Defensiva: alcance corpo a corpo",
+  ["avancada", "aberta", "defensiva"].every((s) =>
+    new RegExp(`${s}:[\\s\\S]*?range:\\s*"close"`).test(SRC)
+  )
+);
+
+// Tarefas de combate — uma por postura, conforme o livro.
+const TASKS = {
+  avancada: "Intimidar Inimigo",
+  aberta: "Reunir Companheiros",
+  defensiva: "Proteger Companheiro",
+  retaguarda: "Preparar Tiro",
+};
+for (const [stance, task] of Object.entries(TASKS)) {
+  ok(
+    `${stance}: tarefa "${task}"`,
+    new RegExp(`${stance}:[\\s\\S]*?combatTask:\\s*"${task}"`).test(SRC)
+  );
+}
+
+// Limites de engajamento (POS-R03).
+ok("Engajamento: 3 heróis por inimigo humano", /heroesPerHumanFoe:\s*3/.test(SRC));
+ok("Engajamento: 6 heróis por inimigo grande", /heroesPerLargeFoe:\s*6/.test(SRC));
+ok("Engajamento: 3 inimigos humanos por herói", /humanFoesPerHero:\s*3/.test(SRC));
+ok("Engajamento: 2 inimigos grandes por herói", /largeFoesPerHero:\s*2/.test(SRC));
+
+// Clamp em 0 — rank negativo quebraria o motor de dados.
+ok("attackRankWithStance clampa em 0", /attackRankWithStance[\s\S]*?Math\.max\(0,/.test(SRC));
+ok("incomingRankWithStance clampa em 0", /incomingRankWithStance[\s\S]*?Math\.max\(0,/.test(SRC));
+
+// Postura padrão é Aberta (neutra) — adversário não escolhe postura.
+ok("Padrão é Aberta", /TOR_DEFAULT_STANCE:\s*TorStanceId\s*=\s*"aberta"/.test(SRC));
+
+// O compêndio e o TS precisam concordar nas 4 posturas.
+const md = readFileSync(
+  join(__dirname, "..", "livros", "um-anel", "compendio", "posturas.md"),
+  "utf8"
+);
+for (const label of Object.values({ a: "Avançada", b: "Aberta", c: "Defensiva", d: "Retaguarda" })) {
+  ok(`compêndio tem "${label}"`, md.includes(`— ${label}`));
+}
+
+console.log(`\nverify-um-anel-stances: ${pass} passaram, ${fail} falharam`);
+if (fail > 0) process.exit(1);

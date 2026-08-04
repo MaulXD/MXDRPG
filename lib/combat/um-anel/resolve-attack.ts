@@ -1,4 +1,13 @@
 import { rollTorCheck, formatTorRollMessage, type TorRollOutcome } from "@/lib/character/um-anel/dice";
+import {
+  attackRankWithStance,
+  canAttackFromStance,
+  canBeTargetedBy,
+  incomingRankWithStance,
+  TOR_DEFAULT_STANCE,
+  torStanceLabel,
+  type TorStanceId,
+} from "@/lib/combat/um-anel/stances";
 
 /**
  * Resolução de ataque tático do Um Anel (livros/um-anel/06-fases-de-aventura-combate.md,
@@ -30,6 +39,19 @@ export type TorAttackParams = {
   defenderMiserable?: boolean;
   /** Só kind:"hero" — já tem 1 Ferida marcada (a próxima é fatal, sem rolar severidade). */
   defenderAlreadyWounded?: boolean;
+
+  /* ── Posturas (D17) ──────────────────────────────────────────────────
+     Adversários não escolhem postura (regra do livro: a mecânica retrata só o
+     ponto de vista do herói), então estes campos são opcionais e caem em
+     Aberta — que é neutra e não altera nada. */
+  /** Postura do atacante, quando herói. */
+  attackerStance?: TorStanceId;
+  /** Postura do defensor, quando herói. */
+  defenderStance?: TorStanceId;
+  /** Ataque feito com arma à distância — decide Retaguarda e alcance. */
+  attackIsRanged?: boolean;
+  /** Quantos oponentes engajam o atacante (Defensiva perde 1d por cada). */
+  attackerEngagedByCount?: number;
 };
 
 export type TorWoundSeverity =
@@ -40,6 +62,15 @@ export type TorWoundSeverity =
 export type TorAttackResolution = {
   attackRoll: TorRollOutcome;
   hit: boolean;
+  /** Ataque barrado por postura (Retaguarda) — nem chega a rolar. */
+  blocked?: string;
+  /** Como a postura mexeu nos Dados de Sucesso, para exibir na mensagem. */
+  stanceEffect?: {
+    attackerStance: TorStanceId;
+    defenderStance: TorStanceId;
+    baseRank: number;
+    finalRank: number;
+  };
   enduranceLoss: number;
   piercingBlow: boolean;
   protectionRoll?: TorRollOutcome;
@@ -63,14 +94,78 @@ function rollWoundSeverity(): TorWoundSeverity {
   return { kind: "grave", days: featDie.numeric };
 }
 
+/** Rolagem vazia — para os casos barrados por postura, que não chegam a rolar. */
+function noRoll(tn: number): TorRollOutcome {
+  return {
+    featDie: { kind: "number", numeric: 0, label: "—" },
+    featDiceRolled: [],
+    successDice: [],
+    total: 0,
+    tn,
+    success: false,
+    autoSuccess: false,
+    autoFail: false,
+    successIcons: 0,
+    degree: "failure",
+    favoured: false,
+    illFavoured: false,
+  };
+}
+
 export function resolveTorAttack(params: TorAttackParams): TorAttackResolution {
   const tn =
     params.attackerKind === "hero"
       ? attributeTN(params.attackerStrength ?? 0) + params.defenderParry
       : params.defenderParry;
 
+  // Adversário não escolhe postura (regra do livro) — cai em Aberta, que é neutra.
+  const attackerStance = params.attackerStance ?? TOR_DEFAULT_STANCE;
+  const defenderStance = params.defenderStance ?? TOR_DEFAULT_STANCE;
+  const attackIsRanged = Boolean(params.attackIsRanged);
+
+  // Retaguarda restringe alcance nos dois sentidos — barra antes de rolar.
+  const canAttack =
+    params.attackerKind === "hero"
+      ? canAttackFromStance(attackerStance, attackIsRanged)
+      : ({ ok: true } as const);
+  if (!canAttack.ok) {
+    return {
+      attackRoll: noRoll(tn),
+      hit: false,
+      blocked: canAttack.reason,
+      enduranceLoss: 0,
+      piercingBlow: false,
+      wound: false,
+      dying: false,
+    };
+  }
+
+  const canTarget = canBeTargetedBy(defenderStance, attackIsRanged);
+  if (!canTarget.ok) {
+    return {
+      attackRoll: noRoll(tn),
+      hit: false,
+      blocked: canTarget.reason,
+      enduranceLoss: 0,
+      piercingBlow: false,
+      wound: false,
+      dying: false,
+    };
+  }
+
+  // Postura do atacante (Avançada +1d, Defensiva −1d por engajador), depois a do
+  // defensor (Avançada facilita, Defensiva dificulta) sobre o mesmo rank.
+  const afterAttacker =
+    params.attackerKind === "hero"
+      ? attackRankWithStance(params.attackerRank, attackerStance, params.attackerEngagedByCount ?? 0)
+      : params.attackerRank;
+  const finalRank =
+    params.defenderKind === "hero"
+      ? incomingRankWithStance(afterAttacker, defenderStance, attackIsRanged)
+      : afterAttacker;
+
   const attackRoll = rollTorCheck({
-    rank: params.attackerRank,
+    rank: finalRank,
     tn,
     favoured: params.attackerFavoured,
     illFavoured: params.attackerIllFavoured,
@@ -78,8 +173,23 @@ export function resolveTorAttack(params: TorAttackParams): TorAttackResolution {
     miserable: params.attackerMiserable,
   });
 
+  const stanceEffect = {
+    attackerStance,
+    defenderStance,
+    baseRank: params.attackerRank,
+    finalRank,
+  };
+
   if (!attackRoll.success) {
-    return { attackRoll, hit: false, enduranceLoss: 0, piercingBlow: false, wound: false, dying: false };
+    return {
+      attackRoll,
+      hit: false,
+      stanceEffect,
+      enduranceLoss: 0,
+      piercingBlow: false,
+      wound: false,
+      dying: false,
+    };
   }
 
   const enduranceLoss = params.weaponDamage;
@@ -87,7 +197,15 @@ export function resolveTorAttack(params: TorAttackParams): TorAttackResolution {
   const piercingBlow = params.weaponCanPierce !== false && attackRoll.featDie.numeric === 10;
 
   if (!piercingBlow) {
-    return { attackRoll, hit: true, enduranceLoss, piercingBlow: false, wound: false, dying: false };
+    return {
+      attackRoll,
+      hit: true,
+      stanceEffect,
+      enduranceLoss,
+      piercingBlow: false,
+      wound: false,
+      dying: false,
+    };
   }
 
   const protectionRoll = rollTorCheck({
@@ -103,6 +221,7 @@ export function resolveTorAttack(params: TorAttackParams): TorAttackResolution {
     return {
       attackRoll,
       hit: true,
+      stanceEffect,
       enduranceLoss,
       piercingBlow: true,
       protectionRoll,
@@ -116,6 +235,7 @@ export function resolveTorAttack(params: TorAttackParams): TorAttackResolution {
     return {
       attackRoll,
       hit: true,
+      stanceEffect,
       enduranceLoss,
       piercingBlow: true,
       protectionRoll,
@@ -129,6 +249,7 @@ export function resolveTorAttack(params: TorAttackParams): TorAttackResolution {
     return {
       attackRoll,
       hit: true,
+      stanceEffect,
       enduranceLoss,
       piercingBlow: true,
       protectionRoll,
@@ -142,6 +263,7 @@ export function resolveTorAttack(params: TorAttackParams): TorAttackResolution {
   return {
     attackRoll,
     hit: true,
+    stanceEffect,
     enduranceLoss,
     piercingBlow: true,
     protectionRoll,
@@ -164,7 +286,23 @@ export function formatTorAttackMessage(
   weaponLabel: string,
   result: TorAttackResolution
 ): string {
-  const rollTxt = formatTorRollMessage(`${attackerName} ataca ${defenderName} (${weaponLabel})`, result.attackRoll);
+  // Barrado por postura: nem houve rolagem, então não formata dados.
+  if (result.blocked) {
+    return `${attackerName} não pode atacar ${defenderName} — ${result.blocked}`;
+  }
+
+  const stanceTxt = result.stanceEffect
+    ? ` [${torStanceLabel(result.stanceEffect.attackerStance)}${
+        result.stanceEffect.finalRank !== result.stanceEffect.baseRank
+          ? ` ${result.stanceEffect.baseRank}d→${result.stanceEffect.finalRank}d`
+          : ""
+      }]`
+    : "";
+
+  const rollTxt = formatTorRollMessage(
+    `${attackerName} ataca ${defenderName} (${weaponLabel})${stanceTxt}`,
+    result.attackRoll
+  );
   if (!result.hit) return rollTxt;
 
   const parts = [rollTxt, `${defenderName} perde ${result.enduranceLoss} de Resistência`];

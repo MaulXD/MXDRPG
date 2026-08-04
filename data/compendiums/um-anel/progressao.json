@@ -1,0 +1,253 @@
+[
+  {
+    "id": "PRO-X01",
+    "name": "Nível 1",
+    "type": "efeito",
+    "system": {
+      "grupo": "Custos de Experiência",
+      "custo": 4,
+      "vale_para": "Perícia, Proficiência de Combate",
+      "ordem": 1,
+      "descricao": "Valor e Sabedoria começam em 1 na criação do personagem, sem custo — o primeiro degrau comprável dos dois é o 2."
+    }
+  },
+  {
+    "id": "PRO-X02",
+    "name": "Nível 2",
+    "type": "efeito",
+    "system": {
+      "grupo": "Custos de Experiência",
+      "custo": 8,
+      "vale_para": "Perícia, Proficiência, Valor, Sabedoria",
+      "ordem": 2
+    }
+  },
+  {
+    "id": "PRO-X03",
+    "name": "Nível 3",
+    "type": "efeito",
+    "system": {
+      "grupo": "Custos de Experiência",
+      "custo": 12,
+      "vale_para": "Perícia, Proficiência, Valor, Sabedoria",
+      "ordem": 3
+    }
+  },
+  {
+    "id": "PRO-X04",
+    "name": "Nível 4",
+    "type": "efeito",
+    "system": {
+      "grupo": "Custos de Experiência",
+      "custo": 20,
+      "vale_para": "Perícia, Proficiência, Valor, Sabedoria",
+      "ordem": 4
+    }
+  },
+  {
+    "id": "PRO-X05",
+    "name": "Nível 5",
+    "type": "efeito",
+    "system": {
+      "grupo": "Custos de Experiência",
+      "custo": 26,
+      "vale_para": "Perícia, Proficiência, Valor, Sabedoria",
+      "ordem": 5
+    }
+  },
+  {
+    "id": "PRO-X06",
+    "name": "Nível 6",
+    "type": "efeito",
+    "system": {
+      "grupo": "Custos de Experiência",
+      "custo": 30,
+      "vale_para": "Perícia, Proficiência, Valor, Sabedoria",
+      "ordem": 6
+    }
+  },
+  {
+    "id": "PRO-L01",
+    "name": "Um grau por Perícia",
+    "type": "efeito",
+    "system": {
+      "grupo": "Limites por Fase",
+      "limite": "1 grau por Perícia em cada Fase de Companhia",
+      "descricao": "Pontos de Perícia não usados podem ser guardados para uma Fase futura, e ficam registrados na ficha."
+    }
+  },
+  {
+    "id": "PRO-L02",
+    "name": "Um grau por Proficiência de Combate",
+    "type": "efeito",
+    "system": {
+      "grupo": "Limites por Fase",
+      "limite": "1 grau por Proficiência em cada Fase de Companhia"
+    }
+  },
+  {
+    "id": "PRO-L03",
+    "name": "Valor OU Sabedoria, nunca os dois",
+    "type": "efeito",
+    "system": {
+      "grupo": "Limites por Fase",
+      "limite": "1 grau em Valor **ou** Sabedoria por Fase, nunca em ambos",
+      "descricao": "Ao atingir um novo valor de atributo, todas as habilidades e características derivadas dele precisam ser atualizadas."
+    }
+  },
+  {
+    "id": "PRO-G01",
+    "name": "Novo grau de Valor",
+    "type": "efeito",
+    "system": {
+      "grupo": "Ganhos por novo grau",
+      "concede": "1 Recompensa",
+      "ordem": 1,
+      "descricao": "Valor mede a coragem temperada por feitos perigosos, e reflete o renome do herói como autor de grandes façanhas. Heróis de toda Cultura escolhem a primeira Recompensa na criação, e podem escolher uma nova a cada novo grau de Valor."
+    }
+  },
+  {
+    "id": "PRO-G02",
+    "name": "Novo grau de Sabedoria",
+    "type": "efeito",
+    "system": {
+      "grupo": "Ganhos por novo grau",
+      "concede": "1 Virtude",
+      "virtude_cultural": "só a partir de Sabedoria 2, e só da própria Cultura",
+      "ordem": 2,
+      "descricao": "Sabedoria expressa a confiança do herói nas próprias capacidades e a capacidade de bom julgamento. Desenvolve-se pela luta e pela adversidade, e reflete o crescimento em estatura aos olhos de quem valoriza tais qualidades."
+    }
+  },
+  {
+    "id": "PRO-R01",
+    "name": "Esperança",
+    "type": "efeito",
+    "system": {
+      "grupo": "Recuperação Espiritual da Fase",
+      "fase_comum": "recupera pontos iguais ao Coração",
+      "yule": "recupera **toda** a Esperança",
+      "descricao": "Automático em toda Fase de Companhia — o tempo diante de uma lareira acolhedora confirma aos heróis que o esforço não foi em vão."
+    }
+  },
+  {
+    "id": "PRO-R02",
+    "name": "Sombra: sem efeito",
+    "type": "efeito",
+    "system": {
+      "grupo": "Recuperação Espiritual da Fase",
+      "sombra_removida": 0,
+      "ordem": 1,
+      "descricao": "A Fase de Aventura não interferiu no retorno da Sombra."
+    }
+  },
+  {
+    "id": "PRO-R03",
+    "name": "Sombra: interferência marginal",
+    "type": "efeito",
+    "system": {
+      "grupo": "Recuperação Espiritual da Fase",
+      "sombra_removida": "até 1",
+      "ordem": 2,
+      "descricao": "As ações da Companhia podem ser consideradas como tendo interferido pelo menos marginalmente no retorno da Sombra."
+    }
+  },
+  {
+    "id": "PRO-R04",
+    "name": "Sombra: atrapalhou o Inimigo",
+    "type": "efeito",
+    "system": {
+      "grupo": "Recuperação Espiritual da Fase",
+      "sombra_removida": "até 2",
+      "ordem": 3,
+      "descricao": "Os feitos podem ser considerados como tendo ativamente atrapalhado ou ferido o Inimigo."
+    }
+  },
+  {
+    "id": "PRO-R05",
+    "name": "Sombra: feito notável",
+    "type": "efeito",
+    "system": {
+      "grupo": "Recuperação Espiritual da Fase",
+      "sombra_removida": "até 3",
+      "ordem": 4,
+      "descricao": "Os heróis cometeram façanhas que ganhariam a atenção do próprio Senhor Sombrio, ou pelo menos de um de seus servos maiores. **Cicatrizes de Sombra não saem aqui** — só pela Empreitada Curar Cicatrizes, em Yule."
+    }
+  },
+  {
+    "id": "PRO-Y01",
+    "name": "Quando chega o Yule",
+    "type": "efeito",
+    "system": {
+      "grupo": "Yule e o Passar dos Anos",
+      "frequencia": "aproximadamente a cada 3 Fases de Companhia",
+      "duracao": "a estação fria inteira, como uma Fase prolongada",
+      "descricao": "Na maioria dos casos a Companhia se separa temporariamente nas festividades de Yule, e cada herói volta para casa aproveitar um tempo entre familiares e sua gente. Três meses bastam para qualquer herói voltar de qualquer lugar, exceto os mais remotos."
+    }
+  },
+  {
+    "id": "PRO-Y02",
+    "name": "O Passar dos Anos",
+    "type": "efeito",
+    "system": {
+      "grupo": "Yule e o Passar dos Anos",
+      "envelhecimento": "todos os heróis envelhecem 1 ano",
+      "bonus": "pontos de Perícia iguais à Astúcia, somados ao total acumulado",
+      "descricao": "O tempo não só derruba reis e arruína cidades — pode trazer sabedoria. O tempo sem aventurar permite refletir sobre as experiências e aprender dos próprios erros. O Mestre aproveita o Yule para atualizar a Companhia sobre as mudanças no mundo."
+    }
+  },
+  {
+    "id": "PRO-E01",
+    "name": "Fase comum",
+    "type": "efeito",
+    "system": {
+      "grupo": "Empreitadas",
+      "escolhas_base": "1, pela Companhia como grupo",
+      "extra_gratis": "1, entre as marcadas como grátis pelo Chamado presente",
+      "total_maximo": 2,
+      "ordem": 1
+    }
+  },
+  {
+    "id": "PRO-E02",
+    "name": "Fase de Yule",
+    "type": "efeito",
+    "system": {
+      "grupo": "Empreitadas",
+      "escolhas_base": "1 por jogador",
+      "extra_gratis": 1,
+      "total_maximo": "número de heróis + 1",
+      "ordem": 2
+    }
+  },
+  {
+    "id": "PRO-E03",
+    "name": "Empreitadas diferentes",
+    "type": "efeito",
+    "system": {
+      "grupo": "Empreitadas",
+      "regra": "as escolhas precisam ser diferentes entre si",
+      "excecao": "Empreitadas marcadas (Yule) podem ser escolhidas por vários heróis",
+      "descricao": "Empreitadas marcadas (Yule) só podem ser escolhidas numa Fase de Yule, mas nessas qualquer número de heróis pode escolher a mesma."
+    }
+  },
+  {
+    "id": "PRO-E04",
+    "name": "Trocar Itens Úteis",
+    "type": "efeito",
+    "system": {
+      "grupo": "Empreitadas",
+      "quando": "em qualquer Fase de Companhia",
+      "descricao": "Além das Empreitadas, em cada Fase de Companhia os jogadores podem trocar livremente a seleção de Itens Úteis dos heróis, sempre respeitando o número máximo permitido pelo Padrão de Vida atual."
+    }
+  },
+  {
+    "id": "PRO-C01",
+    "name": "Nível de Companhia e Patrono",
+    "type": "efeito",
+    "system": {
+      "grupo": "Companhia",
+      "calculo": "Nível base + bônus do Patrono principal",
+      "descricao": "O Patrono principal, escolhido pela Empreitada Encontrar Patrono, soma seu bônus ao Nível de Companhia. Sem Patrono, vale o nível base."
+    }
+  }
+]

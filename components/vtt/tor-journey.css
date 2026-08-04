@@ -1,0 +1,156 @@
+/* Painel de Jornada do Um Anel — escala canônica de app/globals.css */
+
+.tor-journey {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  padding: 0.75rem 0.85rem 1rem;
+  min-width: 0;
+}
+
+.tor-journey__section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  min-width: 0;
+}
+
+.tor-journey__section .eyebrow {
+  margin: 0;
+}
+
+/* Duas colunas no dock; uma só quando o painel aperta.
+   Container query em vez de media query: o painel vive tanto no dock estreito
+   quanto numa janela flutuante redimensionável, então o que importa é a largura
+   DELE, não a da tela. */
+.tor-journey__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 8.5rem), 1fr));
+  gap: 0.5rem;
+}
+
+.tor-journey__grid label,
+.tor-journey__pending label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  min-width: 0;
+  font-family: var(--font-ui);
+  font-size: 0.72rem;
+  color: var(--text-muted);
+}
+
+.tor-journey__grid input,
+.tor-journey__grid select,
+.tor-journey__pending select {
+  min-width: 0;
+  width: 100%;
+  padding: 0.35rem 0.45rem;
+  border-radius: 6px;
+  border: 1px solid var(--chrome-field-border);
+  background: var(--chrome-field-bg);
+  color: var(--chrome-field-text);
+  font-family: var(--font-ui);
+  font-size: 0.82rem;
+}
+
+.tor-journey__checks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.tor-journey__checks label {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-family: var(--font-ui);
+  font-size: 0.78rem;
+  color: var(--text);
+}
+
+.tor-journey__estimate {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--accent);
+}
+
+.tor-journey__remaining {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+/* Evento aguardando resolução — destacado, é a ação pendente da mesa. */
+.tor-journey__pending {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0.6rem 0.7rem;
+  border: 1px solid var(--accent);
+  border-radius: 8px;
+  background: var(--accent-glow);
+}
+
+.tor-journey__pending-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--text-strong);
+}
+
+.tor-journey__pending-hint {
+  margin: 0;
+  font-family: var(--font-ui);
+  font-size: 0.74rem;
+  color: var(--text-muted);
+}
+
+/* Botões de graduação (0d–6d) — a rolagem é escolhida pelo número de dados. */
+.tor-journey__ranks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  align-items: center;
+}
+
+.tor-journey__ranks .btn-ghost {
+  min-width: 2.4rem;
+  padding: 0.3rem 0.4rem;
+  font-family: var(--font-display);
+  font-size: 0.78rem;
+}
+
+.tor-journey__ranks .tor-journey__pending-hint {
+  flex-basis: 100%;
+}
+
+.tor-journey__reset {
+  align-self: flex-start;
+  margin-top: 0.25rem;
+  font-size: 0.74rem;
+}
+
+.tor-journey__log {
+  margin: 0;
+  padding-left: 1.1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+/* Touch: alvos de toque nos botões de graduação, que são os mais clicados. */
+@media (pointer: coarse) {
+  .tor-journey__ranks .btn-ghost {
+    min-width: var(--touch-target);
+    min-height: var(--touch-target);
+  }
+}

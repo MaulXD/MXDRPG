@@ -12,7 +12,8 @@ export type MesaRailIconName =
   | "spawn"
   | "invite"
   | "status"
-  | "compendium";
+  | "compendium"
+  | "torJourney";
 
 type Props = {
   name: MesaRailIconName;
@@ -219,6 +220,20 @@ export function MesaRailIcon({ name, className = "foundry-icon-bar__icon" }: Pro
             fill="color-mix(in srgb, currentColor 6%, transparent)"
           />
           <path d="M12 6.2V19.9" {...S} opacity="0.6" />
+        </RailSvg>
+      );
+
+    /**
+     * Jornada — glyph GENÉRICO provisório (trilha com dois pontos de parada),
+     * na mesma linguagem geométrica dos demais. Não é arte final: substituir
+     * pelo ícone real quando ele chegar, sem inventar ilustração no meio.
+     */
+    case "torJourney":
+      return (
+        <RailSvg className={className}>
+          <path d="M6 18.5c0-3.5 3-4 6-4s6-.5 6-4" {...S} />
+          <circle cx="6" cy="18.5" r="1.8" {...S} />
+          <circle cx="18" cy="6.2" r="1.8" {...S} />
         </RailSvg>
       );
 

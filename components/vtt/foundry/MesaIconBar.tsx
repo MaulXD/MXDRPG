@@ -20,6 +20,8 @@ type Props = {
   onOpenPopup: (id: MesaWindowId) => void;
   showGm?: boolean;
   showInvite?: boolean;
+  /** Jornada: só em mesa do Um Anel, e só para o Mestre. */
+  showJourney?: boolean;
 };
 
 function IconButton({
@@ -68,6 +70,7 @@ export function MesaIconBar({
   onOpenPopup,
   showGm = false,
   showInvite = false,
+  showJourney = false,
 }: Props) {
   const icons: IconDef[] = [
     { id: "status", label: "Status", icon: "status", section: "play" },
@@ -76,6 +79,8 @@ export function MesaIconBar({
     { id: "chat", label: "Chat", icon: "chat", section: "play" },
     { id: "dice", label: "Dados", icon: "dice", section: "play" },
     { id: "compendium", label: "Compêndio", icon: "compendium", section: "play" },
+    // Jornada é conduzida pelo Mestre e só existe em mesa do Um Anel.
+    { id: "torJourney", label: "Jornada", icon: "torJourney", section: "gm", show: showJourney },
     { id: "invite", label: "Convite", icon: "invite", section: "play", show: showInvite },
     { id: "dungeon", label: "Mapa", icon: "dungeon", section: "gm", show: showGm },
     { id: "gm", label: "Mestre", icon: "gm", section: "gm", show: showGm },

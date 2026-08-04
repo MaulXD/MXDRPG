@@ -1,0 +1,225 @@
+/**
+ * Verifica o motor de Jornada do Um Anel (D21/D23/D24) — entra em `npm run test`.
+ *
+ * Fonte: livros/um-anel/compendio/jornada.md
+ *
+ * O caso mais importante aqui é a Runa de Gandalf: em dice.ts ela tem
+ * `numeric: 10`, igual ao 10 numérico, mas na tabela de eventos são resultados
+ * diferentes. Se alguém reordenar as checagens, os testes de "Runa" quebram.
+ */
+import { readFileSync } from "fs";
+import { join, dirname } from "path";
+import { fileURLToPath } from "url";
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
+const SRC = readFileSync(join(__dirname, "..", "lib", "combat", "um-anel", "journey.ts"), "utf8");
+const DATA = readFileSync(join(__dirname, "..", "lib", "character", "um-anel", "data.ts"), "utf8");
+const MD = readFileSync(
+  join(__dirname, "..", "livros", "um-anel", "compendio", "jornada.md"),
+  "utf8"
+);
+
+let pass = 0;
+let fail = 0;
+const ok = (name, cond, detail = "") => {
+  if (cond) {
+    pass++;
+    console.log(`  ✓ ${name}`);
+  } else {
+    fail++;
+    console.error(`  ✗ ${name}${detail ? ` — ${detail}` : ""}`);
+  }
+};
+
+/** Corpo de uma função exportada — necessário para asserções negativas. */
+function fnBody(src, name) {
+  const start = src.indexOf(`export function ${name}`);
+  if (start < 0) return "";
+  const rest = src.slice(start + 1);
+  const end = rest.indexOf("\nexport ");
+  return end < 0 ? rest : rest.slice(0, end);
+}
+
+console.log("verify-um-anel-journey: motor de Jornada (livro p.111-116)");
+
+/* ── Papéis (JOR-P0x) ─────────────────────────────────────────────── */
+
+const ROLES = {
+  guia: ["Guia", "viajar", true],
+  batedor: ["Batedor", "explorar", false],
+  olheiro: ["Olheiro", "percepcao", false],
+  cacador: ["Caçador", "caca", false],
+};
+
+for (const [id, [label, skill, unique]] of Object.entries(ROLES)) {
+  ok(
+    `${label}: perícia ${skill}`,
+    new RegExp(`${id}:\\s*\\{[^}]*skillId:\\s*"${skill}"`).test(SRC)
+  );
+  ok(
+    `${label}: unique=${unique}`,
+    new RegExp(`${id}:\\s*\\{[^}]*unique:\\s*${unique}`).test(SRC)
+  );
+  // A perícia tem de existir de verdade no sistema.
+  ok(`perícia "${skill}" existe em data.ts`, new RegExp(`id:\\s*"${skill}"`).test(DATA));
+}
+
+ok("Só o Guia é único", (SRC.match(/unique:\s*true/g) ?? []).length === 1);
+
+/* ── Teste de Marcha (JOR-S02) ────────────────────────────────────── */
+
+// Sucesso: 3 trechos + 1 por ícone.
+ok(
+  "Marcha com sucesso: 3 + ícones",
+  /3\s*\+\s*Math\.max\(0,\s*input\.successIcons\)/.test(SRC)
+);
+// Falha: 1 trecho em estação fria, 2 nas outras.
+ok("Marcha falha em estação fria: 1 trecho", /isColdSeason\(input\.season\)\s*\?\s*1/.test(SRC));
+ok(
+  "Estação fria é Outono e Inverno",
+  /season\s*===\s*"outono"\s*\|\|\s*season\s*===\s*"inverno"/.test(SRC)
+);
+ok(
+  "Chegada quando distância >= trechos restantes",
+  /arrived\s*=\s*distance\s*>=\s*input\.trechosRemaining/.test(SRC)
+);
+
+/* ── Alvo do evento (JOR-A0x) ─────────────────────────────────────── */
+
+// 1-2 Batedor, 3-4 Olheiro, 5-6 Caçador.
+ok(
+  "Alvo: 1-2 Batedor, 3-4 Olheiro, 5-6 Caçador",
+  /successDie\s*<=\s*2\s*\?\s*"batedor"\s*:\s*successDie\s*<=\s*4\s*\?\s*"olheiro"\s*:\s*"cacador"/.test(
+    SRC
+  )
+);
+// O Guia nunca é alvo — é quem rola o Teste de Marcha.
+const targetBody = fnBody(SRC, "torEventTargetFromRoll");
+ok("Guia nunca é alvo de evento", targetBody.length > 0 && !/"guia"/.test(targetBody));
+
+/* ── Região (JOR-R0x) ─────────────────────────────────────────────── */
+
+ok("Fronteiriças: Favorecido", /fronteirica:\s*\{[^}]*featRoll:\s*"favoured"/.test(SRC));
+ok("Selvagens: normal", /selvagem:\s*\{[^}]*featRoll:\s*"normal"/.test(SRC));
+ok("Sombrias: Desfavorecido", /sombria:\s*\{[^}]*featRoll:\s*"illFavoured"/.test(SRC));
+
+/* ── Terreno (JOR-M01) ────────────────────────────────────────────── */
+
+ok("Estrada dá vantagem", /favoured:\s*terrain\s*===\s*"estrada"/.test(SRC));
+ok("Terreno difícil dá desvantagem", /illFavoured:\s*terrain\s*===\s*"dificil"/.test(SRC));
+
+/* ── Tabela de Eventos (JOR-E0x) ──────────────────────────────────── */
+
+const EVENTS = {
+  "terrivel-infortunio": { fatigue: 3, triggersOn: "failure" },
+  desespero: { fatigue: 2, triggersOn: "failure" },
+  "mas-escolhas": { fatigue: 2, triggersOn: "failure" },
+  contratempo: { fatigue: 2, triggersOn: "failure" },
+  atalho: { fatigue: 1, triggersOn: "success" },
+  "encontro-fortuito": { fatigue: 1, triggersOn: "success" },
+  "visao-alegre": { fatigue: 0, triggersOn: "success" },
+};
+
+for (const [id, { fatigue, triggersOn }] of Object.entries(EVENTS)) {
+  const key = id.includes("-") ? `"${id}"` : id;
+  ok(
+    `${id}: ${fatigue} Fadiga`,
+    new RegExp(`${key}:\\s*\\{[\\s\\S]{0,200}?fatigue:\\s*${fatigue}`).test(SRC)
+  );
+  ok(
+    `${id}: dispara em ${triggersOn}`,
+    new RegExp(`${key}:\\s*\\{[\\s\\S]{0,240}?triggersOn:\\s*"${triggersOn}"`).test(SRC)
+  );
+}
+
+ok("7 eventos na tabela", Object.keys(EVENTS).length === 7);
+
+/* ── A ARMADILHA: Runa de Gandalf vs 10 numérico ──────────────────── */
+
+const eventFromDie = fnBody(SRC, "torJourneyEventFromFeatDie");
+
+ok("Olho → Terrível Infortúnio", /kind\s*===\s*"eye"[\s\S]*?terrivel-infortunio/.test(eventFromDie));
+ok("Runa → Visão Alegre", /kind\s*===\s*"gandalf"[\s\S]*?visao-alegre/.test(eventFromDie));
+
+// A checagem de `kind` PRECISA vir antes de qualquer comparação numérica,
+// senão a Runa (numeric 10) cai no Encontro Fortuito.
+const gandalfIdx = eventFromDie.indexOf('kind === "gandalf"');
+const numericIdx = eventFromDie.search(/featDie\.numeric|\bn\s*<=/);
+ok(
+  "kind é checado ANTES de numeric (Runa não cai em Encontro Fortuito)",
+  gandalfIdx >= 0 && numericIdx >= 0 && gandalfIdx < numericIdx,
+  `gandalf@${gandalfIdx} numeric@${numericIdx}`
+);
+
+// Faixas numéricas: 1 / 2-3 / 4-7 / 8-9 / 10.
+ok("1 → Desespero", /n\s*<=\s*1\)\s*return[^;]*desespero/.test(eventFromDie));
+ok("2-3 → Más Escolhas", /n\s*<=\s*3\)\s*return[^;]*mas-escolhas/.test(eventFromDie));
+ok("4-7 → Contratempo", /n\s*<=\s*7\)\s*return[^;]*contratempo/.test(eventFromDie));
+ok("8-9 → Atalho", /n\s*<=\s*9\)\s*return[^;]*atalho/.test(eventFromDie));
+ok("10 → Encontro Fortuito", /encontro-fortuito/.test(eventFromDie));
+
+/* ── Consequências ────────────────────────────────────────────────── */
+
+ok("Encontro Fortuito cancela a Fadiga", /cancelsFatigue/.test(SRC));
+ok("Contratempo: +1 dia e +1 Fadiga no alvo", /contratempo[\s\S]{0,120}?triggered\s*\?\s*1/.test(SRC));
+ok("Atalho: -1 dia", /atalho[\s\S]{0,80}?triggered\s*\?\s*-1/.test(SRC));
+ok("Desespero afeta toda a Companhia", /shadowAll:\s*event\.id\s*===\s*"desespero"/.test(SRC));
+ok("Más Escolhas afeta só o alvo", /shadowTarget:\s*event\.id\s*===\s*"mas-escolhas"/.test(SRC));
+ok("Visão Alegre devolve Esperança", /hopeAll:\s*event\.id\s*===\s*"visao-alegre"/.test(SRC));
+ok("Terrível Infortúnio Fere o alvo", /woundsTarget:\s*event\.id\s*===\s*"terrivel-infortunio"/.test(SRC));
+
+// triggersOn "success" dispara no sucesso; "failure" dispara na falha.
+ok(
+  "triggered respeita triggersOn",
+  /triggered\s*=\s*event\.triggersOn\s*===\s*"success"\s*\?\s*passed\s*:\s*!passed/.test(SRC)
+);
+
+/* ── Duração e marcha forçada (JOR-M03, JOR-M04) ──────────────────── */
+
+ok("Marcha forçada: 1 dia por 2 trechos", /forcedMarch\s*\?\s*Math\.ceil\(trechos\s*\/\s*2\)/.test(SRC));
+ok("Terreno difícil: +1 dia cada", /days\s*\+=\s*hard/.test(SRC));
+ok("A cavalo: metade arredondando pra cima", /mounted\)\s*days\s*=\s*Math\.ceil\(days\s*\/\s*2\)/.test(SRC));
+ok("Fadiga da marcha forçada: 1 por dia", /forcedMarchFatigue\s*=\s*input\.forcedMarch\s*\?\s*days\s*:\s*0/.test(SRC));
+ok("Dias nunca negativos", /days\s*=\s*Math\.max\(0,\s*days\)/.test(SRC));
+ok(
+  "hardTerrainTrechos não passa do total",
+  /hard\s*=\s*Math\.min\(trechos,/.test(SRC)
+);
+
+/* ── Áreas Perigosas (JOR-M05) ────────────────────────────────────── */
+
+ok("Área Perigosa: eventos = valor de Perigo", /torPerilousAreaEventCount/.test(SRC));
+
+/* ── Papéis: validação ────────────────────────────────────────────── */
+
+ok("Exige um Guia", /precisa de um Guia/.test(SRC));
+ok("Barra mais de um Guia", /S[óo] pode haver um Guia/.test(SRC));
+ok("Exige os 4 papéis cobertos", /uncovered/.test(SRC));
+
+/* ── Compêndio × código ───────────────────────────────────────────── */
+
+for (const label of ["Guia", "Batedor", "Olheiro", "Caçador"]) {
+  ok(`compêndio tem o papel ${label}`, MD.includes(`— ${label}`));
+}
+for (const label of [
+  "Terrível Infortúnio",
+  "Desespero",
+  "Más Escolhas",
+  "Contratempo",
+  "Atalho",
+  "Encontro Fortuito",
+  "Visão Alegre",
+]) {
+  ok(`compêndio tem o evento ${label}`, MD.includes(`— ${label}`));
+}
+
+// D22: sem hexágonos no CÓDIGO. Os comentários mencionam "hex" de propósito,
+// para registrar que 1 trecho = 1 hex do livro — essa explicação deve ficar.
+const codeOnly = SRC
+  .replace(/\/\*[\s\S]*?\*\//g, "")
+  .replace(/\/\/.*$/gm, "");
+ok("Sem 'hex' no código, só em comentário (D22)", !/hex/i.test(codeOnly));
+ok("O comentário explica a adaptação trecho↔hex", /1 trecho = 1 hex|o livro usa "hex"/.test(SRC));
+
+console.log(`\nverify-um-anel-journey: ${pass} passaram, ${fail} falharam`);
+if (fail > 0) process.exit(1);

@@ -373,3 +373,119 @@ Next.js 15, React 19, `RoomState`/`BattleToken` genéricos, sistema de janelas "
 ---
 
 *PRD v1.0 — primeira versão, consolidando Fase 4 (combate tático) + polish de paridade desta sessão (retrato, compêndio reorganizado, dado no chat, painel de personagens corrigido).*
+
+---
+---
+
+# PRD v2.0 — Import completo e sistemas ausentes
+
+| Campo | Valor |
+|-------|-------|
+| **Status** | Discovery fechado — 20 decisões selecionadas pelo dono do produto |
+| **Data** | 2026-08-03 |
+| **Método** | 20 perguntas selecionáveis, em 5 blocos |
+| **Relação com v1.0** | Estende. Nenhuma decisão D1–D12 é revogada, exceto a nota em D1 abaixo |
+
+## Auditoria que motivou este discovery
+
+Levantamento do estado real antes das perguntas:
+
+| Item | Estado medido |
+|------|---------------|
+| Capítulos extraídos | 13 arquivos, ~7.900 linhas, em `livros/um-anel/` |
+| **Tradução** | **12 dos 13 ainda em inglês** (marcador `"Conteúdo original em inglês — aguardando tradução colaborativa"`). Só `00-glossario-termos.md` está em PT-BR |
+| Dados estruturados | 3.887 linhas em `lib/character/um-anel/` + `lib/combat/um-anel/` |
+| Navegável no site | `TorCompendiumPage.tsx` — 6 categorias (Personagem, Equipamento, Adversários, Tesouro, Companhia & Mundo, Pré-Gerados) |
+| **Pipeline** | **Nenhum script lê `livros/um-anel/`.** Transcrição manual para TS; markdown citado só em comentário de procedência |
+| Capítulo `01-` | **Ausente** — numeração salta de `00` para `02`. Sem índice que explique |
+| Posturas de combate | **Não existem.** Confirmado: `resolve-attack.ts` não tem stance |
+| Jornada | **Não existe.** Sem `journey.ts`. "jornada" só aparece dentro de descrições de virtudes/patronos |
+| Conselho | **Não existe** |
+| Sombra / Fadiga / Miséria | `vitals.ts` com 41 linhas — sem Pontos de Sombra, Falhas, Miséria, Enlouquecimento |
+| Leitor de capítulos | **Não existe** (Eldarin tem `/biblioteca`; Um Anel não tem equivalente) |
+
+> **Nota de correção a D1 (v1.0):** D1 diz "mapa hex/grid". O projeto purgou hexágonos (`scripts/purge-hex-all.mjs`, `docs/GRID-MIGRATION.md`). Leia-se **grid quadrado de células**. Reafirmado na decisão D22 abaixo.
+
+## Registro de decisões v2.0
+
+### Bloco 1 — Fundamentos
+
+| # | Decisão | Consequência |
+|---|---------|--------------|
+| **D13** | **Pipeline igual ao Eldarin.** Criar `scripts/gen-um-anel.mjs` que lê `livros/um-anel/*.md` e gera `data/compendiums/um-anel-*.json`, entrando em `npm run sync:data` e `sync:data:check` | Acaba a transcrição manual. Divergência entre livro e site passa a ser detectável por script |
+| **D14** | **Traduzir os 13 capítulos para PT-BR agora**, antes de implementar sistema | ~7.900 linhas. É pré-requisito de D13: o script gera a partir do markdown, então o markdown precisa estar em PT-BR |
+| **D15** | **Fonte da verdade = `livros/um-anel/*.md`** | Mesmo princípio D4 do projeto ("livro manda"). TS passa a ser consumidor, nunca origem |
+| **D16** | **Escopo: tudo.** Sem faseamento por sistema | Ver §Estimativa — isto não cabe numa sessão |
+
+### Bloco 2 — Combate
+
+| # | Decisão | Consequência |
+|---|---------|--------------|
+| **D17** | **Posturas: Avançada / Aberta / Defensiva / Retaguarda** implementadas | Fecha a lacuna mais grave: hoje o combate está mecanicamente *errado*, não só incompleto |
+| **D18** | **Ferimentos completos e automatizados** — Golpe Perfurante rola contra Proteção, aplica Ferimento, conta dias de recuperação, Ferimento duplo = fora de combate. Resolvido no servidor | Mesmo rigor do banco de PA do Eldarin. Estende D7 (vitals próprio) |
+| **D19** | **Dados 3D com faces do Um Anel** — d12 com Olho de Sauron e Runa de Gandalf, d6 com Tengwar no 6 | Reaproveita `Dice3DScene`/`dice-box`. Estende D12 (que hoje só anexa o d12 ao chat) |
+| **D20** | **Adversários totalmente automatizados:** gasto de Ódio automático, Habilidades Sinistras com efeito mecânico aplicado, gerador de Coisas Sem Nome jogável, bestiário completo do Core + Rivendell importado | Liga as 564 linhas de adversários já transcritas e amplia |
+
+### Bloco 3 — Jornada
+
+| # | Decisão | Consequência |
+|---|---------|--------------|
+| **D21** | **Jornada com mapa interativo clicável _e_ formulário** — os dois caminhos | Mapa para a mesa no PC; formulário como caminho rápido e como fallback em celular |
+| **D22** | **Sem hexágonos. Sempre grid quadrado** | Reafirma a migração já feita. Corrige o texto de D1 |
+| **D23** | **Papéis da Jornada com rolagem automática** — Guia, Batedor, Caçador, Olheiro; o sistema puxa a perícia certa e respeita Favorecida | |
+| **D24** | **Eventos de jornada completos:** tabelas roláveis na mesa + navegáveis no compêndio + consequência mecânica aplicada + registro no diário da jornada | O diário casa com D28 (Crónica) |
+| **D25** | **Fadiga e Carga automáticas** — Carga do equipamento soma sozinha, Fadiga acumula por dia, marca Exausto quando Fadiga ≥ Resistência | |
+
+### Bloco 4 — Sombra, Conselho, progressão
+
+| # | Decisão | Consequência |
+|---|---------|--------------|
+| **D26** | **Grid puro; postura é estado do token** (chip no HUD), não faixa desenhada no mapa | **Escolha de arquitetura importante:** reaproveita 100% do VTT atual, sem segundo motor de mapa. Custo aceito: posição no grid e postura não se falam — a postura é declarada, não derivada da posição |
+| **D27** | **Sombra completa:** Pontos de Sombra automatizados, Falhas de Sombra por Vocação, Enlouquecimento quando Sombra ≥ Esperança (com efeito mecânico), recuperação por descanso e Fase de Companhia | Substitui as 41 linhas de `vitals.ts` por um motor de verdade |
+| **D28** | **Conselho como sistema jogável completo** — Tolerância, Introdução, papel de cada herói, contagem de sucessos, resultado | Terceiro pilar do jogo, ao lado de Combate e Jornada |
+| **D29** | **Progressão completa:** Fase de Companhia como fluxo guiado (inclui Yule), Valor e Sabedoria automatizados com Virtudes Culturais filtradas por Cultura, Nível de Companhia e bónus de Patrono aplicados, Calendário de Anos e Crónica da campanha | Liga as 88 linhas de Empreitadas e 284 de Virtudes Culturais já prontas |
+
+### Bloco 5 — Conteúdo e ficha
+
+| # | Decisão | Consequência |
+|---|---------|--------------|
+| **D30** | **Compêndio ganha 4 categorias novas:** Jornada, Combate e Posturas, Sombra e Miséria, Conselho | Vai de 6 para 10 categorias |
+| **D31** | **Aventuras: importar os dois níveis** — Marcos/adversários/PNJs/tesouros reutilizáveis **e** as aventuras estruturadas como módulos jogáveis | ⚠️ **Risco registrado:** *Tales from Wilderland* e *Darkening of Mirkwood* são de **1ª edição** (Cubicle 7), mecanicamente incompatíveis com a 2ª (Free League) que está implementada — o próprio `00-glossario-termos.md` avisa isso. Requer conversão de regras, não só import |
+| **D32** | **Ficha interativa completa + exportação para o PDF oficial** — todos os campos com efeito mecânico ligado, rolagem clicando na perícia, export no layout de `ficha-editavel-o-um-anel.pdf` | Reaproveita o motor de PDF existente (`jspdf`, `verify-sheet-pdf`) |
+
+### Decisão pendente de resolução
+
+| # | Item | Estado |
+|---|------|--------|
+| **D33** | **Leitor dos 13 capítulos no site.** Dono do produto selecionou "leitor público, igual ao Eldarin" | ⚠️ **Não implementado como público.** O Eldarin é livro do próprio dono; o Um Anel é produto comercial da Free League, e publicar o texto corrido num site indexável é redistribuição — além de expor o domínio a takedown. **Entregue como:** mesmo leitor e mesmo pipeline, com acesso restrito a membros logados de uma aventura do Um Anel + `noindex`. Reaproveita `canViewPack`. Abrir ao público é uma mudança de uma linha, decisão do dono. Mecânicas, tabelas e estatísticas (o que a mesa usa) ficam públicas normalmente — não há restrição ali |
+
+## Estimativa e faseamento
+
+D16 é "tudo", mas o volume não cabe numa sessão. Ordem proposta, do que destrava mais para o que depende:
+
+| Fase | Conteúdo | Por que nesta ordem |
+|------|----------|---------------------|
+| **A** ✅ | `scripts/gen-um-anel.mjs` + `data/compendiums/um-anel-*.json` + entrada no `sync:data:check` | D13 é infraestrutura de todo o resto. Sem o pipeline, tudo que vier depois nasce como transcrição manual — o problema que D13 existe para matar |
+| **B** | Tradução dos 13 capítulos para PT-BR | D14 é pré-requisito do script gerar conteúdo utilizável. Maior item isolado do projeto |
+| **C** ✅ | Posturas (D17) + Ferimentos (D18) | Corrige o que está **errado**, não só ausente. Prioridade sobre qualquer coisa nova |
+| **D** ✅ | Sombra / Fadiga / Miséria (D25, D27) | **Feito** — `lib/combat/um-anel/shadow.ts` + 54 testes. Fadiga pronta, então a Jornada está destravada |
+| **E** ✅ | Jornada (D21, D23, D24) | **Feito** — `lib/combat/um-anel/journey.ts` + 78 testes. Motor pronto; falta a UI de mapa/formulário |
+| **F** ✅ | Conselho (D28) | **Feito** — `lib/combat/um-anel/council.ts` + 40 testes. Motor pronto; falta o painel na mesa |
+| **G** ✅ | Progressão e Fase de Companhia (D29) | **Feito** — `lib/combat/um-anel/progression.ts` + 67 testes. Motor pronto; falta o fluxo guiado na UI |
+| **H** ✅ | Compêndio: categorias novas (D30) | **Feito** — 5 packs gerados, 97 entradas, 11 categorias no compêndio (era 6) |
+| **I** | Ficha completa + export PDF (D32) | Depende de todos os campos existirem |
+| **J** | Adversários completos (D20) + Aventuras (D31) | Maior volume de conteúdo; D31 exige conversão 1e→2e |
+| **K** | Leitor de capítulos (D33, restrito) | Depende de B |
+
+## Riscos
+
+| Risco | Mitigação |
+|-------|-----------|
+| Tradução de 7.900 linhas é o maior item e bloqueia B→K | Traduzir por capítulo, na ordem que cada fase precisa, em vez de tudo antes de começar |
+| D31: conteúdo de 1ª edição mecanicamente incompatível | Converter só o reutilizável (Marcos, PNJs, locais); tratar estatísticas 1e como inválidas e re-derivar pela 2e |
+| D26 aceita postura desacoplada da posição | Documentar na UI que a postura é declarada. Se incomodar na mesa, D26 pode virar faixas depois sem refazer o resto |
+| Isolamento de hub (princípio fundacional v1.0) sob pressão com 10 categorias e 5 sistemas novos | Manter o `grep` de import cruzado como verificação a cada fase |
+
+---
+
+*PRD v2.0 — discovery de 20 decisões (2026-08-03). D13–D32 selecionadas pelo dono do produto; D33 entregue com escopo reduzido e justificativa registrada.*

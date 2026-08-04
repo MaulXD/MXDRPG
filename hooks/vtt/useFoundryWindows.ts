@@ -22,6 +22,7 @@ export const FOUNDRY_DOCK_PANEL_IDS: MesaWindowId[] = [
   "dungeon",
   "status",
   "compendium",
+  "torJourney",
 ];
 
 type Registry = Partial<Record<MesaWindowId, FoundryWindowLayout>>;
@@ -43,6 +44,7 @@ const DEFAULT_LAYOUTS: Record<MesaWindowId, Omit<FoundryWindowLayout, "open" | "
   monsterSheet: { x: 96, y: 56, width: 520, height: 640 },
   status: { x: 52, y: 48, width: 400, height: 520 },
   torFicha: { x: 360, y: 48, width: 460, height: 640 },
+  torJourney: { x: 400, y: 48, width: 360, height: 560 },
   compendium: { x: 72, y: 40, width: 560, height: 620 },
 };
 

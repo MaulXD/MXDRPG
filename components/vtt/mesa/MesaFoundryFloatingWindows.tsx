@@ -14,6 +14,11 @@ import { FoundryWindow } from "@/components/vtt/foundry/FoundryWindow";
 import { MesaRoomChatPanel } from "@/components/vtt/mesa/MesaRoomChatPanel";
 import { PlayableCharactersPanel } from "@/components/vtt/PlayableCharactersPanel";
 import { RoomInvitePanel } from "@/components/vtt/RoomInvitePanel";
+const TorJourneyPanel = dynamic(
+  () => import("@/components/vtt/TorJourneyPanel").then((m) => m.TorJourneyPanel),
+  { ssr: false }
+);
+
 const DiceRoller = dynamic(
   () => import("@/components/vtt/DiceRoller").then((m) => m.DiceRoller),
   { ssr: false }
@@ -249,6 +254,28 @@ export function MesaFoundryFloatingWindows(props: MesaFoundryFloatingWindowsProp
           }
           onClose={() => onCloseTorSheet?.()}
         />
+      ) : null}
+
+      {rpgSystemId === "um-anel" && isFloating("torJourney") ? (
+        <FoundryWindow
+          title="Jornada"
+          layout={panel("torJourney")}
+          className="foundry-window--tor-journey"
+          onLayoutChange={(patch) => onPatchWindow("torJourney", patch)}
+          onFocus={() => onFocusWindow("torJourney")}
+          onMinimize={() =>
+            panel("torJourney").minimized
+              ? onRestoreWindow("torJourney")
+              : onMinimizeWindow("torJourney")
+          }
+          onClose={() => onCloseWindow("torJourney")}
+        >
+          <TorJourneyPanel
+            roomId={roomId}
+            canManage={Boolean(effectiveIsGm)}
+            onUpdate={() => void onRefresh()}
+          />
+        </FoundryWindow>
       ) : null}
 
       {isFloating("dice") ? (
