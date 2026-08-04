@@ -104,6 +104,44 @@ npm run sync:data:check       # após editar livros/
 
 ---
 
+### 2026-08-03 — fix(um-anel): três bugs de regra nas condições Exausto e Arrasado
+
+**Pedido:** avançar para a Fase I (ficha interativa). Ao auditar a ficha antes de mexer, achei que boa parte de D32 já existia — rolagem por clique, steppers, pills de condição. O que **não** estava certo eram as fórmulas das condições derivadas.
+
+**Passo a passo:**
+
+1. **Bug 1 (meu, introduzido na Fase D).** `shadow.ts` calculava `weary: state.fatigue >= state.enduranceValue` — Resistência contra a Fadiga **isolada**, ignorando a Carga do equipamento. E os 54 testes da Fase D **trancaram a regra errada**, que é o pior tipo de teste: dá confiança falsa.
+
+2. **A regra real, conferida no livro antes de mexer:** `04-caracteristicas.md` diz *"Heroes become Weary if their Current Endurance score becomes equal to or lower than their total Load"* e *"Fatigue points temporarily raise a travelling Player-hero's total Load"*. Ou seja **Exausto ⟺ Resistência ≤ (Carga + Fadiga)**. A Fadiga **soma** à Carga, não substitui. Adicionei `totalTorLoad()` e o campo `load` em `TorSpiritState`.
+
+3. **Bug 2 (pré-existente, `normalize.ts`).** `weary: endurance.value <= load` — mesma omissão da Fadiga, no lado da ficha. Efeito prático: herói acabado de Fadiga no fim de uma jornada **não ficava Exausto**, que é exatamente o efeito que a Fadiga existe para produzir. A Fadiga era cosmética.
+
+4. **Bug 3 (pré-existente, `normalize.ts`).** `miserable: shadow >= hope.value` ignorava `shadowScars`. Cicatriz conta como ponto de Sombra normal para todos os efeitos (SOM-R06), então quem trocou Sombra por Cicatriz em "Endurecer a Vontade" **saía de Arrasado sem ter melhorado de verdade** — virava um exploit silencioso.
+
+5. **Normalização defensiva:** `shadowScars` e `fatigue` passam a ser normalizados com default e escritos explicitamente no retorno. Sem isso, ficha legada sem os campos daria `NaN` nas comparações — e `NaN` em comparação devolve `false`, então o herói simplesmente **nunca** ficaria Exausto, sem erro nenhum no console.
+
+6. **Ferido continua manual** — é evento de jogo (Golpe Perfurante), não consequência de número.
+
+7. **`computeLoad` segue sendo só equipamento.** A Fadiga é somada fora dela, porque a Carga é persistida na ficha: somar dentro faria a Fadiga entrar duas vezes. Há um teste garantindo que `computeLoad` não menciona Fadiga.
+
+8. **16 testes novos** em `verify-um-anel-sheet-conditions.mjs`, incluindo dois que verificam **a regra no próprio livro** — se a extração mudar e a regra sumir, o teste avisa em vez de validar uma fórmula sem fonte. Também checam que motor e ficha não divergem (duas implementações da mesma regra é aceitável; divergir não é).
+
+**Arquivos tocados:**
+- `lib/combat/um-anel/shadow.ts` — `totalTorLoad()`, campo `load`, fórmula de Exausto corrigida
+- `lib/character/um-anel/normalize.ts` — Exausto com Fadiga, Arrasado com Cicatrizes, defaults explícitos
+- `scripts/verify-um-anel-shadow.mjs` — teste que trancava a regra errada, corrigido
+- `scripts/verify-um-anel-sheet-conditions.mjs` — **novo:** 16 testes
+- `package.json` — verificador no `test` e no `test:um-anel`
+
+**Commits / deploy:** ver branch `fix/login-google-e-responsivo-um-anel`.
+
+**Como testar:**
+- `npm run test:um-anel`
+- Na ficha: herói com Resistência 20, Carga 8 e Fadiga 15 deve aparecer **Exausto** (20 ≤ 23). Antes não aparecia.
+- Herói com Esperança 6, Sombra 3 e 3 Cicatrizes deve aparecer **Arrasado** (6 ≥ 6). Antes não aparecia.
+
+---
+
 ### 2026-08-03 — fix(auth): login do Google caindo — sessão OAuth revalidava no banco a cada requisição
 
 **Pedido:** "tá caindo tanto o login do Google, por quê?" → diagnóstico, e depois "repare os erros identificados".
