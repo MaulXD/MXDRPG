@@ -3,6 +3,9 @@
  * node scripts/verify-sheet-pdf.mjs
  */
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
+import { join, dirname } from "node:path";
+import { fileURLToPath } from "node:url";
 
 // --- Replicated from lib/character/export-sheet-pdf.ts ---
 function sheetPdfFilename(name) {
@@ -250,5 +253,63 @@ test("does not false-positive on background-color property names", () => {
 test("hsl is safe (not in blocklist)", () => {
   assert.ok(!isUnsafeColor("hsl(200 50% 50%)"));
 });
+
+
+/* ── O guard aplicado aos CSS de verdade ──────────────────────────────
+   Até aqui o UNSAFE_COLOR_VALUE só era testado contra strings de exemplo —
+   o regex estava certo mas nada varria os arquivos, então uma cor insegura
+   entrava sem ninguém notar e o bloco saía transparente no PDF capturado. */
+
+const PDF_CSS_FILES = [
+  "components/character/sheet-pdf.css",
+  "components/character/sheet-pdf-capture.css",
+  "components/character/tor-sheet-pdf.css",
+];
+
+/**
+ * Linhas numeradas, com os comentários CSS removidos.
+ *
+ * Remover comentário é obrigatório, não conveniência: estes arquivos
+ * DOCUMENTAM a restrição citando `color-mix()` e `oklch()` por nome, e um scan
+ * ingênuo acusaria a própria explicação. Filtrar por prefixo `*` não resolve —
+ * as linhas de continuação de um bloco `/* … *\/` não começam com `*`.
+ *
+ * Os comentários são trocados por linhas vazias em vez de apagados, para os
+ * números de linha continuarem batendo com o arquivo real.
+ */
+function cssLines(css) {
+  const withoutComments = css.replace(/\/\*[\s\S]*?\*\//g, (m) =>
+    m.replace(/[^\n]/g, " ")
+  );
+  return withoutComments.split("\n").map((line, i) => ({ line: line.trim(), n: i + 1 }));
+}
+
+for (const rel of PDF_CSS_FILES) {
+  test(`${rel} sem cor que o html2canvas não resolve`, () => {
+    const css = readFileSync(join(dirname(fileURLToPath(import.meta.url)), "..", rel), "utf8");
+    const offenders = cssLines(css)
+      .filter(({ line }) => !line.startsWith("*") && !line.startsWith("//"))
+      .filter(({ line }) => isUnsafeColor(line));
+    assert.deepStrictEqual(
+      offenders.map((o) => `linha ${o.n}: ${o.line}`),
+      [],
+      `${rel} usa cor que o html2canvas não resolve`
+    );
+  });
+
+  test(`${rel} não depende de var() de cor do site`, () => {
+    const css = readFileSync(join(dirname(fileURLToPath(import.meta.url)), "..", rel), "utf8");
+    // Os tokens do site resolvem para color-mix() em vários casos, então o
+    // layout de captura precisa de hex/rgb literais.
+    const offenders = cssLines(css).filter(({ line }) =>
+      /(?:color|background|border[a-z-]*)\s*:[^;]*var\(--/.test(line)
+    );
+    assert.deepStrictEqual(
+      offenders.map((o) => `linha ${o.n}: ${o.line}`),
+      [],
+      `${rel} usa var(--…) em propriedade de cor`
+    );
+  });
+}
 
 console.log(`\nverify-sheet-pdf: OK (${passed} tests)`);

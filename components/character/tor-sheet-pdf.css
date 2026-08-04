@@ -1,0 +1,322 @@
+/* Ficha do Um Anel — layout de impressão (html2canvas → jsPDF)
+   ══════════════════════════════════════════════════════════════════
+   RESTRIÇÃO DE COR: html2canvas não resolve color-mix(), oklch(), oklab(),
+   lch(), lab() nem color(). Só hex, rgb() e rgba() aqui — `verify-sheet-pdf`
+   tem um teste (UNSAFE_COLOR_VALUE) que trava o build se algum entrar.
+
+   Também não usa var(--token): os tokens do site resolvem para color-mix()
+   em vários casos, e a captura sairia com bloco transparente. */
+
+.tor-pdf {
+  width: 794px;
+  padding: 28px 32px 24px;
+  box-sizing: border-box;
+  background: #ffffff;
+  color: #1a1410;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 11px;
+  line-height: 1.45;
+}
+
+/* ── Cabeçalho ─────────────────────────────────────────────────── */
+
+.tor-pdf__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #6b4f1e;
+}
+
+.tor-pdf__name {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: #3a2a10;
+}
+
+.tor-pdf__sub {
+  margin: 2px 0 0;
+  font-size: 11px;
+  color: #5a4a35;
+}
+
+.tor-pdf__head-boxes {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+/* ── Seções ────────────────────────────────────────────────────── */
+
+.tor-pdf__section {
+  margin-top: 14px;
+}
+
+.tor-pdf__section > h2 {
+  margin: 0 0 6px;
+  padding-bottom: 3px;
+  border-bottom: 1px solid #c8b48a;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #6b4f1e;
+}
+
+.tor-pdf__section h3 {
+  margin: 8px 0 3px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #7a6448;
+}
+
+/* ── Atributos ─────────────────────────────────────────────────── */
+
+.tor-pdf__attrs {
+  display: flex;
+  gap: 10px;
+}
+
+.tor-pdf__attr {
+  flex: 1;
+  padding: 8px 10px;
+  border: 1px solid #c8b48a;
+  border-radius: 4px;
+  background: #faf6ee;
+  text-align: center;
+}
+
+.tor-pdf__attr-label {
+  display: block;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #7a6448;
+}
+
+.tor-pdf__attr-value {
+  display: block;
+  margin: 2px 0;
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1;
+  color: #1a1410;
+}
+
+.tor-pdf__attr-tn {
+  display: block;
+  font-size: 9px;
+  color: #5a4a35;
+}
+
+/* ── Caixas de recurso ─────────────────────────────────────────── */
+
+.tor-pdf__boxes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.tor-pdf__box {
+  min-width: 84px;
+  padding: 5px 8px;
+  border: 1px solid #c8b48a;
+  border-radius: 3px;
+  background: #faf6ee;
+}
+
+.tor-pdf__box-label {
+  display: block;
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #7a6448;
+}
+
+.tor-pdf__box-value {
+  display: block;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.2;
+  color: #1a1410;
+}
+
+.tor-pdf__box-max {
+  font-size: 10px;
+  font-weight: 400;
+  color: #5a4a35;
+}
+
+/* ── Condições ─────────────────────────────────────────────────── */
+
+.tor-pdf__conditions {
+  display: flex;
+  gap: 6px;
+  margin-top: 6px;
+}
+
+.tor-pdf__conditions > span {
+  padding: 2px 8px;
+  border: 1px solid #c8b48a;
+  border-radius: 3px;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #a09880;
+}
+
+/* Condição ativa — borda e texto escuros. Sem preenchimento colorido:
+   a ficha é impressa e economizar tinta importa na mesa. */
+.tor-pdf__conditions > span.is-on {
+  border-color: #7a1e1e;
+  color: #7a1e1e;
+  background: #f8ecec;
+}
+
+/* ── Perícias ──────────────────────────────────────────────────── */
+
+.tor-pdf__skill-groups {
+  display: flex;
+  gap: 14px;
+}
+
+.tor-pdf__skill-group {
+  flex: 1;
+  min-width: 0;
+}
+
+.tor-pdf__skill-group h3 {
+  margin-top: 0;
+}
+
+.tor-pdf__skill-group ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.tor-pdf__skill-group li {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 6px;
+  padding: 1px 0;
+  border-bottom: 1px dotted #ddd0b8;
+}
+
+.tor-pdf__skill-name {
+  font-size: 10px;
+  color: #1a1410;
+}
+
+.tor-pdf__skill-pips {
+  flex-shrink: 0;
+  font-size: 9px;
+  letter-spacing: 0.06em;
+  color: #6b4f1e;
+}
+
+/* ── Listas e tabelas ──────────────────────────────────────────── */
+
+.tor-pdf__inline {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 14px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 10px;
+}
+
+.tor-pdf__list {
+  margin: 0;
+  padding-left: 14px;
+  font-size: 10px;
+}
+
+.tor-pdf__table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 10px;
+}
+
+.tor-pdf__table th,
+.tor-pdf__table td {
+  padding: 3px 6px;
+  border: 1px solid #ddd0b8;
+  text-align: left;
+}
+
+.tor-pdf__table th {
+  background: #f2eadb;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #6b4f1e;
+}
+
+/* ── Campos e colunas ──────────────────────────────────────────── */
+
+.tor-pdf__armour {
+  display: flex;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.tor-pdf__field {
+  flex: 1;
+  padding: 4px 8px;
+  border: 1px solid #c8b48a;
+  border-radius: 3px;
+  background: #faf6ee;
+}
+
+.tor-pdf__field-label {
+  display: block;
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: #7a6448;
+}
+
+.tor-pdf__field-value {
+  display: block;
+  font-size: 11px;
+  color: #1a1410;
+}
+
+.tor-pdf__two-col {
+  display: flex;
+  gap: 18px;
+}
+
+.tor-pdf__two-col > div {
+  flex: 1;
+  min-width: 0;
+}
+
+.tor-pdf__note {
+  margin: 4px 0 0;
+  font-size: 9px;
+  font-style: italic;
+  color: #5a4a35;
+}
+
+.tor-pdf__foot {
+  margin-top: 16px;
+  padding-top: 6px;
+  border-top: 1px solid #c8b48a;
+  font-size: 9px;
+  color: #7a6448;
+  text-align: center;
+}
