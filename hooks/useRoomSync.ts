@@ -1070,6 +1070,35 @@ export async function revealRoomCell(roomId: string, q: number, r: number) {
   return res.json() as Promise<RoomSnapshot>;
 }
 
+/**
+ * Grava o estado de sessão do Um Anel (Jornada, Conselho, Fase de Companhia).
+ * Só o Mestre — o servidor recusa quem não gerencia a sala.
+ *
+ * `null` num campo APAGA aquele trecho; campo ausente deixa como está. É o que
+ * permite encerrar uma jornada sem apagar o Conselho em andamento.
+ */
+export async function patchTorSession(
+  roomId: string,
+  patch: {
+    journey?: unknown | null;
+    council?: unknown | null;
+    fellowship?: unknown | null;
+  }
+) {
+  const res = await roomFetch(
+    `/api/room/${roomId}/tor-session`,
+    {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      credentials: "same-origin",
+      body: JSON.stringify(patch),
+    },
+    "Falha ao salvar a sessão"
+  );
+  const data = (await res.json()) as { snapshot: RoomSnapshot };
+  return data.snapshot;
+}
+
 export async function postRoomChat(
   roomId: string,
   body: {

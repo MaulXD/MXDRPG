@@ -150,7 +150,21 @@ npm run sync:data:check       # após editar livros/
 
 14. **`components/vtt/TorFellowshipPanel.tsx`** — Yule é **derivado do calendário**, não um botão: o painel mostra `Ano N · Fase X/3` e avisa quando encerrar vai virar o ano. Orçamento de Empreitadas se ajusta sozinho (Fase comum: 1 + 1 grátis; Yule: 1 por herói + 1 grátis), e as marcadas (Yule) aparecem desabilitadas fora do Yule em vez de escondidas — o jogador precisa saber que existem e por que não pode escolher agora. Validação usa `validateTorUndertakings`, então estourar orçamento ou repetir Empreitada não-Yule bloqueia o botão. Tabela de custos de XP num `<details>`, com o lembrete dos bolsos separados e do "Valor OU Sabedoria".
 
-**Limitação conhecida dos três painéis:** o estado vive no `useState` do Mestre e é narrado no chat. A mesa acompanha tudo, mas recarregar a página perde o progresso. Persistir em `RoomState` exigiria mudança de schema e rotas novas — deliberadamente fora do v1, e registrado aqui para não ser descoberto no meio de uma sessão.
+**~~Limitação conhecida dos três painéis~~ — RESOLVIDA na mesma sessão (ver abaixo).**
+
+15. **Persistência do estado de sessão em `RoomState`.** A limitação acima (estado no `useState` do Mestre, perdido ao recarregar) foi fechada: novo campo `RoomState.torSession` com Jornada, Conselho e Fase de Companhia. `eldarin_rooms` guarda a mesa como JSONB, então **não houve migração**.
+
+16. **O campo entra também no `RoomSnapshot`** — e isso é o ponto, não um detalhe: sem estar no snapshot, os jogadores continuariam vendo só o texto do chat. Agora o placar da Jornada (trechos restantes, evento pendente, diário) chega a todos por SSE. `snapshotForViewer` usa `{ ...snapshot }`, então o campo passa sem alteração ali.
+
+17. **Nada confia no que leu do JSONB.** `normalizeTorSession` recorta faixas (`int`), enums (`oneOf`) e tamanho de lista (`strList`): mesa escrita por versão anterior do código continua carregando. Sessão vazia devolve `undefined` para não inflar o JSON da sala.
+
+18. **`null` apaga, ausente mantém.** O patch usa `"campo" in patch` em vez de truthiness — sem essa distinção não haveria como encerrar uma jornada sem apagar o Conselho em andamento.
+
+19. **Decisão de modelagem:** o evento pendente guarda só o `eventId`; o `TorJourneyEventMeta` é resolvido em código na leitura. Guardar o meta inteiro congelaria texto de regra dentro do banco, e mudar a tabela do livro deixaria salas antigas com a versão velha.
+
+20. **`started` deriva de `progress`**, não de um `useState` paralelo — duas fontes de verdade fariam o painel discordar da sala depois de um SSE. O jogador sem permissão passa a ver o placar em modo leitura em vez de uma mensagem de "só o Mestre".
+
+21. **Autorização:** handler exige `canManageRoom` **e** `rpgSystemId === "um-anel"` — o campo nunca aparece num estado do Eldarin. 30 testes novos cobrem normalização, semântica do patch, autorização, isolamento e o acoplamento painel↔sala.
 
 **Ainda pendente do mesmo diagnóstico (depende do servidor, não do código):**
 
