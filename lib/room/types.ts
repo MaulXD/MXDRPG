@@ -7,6 +7,7 @@ import type { CombatLogEntry } from "./combat-log";
 import type { GmCreation } from "./gm-creations";
 import type { RoomSettings } from "./settings";
 import type { RpgSystemId } from "@/lib/rpg/systems";
+import type { TorSessionState } from "@/lib/combat/um-anel/session-state";
 
 export type { CombatTrack };
 export type { CombatUndoEntry };
@@ -41,6 +42,12 @@ export type RoomState = {
   combatLog?: CombatLogEntry[];
   chat: ChatMessage[];
   pings: BattlePing[];
+  /**
+   * Estado de sessão do Um Anel (Jornada, Conselho, Fase de Companhia).
+   * Só existe em mesa `rpgSystemId === "um-anel"` — o Eldarin nunca lê nem
+   * escreve aqui (isolamento de hub do PRD).
+   */
+  torSession?: TorSessionState;
   revision: number;
   updatedAt: number;
 };
@@ -68,5 +75,7 @@ export type RoomSnapshot = {
   gmCreations?: Record<string, GmCreation>;
   chat: ChatMessage[];
   pings: BattlePing[];
+  /** Vai para todos os jogadores: o placar da Jornada/Conselho é público. */
+  torSession?: TorSessionState;
   revision: number;
 };

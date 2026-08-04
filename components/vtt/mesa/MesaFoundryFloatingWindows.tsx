@@ -91,6 +91,8 @@ export type MesaFoundryFloatingWindowsProps = {
   mapScene: BattleScene;
   mapSnapshot: RoomSnapshot | null;
   mesaActors: RoomSnapshot["actors"];
+  /** Estado de sessão do Um Anel vindo do snapshot (Jornada, Conselho, Companhia). */
+  torSession?: RoomSnapshot["torSession"];
   session: SessionUser | null;
   roomInviteCode: string | null;
   showInviteUi: boolean;
@@ -142,6 +144,7 @@ export function MesaFoundryFloatingWindows(props: MesaFoundryFloatingWindowsProp
     mapScene,
     mapSnapshot,
     mesaActors,
+  torSession,
     session,
     roomInviteCode,
     showInviteUi,
@@ -283,6 +286,7 @@ export function MesaFoundryFloatingWindows(props: MesaFoundryFloatingWindowsProp
           <TorJourneyPanel
             roomId={roomId}
             canManage={Boolean(effectiveIsGm)}
+            progress={torSession?.journey ?? null}
             onUpdate={() => void onRefresh()}
           />
         </FoundryWindow>

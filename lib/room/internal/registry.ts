@@ -19,6 +19,7 @@ import { notifyRoomUpdated } from "../notifier";
 import { scheduleSave } from "./periodic-save";
 import { syncLinkedTokens } from "../sync";
 import type { RoomSnapshot, RoomState } from "../types";
+import { normalizeTorSession } from "@/lib/combat/um-anel/session-state";
 
 /** Deve bater com DISPLAY_GRID_RADIUS_CAP em lib/vtt/grid-cells.ts (ver comentário abaixo). */
 const MIN_SAFE_GRID_RADIUS = 24;
@@ -52,6 +53,7 @@ export function toSnapshot(state: RoomState): RoomSnapshot {
     gmCreations: getRoomGmCreations(state),
     chat: state.chat,
     pings: prunePings(state.pings ?? []),
+    torSession: normalizeTorSession(state.torSession),
     revision: state.revision,
   };
 }

@@ -582,6 +582,7 @@ function MesaWorkspaceInner({
             fallbackScene={scene}
             mapScene={mapScene}
             mesaActors={mesaActors}
+            torSession={snapshot?.torSession}
             session={session}
             inviteCode={inviteCode}
             roomInviteCode={roomInviteCode}
@@ -713,6 +714,7 @@ function MesaWorkspaceInner({
                   mapScene={mapScene}
                   mapSnapshot={snapshot}
                   mesaActors={mesaActors}
+                  torSession={snapshot?.torSession}
                   session={session}
                   roomInviteCode={roomInviteCode}
                   showInviteUi={showInviteUi}

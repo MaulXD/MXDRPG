@@ -32,6 +32,7 @@ export {
 export { addRoomChatMessage } from "./handlers/chat";
 export { executeRoomAttack, type AttackExecuteResult } from "./handlers/combat-attack";
 export { executeRoomTorAttack, type TorAttackExecuteResult } from "./handlers/tor-combat-attack";
+export { patchTorSession } from "./handlers/tor-session";
 export { executeRoomAbility, type AbilityExecuteResult } from "./handlers/combat-ability";
 export { executeRoomAreaSpell } from "./handlers/combat-area";
 export { executeGmCombatAction, type GmCombatAction } from "./handlers/combat-gm";

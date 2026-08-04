@@ -67,6 +67,8 @@ export type MesaFoundryDockRailProps = {
   fallbackScene: BattleScene;
   mapScene: BattleScene;
   mesaActors: RoomSnapshot["actors"];
+  /** Estado de sessão do Um Anel vindo do snapshot (Jornada, Conselho, Companhia). */
+  torSession?: RoomSnapshot["torSession"];
   session: SessionUser | null;
   inviteCode?: string | null;
   roomInviteCode: string | null;
@@ -108,6 +110,7 @@ export function MesaFoundryDockRail({
   fallbackScene,
   mapScene,
   mesaActors,
+  torSession,
   session,
   roomInviteCode,
   showInviteUi,
@@ -304,6 +307,7 @@ export function MesaFoundryDockRail({
             <TorJourneyPanel
               roomId={roomId}
               canManage={Boolean(effectiveIsGm)}
+              progress={torSession?.journey ?? null}
               onUpdate={() => void onRefresh()}
             />
           </div>
