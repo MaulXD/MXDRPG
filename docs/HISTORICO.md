@@ -104,6 +104,224 @@ npm run sync:data:check       # após editar livros/
 
 ---
 
+### 2026-08-03 — fix(auth): login do Google caindo — sessão OAuth revalidava no banco a cada requisição
+
+**Pedido:** "tá caindo tanto o login do Google, por quê?" → diagnóstico, e depois "repare os erros identificados".
+
+**Passo a passo:**
+
+1. **Diagnóstico — por que só o Google.** `resolveSessionUser` (`lib/auth/session-user.ts`) decidia materializar a conta por `oauthIdentityFromSession(user)`. Essa função devolve identidade sempre que `oauthProvider` + `oauthSubject` estão presentes na sessão — o que é **sempre verdade para um usuário Google**, inclusive um já materializado com id `usr_` válido. Consequência: toda requisição de sessão OAuth rodava `ensureUserFromOAuth(..., { strict: true })`:
+   - `fetchUserByOAuthIdentity` (query 1)
+   - `fetchUserById` (query 2)
+   - às vezes `fetchUserByEmail` (query 3)
+   - e um `UPDATE` quando a URL do avatar do Google diferia
+
+   Sessão por senha fazia **1 query** (`fetchUserByIdStrict`). Mesma rota, metade do custo e nenhuma escrita.
+
+2. **Por que derrubava.** Com `strict: true`, qualquer exceção cai no catch de `ensureUserFromOAuth`, que devolve sessão efêmera; `materializeOAuthUser` então vê `isOAuthEphemeralSessionId` e **lança** → usuário deslogado. Um soluço de banco de 3s derrubava quem entrou com Google e não derrubava quem entrou com senha.
+
+3. **O multiplicador.** 16 call sites, incluindo `/api/auth/me` e `/api/notifications` — e `NotificationsProvider` faz poll a cada **30 segundos** por cliente logado. Com `connectionLimit: 10`, `connectTimeout: 3000` e timeout de query de 5s, alguns jogadores numa mesa bastavam para esgotar o pool.
+
+4. **Correção (1 condição).** Materializar só quando a linha realmente não existe — id efêmero `google-…`/`discord-…`, que só acontece se o banco estava fora no momento do login. Com id `usr_` já válido, cai no caminho barato de 1 query, igual à senha. A ordem importa e está testada: id efêmero é checado **antes** de `usr_`.
+
+5. **O que se perde (nada relevante).** O retrato do Google deixa de ser reconferido a cada requisição. Mas `oauthAvatarUrl` vem do **cookie**, que só muda quando o usuário loga de novo — e é aí que `completeOAuthLogin` grava o valor novo. Na prática o `UPDATE` já era one-shot; o que existia era o custo de comparar em toda requisição.
+
+6. **Quarto erro meu em teste na mesma sessão.** A asserção negativa "não decide por `oauthIdentityFromSession`" falhava porque casava com o **comentário** que documenta o bug antigo. O comentário é deliberado — é o que impede alguém de "restaurar" o comportamento. Adicionei `stripComments()` e passei as asserções negativas a rodar só sobre código. **Padrão observado:** meus 4 erros de teste nesta sessão foram todos em asserções negativas com regex casando fora do escopo pretendido (arquivo inteiro em vez da função, ou comentário em vez de código).
+
+7. **Validação:** `tsc` limpo · build compila · `npm run test` verde com **12 testes novos** de custo de sessão OAuth.
+
+**Na mesma sessão — primeira UI de motor: painel de Jornada**
+
+8. **`components/vtt/TorJourneyPanel.tsx`** — o primeiro dos motores do Um Anel a ficar realmente jogável. Configura a rota (trechos, terreno difícil, estação, região, a cavalo, marcha forçada), mostra a duração calculada, e conduz o loop: Teste de Marcha do Guia → avança na rota → sorteia alvo e determina o evento pela região → resolve com a rolagem do alvo. Cada passo publica no chat com o d12 anexado (D12), então a mesa toda acompanha.
+
+9. **Bug que peguei antes de terminar:** na primeira versão do `resolveEvent` eu reconstruía um `TorJourneyEventMeta` parcial (`fatigue: 0, triggersOn: "failure"`) em vez de guardar o real. Isso resolveria **ao contrário** os três eventos de `triggersOn: "success"` — Atalho, Encontro Fortuito e Visão Alegre passariam a disparar na falha. Passei a guardar o meta inteiro no estado `pending`.
+
+10. **Ícone provisório, conforme a convenção do projeto.** `MesaRailIcon` não tem glyph genérico de fallback (`default: return null` daria botão invisível), então adicionei um marcador geométrico mínimo para `torJourney`, comentado explicitamente como **não-final** — a regra do projeto é não inventar ilustração enquanto a arte real não chega.
+
+11. **Integração completa:** novo `MesaWindowId`, layout padrão, entrada em `FOUNDRY_DOCK_PANEL_IDS`, painel no dock e em janela flutuante, e ícone no rail — tudo condicionado a `rpgSystemId === "um-anel"` **e** ser Mestre, respeitando o despacho por sistema (D10). CSS responsivo desde o início, com container query (o painel vive tanto no dock estreito quanto em janela redimensionável) e alvos de toque de 44px nos botões de graduação.
+
+**Ainda pendente do mesmo diagnóstico (depende do servidor, não do código):**
+
+- **`SESSION_SECRET` estável em produção.** O commit `be69f6f` (31/07) passou a exigir HMAC no cookie e rejeita o formato antigo de propósito — isso deslogou todo mundo **uma vez**, o que é esperado. Se estiver repetindo a cada deploy, o segredo não está estável no Contabo (`scripts/local/setup.sh` gera um aleatório; se algo parecido roda no servidor, cada recriação invalida todas as sessões).
+- **Diagnóstico rápido:** `curl https://www.mxdrpg.com.br/api/health` → `oauth.ready`, `oauth.missing`, `db`, `buildSha`. Se `db: false` ou `oauth.missing` vier preenchido, o problema é de configuração, não de código.
+
+**Arquivos tocados:**
+- `lib/auth/session-user.ts` — gatilho da materialização passa a ser o id efêmero, não a identidade OAuth
+- `scripts/verify-oauth-session-cost.mjs` — **novo:** 12 testes que trancam a regressão
+- `components/vtt/TorJourneyPanel.tsx` + `tor-journey.css` — **novos:** painel de Jornada jogável
+- `lib/vtt/foundry-window-placement.ts` · `hooks/vtt/useFoundryWindows.ts` — janela `torJourney`
+- `components/vtt/foundry/MesaRailIcon.tsx` — glyph provisório `torJourney`
+- `components/vtt/foundry/MesaIconBar.tsx` · `MesaFoundrySidebar.tsx` — prop `showJourney`
+- `components/vtt/mesa/MesaFoundryDockRail.tsx` · `MesaFoundryFloatingWindows.tsx` — painel no dock e flutuante
+- `package.json` — verificador no `test`; atalho `test:auth`
+
+**Commits / deploy:** pendente local (push só quando o usuário pedir).
+
+**Como testar:**
+- `npm run test:auth` → 12 testes
+- Em produção, depois do deploy: entrar com Google e navegar/deixar aberto — a sessão não deve mais cair sozinha
+- Confirmar no log do servidor que `[materializeSessionUser] oauth materialize failed` parou de aparecer
+
+---
+
+### 2026-08-03 — Um Anel: pipeline de compêndio + posturas de combate (PRD v2.0, Fases A e C)
+
+**Pedido:** extrair o livro do Um Anel subdividido em compêndios (não publicar o livro inteiro) e começar a implantar o resto das 20 decisões do discovery.
+
+**Passo a passo:**
+
+1. **Discovery — 20 perguntas selecionáveis**, registradas como D13–D33 no [PRD-MESA-UM-ANEL.md](./PRD-MESA-UM-ANEL.md) v2.0.
+
+2. **Auditoria que motivou:** 13 capítulos extraídos (~7.900 linhas), mas **12 dos 13 ainda em inglês**; **nenhum script lia `livros/um-anel/`** (transcrição manual para TS, markdown só citado em comentário); Posturas, Jornada, Conselho **inexistentes** no código; `vitals.ts` com 41 linhas; capítulo `01-` ausente (numeração salta 00 → 02).
+
+3. **Fase A — pipeline (D13/D15).** Criado `livros/um-anel/compendio/` com 4 arquivos markdown PT-BR **estruturados** (formato determinístico `## ID — Nome` + `- **Campo:** valor` + `> Descrição:`), extraídos e traduzidos dos capítulos em inglês. `scripts/gen-um-anel.mjs` parseia e gera `data/compendiums/um-anel/*.json` + `index.json`. **67 entradas em 4 packs.**
+
+4. **Guarda contra divergência** — o problema que D13 existe para matar: `scripts/verify-um-anel-compendium.mjs` regenera em memória e compara contagens, então markdown editado sem rodar `sync:data` **falha o check**. Testado na prática: adicionei uma entrada no markdown, o check acusou `8 → 9` e saiu com exit 1.
+
+5. **Isolamento de hub respeitado** (princípio fundacional do PRD v1.0): `lib/character/um-anel/compendium.ts` é registry próprio. **Não** toquei em `lib/compendium/registry.ts`, que é do Eldarin.
+
+6. **Compêndio de 6 → 10 categorias.** `TorCompendiumPage` ganhou `GeneratedPackSection`, uma renderização única que serve os 4 packs gerados — adicionar pack novo no script não exige tocar no componente.
+
+7. **Fase C — posturas (D17).** `lib/combat/um-anel/stances.ts`: as 4 posturas com efeito real na rolagem. Nota importante do livro: `(1d)` é **Dado de Sucesso** (d6), não Dado de Proeza — então postura mexe em `rank`, nunca em favoured/illFavoured. Avançada +1d no ataque e +1d para quem te ataca; Defensiva −1d para quem te ataca e −1d por engajador; Retaguarda restringe alcance nos dois sentidos (barra o ataque antes de rolar). Ligado em `resolveTorAttack` com `stanceEffect` na mensagem de chat.
+
+8. **D18 já estava pronto.** Conferi `resolve-attack.ts`: Golpe Perfurante, teste de Proteção vs Ferimento da arma, severidade (moderado/grave/gravíssimo), adversário eliminado com 1 Ferida, herói na 2ª Ferida morrendo — tudo implementado e correto. Não mexi.
+
+9. **Adaptação registrada (D22 — sem hex):** o livro conta jornada em *hexes*; o compêndio usa **trecho** (1 trecho = 1 hex). A matemática é idêntica (as regras só contam unidades ao longo da rota), e o projeto purgou hexágonos.
+
+10. **Validação:** `npx tsc --noEmit` limpo · `npm run build` compila · `npm run test` verde, agora com **24 testes novos de postura** · `sync:data:check` valida os 4 packs.
+
+**Escopo NÃO entregue (registrado no PRD):** D14 (tradução dos 13 capítulos — maior item isolado), D19 (dados 3D), D20 (bestiário completo), D21/D23/D24 (Jornada jogável), D27 (motor de Sombra), D28 (Conselho jogável), D29 (progressão), D31 (aventuras), D32 (ficha + PDF). Os dados de Jornada, Sombra e Conselho **já estão no compêndio como referência**; falta a implementação jogável.
+
+**D33 — divergência registrada:** o dono selecionou "leitor público dos capítulos". Não implementei público: o Eldarin é livro dele, o Um Anel é da Free League. Depois o dono esclareceu que **não quer publicar o livro**, só extrair para compêndios — que é exatamente o que foi feito. Divergência resolvida.
+
+**Arquivos tocados:**
+- `livros/um-anel/compendio/posturas.md` · `jornada.md` · `sombra.md` · `conselho.md` — **novos:** fonte da verdade PT-BR estruturada
+- `scripts/gen-um-anel.mjs` — **novo:** parser markdown → JSON
+- `scripts/verify-um-anel-compendium.mjs` — **novo:** guarda de divergência
+- `scripts/verify-um-anel-stances.mjs` — **novo:** 24 testes da tabela de posturas
+- `lib/character/um-anel/compendium.ts` — **novo:** registry isolado do Eldarin
+- `lib/combat/um-anel/stances.ts` — **novo:** as 4 posturas + limites de engajamento
+- `lib/combat/um-anel/resolve-attack.ts` — posturas ligadas na resolução; `blocked` e `stanceEffect`
+- `components/compendium/TorCompendiumPage.tsx` — 4 categorias novas via `GeneratedPackSection`
+- `data/compendiums/um-anel/*.json` — **gerados** (não editar à mão)
+- `package.json` — `gen-um-anel` no `sync:data`; verificadores no `sync:data:check` e `test`; `sync:um-anel` e `test:um-anel`
+- `docs/PRD-MESA-UM-ANEL.md` — PRD v2.0 com D13–D33
+
+**Fase D (mesma sessão) — motor de Sombra (D25/D27):**
+
+11. **`lib/combat/um-anel/shadow.ts`** — substitui o vazio deixado por `vitals.ts` (41 linhas, que só sabia aplicar dano de ataque). Implementa: 4 fontes de Sombra com resistibilidade correta (**Malfeito é a única não resistível** — regra que se erra com facilidade), Teste de Sombra reduzindo 1 + 1 por ícone, teto de Sombra na Esperança máxima com `overflow` registrado, Miserável (Sombra ≥ Esperança **atual**), Desfavorecido (Sombra ≥ Esperança **máxima**), Exausto (Fadiga ≥ Resistência), Endurecer a Vontade, Acesso de Loucura, Sucumbir à Sombra, e as três formas de recuperação (Descanso Prolongado, fim de jornada com Vigor de montaria + rolagem de Viagem, Curar Cicatrizes só em Yule).
+
+12. **Condições são derivadas, não armazenadas.** `deriveTorSpiritFlags` calcula `miserable`/`weary`/`illFavoured`/`succumbed` a partir dos números. Guardar as duas coisas abriria espaço para dessincronizar — e Cicatrizes contam no total de Sombra para todos os efeitos, o que é fácil esquecer.
+
+13. **As 24 Falhas dos Caminhos da Sombra** (6 caminhos × 4) extraídas para o compêndio e para `SHADOW_PATH_FLAWS` em `data.ts`. Os 6 caminhos e o mapeamento Vocação→Caminho já existiam; **as Falhas não** — e são justamente o que o Acesso de Loucura concede.
+
+14. **Bug meu, pego pelo teste:** escrevi "Tesoureiro" como Vocação do Mal do Dragão; o nome real no código é **Caçador de Tesouros**. O teste que cruza compêndio × `data.ts` acusou. Corrigido.
+
+15. **Teste meu estava errado, não o código:** a asserção negativa "Descanso não remove Cicatriz" usava `/applyTorProlongedRest[\s\S]*?shadowScars:/`, e o `[\s\S]*?` atravessa o arquivo casando com outra função abaixo. Adicionei `fnBody()` para escopar ao corpo da função. O código sempre esteve certo.
+
+16. **Validação da Fase D:** `npm run test` verde com **54 testes novos de Sombra**. Compêndio subiu para **74 entradas**.
+
+**Fase E (mesma sessão) — Jornada (D21/D23/D24):**
+
+17. **`lib/combat/um-anel/journey.ts`** — sistema que não existia em código nenhum. Papéis (Guia único + Batedor/Olheiro/Caçador) com a perícia certa e validação de cobertura; Teste de Marcha (sucesso 3 + ícones; falha 2 trechos, ou 1 em estação fria); alvo do evento por Dado de Sucesso (o **Guia nunca é alvo** — é quem rola a Marcha); região definindo Favorecido/normal/Desfavorecido; tabela dos 7 eventos com Fadiga e consequência; terreno (estrada +1d, difícil −1d); duração, marcha forçada, áreas perigosas.
+
+18. **Armadilha real que o teste tranca:** em `dice.ts` a Runa de Gandalf tem `numeric: 10`, o **mesmo** valor do 10 numérico. No Golpe Perfurante isso é conveniente de propósito (ambos perfuram). Na tabela de eventos são resultados **diferentes** — Visão Alegre vs Encontro Fortuito. Então `kind` tem de ser checado **antes** de `numeric`, e o teste compara os índices das duas checagens no fonte para garantir a ordem.
+
+**Fase F (mesma sessão) — Conselho (D28):**
+
+19. **`lib/combat/um-anel/council.ts`** — terceiro pilar, também inexistente. Resistência 3/6/9; Introdução definindo o limite de tempo (sucesso = Resistência + ícones; falha = Resistência **e** carrega Desastre para o fim); Interação acumulando 1 + ícones, com a tentativa contando mesmo na falha.
+
+20. **Ordem que importa:** em `torCouncilOutcome`, alcançar a Resistência é checado **antes** de esgotar o limite — ganhar na última tentativa vale. Invertido, a vitória no limite viraria falha. O teste compara os índices.
+
+21. **Teste meu estava estrito demais:** a asserção "sem hex no motor" (D22) falhava por causa do comentário que **documenta** a adaptação trecho↔hex. Passei a checar só o código, e adicionei uma asserção que exige que a explicação continue no comentário.
+
+22. **Isolamento de hub verificado:** os 5 módulos novos do Um Anel não importam nada fora de `um-anel/`. Confirmado por grep.
+
+**Fase G (mesma sessão) — progressão e Fase de Companhia (D29):**
+
+23. **`lib/combat/um-anel/progression.ts`** — tabela de custos de Experiência (4/8/12/20/26/30 para atingir os níveis 1–6), limites por Fase, ganhos por novo grau, recuperação espiritual, calendário com Yule, Empreitadas e Nível de Companhia. Novo pack `progressao` no compêndio (23 entradas), que subiu para **5 packs / 97 entradas**.
+
+24. **Três regras que se erram com facilidade, agora trancadas por teste:**
+    - **Bolsos separados:** Perícia gasta pontos de *Perícia*; Proficiência, Valor e Sabedoria gastam pontos de *Aventura*. O teste verifica que cada função de preço **não** menciona o bolso errado.
+    - **Valor OU Sabedoria:** comprar qualquer um dos dois bloqueia os dois na mesma Fase. `canBuyTorValourOrWisdomThisPhase` **não recebe** `which` de propósito — o parâmetro sugeriria uma checagem por eixo que não existe.
+    - **Cicatrizes não saem na Fase.** A recuperação espiritual devolve Esperança e remove 1–3 Sombra conforme o resultado da Fase de Aventura, mas Cicatriz só pela Empreitada Curar Cicatrizes, em Yule. O teste usa `fnBody` para garantir que `applyTorSpiritualRecovery` nunca toca `shadowScars`.
+
+25. **Yule modelado como consequência do calendário**, não como flag manual: `advanceTorCalendar` conta as Fases, e a terceira do ano vira o ano, envelhece todos em 1 e concede pontos de Perícia iguais à Astúcia.
+
+26. **Empreitadas:** orçamento é 1 base + 1 grátis na Fase comum (máx. 2), e 1 por herói + 1 grátis no Yule. Duplicatas só são permitidas nas marcadas (Yule) — que é exatamente o que o livro abre.
+
+27. **Terceiro erro meu em teste nesta sessão:** a asserção de isolamento de hub usava `/^import .*$/gm`, que pega só a primeira linha de um import multi-linha (`import {`) e não vê o `from "…/um-anel/shadow"` embaixo. Passei a extrair os especificadores de módulo via `from "…"`, e adicionei uma asserção de sanidade do próprio teste (tem de existir ao menos um import de `um-anel`) para o teste não passar por vacuidade.
+
+28. **Validação final:** `tsc` limpo · build compila · `npm run test` verde com **263 testes novos do Um Anel** nesta sessão (24 posturas + 54 Sombra + 78 Jornada + 40 Conselho + 67 progressão).
+
+**Nota de escopo importante:** os motores das Fases E, F e G estão prontos e testados, mas **sem UI**. As regras estão corretas e chamáveis; o jogador ainda não tem painel de Jornada, Conselho ou Fase de Companhia na mesa. Não confundir "motor pronto" com "jogável".
+
+**Commits / deploy:** pendente local (push só quando o usuário pedir).
+
+**Como testar:**
+- `npm run sync:um-anel` → deve imprimir 4 packs, 74 entradas
+- `npm run test:um-anel` → 263 testes (24 posturas + 54 Sombra + 78 Jornada + 40 Conselho + 67 progressão) + verificação dos packs
+- Editar qualquer `livros/um-anel/compendio/*.md` **sem** rodar `sync:data` → `sync:data:check` deve **falhar**
+- `/compendios` numa mesa do Um Anel → 10 categorias, com Combate e Posturas, Jornada, Conselho, Sombra e Miséria
+- Na mesa: atacar com herói em Retaguarda usando arma corpo a corpo → deve ser **barrado** com mensagem, sem rolar dados
+
+---
+
+### 2026-08-03 — Refatoração responsiva: PC, tablet e celular
+
+**Pedido:** refatorar design e funcionamento do MXDRPG para PC, celular e tablet.
+
+**Passo a passo:**
+
+1. **Diagnóstico (auditoria do repo inteiro):**
+   - **Bloqueador crítico:** `isPanButton` em `useBattlefieldView.ts` exigia botão do meio ou Alt/Shift+clique. Em toque, `button === 0` sem modificador → **era impossível mover o mapa em celular ou tablet**. Zoom só por `wheel`, sem pinça. Zero ocorrências de `onTouchStart`/`touchstart` no projeto. A dica da toolbar admitia: "Scroll zoom · Alt pan".
+   - **Zero consciência de dispositivo:** nenhum `isMobile`/`isTablet`/`pointer: coarse`. Todo responsivo era largura-only; o React nunca sabia se estava num dedo.
+   - **17 breakpoints ad-hoc:** 380, 400, 420, 480, 520, 560, 600, 640, 720, 768, 800, 900, 1100, 22rem + um `min-width: 900px` isolado. Cada arquivo inventou o seu.
+   - **Mesa virava página rolável em tablet:** `@media (max-width: 1100px)` fazia `.vtt-chrome { height: auto; overflow: auto }` e empilhava stage (52dvh) + dock (40dvh) + sidebar (38dvh). Pegava **iPad em paisagem (1024px)** — o aparelho com mais espaço sobrando.
+   - **`env(safe-area-inset-*)` era no-op:** o projeto usava em vários lugares, mas sem `viewport-fit=cover` essas variáveis resolvem sempre 0.
+   - **Três blocos de CSS morto:** (a) drawer do dock em ≤480px que nunca aparecia — o bloco de 720px aplicava `display: none` no mesmo elemento; (b) `@media 640px` do HUD mirando `.vtt-combat-hud__body/__actions/__portrait`, nomes de uma versão anterior — o HUD **nunca** se adaptou a celular; (c) regras do layout de mesa pré-Foundry (`.mesa-stage`, `.mesa-workspace-body`, `.mesa-dock--*`, `.vtt-sidebar`), inalcançáveis porque `MesaBattlefieldStage` sempre passa `foundryLayout`.
+
+2. **Decisão:** mapa em tela cheia + bottom sheets (escolha do dono do produto entre 3 opções). Escala canônica de 5 degraus. Layout de PC estendido até 768px — iPad em paisagem passa a usar o layout de desktop, não o empilhado.
+
+3. **Implementação:**
+   - **Gestos:** pinça (zoom ancorado no ponto médio + pan no mesmo gesto) e `pointercancel` em `useBattlefieldView.ts`; ferramenta de mão opcional na toolbar (um dedo arrasta o mapa) com ícone `pan`. Um dedo sem a ferramenta continua indo para token/célula — nada de gameplay mudou.
+   - **Long-press** já existia (520ms + vibração) e estava correto. Mas a pinça o quebrava: o `pointerup` do 1º dedo passa a ser reivindicado pela vista, então o timer nunca era limpo e o menu abria no meio do gesto. Corrigido abortando o estado transiente do ponteiro quando a vista assume o gesto.
+   - **Escala canônica:** `479 / 767 / 1023 / 1279` + consultas de capacidade. 46 breakpoints normalizados por script; 2 colisões de seletor que a normalização criou em `friends.css` detectadas por script e corrigidas (o bloco de `lg` do `.friends-page__grid` tinha virado código morto).
+   - **Mesa:** `.vtt-chrome` fica `100dvh` + `overflow: hidden` em todo tamanho. md (768–1023): dock sobrepõe o mapa. sm (≤767): dock vira folha inferior — antes era `display: none`, e os painéis ficavam **inalcançáveis** no celular.
+   - **HUD:** responsivo reescrito nas classes reais (`hud-*`) em `eldarin-v4.css`, com caso de paisagem curta (linha única, retrato 60px) e `--safe-bottom`.
+   - **Novo:** `app/responsive.css` (tokens por degrau, higiene touch, primitivas de drawer/sheet) e `hooks/useDeviceProfile.ts`.
+
+4. **Validação:** `npx tsc --noEmit` limpo · `npm run build` compila · `npm run test` verde (PA, movimento, grid, PDF, consumíveis, compêndios, 83 monstros) · script de colisão de `@media` sem achados. `npm run lint` **não roda neste repo** (ESLint não configurado, abre prompt interativo) — condição pré-existente.
+
+**Arquivos tocados:**
+- `app/globals.css` — escala canônica documentada, tokens de toque/safe-area/gutter/mesa; `--gutter` ligado ao `.page-wrap`
+- `app/responsive.css` — **novo:** tokens por degrau, higiene touch, `.r-drawer` / `.r-sheet` / `.r-scrim`
+- `app/layout.tsx` — `export const viewport` com `viewportFit: cover` e `interactiveWidget: resizes-content`
+- `hooks/useDeviceProfile.ts` — **novo:** tamanho, toque, orientação (SSR-safe)
+- `hooks/vtt/useBattlefieldView.ts` — pinça, pan de um dedo, ferramenta de mão, `pointercancel`
+- `hooks/vtt/useBattlefieldPointer.ts` — `openTokenMenuAt` extraído (clique direito e long-press pelo mesmo caminho)
+- `components/vtt/battlefield/BattlefieldMapCanvas.tsx` — `pointercancel`, aborta long-press quando a vista assume o gesto
+- `components/vtt/MapToolbar.tsx` / `MapToolbarIcon.tsx` — ferramenta de mão + ícone `pan`; dica por dispositivo via CSS
+- `components/vtt/vtt.css` — bloco da mesa reescrito só com seletores vivos; CSS morto do HUD removido
+- `components/vtt/foundry/foundry.css` — dock sobreposto (md), folha inferior (sm), paisagem curta; cascade morta de ≤480px removida
+- `components/vtt/eldarin-v4.css` — HUD responsivo nas classes reais
+- `components/vtt/whiteboard.css` — alvos de toque; paleta horizontal em paisagem curta
+- `components/character/sheet-v2.css` — `min-width: 780px` → `min(780px, 100vw - 1.25rem)`
+- `components/friends/friends.css` — popup vira folha no celular; colisão de `lg` corrigida
+- `components/compendium/compendium.css` + 6 arquivos — 12 grids `auto-fill` com `min(100%, …)` anti-overflow
+
+**Commits / deploy:** pendente local (push só quando o usuário pedir).
+
+**Como testar:**
+- **iPad paisagem (1024px):** a mesa **não** deve rolar verticalmente; layout de PC com rail + mapa + dock
+- **iPad retrato (768–834px):** abrir um painel do rail → dock sobrepõe o mapa, mapa mantém a largura toda
+- **Celular retrato (390px):** rail vira faixa no topo; painel do rail sobe como folha de baixo; HUD empilha as ações
+- **Celular deitado (~390px de altura):** topbar some, paleta do mapa vira faixa horizontal no rodapé, HUD em linha única
+- **Gestos (qualquer touch):** pinça dá zoom; dois dedos movem o mapa; toque longo no token abre o menu de ações; pinçar durante um toque longo **não** deve abrir o menu
+- **Ficha em celular:** janela não estoura a tela na horizontal
+
+---
+
 ### 2026-07-24 — Extração dos livros do "O Um Anel" + capa real do sistema
 
 **Pedido:** "subi dentro da pasta os livros do TOR ou the one ring, quero que extraia tudo para montar o RPG dele também... quando você exportar toda essa parte a gente trabalha na tradução" + depois "usa essa imagem como capa do RPG de o um anel, recorte a imagem pra deixar perfeitamente quadrada".

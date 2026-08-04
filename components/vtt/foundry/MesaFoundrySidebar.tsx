@@ -10,6 +10,7 @@ type Props = {
   onOpenPopup: (id: MesaWindowId) => void;
   showGm?: boolean;
   showInvite?: boolean;
+  showJourney?: boolean;
   dockOpen: boolean;
   children: ReactNode;
 };
@@ -20,6 +21,7 @@ export function MesaFoundrySidebar({
   onOpenPopup,
   showGm = false,
   showInvite = false,
+  showJourney = false,
   dockOpen,
   children,
 }: Props) {
@@ -34,6 +36,7 @@ export function MesaFoundrySidebar({
         onOpenPopup={onOpenPopup}
         showGm={showGm}
         showInvite={showInvite}
+        showJourney={showJourney}
       />
       <div
         id="foundry-sidebar-dock"

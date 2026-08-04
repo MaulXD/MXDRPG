@@ -1,0 +1,293 @@
+[
+  {
+    "id": "JOR-P01",
+    "name": "Guia",
+    "type": "efeito",
+    "system": {
+      "grupo": "Papéis da Jornada",
+      "pericia": "Viagem",
+      "unico": "sim",
+      "ordem": 1,
+      "descricao": "Responsável por todas as decisões de rota, descanso e suprimentos. É o Guia quem faz os Testes de Marcha que determinam onde os eventos acontecem."
+    }
+  },
+  {
+    "id": "JOR-P02",
+    "name": "Batedor",
+    "type": "efeito",
+    "system": {
+      "grupo": "Papéis da Jornada",
+      "pericia": "Explorar",
+      "unico": "não",
+      "ordem": 2,
+      "descricao": "Responsável por armar o acampamento e abrir novas trilhas."
+    }
+  },
+  {
+    "id": "JOR-P03",
+    "name": "Olheiro",
+    "type": "efeito",
+    "system": {
+      "grupo": "Papéis da Jornada",
+      "pericia": "Percepção",
+      "unico": "não",
+      "ordem": 3,
+      "descricao": "Responsável por manter a vigilância."
+    }
+  },
+  {
+    "id": "JOR-P04",
+    "name": "Caçador",
+    "type": "efeito",
+    "system": {
+      "grupo": "Papéis da Jornada",
+      "pericia": "Caça",
+      "unico": "não",
+      "ordem": 4,
+      "descricao": "Responsável por encontrar comida na natureza."
+    }
+  },
+  {
+    "id": "JOR-S01",
+    "name": "1. Definir a Rota",
+    "type": "efeito",
+    "system": {
+      "grupo": "Sequência da Jornada",
+      "descricao": "A Companhia mostra ao Mestre o caminho que pretende seguir, ligando o local de partida ao destino. A rota raramente é uma linha reta: cadeias de montanhas e rios caudalosos só se atravessam por passagens, pontes ou vaus. O Mestre então traça o itinerário como um percurso de N trechos (não contando o trecho de partida). Vale anotar marcos notáveis pelo caminho (ruínas, vaus, pontes) e marcar os trechos de terreno difícil."
+    }
+  },
+  {
+    "id": "JOR-S02",
+    "name": "2. Testes de Marcha",
+    "type": "efeito",
+    "system": {
+      "grupo": "Sequência da Jornada",
+      "quem_rola": "Guia",
+      "pericia": "Viagem",
+      "falha_verao_primavera": "evento a 2 trechos",
+      "falha_inverno_outono": "evento a 1 trecho",
+      "sucesso": "evento a 3 trechos, +1 por cada ícone de Sucesso",
+      "descricao": "Assim que a Companhia parte, o Guia faz o primeiro Teste de Marcha e conta os trechos ao longo da rota conforme o resultado. O último trecho alcançado na contagem é onde o evento acontece. Resolvido o evento, o Guia faz um novo Teste de Marcha para ver se outro acontece mais adiante."
+    }
+  },
+  {
+    "id": "JOR-S03",
+    "name": "3. Encerrar a Jornada",
+    "type": "efeito",
+    "system": {
+      "grupo": "Sequência da Jornada",
+      "descricao": "A jornada continua até o resultado do Teste de Marcha do Guia igualar ou passar o número de trechos que faltam entre a posição atual e o destino — aí a Companhia chegou. Também termina quando a Companhia chega ao destino e entra numa cena nova, ou quando um imprevisto a envolve em outra atividade por tempo significativo (o Mestre decide se isso encerra ou não). Jornadas de mais de 20 trechos devem ser divididas em pernas, tratadas como jornadas separadas."
+    }
+  },
+  {
+    "id": "JOR-A01",
+    "name": "Alvo do evento: Batedores",
+    "type": "efeito",
+    "system": {
+      "grupo": "Eventos",
+      "rolagem_dado_de_sucesso": "1–2",
+      "pericia_testada": "Explorar",
+      "descricao": "O Mestre rola um Dado de Sucesso para escolher quem enfrenta o evento, entre os heróis que cobrem os papéis de Batedor, Olheiro e Caçador."
+    }
+  },
+  {
+    "id": "JOR-A02",
+    "name": "Alvo do evento: Olheiros",
+    "type": "efeito",
+    "system": {
+      "grupo": "Eventos",
+      "rolagem_dado_de_sucesso": "3–4",
+      "pericia_testada": "Percepção"
+    }
+  },
+  {
+    "id": "JOR-A03",
+    "name": "Alvo do evento: Caçadores",
+    "type": "efeito",
+    "system": {
+      "grupo": "Eventos",
+      "rolagem_dado_de_sucesso": "5–6",
+      "pericia_testada": "Caça"
+    }
+  },
+  {
+    "id": "JOR-R01",
+    "name": "Terras Fronteiriças",
+    "type": "efeito",
+    "system": {
+      "grupo": "Tipo de Região",
+      "rolagem": "Dado de Proeza Favorecido",
+      "descricao": "Região mais segura — o Mestre rola o Dado de Proeza com vantagem, então eventos ruins são mais raros."
+    }
+  },
+  {
+    "id": "JOR-R02",
+    "name": "Terras Selvagens",
+    "type": "efeito",
+    "system": {
+      "grupo": "Tipo de Região",
+      "rolagem": "Dado de Proeza simples",
+      "descricao": "Região neutra — uma única rolagem de Dado de Proeza."
+    }
+  },
+  {
+    "id": "JOR-R03",
+    "name": "Terras Sombrias",
+    "type": "efeito",
+    "system": {
+      "grupo": "Tipo de Região",
+      "rolagem": "Dado de Proeza Desfavorecido",
+      "descricao": "Região corrompida — o Mestre rola com desvantagem, então eventos ruins são mais frequentes."
+    }
+  },
+  {
+    "id": "JOR-E01",
+    "name": "Terrível Infortúnio",
+    "type": "efeito",
+    "system": {
+      "grupo": "Tabela de Eventos de Jornada",
+      "dado_de_proeza": "Olho de Sauron",
+      "consequencia": "Se a rolagem falhar, o alvo fica Ferido",
+      "fadiga": 3,
+      "ordem": 1,
+      "descricao": "Algo deu tão errado que a Companhia segue se arrastando de exaustão e o alvo do evento corre risco de dano sério. Exemplos: os Caçadores se feriram porque a presa era perigosa demais; os Batedores sofreram com o frio extremo."
+    }
+  },
+  {
+    "id": "JOR-E02",
+    "name": "Desespero",
+    "type": "efeito",
+    "system": {
+      "grupo": "Tabela de Eventos de Jornada",
+      "dado_de_proeza": 1,
+      "consequencia": "Se a rolagem falhar, todos na Companhia ganham 1 ponto de Sombra (Pavor)",
+      "fadiga": 2,
+      "ordem": 2
+    }
+  },
+  {
+    "id": "JOR-E03",
+    "name": "Más Escolhas",
+    "type": "efeito",
+    "system": {
+      "grupo": "Tabela de Eventos de Jornada",
+      "dado_de_proeza": "2–3",
+      "consequencia": "Se a rolagem falhar, o alvo ganha 1 ponto de Sombra (Pavor)",
+      "fadiga": 2,
+      "ordem": 3
+    }
+  },
+  {
+    "id": "JOR-E04",
+    "name": "Contratempo",
+    "type": "efeito",
+    "system": {
+      "grupo": "Tabela de Eventos de Jornada",
+      "dado_de_proeza": "4–7",
+      "consequencia": "Se a rolagem falhar, soma 1 dia à jornada e o alvo ganha 1 Fadiga adicional",
+      "fadiga": 2,
+      "ordem": 4
+    }
+  },
+  {
+    "id": "JOR-E05",
+    "name": "Atalho",
+    "type": "efeito",
+    "system": {
+      "grupo": "Tabela de Eventos de Jornada",
+      "dado_de_proeza": "8–9",
+      "consequencia": "Se a rolagem tiver sucesso, reduz a jornada em 1 dia",
+      "fadiga": 1,
+      "ordem": 5
+    }
+  },
+  {
+    "id": "JOR-E06",
+    "name": "Encontro Fortuito",
+    "type": "efeito",
+    "system": {
+      "grupo": "Tabela de Eventos de Jornada",
+      "dado_de_proeza": 10,
+      "consequencia": "Se a rolagem tiver sucesso, nenhuma Fadiga é ganha e o Mestre improvisa um encontro favorável à Companhia",
+      "fadiga": 1,
+      "ordem": 6
+    }
+  },
+  {
+    "id": "JOR-E07",
+    "name": "Visão Alegre",
+    "type": "efeito",
+    "system": {
+      "grupo": "Tabela de Eventos de Jornada",
+      "dado_de_proeza": "Runa de Gandalf",
+      "consequencia": "Se a rolagem tiver sucesso, todos na Companhia recuperam 1 Esperança",
+      "fadiga": "—",
+      "ordem": 7
+    }
+  },
+  {
+    "id": "JOR-M01",
+    "name": "Estradas e terreno difícil",
+    "type": "efeito",
+    "system": {
+      "grupo": "Modificadores e regras",
+      "terreno_dificil": "a rolagem perde (1d)",
+      "estrada": "a rolagem ganha (1d)",
+      "descricao": "Se o evento acontece num trecho de terreno difícil, o herói que rola perde (1d). Se acontece ao longo de uma estrada, ganha (1d)."
+    }
+  },
+  {
+    "id": "JOR-M02",
+    "name": "Fadiga de Viagem",
+    "type": "efeito",
+    "system": {
+      "grupo": "Modificadores e regras",
+      "reducao_por_montaria": "primeiro reduz a Fadiga total pelo Vigor da montaria",
+      "reducao_por_viagem": "sucesso reduz 1, +1 por cada ícone de Sucesso",
+      "resto": "1 ponto por cada Descanso Prolongado em refúgio abrigado e seguro",
+      "descricao": "Fadiga é o cansaço profundo acumulado durante a viagem, que se manifesta por completo quando a jornada termina. Baixa a capacidade de carga e a eficácia do herói. **Não pode ser removida enquanto a jornada durar.** No fim da jornada, heróis com montaria reduzem primeiro pelo Vigor dela; depois todos podem reduzir mais com uma rolagem de Viagem. O que sobrar vai para a ficha e sai a 1 ponto por Descanso Prolongado — em refúgio seguro, não \"na estrada\"."
+    }
+  },
+  {
+    "id": "JOR-M03",
+    "name": "Duração da Jornada",
+    "type": "efeito",
+    "system": {
+      "grupo": "Modificadores e regras",
+      "base": "1 dia por trecho",
+      "terreno_dificil": "+1 dia por trecho (colinas, bosques, pântanos…)",
+      "a_cavalo": "metade do total, arredondando para cima",
+      "descricao": "Para saber quanto tempo a viagem durou, conte os trechos da rota somando 1 dia por cada trecho de terreno difícil. Se a Companhia toda viaja a cavalo, divida por dois arredondando para cima — cavalgar normalmente só é possível por estradas e bons caminhos; regiões de mata fechada não permitem avançar montado."
+    }
+  },
+  {
+    "id": "JOR-M04",
+    "name": "Marcha Forçada",
+    "type": "efeito",
+    "system": {
+      "grupo": "Modificadores e regras",
+      "dias": "1 dia por cada 2 trechos",
+      "custo": "+1 ponto de Fadiga por cada dia de marcha forçada",
+      "descricao": "A Companhia pode se pressionar e marchar mais horas por dia do que ousaria normalmente."
+    }
+  },
+  {
+    "id": "JOR-M05",
+    "name": "Áreas Perigosas",
+    "type": "efeito",
+    "system": {
+      "grupo": "Modificadores e regras",
+      "classificacao": "valor de Perigo (numérico)",
+      "descricao": "Certas áreas do mapa são difíceis ou perigosas de atravessar (mata fechada, passagens escarpadas, pântanos traiçoeiros). Cada uma tem um valor de Perigo. Quando um Teste de Marcha levaria a Companhia para dentro ou através dela: (1) a Companhia para assim que entra; (2) antes de sair, enfrenta um número de Eventos igual ao valor de Perigo; (3) resolvidos todos, a jornada segue normalmente, retomando os Testes de Marcha do primeiro trecho fora da área."
+    }
+  },
+  {
+    "id": "JOR-M06",
+    "name": "Apoio na rolagem",
+    "type": "efeito",
+    "system": {
+      "grupo": "Modificadores e regras",
+      "descricao": "Um herói que cobre o mesmo papel do alvo pode escolher apoiar a rolagem (regra de Apoio, Core Rules p.20). A consequência que fala do \"alvo\" atinge quem rolou, e eventualmente quem deu apoio."
+    }
+  }
+]

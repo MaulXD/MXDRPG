@@ -214,6 +214,23 @@ export const SHADOW_PATH_BY_ID: Record<string, TorShadowPathDef> = Object.fromEn
   SHADOW_PATHS.map((s) => [s.id, s])
 );
 
+/**
+ * Falhas por Caminho da Sombra, na ordem em que são adquiridas (1 → 4).
+ * Cada Acesso de Loucura concede a próxima. Fonte: livros/um-anel/compendio/sombra.md
+ * §"Caminhos da Sombra" (Core Rules p.141-143).
+ *
+ * Uma Falha é uma Característica Distintiva negativa: quando a perícia rolada pode
+ * ser plausivelmente afetada por ela, a rolagem fica Desfavorecida.
+ */
+export const SHADOW_PATH_FLAWS: Record<string, string[]> = {
+  "maldicao-da-vinganca": ["Rancoroso", "Brutal", "Cruel", "Assassino"],
+  "mal-do-dragao": ["Ambicioso", "Desconfiado", "Ardiloso", "Ladrão"],
+  "fascinio-pelo-poder": ["Ressentido", "Arrogante", "Presunçoso", "Tirânico"],
+  "fascinio-pelos-segredos": ["Soberbo", "Desdenhoso", "Dissimulado", "Traiçoeiro"],
+  "caminho-do-desespero": ["Inquieto", "Vacilante", "Culpado", "Medroso"],
+  "loucura-errante": ["Indolente", "Esquecido", "Indiferente", "Covarde"],
+};
+
 export type TorRewardDef = { id: string; label: string; description: string };
 
 export const STARTING_REWARDS: TorRewardDef[] = [

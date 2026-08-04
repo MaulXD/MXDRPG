@@ -1,0 +1,142 @@
+[
+  {
+    "id": "CON-001",
+    "name": "Pedido razoável",
+    "type": "efeito",
+    "system": {
+      "grupo": "Resistência",
+      "resistencia": 3,
+      "ordem": 1,
+      "descricao": "O povo encontrado não perde nada ao ajudar os heróis, ou a Companhia oferece algo de valor aproximadamente equivalente em troca."
+    }
+  },
+  {
+    "id": "CON-002",
+    "name": "Pedido ousado",
+    "type": "efeito",
+    "system": {
+      "grupo": "Resistência",
+      "resistencia": 6,
+      "ordem": 2,
+      "descricao": "O objetivo beneficia a Companhia mais do que beneficia as pessoas encontradas."
+    }
+  },
+  {
+    "id": "CON-003",
+    "name": "Pedido ultrajante",
+    "type": "efeito",
+    "system": {
+      "grupo": "Resistência",
+      "resistencia": 9,
+      "ordem": 3,
+      "descricao": "Os heróis pedem que o povo encontrado faça algo perigoso, ou que tem pouca ou nenhuma possibilidade de recompensa."
+    }
+  },
+  {
+    "id": "CON-S01",
+    "name": "1. Definir a Resistência",
+    "type": "efeito",
+    "system": {
+      "grupo": "Sequência",
+      "quem": "Mestre",
+      "valores": "3, 6 ou 9",
+      "descricao": "Antes do conselho começar, os jogadores devem concordar sobre o que a Companhia espera obter do encontro, e possivelmente sobre como obter. O que estão pedindo? Que tipo de ajuda esperam? Como pretendem conseguir? Há algo que estão dispostos a dar em troca — ou a sacrificar? O Mestre então fixa a Resistência, que reflete o quão difícil será atingir o objetivo declarado."
+    }
+  },
+  {
+    "id": "CON-S02",
+    "name": "2. Introdução",
+    "type": "efeito",
+    "system": {
+      "grupo": "Sequência",
+      "quem": "Porta-voz eleito pela Companhia",
+      "pericias_uteis": "Imponência, Cortesia, Enigmas",
+      "sucesso": "Limite de tempo = Resistência + 1 por cada ícone de Sucesso rolado",
+      "falha": "Limite de tempo = Resistência, e se o conselho terminar em falha, termina em Desastre",
+      "descricao": "No começo do conselho a Companhia precisa se apresentar. Para isso elege um porta-voz, de preferência aproveitando o melhor orador do grupo. O porta-voz faz uma rolagem de perícia, e o resultado determina o **limite de tempo** do conselho — o número total de tentativas que os heróis têm como grupo para apresentar seu caso antes de serem finalmente dispensados."
+    }
+  },
+  {
+    "id": "CON-S03",
+    "name": "3. Interação",
+    "type": "efeito",
+    "system": {
+      "grupo": "Sequência",
+      "quem": "Toda a Companhia",
+      "pericias_uteis": "Encorajar, Perspicácia, Persuasão, Enigmas, Canção",
+      "objetivo": "Acumular sucessos até igualar ou passar a Resistência",
+      "limite": "O limite de tempo definido na Introdução",
+      "descricao": "A parte principal e mais desafiadora do encontro. É aqui que os jogadores atuam a cena com o Mestre e fazem rolagens de perícia para acumular sucessos suficientes para igualar ou exceder a Resistência do conselho."
+    }
+  },
+  {
+    "id": "CON-P01",
+    "name": "Imponência (Introdução)",
+    "type": "efeito",
+    "system": {
+      "grupo": "Perícias do Conselho",
+      "etapa": "Introdução",
+      "descricao": "Uma rolagem de Imponência passa uma mensagem poderosa com poucas palavras. Serve para impressionar alguém e virar uma reação inicial negativa, ou para fixar rapidamente os termos da discussão que vem. Tem um custo: o porta-voz menciona voluntariamente a linhagem, os feitos e outras informações pessoais dos membros da Companhia para obter efeito pleno."
+    }
+  },
+  {
+    "id": "CON-P02",
+    "name": "Cortesia (Introdução)",
+    "type": "efeito",
+    "system": {
+      "grupo": "Perícias do Conselho",
+      "etapa": "Introdução",
+      "descricao": "Uma introdução polida é a melhor forma de suavizar uma relação antes de pedir apoio ou assistência. Especialmente útil se a Companhia (ou pelo menos o porta-voz) já tem boas relações com a outra parte. Para ouvidos hostis, porém, um orador cortês pode soar dissimulado. Também permite recusar polidamente revelar demais sobre a identidade do grupo."
+    }
+  },
+  {
+    "id": "CON-P03",
+    "name": "Enigmas (Introdução e Interação)",
+    "type": "efeito",
+    "system": {
+      "grupo": "Perícias do Conselho",
+      "etapa": "Introdução, Interação",
+      "descricao": "Se a Companhia tem dúvidas sobre as intenções da outra parte, o porta-voz pode formular perguntas e respostas de modo a extrair muita informação dando muito pouco. Mas um desempenho ruim certamente provoca desconfiança na outra parte."
+    }
+  },
+  {
+    "id": "CON-P04",
+    "name": "Encorajar (Interação)",
+    "type": "efeito",
+    "system": {
+      "grupo": "Perícias do Conselho",
+      "etapa": "Interação",
+      "descricao": "Dirigir-se a multidões e erguer os ânimos."
+    }
+  },
+  {
+    "id": "CON-P05",
+    "name": "Perspicácia (Interação)",
+    "type": "efeito",
+    "system": {
+      "grupo": "Perícias do Conselho",
+      "etapa": "Interação",
+      "descricao": "Observar e avaliar a outra parte."
+    }
+  },
+  {
+    "id": "CON-P06",
+    "name": "Persuasão (Interação)",
+    "type": "efeito",
+    "system": {
+      "grupo": "Perícias do Conselho",
+      "etapa": "Interação",
+      "descricao": "Defender um ponto de vista e convencer."
+    }
+  },
+  {
+    "id": "CON-P07",
+    "name": "Canção (Interação)",
+    "type": "efeito",
+    "system": {
+      "grupo": "Perícias do Conselho",
+      "etapa": "Interação",
+      "descricao": "Conquistar aprovação pela música e pelo verso."
+    }
+  }
+]

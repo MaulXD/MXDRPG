@@ -22,6 +22,11 @@ const MesaEldarinCompendiumPanel = dynamic(
   () => import("@/components/vtt/MesaEldarinCompendiumPanel").then((m) => m.MesaEldarinCompendiumPanel),
   { ssr: false }
 );
+const TorJourneyPanel = dynamic(
+  () => import("@/components/vtt/TorJourneyPanel").then((m) => m.TorJourneyPanel),
+  { ssr: false }
+);
+
 const TorCompendiumPage = dynamic(
   () => import("@/components/compendium/TorCompendiumPage").then((m) => m.TorCompendiumPage),
   { ssr: false }
@@ -129,6 +134,7 @@ export function MesaFoundryDockRail({
       onOpenPopup={onOpenPopup}
       showGm={effectiveCanControlCombat}
       showInvite={showInviteUi}
+      showJourney={rpgSystemId === "um-anel" && Boolean(effectiveIsGm)}
       dockOpen={dockOpen}
     >
       {!isFloating("chat") ? (
@@ -267,6 +273,29 @@ export function MesaFoundryDockRail({
                 onOpenMonsterSheet={onOpenMonsterSheet}
               />
             )}
+          </div>
+        </FoundryDockPanel>
+      ) : null}
+
+      {rpgSystemId === "um-anel" && !isFloating("torJourney") ? (
+        <FoundryDockPanel
+          title="Jornada"
+          open={panel("torJourney").open}
+          minimized={panel("torJourney").minimized}
+          className="foundry-dock-panel--tor-journey"
+          onClose={() => onClosePanel("torJourney")}
+          onMinimize={() =>
+            panel("torJourney").minimized
+              ? onRestorePanel("torJourney")
+              : onMinimizePanel("torJourney")
+          }
+        >
+          <div className="mesa-panel-scroll mesa-panel-scroll--rail">
+            <TorJourneyPanel
+              roomId={roomId}
+              canManage={Boolean(effectiveIsGm)}
+              onUpdate={() => void onRefresh()}
+            />
           </div>
         </FoundryDockPanel>
       ) : null}

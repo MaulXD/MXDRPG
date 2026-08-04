@@ -1,0 +1,306 @@
+[
+  {
+    "id": "SOM-R01",
+    "name": "Teto de Sombra",
+    "type": "efeito",
+    "system": {
+      "grupo": "Regras centrais",
+      "limite": "Sombra nunca passa da Esperança máxima do herói",
+      "descricao": "Heróis não acumulam Sombra acima da sua Esperança máxima — pontos ganhos além disso simplesmente não elevam o total."
+    }
+  },
+  {
+    "id": "SOM-R02",
+    "name": "Miserável",
+    "type": "efeito",
+    "system": {
+      "grupo": "Regras centrais",
+      "gatilho": "Sombra ≥ Esperança atual",
+      "efeito": "Rolar o Olho de Sauron no Dado de Proeza resulta em falha, independente do ND e do resultado obtido",
+      "saida": "Deixa de ser Miserável quando a Esperança volta a superar a Sombra",
+      "descricao": "O herói fica Miserável quando a Sombra iguala ou supera a Esperança atual. Marque a caixa Miserável na ficha. Continua Miserável até a Esperança superar a Sombra de novo, seja recuperando Esperança, seja livrando-se de Sombra."
+    }
+  },
+  {
+    "id": "SOM-R03",
+    "name": "Desfavorecido por Sombra",
+    "type": "efeito",
+    "system": {
+      "grupo": "Regras centrais",
+      "gatilho": "Sombra alcança a Esperança **máxima**",
+      "efeito": "Desfavorecido em todas as rolagens",
+      "unica_saida": "Encenar um Acesso de Loucura",
+      "descricao": "Heróis cuja Sombra alcança a Esperança máxima estão tão sobrecarregados pelos próprios medos que ficam Desfavorecidos em tudo. Há só um jeito de sair dessa profundidade de desespero: o herói precisa passar por um Acesso de Loucura."
+    }
+  },
+  {
+    "id": "SOM-R04",
+    "name": "Teste de Sombra",
+    "type": "efeito",
+    "system": {
+      "grupo": "Regras centrais",
+      "rolagem": "Dado de Proeza + Dados de Sucesso da graduação apropriada",
+      "atributo": "Valor ou Sabedoria, conforme a fonte",
+      "sucesso": "Reduz a Sombra ganha em 1 ponto, +1 por cada ícone de Sucesso",
+      "nao_resistivel": "Malfeitos (nunca podem ser reduzidos ou cancelados)",
+      "descricao": "Algumas fontes de Sombra permitem uma rolagem para cancelar ou reduzir os pontos ganhos. Pavor, Ganância e Feitiçaria podem ser resistidos; Malfeito não."
+    }
+  },
+  {
+    "id": "SOM-R05",
+    "name": "Endurecer a Vontade",
+    "type": "efeito",
+    "system": {
+      "grupo": "Regras centrais",
+      "requisito": "Sombra acumulada ainda **não** iguala a Esperança máxima",
+      "efeito": "Remove toda a Sombra atual, substituindo por 1 Cicatriz de Sombra",
+      "descricao": "Aventureiros sob o fardo da Sombra podem recorrer às reservas mais fundas de energia espiritual para endurecer a determinação antes que seja tarde. Para alguns é uma demonstração de força desesperada; outros têm um momento de clareza no instante mais escuro, quando tudo parece perdido, e de repente todas as dúvidas se dissipam."
+    }
+  },
+  {
+    "id": "SOM-R06",
+    "name": "Cicatriz de Sombra",
+    "type": "efeito",
+    "system": {
+      "grupo": "Regras centrais",
+      "natureza": "Ponto de Sombra permanente",
+      "remocao": "Só numa Fase de Companhia de Yule, pela Empreitada Curar Cicatrizes",
+      "descricao": "Conta como ponto de Sombra normal para todos os efeitos, mas não sai com descanso nem com Teste de Sombra."
+    }
+  },
+  {
+    "id": "SOM-F01",
+    "name": "Pavor",
+    "type": "efeito",
+    "system": {
+      "grupo": "Fontes de Sombra",
+      "resistivel": "Sim (Teste de Sombra)",
+      "atributo_do_teste": "Valor",
+      "ordem": 1,
+      "descricao": "O terror é uma lança na mão do Inimigo. Aventureiros ganham Sombra sempre que testemunham algo capaz de plantar medo ou dúvida no coração — encarar uma criatura horrenda saída dos poços mais escuros de Mordor, entrar num lugar onde as sombras são espessadas por uma maldição antiga, ou sentir diretamente o poder terrível do Inimigo."
+    }
+  },
+  {
+    "id": "SOM-F02",
+    "name": "Ganância",
+    "type": "efeito",
+    "system": {
+      "grupo": "Fontes de Sombra",
+      "resistivel": "Sim (Teste de Sombra)",
+      "atributo_do_teste": "Sabedoria",
+      "ordem": 2,
+      "descricao": "Tesouros de ouro e grandes estoques de armas e armaduras encantadas jazem em cavernas esquecidas. Heróis correm risco de ser corrompidos pelo próprio desejo sempre que põem a mão em ouro e objetos preciosos maculados por ter ficado no escuro por muito tempo."
+    }
+  },
+  {
+    "id": "SOM-F03",
+    "name": "Malfeito",
+    "type": "efeito",
+    "system": {
+      "grupo": "Fontes de Sombra",
+      "resistivel": "Não",
+      "ordem": 3,
+      "descricao": "Heróis ganham Sombra sempre que cometem um ato essencialmente errado ou até nefasto, independente do objetivo que buscam. Tentar fazer algo desprezível já é Malfeito, tenha a ação sucesso ou não. O Mestre normalmente deve avisar os jogadores quando estão a ponto de cometer um. **Intenção:** é possível cometer Malfeito sem saber — por exemplo atacar alguém tido por culpado de crime hediondo, que depois se revela inocente. Nesse caso não se ganha Sombra automaticamente, só se não houver tentativa de reparação quando o erro vier à luz. Havendo contrição e esforço sincero de corrigir, cabe um Teste de Sombra (Sabedoria)."
+    }
+  },
+  {
+    "id": "SOM-F04",
+    "name": "Feitiçaria",
+    "type": "efeito",
+    "system": {
+      "grupo": "Fontes de Sombra",
+      "resistivel": "Sim (Teste de Sombra)",
+      "atributo_do_teste": "Sabedoria",
+      "ordem": 4,
+      "descricao": "Dizem que os que caem no favor do Senhor Sombrio são recompensados com conhecimento maligno, e alguns o retorcem em magia negra. Aventureiros ganham Sombra quando são vítimas dos feitiços terríveis do Inimigo e de seus servos. A quantidade depende do poder do feitiço, e costuma vir com consequências negativas adicionais."
+    }
+  },
+  {
+    "id": "SOM-P01",
+    "name": "Tragédia natural inesperada",
+    "type": "efeito",
+    "system": {
+      "grupo": "Tabela: Fontes de Pavor",
+      "sombra": 1,
+      "exemplo": "Acidente grave ou mortal, morte na família, catástrofe natural",
+      "ordem": 1
+    }
+  },
+  {
+    "id": "SOM-P02",
+    "name": "Matança horrenda, obra de Orc",
+    "type": "efeito",
+    "system": {
+      "grupo": "Tabela: Fontes de Pavor",
+      "sombra": 2,
+      "exemplo": "Descobrir aldeões brutalmente mutilados, sofrer escravidão",
+      "ordem": 2
+    }
+  },
+  {
+    "id": "SOM-P03",
+    "name": "Experiência atroz, tormento físico e espiritual",
+    "type": "efeito",
+    "system": {
+      "grupo": "Tabela: Fontes de Pavor",
+      "sombra": 3,
+      "exemplo": "Sofrer tortura, ser assombrado por um Tumulário",
+      "ordem": 3
+    }
+  },
+  {
+    "id": "SOM-P04",
+    "name": "Sentir diretamente o poder do Inimigo",
+    "type": "efeito",
+    "system": {
+      "grupo": "Tabela: Fontes de Pavor",
+      "sombra": 4,
+      "exemplo": "Ver a mobilização de um exército da Sombra, ver o Olho num Palantír",
+      "ordem": 4
+    }
+  },
+  {
+    "id": "SOM-M01",
+    "name": "Ameaças violentas e mentiras maliciosas; crueldade irrefletida",
+    "type": "efeito",
+    "system": {
+      "grupo": "Tabela: Malfeitos",
+      "sombra": 1,
+      "ordem": 1
+    }
+  },
+  {
+    "id": "SOM-M02",
+    "name": "Manipular outros; abusar da própria autoridade; crueldade deliberada",
+    "type": "efeito",
+    "system": {
+      "grupo": "Tabela: Malfeitos",
+      "sombra": 2,
+      "ordem": 2
+    }
+  },
+  {
+    "id": "SOM-M03",
+    "name": "Roubo ou pilhagem; quebra de juramento ou covardia; traição",
+    "type": "efeito",
+    "system": {
+      "grupo": "Tabela: Malfeitos",
+      "sombra": 3,
+      "ordem": 3
+    }
+  },
+  {
+    "id": "SOM-M04",
+    "name": "Tormento ou tortura; matar ou mutilar inimigo rendido ou gente inofensiva",
+    "type": "efeito",
+    "system": {
+      "grupo": "Tabela: Malfeitos",
+      "sombra": 4,
+      "ordem": 4
+    }
+  },
+  {
+    "id": "SOM-M05",
+    "name": "Assassinato; agir voluntariamente a serviço do Inimigo",
+    "type": "efeito",
+    "system": {
+      "grupo": "Tabela: Malfeitos",
+      "sombra": "4 mais 1 Cicatriz de Sombra",
+      "ordem": 5
+    }
+  },
+  {
+    "id": "SOM-L01",
+    "name": "Acesso de Loucura",
+    "type": "efeito",
+    "system": {
+      "grupo": "Loucura",
+      "gatilho": "Sombra alcançou a Esperança máxima (Desfavorecido)",
+      "efeito": "Encenar o acesso é a única forma de se livrar da Sombra",
+      "descricao": "Uma reação violenta que marca um passo significativo na queda do herói rumo à degeneração. Se nada parecer se encaixar nas circunstâncias, um acesso padrão toma a forma de uma agressão de qualquer tipo, verbal ou física, sobre o alvo mais provável e disponível — o Foco de Irmandade do personagem geralmente se qualifica."
+    }
+  },
+  {
+    "id": "SOM-C01",
+    "name": "Maldição da Vingança",
+    "type": "efeito",
+    "system": {
+      "grupo": "Caminhos da Sombra",
+      "vocacao": "Campeão",
+      "falhas": "Rancoroso, Brutal, Cruel, Assassino",
+      "ordem": 1,
+      "descricao": "Quem vive pela espada é sempre tentado a desembainhá-la, literal ou figurativamente, quando sua vontade é contrariada ou sua honra ofendida."
+    }
+  },
+  {
+    "id": "SOM-C02",
+    "name": "Mal do Dragão",
+    "type": "efeito",
+    "system": {
+      "grupo": "Caminhos da Sombra",
+      "vocacao": "Caçador de Tesouros",
+      "falhas": "Ambicioso, Desconfiado, Ardiloso, Ladrão",
+      "ordem": 2,
+      "descricao": "Aventureiros que buscam riquezas perdidas correm o risco de contrair a antiga doença capaz de transformar uma pilha de ouro encantado em cinzas amargas."
+    }
+  },
+  {
+    "id": "SOM-C03",
+    "name": "Fascínio pelo Poder",
+    "type": "efeito",
+    "system": {
+      "grupo": "Caminhos da Sombra",
+      "vocacao": "Capitão",
+      "falhas": "Ressentido, Arrogante, Presunçoso, Tirânico",
+      "ordem": 3,
+      "descricao": "Quando indivíduos recebem uma posição de autoridade, podem acabar confundindo seu próprio engrandecimento com o bem maior das pessoas que deveriam guiar ou proteger."
+    }
+  },
+  {
+    "id": "SOM-C04",
+    "name": "Fascínio pelos Segredos",
+    "type": "efeito",
+    "system": {
+      "grupo": "Caminhos da Sombra",
+      "vocacao": "Erudito",
+      "falhas": "Soberbo, Desdenhoso, Dissimulado, Traiçoeiro",
+      "ordem": 4,
+      "descricao": "Curiosidade e inquisitividade são virtudes desejáveis, mas o conhecimento pode ser usado de forma maliciosa, e os segredos são perigosos."
+    }
+  },
+  {
+    "id": "SOM-C05",
+    "name": "Caminho do Desespero",
+    "type": "efeito",
+    "system": {
+      "grupo": "Caminhos da Sombra",
+      "vocacao": "Guardião",
+      "falhas": "Inquieto, Vacilante, Culpado, Medroso",
+      "ordem": 5,
+      "descricao": "A dúvida sobre si mesmo é muitas vezes o caminho que a Sombra escolhe para alcançar o coração de quem a ela se opõe."
+    }
+  },
+  {
+    "id": "SOM-C06",
+    "name": "Loucura Errante",
+    "type": "efeito",
+    "system": {
+      "grupo": "Caminhos da Sombra",
+      "vocacao": "Mensageiro",
+      "falhas": "Indolente, Esquecido, Indiferente, Covarde",
+      "ordem": 6,
+      "descricao": "Viajar para longe pode ser o dever escolhido por um mensageiro, mas carrega o risco de nunca encontrar um lugar pelo qual lutar."
+    }
+  },
+  {
+    "id": "SOM-C07",
+    "name": "Sucumbir à Sombra",
+    "type": "efeito",
+    "system": {
+      "grupo": "Caminhos da Sombra",
+      "gatilho": "Herói com as 4 Falhas do seu Caminho",
+      "efeito": "Na próxima vez que a Sombra alcançar a Esperança máxima, o herói **não** fica Desfavorecido — é retirado de jogo",
+      "descricao": "Heróis que desenvolvem o conjunto completo de quatro Falhas correm risco de sucumbir totalmente à Sombra. Homens, Hobbits e Anões sucumbem à loucura; Elfos buscam deixar a Terra-média e navegar para o Extremo Oeste. O destino final é decidido entre o Mestre e o jogador."
+    }
+  }
+]

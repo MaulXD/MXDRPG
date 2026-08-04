@@ -38,6 +38,12 @@ import {
 } from "@/lib/character/um-anel/nameless-things";
 import { TOR_LANDMARKS, TOR_LANDMARK_STRUCTURE } from "@/lib/character/um-anel/landmarks";
 import { TOR_PREGEN_CHARACTERS } from "@/lib/character/um-anel/pregens";
+import {
+  TOR_PACKS,
+  torEntryFields,
+  torPackGroups,
+  type TorPackId,
+} from "@/lib/character/um-anel/compendium";
 import { attributeTN } from "@/lib/character/um-anel/rules";
 import type { TorCombatProficiencyId } from "@/lib/character/um-anel/types";
 import "@/components/compendium/compendium.css";
@@ -49,16 +55,31 @@ const ADVERSARY_TIER_LABEL: Record<string, string> = {
   boss: "Chefe",
 };
 
-type CategoryId = "personagem" | "equipamento" | "adversarios" | "tesouro" | "companhia-mundo" | "pre-gerados";
+type CategoryId =
+  | "personagem"
+  | "equipamento"
+  | "adversarios"
+  | "tesouro"
+  | "companhia-mundo"
+  | "pre-gerados"
+  | TorPackId;
 
 const CATEGORIES: { id: CategoryId; label: string }[] = [
   { id: "personagem", label: "Personagem" },
   { id: "equipamento", label: "Equipamento" },
+  { id: "posturas", label: "Combate e Posturas" },
   { id: "adversarios", label: "Adversários" },
+  { id: "jornada", label: "Jornada" },
+  { id: "conselho", label: "Conselho" },
+  { id: "sombra", label: "Sombra e Miséria" },
   { id: "tesouro", label: "Tesouro" },
+  { id: "progressao", label: "Progressão e Companhia" },
   { id: "companhia-mundo", label: "Companhia & Mundo" },
   { id: "pre-gerados", label: "Personagens Prontos" },
 ];
+
+/** Categorias geradas por scripts/gen-um-anel.mjs (D13) — renderizadas por dados. */
+const GENERATED_PACKS = new Set<string>(TOR_PACKS.map((p) => p.id));
 
 function recordEntries(rec: Record<string, string>): string {
   return Object.entries(rec)
@@ -96,8 +117,46 @@ export function TorCompendiumPage() {
         {active === "tesouro" ? <TesouroSection /> : null}
         {active === "companhia-mundo" ? <CompanhiaMundoSection /> : null}
         {active === "pre-gerados" ? <PreGeradosSection /> : null}
+        {GENERATED_PACKS.has(active) ? <GeneratedPackSection packId={active as TorPackId} /> : null}
       </div>
     </div>
+  );
+}
+
+/**
+ * Categorias vindas do markdown via gen-um-anel.mjs. Uma renderização só serve
+ * todos os packs gerados porque o formato de entrada é o mesmo — adicionar um
+ * pack novo no script exige apenas uma linha em CATEGORIES, nunca tocar aqui.
+ */
+function GeneratedPackSection({ packId }: { packId: TorPackId }) {
+  const meta = TOR_PACKS.find((p) => p.id === packId);
+  const groups = torPackGroups(packId);
+
+  return (
+    <>
+      {meta ? <p className="tor-compendium__lead">{meta.description}</p> : null}
+      {groups.map(({ group, entries }) => (
+        <section key={group ?? "_"}>
+          {group ? <h2>{group}</h2> : null}
+          <div className="tor-compendium__grid">
+            {entries.map((entry) => {
+              const fields = torEntryFields(entry);
+              return (
+                <article key={entry.id} className="tor-compendium__card">
+                  <h3>{entry.name}</h3>
+                  {fields.map((f) => (
+                    <p key={f.label} className="tor-compendium__meta">
+                      <strong>{f.label}:</strong> {f.value}
+                    </p>
+                  ))}
+                  {entry.system.descricao ? <p>{entry.system.descricao}</p> : null}
+                </article>
+              );
+            })}
+          </div>
+        </section>
+      ))}
+    </>
   );
 }
 
