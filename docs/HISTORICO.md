@@ -104,6 +104,70 @@ npm run sync:data:check       # após editar livros/
 
 ---
 
+### 2026-08-04 — Fase B, rodada 4/12: tradução de 11-personagens-exemplo.md + NA 18 explicado
+
+**Pedido:** loop contínuo — traduzir os capítulos do Um Anel do menor para o maior, auditando as
+regras contra o código na mesma rodada.
+
+**Passo a passo:**
+
+1. **Diagnóstico.** O capítulo dos 8 pré-gerados do Starter Set já vinha com um alerta da extração:
+   as fichas imprimem **NA = 18 − Atributo**, e não o **20 − Atributo** que o livro afirma. A extração
+   não soube decidir qual estava certo e deixou a dúvida em aberto — `pregens.ts` herdou um comentário
+   com o diagnóstico incompleto.
+
+2. **O NA 18 não é erro — é regra opcional oficial.** A tradução do capítulo 2 (rodada 5, na mesma
+   sessão) trouxe o box *Tweaking the Target Numbers*: "para campanhas mais curtas ou jogos de uma
+   sessão, os jogadores e o Mestre podem combinar derivar os NAs subtraindo os Atributos de **18**".
+   O Starter Set é exatamente um produto de campanha curta, então suas fichas usam a variante
+   corretamente — **os dois números estão certos, cada um no seu contexto**. A VTT implementa o padrão
+   (20 − Atributo), então estas 8 fichas aparecem com NA 2 acima do PDF, o que é correto. Registrei
+   minha primeira conclusão como errada: eu havia chamado o 18 de erro de impressão antes de traduzir
+   o capítulo que o documenta. **A variante 18 como opção de campanha fica em aberto, não implementada.**
+
+3. **A coluna de Valor está comprovadamente certa, independente disso.** Os **7 pré-gerados Hobbit
+   usam exatamente os 6 conjuntos oficiais de Atributos** da tabela de Hobbits do Condado
+   (`03-aventureiros.md`), cada conjunto uma vez, Bilbo repetindo o de Drogo. Transcrição errada da
+   arte da ficha não cairia toda dentro de uma tabela fechada de 6 linhas. E **Balin, o único Anão,
+   fecha exato nas três derivadas** com as bases do Povo de Durin (+22/+8/+10) — é o controle que
+   isola o desvio de Resistência às fichas Hobbit.
+
+4. **A divergência de verdade, essa não resolvível pela fonte.** A Resistência das 7 fichas Hobbit está exatamente
+   **+2 acima** da fórmula cultural (Hobbits: FORÇA + 18). Esperança (+10) e Bloqueio (+12) fecham
+   exatos nas 7, inclusive somando as 3 Virtudes que alteram estatística (Confiança de Drogo, Agilidade
+   de Paladin, Robustez de Rorimac). O livreto condensado do Starter Set não traz bloco de criação de
+   personagem, então não há como saber se é erro de impressão ou base diferente. **Valores impressos
+   preservados por fidelidade**, com a relação fixada em teste pra ninguém "corrigir" recalculando.
+
+5. **Cruzamento maior de brinde.** O teste passou a comparar as **6 culturas do capítulo 3 × 3
+   derivadas = 18 valores** contra `data.ts`. Todas batem — Bardos 20/8/12, Anões 22/8/10, Elfos de
+   Lindon 20/8/12, Hobbits 18/10/12, Homens de Bri 20/10/10, Rangers 20/6/14.
+
+6. **Gap de gate corrigido.** `verify-um-anel-compendium.mjs` (a guarda de divergência entre o markdown
+   e o JSON gerado) estava só no `test:um-anel`, fora do `npm run test`. Um JSON obsoleto passaria pelo
+   gate principal. Entrou nos dois.
+
+**Dois falsos alarmes evitados** (conferidos antes de reportar): a suposta inconsistência interna das
+tabelas de NA — eram as Virtudes Proeza de Esmeralda (−1 NA de Força) e de Primula (−1 NA de Astúcia);
+e "Astúcia" em vez de "Argúcia" em `pregens.ts` — `data.ts:57` define `argucia: "Astúcia"`, é o rótulo
+canônico do projeto.
+
+**Arquivos tocados:**
+- `livros/um-anel/11-personagens-exemplo.md` — traduzido (347 linhas), marcador removido; a nota de
+  divergência reescrita com o diagnóstico resolvido e a tabela de conjuntos oficiais
+- `lib/character/um-anel/pregens.ts` — comentário de cabeçalho corrigido: separa as duas divergências,
+  cada uma com seu diagnóstico e o motivo de não recalcular
+- `scripts/verify-um-anel-pregens.mjs` — **novo**, 58 asserções
+- `package.json` — pregens e compendium entraram no `npm run test`
+
+**Validação:** `npx tsc --noEmit` limpo · `npm run test` verde (416 asserções) · `npm run build` compila.
+Teste negativo conferido: zerar `HOBBIT_ENDURANCE_OFFSET` produz exatamente 7 falhas (as 7 Resistências
+Hobbit), então as asserções são vivas e não vácuo.
+
+**Como testar:** `node scripts/verify-um-anel-pregens.mjs`
+
+---
+
 ### 2026-08-03 — Fase B, rodada 3/12: tradução de 13-apendice-patronos-e-ficha.md
 
 **Feito:** apêndice traduzido (342 linhas) — os 6 Patronos do Core com biografia, ficha, Bônus de

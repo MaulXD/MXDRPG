@@ -6,11 +6,28 @@
  * O Starter Set não usa Vocação / Caminho da Sombra / Padrão de Vida (campos
  * só do Livro Básico) — por fidelidade ao material original, estes 8
  * pré-gerados são referência de mesa pronta (stats, equipamento, contexto),
- * não fichas plenamente jogáveis via o assistente de criação. NA de Atributo
- * é calculado ao vivo com a mesma fórmula do resto do sistema (attributeTN,
- * NA = 20 − Atributo) — os PDFs originais usam NA = 18 − Atributo pros
- * pré-gerados, uma divergência do próprio material-fonte sinalizada no
- * markdown de extração; não repetimos aqui o valor divergente.
+ * não fichas plenamente jogáveis via o assistente de criação.
+ *
+ * Dois pontos onde estes números não batem com o padrão do sistema. Ver a
+ * seção "Nota sobre Valor de Atributo × NA impresso" no markdown.
+ *
+ * 1. NA impresso — NÃO é erro. As fichas do PDF trazem NA = 18 − Atributo,
+ *    que é a variante oficial de campanha curta / one-shot descrita no box
+ *    "Tweaking the Target Numbers" do Livro Básico (02-resolucao-de-acoes.md);
+ *    o Starter Set é exatamente esse tipo de produto. A VTT implementa o
+ *    padrão (attributeTN, 20 − Atributo), então a ficha destes 8 aparece com
+ *    NA 2 acima do PDF — correto pro padrão. A variante 18 fica como possível
+ *    opção de campanha no futuro. Os VALORES de Atributo abaixo estão certos
+ *    de qualquer forma: os 7 pré-gerados Hobbit usam exatamente os 6
+ *    conjuntos oficiais da tabela de Hobbits do Condado.
+ *
+ * 2. Resistência dos Hobbits — divergência real. Os 7 valores abaixo estão +2
+ *    da fórmula cultural (Hobbits: FORÇA + 18). Esperança (+10) e Bloqueio
+ *    (+12) fecham exatos, e Balin — único Anão — fecha exato nas três com as
+ *    bases do Povo de Durin, o que isola o desvio. A fonte não permite
+ *    decidir se é erro de impressão ou base diferente no Starter Set, então
+ *    os valores impressos ficam preservados. NÃO "corrija" recalculando:
+ *    scripts/verify-um-anel-pregens.mjs fixa a relação.
  */
 import type { TorCombatProficiencyId, TorCultureId, TorSkillId } from "./types";
 
