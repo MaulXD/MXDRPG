@@ -135,6 +135,16 @@ npm run sync:data:check       # após editar livros/
 
 **Commits / deploy:** ver branch `fix/login-google-e-responsivo-um-anel`.
 
+**Bug 4 (pré-existente, mesma sessão) — Arrasado tratado como Desfavorecido:**
+
+9. O Teste de Proteção do Golpe Perfurante passava `illFavoured: params.defenderMiserable`, aplicando ao defensor Arrasado uma penalidade que **o livro não dá**. As duas condições são distintas: Arrasado faz o Olho de Sauron virar falha automática (linha 363 de `08-mestre-e-adversarios.md`); **Desfavorecido** é a condição pior e separada, ao a Sombra alcançar a Esperança **máxima** (linha 367), ou por uma Falha que afete a rolagem.
+
+10. Efeito prático: quem estava Arrasado sofria duas penalidades pelo preço de uma — o Olho virava falha (correto) **e** rolava 2 Dados de Proeza pegando o pior (incorreto). Num Teste de Proteção, isso é a diferença entre levar um Ferimento e não levar.
+
+11. Adicionado `defenderIllFavoured` como parâmetro próprio, derivado no handler de `shadow + shadowScars >= hope.max` — mesma fórmula de `deriveTorSpiritFlags`. 9 testes novos, incluindo dois que verificam **as duas frases do livro** e um que confirma a ordem de leitura (o estado do defensor é lido **antes** de aplicar o dano, porque "the Protection Test is made *before* the Weariness sets in").
+
+12. **Verificado e correto, não mexi:** o Golpe Perfurante testa `featDie.numeric === 10`, e o livro diz "a Piercing Blow on a **10 or [Rune]** result" — a Runa tem `numeric: 10`, então a checagem cobre os dois de propósito. Também confirmei que o efeito de Exausto no motor de dados está certo (zera Dados de Sucesso 1–3) e que Arrasado é auto-falha só no Olho.
+
 **Como testar:**
 - `npm run test:um-anel`
 - Na ficha: herói com Resistência 20, Carga 8 e Fadiga 15 deve aparecer **Exausto** (20 ≤ 23). Antes não aparecia.

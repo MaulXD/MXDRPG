@@ -96,5 +96,72 @@ for (const label of Object.values({ a: "Avançada", b: "Aberta", c: "Defensiva",
   ok(`compêndio tem "${label}"`, md.includes(`— ${label}`));
 }
 
+
+/* ── Arrasado ≠ Desfavorecido (bug corrigido) ─────────────────────── */
+
+const ATTACK = readFileSync(
+  join(__dirname, "..", "lib", "combat", "um-anel", "resolve-attack.ts"),
+  "utf8"
+);
+const HANDLER = readFileSync(
+  join(__dirname, "..", "lib", "room", "handlers", "tor-combat-attack.ts"),
+  "utf8"
+);
+const BOOK_GM = readFileSync(
+  join(__dirname, "..", "livros", "um-anel", "08-mestre-e-adversarios.md"),
+  "utf8"
+);
+const stripC = (x) => x.replace(/\/\*[\s\S]*?\*\//g, "").replace(/\/\/.*$/gm, "");
+const attackCode = stripC(ATTACK);
+
+// O livro trata as duas como condições distintas — Arrasado faz o Olho falhar;
+// Desfavorecido é a condição pior, ao atingir a Esperança máxima.
+ok(
+  "livro: Arrasado faz o Olho virar falha",
+  /become Miserable[\s\S]{0,200}?rolling an .{0,3} icon on the Feat die results in failure/i.test(BOOK_GM)
+);
+ok(
+  "livro: Desfavorecido vem da Sombra na Esperança máxima",
+  /Shadow score reaches their maximum Hope rating[\s\S]{0,80}?Ill-favoured/i.test(BOOK_GM)
+);
+
+// A REGRESSÃO: o Teste de Proteção usava `illFavoured: params.defenderMiserable`,
+// aplicando uma penalidade que o livro não dá.
+ok(
+  "Teste de Proteção NÃO desfavorece por estar Arrasado",
+  !/illFavoured:\s*params\.defenderMiserable/.test(attackCode)
+);
+ok(
+  "Teste de Proteção usa defenderIllFavoured próprio",
+  /illFavoured:\s*params\.defenderIllFavoured/.test(attackCode)
+);
+ok("TorAttackParams tem defenderIllFavoured", /defenderIllFavoured\?:\s*boolean;/.test(ATTACK));
+
+// O handler deriva Desfavorecido de Sombra + Cicatrizes vs Esperança MÁXIMA.
+ok(
+  "handler deriva Desfavorecido da Esperança máxima",
+  /defSheet\.shadow \+ defSheet\.shadowScars >= defSheet\.hope\.max/.test(HANDLER)
+);
+// E lê o estado do defensor ANTES de aplicar o dano.
+const readIdx = HANDLER.indexOf("defenderWeary = defSheet.conditions.weary");
+const applyIdx = HANDLER.indexOf("applyTorAttackResultToDefender(defenderToken");
+ok(
+  "estado do defensor é lido ANTES de aplicar o dano",
+  readIdx >= 0 && applyIdx >= 0 && readIdx < applyIdx,
+  `leitura@${readIdx} aplicacao@${applyIdx}`
+);
+
+// Golpe Perfurante em 10 OU Runa — numeric === 10 cobre os dois de propósito.
+ok(
+  "livro: Golpe Perfurante em 10 ou Runa",
+  /Piercing Blow on a \*\*10 or \[Rune\]\*\* result/i.test(
+    readFileSync(join(__dirname, "..", "livros", "um-anel", "06-fases-de-aventura-combate.md"), "utf8")
+  )
+);
+ok(
+  "Golpe Perfurante testa numeric === 10 (cobre 10 e Runa)",
+  /attackRoll\.featDie\.numeric === 10/.test(attackCode)
+);
+
 console.log(`\nverify-um-anel-stances: ${pass} passaram, ${fail} falharam`);
 if (fail > 0) process.exit(1);
