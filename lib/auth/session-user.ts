@@ -55,8 +55,27 @@ export async function materializeSessionUser(user: SessionUser): Promise<Session
 }
 
 async function resolveSessionUser(user: SessionUser): Promise<SessionUser> {
-  const oauth = oauthIdentityFromSession(user);
-  if (oauth) {
+  /**
+   * Materializar OAuth só quando a conta AINDA NÃO TEM linha no banco — id
+   * efêmero `google-…`/`discord-…`, que só acontece se o banco estava fora no
+   * momento do login.
+   *
+   * Antes o gatilho era `oauthIdentityFromSession(user)`, que devolve identidade
+   * sempre que `oauthProvider` + `oauthSubject` estão na sessão — ou seja,
+   * SEMPRE para um usuário Google, inclusive um já materializado com id `usr_`.
+   * O efeito: toda requisição de sessão OAuth rodava `ensureUserFromOAuth`
+   * (2–3 queries + possível UPDATE) com `strict: true`, enquanto sessão por
+   * senha fazia 1 query. Qualquer soluço do banco derrubava quem entrou com
+   * Google e não derrubava quem entrou com senha — e `/api/notifications` faz
+   * poll a cada 30s, multiplicando isso por jogador.
+   *
+   * Com id `usr_` já válido, o caminho barato abaixo (`fetchUserByIdStrict`)
+   * resolve igual ao da senha. O retrato do Google deixa de ser reconferido a
+   * cada requisição, mas isso não perde nada: `oauthAvatarUrl` vem do cookie,
+   * que só muda quando o usuário loga de novo — momento em que
+   * `completeOAuthLogin` grava o valor novo.
+   */
+  if (isOAuthEphemeralSessionId(user.id)) {
     try {
       return await materializeOAuthUser(user);
     } catch (err) {
