@@ -92,12 +92,20 @@ export async function executeRoomTorAttack(
 
   let defenderWeary = false;
   let defenderMiserable = false;
+  // Desfavorecido é condição SEPARADA de Arrasado (Sombra na Esperança máxima),
+  // e a ficha não guarda essa flag — deriva aqui, do mesmo lugar que o motor de
+  // Sombra usa. Ver lib/combat/um-anel/shadow.ts::deriveTorSpiritFlags.
+  let defenderIllFavoured = false;
   let defenderHeroSheetId: string | null = null;
   if (defCombat.kind === "hero" && defCombat.torCharacterId) {
     const defSheet = await resolveTorCharacter(defCombat.torCharacterId);
     if (defSheet) {
+      // Lido ANTES de applyTorAttackResultToDefender: o Teste de Proteção é
+      // feito antes de a Exaustão deste golpe surgir (livro §Piercing Blows).
       defenderWeary = defSheet.conditions.weary;
       defenderMiserable = defSheet.conditions.miserable;
+      defenderIllFavoured =
+        defSheet.shadow + defSheet.shadowScars >= defSheet.hope.max;
       defenderHeroSheetId = defSheet.id;
     }
   }
@@ -116,6 +124,7 @@ export async function executeRoomTorAttack(
     defenderProtectionDice: defCombat.protectionDice,
     defenderWeary,
     defenderMiserable,
+    defenderIllFavoured,
     defenderAlreadyWounded: defCombat.wounded,
   });
 

@@ -35,8 +35,20 @@ export type TorAttackParams = {
   weaponCanPierce?: boolean;
   defenderKind: "hero" | "adversary";
   defenderProtectionDice: number;
+  /**
+   * Exausto no momento do ataque. Precisa ser o estado **anterior** ao dano
+   * deste golpe: "if the attack made the character Weary, the Protection Test
+   * is made *before* the Weariness sets in" (livro, §Piercing Blows).
+   */
   defenderWeary?: boolean;
+  /** Arrasado — faz o Olho de Sauron virar falha automática. */
   defenderMiserable?: boolean;
+  /**
+   * Desfavorecido — condição SEPARADA de Arrasado, e pior: acontece quando a
+   * Sombra alcança a Esperança **máxima**, ou por uma Falha que afete a rolagem
+   * (livro §The Shadow e §Using Flaws). Estar Arrasado NÃO desfavorece por si.
+   */
+  defenderIllFavoured?: boolean;
   /** Só kind:"hero" — já tem 1 Ferida marcada (a próxima é fatal, sem rolar severidade). */
   defenderAlreadyWounded?: boolean;
 
@@ -211,7 +223,11 @@ export function resolveTorAttack(params: TorAttackParams): TorAttackResolution {
   const protectionRoll = rollTorCheck({
     rank: params.defenderProtectionDice,
     tn: params.weaponInjury,
-    illFavoured: params.defenderMiserable,
+    // `illFavoured` vinha de `defenderMiserable`, o que aplicava ao Teste de
+    // Proteção uma penalidade que o livro não dá: Arrasado só faz o Olho virar
+    // falha (o que o próprio `miserable` abaixo já faz). Desfavorecido é a
+    // condição separada de Sombra no máximo, ou de uma Falha.
+    illFavoured: params.defenderIllFavoured,
     weary: params.defenderWeary,
     miserable: params.defenderMiserable,
   });
