@@ -1,5 +1,5 @@
 import { ATTRIBUTE_LABEL, COMBAT_PROFICIENCY_LABEL, SKILLS, SKILL_LABEL } from "./data";
-import { attributeTN } from "./rules";
+import { attributeTN, isTorIllFavouredByShadow } from "./rules";
 import type { TorCharacterSheet, TorCombatProficiencyId, TorSkillId } from "./types";
 
 /**
@@ -143,6 +143,15 @@ function skillGroup(skillId: TorSkillId) {
   return SKILLS.find((s) => s.id === skillId)?.group ?? "forca";
 }
 
+/** Desfavorecido pela Sombra, lido da ficha (ver isTorIllFavouredByShadow). */
+function torSheetIllFavoured(character: TorCharacterSheet): boolean {
+  return isTorIllFavouredByShadow({
+    shadow: character.shadow,
+    shadowScars: character.shadowScars,
+    hopeMax: character.hope.max,
+  });
+}
+
 export function rollTorSkillCheck(
   character: TorCharacterSheet,
   skillId: TorSkillId
@@ -155,7 +164,9 @@ export function rollTorSkillCheck(
     rank,
     tn,
     favoured,
-    illFavoured: character.conditions.miserable,
+    // Arrasado NÃO desfavorece — só faz o Olho virar falha, o que `miserable`
+    // abaixo já cobre. Desfavorecido é a condição separada da Esperança máxima.
+    illFavoured: torSheetIllFavoured(character),
     weary: character.conditions.weary,
     miserable: character.conditions.miserable,
   });
@@ -169,12 +180,15 @@ export function rollTorCombatProficiencyCheck(
 ): { outcome: TorRollOutcome; message: string } {
   const tn = attributeTN(character.attributes.forca);
   const rank = character.combatProficiencies[profId] ?? 0;
-  // Proficiências de combate nunca são Favorecidas (regra do livro).
+  // Proficiências de combate nunca são Favorecidas por serem Proficiências —
+  // só uma Virtude pode favorecê-las (ex.: "Certeiro no Alvo", do Bilbo
+  // pré-gerado). Virtudes ainda não entram nas rolagens; quando entrarem, é
+  // aqui que o `favoured` deixa de ser fixo.
   const outcome = rollTorCheck({
     rank,
     tn,
     favoured: false,
-    illFavoured: character.conditions.miserable,
+    illFavoured: torSheetIllFavoured(character),
     weary: character.conditions.weary,
     miserable: character.conditions.miserable,
   });

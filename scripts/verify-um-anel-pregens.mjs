@@ -57,10 +57,16 @@ const TN_SOURCES = [
   "03-aventureiros.md",
   "09-starter-set-regras-condensadas.md",
 ];
+// Bilíngue de propósito: estes capítulos vão sendo traduzidos ao longo da Fase
+// B, e a afirmação tem que continuar sendo reconhecida em PT-BR. Sem isso o
+// teste passa a falhar a cada tradução (aconteceu ao traduzir o capítulo 2).
+const TN_STATEMENT = /\b20 (minus|menos)\b/g;
 let tnStatements = 0;
 for (const f of TN_SOURCES) {
   const src = readFileSync(root("livros", "um-anel", f), "utf8");
-  tnStatements += (src.match(/20 minus (its corresponding )?[Aa]ttribute/g) || []).length;
+  const hits = (src.match(TN_STATEMENT) || []).length;
+  ok(`${f} afirma NA = 20 − Atributo`, hits >= 1, `achou ${hits}`);
+  tnStatements += hits;
 }
 ok(
   "livro afirma NA = 20 − Atributo em 4+ pontos",
@@ -76,7 +82,7 @@ ok(
 // de pregens.ts passa a mentir — então a explicação tem que CONTINUAR lá.
 ok(
   "livro documenta a variante 18 pra campanha curta",
-  /subtracting their Attributes from 18 instead/.test(
+  /(subtracting their Attributes from 18 instead|subtraindo os Atributos de \*\*18\*\* em vez disso)/.test(
     readFileSync(root("livros", "um-anel", "02-resolucao-de-acoes.md"), "utf8")
   )
 );

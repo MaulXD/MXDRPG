@@ -1,5 +1,5 @@
 import { WEAPON_BY_ID } from "@/lib/character/um-anel/data";
-import { resolveWeaponInjury } from "@/lib/character/um-anel/rules";
+import { isTorIllFavouredByShadow, resolveWeaponInjury } from "@/lib/character/um-anel/rules";
 import { resolveTorCharacter, patchTorCharacterResources } from "@/lib/character/um-anel/characters";
 import { resolveTorAttack, formatTorAttackMessage } from "@/lib/combat/um-anel/resolve-attack";
 import { featDieRollPayload } from "@/lib/character/um-anel/dice";
@@ -104,8 +104,11 @@ export async function executeRoomTorAttack(
       // feito antes de a Exaustão deste golpe surgir (livro §Piercing Blows).
       defenderWeary = defSheet.conditions.weary;
       defenderMiserable = defSheet.conditions.miserable;
-      defenderIllFavoured =
-        defSheet.shadow + defSheet.shadowScars >= defSheet.hope.max;
+      defenderIllFavoured = isTorIllFavouredByShadow({
+        shadow: defSheet.shadow,
+        shadowScars: defSheet.shadowScars,
+        hopeMax: defSheet.hope.max,
+      });
       defenderHeroSheetId = defSheet.id;
     }
   }
