@@ -135,7 +135,7 @@
 
 .tor-sheet__resources {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 110px), 1fr));
   gap: 0.6rem;
 }
 
@@ -180,7 +180,7 @@
 
 .tor-sheet__attrs {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
   gap: 1.1rem;
 }
 
@@ -397,7 +397,7 @@
 
 .tor-sheet__grid-2 {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
   gap: 1rem;
 }
 

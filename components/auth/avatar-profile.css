@@ -10,7 +10,7 @@
   align-items: flex-start;
 }
 
-@media (max-width: 520px) {
+@media (max-width: 767px) {
   .avatar-profile-form__header {
     flex-direction: column;
     align-items: center;

@@ -90,7 +90,7 @@
   letter-spacing: 0.18em;
 }
 
-@media (max-width: 520px) {
+@media (max-width: 767px) {
   .eldarin-logo--header .eldarin-logo__name {
     font-size: 0.88rem;
     letter-spacing: 0.16em;

@@ -21,7 +21,7 @@
   grid-area: main;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 1023px) {
   .sheet-shell {
     grid-template-columns: 1fr;
     grid-template-areas:
@@ -79,7 +79,7 @@
   margin-top: 0.12rem;
 }
 
-@media (max-width: 480px) {
+@media (max-width: 479px) {
   .sheet-header {
     flex-direction: column;
     text-align: center;
@@ -783,7 +783,7 @@
   gap: 0.75rem;
 }
 
-@media (max-width: 380px) {
+@media (max-width: 479px) {
   .sheet-portrait-duo {
     grid-template-columns: 1fr;
   }
@@ -1009,7 +1009,7 @@
   margin: 0;
 }
 
-@media (max-width: 420px) {
+@media (max-width: 479px) {
   .portrait-focus-previews,
   .portrait-focus-previews--duo {
     grid-template-columns: 1fr 1fr;

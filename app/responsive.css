@@ -1,0 +1,289 @@
+/* ═══════════════════════════════════════════════════════════════════
+   Eldarin — sistema responsivo
+   ═══════════════════════════════════════════════════════════════════
+
+   Complementa a escala canônica declarada em globals.css (:root).
+   Cinco degraus, sem valores intermediários:
+
+     xs  ≤479   ·  sm 480–767  ·  md 768–1023  ·  lg 1024–1279  ·  xl ≥1280
+
+   Este arquivo contém:
+     1. Overrides de token por degrau (gutter, mesa, tipografia)
+     2. Higiene touch global (zoom de input no iOS, tap highlight, hover)
+     3. Primitivas de superfície: drawer lateral e bottom sheet
+     4. Utilitários de visibilidade por dispositivo
+
+   Nada aqui é específico da mesa ou do site — só a base compartilhada.
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* ─────────────────────────────────────────────
+   1. Tokens por degrau
+   ───────────────────────────────────────────── */
+
+/* lg — tablet paisagem: mesa mantém layout de PC, mas dock mais enxuto */
+@media (max-width: 1279px) {
+  :root {
+    --mesa-dock-w: clamp(232px, 26vw, 300px);
+  }
+}
+
+/* md — tablet retrato: dock deixa de ocupar coluna e vira drawer */
+@media (max-width: 1023px) {
+  :root {
+    --gutter: 1.25rem;
+    --mesa-dock-w: min(340px, 46vw);
+  }
+}
+
+/* sm — celular grande */
+@media (max-width: 767px) {
+  :root {
+    --gutter: 1rem;
+    --header-h: 56px;
+    --mesa-rail-w: 100%;
+    --mesa-dock-w: 100%;
+    --text-3xl: 1.85rem;
+    --text-4xl: 2.25rem;
+  }
+}
+
+/* xs — celular retrato */
+@media (max-width: 479px) {
+  :root {
+    --gutter: 0.75rem;
+    --text-2xl: 1.5rem;
+    --text-3xl: 1.6rem;
+    --text-4xl: 1.9rem;
+  }
+}
+
+/* celular deitado — altura é o recurso escasso, não a largura */
+@media (max-height: 500px) and (orientation: landscape) {
+  :root {
+    --header-h: 44px;
+    --mesa-sheet-max-h: 88dvh;
+    --mesa-sheet-peek: 2.5rem;
+  }
+}
+
+/* ─────────────────────────────────────────────
+   2. Higiene touch global
+   ───────────────────────────────────────────── */
+
+/* iOS dá zoom automático em qualquer campo com font-size < 16px.
+   Em touch, forçar 16px nos campos evita o salto de viewport que
+   desalinha a mesa e não volta sozinho. */
+@media (pointer: coarse) {
+  input:not([type="checkbox"]):not([type="radio"]):not([type="range"]),
+  select,
+  textarea {
+    font-size: max(16px, 1rem);
+  }
+}
+
+/* O flash cinza do WebKit ao tocar atravessa o tema escuro. */
+@media (pointer: coarse) {
+  * {
+    -webkit-tap-highlight-color: transparent;
+  }
+}
+
+/* Alvos de toque — lista EXPLÍCITA, não `button` genérico.
+   Um `button { min-height: 44px }` em ponteiro grosso atingiria os 368
+   botões do projeto, inflando a ficha e os painéis densos da mesa no
+   iPad (min-height estica a linha do flex que os contém). Aqui só entram
+   os controles de ação primária, onde errar o toque custa caro.
+   Alvos específicos da mesa ficam em vtt.css e whiteboard.css. */
+@media (pointer: coarse) {
+  .btn,
+  .btn-ghost,
+  a.btn,
+  a.btn-ghost,
+  button[type="submit"],
+  .mobile-nav__toggle,
+  .mobile-nav__links .nav-link {
+    min-height: var(--touch-target);
+  }
+
+  /* Checkbox e radio nativos são pequenos por padrão em qualquer tema. */
+  input[type="checkbox"],
+  input[type="radio"] {
+    min-width: 1.15rem;
+    min-height: 1.15rem;
+  }
+}
+
+/* Efeitos de :hover em touch ficam "presos" após o toque — o navegador
+   não tem evento de saída. Só liberar hover onde existe cursor real.
+   (mesmo padrão já aplicado pontualmente em MesaIconBar e condition-chip) */
+@media (hover: none) {
+  .btn:hover,
+  .btn-ghost:hover,
+  .feature-card:hover {
+    transform: none;
+  }
+}
+
+/* ─────────────────────────────────────────────
+   3. Primitivas de superfície
+   ───────────────────────────────────────────── */
+
+/* Drawer lateral — painel que desliza sobre o conteúdo (tablet retrato).
+   Diferente do dock: não reserva espaço no fluxo, sobrepõe. */
+.r-drawer {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  z-index: 45;
+  display: flex;
+  flex-direction: column;
+  width: var(--mesa-dock-w);
+  max-width: calc(100vw - var(--mesa-rail-w) - 0.5rem);
+  background: var(--chrome-surface);
+  border-left: 1px solid var(--chrome-border-bright);
+  box-shadow: -8px 0 28px rgba(0, 0, 0, 0.5);
+  transition: transform 0.24s var(--ease-out);
+}
+
+.r-drawer--right {
+  right: 0;
+  transform: translateX(0);
+}
+
+.r-drawer--right[data-open="false"] {
+  transform: translateX(100%);
+}
+
+.r-drawer--left {
+  left: 0;
+  border-left: none;
+  border-right: 1px solid var(--chrome-border-bright);
+  box-shadow: 8px 0 28px rgba(0, 0, 0, 0.5);
+}
+
+.r-drawer--left[data-open="false"] {
+  transform: translateX(-100%);
+}
+
+/* Véu — fecha o drawer ao toque fora. Não bloqueia o mapa quando fechado. */
+.r-scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 44;
+  background: rgba(0, 0, 0, 0.5);
+  opacity: 1;
+  transition: opacity 0.2s ease;
+}
+
+.r-scrim[data-open="false"] {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Bottom sheet — painel que sobe de baixo (celular).
+   Sobe sobre o mapa; o mapa continua interativo atrás quando recolhido. */
+.r-sheet {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 46;
+  display: flex;
+  flex-direction: column;
+  max-height: var(--mesa-sheet-max-h);
+  padding-bottom: var(--safe-bottom);
+  background: var(--chrome-surface);
+  border-top: 1px solid var(--chrome-border-bright);
+  border-radius: 14px 14px 0 0;
+  box-shadow: 0 -10px 32px rgba(0, 0, 0, 0.55);
+  transition: transform 0.26s var(--ease-out);
+  transform: translateY(0);
+}
+
+/* Recolhido: só a alça fica visível ("peek"). */
+.r-sheet[data-state="closed"] {
+  transform: translateY(calc(100% - var(--mesa-sheet-peek)));
+}
+
+.r-sheet[data-state="hidden"] {
+  transform: translateY(100%);
+}
+
+/* Alça de arraste — alvo de toque generoso, sem depender de precisão. */
+.r-sheet__grip {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: var(--mesa-sheet-peek);
+  padding: 0 0.85rem;
+  border: none;
+  background: none;
+  color: var(--chrome-text);
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: grab;
+  touch-action: none;
+}
+
+.r-sheet__grip::before {
+  content: "";
+  width: 2.25rem;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--chrome-border-bright);
+}
+
+.r-sheet__body {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* ─────────────────────────────────────────────
+   4. Visibilidade por dispositivo
+   ───────────────────────────────────────────── */
+
+.r-only-touch {
+  display: none;
+}
+
+@media (pointer: coarse) {
+  .r-only-touch {
+    display: revert;
+  }
+
+  .r-only-mouse {
+    display: none;
+  }
+}
+
+/* ≥768px (md+) — esconde o que é exclusivo de celular */
+.r-only-phone {
+  display: none;
+}
+
+@media (max-width: 767px) {
+  .r-only-phone {
+    display: revert;
+  }
+
+  .r-hide-phone {
+    display: none;
+  }
+}
+
+/* Respeita quem pediu menos movimento — vale para as primitivas acima */
+@media (prefers-reduced-motion: reduce) {
+  .r-drawer,
+  .r-sheet,
+  .r-scrim {
+    transition: none;
+  }
+}

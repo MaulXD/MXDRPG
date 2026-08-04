@@ -1820,7 +1820,7 @@
   }
 }
 
-@media (max-width: 900px) {
+@media (max-width: 1023px) {
   .sheet-ddb-body {
     grid-template-columns: 108px minmax(0, 1fr);
   }
@@ -1841,7 +1841,7 @@
   }
 }
 
-@media (max-width: 720px) {
+@media (max-width: 767px) {
   .page-wrap--sheet-ddb {
     padding-inline: 0.5rem;
   }
@@ -1904,7 +1904,7 @@
   }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 479px) {
   .sheet-ddb-header {
     flex-wrap: wrap;
     gap: 0.5rem;

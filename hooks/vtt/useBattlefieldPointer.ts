@@ -1299,13 +1299,18 @@ export function useBattlefieldPointer({
     onGmDragPreview,
   ]);
 
-  const onContextMenu = useCallback(
-    (e: React.MouseEvent<HTMLCanvasElement>) => {
-      e.preventDefault();
+  /**
+   * Abre o menu de ações do token num ponto da tela. Extraído de `onContextMenu`
+   * para que o clique direito (mouse) e o toque longo (dedo) compartilhem
+   * exatamente o mesmo caminho — em touch não existe clique direito, e antes
+   * disso o menu era inalcançável no celular e no tablet.
+   */
+  const openTokenMenuAt = useCallback(
+    (clientX: number, clientY: number) => {
       const rect = canvasRef.current?.getBoundingClientRect();
       if (!rect) return;
-      const px = e.clientX - rect.left;
-      const py = e.clientY - rect.top;
+      const px = clientX - rect.left;
+      const py = clientY - rect.top;
 
       let hit = tokenAtPoint(px, py);
       if (!hit) {
@@ -1330,7 +1335,7 @@ export function useBattlefieldPointer({
       }
       if (hit.id !== selectedId) setSelectedId(hit.id);
       const center = tokenScreenCenter(hit);
-      onActionRingRequest?.(hit, center?.x ?? e.clientX, center?.y ?? e.clientY);
+      onActionRingRequest?.(hit, center?.x ?? clientX, center?.y ?? clientY);
     },
     [
       canvasRef,
@@ -1341,14 +1346,20 @@ export function useBattlefieldPointer({
       canControlCombat,
       onOpenMonsterKnowledge,
       canOpenActionRing,
-      canOpenPlayerBestiary,
       onActionRingBlocked,
       selectedId,
       setSelectedId,
       onActionRingRequest,
-      onOpenPlayerBestiary,
       whiteboard,
     ]
+  );
+
+  const onContextMenu = useCallback(
+    (e: React.MouseEvent<HTMLCanvasElement>) => {
+      e.preventDefault();
+      openTokenMenuAt(e.clientX, e.clientY);
+    },
+    [openTokenMenuAt]
   );
 
   const cancelWhiteboardDraft = useCallback(() => {

@@ -8,7 +8,8 @@ export type MapToolbarIconName =
   | "dungeon"
   | "zoom-in"
   | "zoom-out"
-  | "reset-view";
+  | "reset-view"
+  | "pan";
 
 type Props = {
   name: MapToolbarIconName;
@@ -183,6 +184,19 @@ export function MapToolbarIcon({ name, className = "map-toolbar__icon" }: Props)
           <circle cx="12" cy="12" r="7.25" {...S} />
           <circle cx="12" cy="12" r="2" {...S} />
           <path d="M12 3.5v2M12 18.5v2M3.5 12h2M18.5 12h2" {...S} opacity="0.55" strokeWidth="1.3" />
+        </IconSvg>
+      );
+
+    /* Arrastar o mapa — cruz de quatro setas, mesma linguagem geométrica
+       dos demais (traço fino, sem preenchimento). */
+    case "pan":
+      return (
+        <IconSvg className={className}>
+          <path d="M12 4v16M4 12h16" {...S} />
+          <path d="M12 4 9.9 6.4M12 4l2.1 2.4" {...S} />
+          <path d="M12 20l-2.1-2.4M12 20l2.1-2.4" {...S} />
+          <path d="M4 12l2.4-2.1M4 12l2.4 2.1" {...S} />
+          <path d="M20 12l-2.4-2.1M20 12l-2.4 2.1" {...S} />
         </IconSvg>
       );
 

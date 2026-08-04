@@ -24,7 +24,7 @@
   transform: translateX(-50%);
 }
 
-@media (max-width: 720px) {
+@media (max-width: 767px) {
   .foundry-mesa__toasts .vtt-toast-stack {
     z-index: 55;
     max-width: min(94%, 480px);

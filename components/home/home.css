@@ -149,7 +149,7 @@
   .landing-scroll-hint { animation: none; }
 }
 
-@media (max-width: 600px) {
+@media (max-width: 767px) {
   .landing-preview { max-width: 100%; }
   .landing-scroll-hint { display: none; }
 }
@@ -229,7 +229,7 @@
   font-size: 0.78rem;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 767px) {
   .download-band {
     flex-direction: column;
     align-items: flex-start;
