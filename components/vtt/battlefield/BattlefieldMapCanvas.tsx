@@ -23,6 +23,9 @@ type BattlefieldViewHandle = {
   onPointerDown: (e: ReactPointerEvent) => boolean;
   onPointerMove: (e: ReactPointerEvent) => boolean;
   endPan: (e: ReactPointerEvent) => boolean;
+  onPointerCancel: (e: ReactPointerEvent) => void;
+  panToolActive: boolean;
+  togglePanTool: () => void;
 };
 
 type MarkupDraft = { wx: number; wy: number } | null;
@@ -116,7 +119,7 @@ export function BattlefieldMapCanvas({
   return (
     <div
       ref={wrapRef}
-      className={`vtt-canvas-wrap${foundryLayout ? " vtt-canvas-wrap--foundry" : ""}${attackTargetCursor ? " vtt-canvas-wrap--attack-target" : ""}${spawnDragActive ? " vtt-canvas-wrap--spawn-drop" : ""}${battlefieldView.isPanning ? " vtt-canvas-wrap--panning" : ""}`}
+      className={`vtt-canvas-wrap${foundryLayout ? " vtt-canvas-wrap--foundry" : ""}${attackTargetCursor ? " vtt-canvas-wrap--attack-target" : ""}${spawnDragActive ? " vtt-canvas-wrap--spawn-drop" : ""}${battlefieldView.isPanning ? " vtt-canvas-wrap--panning" : ""}${battlefieldView.panToolActive ? " vtt-canvas-wrap--pan-tool" : ""}`}
       onContextMenu={(e) => e.preventDefault()}
       onContextMenuCapture={(e) => e.preventDefault()}
       {...spawnDropHandlers}
@@ -159,13 +162,22 @@ export function BattlefieldMapCanvas({
         showDungeonEditor={showDungeonEditor}
         dungeonEditorActive={dungeonEditorActive}
         onToggleDungeonEditor={onToggleDungeonEditor}
+        panToolActive={battlefieldView.panToolActive}
+        onTogglePanTool={battlefieldView.togglePanTool}
       />
       <canvas
         ref={canvasRef}
         className="vtt-canvas"
         {...spawnDropHandlers}
         onPointerDown={(e) => {
-          if (battlefieldView.onPointerDown(e)) return;
+          if (battlefieldView.onPointerDown(e)) {
+            // A vista assumiu o gesto (pinça ou pan). O primeiro dedo já pode
+            // ter armado um long-press, e o `pointerup` dele vai ser
+            // reivindicado pela vista — então o timer nunca seria limpo e o
+            // menu do token abriria no meio da pinça. Abortar aqui.
+            pointerHandlers.onPointerLeave();
+            return;
+          }
           pointerHandlers.onPointerDown(e);
         }}
         onPointerMove={(e) => {
@@ -178,6 +190,10 @@ export function BattlefieldMapCanvas({
         }}
         onPointerLeave={(e) => {
           battlefieldView.endPan(e);
+          pointerHandlers.onPointerLeave();
+        }}
+        onPointerCancel={(e) => {
+          battlefieldView.onPointerCancel(e);
           pointerHandlers.onPointerLeave();
         }}
         onContextMenu={pointerHandlers.onContextMenu}

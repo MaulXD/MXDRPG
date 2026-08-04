@@ -38,6 +38,8 @@ type Props = {
   showDungeonEditor?: boolean;
   dungeonEditorActive?: boolean;
   onToggleDungeonEditor?: () => void;
+  panToolActive: boolean;
+  onTogglePanTool: () => void;
 };
 
 type ToolBtn = {
@@ -98,6 +100,8 @@ export function MapToolbar({
   showDungeonEditor = false,
   dungeonEditorActive = false,
   onToggleDungeonEditor,
+  panToolActive,
+  onTogglePanTool,
 }: Props) {
   const pickMapTool = (mode: MapToolMode) => {
     if (mode === "ping" && !canPing) return;
@@ -201,7 +205,19 @@ export function MapToolbar({
           </>
         ) : null}
 
-        <p className="map-toolbar__section-label">Zoom</p>
+        <p className="map-toolbar__section-label">Vista</p>
+        <button
+          type="button"
+          data-tool-icon="pan"
+          className={`map-toolbar__btn map-toolbar__btn--wide${panToolActive ? " map-toolbar__btn--active" : ""}`}
+          title="Arrastar o mapa — com esta opção ligada, um dedo (ou clique) move a vista em vez de agir no token"
+          aria-label="Arrastar o mapa"
+          aria-pressed={panToolActive}
+          onClick={onTogglePanTool}
+        >
+          <MapToolbarIcon name="pan" />
+        </button>
+
         <div className="map-toolbar__zoom" role="group" aria-label="Zoom">
           <button
             type="button"
@@ -238,7 +254,10 @@ export function MapToolbar({
           </button>
         </div>
 
-        <p className="map-toolbar__foot-hint">Scroll zoom · Alt pan</p>
+        {/* Dica por dispositivo via CSS (não por JS) para não haver divergência
+            de hidratação entre servidor e cliente. */}
+        <p className="map-toolbar__foot-hint r-only-mouse">Scroll zoom · Alt pan</p>
+        <p className="map-toolbar__foot-hint r-only-touch">Pinça = zoom · 2 dedos = mover</p>
       </div>
 
       {canUseDraw && mapToolMode === "draw" ? (

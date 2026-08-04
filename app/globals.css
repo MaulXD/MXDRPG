@@ -145,6 +145,49 @@
   --control-h-sm: 2rem;
   --control-h-xs: 1.75rem;
 
+  /* ──────────────────────────────────────────────────────────────
+     Sistema responsivo — escala canônica de breakpoints
+     ──────────────────────────────────────────────────────────────
+     CSS não aceita var() dentro de @media, então estes valores são
+     a REFERÊNCIA ÚNICA. Ao escrever um @media novo, use um destes
+     cinco degraus — nunca invente um valor intermediário.
+
+       xs   ≤ 479px    celular retrato          (360–430 típico)
+       sm   480–767px  celular grande / paisagem estreita
+       md   768–1023px tablet retrato           (768–834 típico)
+       lg   1024–1279px tablet paisagem         (1024–1366 típico)
+       xl   ≥ 1280px   desktop
+
+     Consultas de capacidade (não de largura):
+       (pointer: coarse)                     → dedo
+       (hover: hover) and (pointer: fine)    → mouse de verdade
+       (max-height: 500px) and (orientation: landscape) → celular deitado
+
+     Regra da mesa: o layout de PC (rail + stage + dock) vale até
+     768px. Abaixo disso o stage vira tela cheia com bottom sheets.
+     O stage NUNCA scrolla verticalmente em nenhum tamanho.
+     ────────────────────────────────────────────────────────────── */
+
+  /* alvo de toque — WCAG 2.5.8 pede 24px, Apple/Google pedem 44px */
+  --touch-target:    44px;
+  --touch-target-sm: 36px;
+  --touch-gap:       0.5rem;
+
+  /* safe areas (notch, home indicator, barra de gestos) */
+  --safe-top:    env(safe-area-inset-top, 0px);
+  --safe-right:  env(safe-area-inset-right, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-left:   env(safe-area-inset-left, 0px);
+
+  /* gutter da página — encolhe junto com a tela */
+  --gutter: 1.5rem;
+
+  /* mesa — medidas estruturais em token, para o layout responder num só lugar */
+  --mesa-rail-w:      3.75rem;
+  --mesa-dock-w:      clamp(248px, 28vw, 340px);
+  --mesa-sheet-peek:  3.25rem;
+  --mesa-sheet-max-h: 72dvh;
+
   --vtt-canvas-bg-0: #7a7a78;
   --vtt-canvas-bg-1: #7a7a78;
   --vtt-cell-fill: transparent;
@@ -458,16 +501,22 @@ button.btn {
   background: var(--accent-soft);
 }
 
+/* A margem lateral vem do token --gutter, que encolhe por degrau em
+   app/responsive.css (1.5rem → 1.25 → 1 → 0.75). Assim a respiração da
+   página muda num lugar só, em vez de num @media por componente.
+   Inclui as safe areas: em celular deitado o notch invade a lateral. */
 .page-wrap {
-  width: min(1120px, 100% - 2.5rem);
+  width: min(
+    1120px,
+    100% - (var(--gutter) * 2) - var(--safe-left) - var(--safe-right)
+  );
   margin: 0 auto;
   padding: 0 0 5rem;
   min-width: 0;
 }
 
-@media (max-width: 640px) {
+@media (max-width: 767px) {
   .page-wrap {
-    width: min(1120px, calc(100% - 1.25rem));
     padding-bottom: 3rem;
   }
 }
@@ -628,7 +677,7 @@ select:focus-visible {
   min-height: calc(100vh - var(--header-h) - 4rem);
 }
 
-@media (max-width: 900px) {
+@media (max-width: 1023px) {
   .hero-grid {
     grid-template-columns: 1fr;
     min-height: auto;
@@ -669,7 +718,7 @@ select:focus-visible {
   gap: 1rem;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 767px) {
   .grid-2,
   .grid-3 {
     grid-template-columns: 1fr;
@@ -1047,7 +1096,7 @@ select optgroup {
   pointer-events: none;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 1023px) {
   .vtt-shell {
     grid-template-columns: 1fr;
   }
@@ -1169,7 +1218,7 @@ select optgroup {
   justify-content: flex-end;
 }
 
-@media (max-width: 640px) {
+@media (max-width: 767px) {
   .site-header {
     width: calc(100% - 1rem);
     padding: 0.5rem 0.65rem 0.5rem 0.85rem;
@@ -1226,7 +1275,9 @@ pre {
   gap: 1rem;
 }
 
-@media (min-width: 900px) {
+/* Duas colunas a partir de tablet em paisagem (lg) — em retrato, a lista de
+   280px + detalhe deixaria os dois lados estreitos demais. */
+@media (min-width: 1024px) {
   .admin-mesas__grid {
     grid-template-columns: 280px 1fr;
   }
@@ -1363,7 +1414,7 @@ pre {
   border-top: 1px solid var(--glass-border);
 }
 
-@media (max-width: 768px) {
+@media (max-width: 767px) {
   .site-nav__links {
     display: none;
   }
@@ -1502,7 +1553,7 @@ pre {
   color: var(--accent);
 }
 
-@media (max-width: 640px) {
+@media (max-width: 767px) {
   .download-band {
     grid-template-columns: 1fr;
     padding: 1.5rem;

@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { SITE_NAME } from "@/lib/site-metadata";
 import { Cinzel, Lora, Source_Sans_3 } from "next/font/google";
 import { AuthProvider } from "@/components/auth/AuthProvider";
@@ -16,6 +16,7 @@ import { SiteTitleFixScript } from "@/components/ui/SiteTitleFixScript";
 import { SiteTabTitle } from "@/components/ui/SiteTabTitle";
 import { SiteTooltipLayer } from "@/components/ui/SiteTooltipLayer";
 import "./globals.css";
+import "./responsive.css";
 import "@/components/nav-motion.css";
 import "@/components/ui/medieval-borders.css";
 import "@/components/home/home.css";
@@ -59,6 +60,22 @@ export const metadata: Metadata = {
     icon: [{ url: "/favicon.png", type: "image/png" }],
     apple: [{ url: "/icon.png", type: "image/png" }],
   },
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  // `cover` é o que faz env(safe-area-inset-*) devolver valor real. Sem isso
+  // todo env(safe-area-inset-…) do projeto resolve para 0 e o conteúdo passa
+  // por baixo do notch / barra de gestos.
+  viewportFit: "cover",
+  // Teclado virtual redimensiona o layout em vez de sobrepor — o campo de
+  // chat da mesa fica visível ao digitar em vez de ficar atrás do teclado.
+  interactiveWidget: "resizes-content",
+  // userScalable fica LIGADO de propósito (WCAG 1.4.4 — zoom até 200%).
+  // O pinch do mapa não conflita: o canvas usa touch-action: none, que
+  // desliga o gesto do navegador só ali.
+  themeColor: "#0e0d0b",
 };
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {

@@ -189,7 +189,7 @@
   cursor: not-allowed;
 }
 
-@media (max-width: 640px) {
+@media (max-width: 767px) {
   .char-wizard-progress__label {
     font-size: 0.66rem;
   }
@@ -274,7 +274,7 @@
   min-width: 0;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 1023px) {
   .char-wizard-body {
     grid-template-columns: 1fr;
   }
@@ -1089,7 +1089,7 @@
   min-height: 0;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 1023px) {
   .char-wizard--mesa-embed .char-wizard-body {
     grid-template-columns: 1fr;
   }

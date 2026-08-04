@@ -371,7 +371,98 @@ Disparado quando `activeIndex` ou rodada mudam (não na carga inicial da mesa).
 6. **Painéis na mesa:** usar `glass-panel` ou classes `foundry-dock-panel--`*; scroll com `mesa-panel-scroll`.
 7. **Tooltips de regras:** reutilizar `effectTipAttrs` / padrão `data-tip`.
 8. **Tipografia:** Cinzel para títulos e valores de jogo; Lora para regras e lore; Source Sans 3 para controles densos.
-9. **Responsivo:** mesa prioriza desktop; `@media (max-width: 640px)` no HUD; dock estreito em telas médias.
+9. **Responsivo:** ver seção 9b — escala canônica de 5 degraus, obrigatória para qualquer `@media` novo.
+
+---
+
+## 9b. Sistema responsivo — PC, tablet e celular
+
+### Escala canônica (obrigatória)
+
+CSS não aceita `var()` dentro de `@media`, então estes cinco degraus são a
+**referência única**, documentada em `app/globals.css`. Ao escrever um `@media`
+novo, use um deles — **nunca** invente um valor intermediário.
+
+| Degrau | Largura      | Alvo típico                     |
+| ------ | ------------ | ------------------------------- |
+| `xs`   | ≤ 479px      | celular retrato (360–430)       |
+| `sm`   | 480–767px    | celular grande / paisagem       |
+| `md`   | 768–1023px   | tablet retrato (768–834)        |
+| `lg`   | 1024–1279px  | tablet paisagem (1024–1366)     |
+| `xl`   | ≥ 1280px     | desktop                         |
+
+### Consultas de capacidade (não de largura)
+
+```css
+@media (pointer: coarse)                    /* dedo */
+@media (hover: hover) and (pointer: fine)   /* mouse de verdade */
+@media (max-height: 500px) and (orientation: landscape)  /* celular deitado */
+```
+
+Efeitos de `:hover` **só** dentro de `(hover: hover) and (pointer: fine)` — em
+touch o navegador não tem evento de saída e o estado fica "preso" após o toque.
+
+### Regras que não se quebram
+
+1. **`.vtt-chrome` fica `100dvh` + `overflow: hidden` em todo tamanho.** A mesa é
+   superfície de jogo, não página: se o stage rolar verticalmente, o jogador
+   perde a noção de onde o mapa está e o HUD sai da tela.
+2. **O layout de PC vale até 768px.** iPad em paisagem usa rail + stage + dock,
+   igual ao desktop.
+3. **`dvh`, não `vh`** — a barra de endereço do celular muda a altura.
+4. **Safe areas** via `--safe-top/right/bottom/left`. Funcionam porque
+   `app/layout.tsx` declara `viewportFit: "cover"`; sem isso `env(safe-area-inset-*)`
+   resolve 0.
+5. **Grids `auto-fill`/`auto-fit`** usam `minmax(min(100%, Npx), 1fr)` — com
+   `Npx` puro, um container mais estreito que `N` cria scroll horizontal.
+6. **Alvos de toque são lista explícita**, nunca `button { min-height }` global:
+   `min-height` estica a linha do flex que contém o botão e inflaria a UI densa
+   da ficha e dos painéis no tablet.
+
+### Comportamento da mesa por degrau
+
+| Degrau      | Rail                 | Dock / painéis                    | Mapa        |
+| ----------- | -------------------- | --------------------------------- | ----------- |
+| `xl` / `lg` | coluna à esquerda    | coluna fixa (`--mesa-dock-w`)     | resto       |
+| `md`        | coluna à esquerda    | **sobrepõe** o mapa               | largura toda |
+| `xs` / `sm` | faixa no topo        | **folha inferior** sobre o mapa   | tela cheia  |
+
+Em celular deitado a topbar recolhe e a paleta do mapa vira faixa horizontal no
+rodapé — na paisagem curta a altura é o recurso escasso, não a largura.
+
+### Gestos no mapa (touch)
+
+| Gesto                | Ação                                                     |
+| -------------------- | -------------------------------------------------------- |
+| Dois dedos           | zoom (pinça) **e** pan no mesmo gesto                    |
+| Um dedo              | token / célula — selecionar, mover, atacar               |
+| Um dedo + ferramenta de mão | arrasta o mapa                                    |
+| Toque longo (520ms)  | menu de ações do token (equivale ao clique direito)      |
+
+O canvas usa `touch-action: none` — isso desliga o gesto do navegador **só ali**,
+então `userScalable` continua ligado no resto do site (WCAG 1.4.4, zoom até 200%).
+
+Implementação: `hooks/vtt/useBattlefieldView.ts` (pinça, pan, ferramenta de mão),
+`hooks/vtt/useBattlefieldPointer.ts` (`openTokenMenuAt`, long-press).
+
+### Detecção de dispositivo em React
+
+`hooks/useDeviceProfile.ts` — use quando precisar mudar **comportamento**, não só
+estilo. Para estilo, prefira CSS (evita divergência de hidratação):
+
+```ts
+const { isPhone, isTabletPortrait, isTouch, hasMouse, isShortLandscape } = useDeviceProfile();
+```
+
+Fallback de SSR é desktop com mouse: um layout de PC servido a um celular se
+corrige no primeiro efeito, enquanto o inverso faria o desktop piscar em layout
+de celular a cada navegação.
+
+### Primitivas compartilhadas (`app/responsive.css`)
+
+`.r-drawer` (painel que desliza sobre o conteúdo) · `.r-sheet` + `.r-sheet__grip`
++ `.r-sheet__body` (folha inferior com alça) · `.r-scrim` (véu) ·
+`.r-only-touch` / `.r-only-mouse` / `.r-only-phone` / `.r-hide-phone`.
 
 ---
 
@@ -381,6 +472,7 @@ Disparado quando `activeIndex` ou rodada mudam (não na carga inicial da mesa).
 
 ```
 app/globals.css                              ← tokens globais, tema claro/escuro, botões
+app/responsive.css                           ← escala de breakpoints, higiene touch, drawer/sheet
 components/vtt/vtt.css                       ← combate, HUD, turn handoff, sidebars
 components/vtt/mesa-theme.css                ← override mesa Foundry + canvas
 components/vtt/foundry/foundry.css           ← rail, dock (altura 100%), janelas
@@ -435,6 +527,7 @@ lib/room/adventure-actors.ts   ← merge retratos ao sync ficha DB
 
 | Versão | Data     | Mudanças                                                                                                                            |
 | ------ | -------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| responsivo | ago/2026 | Escala canônica de 5 degraus (17 breakpoints ad-hoc → 4), gestos de pinça/pan/long-press no mapa, mesa nunca rola vertical, dock sobreposto em tablet e folha inferior em celular, `viewportFit: cover` (safe areas passam a funcionar), 3 blocos de CSS morto removidos. Ver **seção 9b**. |
 | v3     | jun/2026 | Dock preenche altura; toasts acima do HUD; overlay de turno; retratos persistentes; HUD com PortraitFocusFill e fundo em `::before` |
 | v2     | jun/2026 | Contraste WCAG, sem emojis, atributos opção C, tokens célula, ficha Foundry                                                            |
 | v1     | —        | Paleta ardósia/azul, shell Foundry inicial                                                                                          |
@@ -442,4 +535,4 @@ lib/room/adventure-actors.ts   ← merge retratos ao sync ficha DB
 
 ---
 
-*Última revisão: junho 2026 — v3.*
+*Última revisão: agosto 2026 — v3 + sistema responsivo (seção 9b).*

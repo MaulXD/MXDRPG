@@ -385,11 +385,23 @@
   height: 100%;
 }
 
+/* A ficha quer 780px de largura, mas isso não pode virar um piso rígido:
+   num celular de 390px a janela estourava a tela e o conteúdo ficava
+   inalcançável na horizontal. `min()` mantém os 780px onde há espaço e
+   cede onde não há. */
 .foundry-window--character-sheet.foundry-window--sheet-v2 {
-  min-width: 780px;
+  min-width: min(780px, calc(100vw - 1.25rem));
 }
 
-@media (max-width: 720px) {
+/* ── md — tablet retrato: coluna lateral vira largura mínima ───────── */
+@media (max-width: 1023px) {
+  .sheet-v2-overview {
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+  }
+}
+
+/* ── sm — celular: uma coluna, retrato menor ───────────────────────── */
+@media (max-width: 767px) {
   .sheet-v2-frame {
     grid-template-columns: 104px minmax(0, 1fr) 44px;
   }
@@ -405,6 +417,21 @@
 
   .sheet-v2-overview {
     grid-template-columns: 1fr;
+  }
+}
+
+/* ── xs — celular retrato: 3 colunas continuam, só mais estreitas ────
+   A terceira coluna é a navegação de seções (`sheet-v2-rail-tabs`).
+   Reduzir para 2 colunas empurraria a navegação para outra linha do
+   grid — então aqui só encolhe, mantendo tudo alcançável. */
+@media (max-width: 479px) {
+  .sheet-v2-frame {
+    grid-template-columns: 84px minmax(0, 1fr) 40px;
+  }
+
+  .sheet-v2-portrait-wrap {
+    width: 72px;
+    height: 72px;
   }
 }
 

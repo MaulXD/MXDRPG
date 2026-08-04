@@ -91,7 +91,7 @@
   margin: 0;
 }
 
-@media (max-width: 420px) {
+@media (max-width: 479px) {
   .portrait-focus-previews,
   .portrait-focus-previews--duo {
     grid-template-columns: 1fr 1fr;

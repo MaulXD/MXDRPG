@@ -361,7 +361,7 @@
   gap: 1rem;
 }
 
-@media (max-width: 640px) {
+@media (max-width: 767px) {
   .mf {
     --mf-inset: 8px;
     --mf-pad: 0.85rem;

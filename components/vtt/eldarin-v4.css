@@ -737,7 +737,22 @@
   background-image: none;
 }
 
-@media (max-width: 520px) {
+/* ══════════════════════════════════════════════════════════════════
+   HUD de combate — responsivo (escala canônica de app/globals.css)
+   ══════════════════════════════════════════════════════════════════ */
+
+/* O HUD flutua no rodapé do stage: precisa respeitar a barra de gestos,
+   senão os botões "Ficha" e "Passar" ficam por baixo dela no celular. */
+.vtt-hud-wrapper {
+  bottom: calc(14px + var(--safe-bottom));
+}
+
+/* ── xs — celular retrato: linha única não cabe ─────────────────────
+   A linha precisa de ~420px (retrato 96 + corpo + ações). Em 360–430px
+   as ações descem para uma faixa horizontal sob o corpo.
+   (Antes o gatilho era 520px, fora da escala; em 480–520px o HUD
+   quebrava sem necessidade.) */
+@media (max-width: 479px) {
   .vtt-hud-wrapper .vtt-combat-hud {
     flex-wrap: wrap;
   }
@@ -752,6 +767,63 @@
   .hud-btn + .hud-btn {
     border-top: none;
     border-left: 1px solid var(--border);
+  }
+
+  /* Retrato menor devolve largura ao nome e à barra de PV. */
+  .hud-portrait-wrap {
+    width: 72px;
+    min-width: 72px;
+    padding: 6px;
+  }
+}
+
+/* ── celular deitado: a altura é o recurso escasso ──────────────────
+   Mantém a linha única (a largura sobra), mas comprime a vertical para
+   o HUD não comer o mapa. */
+@media (max-height: 500px) and (orientation: landscape) {
+  .vtt-hud-wrapper {
+    bottom: calc(6px + var(--safe-bottom));
+    gap: 2px;
+  }
+
+  /* Não quebra em linhas: com ~390px de altura, empilhar tiraria o mapa da tela. */
+  .vtt-hud-wrapper .vtt-combat-hud {
+    flex-wrap: nowrap;
+  }
+
+  .hud-portrait-wrap {
+    width: 60px;
+    min-width: 60px;
+    padding: 4px;
+  }
+
+  .hud-body {
+    padding: 5px 9px;
+    gap: 3px;
+  }
+
+  .hud-actions {
+    flex-direction: row;
+    border-left: 1px solid var(--border-accent);
+    border-top: none;
+  }
+
+  .hud-btn {
+    padding: 0 10px;
+  }
+
+  .hud-btn + .hud-btn {
+    border-top: none;
+    border-left: 1px solid var(--border);
+  }
+
+  /* Chips de efeito em faixa rolável — quebrar linha empurraria o HUD
+     para cima do mapa. */
+  .vtt-hud-effects {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
   }
 }
 

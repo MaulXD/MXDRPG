@@ -392,7 +392,40 @@
 /* ══════════════════════════════════════════════════
    Responsivo — telas pequenas
    ══════════════════════════════════════════════════ */
-@media (max-width: 640px) {
+/* ══════════════════════════════════════════════════
+   Touch — alvos de toque
+   ══════════════════════════════════════════════════
+   32,6px é confortável no mouse e apertado no dedo. Em ponteiro grosso
+   os botões crescem e a paleta ganha scroll interno em vez de esticar
+   além da tela. Não usa var(--touch-target) cheio (44px): com ~12
+   ferramentas a coluna não caberia em celular deitado. */
+@media (pointer: coarse) {
+  .map-toolbar {
+    width: 3rem;
+    padding: 0.4rem 0.35rem;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-width: none;
+  }
+
+  .map-toolbar__btn {
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+
+  .map-toolbar__btn--wide {
+    width: 100%;
+  }
+
+  /* Espaçamento entre alvos evita toque errado sem precisar de mais altura. */
+  .map-toolbar__group,
+  .map-toolbar__zoom {
+    gap: 0.28rem;
+  }
+}
+
+/* sm — celular: paleta encosta embaixo, acima do HUD de combate */
+@media (max-width: 767px) {
   .map-toolbar-shell {
     top: auto;
     bottom: clamp(4.25rem, 14vh, 5.5rem);
@@ -405,10 +438,58 @@
 
   .map-toolbar {
     max-height: min(38vh, 280px);
+    overflow-y: auto;
   }
 
   .map-toolbar__flyout {
     min-width: 5.25rem;
+  }
+}
+
+/* Celular deitado: altura é o recurso escasso — a paleta vira faixa
+   horizontal rolável no rodapé em vez de coluna. */
+@media (max-height: 500px) and (orientation: landscape) {
+  .map-toolbar-shell {
+    top: auto;
+    bottom: calc(0.35rem + var(--safe-bottom));
+    left: calc(0.35rem + var(--safe-left));
+    right: calc(0.35rem + var(--safe-right));
+    flex-direction: column;
+    max-width: none;
+    max-height: none;
+  }
+
+  .map-toolbar {
+    flex-direction: row;
+    align-items: center;
+    width: auto;
+    max-width: 100%;
+    max-height: none;
+    overflow-x: auto;
+    overflow-y: visible;
+    gap: 0.28rem;
+    padding: 0.28rem 0.4rem;
+  }
+
+  .map-toolbar__group,
+  .map-toolbar__zoom {
+    flex-direction: row;
+  }
+
+  /* Rótulos de seção e divisores verticais não fazem sentido na horizontal. */
+  .map-toolbar__section-label,
+  .map-toolbar__foot-hint {
+    display: none;
+  }
+
+  .map-toolbar__divider {
+    width: 1px;
+    height: 1.5rem;
+    margin: 0 0.22rem;
+  }
+
+  .map-toolbar__btn--wide {
+    width: 2.5rem;
   }
 }
 

@@ -99,7 +99,7 @@
   padding: 0;
 }
 
-@media (max-width: 520px) {
+@media (max-width: 767px) {
   .monster-sheet-popup__picker {
     grid-template-columns: 1fr;
   }
@@ -222,7 +222,7 @@
 
 .monster-sheet__vitals {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(5.5rem, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 5.5rem), 1fr));
   gap: 0.5rem;
 }
 
@@ -350,7 +350,7 @@
   margin-top: 0.55rem;
 }
 
-@media (max-width: 560px) {
+@media (max-width: 767px) {
   .monster-sheet__xp-grid {
     grid-template-columns: 1fr;
   }

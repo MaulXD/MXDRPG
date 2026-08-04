@@ -424,7 +424,7 @@
   overflow-y: auto;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 1023px) {
   .room-invite-bar {
     flex-direction: column;
     align-items: stretch;
@@ -447,7 +447,7 @@
   min-height: 0;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 1023px) {
   .vtt-shell {
     grid-template-columns: 1fr;
   }
@@ -1210,6 +1210,14 @@
   --map-toolbar-gap: 0.65rem;
 }
 
+/* Ferramenta de mão ligada: o cursor avisa que o clique move a vista, não o
+   token. Declarado ANTES de --panning de propósito — mesma especificidade,
+   então o arraste em curso (grabbing) precisa vir depois para vencer. */
+.vtt-canvas-wrap--pan-tool,
+.vtt-canvas-wrap--pan-tool .vtt-canvas {
+  cursor: grab;
+}
+
 .vtt-canvas-wrap--panning,
 .vtt-canvas-wrap--panning .vtt-canvas {
   cursor: grabbing;
@@ -1412,7 +1420,7 @@
   white-space: nowrap;
 }
 
-@media (max-width: 720px) {
+@media (max-width: 767px) {
   .vtt-view-hint {
     display: none;
   }
@@ -1986,7 +1994,7 @@
   font-weight: 500;
 }
 
-@media (max-width: 1100px) {
+@media (max-width: 1023px) {
   .vtt-end-turn-bar {
     right: max(8px, env(safe-area-inset-right, 0));
     top: auto;
@@ -2907,78 +2915,75 @@
   overflow: hidden;
 }
 
-@media (max-width: 1100px) {
-  .vtt-chrome {
-    height: auto;
-    max-height: none;
-    overflow: auto;
-  }
+/* ══════════════════════════════════════════════════════════════════
+   Mesa responsiva — escala canônica (ver app/globals.css)
+   ══════════════════════════════════════════════════════════════════
 
-  .vtt-chrome .vtt-main {
-    overflow: visible;
-  }
+   REGRA QUE NÃO SE QUEBRA: `.vtt-chrome` fica 100dvh + overflow hidden
+   em TODO tamanho. A mesa é uma superfície de jogo, não uma página —
+   se o stage rolar verticalmente, o jogador perde a noção de onde o
+   mapa está e o HUD sai da tela.
 
-  .vtt-page--mesa {
-    overflow: hidden;
-  }
+   (Antes, um @media 1100px transformava a mesa em página rolável, o que
+   pegava iPad em paisagem — 1024px — justamente o aparelho com espaço
+   de sobra para o layout de PC.)
 
-  .mesa-workspace {
-    min-height: calc(100dvh - 7rem);
-  }
+   lg  ≥1024  dock em coluna fixa, como no PC
+   md  768–1023  dock vira drawer sobreposto; stage ocupa a largura toda
+   sm  ≤767   stage em tela cheia; painéis em bottom sheet
+   ══════════════════════════════════════════════════════════════════ */
 
-  .mesa-workspace-body {
-    flex-direction: column;
-  }
+/* NOTA — só entram aqui seletores que o React realmente renderiza.
+   `.mesa-workspace-body`, `.mesa-stage`, `.mesa-dock--*`, `.vtt-sidebar`,
+   `.mesa-dock-resize` pertencem ao layout de mesa anterior ao shell
+   Foundry: `Battlefield` só monta esse ramo quando `foundryLayout` é
+   falso, e `MesaBattlefieldStage` — o único lugar que usa `Battlefield` —
+   passa `foundryLayout` sempre. O responsivo do dock/rail vive em
+   components/vtt/foundry/foundry.css, que é o shell ativo. */
 
-  .mesa-stage {
-    min-height: min(52dvh, 480px);
-    flex: 1;
-  }
-
-  .mesa-stage .vtt-shell {
-    grid-template-columns: 1fr !important;
-    grid-template-rows: auto minmax(240px, 1fr);
-  }
-
-  .mesa-stage .vtt-sidebar {
-    max-height: min(38dvh, 320px);
-  }
-
-  .mesa-dock--left:not(.mesa-dock--collapsed) {
-    max-height: min(40dvh, 360px);
-  }
-
-  .mesa-workspace-body > .mesa-dock--right:not(.mesa-dock--collapsed) {
-    width: 100% !important;
-    flex-basis: auto !important;
-    max-height: 42dvh;
-  }
-
-  .mesa-dock-resize {
-    display: none;
-  }
-
+/* ── touch — alvos de toque na mesa ─────────────────────────────── */
+@media (pointer: coarse) {
   .mesa-rail-tab {
-    min-height: 44px;
+    min-height: var(--touch-target);
     padding: 0.65rem 0.85rem;
     font-size: 0.9rem;
   }
 
-  .vtt-action-hud {
-    left: calc(
-      max(8px, env(safe-area-inset-left, 0)) + var(--map-toolbar-width) + var(--map-toolbar-gap)
-    );
-    bottom: max(8px, env(safe-area-inset-bottom, 0));
-    max-width: min(
-      280px,
-      calc(100% - var(--map-toolbar-width) - var(--map-toolbar-gap) - 16px)
-    );
+  .mesa-dock-toggle {
+    min-height: var(--touch-target);
+  }
+}
+
+/* ── sm — celular: o stage é a tela inteira ─────────────────────── */
+@media (max-width: 767px) {
+  /* Uma coluna só: o mapa não divide espaço com painel lateral. */
+  .vtt-shell {
+    grid-template-columns: 1fr;
+    grid-template-rows: minmax(0, 1fr);
   }
 
-  .vtt-sidebar .btn,
-  .vtt-combat-actions .btn,
-  .token-action-panel .btn {
-    min-height: 44px;
+  .vtt-action-hud {
+    left: calc(var(--safe-left) + var(--map-toolbar-width) + var(--map-toolbar-gap) + 8px);
+    bottom: calc(var(--safe-bottom) + 8px);
+    max-width: calc(
+      100% - var(--map-toolbar-width) - var(--map-toolbar-gap) - var(--safe-left) -
+        var(--safe-right) - 16px
+    );
+  }
+}
+
+/* ── celular deitado: altura mínima, chrome ao essencial ────────── */
+@media (max-height: 500px) and (orientation: landscape) {
+  /* A topbar rouba ~1/6 da altura útil — na paisagem curta ela sai. */
+  .vtt-topbar-shell {
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    pointer-events: none;
+  }
+
+  .vtt-chrome .vtt-main {
+    padding: 0.25rem 0.35rem 0.35rem;
   }
 }
 
@@ -5420,7 +5425,7 @@
   min-height: 1em;
 }
 
-@media (max-width: 22rem) {
+@media (max-width: 479px) {
   .combat-dice-result-bar {
     flex-direction: column;
     align-items: stretch;
@@ -6261,19 +6266,47 @@
   padding-bottom: 0.35rem;
 }
 
-@media (max-width: 720px) {
+@media (max-width: 767px) {
+  /* A topbar da mesa fica em UMA linha no celular.
+     Antes `.vtt-nav { width: 100% }` empurrava a navegação para uma linha
+     própria, e os ícones sociais caíam numa terceira — três linhas de
+     chrome comendo ~25% da tela, com o mapa espremido no que sobrava. */
   .vtt-topbar {
-    padding: 0.5rem 0.75rem;
+    flex-wrap: nowrap;
+    gap: 0.35rem;
+    padding: 0.35rem 0.5rem;
+    padding-left: calc(0.5rem + var(--safe-left));
+    padding-right: calc(0.5rem + var(--safe-right));
   }
 
   .vtt-nav {
-    width: 100%;
-    flex-wrap: wrap;
-    gap: 0.35rem;
+    width: auto;
+    flex-wrap: nowrap;
+    gap: 0.15rem;
+    min-width: 0;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+  }
+
+  .vtt-nav::-webkit-scrollbar {
+    display: none;
+  }
+
+  .vtt-topbar__end {
+    flex-wrap: nowrap;
+    min-width: 0;
+  }
+
+  /* Ícones sociais não encolhem — são o alvo de toque; a nav cede espaço. */
+  .vtt-topbar__social {
+    flex-shrink: 0;
+    padding-left: 0.25rem;
   }
 
   .vtt-topbar-actions {
     margin-left: auto;
+    flex-shrink: 0;
   }
 
   .vtt-dungeon-layer-tabs {
@@ -6281,7 +6314,16 @@
   }
 }
 
-@media (max-width: 400px) {
+/* xs — celular retrato: só o ícone na navegação da mesa. Os rótulos
+   "Mesas / Compêndios / Sistema" não caberiam junto com os 4 ícones
+   sociais em 390px. */
+@media (max-width: 479px) {
+  .vtt-nav .nav-link__label {
+    display: none;
+  }
+}
+
+@media (max-width: 479px) {
   .vtt-map-panel-row {
     grid-template-columns: 1fr;
   }
@@ -7437,34 +7479,11 @@
   color: var(--text-muted);
 }
 
-@media (max-width: 640px) {
-  .vtt-combat-hud__body {
-    grid-template-columns: auto 1fr;
-    grid-template-rows: auto auto;
-  }
-
-  .vtt-combat-hud__actions {
-    grid-column: 1 / -1;
-    flex-direction: column;
-    align-items: stretch;
-    min-width: 0;
-  }
-
-  .vtt-combat-hud__actions-head {
-    justify-content: space-between;
-  }
-
-  .vtt-combat-hud__end-turn {
-    width: 100%;
-  }
-
-  .vtt-combat-hud__portrait {
-    width: 58px;
-    height: 58px;
-    min-width: 58px;
-    min-height: 58px;
-  }
-}
+/* O HUD responsivo vive em eldarin-v4.css, junto das classes `hud-*` que o
+   componente realmente usa. Havia aqui um @media (max-width: 767px) mirando
+   `.vtt-combat-hud__body/__actions/__portrait` — nomes de uma versão anterior
+   do HUD, que o React não emite mais. Era CSS morto: o HUD nunca se adaptou
+   a celular. Removido para não mascarar o problema de novo. */
 
 .vtt-mini-hud__hint {
   margin: 0.35rem 0 0;
