@@ -85,8 +85,18 @@ ok(
   "Cicatrizes contam no total de Sombra",
   /totalShadow\s*=\s*state\.shadow\s*\+\s*state\.shadowScars/.test(SHADOW)
 );
-// Fadiga >= Resistência = Exausto.
-ok("Exausto usa Fadiga vs Resistência", /weary:\s*state\.fatigue\s*>=\s*state\.enduranceValue/.test(SHADOW));
+// Exausto: Resistência <= Carga TOTAL, e a Fadiga SOMA à Carga.
+// Bug corrigido: a versão anterior comparava Resistência com a Fadiga isolada,
+// ignorando a Carga do equipamento — e este teste trancava a regra errada.
+ok(
+  "Exausto usa Resistência vs Carga total",
+  /weary:\s*state\.enduranceValue\s*<=\s*totalTorLoad\(state\)/.test(SHADOW)
+);
+ok(
+  "Carga total = Carga do equipamento + Fadiga (soma, não substitui)",
+  /Math\.max\(0,\s*state\.load\)\s*\+\s*Math\.max\(0,\s*state\.fatigue\)/.test(SHADOW)
+);
+ok("TorSpiritState tem `load`", /load:\s*number;/.test(SHADOW));
 
 /* ── Teto de Sombra (SOM-R01) ─────────────────────────────────────── */
 

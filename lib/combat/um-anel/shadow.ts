@@ -65,6 +65,12 @@ export type TorSpiritState = {
   hopeMax: number;
   fatigue: number;
   enduranceValue: number;
+  /**
+   * Carga do equipamento (sem a Fadiga). Necessária porque Exausto compara
+   * Resistência com a Carga **total**, e a Fadiga entra somando à Carga —
+   * não substituindo (04-caracteristicas.md §"Fatigue").
+   */
+  load: number;
   /** Falhas já adquiridas no Caminho da Sombra (0–4). */
   flaws: number;
 };
@@ -83,16 +89,29 @@ export type TorSpiritFlags = {
 export const TOR_MAX_FLAWS = 4;
 
 /**
+ * Carga total = Carga do equipamento + Fadiga.
+ *
+ * A Fadiga **soma** à Carga, não substitui: "When gained, Fatigue points
+ * temporarily raise a travelling Player-hero's total Load, effectively making it
+ * easier to become Weary" (04-caracteristicas.md).
+ */
+export function totalTorLoad(state: Pick<TorSpiritState, "load" | "fatigue">): number {
+  return Math.max(0, state.load) + Math.max(0, state.fatigue);
+}
+
+/**
  * Deriva as condições a partir dos números. Nunca guardar `miserable`/`weary`
- * como fonte da verdade: eles são consequência de Sombra/Fadiga, e guardar
+ * como fonte da verdade: eles são consequência de Sombra/Fadiga/Carga, e guardar
  * ambos abre espaço para ficarem dessincronizados.
  */
 export function deriveTorSpiritFlags(state: TorSpiritState): TorSpiritFlags {
+  // Cicatrizes contam como Sombra normal para todos os efeitos (SOM-R06).
   const totalShadow = state.shadow + state.shadowScars;
   const atMaxShadow = totalShadow >= state.hopeMax;
   return {
     miserable: totalShadow >= state.hopeValue,
-    weary: state.fatigue >= state.enduranceValue,
+    // Exausto compara Resistência com a Carga TOTAL, não com a Fadiga isolada.
+    weary: state.enduranceValue <= totalTorLoad(state),
     // Quem já sucumbiu sai de jogo — não faz sentido também marcar Desfavorecido.
     illFavouredByShadow: atMaxShadow && state.flaws < TOR_MAX_FLAWS,
     succumbed: atMaxShadow && state.flaws >= TOR_MAX_FLAWS,

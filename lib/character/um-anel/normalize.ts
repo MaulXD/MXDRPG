@@ -18,6 +18,9 @@ export function normalizeTorCharacter(raw: TorCharacterSheet): TorCharacterSheet
   const armour = raw.armour ?? { armourId: null, helm: false, shieldId: null };
   const load = computeLoad(warGear, armour, raw.culture);
   const shadow = raw.shadow ?? 0;
+  // Cicatrizes e Fadiga entram nas condições derivadas abaixo — ver comentário lá.
+  const shadowScars = raw.shadowScars ?? 0;
+  const fatigue = raw.fatigue ?? 0;
 
   return {
     ...raw,
@@ -27,13 +30,27 @@ export function normalizeTorCharacter(raw: TorCharacterSheet): TorCharacterSheet
     endurance,
     hope,
     shadow,
+    // Explícitos, não só via `...raw`: ficha legada pode não ter os campos, e
+    // `undefined` aqui quebraria as condições derivadas abaixo (NaN silencioso).
+    shadowScars,
+    fatigue,
     parry: raw.parry ?? derived.parry,
     shieldParryBonus: raw.shieldParryBonus ?? 0,
     conditions: {
-      // Exausto/Arrasado são derivados das regras (Carga vs Resistência, Sombra vs Esperança
-      // atual) — não ficam a cargo de um toggle manual. Ferido continua manual (evento de jogo).
-      weary: endurance.value <= load,
-      miserable: shadow >= hope.value,
+      // Exausto/Arrasado são derivados das regras — não ficam a cargo de um
+      // toggle manual. Ferido continua manual (evento de jogo).
+      //
+      // Exausto: Resistência ≤ Carga TOTAL, e a Fadiga soma à Carga
+      // ("Fatigue points temporarily raise a hero's total Load" —
+      // 04-caracteristicas.md). Antes comparava só com a Carga do equipamento,
+      // então um herói arrasado de Fadiga no fim de uma jornada não ficava
+      // Exausto — exatamente o efeito que a Fadiga existe para produzir.
+      weary: endurance.value <= load + fatigue,
+      // Arrasado: Cicatriz de Sombra conta como ponto normal para todos os
+      // efeitos (SOM-R06), então entra na comparação. Antes ficava de fora, e
+      // quem trocou Sombra por Cicatriz em "Endurecer a Vontade" saía de
+      // Arrasado sem ter melhorado de verdade.
+      miserable: shadow + shadowScars >= hope.value,
       wounded: raw.conditions?.wounded ?? false,
     },
     warGear,
