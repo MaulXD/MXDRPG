@@ -148,7 +148,12 @@ function normalizeFellowship(raw: unknown): TorFellowshipProgress | null {
     // 0–2: a terceira Fase é o Yule, que zera e vira o ano.
     phasesThisYear: int(r.phasesThisYear, 0, 0, 2),
     companySize: int(r.companySize, 4, 1, 8),
-    witsScore: int(r.witsScore, 3, 0, 6),
+    // Teto 7, não 6: os arrays de Atributo de data.ts oferecem ASTÚCIA 7 pra
+    // Elfos de Lindon, Hobbits do Condado e Altos-Elfos de Valfenda. Com teto 6
+    // o bônus de Perícia do Yule desses heróis era silenciosamente cortado em 1
+    // ponto por ano. verify-um-anel-session-state.mjs amarra este teto ao maior
+    // `argucia` de data.ts — se um suplemento trouxer 8, o teste acusa aqui.
+    witsScore: int(r.witsScore, 3, 0, 7),
     outcome: oneOf(r.outcome, TOR_PHASE_OUTCOMES, "marginal"),
     picks: strList(r.picks, 12),
   };

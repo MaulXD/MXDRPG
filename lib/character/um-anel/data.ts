@@ -236,16 +236,19 @@ export type TorRewardDef = { id: string; label: string; description: string };
 export const STARTING_REWARDS: TorRewardDef[] = [
   { id: "ajustado", label: "Ajustado", description: "(armadura ou elmo) Some +2 ao resultado da sua rolagem de Proteção." },
   { id: "fabricacao-engenhosa", label: "Fabricação Engenhosa", description: "(armadura, elmo ou escudo) Reduza em 2 a Carga desse item." },
-  { id: "cruel", label: "Cruel", description: "(arma) Aumente em 2 o valor de Ferimento da arma." },
+  { id: "cruel", label: "Cruel", description: "(arma) Some 2 ao valor de Ferimento da arma selecionada. Uma arma que pode ser empunhada com uma ou duas mãos recebe o bônus em ambos os seus valores de Ferimento." },
   { id: "grave", label: "Grave", description: "(arma) Aumente em 1 o valor de Dano da arma." },
   { id: "afiado", label: "Afiado", description: "(arma) Rolagens de ataque causam Golpe Perfurante com 9+." },
   { id: "reforcado", label: "Reforçado", description: "(escudo) Aumente em +1 o bônus de Bloqueio do escudo." },
 ];
 
 export const STARTING_VIRTUES: TorRewardDef[] = [
-  { id: "confianca", label: "Confiança", description: "Aumente sua Esperança em 2." },
-  { id: "mao-firme", label: "Mão Firme", description: "Some +1 ao dano infligido em um Golpe Pesado." },
-  { id: "robustez", label: "Robustez", description: "Aumente sua Resistência em 2." },
+  { id: "confianca", label: "Confiança", description: "Aumente em 2 pontos seu valor máximo de Esperança." },
+  // Texto completo do capítulo 5. O resumo do capítulo 3 ("+1 ao dano de um Golpe
+  // Pesado") apaga a segunda metade, que é a que mais pesa em combate: o +1 no
+  // Dado de Proeza pode levar um 9 a 10 e disparar o Golpe Perfurante.
+  { id: "mao-firme", label: "Mão Firme", description: "Ao infligir Dano Especial em combate, some +1 ao seu valor de FORÇA em um Golpe Pesado, e +1 ao resultado numérico do Dado de Proeza em um Golpe Perfurante." },
+  { id: "robustez", label: "Robustez", description: "Aumente em 2 pontos seu valor máximo de Resistência." },
   { id: "maestria", label: "Maestria", description: "Escolha duas Perícias e torne-as Favorecidas." },
   { id: "agilidade-de-aparar", label: "Agilidade", description: "Aumente seu valor de Bloqueio em 1." },
   { id: "proeza", label: "Proeza", description: "Reduza o NA de um Atributo em 1." },

@@ -326,7 +326,12 @@ e ao norte da Estrada do Leste.
     - **Nível de Atributo:** 5
     - **Resistência:** 22 | **Vigor:** 1 | **Ódio:** 5 | **Bloqueio:** +3 | **Proteção:** 3
     - **Proficiências de Combate:** Cimitarra 3 (3/16, Quebrar Escudo), Lança 2 (3/14, Perfurar)
-    - **Marca especial:** Sobrepujar
+    - **Dano Especial sempre disponível:** Sobrepujar (*Overbear* no original)
+      > O capítulo 8 ("Opções de Dano Especial") explica que opções sempre disponíveis são listadas
+      > separadamente, fora das Proficiências de Combate — é o caso desta linha. Porém *Overbear* não
+      > está entre as quatro opções descritas no capítulo 8 (Quebrar Escudo, Golpe Pesado, Perfurar,
+      > Agarrar) e não aparece em nenhum outro ponto do material extraído. O efeito fica **sem
+      > definição na fonte**; registrado como texto informativo pro Mestre, sem mecanizar.
     - **Habilidades Sinistras:**
       - *Veneno de Orc* — Se um ataque produzir ao menos 1 ícone de Sucesso, o alvo é envenenado (ver
         p.134).

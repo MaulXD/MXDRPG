@@ -294,5 +294,120 @@ ok(
   /Resistência dos Hobbits/.test(PREGENS) && /NA impresso/.test(PREGENS)
 );
 
+/* ── Virtude Mão Firme: texto completo em data.ts, abreviado em pregens.ts ──
+   Achado na rodada 6: `data.ts` guardava só a metade do Golpe Pesado do texto
+   do capítulo 5, apagando "+1 ao resultado numérico do Dado de Proeza em um
+   Golpe Perfurante" — que é a metade que mais pesa, porque pode levar um 9 a 10
+   e disparar o Golpe Perfurante.
+
+   Os DOIS lados precisam de guarda, e eles divergem de propósito:
+   - `data.ts` é a regra jogável → texto completo do capítulo 5.
+   - `pregens.ts` reproduz a ficha do Starter Set, que traz o resumo curto →
+     fica curto, por fidelidade ao material. "Consertar" ali seria errado. */
+
+const CAP5 = readFileSync(root("livros", "um-anel", "05-valor-e-sabedoria.md"), "utf8");
+const DATA_TS = readFileSync(root("lib", "character", "um-anel", "data.ts"), "utf8");
+
+ok(
+  "livro (cap.5): Mão Firme tem as duas metades",
+  /some \+1 ao seu valor de FORÇA em um Golpe Pesado, e \+1 ao resultado numérico do Dado de Proeza em um Golpe Perfurante/i.test(
+    CAP5
+  )
+);
+
+const maoFirmeData = DATA_TS.match(/id: "mao-firme",[^}]*?description: "([^"]+)"/);
+ok("data.ts tem a Virtude Mão Firme", Boolean(maoFirmeData));
+ok(
+  "data.ts: Mão Firme cobre o Golpe Pesado",
+  maoFirmeData && /Golpe Pesado/.test(maoFirmeData[1])
+);
+ok(
+  "data.ts: Mão Firme cobre o Golpe Perfurante (a metade que faltava)",
+  maoFirmeData && /Dado de Proeza em um Golpe Perfurante/.test(maoFirmeData[1]),
+  maoFirmeData?.[1]
+);
+
+// A ficha do Balin no Starter Set traz só o resumo — pregens.ts acompanha ela.
+const maoFirmePregen = PREGENS.match(/name: "Mão Firme", text: "([^"]+)"/);
+ok("pregens.ts tem Mão Firme (ficha do Balin)", Boolean(maoFirmePregen));
+ok(
+  "pregens.ts mantém o texto curto da ficha do Starter Set",
+  maoFirmePregen && !/Golpe Perfurante/.test(maoFirmePregen[1]),
+  maoFirmePregen?.[1]
+);
+ok(
+  "markdown da ficha do Balin também traz só o resumo",
+  /Mão Firme \(soma \+1 ao dano infligido em um Golpe Pesado\)/.test(SHEET_MD)
+);
+
+/* ── Virtudes e Recompensas devem carregar a regra do capítulo 5 ───────────
+   O capítulo 3 apresenta a mesma lista de forma ABREVIADA (é resumo de criação
+   de personagem); o capítulo 5 é quem DEFINE cada Virtude e Recompensa. Copiar
+   o resumo do capítulo 3 para o app perde conteúdo mecânico — em Mão Firme
+   perdia um efeito inteiro, em Cruel perdia a cláusula das armas de mão-e-meia
+   (afeta 3 armas com dois valores de Ferimento), em Confiança/Robustez perdia a
+   palavra "máximo", que é o que distingue o valor máximo do atual.
+
+   Regra do projeto que estes testes fixam: `data.ts` carrega o texto do
+   capítulo 5. `pregens.ts` é exceção — reproduz a ficha do Starter Set. */
+
+const desc = (id) => {
+  const m = DATA_TS.match(new RegExp(`id: "${id}",[^}]*?description: "([^"]+)"`));
+  return m ? m[1] : null;
+};
+
+// Cruz: a cláusula de mão-e-meia só importa porque existem armas com dois
+// valores de Ferimento. Se um dia não houver, a asserção perde sentido.
+const dualInjuryWeapons = [...DATA_TS.matchAll(/injury: "(\d+) \(1m\) \/ (\d+) \(2m\)"/g)];
+ok(
+  "data.ts tem armas com dois valores de Ferimento",
+  dualInjuryWeapons.length >= 3,
+  `achou ${dualInjuryWeapons.length}`
+);
+ok(
+  "livro (cap.5): Cruel dá o bônus nos DOIS valores de Ferimento",
+  /recebe o bônus em ambos os seus valores de Ferimento/i.test(CAP5)
+);
+ok(
+  "data.ts: Cruel traz a cláusula de mão-e-meia",
+  /ambos os seus valores de Ferimento/.test(desc("cruel") || ""),
+  desc("cruel")
+);
+
+for (const [id, stat] of [
+  ["confianca", "Esperança"],
+  ["robustez", "Resistência"],
+]) {
+  ok(
+    `livro (cap.5): ${id} aumenta o valor MÁXIMO de ${stat}`,
+    new RegExp(`Aumente em 2 pontos seu valor máximo de ${stat}`, "i").test(CAP5)
+  );
+  ok(
+    `data.ts: ${id} diz "valor máximo", não o valor atual`,
+    new RegExp(`valor máximo de ${stat}`).test(desc(id) || ""),
+    desc(id)
+  );
+}
+
+/* ── Nome da tarefa de combate: Virtude × motor ──────────────────────────
+   A Virtude Cultural "Realeza Revelada" manda tentar uma tarefa de combate da
+   postura Aberta. Se o nome ali divergir do nome em stances.ts, o Mestre
+   procura uma tarefa que o app não tem. */
+
+const VIRT = readFileSync(root("lib", "character", "um-anel", "cultural-virtues.ts"), "utf8");
+const STANCES = readFileSync(root("lib", "combat", "um-anel", "stances.ts"), "utf8");
+const abertaTask = STANCES.match(/aberta:[\s\S]{0,400}?combatTask: "([^"]+)"/);
+ok("stances.ts define a tarefa da postura Aberta", Boolean(abertaTask), abertaTask?.[1]);
+ok(
+  `Virtude Cultural usa o nome do motor ("${abertaTask?.[1]}")`,
+  abertaTask && VIRT.includes(abertaTask[1]),
+  `motor="${abertaTask?.[1]}"`
+);
+// O nome antigo não pode voltar por copiar/colar de outra fonte.
+ok(
+  'nenhuma Virtude usa "Reanimar Companheiros"',
+  !/Reanimar Companheiros/.test(stripComments(VIRT))
+);
+
 console.log(`\nverify-um-anel-pregens: ${pass} passaram, ${fail} falharam`);
 if (fail > 0) process.exit(1);

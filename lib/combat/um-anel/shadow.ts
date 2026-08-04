@@ -301,19 +301,49 @@ export function applyTorJourneyEndRecovery(
   return { state: next, flags: deriveTorSpiritFlags(next), removed };
 }
 
-/** Empreitada Curar Cicatrizes — só em Fase de Yule (SOM-R06). */
+/** Custo da Empreitada Curar Cicatrizes, em pontos de Aventura. */
+export const TOR_HEAL_SCAR_COST = 5;
+
+/**
+ * Empreitada Curar Cicatrizes — só em Fase de Yule (SOM-R06), e **custa 5
+ * pontos de Aventura**: "gaste **5 pontos de Aventura** e remova **1 Cicatriz
+ * de Sombra**" (`07-fases-de-companhia-jornada.md`).
+ *
+ * O custo estava ausente até a rodada 6 do loop. A função ainda não tem chamador
+ * em produção, então nenhuma Cicatriz saiu de graça em mesa — mas quem fosse
+ * ligá-la entregaria a Empreitada sem cobrar. Corrigido antes de existir
+ * chamador, que é a hora barata de corrigir.
+ */
 export function healTorShadowScar(
   state: TorSpiritState,
-  opts: { isYule: boolean }
-): { ok: false; reason: string } | { ok: true; state: TorSpiritState; flags: TorSpiritFlags } {
+  opts: { isYule: boolean; availableAdventurePoints: number }
+):
+  | { ok: false; reason: string }
+  | {
+      ok: true;
+      state: TorSpiritState;
+      flags: TorSpiritFlags;
+      spentAdventurePoints: number;
+    } {
   if (!opts.isYule) {
     return { ok: false, reason: "Curar Cicatrizes só na Fase de Companhia de Yule" };
   }
   if (state.shadowScars <= 0) {
     return { ok: false, reason: "Nenhuma Cicatriz de Sombra para curar" };
   }
+  if (opts.availableAdventurePoints < TOR_HEAL_SCAR_COST) {
+    return {
+      ok: false,
+      reason: `Curar Cicatrizes custa ${TOR_HEAL_SCAR_COST} pontos de Aventura (tem ${opts.availableAdventurePoints})`,
+    };
+  }
   const next: TorSpiritState = { ...state, shadowScars: state.shadowScars - 1 };
-  return { ok: true, state: next, flags: deriveTorSpiritFlags(next) };
+  return {
+    ok: true,
+    state: next,
+    flags: deriveTorSpiritFlags(next),
+    spentAdventurePoints: TOR_HEAL_SCAR_COST,
+  };
 }
 
 /* ══════════════════════════════════════════════════════════════════════

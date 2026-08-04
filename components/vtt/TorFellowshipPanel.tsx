@@ -218,7 +218,7 @@ export function TorFellowshipPanel({ roomId, canManage, fellowship, onUpdate }: 
             <input
               type="number"
               min={0}
-              max={6}
+              max={7}
               value={state.witsScore}
               disabled={busy}
               onChange={(e) => void save({ witsScore: Math.max(0, Number(e.target.value) || 0) })}

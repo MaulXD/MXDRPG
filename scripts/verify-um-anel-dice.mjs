@@ -298,5 +298,68 @@ ok(
   /Apenas um herói-jogador pode gastar Esperança para apoiar o herói-jogador ativo/i.test(BOOK)
 );
 
+/* ── 6. Ataques de Briga ─────────────────────────────────────────────────
+   Achado na rodada 6: o handler fixava rank 0 pra qualquer arma de briga
+   (Desarmado, Adaga, Cacete, Porrete), ou seja, só o Dado de Proeza. O livro
+   manda rolar a Proficiência de Combate MAIS ALTA do herói perdendo (1d).
+   Com rank 0 o total máximo é 10, abaixo de qualquer NA de FORÇA típico
+   (18 + Bloqueio) — a chance de acerto ia a zero fora da Runa de Gandalf. */
+
+const BRIGA = readFileSync(
+  root("livros", "um-anel", "09-starter-set-regras-condensadas.md"),
+  "utf8"
+);
+const HANDLER_RAW = readFileSync(root("lib", "room", "handlers", "tor-combat-attack.ts"), "utf8");
+const HANDLER = stripComments(HANDLER_RAW);
+const DATA = stripComments(readFileSync(root("lib", "character", "um-anel", "data.ts"), "utf8"));
+
+ok(
+  "livro: briga rola a Proficiência mais alta perdendo (1d)",
+  /role dados iguais à sua Proficiência de Combate mais alta, mas \*perca \(1d\)\*/i.test(BRIGA)
+);
+ok(
+  "livro: desarmado tem Dano 1 e não perfura",
+  /Ataques desarmados têm Dano 1 e não podem causar um Golpe Perfurante/i.test(BRIGA)
+);
+
+const BRAWL = fnBody(RULES, "torBrawlingRank");
+ok("torBrawlingRank existe", BRAWL.length > 40);
+ok("torBrawlingRank pega o MAIOR valor", /Math\.max\(\.\.\.values\)/.test(BRAWL));
+ok("torBrawlingRank desconta o (1d)", /highest - 1/.test(BRAWL));
+ok("torBrawlingRank clampa em 0", /Math\.max\(0, highest - 1\)/.test(BRAWL));
+
+// A REGRESSÃO, escopada ao código sem comentários.
+ok(
+  "handler NÃO zera o rank de briga",
+  !/proficiency === "brawling"\s*\?\s*0\b/.test(HANDLER)
+);
+ok(
+  "handler usa torBrawlingRank pra briga",
+  /proficiency === "brawling"[\s\S]{0,80}?torBrawlingRank\(sheet\.combatProficiencies\)/.test(HANDLER)
+);
+// Arma normal continua usando a Proficiência dela, não a mais alta.
+ok(
+  "arma normal usa a própria Proficiência",
+  /sheet\.combatProficiencies\[weapon\.proficiency\] \?\? 0/.test(HANDLER)
+);
+
+// As 4 armas de briga do livro. Se alguém marcar uma espada como "brawling",
+// ela passaria a rolar a Proficiência mais alta — isto acusa.
+const brawlWeapons = [...DATA.matchAll(/id: "([a-z-]+)"[^}]*?proficiency: "brawling"/g)].map(
+  (m) => m[1]
+);
+ok(
+  "exatamente 4 armas de briga (desarmado, adaga, cacete, porrete)",
+  brawlWeapons.length === 4 &&
+    ["desarmado", "adaga", "cacete", "porrete"].every((w) => brawlWeapons.includes(w)),
+  brawlWeapons.join(", ")
+);
+// Só Desarmado não perfura — Adaga (14), Cacete (12) e Porrete (14) perfuram.
+ok(
+  "só Desarmado tem injury null",
+  /id: "desarmado"[^}]*?injury: null/.test(DATA) &&
+    (DATA.match(/injury: null/g) || []).length === 1
+);
+
 console.log(`\nverify-um-anel-dice: ${pass} passaram, ${fail} falharam`);
 if (fail > 0) process.exit(1);

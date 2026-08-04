@@ -1,5 +1,9 @@
 import { WEAPON_BY_ID } from "@/lib/character/um-anel/data";
-import { isTorIllFavouredByShadow, resolveWeaponInjury } from "@/lib/character/um-anel/rules";
+import {
+  isTorIllFavouredByShadow,
+  resolveWeaponInjury,
+  torBrawlingRank,
+} from "@/lib/character/um-anel/rules";
 import { resolveTorCharacter, patchTorCharacterResources } from "@/lib/character/um-anel/characters";
 import { resolveTorAttack, formatTorAttackMessage } from "@/lib/combat/um-anel/resolve-attack";
 import { featDieRollPayload } from "@/lib/character/um-anel/dice";
@@ -73,8 +77,12 @@ export async function executeRoomTorAttack(
     const gearItem = sheet.warGear.find((w) => w.weaponId === opts.weaponId);
     const weapon = WEAPON_BY_ID[opts.weaponId];
     if (!gearItem || !weapon) return { ok: false, error: "Arma não equipada" };
+    // Briga não é rank 0 — é a Proficiência mais alta do herói perdendo (1d).
+    // Ver torBrawlingRank(); zerar aqui tornava desarmado/adaga inacertável.
     attackerRank =
-      weapon.proficiency === "brawling" ? 0 : (sheet.combatProficiencies[weapon.proficiency] ?? 0);
+      weapon.proficiency === "brawling"
+        ? torBrawlingRank(sheet.combatProficiencies)
+        : (sheet.combatProficiencies[weapon.proficiency] ?? 0);
     attackerStrength = sheet.attributes.forca;
     attackerWeary = sheet.conditions.weary;
     attackerMiserable = sheet.conditions.miserable;

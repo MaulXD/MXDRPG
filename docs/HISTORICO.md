@@ -104,6 +104,91 @@ npm run sync:data:check       # após editar livros/
 
 ---
 
+### 2026-08-04 — Fase B, rodada 6/12: 3 capítulos em paralelo (workflow) + 6 bugs de regra
+
+**Pedido:** loop contínuo, com ultracode ligado — orquestrar com workflow e verificar divergências
+adversarialmente antes de tocar em código.
+
+**Como foi feito (mudança de método):** um workflow de **33 agentes** traduziu `09-starter-set`,
+`07-fases-de-companhia-jornada` e `05-valor-e-sabedoria` em paralelo; cada capítulo foi auditado assim
+que sua tradução terminou (pipeline, sem barreira); e **cada divergência candidata enfrentou 3
+refutadores com lentes distintas** — leitura-do-livro, leitura-do-código e consequência-numérica —
+com padrão "refutada = true". Os auditores só relatam; todas as edições de código foram feitas por mim,
+serializadas, depois da verificação.
+
+**Resultado da verificação adversarial: 9 candidatas → 4 sobreviveram, 5 refutadas (56% mortas).**
+A proporção bate com o histórico de falsos alarmes do projeto e valida o desenho: sem essa camada, 5
+mudanças desnecessárias teriam entrado em código de produção.
+
+**Bugs corrigidos (6):**
+
+1. **Ataques de Briga rolavam rank 0** (`tor-combat-attack.ts`). O livro manda rolar a Proficiência de
+   Combate **mais alta** do herói perdendo (1d); o código fixava 0 para as 4 armas de briga
+   (Desarmado, Adaga, Cacete, Porrete). Com rank 0 o total máximo é 10, abaixo de qualquer NA de FORÇA
+   típico (18 + Bloqueio) — **a chance de acerto ia a zero fora da Runa de Gandalf**, e o herói também
+   perdia toda chance de ícone de Sucesso, logo de Dano Especial. Corrigido com `torBrawlingRank()`.
+2. **Teto da ASTÚCIA no bônus de Yule** (`session-state.ts`). `normalizeFellowship` clampava em 6, mas
+   os arrays de Atributo de `data.ts` dão ASTÚCIA 7 a Elfos de Lindon, Hobbits do Condado e
+   Altos-Elfos. O 7 digitado voltava 6 do normalizador: cada herói perdia 1 ponto de Perícia por ano.
+   O teste amarra o teto ao maior `argucia` de `data.ts`, então um suplemento com 8 acusa sozinho.
+3. **Virtude Mão Firme perdia metade do efeito** (`data.ts`). Guardava só "+1 ao dano de um Golpe
+   Pesado" e apagava "+1 ao resultado numérico do Dado de Proeza em um Golpe Perfurante" — a metade
+   que mais pesa, porque leva um 9 a 10 e dispara o Golpe Perfurante.
+4. **Recompensa Cruel perdia a cláusula de mão-e-meia** (`data.ts`) — afeta as 3 armas com dois
+   valores de Ferimento (espada longa, lança, machado de cabo longo).
+5. **Confiança e Robustez diziam "sua Esperança/Resistência"** em vez de "seu valor **máximo**"
+   (`data.ts`) — é o que distingue o máximo do atual.
+6. **`healTorShadowScar` não cobrava os 5 pontos de Aventura** (`shadow.ts`). Código morto hoje, então
+   nenhuma Cicatriz saiu de graça em mesa — mas quem fosse ligá-la entregaria a Empreitada sem cobrar.
+   Corrigido antes de existir chamador, que é a hora barata.
+
+**Onde discordei dos refutadores.** Os itens 4 e 5 foram **refutados 3/3**, com o argumento — factualmente
+correto — de que o texto do código é transcrição literal do capítulo 3. Mas o capítulo 3 é resumo de
+criação de personagem e o **capítulo 5 é quem define** Virtudes e Recompensas; copiar o resumo perde
+conteúdo mecânico. Como eu já havia aplicado esse critério ao Mão Firme (item 3), aceitar a refutação
+deixaria o mesmo defeito tratado de dois jeitos no mesmo commit. Os refutadores acertaram os fatos e
+erraram o padrão; a decisão de padrão é minha. Ficou fixada em teste: `data.ts` carrega o texto do
+capítulo 5, e `pregens.ts` é a exceção — reproduz a ficha do Starter Set, que traz o resumo curto.
+
+**Também corrigido:** a Virtude Cultural "Realeza Revelada" mandava tentar "Reanimar Companheiros",
+nome que não existe em nenhum outro ponto do app — a tarefa da postura Aberta é "Reunir Companheiros"
+em `stances.ts` e no compêndio. Refutado 2/3 como cosmético, mas o Mestre procurava uma tarefa
+inexistente. O teste agora lê o nome do motor e exige que a Virtude use o mesmo.
+
+**As 4 refutações que aceitei:** Empreitada grátis adicional (o livro dá dois slots, só o segundo é
+restrito); custo de Curar Cicatrizes reportado como bug de mesa (é código morto — corrigi como
+prevenção, não como bug ativo); e duas alegações cujo "impacto" era impossível porque a string citada
+é texto de UI, não caminho de cálculo.
+
+**Arquivos tocados:**
+- `livros/um-anel/{09-starter-set-regras-condensadas,07-fases-de-companhia-jornada,05-valor-e-sabedoria}.md`
+  — traduzidos, marcadores removidos
+- `livros/um-anel/12-o-mundo-eriador.md` — linha do Búrzgul: "Marca especial: Sobrepujar" virou "Dano
+  Especial sempre disponível", com nota de que *Overbear* **não** é nenhuma das 4 opções do capítulo 8
+  e não tem efeito definido na fonte — registrado em vez de mecanizado por chute
+- `lib/character/um-anel/rules.ts` — `torBrawlingRank()`
+- `lib/room/handlers/tor-combat-attack.ts` — usa o helper em vez de 0
+- `lib/combat/um-anel/session-state.ts` — teto 6 → 7
+- `lib/character/um-anel/data.ts` — Mão Firme, Cruel, Confiança, Robustez
+- `lib/character/um-anel/cultural-virtues.ts` — nome da tarefa alinhado ao motor
+- `lib/combat/um-anel/shadow.ts` — `TOR_HEAL_SCAR_COST` e cobrança
+- `components/vtt/TorFellowshipPanel.tsx` — `max` do input de Astúcia
+- `scripts/verify-um-anel-{dice,pregens,session-state,shadow}.mjs` — asserções novas
+
+**Validação:** `npx tsc --noEmit` limpo · `npm run test` verde (**542 asserções**) · `npm run build`
+compila. Testes negativos rodados nas 3 primeiras correções: reintroduzir cada bug produz exatamente
+as falhas esperadas (2, 1 e 1) e nenhuma outra.
+
+**Em aberto, decidido conscientemente:** o bônus de Perícia do Yule é **por herói** conforme a ASTÚCIA
+de cada um, e o estado guarda um número único para a Companhia inteira. Divergência confirmada 3/3 e
+**não corrigida nesta rodada** — o conserto certo é computar no servidor a partir das fichas da sala
+(o handler já resolve fichas), o que refatora o fluxo de encerrar Fase. Fica como próxima tarefa, não
+como esquecimento.
+
+**Como testar:** `npm run test:um-anel`
+
+---
+
 ### 2026-08-04 — Fase B, rodada 5/12: tradução de 02-resolucao-de-acoes.md + 7º bug de regra
 
 **Pedido:** loop contínuo — traduzir do menor para o maior, auditando as regras contra o código.

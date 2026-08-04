@@ -226,5 +226,45 @@ ok(
   /healTorShadowScar[\s\S]*?!opts\.isYule[\s\S]*?ok:\s*false/.test(SHADOW)
 );
 
+/* ── Curar Cicatrizes custa 5 pontos de Aventura ───────────────────────
+   O livro: "gaste 5 pontos de Aventura e remova 1 Cicatriz de Sombra"
+   (07-fases-de-companhia-jornada.md). O custo estava ausente — a função só
+   checava Yule e a existência de Cicatriz. Sem chamador em produção ainda, mas
+   ligá-la assim entregaria a Empreitada de graça. */
+
+const BOOK_FELLOWSHIP = readFileSync(
+  join(__dirname, "..", "livros", "um-anel", "07-fases-de-companhia-jornada.md"),
+  "utf8"
+);
+// O trecho é um blockquote quebrado em 3 linhas; junta as continuações antes
+// de casar, senão o regex teria de adivinhar onde cai a quebra de linha.
+const fellowshipFlat = BOOK_FELLOWSHIP.replace(/\n>\s*/g, " ");
+ok(
+  "livro: Curar Cicatrizes custa 5 pontos de Aventura",
+  /gaste \*\*5 pontos de Aventura\*\* e remova \*\*1 Cicatriz de Sombra\*\*/i.test(fellowshipFlat)
+);
+ok("constante do custo existe e vale 5", /TOR_HEAL_SCAR_COST = 5;/.test(SHADOW));
+
+const healBody = fnBody(SHADOW, "healTorShadowScar");
+ok("healTorShadowScar isolada pra asserção", healBody.length > 80);
+ok(
+  "healTorShadowScar recebe os pontos de Aventura disponíveis",
+  /availableAdventurePoints: number/.test(healBody)
+);
+ok(
+  "healTorShadowScar recusa quando falta ponto de Aventura",
+  /opts\.availableAdventurePoints < TOR_HEAL_SCAR_COST[\s\S]{0,200}?ok: false/.test(healBody)
+);
+ok(
+  "healTorShadowScar informa quanto gastou",
+  /spentAdventurePoints: TOR_HEAL_SCAR_COST/.test(healBody)
+);
+// Remover a Cicatriz sem cobrar era o bug — o caminho de sucesso tem de gastar.
+ok(
+  "sucesso remove 1 Cicatriz E cobra",
+  /shadowScars: state\.shadowScars - 1/.test(healBody) &&
+    /spentAdventurePoints/.test(healBody)
+);
+
 console.log(`\nverify-um-anel-shadow: ${pass} passaram, ${fail} falharam`);
 if (fail > 0) process.exit(1);
