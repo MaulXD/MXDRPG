@@ -1,365 +1,374 @@
-# Action Resolution — The One Ring 2e (fonte: Core Rules, p.15-26)
+# Resolução de Ações — O Um Anel 2ª ed. (fonte: Livro Básico, p.15-26)
 
-> Conteúdo original em inglês — aguardando tradução colaborativa.
 > Fonte: the one ring/The_One_Ring_Core_Rules.pdf
 
 ---
 
-## Chapter 2 opening quote
+## Citação de abertura do capítulo 2
 
-*"Of the various burglarious proceedings he had heard of, picking the trolls' pockets seemed the least difficult…"*
+*"De todos os procedimentos ladronescos de que já tinha ouvido falar, bater a carteira dos trolls parecia o menos difícil…"*
 
-## Introduction
+## Introdução
 
-As seen in the Prologue, a game session of *The One Ring* takes the form of a continuous conversation among the playing group. There are no turns, and the dialogue alternates between the Loremaster and the players who collaborate in bringing to life a series of scenes in which the Player-heroes are the protagonists.
+Como visto no Prólogo, uma sessão de jogo de *O Um Anel* toma a forma de uma conversa contínua entre o grupo. Não há turnos, e o diálogo alterna entre o Mestre e os jogadores, que colaboram para dar vida a uma série de cenas em que os heróis-jogadores são os protagonistas.
 
-> The main way for the players to participate in a scene is simple — all they have to do is tell the Loremaster what their Player-heroes are doing, and how they intend to do it. In game terms, this statement of intent is called **taking an action**.
+> O jeito principal de os jogadores participarem de uma cena é simples — basta contarem ao Mestre o que seus heróis-jogadores estão fazendo, e como pretendem fazê-lo. Em termos de jogo, essa declaração de intenção se chama **tomar uma ação**.
 
-Once the players are done describing their chosen action, the Loremaster proceeds to evaluate whether to grant them what they want simply based on how they tried to achieve it, or if the circumstances require a die roll.
+Quando os jogadores terminam de descrever a ação escolhida, o Mestre avalia se concede o que eles querem simplesmente com base em como tentaram alcançá-lo, ou se as circunstâncias exigem uma rolagem de dados.
 
-## The One Ring Dice
+## Os Dados de O Um Anel
 
-*The One Ring* makes use of a specialised set of dice, including six 6-sided dice (also called **Success Dice**) and two 12-sided dice with two special icons (called the **Feat Dice**).
+*O Um Anel* usa um conjunto especializado de dados, incluindo seis dados de 6 faces (também chamados de **Dados de Sucesso**) e dois dados de 12 faces com dois ícones especiais (chamados de **Dados de Proeza**).
 
-Sold separately, *The One Ring Dice Set* contains exactly the right amount of dice for use with the game, but players may find it useful to bring some more as it will be more convenient for each player to have a set close at hand.
+Vendido separadamente, *O Um Anel — Conjunto de Dados* contém exatamente a quantidade certa de dados para o jogo, mas os jogadores podem achar útil trazer alguns a mais, já que é mais conveniente cada jogador ter um conjunto à mão.
 
-### Using Your Own Dice (sidebar)
+### Usando Seus Próprios Dados (box)
 
-If you already have a set of regular dice you use for games, you can easily use them for *The One Ring*. Just remember that on the 12-sided Feat Dice, the 11 is the Eye of Sauron symbol and the 12 is a Gandalf rune. On the 6-sided Success Dice, the 6 has an Elvish symbol (tengwa), which represents an additional level of success.
+Se você já tem um conjunto de dados comuns que usa em jogos, pode facilmente usá-lo em *O Um Anel*. Basta lembrar que, nos Dados de Proeza de 12 faces, o 11 é o símbolo do Olho de Sauron e o 12 é uma runa de Gandalf. Nos Dados de Sucesso de 6 faces, o 6 tem um símbolo élfico (tengwa), que representa um nível adicional de sucesso.
 
-## When to Roll
+## Quando Rolar
 
-To put it simply, the Loremaster should ask for a die roll only if there is a possibility that a player's chosen action might fail. If the description of an action does not leave any doubts about its outcome, there's no need to make a roll — the action succeeds automatically.
+Em resumo: o Mestre só deve pedir uma rolagem se houver a possibilidade de a ação escolhida pelo jogador falhar. Se a descrição de uma ação não deixa dúvidas sobre seu resultado, não há necessidade de rolar — a ação tem sucesso automaticamente.
 
-But this is not all there is to it: resorting to a roll should be considered exclusively if the action or its goal fall into one of the following instances:
+Mas não é só isso: recorrer a uma rolagem só deve ser considerado se a ação ou seu objetivo se encaixarem em um dos casos abaixo:
 
-1. **DANGER** — *Roll if the action is dangerous.*
-   If the Player-hero does not risk anything by failing, do not roll.
-2. **KNOWLEDGE** — *Roll if the action aims to obtain information that is not immediately available.*
-   If the knowledge that the heroes are looking for is not secret or otherwise hidden, do not roll.
-3. **MANIPULATION** — *Roll if the action intends to influence one or more uncooperative Loremaster characters.*
-   If what the heroes ask of the Loremaster characters matches their own motives (see *Chapter 9*), do not roll.
+1. **PERIGO** — *Role se a ação for perigosa.*
+   Se o herói-jogador não arrisca nada ao falhar, não role.
+2. **CONHECIMENTO** — *Role se a ação visa obter informação que não está imediatamente disponível.*
+   Se o conhecimento que os heróis procuram não é secreto nem oculto de outra forma, não role.
+3. **MANIPULAÇÃO** — *Role se a ação pretende influenciar um ou mais personagens do Mestre não cooperativos.*
+   Se o que os heróis pedem aos personagens do Mestre coincide com os motivos deles próprios (ver *Capítulo 9*), não role.
 
-## Scenes in Brief
+## Cenas em Resumo
 
-Breaking it down, scenes in *The One Ring* work as follows:
+Destrinchando, as cenas em *O Um Anel* funcionam assim:
 
-1. The Loremaster describes a situation requiring the players to make decisions.
-2. The players investigate the situation, considering their options. Once decided, they choose their action and describe it to the Loremaster.
-3. The Loremaster evaluates the plan of the players, and adjudicates whether to just 'say yes' and grant them what they want to achieve, or ask for a die roll.
+1. O Mestre descreve uma situação que exige que os jogadores tomem decisões.
+2. Os jogadores investigam a situação, considerando suas opções. Decididos, escolhem sua ação e a descrevem ao Mestre.
+3. O Mestre avalia o plano dos jogadores e julga se simplesmente 'diz sim' e concede o que eles querem alcançar, ou se pede uma rolagem.
 
-More information about scenes is presented in *Chapter 6: Adventuring Phases*, and *Chapter 8: The Loremaster*, pages 92 and 126, respectively.
+Mais informações sobre cenas em *Capítulo 6: Fases de Aventura* e *Capítulo 8: O Mestre*, páginas 92 e 126, respectivamente.
 
 ---
 
-## Making Rolls
+## Fazendo Rolagens
 
-*"In the end Bilbo won the game, more by luck (as it seemed) than by wits…"*
+*"No fim Bilbo ganhou o jogo, mais por sorte (como pareceu) que por argúcia…"*
 
-Once the necessity for a die roll has been established, it must be determined who is going to make the roll, and which ability is most appropriate for the action.
+Estabelecida a necessidade de uma rolagem, é preciso determinar quem vai rolar e qual habilidade é mais apropriada para a ação.
 
-### Who Rolls
+### Quem Rola
 
-Determining who is going to make the roll is easy in the case of actions chosen by the players, but can be less so if the roll is being made as a reaction to something described by the Loremaster.
+Determinar quem vai rolar é fácil no caso de ações escolhidas pelos jogadores, mas pode ser menos óbvio se a rolagem é reação a algo descrito pelo Mestre.
 
-In general terms, it is highly advisable to have a single player make a roll, except when something involves everyone in the group.
+Em termos gerais, é altamente recomendável que um único jogador faça a rolagem, exceto quando algo envolve todo o grupo.
 
-> To do so, the players simply choose the Player-hero who is best suited to the task at hand, eventually applying the rules for support (see Support, page 20).
+> Para isso, os jogadores simplesmente escolhem o herói-jogador mais adequado à tarefa em questão, eventualmente aplicando as regras de apoio (ver Apoio, adiante).
 
-### Which Ability
+### Qual Habilidade
 
-The ability to use depends mostly on the type of roll:
+A habilidade a usar depende principalmente do tipo de rolagem:
 
-- **Skill Rolls.** By far the most common type of actions, Skill rolls are required whenever a Player-hero attempts to do something that can be accomplished using one of the 18 Skills listed on a character sheet.
-- **Combat Rolls.** When involved in a fight, the Player-heroes rely mostly on their Combat Proficiencies to make attack rolls, and on **PROTECTION** rolls to avoid being injured seriously when hit.
-- **Shadow Tests.** The corrupting effect of the Shadow is resisted by making **VALOUR** and **WISDOM** rolls, prompted by sources such as Dread, Sorcery, and Greed.
+- **Rolagens de Perícia.** De longe o tipo mais comum de ação, são exigidas sempre que um herói-jogador tenta algo que possa ser realizado com uma das 18 Perícias listadas na ficha.
+- **Rolagens de Combate.** Em uma luta, os heróis-jogadores recorrem principalmente às Proficiências de Combate para rolagens de ataque, e a rolagens de **PROTEÇÃO** para evitar ferimentos graves ao serem atingidos.
+- **Testes de Sombra.** O efeito corruptor da Sombra é resistido com rolagens de **VALOR** e **SABEDORIA**, provocadas por fontes como Pavor, Feitiçaria e Cobiça.
 
-### Make the Roll
+### Faça a Rolagem
 
-Once the correct ability to be used has been determined, proceed to make the roll employing its numerical rating (all abilities that can be used to make a roll are given a value ranging from 1 to 6):
+Determinada a habilidade correta, faça a rolagem usando seu valor numérico (todas as habilidades roláveis têm um valor de 1 a 6):
 
-1. Roll one Feat Die, plus a number of Success Dice equal to the rating of the appropriate ability (roll only the Feat Die if the rating is zero).
-2. Add up the numerical results on all dice, comparing the total to the Target Number (TN) associated with the rolled ability.
+1. Role um Dado de Proeza, mais um número de Dados de Sucesso igual ao valor da habilidade apropriada (role só o Dado de Proeza se o valor for zero).
+2. Some os resultados numéricos de todos os dados, comparando o total ao Número-Alvo (NA) associado à habilidade rolada.
 
-In general terms, if the rolled total is equal to or greater than the TN, the roll is a success; otherwise, it has failed — a successful roll indicates that the acting Player-hero achieves their goal, while a failure means that something went wrong and that the desired goal was not achieved.
+Em termos gerais, se o total rolado é igual ou maior que o NA, a rolagem é um sucesso; caso contrário, falhou — um sucesso indica que o herói-jogador atinge seu objetivo, e uma falha significa que algo deu errado e o objetivo desejado não foi alcançado.
 
-Some rules state explicitly what happens in game terms in case of a failure or a success — combat, for example, or the rules for journeys — while other situations require creativity from the players and the Loremaster.
+Algumas regras dizem explicitamente o que acontece em termos de jogo em caso de falha ou sucesso — combate, por exemplo, ou as regras de jornadas — enquanto outras situações exigem criatividade dos jogadores e do Mestre.
 
-In any case, the consequences of both a successful and a failed roll always determine a well-defined change in the gameplay (see Degree of Success on page 18 for more about assessing the outcome of a successful roll, and *Chapter 8: The Loremaster*, for additional rules on the consequences of failure).
+Em qualquer caso, as consequências de um sucesso e de uma falha sempre determinam uma mudança bem definida no jogo (ver Grau de Sucesso adiante, sobre avaliar o resultado de um sucesso, e *Capítulo 8: O Mestre*, para regras adicionais sobre as consequências da falha).
 
-### Repeating a Roll
+### Repetindo uma Rolagem
 
-As a rule, players only have one attempt at anything that is resolved with a die roll — whether they succeed or fail, they have done their best.
+Como regra, os jogadores têm apenas uma tentativa em qualquer coisa resolvida com uma rolagem — tenham sucesso ou falhem, fizeram o melhor que podiam.
 
-> As far as Skill rolls are concerned, if the Loremaster allows it, a failed action can be attempted again by the same Player-hero if the failing Player-hero tries again using a different Skill, effectively representing a different approach to the same problem.
+> No que se refere a rolagens de Perícia, se o Mestre permitir, uma ação falhada pode ser tentada de novo pelo mesmo herói-jogador se ele tentar usando uma **Perícia diferente**, representando efetivamente uma abordagem diferente para o mesmo problema.
 
-Of course, a Player-hero who is given a second chance must always cope with the consequences of having failed the first time… (see also the Consequences of Failure, on page 130).
+Claro, um herói-jogador que recebe uma segunda chance sempre tem de lidar com as consequências de ter falhado na primeira vez… (ver também as Consequências da Falha, no capítulo 8).
 
-### How to Read the Feat Dice
+### Como Ler os Dados de Proeza
 
-Each Feat Die shows numbers ranging from 1 to 10, and two special icons: a Gandalf rune and the Eye of Sauron. The two icons are normally read as follows:
+Cada Dado de Proeza mostra números de 1 a 10, e dois ícones especiais: uma runa de Gandalf e o Olho de Sauron. Os dois ícones são normalmente lidos assim:
 
-- The **Gandalf rune** is the greatest result you can get on a Feat Die. When the die comes up showing the Gandalf rune, the action succeeds regardless of whether the total result of the roll was enough to match or beat the TN or not.
-- The **Eye of Sauron** icon is considered to be the worst result possible on a Feat Die. When the Feat Die comes up showing the Eye of Sauron icon, the Feat Die result counts as a zero.
+- A **runa de Gandalf** é o melhor resultado possível em um Dado de Proeza. Quando o dado sai com a runa de Gandalf, **a ação tem sucesso independentemente** de o total da rolagem ter sido suficiente para igualar ou superar o NA.
+- O ícone do **Olho de Sauron** é considerado o pior resultado possível em um Dado de Proeza. Quando o Dado de Proeza sai com o Olho de Sauron, **o resultado do Dado de Proeza conta como zero**.
 
-### How to Read the Success Dice
+### Como Ler os Dados de Sucesso
 
-Success Dice are special 6-sided dice, customised to show the numbers 1, 2, and 3 in outline, and the numbers 4, 5, and 6 in solid black. In addition, a Success icon — the Elvish symbol (tengwa) — appears along with the number 6. Success Dice are always rolled together with a single Feat Die.
+Dados de Sucesso são dados de 6 faces especiais, customizados para mostrar os números 1, 2 e 3 em contorno vazado, e os números 4, 5 e 6 em preto sólido. Além disso, um ícone de Sucesso — o símbolo élfico (tengwa) — aparece junto ao número 6. Dados de Sucesso são sempre rolados junto com um único Dado de Proeza.
 
-> Add the results on all Success Dice to the result of the Feat die, with any Success icons rolled indicating a superior result on a success (see Degree of Success below).
+> Some os resultados de todos os Dados de Sucesso ao resultado do Dado de Proeza, e qualquer ícone de Sucesso rolado indica um resultado superior em caso de sucesso (ver Grau de Sucesso adiante).
 
-### Target Numbers
+### Números-Alvo
 
-All abilities used in the game are associated with a Target Number, a numerical value that the roll result must match or beat.
+Todas as habilidades usadas no jogo estão associadas a um Número-Alvo, um valor numérico que o resultado da rolagem precisa igualar ou superar.
 
-> Most rolls made by the Player-heroes are made against three Attribute Target Numbers (Attribute TNs, for short), based on the ratings they have in **STRENGTH**, **HEART**, and **WITS**.
+> A maioria das rolagens feitas pelos heróis-jogadores é contra três Números-Alvo de Atributo (NAs de Atributo, para abreviar), baseados nos valores que eles têm em **FORÇA**, **CORAÇÃO** e **ASTÚCIA**.
 
-During character creation, the players generate three Target Numbers, one for each Attribute, putting a hero's fundamental capabilities right in front of a player's eyes.
+Durante a criação de personagem, os jogadores geram três Números-Alvo, um para cada Atributo, colocando as capacidades fundamentais do herói diante dos olhos do jogador.
 
-> Each Attribute TN is equal to 20 minus its corresponding Attribute score.
+> Cada NA de Atributo é igual a **20 menos** o valor do Atributo correspondente.
 
-**EXAMPLE:** *Scouting ahead for the Company, Hanar the Dwarf has a chance to notice a group of Goblins setting up an ambush. He has an AWARENESS Skill of 2, so he rolls a Feat die plus two Success dice, adding up the results of all dice rolled. As AWARENESS is a STRENGTH Skill, the roll result is compared against Hanar's STRENGTH TN, which is 13. With the Success dice showing 4 and 5, and the Feat Die an 8, Hanar's player does hardly need to do any maths to know that the Dwarf succeeded.*
+**EXEMPLO:** *Explorando à frente pela Companhia, Hanar, o Anão, tem a chance de notar um grupo de Goblins preparando uma emboscada. Ele tem Percepção 2, então rola um Dado de Proeza mais dois Dados de Sucesso, somando os resultados de todos os dados. Como Percepção é uma Perícia de Força, o resultado é comparado ao NA de Força de Hanar, que é 13. Com os Dados de Sucesso mostrando 4 e 5, e o Dado de Proeza um 8, o jogador de Hanar nem precisa fazer conta para saber que o Anão teve sucesso.*
 
-#### Tweaking the Target Numbers (sidebar)
+#### Ajustando os Números-Alvo (box)
 
-Calculating TNs by subtracting the Attribute scores from 20 results in difficulty thresholds that are appropriate to medium to long campaigns, as they present a challenge to inexperienced individuals, but hold up well as those same characters advance in proficiency. For shorter campaigns or one-shot games the players and the Loremaster may agree to derive the TNs by subtracting their Attributes from 18 instead.
+Calcular os NAs subtraindo os Atributos de 20 produz limiares de dificuldade apropriados a campanhas médias e longas, pois desafiam indivíduos inexperientes mas se sustentam bem à medida que esses mesmos personagens avançam em proficiência. Para campanhas mais curtas ou jogos de uma sessão, os jogadores e o Mestre podem combinar derivar os NAs subtraindo os Atributos de **18** em vez disso.
 
-### Degree of Success
+> **Nota de implementação.** É esta regra opcional que explica o NA impresso nas fichas pré-geradas do Starter Set — ver `11-personagens-exemplo.md`. A VTT implementa o padrão (20 − Atributo, em `lib/character/um-anel/rules.ts::attributeTN`); a variante 18 fica em aberto como possível opção de campanha.
 
-A roll result that achieves its Target Number (or results in the Gandalf rune) and produces one or more Success icons is an outcome of a superior quality — a musician performs particularly well, a look-out spots enemies at a longer distance, an orator succeeds in galvanizing a larger audience. The greater the number of Success icons rolled, the better:
+### Grau de Sucesso
 
-- **(—)** If no Success icons were scored, the action was successful, but didn't achieve anything beyond the bare minimum (**a success**).
-- **One Success icon** If a single Success icon was scored, then the Player-hero's accomplishment was out of the ordinary (**a great success**).
-- **Two or more Success icons** If two or more Success icons were scored, the result was absolutely exceptional and memorable (**an extraordinary success**).
+Um resultado que alcança seu Número-Alvo (ou sai na runa de Gandalf) e produz um ou mais ícones de Sucesso é um resultado de qualidade superior — um músico se apresenta particularmente bem, um vigia avista inimigos a maior distância, um orador consegue galvanizar uma plateia maior. Quanto mais ícones de Sucesso rolados, melhor:
 
-### Special Successes
+- **(—)** Se nenhum ícone de Sucesso foi obtido, a ação teve sucesso, mas não alcançou nada além do mínimo (**um sucesso**).
+- **Um ícone de Sucesso** — a conquista do herói-jogador foi fora do comum (**um grande sucesso**).
+- **Dois ou mais ícones de Sucesso** — o resultado foi absolutamente excepcional e memorável (**um sucesso extraordinário**).
 
-When making Skill rolls, if a finer level of detail is desired, players can specify what their superior result means, by 'spending' their rolled Success icons to trigger a number of special results:
+### Sucessos Especiais
 
-> For each Success icon rolled, a Player-hero can choose one of the options listed in the Skill Special Success table on the next page.
+Em rolagens de Perícia, se um nível de detalhe mais fino for desejado, os jogadores podem especificar o que seu resultado superior significa, 'gastando' os ícones de Sucesso rolados para acionar uma série de resultados especiais:
 
-If a roll scores multiple Success icons, they are normally used to achieve multiple special results, such as assisting a fellow Player-hero AND doing it silently.
+> Por cada ícone de Sucesso rolado, um herói-jogador pode escolher uma das opções listadas na tabela de Sucesso Especial de Perícia.
 
-Note that 'spending' a Success icon does not detract from the numerical result of a roll, and does not reduce the overall success level — a great success remains such even when a Success icon is used to trigger a Special Success result.
+Se uma rolagem obtém múltiplos ícones de Sucesso, eles normalmente são usados para alcançar múltiplos resultados especiais, como ajudar um companheiro E fazê-lo silenciosamente.
 
-### Skill Special Success Table
+Note que 'gastar' um ícone de Sucesso **não** reduz o resultado numérico da rolagem, e **não** reduz o nível geral de sucesso — um grande sucesso continua sendo grande sucesso mesmo quando um ícone de Sucesso é usado para acionar um Sucesso Especial.
 
-| Spend 1 Success icon to… | Description |
+### Tabela de Sucesso Especial de Perícia
+
+| Gaste 1 ícone de Sucesso para… | Descrição |
 |---|---|
-| Cancel a Failure | If a Skill roll involves multiple players, you help another Player-hero who failed; the failed roll is considered a success. |
-| Score 1 Additional Success | If an action requires multiple successes to be achieved, you score 1 additional success. |
-| Gain insight | You gain additional information, not necessarily related to the task at hand. For example, while helping a sick individual with a HEALING roll you discover the trace of poison. Or you spot a sentry while sneaking into a ruin with a roll of STEALTH. |
-| Go quietly | You achieve your goal noiselessly or without otherwise attracting attention. |
-| Make haste | You complete the attempted task in a shorter time (about half the expected time). |
-| Widen influence | You can influence more than the specific number of subjects originally targeted by the action. As a general rule, each Success icon spent corresponds to one additional subject or group of subjects. For example, following a roll of INSIGHT, you spot a second person acting suspiciously at an inn; a roll of ENHEARTEN aimed to affect half a dozen individuals allows you to influence a full dozen. |
+| Cancelar uma Falha | Se a rolagem de Perícia envolve múltiplos jogadores, você ajuda outro herói-jogador que falhou; a rolagem falhada é considerada um sucesso. |
+| Obter 1 Sucesso Adicional | Se uma ação exige múltiplos sucessos para ser alcançada, você obtém 1 sucesso adicional. |
+| Obter uma revelação | Você obtém informação adicional, não necessariamente relacionada à tarefa em questão. Por exemplo, ao cuidar de um doente com uma rolagem de Cura, você descobre traços de veneno. Ou avista um sentinela ao se esgueirar numa ruína com uma rolagem de Furtividade. |
+| Agir em silêncio | Você alcança seu objetivo sem ruído ou sem atrair atenção de outra forma. |
+| Ganhar tempo | Você completa a tarefa em menos tempo (cerca da metade do esperado). |
+| Ampliar a influência | Você pode influenciar mais que o número específico de alvos originalmente visado pela ação. Como regra geral, cada ícone de Sucesso gasto corresponde a um alvo ou grupo de alvos adicional. Por exemplo, após uma rolagem de Perspicácia, você identifica uma segunda pessoa agindo de forma suspeita numa estalagem; uma rolagem de Encorajar voltada a meia dúzia de indivíduos permite influenciar uma dúzia inteira. |
 
 ---
 
-## Die Roll Modifiers
+## Modificadores de Rolagem
 
-Following are a number of variations upon the core rules of the game. They represent those advantages (and drawbacks!) that affect the Player-heroes as the most explicit demonstration of their heroic stature.
+Seguem variações sobre as regras centrais do jogo. Representam as vantagens (e desvantagens!) que afetam os heróis-jogadores como demonstração mais explícita de sua estatura heroica.
 
-### Favoured Rolls
+### Rolagens Favorecidas
 
-A **Favoured** roll happens when a Player-hero possesses a special affinity for a task.
+Uma rolagem **Favorecida** acontece quando um herói-jogador tem afinidade especial por uma tarefa.
 
-> When making a Favoured roll, players roll two Feat dice instead of one, keeping the best result among the two.
+> Ao fazer uma rolagem Favorecida, os jogadores rolam **dois Dados de Proeza** em vez de um, ficando com o **melhor** resultado entre os dois.
 
-Typical sources of Favoured rolls are a Player-hero's Favoured Skills (see also Skills page 60), and several Cultural Virtues, abilities that set a hero's capability beyond the usual reach (see Virtues, page 80).
+Fontes típicas de rolagens Favorecidas são as Perícias Favorecidas do herói-jogador e várias Virtudes Culturais, habilidades que colocam a capacidade do herói além do alcance usual.
 
-### Ill-favoured Rolls
+### Rolagens Desfavorecidas
 
-The opposite of a Favoured roll, a roll is made **Ill-favoured** when a Player-hero is suffering from some limitation.
+O oposto de uma rolagem Favorecida: uma rolagem é **Desfavorecida** quando um herói-jogador sofre alguma limitação.
 
-> When making an Ill-favoured roll, players roll two Feat dice instead of one, keeping the worst result among the two.
+> Ao fazer uma rolagem Desfavorecida, os jogadores rolam **dois Dados de Proeza** em vez de um, ficando com o **pior** resultado entre os dois.
 
-#### Sidebar: Favoured vs Ill-favoured / Ill-favoured Player-heroes
+#### Box: Favorecida × Desfavorecida / Heróis Desfavorecidos
 
-**FAVOURED VS ILL-FAVOURED:** It is possible for a roll to be both Favoured and Ill-favoured for different, conflicting reasons — when this happens, the roll is resolved normally (roll one Feat Die only), even if multiple sources would make a roll Favoured and only one would make it Ill-favoured (or vice versa).
+**FAVORECIDA × DESFAVORECIDA:** É possível uma rolagem ser Favorecida **e** Desfavorecida por razões diferentes e conflitantes — quando isso acontece, **a rolagem é resolvida normalmente (rola-se apenas um Dado de Proeza)**, mesmo que múltiplas fontes a tornem Favorecida e apenas uma a torne Desfavorecida (ou vice-versa).
 
-**ILL-FAVOURED PLAYER-HEROES:** At times, an ability of an adversary or another special rule may directly make a Player-hero Ill-favoured, instead of specifying a particular roll — when this happens, the unlucky adventurer is considered Ill-favoured on all rolls. For example, Player-heroes whose Shadow score matches their maximum Hope are considered to be Ill-favoured on all rolls.
+> **Nota de implementação.** Esta é a regra que implementações ingênuas erram: elas somam ou compensam as fontes ("duas Favorecidas menos uma Desfavorecida = uma Favorecida") em vez de cancelar tudo para uma rolagem normal. `lib/character/um-anel/dice.ts::rollTorCheck` cancela corretamente; `scripts/verify-um-anel-dice.mjs` fixa isso.
 
-### Bonus Success Dice
+**HERÓIS DESFAVORECIDOS:** Às vezes uma habilidade de um adversário ou outra regra especial torna um herói-jogador Desfavorecido diretamente, em vez de especificar uma rolagem em particular — quando isso acontece, o infeliz aventureiro é considerado Desfavorecido em **todas** as rolagens. Por exemplo, heróis-jogadores cuja pontuação de Sombra iguala sua **Esperança máxima** são considerados Desfavorecidos em todas as rolagens.
 
-It is possible for a Player-hero to be attempting something under favourable circumstances, or employing a particularly beneficial talent. When this happens, the Player-hero may be granted a bonus in the form of a number of additional Success Dice to roll.
+> **Nota de implementação.** Atenção: esta é uma condição **separada** de Arrasado (ver Condições, adiante), e com efeito diferente. Confundir as duas aplica dupla penalidade — bug que já ocorreu duas vezes neste projeto, no Teste de Proteção e nas rolagens de Perícia/Proficiência.
 
-> Bonuses are indicated in the text as *gain (1d)* or more, meaning that Player-heroes enjoying the modifier add 1 Success die to those they are entitled to roll for the action.
+### Dados de Sucesso Bônus
 
-Most commonly, bonus Success dice are gained by spending Hope, or as the effect of a number of Cultural Virtues.
+É possível que um herói-jogador esteja tentando algo em circunstâncias favoráveis, ou empregando um talento particularmente benéfico. Nesse caso, ele pode receber um bônus na forma de Dados de Sucesso adicionais.
 
-**HOPE BONUS:** A character's Hope score is a pool of points representing the reserve of spiritual vigour that heroes draw from when confronted by difficult odds, or when a particularly good result is required by the circumstances.
+> Bônus são indicados no texto como *ganha (1d)* ou mais, significando que os heróis-jogadores que gozam do modificador somam 1 Dado de Sucesso aos que já têm direito de rolar pela ação.
 
-> A Player-hero about to make a die roll can spend 1 Hope point to *gain (1d)*.
+Mais comumente, Dados de Sucesso bônus são obtidos gastando Esperança, ou como efeito de várias Virtudes Culturais.
 
-Hope can be spent to gain dice on any roll made by a Player-hero. It is not possible to spend multiple Hope points to gain multiple bonus Success dice.
+**BÔNUS DE ESPERANÇA:** A Esperança de um personagem é uma reserva de pontos representando o vigor espiritual de que os heróis se valem diante de probabilidades difíceis, ou quando as circunstâncias exigem um resultado particularmente bom.
 
-**INSPIRATION:** Certain circumstances may result in a Player-hero becoming temporarily Inspired. Inspired Player-heroes double the benefit of spending a Hope point:
+> Um herói-jogador a ponto de fazer uma rolagem pode gastar 1 ponto de Esperança para *ganhar (1d)*.
 
-> An Inspired Player-hero who spends 1 Hope point to get a Hope bonus *gains (2d)*, instead of *(1d)*.
+Esperança pode ser gasta para ganhar dados em qualquer rolagem feita por um herói-jogador. **Não é possível gastar múltiplos pontos de Esperança para ganhar múltiplos Dados de Sucesso bônus.**
 
-Inspiration can be achieved mainly through the invocation of a Distinctive Feature (see page 67), or as the effect of a number of Cultural Virtues.
+**INSPIRAÇÃO:** Certas circunstâncias podem deixar um herói-jogador temporariamente Inspirado. Heróis-jogadores Inspirados dobram o benefício de gastar um ponto de Esperança:
 
-Heroes appealing to their Hope too often must beware though, for they run the risk of depleting their spiritual energies and becoming Miserable (see Miserable on page 22. For more about Hope, see page 71).
+> Um herói-jogador Inspirado que gasta 1 ponto de Esperança para obter o bônus de Esperança *ganha (2d)*, em vez de *(1d)*.
 
-**SUPPORT:** A Player-hero may make an effort to help another member of the Company who is making a Skill roll.
+Inspiração é obtida principalmente pela invocação de uma Característica Distintiva, ou como efeito de várias Virtudes Culturais.
 
-> To do so, the supporting character may spend 1 point of Hope to let the active Player-hero *gain (1d)*.
+Heróis que apelam à Esperança com frequência excessiva devem se precaver, porém, pois corrern o risco de esgotar suas energias espirituais e ficar Arrasados (ver Arrasado adiante).
 
-A Player-hero may support another only if the circumstances allow it, and only if the supporting hero possesses at least one rank in an appropriate Skill. Whether a Skill is deemed appropriate to the supporting action is up to the Loremaster. Only one Player-hero can spend Hope to support the active Player-hero.
+**APOIO:** Um herói-jogador pode se esforçar para ajudar outro membro da Companhia que está fazendo uma rolagem de Perícia.
 
-**EXAMPLE:** *A Hobbit burglar is trying to open a Dwarven door using her CRAFT (2). Her Barding companion spends 1 point of Hope and provides advice on Dwarven mechanisms with his LORE Skill — the Loremaster approves and the Hobbit gains (1d) on her roll.*
+> Para isso, o personagem que apoia pode gastar 1 ponto de Esperança para que o herói-jogador ativo *ganhe (1d)*.
 
-#### Sidebar: Bonuses vs Penalties
+Um herói-jogador só pode apoiar outro se as circunstâncias permitirem, e apenas se o herói que apoia possuir ao menos um grau em uma Perícia apropriada. Se uma Perícia é apropriada à ação de apoio é decisão do Mestre. **Apenas um herói-jogador pode gastar Esperança para apoiar o herói-jogador ativo.**
 
-Bonuses and penalties are cumulative — if a Player-hero gains or loses dice from multiple sources, simply add up all gained dice and subtract all lost dice.
+**EXEMPLO:** *Uma ladra Hobbit está tentando abrir uma porta anã usando seu Ofício (2). Seu companheiro Bardo gasta 1 ponto de Esperança e dá conselhos sobre mecanismos anões com sua Perícia de Saber — o Mestre aprova e a Hobbit ganha (1d) em sua rolagem.*
 
-For example, if a Player-hero *gains (1d)* from a supporting Player-hero, *gains (2d)* spending Hope while Inspired, and *loses (1d)* from a penalty, the affected roll finally *gains (2d)*.
+#### Box: Bônus × Penalidades
 
-### Penalty Success Dice
+Bônus e penalidades são **cumulativos** — se um herói-jogador ganha ou perde dados de múltiplas fontes, basta somar todos os dados ganhos e subtrair todos os perdidos.
 
-Adventurers wish they were lucky enough to enjoy only favourable circumstances… At times, fortune seems to conspire against them, they may put themselves in danger by their own volition looking for a greater benefit, or they may have fallen victim to some malicious power or spell. When this happens, a Player-hero may suffer from a penalty.
+Por exemplo, se um herói-jogador *ganha (1d)* de um companheiro que apoia, *ganha (2d)* gastando Esperança enquanto Inspirado, e *perde (1d)* de uma penalidade, a rolagem afetada finalmente *ganha (2d)*.
 
-> Penalties are normally indicated in the text as *lose (1d)* or more, meaning that a Player-hero rolls fewer Success dice (down to a minimum of zero Success dice).
+> **Nota:** cumulativos aqui vale para Dados de Sucesso, que somam. Não confundir com Favorecida/Desfavorecida, que se cancelam mutuamente em vez de somar — são mecânicas distintas (uma mexe nos Dados de Sucesso, a outra na quantidade de Dados de Proeza).
 
-Usually, penalties come from situational disadvantages, like adopting a less aggressive stance in combat, or suffering from a complication (see *Chapter 6*).
+### Dados de Sucesso de Penalidade
 
-### Magical Success
+Os aventureiros bem gostariam de ter sorte o bastante para gozar apenas de circunstâncias favoráveis… Às vezes a fortuna parece conspirar contra eles, podem se colocar em perigo por vontade própria buscando um benefício maior, ou podem ter sido vítimas de algum poder ou feitiço malicioso. Nesse caso, o herói-jogador pode sofrer uma penalidade.
 
-Enchanted artefacts, like magic rings and cloaks, and ancient spells and uncanny powers, can allow a Player-hero to exceed the possibilities of mere mortals.
+> Penalidades são normalmente indicadas no texto como *perde (1d)* ou mais, significando que o herói-jogador rola **menos** Dados de Sucesso (**até um mínimo de zero** Dados de Sucesso).
 
-> Player-heroes possessing a magical talent or artefact can spend 1 point of Hope before a Skill roll to achieve a Magical success — that is, to pass their action automatically, regardless of the Target Number.
+Normalmente, penalidades vêm de desvantagens situacionais, como adotar uma postura menos agressiva em combate, ou sofrer uma complicação (ver *Capítulo 6*).
 
-In game terms, the roll is made by rolling only the required number of Success dice (to check for higher degrees of success) but disregarding the numerical total obtained.
+### Sucesso Mágico
 
-Narratively, a Magical success is an outcome that can hardly be mistaken for an ordinary success — in other words, the Player-hero has achieved something so unusual that it could not be accomplished without a supernatural aid.
+Artefatos encantados, como anéis e capas mágicas, e feitiços antigos e poderes sobrenaturais, podem permitir a um herói-jogador exceder as possibilidades de meros mortais.
 
-For example, a Player-hero who attempts to intimidate some guards with a roll of AWE seems to grow in stature, as the light dims and the shadows lengthen around the character. Or again, a Player-hero rolling SONG makes the listeners experience visions of what the music is about.
+> Heróis-jogadores que possuam um talento ou artefato mágico podem gastar 1 ponto de Esperança antes de uma rolagem de Perícia para alcançar um sucesso Mágico — isto é, passar na ação automaticamente, independentemente do Número-Alvo.
 
-Player-heroes who have the chance to achieve a magical success can also attempt actions that would be impossible to achieve by someone without a magical aid — for example, climbing a sheer wall of rock without tools, jumping across a chasm six or more yards wide in full gear, or running on fresh snow as if it was firm sand.
+Em termos de jogo, a rolagem é feita rolando apenas o número necessário de Dados de Sucesso (para verificar graus mais altos de sucesso), mas desconsiderando o total numérico obtido.
 
-#### Sidebar: Not-so-subtle Magic
+Narrativamente, um sucesso Mágico é um resultado que dificilmente pode ser confundido com um sucesso comum — em outras palavras, o herói-jogador alcançou algo tão incomum que não poderia ser realizado sem auxílio sobrenatural.
 
-A Magical success is an outcome so remarkable and unusual that it may be unsettling to folk not used to such feats, or raise suspicion in individuals capable of recognising their otherworldly nature. Moreover, overt magical effects, even when invoked for beneficial purposes, may sometimes be misinterpreted, as many associate supernatural occurrences with the working of dark sorcery. (See also the rules for the Eye of Mordor, on page 169).
+Por exemplo, um herói-jogador que tenta intimidar guardas com uma rolagem de Imponência parece crescer em estatura, enquanto a luz diminui e as sombras se alongam ao redor. Ou ainda, um herói-jogador rolando Canto faz os ouvintes experimentarem visões daquilo de que a música fala.
 
----
+Heróis-jogadores que têm a chance de alcançar um sucesso mágico também podem tentar ações que seriam impossíveis sem auxílio mágico — por exemplo, escalar uma parede de rocha vertical sem ferramentas, saltar um abismo de seis metros ou mais em equipamento completo, ou correr sobre neve fresca como se fosse areia firme.
 
-## Conditions
+#### Box: Magia Não Tão Discreta
 
-*"'A Balrog,' muttered Gandalf. 'Now I understand.' He faltered and leaned heavily on his staff. 'What an evil fortune! And I am already weary.'"*
-
-Die rolls can be modified by three special conditions that can affect the Player-heroes. All conditions are recorded on the character sheet by checking the corresponding box.
-
-### Miserable
-
-The oppressing burden of the Twilight of the Third Age as perceived by the Player-heroes is represented in the game by their Shadow rating. Heroes gain Shadow points in many ways in the course of their adventuring — when their Shadow rating matches or exceeds their current Hope score they become Miserable.
-
-> When a Miserable hero is making a roll, if the Feat die result shows the Eye of Sauron icon, the action fails, regardless of the total result obtained by the roll.
-
-### Weary
-
-The resistance of the Player-heroes is represented in game terms by their Endurance score. Heroes can lose Endurance in many ways, for example as the consequence of receiving a blow in combat or straining excessively while carrying a heavy burden — when their Endurance drops to a level equal to or lower than their Load score, they become Weary.
-
-> When a Weary hero is making a roll, all the Success Dice that come up showing a result in an outlined number (1, 2, or 3) are considered to have given a result of zero instead.
-
-See pages 49 and 69 for more about Load and Endurance, respectively.
-
-### Wounded
-
-Serious injuries can cause a hero to become Wounded. While losing and recovering Endurance is an everyday occurrence, being Wounded is a more serious predicament for an adventurer and will affect them for much longer. Heroes are Wounded most often in combat.
-
-> Wounded heroes who remain active risk being knocked out of combat and recover lost Endurance points more slowly (see Resting, page 71).
+Um sucesso Mágico é um resultado tão notável e incomum que pode ser inquietante para gente não acostumada a tais feitos, ou levantar suspeita em indivíduos capazes de reconhecer sua natureza sobrenatural. Além disso, efeitos mágicos manifestos, mesmo quando invocados com propósitos benéficos, podem às vezes ser mal interpretados, já que muitos associam ocorrências sobrenaturais à obra da feitiçaria negra. (Ver também as regras do Olho de Mordor, no capítulo 8.)
 
 ---
 
-## The Character Sheet
+## Condições
 
-*"…I was given a description that fits you well enough, if I may say so."*
+*"'Um Balrog', murmurou Gandalf. 'Agora entendo.' Ele vacilou e se apoiou com força em seu cajado. 'Que má fortuna! E eu já estou exausto.'"*
 
-All Player-heroes are defined in the game by a collection of traits and numbers, describing their physical, spiritual, and mental attributes and the extent of their knowledge and capability as adventurers. These values influence how they interact with the game rules, so it is important that they are close at hand and easy to keep track of.
+Rolagens podem ser modificadas por três condições especiais que podem afetar os heróis-jogadores. Todas as condições são registradas na ficha marcando a caixa correspondente.
 
-For ease of reference, all players get a character sheet, a descriptive form that is easily compiled and updated as a Player-hero grows. A blank character sheet can be found on page 239, and a PDF version can be downloaded from freeleaguepublishing.com.
+### Arrasado
 
-### Die Roll Procedure (sidebar)
+O fardo opressivo do Crepúsculo da Terceira Era, tal como percebido pelos heróis-jogadores, é representado no jogo por sua pontuação de Sombra. Heróis ganham pontos de Sombra de muitas formas ao longo de suas aventuras — quando sua pontuação de Sombra **iguala ou excede sua Esperança atual**, eles ficam Arrasados.
 
-Once the necessity to roll dice has been established, follow the steps below to make a die roll.
+> Quando um herói Arrasado faz uma rolagem, se o resultado do Dado de Proeza mostra o ícone do Olho de Sauron, **a ação falha**, independentemente do total obtido pela rolagem.
 
-1. Define what the Player-hero is trying to achieve with the roll. This is important to determine its consequences, both in the case of success and failure.
-2. Select the ability to be used for the roll. Players are encouraged to suggest the appropriate ability. The difficulty for the action is based on the relevant Attribute TN.
-3. Take one Feat Die and a number of Success Dice equal to the rating of the chosen ability (or two Feat Dice, if the roll is Favoured or Ill-favoured). Spend 1 Hope to *gain (1d)* — *gain (2d)* if Inspired.
-4. Make the roll. If the roll is Favoured, choose the best result on the Feat Dice, or the worst if Ill-Favoured. If you roll a Gandalf rune, the action is automatically a success. If you are Miserable and you roll an Eye of Sauron, you fail automatically instead.
-5. Otherwise, all numerical dice results are added up to get the action result. If you are Weary, all Success Dice results in outline (1, 2 and 3) are ignored. If the total action result is equal or superior to the relevant Target Number, the action is a success. If the result is lower than the Target Number, the action has failed.
-6. If the action is successful, the number of Success icons rolled indicates the degree of success, and can be spent to achieve a special success.
+> **Nota de implementação.** Este é o **único** efeito de Arrasado. Arrasado **não** torna a rolagem Desfavorecida — quem faz isso é a condição de Esperança máxima descrita no box "Heróis Desfavorecidos" acima. Cicatrizes de Sombra contam como Sombra normal ao comparar com a Esperança.
 
----
+### Exausto
 
-## A Glossary of Game Terms
+A resistência dos heróis-jogadores é representada em termos de jogo por sua Resistência. Heróis podem perder Resistência de muitas formas, por exemplo como consequência de receber um golpe em combate ou de se esforçar em excesso carregando um fardo pesado — quando sua Resistência cai a um nível **igual ou inferior à sua Carga**, eles ficam Exaustos.
 
-As can be seen from the sample character sheet shown on these pages, the game makes use of several specific terms. Here are some definitions to help get players started. These are explained in more detail in later chapters.
+> Quando um herói Exausto faz uma rolagem, todos os Dados de Sucesso que saem mostrando um número em contorno vazado (**1, 2 ou 3**) são considerados como tendo dado resultado **zero**.
 
-**ADVENTURE AND SKILL POINTS:** When they start adventuring, Player-heroes change and grow by gaining and using Adventure and Skill points, accumulated by players after each session.
+> **Nota de implementação.** A comparação é com a Carga **total**, e a Fadiga soma à Carga total (ver o verbete FADIGA no glossário abaixo, e `04-caracteristicas.md`). Comparar apenas com a Carga de equipamento torna a Fadiga puramente decorativa — bug que já ocorreu neste projeto.
 
-**ARMOUR:** Characters wear armour to avoid suffering lasting damage in combat. Usually composed of several layers of protective garments, armour is always burdensome and heavy. Player-heroes can wear a helm to complement their defensive gear.
+### Ferido
 
-**ATTRIBUTE RATINGS:** STRENGTH, HEART, and WITS describe respectively the physical, spiritual, and mental profile of a character. These numerical scores are the primary building blocks of all heroes, and describe their aptitudes and natural capabilities.
+Ferimentos sérios podem deixar um herói Ferido. Enquanto perder e recuperar Resistência é uma ocorrência cotidiana, estar Ferido é uma situação mais grave para um aventureiro e o afetará por muito mais tempo. Heróis são Feridos com mais frequência em combate.
 
-**ATTRIBUTE TNS:** During character creation, all players calculate three Target Numbers (TNs) using a Player-hero's STRENGTH, HEART, and WITS. These scores are annotated on the relevant spaces on the character sheet. These TNs are used to take the Attributes of a hero into account when resolving most rolls.
-
-**CALLING:** A Calling is what motivates the Player-heroes to seek a life of adventure and keeps them on that dangerous path every day. There are six different callings to choose from, each one exemplifying a different adventurous drive. Player-heroes can be Captains, Champions, Messengers, Scholars, Treasure Hunters, or Wardens. Callings let players customise their character concepts and help them focus on the beliefs and goals that give them a sense of purpose.
-
-**COMBAT PROFICIENCIES:** Combat Proficiencies describe a character's expertise with weapons, like swords, spears, axes, or bows.
-
-**CULTURAL BLESSING:** A Cultural Blessing describes a special ability or quality so profoundly ingrained in a given community that in the game it is made available to all its members.
-
-**DISTINCTIVE FEATURES:** These peculiar features are used by players to personalise their characters, and to gain an advantage when trying to achieve something related to a character's qualities.
-
-**ENDURANCE:** Endurance is the expression of a Player-hero's physical stamina and determination. It is reduced when a character is subjected to physical harm, stress, and exhaustion.
-
-**FATIGUE:** Player-heroes accumulate Fatigue points when on a journey. Fatigue raises a hero's Load total temporarily, making it easier for them to become Weary.
-
-**FELLOWSHIP:** This is a numerical value, generally corresponding to the number of Player-heroes in the Company and representing the bond of mutual trust enjoyed by all its members.
-
-**FLAWS:** Under the pressure of the Shadow heroes can develop Flaws, embracing simpler, more primitive emotions, trading respect for arrogance, love for lust, trust for suspicion.
-
-**HEROIC CULTURE:** The cultural group to which an adventurer belongs. Choosing a character's Culture is probably the most important choice to be made when creating a Player-hero. There are six playable Cultures in this volume of *The One Ring*: Bardings, Dwarves of Durin's Folk, Elves of Lindon, Hobbits of the Shire, Men of Bree, and the Rangers of the North.
-
-**HOPE:** A character's Hope score defines the reserves of spiritual vigour that heroes draw upon when in danger.
-
-**LOAD:** The weight and encumbrance of the gear carried by a Player-hero may limit their performance. Heroes are considered Weary as long as their Endurance score is equal to or lower than their Load total.
-
-**MISERABLE:** This box is checked when a Player-hero has been made Miserable. A Miserable character finds it harder to accomplish anything — in game terms, if a die roll produces an Eye of Sauron icon, the action fails regardless of whether the total result of the roll was enough to match or beat the TN or not.
-
-**PARRY:** A hero's Parry score reflects their ability to deflect or in any way avoid an incoming blow.
-
-**REWARDS:** Rewards are pieces of war gear of superior craftsmanship, granted to a Player-hero as an award for their deeds. Players receive a Reward when their Player-hero attains a new VALOUR rank.
-
-**SHADOW:** The accumulation of Shadow points undermines the Hope score of the Player-heroes, weakening their spirit. Heroes are considered Miserable as long as their Hope score is equal or lower than their current Shadow rating.
-
-**SHADOW PATH:** This suggests the individual path heroes will follow if they fail to resist the Shadow's influence.
-
-**SHADOW SCARS:** Heroes can harden their will and trade their current Shadow points for a single permanent Shadow Scar.
-
-**SHIELD:** Carrying a shield of any type enhances a character's Parry rating.
-
-**SKILLS:** Skills represent the things a Player-hero has learnt to do. Players record their value by filling in the relevant number of boxes. In some instances during character creation, players are instructed to check the box to the left of a Skill's name, to mark it as Favoured. Favoured Skills describe a peculiar talent in the field described by the ability.
-
-**SKILL CATEGORIES:** Skills are organised vertically into columns, grouping the abilities by the Attribute that is considered most influential. Thus, there are six STRENGTH Skills, six HEART Skills, and six WITS Skills.
-
-**STANDARD OF LIVING:** This summarises a culture's level of prosperity. A cultural Standard of Living influences the amount of items a Player-hero receives at the start of the game.
-
-**TREASURE:** Heroes gain Treasure when they gain possession of materials and items of uncommon worth, like silver, gold, and precious gems. This space is used to record any Treasure points found by a Player-hero.
-
-**VALOUR:** A character's VALOUR rank describes their stature as a doer of great deeds, and is a measure of courage in the face of dangerous situations or opponents. Each time a Player-hero attains a new VALOUR rank, they receive a Reward, as an acknowledgement of their actions.
-
-**VIRTUES:** Virtues are unique abilities and special talents, characteristic of a given culture. Players select a new Virtue when their Player-hero rises to a new WISDOM rank.
-
-**WAR GEAR:** The weapons carried by the Player-hero, along with the corresponding stats and Load ratings.
-
-**WEARY:** This box is checked when a Player-hero has been made Weary. Weary characters suffer a penalty when taking actions.
-
-**WISDOM:** A character's WISDOM rank defines their self-understanding and capability for good judgement, and is a measure of their resistance to the corrupting power of the Shadow. Each time a Player-hero attains a new WISDOM rank, they receive a Virtue, as a consequence of this awareness.
-
-**WOUNDED AND INJURY:** Player-heroes are wounded when the attacks of their enemies successfully overcome their defences and protective gear, resulting in an injury.
+> Heróis Feridos que permanecem ativos correm o risco de ser derrubados do combate e recuperam pontos de Resistência perdidos mais lentamente (ver Descanso, capítulo 4).
 
 ---
 
-*(End of Chapter 2 — p.26 is a full-page illustration with no additional rules text, closing the chapter.)*
+## A Ficha de Personagem
+
+*"…me deram uma descrição que combina bem com você, se me permite dizer."*
+
+Todos os heróis-jogadores são definidos no jogo por um conjunto de traços e números, descrevendo seus atributos físicos, espirituais e mentais e a extensão de seu conhecimento e capacidade como aventureiros. Esses valores influenciam como eles interagem com as regras, então é importante que estejam à mão e fáceis de acompanhar.
+
+Para facilitar a referência, todos os jogadores recebem uma ficha de personagem, um formulário descritivo facilmente preenchido e atualizado conforme o herói-jogador cresce. Uma ficha em branco está no apêndice, e uma versão em PDF pode ser baixada em freeleaguepublishing.com.
+
+### Procedimento de Rolagem (box)
+
+Estabelecida a necessidade de rolar dados, siga os passos abaixo.
+
+1. Defina o que o herói-jogador está tentando alcançar com a rolagem. Isso é importante para determinar as consequências, tanto em caso de sucesso quanto de falha.
+2. Selecione a habilidade a usar. Os jogadores são encorajados a sugerir a habilidade apropriada. A dificuldade da ação se baseia no NA do Atributo relevante.
+3. Pegue um Dado de Proeza e um número de Dados de Sucesso igual ao valor da habilidade escolhida (**ou dois Dados de Proeza, se a rolagem for Favorecida ou Desfavorecida**). Gaste 1 Esperança para *ganhar (1d)* — *ganhar (2d)* se Inspirado.
+4. Faça a rolagem. Se a rolagem for Favorecida, escolha o melhor resultado nos Dados de Proeza, ou o pior se Desfavorecida. Se sair uma runa de Gandalf, a ação é automaticamente um sucesso. Se você está Arrasado e sai um Olho de Sauron, você falha automaticamente em vez disso.
+5. Caso contrário, todos os resultados numéricos são somados para obter o resultado da ação. Se você está Exausto, todos os resultados de Dados de Sucesso em contorno (1, 2 e 3) são ignorados. Se o resultado total da ação é igual ou superior ao Número-Alvo relevante, a ação é um sucesso. Se o resultado é inferior ao Número-Alvo, a ação falhou.
+6. Se a ação tem sucesso, o número de ícones de Sucesso rolados indica o grau de sucesso, e pode ser gasto para alcançar um sucesso especial.
+
+---
+
+## Glossário de Termos de Jogo
+
+Como se vê na ficha de exemplo, o jogo usa vários termos específicos. Seguem definições para ajudar os jogadores a começar. Elas são explicadas em mais detalhe nos capítulos seguintes.
+
+**PONTOS DE AVENTURA E DE PERÍCIA:** Ao começar a aventurar-se, os heróis-jogadores mudam e crescem ganhando e usando pontos de Aventura e de Perícia, acumulados pelos jogadores após cada sessão.
+
+**ARMADURA:** Personagens vestem armadura para evitar sofrer dano duradouro em combate. Normalmente composta de várias camadas de vestes protetoras, a armadura é sempre onerosa e pesada. Heróis-jogadores podem usar um elmo para complementar seu equipamento defensivo.
+
+**VALORES DE ATRIBUTO:** FORÇA, CORAÇÃO e ASTÚCIA descrevem respectivamente o perfil físico, espiritual e mental de um personagem. Esses valores numéricos são os blocos de construção primários de todos os heróis, e descrevem suas aptidões e capacidades naturais.
+
+**NAs DE ATRIBUTO:** Durante a criação de personagem, todos os jogadores calculam três Números-Alvo (NAs) usando a FORÇA, o CORAÇÃO e a ASTÚCIA do herói-jogador. Esses valores são anotados nos espaços relevantes da ficha. Esses NAs são usados para levar os Atributos do herói em conta ao resolver a maioria das rolagens.
+
+**VOCAÇÃO:** A Vocação é o que motiva os heróis-jogadores a buscar uma vida de aventura e os mantém nesse caminho perigoso todos os dias. Há seis Vocações à escolha, cada uma exemplificando um impulso aventureiro diferente. Heróis-jogadores podem ser Capitães, Campeões, Mensageiros, Eruditos, Caçadores de Tesouros ou Guardiões. Vocações permitem aos jogadores customizar o conceito do personagem e ajudam a focar nas crenças e objetivos que lhes dão senso de propósito.
+
+**PROFICIÊNCIAS DE COMBATE:** Descrevem a perícia do personagem com armas, como espadas, lanças, machados ou arcos.
+
+**BÊNÇÃO CULTURAL:** Descreve uma habilidade ou qualidade especial tão profundamente arraigada em determinada comunidade que, no jogo, é disponibilizada a todos os seus membros.
+
+**CARACTERÍSTICAS DISTINTIVAS:** Essas características peculiares são usadas pelos jogadores para personalizar seus personagens, e para obter vantagem ao tentar alcançar algo relacionado às qualidades do personagem.
+
+**RESISTÊNCIA:** A Resistência é a expressão do vigor físico e da determinação do herói-jogador. É reduzida quando o personagem é submetido a dano físico, estresse e exaustão.
+
+**FADIGA:** Heróis-jogadores acumulam pontos de Fadiga em jornada. A Fadiga **eleva temporariamente a Carga total** do herói, tornando mais fácil que ele fique Exausto.
+
+**COMPANHEIRISMO:** Valor numérico, geralmente correspondendo ao número de heróis-jogadores na Companhia e representando o laço de confiança mútua desfrutado por todos os seus membros.
+
+**FALHAS:** Sob a pressão da Sombra, heróis podem desenvolver Falhas, abraçando emoções mais simples e primitivas, trocando respeito por arrogância, amor por luxúria, confiança por suspeita.
+
+**CULTURA HEROICA:** O grupo cultural a que um aventureiro pertence. Escolher a Cultura do personagem é provavelmente a decisão mais importante ao criar um herói-jogador. Há seis Culturas jogáveis neste volume de *O Um Anel*: Bardos, Anões do Povo de Durin, Elfos de Lindon, Hobbits do Condado, Homens de Bri e Rangers do Norte.
+
+**ESPERANÇA:** A Esperança do personagem define as reservas de vigor espiritual de que os heróis se valem em perigo.
+
+**CARGA:** O peso e o embaraço do equipamento carregado por um herói-jogador podem limitar seu desempenho. Heróis são considerados Exaustos enquanto sua Resistência for **igual ou inferior à sua Carga total**.
+
+**ARRASADO:** Esta caixa é marcada quando um herói-jogador fica Arrasado. Um personagem Arrasado tem mais dificuldade em realizar qualquer coisa — em termos de jogo, se uma rolagem produz um ícone do Olho de Sauron, a ação falha independentemente de o total ter sido suficiente para igualar ou superar o NA.
+
+**BLOQUEIO:** O Bloqueio do herói reflete sua capacidade de desviar ou de qualquer forma evitar um golpe recebido.
+
+**RECOMPENSAS:** Recompensas são peças de Equipamento de Guerra de manufatura superior, concedidas ao herói-jogador como prêmio por seus feitos. Os jogadores recebem uma Recompensa quando o herói-jogador atinge um novo grau de VALOR.
+
+**SOMBRA:** A acumulação de pontos de Sombra mina a Esperança dos heróis-jogadores, enfraquecendo seu espírito. Heróis são considerados Arrasados enquanto sua Esperança for igual ou inferior à sua pontuação de Sombra atual.
+
+**CAMINHO DA SOMBRA:** Sugere o caminho individual que os heróis seguirão se falharem em resistir à influência da Sombra.
+
+**CICATRIZES DE SOMBRA:** Heróis podem endurecer sua vontade e trocar seus pontos de Sombra atuais por uma única Cicatriz de Sombra permanente.
+
+**ESCUDO:** Carregar um escudo de qualquer tipo aumenta o Bloqueio do personagem.
+
+**PERÍCIAS:** Perícias representam as coisas que o herói-jogador aprendeu a fazer. Os jogadores registram seu valor preenchendo o número relevante de caixas. Em alguns momentos da criação de personagem, os jogadores são instruídos a marcar a caixa à esquerda do nome de uma Perícia, para marcá-la como Favorecida. Perícias Favorecidas descrevem um talento peculiar no campo descrito pela habilidade.
+
+**CATEGORIAS DE PERÍCIA:** As Perícias são organizadas verticalmente em colunas, agrupando as habilidades pelo Atributo considerado mais influente. Assim, há seis Perícias de FORÇA, seis de CORAÇÃO e seis de ASTÚCIA.
+
+**PADRÃO DE VIDA:** Resume o nível de prosperidade de uma cultura. O Padrão de Vida cultural influencia a quantidade de itens que o herói-jogador recebe no início do jogo.
+
+**TESOURO:** Heróis ganham Tesouro quando tomam posse de materiais e itens de valor incomum, como prata, ouro e gemas preciosas. Este espaço é usado para registrar quaisquer pontos de Tesouro encontrados pelo herói-jogador.
+
+**VALOR:** O grau de VALOR do personagem descreve sua estatura como realizador de grandes feitos, e é medida de coragem diante de situações ou oponentes perigosos. Cada vez que o herói-jogador atinge um novo grau de VALOR, recebe uma Recompensa, como reconhecimento de suas ações.
+
+**VIRTUDES:** Virtudes são habilidades únicas e talentos especiais, característicos de determinada cultura. Os jogadores selecionam uma nova Virtude quando o herói-jogador ascende a um novo grau de SABEDORIA.
+
+**EQUIPAMENTO DE GUERRA:** As armas carregadas pelo herói-jogador, junto com suas estatísticas e valores de Carga correspondentes.
+
+**EXAUSTO:** Esta caixa é marcada quando um herói-jogador fica Exausto. Personagens Exaustos sofrem penalidade ao tomar ações.
+
+**SABEDORIA:** O grau de SABEDORIA do personagem define sua autocompreensão e capacidade de bom julgamento, e é medida de sua resistência ao poder corruptor da Sombra. Cada vez que o herói-jogador atinge um novo grau de SABEDORIA, recebe uma Virtude, como consequência dessa consciência.
+
+**FERIDO E FERIMENTO:** Heróis-jogadores são feridos quando os ataques de seus inimigos superam com sucesso suas defesas e equipamento protetor, resultando em um ferimento.
+
+---
+
+*(Fim do capítulo 2 — a p.26 é uma ilustração de página inteira sem texto de regra adicional, encerrando o capítulo.)*

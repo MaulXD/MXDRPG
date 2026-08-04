@@ -137,10 +137,22 @@ ok(
 );
 ok("TorAttackParams tem defenderIllFavoured", /defenderIllFavoured\?:\s*boolean;/.test(ATTACK));
 
-// O handler deriva Desfavorecido de Sombra + Cicatrizes vs Esperança MÁXIMA.
+// O handler deriva Desfavorecido de Sombra + Cicatrizes vs Esperança MÁXIMA,
+// pelo helper compartilhado (era fórmula inline; virou helper na rodada 5 pra
+// não haver cópia divergindo entre handler, dice.ts e resolve-attack.ts).
 ok(
-  "handler deriva Desfavorecido da Esperança máxima",
-  /defSheet\.shadow \+ defSheet\.shadowScars >= defSheet\.hope\.max/.test(HANDLER)
+  "handler deriva Desfavorecido pelo helper compartilhado",
+  /isTorIllFavouredByShadow\(\{[\s\S]{0,200}?hopeMax: defSheet\.hope\.max/.test(HANDLER)
+);
+const RULES_TS = readFileSync(
+  join(__dirname, "..", "lib", "character", "um-anel", "rules.ts"),
+  "utf8"
+);
+ok(
+  "helper compara Sombra + Cicatrizes com a Esperança MÁXIMA",
+  /isTorIllFavouredByShadow[\s\S]{0,400}?params\.shadow \+ params\.shadowScars >= params\.hopeMax/.test(
+    stripC(RULES_TS)
+  )
 );
 // E lê o estado do defensor ANTES de aplicar o dano.
 const readIdx = HANDLER.indexOf("defenderWeary = defSheet.conditions.weary");

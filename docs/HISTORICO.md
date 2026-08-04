@@ -104,6 +104,68 @@ npm run sync:data:check       # após editar livros/
 
 ---
 
+### 2026-08-04 — Fase B, rodada 5/12: tradução de 02-resolucao-de-acoes.md + 7º bug de regra
+
+**Pedido:** loop contínuo — traduzir do menor para o maior, auditando as regras contra o código.
+
+**Passo a passo:**
+
+1. **Bug encontrado — o mesmo de antes, em outro sítio.** `rollTorSkillCheck` e
+   `rollTorCombatProficiencyCheck` em `lib/character/um-anel/dice.ts` passavam
+   `illFavoured: character.conditions.miserable`. É exatamente a confusão Arrasado × Desfavorecido
+   corrigida na rodada 3 no Teste de Proteção — **sobreviveu nas rolagens de Perícia e de
+   Proficiência de Combate**, que são as mais frequentes da mesa. Efeito: todo herói Arrasado rolava
+   **dois Dados de Proeza ficando com o pior** em cada rolagem de Perícia, além da falha automática
+   no Olho que já é o efeito correto. Dupla penalidade.
+
+2. **O livro é explícito, e em dois lugares.** O passo 4 do box *Procedimento de Rolagem*: "Se sair
+   uma runa de Gandalf, a ação é automaticamente um sucesso. Se você está Arrasado e sai um Olho de
+   Sauron, você falha automaticamente em vez disso" — nada sobre desfavorecer. E o passo 3 só manda
+   pegar dois Dados de Proeza "se a rolagem for Favorecida ou Desfavorecida". Desfavorecido é a
+   condição separada: "heróis-jogadores cuja pontuação de Sombra iguala sua **Esperança máxima**".
+
+3. **Correção com fórmula única.** A comparação estava inline em `tor-combat-attack.ts` e ia virar uma
+   segunda cópia em `dice.ts`. Extraí `isTorIllFavouredByShadow()` em
+   `lib/character/um-anel/rules.ts` e apontei os dois para ela — uma fórmula, um lugar.
+
+4. **Verificação limpa no ponto de maior risco.** A regra que implementações ingênuas erram é o
+   cancelamento Favorecida × Desfavorecida: o livro manda **resolver normal, com 1 dado**, e diz
+   explicitamente que não depende da contagem de fontes. `rollTorCheck` já cancelava certo
+   (`favoured && !illFavoured` nos dois sentidos). Também limpos: Olho → 0, Runa → sucesso
+   automático, ordem de força do `featDieRank` (Olho −1, Runa 11), Exausto zerando 1–3, graus de
+   sucesso, e clamp de rank negativo.
+
+5. **Armadilha sistêmica do pipeline, resolvida.** As asserções "livro:" casam com o texto do
+   markdown — e traduzir um capítulo troca o idioma dele, quebrando todo teste que citava o inglês.
+   Aconteceu nesta rodada: 16 asserções do teste novo e 2 do de pré-gerados caíram assim que a
+   tradução entrou. Reancorei tudo no PT-BR, deixei a contagem de NA **bilíngue** (para não quebrar
+   de novo a cada tradução) e registrei o aviso no cabeçalho do teste, nomeando as asserções em
+   inglês que ainda vão quebrar (`verify-um-anel-stances.mjs` aponta para os capítulos 6 e 8).
+
+6. **`fnBody()` errado duas vezes antes de acertar.** Contar profundidade de chave desde a declaração
+   pega a chave do **tipo do parâmetro** (`rollTorCheck(opts: { … })`), e "primeira `}` na coluna 0"
+   pega o fechamento desse mesmo tipo multilinha (`}): TorRollOutcome {`). A versão final pula a
+   lista de parâmetros contando parênteses e depois pula anotações de tipo de retorno casando chaves.
+   Sem escopo correto, as asserções negativas passariam vazias.
+
+**Arquivos tocados:**
+- `livros/um-anel/02-resolucao-de-acoes.md` — traduzido (365 linhas), marcador removido; 6 notas de
+  implementação ligando cada regra ao ponto do código
+- `lib/character/um-anel/rules.ts` — `isTorIllFavouredByShadow()`, com as duas condições contrastadas
+- `lib/character/um-anel/dice.ts` — o bug corrigido nas duas funções de rolagem
+- `lib/room/handlers/tor-combat-attack.ts` — passou a usar o helper em vez da fórmula inline
+- `scripts/verify-um-anel-dice.mjs` — **novo**, 43 asserções
+- `scripts/verify-um-anel-pregens.mjs`, `scripts/verify-um-anel-stances.mjs` — reancorados
+- `package.json` — o teste novo entrou nos dois scripts
+
+**Validação:** `npx tsc --noEmit` limpo · `npm run test` verde (502 asserções) · `npm run build` compila.
+Teste negativo conferido: reintroduzir `illFavoured: character.conditions.miserable` produz exatamente
+4 falhas, duas por função, e nenhuma outra.
+
+**Como testar:** `node scripts/verify-um-anel-dice.mjs`
+
+---
+
 ### 2026-08-04 — Fase B, rodada 4/12: tradução de 11-personagens-exemplo.md + NA 18 explicado
 
 **Pedido:** loop contínuo — traduzir os capítulos do Um Anel do menor para o maior, auditando as

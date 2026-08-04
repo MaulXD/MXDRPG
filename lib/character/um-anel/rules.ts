@@ -7,6 +7,32 @@ export function attributeTN(score: number): number {
   return 20 - score;
 }
 
+/**
+ * Desfavorecido pela Sombra — condição SEPARADA de Arrasado.
+ *
+ * O livro trata as duas em parágrafos distintos (02-resolucao-de-acoes.md,
+ * "Conditions" e o box "Ill-favoured Player-heroes"):
+ *
+ * - **Arrasado**: Sombra ≥ Esperança **atual**. Efeito único — o Olho de Sauron
+ *   vira falha automática. Não faz rolar dois Dados de Proeza.
+ * - **Desfavorecido**: Sombra ≥ Esperança **máxima**. Este sim rola dois Dados
+ *   de Proeza e fica com o PIOR, em todas as rolagens.
+ *
+ * Tratar Arrasado como Desfavorecido aplica as duas penalidades de uma vez. Já
+ * foi corrigido no Teste de Proteção (resolve-attack.ts) e nas rolagens de
+ * Perícia/Proficiência (dice.ts) — este helper existe pra não haver uma
+ * terceira cópia da fórmula divergindo.
+ *
+ * Cicatrizes de Sombra contam como Sombra normal para todos os efeitos.
+ */
+export function isTorIllFavouredByShadow(params: {
+  shadow: number;
+  shadowScars: number;
+  hopeMax: number;
+}): boolean {
+  return params.shadow + params.shadowScars >= params.hopeMax;
+}
+
 export function computeDerivedStats(
   cultureId: TorCultureId,
   attributes: TorAttributes
