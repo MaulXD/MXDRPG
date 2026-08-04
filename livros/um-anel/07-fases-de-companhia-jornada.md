@@ -1,124 +1,127 @@
-# Fellowship Phases — The One Ring 2e (fonte: Core Rules, p.117-124)
+# Fases de Companhia — O Um Anel 2ª ed. (fonte: Regras Básicas, p.117-124)
 
-> Conteúdo original em inglês — aguardando tradução colaborativa.
 > Fonte: the one ring/The_One_Ring_Core_Rules.pdf
 
 ---
 
 > **Nota de transcrição:** o capítulo termina, no livro impresso, na página 123 (seção
-> "Fellowship Phase Undertakings"). A página seguinte é apenas uma ilustração de transição
-> para o Capítulo 8 ("The Loremaster"), por isso não há conteúdo de regras além do que está
+> "Empreitadas da Fase de Companhia"). A página seguinte é apenas uma ilustração de transição
+> para o Capítulo 8 ("O Mestre"), por isso não há conteúdo de regras além do que está
 > transcrito abaixo.
 
-## Introduction (flavor)
+## Introdução (ambientação)
 
-*"When winter first begins to bite and stones crack in the frosty night, when pools are black
-and trees are bare, 'tis evil in the Wild to fare."*
+*"Quando o inverno começa a morder e as pedras rangem na noite gelada, quando as poças estão
+negras e as árvores nuas, é mau viajar pelas Terras Selvagens."*
 
-Heroes are not always busy navigating deep caverns, fighting back the Shadow, or fleeing from
-dangers beyond their ability to face. Even the most eager of adventurers needs some time to
-rest, to gather their wits, and allow time for their hurts to mend. Whether the Player-heroes
-spend it in pursuit of a personal goal, or simply resting comfortably to recover their
-energies before setting out on the road once again, the time between adventures is called the
-**Fellowship Phase**.
+Heróis não estão sempre ocupados atravessando cavernas profundas, repelindo a Sombra ou
+fugindo de perigos além de sua capacidade de enfrentar. Até os aventureiros mais ávidos
+precisam de algum tempo para descansar, para recobrar o juízo e para permitir que suas feridas
+se curem. Seja gastando esse tempo na busca de um objetivo pessoal, seja simplesmente
+descansando com conforto para recuperar as energias antes de partir novamente pela estrada, o
+tempo entre aventuras é chamado de **Fase de Companhia**.
 
 ---
 
-## How a Fellowship Phase Works
+## Como Funciona uma Fase de Companhia
 
-*"They stayed long in that good house, fourteen days at least, and they found it hard to
-leave."*
+*"Eles ficaram muito tempo naquela boa casa, catorze dias pelo menos, e acharam difícil
+partir."*
 
-A Fellowship Phase is a gameplay instance driven by the players' choices — while during the
-Adventuring Phase players react to the Loremaster's storytelling prompts, during a Fellowship
-Phase they get to elaborate upon their Player-heroes' stories and ambitions, and to mark their
-adventurers' progression. The Loremaster is invited to sit back and follow what the players
-have to say about their characters.
+Uma Fase de Companhia é um trecho de jogo conduzido pelas escolhas dos jogadores — enquanto
+durante a Fase de Aventura os jogadores reagem aos ganchos narrativos do Mestre, durante uma
+Fase de Companhia eles podem elaborar as histórias e ambições de seus heróis-jogadores e
+registrar o progresso de seus aventureiros. O Mestre é convidado a recostar-se e acompanhar o
+que os jogadores têm a dizer sobre seus personagens.
 
-Players are encouraged to narrate in detail what they do during a Fellowship Phase, not
-necessarily limiting themselves to those activities with a direct gaming effect. For example,
-the adventurers might inquire about leads, problems, and opportunities that have arisen
-during the preceding Adventuring Phase.
+Os jogadores são encorajados a narrar em detalhe o que fazem durante uma Fase de Companhia, não
+se limitando necessariamente às atividades com efeito direto de jogo. Por exemplo, os
+aventureiros podem indagar sobre pistas, problemas e oportunidades que surgiram durante a Fase
+de Aventura precedente.
 
-When they do so, the players must keep in mind the length of a Fellowship Phase and its
-geographical limits. Moreover, they must not introduce new background information — such as
-exploring a location their Player-hero has never visited before, making the acquaintance of
-personalities they haven't encountered yet, and so on (in short, they should not do what is
-better suited to an Adventuring Phase).
+Ao fazê-lo, os jogadores devem ter em mente a duração da Fase de Companhia e seus limites
+geográficos. Além disso, não devem introduzir novas informações de contexto — como explorar um
+lugar que seu herói-jogador nunca visitou antes, travar conhecimento com personalidades que
+ainda não encontraram, e assim por diante (em suma, não devem fazer aquilo que é mais adequado
+a uma Fase de Aventura).
 
-> A Fellowship Phase marks the conclusion of each Adventuring Phase, and, as such, ideally
-> takes place at the end of a gaming session. Otherwise, it can open a new session, and
-> precede the next Adventuring Phase.
+> Uma Fase de Companhia marca a conclusão de cada Fase de Aventura e, como tal, idealmente
+> acontece ao final de uma sessão de jogo. Do contrário, pode abrir uma nova sessão e preceder
+> a Fase de Aventura seguinte.
 
-### Fellowship Phase Structure
+### Estrutura da Fase de Companhia
 
-All Fellowship Phases are structured as follows:
+Todas as Fases de Companhia são estruturadas assim:
 
-1. **Set duration**
-2. **Choose destination**
-3. **Perform updates**
-4. **Choose undertakings**
+1. **Definir a duração**
+2. **Escolher o destino**
+3. **Fazer as atualizações**
+4. **Escolher as empreitadas**
 
-#### 1 — Set Duration
+#### 1 — Definir a Duração
 
-A Fellowship Phase usually covers a longer period of time than the average Adventuring Phase.
-Events are described in broader strokes — days and weeks pass while the Player-heroes relax,
-or busy themselves with their own personal work or studies.
+Uma Fase de Companhia normalmente cobre um período de tempo mais longo do que a Fase de
+Aventura média. Os eventos são descritos em traços mais largos — dias e semanas passam
+enquanto os heróis-jogadores relaxam ou se ocupam com seus próprios trabalhos ou estudos
+pessoais.
 
-> To give the Player-heroes a real break from active adventuring, a Fellowship Phase should
-> last a minimum of **one week, up to an entire season**.
+> Para dar aos heróis-jogadores uma pausa real da vida ativa de aventuras, uma Fase de
+> Companhia deve durar no mínimo **uma semana, até uma estação inteira**.
 
-Normally, the longest Fellowship Phase is taken during the mid-winter festivities (see
-*Yule*, below).
+Normalmente, a Fase de Companhia mais longa é aquela vivida durante as festividades do meio do
+inverno (ver *Yule*, adiante).
 
-#### 2 — Choose Destination
+#### 2 — Escolher o Destino
 
-Once the length of the Fellowship Phase has been determined, the players must decide where
-they will spend the phase. Generally, the Player-heroes stop at a safe haven to spend the
-phase as a group, unless the end of the year's end festivities are near. To keep the gameplay
-authentic, the players should choose a place within a reasonable distance from the area where
-the Company was adventuring during the recent sessions of play, also taking into
-consideration how long the Fellowship Phase will last.
+Uma vez determinada a duração da Fase de Companhia, os jogadores devem decidir onde vão passar
+a fase. Em geral, os heróis-jogadores param em um refúgio seguro para passar a fase como grupo,
+a menos que as festividades de fim de ano estejam próximas. Para manter o jogo autêntico, os
+jogadores devem escolher um lugar a uma distância razoável da área onde a Companhia estava
+aventurando durante as sessões de jogo recentes, levando em conta também quanto tempo a Fase de
+Companhia vai durar.
 
-> The players are free to select any location the Company has visited so far. The journey
-> required to reach the chosen destination is considered to take place 'behind the scenes',
-> unless the players have a mind to play out the details.
+> Os jogadores são livres para selecionar qualquer lugar que a Companhia tenha visitado até
+> então. A jornada necessária para alcançar o destino escolhido é considerada como tendo
+> ocorrido "nos bastidores", a menos que os jogadores queiram jogar os detalhes.
 
-Places like the town of Bree or Rivendell are the ultimate safe havens, as they are
-particularly suited to resting and the mending of wounds, and are inhabited by a host willing
-to welcome travellers.
+Lugares como a vila de Bri ou Valfenda são os refúgios seguros supremos, pois são
+particularmente adequados ao descanso e à cura de ferimentos, e são habitados por um anfitrião
+disposto a receber viajantes.
 
-#### 3 — Perform Updates
+#### 3 — Fazer as Atualizações
 
-The players may now spend their accumulated Experience Points to improve their Player-heroes'
-Skills and Combat Proficiencies, and to acquire new **VALOUR** or **WISDOM** ranks.
-Additionally, the time spent in front of a cosy hearth while enjoying an everyday life
-confirms to the Player-heroes that their efforts are not wasted, and restores their faith in a
-brighter future.
+Os jogadores podem agora gastar os Pontos de Experiência acumulados para melhorar as Perícias e
+Proficiências de Combate de seus heróis-jogadores, e para adquirir novos graus de **VALOR** ou
+**SABEDORIA**. Além disso, o tempo passado diante de uma lareira acolhedora, desfrutando da
+vida cotidiana, confirma aos heróis-jogadores que seus esforços não são em vão e restaura sua
+fé em um futuro mais brilhante.
 
-**TRAINING:** Players spend Skill points to develop their Player-hero's Skill ratings, using
-the Experience Points Costs table below. They don't have to spend all their points at once —
-Skill points can be saved to acquire more expensive upgrades during a later Fellowship Phase.
-Any remaining points are kept track of using the appropriate space on the character sheet.
+**TREINAMENTO:** os jogadores gastam pontos de Perícia para desenvolver os níveis de Perícia de
+seu herói-jogador, usando a tabela de Custos de Pontos de Experiência abaixo. Eles não precisam
+gastar todos os pontos de uma só vez — pontos de Perícia podem ser guardados para adquirir
+melhorias mais caras em uma Fase de Companhia posterior. Quaisquer pontos restantes são
+registrados no espaço apropriado da ficha de personagem.
 
-> During a single Fellowship Phase, players can buy a maximum of **one rank in each Skill**.
+> Durante uma única Fase de Companhia, os jogadores podem comprar no máximo **um grau em cada
+> Perícia**.
 
-**GROWTH:** Players spend Adventure points to buy a new rank in either **WISDOM** or
-**VALOUR**, or to enhance an adventurer's Combat Proficiencies. As with Skill points, players
-do not have to spend all their Adventure points at once, but can save them to acquire more
-expensive upgrades later. Players may buy a rank in a Combat Proficiency, VALOUR, or WISDOM
-if they have enough Adventure points to attain the new rating as set out in the Experience
-Points Cost table. When Player-heroes reach a new VALOUR or WISDOM rank, they also gain a new
-Reward or Virtue (see p.78 of the Core Rules).
+**CRESCIMENTO:** os jogadores gastam pontos de Aventura para comprar um novo grau em
+**SABEDORIA** ou **VALOR**, ou para melhorar as Proficiências de Combate de um aventureiro.
+Como ocorre com os pontos de Perícia, os jogadores não precisam gastar todos os pontos de
+Aventura de uma só vez, e podem guardá-los para adquirir melhorias mais caras depois. Os
+jogadores podem comprar um grau em uma Proficiência de Combate, em VALOR ou em SABEDORIA se
+tiverem pontos de Aventura suficientes para atingir o novo nível conforme estabelecido na
+tabela de Custos de Pontos de Experiência. Quando heróis-jogadores alcançam um novo grau de
+VALOR ou SABEDORIA, eles também ganham uma nova Recompensa ou Virtude (ver capítulo 5).
 
-> During a single Fellowship Phase, players can acquire a maximum of **one rank in each
-> Combat Proficiency**. They can also buy a rank in either WISDOM or VALOUR, but not both. If
-> a new attribute value is attained, the scores of all related abilities and features must be
-> updated accordingly.
+> Durante uma única Fase de Companhia, os jogadores podem adquirir no máximo **um grau em cada
+> Proficiência de Combate**. Também podem comprar um grau em SABEDORIA ou em VALOR, mas não em
+> ambos. Se um novo valor de atributo for atingido, os valores de todas as habilidades e
+> características relacionadas devem ser atualizados conforme necessário.
 
-**EXPERIENCE POINTS COSTS:**
+**CUSTOS DE PONTOS DE EXPERIÊNCIA:**
 
-| New Skill or Combat Proficiency Level | New Valour or Wisdom Rank | Skill or Adventure Point Cost |
+| Novo nível de Perícia ou Proficiência de Combate | Novo grau de Valor ou Sabedoria | Custo em pontos de Perícia ou de Aventura |
 |---|---|---|
 | ● (1) | — | 4 |
 | ●● (2) | 2 | 8 |
@@ -127,271 +130,278 @@ Reward or Virtue (see p.78 of the Core Rules).
 | ●●●●● (5) | 5 | 26 |
 | ●●●●●● (6) | 6 | 30 |
 
-*(Nota de transcrição: a coluna "New Skill or Combat Proficiency Level" usa no livro os pips
-padrão do sistema — 1 a 6 marcas — representados aqui como ●.)*
+*(Nota de transcrição: a coluna "Novo nível de Perícia ou Proficiência de Combate" usa no livro
+os pips padrão do sistema — 1 a 6 marcas — representados aqui como ●.)*
 
-**SPIRITUAL RECOVERY:** During each Fellowship Phase, all Player-heroes automatically recover
-a number of Hope points equal to their **HEART** score, and they recover them all at Yule.
+**RECUPERAÇÃO ESPIRITUAL:** durante cada Fase de Companhia, todos os heróis-jogadores
+recuperam automaticamente um número de pontos de Esperança igual ao seu valor de **CORAÇÃO**, e
+recuperam todos eles no Yule.
 
-Then, if the Adventuring Phase resulted in what can be considered a positive outcome in the
-fight against the encroaching Shadow, all members of the Company get to remove a number of
-Shadow points. If that's the case, the Loremaster must then weigh the actions of the Company
-against the broader context of the Twilight of the Third Age, and allow them to remove from 1
-to 3 Shadow points, based on how noteworthy their accomplishments are deemed to be.
+Depois, se a Fase de Aventura resultou naquilo que pode ser considerado um desfecho positivo na
+luta contra a Sombra que avança, todos os membros da Companhia podem remover um número de
+pontos de Sombra. Nesse caso, o Mestre deve pesar as ações da Companhia diante do contexto mais
+amplo do Crepúsculo da Terceira Era e permitir que removam de 1 a 3 pontos de Sombra, conforme
+o quanto suas realizações sejam consideradas notáveis.
 
-- If the Company's actions can be considered to have at least marginally interfered with the
-  return of the Shadow, each Player-hero removes **1 Shadow point**;
-- If their deeds can be considered to have actively hindered or damaged the Enemy, each
-  Player-hero removes **up to 2 Shadow points**;
-- If the Player-heroes have committed feats that would gain the attention of the Dark Lord
-  himself, or at least that of one of his major servants, then the Player-heroes can remove
-  **up to 3 Shadow points**.
+- Se as ações da Companhia podem ser consideradas como tendo interferido pelo menos
+  marginalmente no retorno da Sombra, cada herói-jogador remove **1 ponto de Sombra**;
+- Se seus feitos podem ser considerados como tendo ativamente atrapalhado ou ferido o Inimigo,
+  cada herói-jogador remove **até 2 pontos de Sombra**;
+- Se os heróis-jogadores cometeram façanhas que ganhariam a atenção do próprio Senhor Sombrio,
+  ou pelo menos de um de seus servos maiores, então os heróis-jogadores podem remover **até 3
+  pontos de Sombra**.
 
 ---
 
 ## Yule
 
-*"Approximately once every three Fellowship Phases, winter comes, and with it the end of the
-current year."*
+*"Aproximadamente uma vez a cada três Fases de Companhia, o inverno chega e, com ele, o fim do
+ano corrente."*
 
-Normally, the Company spends the entire cold season as a single, prolonged Fellowship Phase.
-Life in the wild is unforgiving, and adventurers prefer to have a roof over their heads when
-the wind is howling, and the land is buried in snow. In most cases, the Company disbands
-temporarily on occasion of the Yule festivities, as each Player-hero takes the chance to
-return home and enjoy some time among family and folk. Three months are enough for any
-Player-hero to return home from any location other than the most remote.
+Normalmente, a Companhia passa toda a estação fria como uma única Fase de Companhia
+prolongada. A vida nas terras selvagens é implacável, e os aventureiros preferem ter um teto
+sobre a cabeça quando o vento uiva e a terra está enterrada em neve. Na maioria dos casos, a
+Companhia se separa temporariamente na ocasião das festividades de Yule, já que cada
+herói-jogador aproveita a chance de voltar para casa e desfrutar de um tempo entre familiares e
+sua gente. Três meses bastam para qualquer herói-jogador voltar para casa de qualquer lugar
+que não seja dos mais remotos.
 
-### The Passage of the Years
+### O Passar dos Anos
 
-When Yule comes, it means that all Player-heroes have aged one year. Luckily, time does not
-only slay kings and ruin towns, but may bring wisdom — the time the Player-heroes spend
-without adventuring allows them to reflect on their experiences, and possibly learn from
-their mistakes.
+Quando o Yule chega, isso significa que todos os heróis-jogadores envelheceram um ano. Por
+sorte, o tempo não apenas mata reis e arruína cidades, mas pode trazer sabedoria — o tempo que
+os heróis-jogadores passam sem aventurar lhes permite refletir sobre suas experiências e,
+possivelmente, aprender de seus erros.
 
-> During a Yule Fellowship Phase, all Player-heroes earn a number of **bonus Skill points
-> equal to their WITS rating**, and add this amount to the total they accumulated during the
-> last Adventuring Phase.
+> Durante uma Fase de Companhia de Yule, todos os heróis-jogadores ganham um número de **pontos
+> de Perícia bônus igual ao seu nível de ASTÚCIA**, e somam essa quantidade ao total que
+> acumularam durante a última Fase de Aventura.
 
-Then, the Loremaster should take the chance offered by a Yule Fellowship Phase to update the
-Company on the changes that are taking place in the world and that their Player-heroes should
-know about. To this end, the Loremaster may use the information contained in the setting
-chapter to determine what news reaches the ears of the Player-heroes, tailoring the
-information based on the current circumstances and whereabouts of the Company. Keeping the
-Company up-to-date with important news is a way to insert background elements into the next
-Adventuring Phase.
+Depois, o Mestre deve aproveitar a oportunidade oferecida por uma Fase de Companhia de Yule
+para atualizar a Companhia sobre as mudanças que estão ocorrendo no mundo e que seus
+heróis-jogadores deveriam conhecer. Para isso, o Mestre pode usar as informações contidas no
+capítulo de ambientação para determinar que notícias chegam aos ouvidos dos heróis-jogadores,
+ajustando a informação conforme as circunstâncias atuais e o paradeiro da Companhia. Manter a
+Companhia a par das notícias importantes é uma forma de inserir elementos de contexto na Fase
+de Aventura seguinte.
 
 ---
 
-## Choose Undertakings
+## Escolher as Empreitadas
 
-**Undertakings** are time-consuming endeavours that Player-heroes can accomplish exclusively
-during a lengthy stop like a Fellowship Phase.
+**Empreitadas** são empreendimentos demorados que os heróis-jogadores só podem realizar durante
+uma parada longa como uma Fase de Companhia.
 
-> Players select a number of activities, based on whether the Fellowship Phase is an ordinary
-> one, or if it's Yule (the end of a year) — see *Fellowship Phase Undertakings*, below.
+> Os jogadores selecionam um número de atividades conforme a Fase de Companhia seja uma comum
+> ou seja o Yule (o fim de um ano) — ver *Empreitadas da Fase de Companhia*, adiante.
 
-**CHANGE USEFUL ITEMS (sidebar):** in addition to the various endeavours they may achieve,
-during each Fellowship Phase the players are free to change the selection of their
-Player-heroes' Useful Items (always respecting the maximum number of items allowed by their
-current Standard of Living).
+**TROCAR ITENS ÚTEIS (box):** além dos vários empreendimentos que podem realizar, durante cada
+Fase de Companhia os jogadores são livres para trocar a seleção de Itens Úteis de seus
+heróis-jogadores (sempre respeitando o número máximo de itens permitido por seu Padrão de Vida
+atual).
 
-### Fellowship Phase Undertakings
+### Empreitadas da Fase de Companhia
 
-This section lists the various activities available to the Company during a Fellowship Phase.
-Players select a different number of undertakings, based on whether the Fellowship Phase is
-an ordinary one, or if it's Yule — the end of a year.
+Esta seção lista as várias atividades disponíveis à Companhia durante uma Fase de Companhia. Os
+jogadores selecionam um número diferente de empreitadas conforme a Fase de Companhia seja uma
+comum ou seja o Yule — o fim de um ano.
 
-- During an **ordinary Fellowship Phase**, the Company as a group chooses **one single
-  undertaking**.
-- During a **Yule Fellowship Phase**, each player chooses **one undertaking instead** (i.e.
-  one per Player-hero).
-- Finally, during each Fellowship Phase (ordinary or Yule), the Company is entitled to choose
-  **one additional undertaking**, selecting it among those that are listed as **free**, based
-  on the Callings represented among the Player-heroes.
+- Durante uma **Fase de Companhia comum**, a Companhia como grupo escolhe **uma única
+  empreitada**.
+- Durante uma **Fase de Companhia de Yule**, cada jogador escolhe **uma empreitada** (isto é,
+  uma por herói-jogador).
+- Por fim, durante cada Fase de Companhia (comum ou de Yule), a Companhia tem direito a
+  escolher **uma empreitada adicional**, selecionando-a entre as que estão listadas como
+  **grátis**, conforme as Vocações representadas entre os heróis-jogadores.
 
-To sum things up, during an ordinary Fellowship Phase the Company will choose a maximum of
-**two undertakings**, and a number of undertakings equal to the **number of Player-heroes
-plus one** during Yule. Players must always select different undertakings, unless they are
-marked as Yule activities — such endeavours can be chosen by any number of Player-heroes.
+Resumindo, durante uma Fase de Companhia comum a Companhia escolherá no máximo **duas
+empreitadas**, e um número de empreitadas igual ao **número de heróis-jogadores mais um**
+durante o Yule. Os jogadores devem sempre selecionar empreitadas diferentes, a menos que
+estejam marcadas como atividades de Yule — tais empreendimentos podem ser escolhidos por
+qualquer número de heróis-jogadores.
 
-Undertakings marked **(Yule)** below can only be chosen during a Yule Fellowship Phase.
+As empreitadas marcadas com **(Yule)** abaixo só podem ser escolhidas durante uma Fase de
+Companhia de Yule.
 
-#### Gather Rumours
+#### Reunir Rumores
 
-*"When they appeared they brought news from afar, and told strange forgotten tales which were
-eagerly listened to…"*
+*"Quando apareciam, traziam notícias de longe e contavam histórias estranhas e esquecidas, que
+eram ouvidas com avidez…"*
 
-News of strange things happening in the world are multiplying with every passing year.
-Tidings of a gathering darkness, of distant wars, and of the flight of the Elves — vague
-legends and old songs are proving to be more than just children's stories. Player-heroes
-gathering rumours try to separate facts from fireside-tales, and to gather stories that may
-prove useful in their adventures.
+Notícias de coisas estranhas acontecendo no mundo se multiplicam a cada ano que passa. Novas de
+uma escuridão que se ajunta, de guerras distantes e da partida dos Elfos — lendas vagas e
+canções antigas estão se provando mais que histórias para crianças. Heróis-jogadores que
+reúnem rumores tentam separar os fatos das histórias de lareira e recolher relatos que possam
+ser úteis em suas aventuras.
 
-> Choose this undertaking to receive a rumour from the Loremaster.
+> Escolha esta empreitada para receber um rumor do Mestre.
 
-A rumour can be a story about an individual, a place, or a coming event, pointing
-specifically to something that the Company can explore, prevent, or aspire to achieve.
-Otherwise, a rumour can be something specific that the Player-hero is inquiring about, and
-directly related to the current adventuring circumstances of the Company.
+Um rumor pode ser uma história sobre um indivíduo, um lugar ou um evento vindouro, apontando
+especificamente para algo que a Companhia possa explorar, impedir ou aspirar a conquistar. Do
+contrário, um rumor pode ser algo específico sobre o qual o herói-jogador esteja indagando, e
+diretamente ligado às circunstâncias atuais de aventura da Companhia.
 
-*A Company including a **Warden** can choose this activity as a free Undertaking.*
+*Uma Companhia que inclua um **Guardião** pode escolher esta atividade como Empreitada grátis.*
 
-#### Heal Scars (Yule)
+#### Curar Cicatrizes (Yule)
 
-*"Is it not a strange fate that we should suffer so much fear and doubt for so small a
-thing?"*
+*"Não é um destino estranho que devamos sofrer tanto medo e dúvida por uma coisa tão pequena?"*
 
-Heroes feel the burden of the Shadow weigh heavily upon their shoulders long after their
-adventures are over. Their minds remain bent on dark thoughts, and visions haunt them in
-their dreams, if not even during their waking hours. Only the passage of time can heal such
-wounds.
+Os heróis sentem o fardo da Sombra pesar sobre seus ombros muito depois de terminadas suas
+aventuras. Suas mentes permanecem voltadas a pensamentos escuros, e visões os assombram nos
+sonhos, se não mesmo durante as horas em que estão despertos. Só a passagem do tempo pode
+curar tais feridas.
 
-> Choose this undertaking to focus on mending your spiritual injuries — spend **5 Adventure
-> points** and remove **1 Shadow Scar** (see *Harden Will*, p.137 of the Core Rules).
+> Escolha esta empreitada para se concentrar em sanar suas feridas espirituais — gaste **5
+> pontos de Aventura** e remova **1 Cicatriz de Sombra** (ver *Endurecer a Vontade*, capítulo
+> 8).
 
-Player-heroes from different Cultures resort to different methods to get rid of their scars.
-Dwarves often turn to the forge to burn out their frustration, smiting the red iron on the
-anvil; Hobbits dedicate themselves to a beloved activity, like gardening; Elves and Men
-generally create, play, or recite poems and songs.
+Heróis-jogadores de Culturas diferentes recorrem a métodos diferentes para se livrar de suas
+cicatrizes. Anões muitas vezes se voltam para a forja para queimar sua frustração, malhando o
+ferro em brasa na bigorna; Hobbits se dedicam a uma atividade amada, como a jardinagem; Elfos e
+Homens geralmente criam, tocam ou recitam poemas e canções.
 
-#### Meet Patron
+#### Encontrar Patrono
 
-*"Elrond, as was his custom, sat in a great chair at the end of the long table upon the
-dais…"*
+*"Elrond, como era seu costume, sentou-se numa grande cadeira à cabeceira da longa mesa sobre o
+estrado…"*
 
-After a few years of adventuring, the Company will probably count several of the Wise and the
-Great among their allies. Some of these can be chosen as Patrons of the Company (see p.52 of
-the Core Rules).
+Depois de alguns anos aventurando, a Companhia provavelmente contará vários dos Sábios e dos
+Grandes entre seus aliados. Alguns deles podem ser escolhidos como Patronos da Companhia (ver
+capítulo 3).
 
-> Choose this undertaking to meet one of the Company's friends and allies when spending the
-> Fellowship Phase in a location where that individual can be found, and if the Patron is
-> available for a meeting.
+> Escolha esta empreitada para encontrar um dos amigos e aliados da Companhia quando passar a
+> Fase de Companhia em um lugar onde esse indivíduo possa ser encontrado, e se o Patrono
+> estiver disponível para um encontro.
 
-When this is the case, the Loremaster can work with the Player-hero to set up the encounter.
-The reasons to see a patron vary based on the current circumstances of a campaign, but
-generally revolve around the Player-hero asking for some sort of assistance, possibly
-accepting a task requested by the patron in return. The descriptions of the various
-personalities given on p.212 of the Core Rules give directions on how to handle their
-introduction as patrons in the game.
+Sendo esse o caso, o Mestre pode trabalhar com o herói-jogador para preparar o encontro. Os
+motivos para ver um patrono variam conforme as circunstâncias atuais de uma campanha, mas em
+geral giram em torno de o herói-jogador pedir algum tipo de assistência, possivelmente
+aceitando em troca uma tarefa solicitada pelo patrono. As descrições das várias personalidades
+dadas no Apêndice A (capítulo 13) orientam sobre como conduzir sua introdução como patronos no
+jogo.
 
-*A Company including a **Messenger** can choose this activity as a free Undertaking.*
+*Uma Companhia que inclua um **Mensageiro** pode escolher esta atividade como Empreitada
+grátis.*
 
-#### Ponder Storied and Figured Maps
+#### Ponderar Mapas Historiados e Figurados
 
-*"There are many maps in Elrond's house, but I suppose you never thought to look at them?"*
+*"Há muitos mapas na casa de Elrond, mas suponho que você nunca pensou em olhá-los?"*
 
-Middle-earth has changed since the time when lore-masters spent long hours drawing maps of
-every known corner of the world. Today's maps show mostly white spaces beyond the borders of
-the realms of Men, Dwarves, and Elves. Yet, looking at them is time well-spent for a
-travelling hero.
+A Terra-média mudou desde o tempo em que os mestres do saber passavam longas horas desenhando
+mapas de cada canto conhecido do mundo. Os mapas de hoje mostram em sua maior parte espaços em
+branco além das fronteiras dos reinos dos Homens, dos Anões e dos Elfos. Ainda assim,
+examiná-los é tempo bem gasto para um herói viajante.
 
-> A Player-hero choosing this undertaking studies every map and scroll of lore they can find,
-> to learn as much as possible about the perils the Company may face while on a journey.
-> Until the next Fellowship Phase, apply a modifier of **+1 to all Feat die rolls made to
-> determine the nature of events** during the Event Resolution step of a Journey.
+> Um herói-jogador que escolha esta empreitada estuda todos os mapas e pergaminhos de saber que
+> consegue encontrar, para aprender o máximo possível sobre os perigos que a Companhia pode
+> enfrentar em uma jornada. Até a próxima Fase de Companhia, aplique um modificador de **+1 em
+> todas as rolagens do Dado de Proeza feitas para determinar a natureza dos eventos** durante a
+> etapa de Resolução de Eventos de uma Jornada.
 
-*A Company including a **Scholar** can choose this activity as a free Undertaking.*
+*Uma Companhia que inclua um **Erudito** pode escolher esta atividade como Empreitada grátis.*
 
-#### Raise an Heir (Yule)
+#### Criar um Herdeiro (Yule)
 
-*"When Bilbo was ninety-nine he adopted Frodo as his heir, and brought him to live at Bag
-End…"*
+*"Quando Bilbo tinha noventa e nove anos, adotou Frodo como seu herdeiro e o trouxe para viver
+em Bolsão…"*
 
-Wise adventurers sooner or later realise that all they have done in their lives can avail to
-nothing if they meet an untimely end. To avoid squandering their legacy, they should spend
-some money and time choosing and raising a worthy successor.
+Aventureiros sábios cedo ou tarde percebem que tudo o que fizeram em suas vidas pode não servir
+para nada se encontrarem um fim prematuro. Para evitar desperdiçar seu legado, devem gastar
+algum dinheiro e algum tempo escolhendo e criando um sucessor digno.
 
-> Choose this undertaking to spend up to **5 Treasure and an equal number of Adventure
-> points** to add to your heir's starting Previous Experience reserve: for each Adventure
-> point spent, raise the reserve by 1.
+> Escolha esta empreitada para gastar até **5 de Tesouro e um número igual de pontos de
+> Aventura** para somar à reserva inicial de Experiência Anterior de seu herdeiro: para cada
+> ponto de Aventura gasto, aumente a reserva em 1.
 
-If this is the first time that this undertaking has been chosen, the player must also choose
-a name for the designated heir, writing it down on the character sheet (see p.56 of the Core
-Rules for more details about raising an heir).
+Se esta é a primeira vez que esta empreitada é escolhida, o jogador deve também escolher um
+nome para o herdeiro designado, anotando-o na ficha de personagem (ver capítulo 3 para mais
+detalhes sobre criar um herdeiro).
 
-#### Recount a Story (Yule)
+#### Contar uma História (Yule)
 
-*"To some there Bilbo's tale was wholly new, and they listened with amazement while the old
-Hobbit, actually not at all displeased, recounted his adventure with Gollum, at full
-length."*
+*"Para alguns ali, a história de Bilbo era inteiramente nova, e escutaram com espanto enquanto
+o velho Hobbit, na verdade nada descontente, narrava sua aventura com Gollum, por inteiro."*
 
-Adventures have a meaning for those who live them, but they can become cautionary tales for
-others. Player-heroes give a personal account of an event they took part in, describing the
-episode to members of their own folk in a public place or event, or recording it in a book.
-Players are encouraged to improvise a short narration.
+As aventuras têm um significado para quem as vive, mas podem se tornar histórias exemplares
+para outros. Os heróis-jogadores dão um relato pessoal de um evento do qual tomaram parte,
+descrevendo o episódio a membros de seu próprio povo em um lugar ou evento público, ou
+registrando-o em um livro. Os jogadores são encorajados a improvisar uma narração curta.
 
-> Choose this undertaking to replace one of your Distinctive Features with a new trait,
-> choosing a quality that you displayed in the narrated episode.
+> Escolha esta empreitada para substituir uma de suas Características Distintivas por um novo
+> traço, escolhendo uma qualidade que você demonstrou no episódio narrado.
 
-Players can choose a trait from the list of Distinctive Features (p.67 of the Core Rules), or
-even propose a new one of their own creation.
+Os jogadores podem escolher um traço da lista de Características Distintivas (ver capítulo 4),
+ou até propor um novo, de sua própria criação.
 
-#### Strengthen Fellowship
+#### Fortalecer o Companheirismo
 
-*"…in this matter it would be well to trust rather to their friendship than to great
-wisdom."*
+*"…neste assunto, seria bom confiar mais em sua amizade do que em grande sabedoria."*
 
-The bond shared by the members of a Company is put to the test by the odds they face in the
-course of their adventures, and can be reinforced when the Player-heroes are enjoying a
-moment of respite.
+O vínculo compartilhado pelos membros de uma Companhia é posto à prova pelas adversidades que
+enfrentam no curso de suas aventuras, e pode ser reforçado quando os heróis-jogadores estão
+desfrutando de um momento de descanso.
 
-> Choose this undertaking to raise the Fellowship rating by **+1 until the next Fellowship
-> Phase**.
+> Escolha esta empreitada para aumentar o nível de Companheirismo em **+1 até a próxima Fase de
+> Companhia**.
 
-*A Company including a **Captain** can choose this activity as a free Undertaking.*
+*Uma Companhia que inclua um **Capitão** pode escolher esta atividade como Empreitada grátis.*
 
-#### Study Magical Items
+#### Estudar Itens Mágicos
 
-*"This is an heirloom of our house," said Éowyn. "It was made by the Dwarves, and came from
-the hoard of Scatha the Worm."*
+*"Este é um bem de herança da nossa casa", disse Éowyn. "Foi feito pelos Anões e veio do
+tesouro de Scatha, o Verme."*
 
-When heroes come into possession of a strange ring, an ancient jewel, or a rune-scored staff,
-they might not know much about their properties, especially if they are not immediately
-observable.
+Quando heróis entram na posse de um anel estranho, de uma joia antiga ou de um cajado marcado
+com runas, podem não saber muito sobre suas propriedades, especialmente se elas não são
+imediatamente observáveis.
 
-> Choose this Undertaking to learn all there is to be discovered about the qualities of all
-> Marvellous Artefacts and Wondrous Items in the Company's possession.
+> Escolha esta Empreitada para aprender tudo o que há para descobrir sobre as qualidades de
+> todos os Artefatos Maravilhosos e Itens Prodigiosos na posse da Companhia.
 
-*A Company including a **Treasure Hunter** can choose this activity as a free Undertaking.*
+*Uma Companhia que inclua um **Caçador de Tesouros** pode escolher esta atividade como
+Empreitada grátis.*
 
-#### Write a Song
+#### Compor uma Canção
 
-*"And then one would sing amid the gloom some staves of the Lay of Nimrodel, or other songs
-of the Vale of Anduin out of vanished years."*
+*"E então, na penumbra, um deles cantava algumas estrofes da Balada de Nimrodel, ou outras
+canções do Vale do Anduin de anos desaparecidos."*
 
-All Cultures of Middle-earth play and sing songs to remember things that are fair and to
-celebrate life.
+Todas as Culturas da Terra-média tocam e cantam canções para lembrar as coisas belas e para
+celebrar a vida.
 
-> Choose this Undertaking to compose a song, choosing whether it will be a **Lay**, a **Song
-> of Victory**, or a **Walking-song**.
+> Escolha esta Empreitada para compor uma canção, escolhendo se ela será uma **Balada**, uma
+> **Canção de Vitória** ou uma **Canção de Caminhada**.
 
-The new composition is added to the Company's list of songs — this list is used to keep track
-of which songs are available to the Company to sing during an Adventuring Phase (see *Singing
-Songs*, below). The player is encouraged to come up with a song title, or its lyrics, for
-example taking inspiration from events that occurred to the Company, or focusing on one or
-more Player-heroes.
+A nova composição é acrescentada à lista de canções da Companhia — essa lista serve para
+controlar quais canções estão disponíveis para a Companhia cantar durante uma Fase de Aventura
+(ver *Cantar Canções*, adiante). O jogador é encorajado a inventar um título para a canção, ou
+sua letra, por exemplo inspirando-se em eventos que ocorreram à Companhia, ou focando em um ou
+mais heróis-jogadores.
 
-*A Company including a **Champion** can choose this activity as a free Undertaking.*
+*Uma Companhia que inclua um **Campeão** pode escolher esta atividade como Empreitada grátis.*
 
-**Song types:**
+**Tipos de canção:**
 
-- **LAY (Councils):** A Player-hero creates a short narrative poem, particularly appropriate
-  to narrate heroic deeds, and meant to be recited or sung at gatherings.
-- **SONG OF VICTORY (Combat):** Warriors sing stirring songs in combat, to lift their spirit
-  and renew their lust for battle.
-- **WALKING-SONG (Journey):** Travellers trudging along the final hours of a long day of
-  travelling may find it helpful to hum a merry song, especially when they are drawing near
-  to their destination.
+- **BALADA (Conselhos):** um herói-jogador cria um poema narrativo curto, particularmente
+  apropriado para narrar feitos heroicos, e destinado a ser recitado ou cantado em reuniões.
+- **CANÇÃO DE VITÓRIA (Combate):** guerreiros cantam canções inflamadas em combate, para
+  elevar seu ânimo e renovar seu apetite pela batalha.
+- **CANÇÃO DE CAMINHADA (Jornada):** viajantes que se arrastam nas horas finais de um longo dia
+  de viagem podem achar útil entoar uma canção alegre, especialmente quando estão se
+  aproximando de seu destino.
 
-**SINGING SONGS (sidebar — how composed songs are used during an Adventuring Phase):** When
-the Company is involved in a Council, Combat, or Journey, the Player-heroes may sing a song
-and rouse themselves to pursue their goals with renewed strength of purpose.
+**CANTAR CANÇÕES (box — como as canções compostas são usadas durante uma Fase de Aventura):**
+quando a Companhia está envolvida em um Conselho, um Combate ou uma Jornada, os heróis-jogadores
+podem cantar uma canção e animar-se para perseguir seus objetivos com renovada firmeza de
+propósito.
 
-> To do so, first choose a song from among those on the Company's song list that is
-> appropriate to the current venture (Combat, Journey, or Council). Then, make a **SONG**
-> roll. Heroes succeeding in the roll ignore the effects of being Weary for the length of the
-> heroic venture (singing a song in combat is considered a secondary action).
+> Para isso, primeiro escolha uma canção entre as que estão na lista de canções da Companhia
+> que seja apropriada ao empreendimento atual (Combate, Jornada ou Conselho). Depois, faça uma
+> rolagem de **CANTO**. Heróis que tiverem sucesso na rolagem ignoram os efeitos de estar
+> Exausto pela duração do empreendimento heroico (cantar uma canção em combate é considerado
+> uma ação secundária).
 
-Each song may be used by the Company **once for each Adventuring Phase**. Mark a song off the
-list once it has been spent. A song must be marked off whether it has been used successfully
-or not.
+Cada canção pode ser usada pela Companhia **uma vez em cada Fase de Aventura**. Marque a canção
+na lista quando ela tiver sido gasta. Uma canção deve ser marcada tenha ela sido usada com
+sucesso ou não.

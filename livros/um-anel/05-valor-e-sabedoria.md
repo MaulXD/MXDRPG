@@ -1,478 +1,477 @@
-# Chapter 5 — Valour and Wisdom — The One Ring 2e (fonte: Core Rules, p.77-89)
+# Capítulo 5 — Valor e Sabedoria — O Um Anel 2ª ed. (fonte: Core Rules, p.77-89)
 
-> Conteúdo original em inglês — aguardando tradução colaborativa.
 > Fonte: the one ring/The_One_Ring_Core_Rules.pdf
 
 ---
 
-> "There is more in you of good than you know, child of the kindly West. Some courage and some wisdom, blended in measure."
+> "Há mais coisas boas em você do que imagina, filho do gentil Oeste. Alguma coragem e alguma sabedoria, mescladas em medida."
 
-The heroic stature of an adventurer can be measured in different ways. *The One Ring* uses two gauges to show how an adventurer grows over the course of the game: VALOUR and WISDOM. These scores increase as a Player-hero overcomes challenges that others dare not undertake. They are profoundly different to other types of characteristics, both in what they represent and their influence on the game.
+A estatura heroica de um aventureiro pode ser medida de diferentes maneiras. *O Um Anel* usa dois indicadores para mostrar como um aventureiro cresce ao longo do jogo: VALOR e SABEDORIA. Esses valores aumentam quando um herói-jogador supera desafios que outros não ousam enfrentar. São profundamente diferentes de outros tipos de características, tanto no que representam quanto na influência que exercem sobre o jogo.
 
-WISDOM or VALOUR affect the game in several ways: they influence social interactions, provide Player-heroes with special abilities and superior equipment, and allow them to resist the dangerous influence of the Shadow (see The Shadow, page 136).
+SABEDORIA ou VALOR afetam o jogo de várias formas: influenciam interações sociais, concedem aos heróis-jogadores habilidades especiais e equipamento superior, e permitem que resistam à perigosa influência da Sombra (ver o capítulo da Sombra).
 
-- Rolls made using VALOUR and WISDOM are resolved as usual, rolling a Feat Die and a number of Success Dice equal to the appropriate rating in the challenged ability.
-- The difficulty is the HEART TN for rolls based on VALOUR, and the WITS TN for rolls based on WISDOM, as modified by the TN of the source that originated the roll.
+- Rolagens feitas com VALOR e SABEDORIA são resolvidas normalmente, rolando um Dado de Proeza e um número de Dados de Sucesso igual ao valor apropriado na habilidade testada.
+- A dificuldade é o NA de CORAÇÃO para rolagens baseadas em VALOR, e o NA de ASTÚCIA para rolagens baseadas em SABEDORIA, modificado pelo NA da fonte que originou a rolagem.
 
-## Wisdom
+## Sabedoria
 
-WISDOM expresses the Player-heroes' trust in their own capabilities, their self-confidence and capacity for good judgement. It is a characteristic with deeply personal implications, because it develops and improves through struggle and strife, and reflects an adventurer's growth in stature in the eyes of those folk that prize such qualities.
+SABEDORIA expressa a confiança dos heróis-jogadores em suas próprias capacidades, sua autoconfiança e sua capacidade de bom julgamento. É uma característica com implicações profundamente pessoais, porque se desenvolve e melhora através de luta e adversidade, e reflete o crescimento em estatura de um aventureiro aos olhos daqueles povos que valorizam tais qualidades.
 
-If a player chooses WISDOM over VALOUR when spending Experience points, it suggests that adventuring is affecting the Player-hero subtly but profoundly. Starting out as a naive individual with an adventurous spirit, adventurers can achieve the maturity and sagacity of the Wise.
+Se um jogador escolhe SABEDORIA em vez de VALOR ao gastar pontos de Experiência, isso sugere que a vida de aventuras está afetando o herói-jogador de forma sutil, mas profunda. Começando como um indivíduo ingênuo com espírito aventureiro, aventureiros podem alcançar a maturidade e a sagacidade dos Sábios.
 
-## Valour
+## Valor
 
-VALOUR is a measure of a hero's courage, as tempered by dangerous deeds. Individuals of valour are willing to place themselves in danger for the safety of others. In times where new threats arise each day, courage is highly prized, and a valiant adventurer is often esteemed above all others. For this reason, the VALOUR rank of Player-heroes reflects the level of renown they have attained as doers of great deeds.
+VALOR é uma medida da coragem de um herói, temperada por feitos perigosos. Indivíduos de valor estão dispostos a se colocar em perigo pela segurança dos outros. Em tempos nos quais novas ameaças surgem a cada dia, a coragem é altamente valorizada, e um aventureiro valente é muitas vezes estimado acima de todos os outros. Por essa razão, o grau de VALOR dos heróis-jogadores reflete o nível de renome que alcançaram como autores de grandes feitos.
 
-If a player decides to favour VALOUR over WISDOM in the course of the game, the status of the Player-hero in the eyes of others will be determined primarily by their actions and deeds. Even from the lowliest start as a wandering adventurer, adventurers may one day earn the repute and respect of famous heroes or kings.
+Se um jogador decide favorecer VALOR em vez de SABEDORIA ao longo do jogo, o status do herói-jogador aos olhos dos outros será determinado primariamente por suas ações e feitos. Mesmo partindo do mais humilde início como um aventureiro errante, aventureiros podem um dia conquistar a reputação e o respeito de heróis ou reis famosos.
 
-## Rewards
+## Recompensas
 
-> Háma knelt and presented to Théoden a long sword in a scabbard clasped with gold and set with green gems. "Here, lord, is Herugrim, your ancient blade..."
+> Háma ajoelhou-se e apresentou a Théoden uma longa espada em uma bainha ornada com ouro e cravejada de gemas verdes. "Aqui, senhor, está Herugrim, vossa antiga lâmina..."
 
-In a world of growing darkness, trade is mostly limited to small areas and is often practised only among trusted individuals. Finely crafted weapons or suits of armour cannot be purchased, but may — rarely — be awarded for service or heroic deeds. Rewards represent the characteristics of such high-quality weapons and defensive gear, priceless instruments of war given to heroes by their own folk or family, or by generous lords honouring them by letting them choose a weapon or a suit of armour from their personal armoury.
+Em um mundo de trevas crescentes, o comércio é em grande parte limitado a pequenas áreas e frequentemente praticado apenas entre indivíduos de confiança. Armas finamente trabalhadas ou conjuntos de armadura não podem ser comprados, mas podem — raramente — ser concedidos por serviços prestados ou feitos heroicos. Recompensas representam as características dessas armas e equipamentos defensivos de alta qualidade, instrumentos de guerra inestimáveis dados a heróis por seu próprio povo ou família, ou por senhores generosos que os honram permitindo que escolham uma arma ou um conjunto de armadura de seu arsenal pessoal.
 
-Rewards are upgrades that players can select to raise the effectiveness of their war gear. Each Reward affects a single characteristic of an item, for example improving its Load rating, its Damage, etc.
+Recompensas são melhorias que os jogadores podem selecionar para elevar a eficácia de seu Equipamento de Guerra. Cada Recompensa afeta uma única característica de um item, por exemplo, melhorando seu valor de Carga, seu Dano, etc.
 
-> Heroes from all Cultures choose a first Reward during character creation, and may choose a new one each time they gain a new rank in VALOUR.
+> Heróis de todas as Culturas escolhem uma primeira Recompensa durante a criação de personagem, e podem escolher uma nova cada vez que ganham um novo grau em VALOR.
 
-It is up to the players to decide whether a Reward represents the discovery of a previously unknown property of an item, or an entirely new weapon or suit of armour. Whatever their choice, they are encouraged to integrate the decisions into a narrative, telling the tale of how they received a gift or had their equipment improved.
+Cabe aos jogadores decidir se uma Recompensa representa a descoberta de uma propriedade antes desconhecida de um item, ou uma arma ou conjunto de armadura inteiramente novo. Qualquer que seja a escolha, eles são encorajados a integrar as decisões em uma narrativa, contando a história de como receberam um presente ou tiveram seu equipamento aprimorado.
 
-### Rewards List
+### Lista de Recompensas
 
-There are six types of Rewards. Each one indicates in brackets the type of gear that can receive that upgrade. All upgrades can be applied only once to the same piece of gear.
+Existem seis tipos de Recompensas. Cada uma indica entre parênteses o tipo de equipamento que pode receber aquela melhoria. Todas as melhorias podem ser aplicadas apenas uma vez ao mesmo item.
 
-**CLOSE-FITTING (ARMOUR OR HELM)**
+**AJUSTADO (ARMADURA OU ELMO)**
 
-A skilful smith has made this piece of protective equipment more difficult to overcome with a piercing blow.
+Um ferreiro habilidoso tornou esta peça de equipamento protetor mais difícil de ser superada por um Golpe Perfurante.
 
-- When you make a PROTECTION roll while wearing a close-fitting armour or helm you add +2 to the result.
+- Quando você faz uma rolagem de PROTEÇÃO usando uma armadura ou elmo Ajustado, some +2 ao resultado.
 
-**CUNNING MAKE (ARMOUR, HELM, OR SHIELD)**
+**FABRICAÇÃO ENGENHOSA (ARMADURA, ELMO OU ESCUDO)**
 
-A skilled craftsman has made this piece of equipment lighter or less cumbersome than its lesser counterparts.
+Um artesão habilidoso tornou esta peça de equipamento mais leve ou menos incômoda do que suas contrapartes inferiores.
 
-- Reduce the Load rating of the selected item by 2 (to a minimum of 0 Load).
+- Reduza em 2 o valor de Carga do item selecionado (até um mínimo de 0 de Carga).
 
-**FELL (WEAPON)**
+**CRUEL (ARMA)**
 
-Hard and straight, a Piercing Blow from a Fell weapon is stopped less easily by a suit of armour.
+Dura e reta, um Golpe Perfurante de uma arma Cruel é detido com menos facilidade por um conjunto de armadura.
 
-- Add 2 to the Injury rating of the selected weapon.
+- Some 2 ao valor de Ferimento da arma selecionada.
 
-A weapon that can be wielded with one or two hands gets the bonus to both its Injury ratings.
+Uma arma que pode ser empunhada com uma ou duas mãos recebe o bônus em ambos os seus valores de Ferimento.
 
-**GRIEVOUS (WEAPON)**
+**GRAVE (ARMA)**
 
-The weapon is strong and heavy, inflicting more harm on its targets.
+A arma é forte e pesada, infligindo mais dano em seus alvos.
 
-- Add 1 to the Damage rating of the selected weapon.
+- Some 1 ao valor de Dano da arma selecionada.
 
-**KEEN (WEAPON)**
+**AFIADO (ARMA)**
 
-Sharp or better-balanced, this weapon is now more likely to produce a Piercing Blow when hitting its target.
+Mais afiada ou melhor equilibrada, esta arma agora tem mais chance de produzir um Golpe Perfurante ao acertar seu alvo.
 
-- Attack rolls made with a Keen weapon score a Piercing Blow also on a result of 9 on the Feat die.
+- Rolagens de ataque feitas com uma arma Afiada causam um Golpe Perfurante também com um resultado de 9 no Dado de Proeza.
 
-**REINFORCED (SHIELD)**
+**REFORÇADO (ESCUDO)**
 
-The shield's structure is reinforced, possibly with a metal rim or a larger iron boss, letting its wearer parry blows with greater ease.
+A estrutura do escudo é reforçada, possivelmente com uma borda metálica ou um umbo de ferro maior, permitindo que seu portador apare golpes com maior facilidade.
 
-- Add 1 to your shield's Parry bonus.
+- Some 1 ao bônus de Bloqueio do seu escudo.
 
-### Items of Superior Worth
+### Itens de Valor Superior
 
-If a hero loses or breaks any piece of war gear during play, they can replace it or fix it at no cost at the next settlement they reach or during another appropriate moment in the narrative. At most, a small favour may be demanded, such as performing a task, or simply a song or tale, especially if the settlement is not of their own Culture.
+Se um herói perde ou quebra qualquer peça de Equipamento de Guerra durante o jogo, pode substituí-la ou consertá-la sem custo no próximo assentamento que alcançar ou em outro momento apropriado da narrativa. No máximo, um pequeno favor pode ser exigido, como realizar uma tarefa, ou simplesmente uma canção ou história, especialmente se o assentamento não for de sua própria Cultura.
 
-On the contrary, items upgraded with one or more Rewards enjoy a degree of 'plot immunity', and as such they should never be lost, broken, or be otherwise taken from a Player-hero (for example, a shield enhanced by a Reward cannot be smashed).
+Ao contrário, itens aprimorados com uma ou mais Recompensas gozam de um certo grau de "imunidade narrativa" e, como tal, nunca devem ser perdidos, quebrados ou tomados de um herói-jogador de qualquer outra forma (por exemplo, um escudo aprimorado por uma Recompensa não pode ser destroçado).
 
-For the same reason, they cannot be handed over to other Player-heroes to use, not even in the case of character death (prized items are usually buried with their owners). After all, a Reward is a token of recognition of a hero's renown, and that cannot be taken away or transferred.
+Pela mesma razão, não podem ser entregues a outros heróis-jogadores para uso, nem mesmo em caso de morte do personagem (itens preciosos são normalmente enterrados com seus donos). Afinal, uma Recompensa é um símbolo de reconhecimento do renome de um herói, e isso não pode ser retirado nem transferido.
 
-### Named Weapons
+### Armas com Nome
 
-Warriors and adventurers often name items of war gear that prove themselves worthy. This is most common with blades and spears, rarer with helms and shields — and almost unknown with armour.
+Guerreiros e aventureiros muitas vezes dão nome a peças de Equipamento de Guerra que se provam dignas. Isso é mais comum com lâminas e lanças, mais raro com elmos e escudos — e quase desconhecido com armaduras.
 
-Elves and Men follow similar naming traditions, bestowing titles upon their weapons — such as 'Orc-cleaver', 'Foe-hammer', or 'Battle-friend' — that glorify their effectiveness in battle. However, weapons with loftier or more poetic names — such as 'Snow Point' or 'Cold Star' — are almost always items of nobler lineage or greater antiquity, and are rarely given as Rewards.
+Elfos e Homens seguem tradições de nomeação semelhantes, conferindo títulos às suas armas — como "Fendedor-de-Orcs", "Martelo-dos-Inimigos" ou "Amigo-de-Batalha" — que glorificam sua eficácia em batalha. Contudo, armas com nomes mais elevados ou poéticos — como "Ponta de Neve" ou "Estrela Fria" — são quase sempre itens de linhagem mais nobre ou de maior antiguidade, e raramente são dados como Recompensas.
 
-Weapons of worth are so highly esteemed among the Bardings that they often name their sons and daughters after pieces of war gear — 'Bard' can be translated as 'Battle-axe'. The Dúnedain treasure their ancient blades, and pass them down through generations of warriors.
+Armas de valor são tão altamente estimadas entre os Bardos que eles frequentemente nomeiam seus filhos e filhas em homenagem a peças de Equipamento de Guerra — "Bard" pode ser traduzido como "Machado de Batalha". Os Dúnedain valorizam suas lâminas antigas e as transmitem através de gerações de guerreiros.
 
-Hobbits and Bree-landers rarely give titles to their weapons. If they do, it is probably because such an item has saved their lives. In any case, they tend to choose simple or otherwise unpretentious names taken from ordinary life.
+Hobbits e moradores da Terra de Bri raramente dão títulos às suas armas. Se o fazem, é provavelmente porque tal item salvou suas vidas. Em todo caso, tendem a escolher nomes simples ou de outra forma despretensiosos, tirados da vida cotidiana.
 
-Dwarves do not use names for their weapons at all, even renowned artefacts, which are most likely to be known by their legendary owners (such as the Axe of Durin). Of course, it is entirely possible that they do give names to their weapons but keep them secret.
+Anões não usam nomes para suas armas de forma alguma, nem mesmo para artefatos renomados, que são mais provavelmente conhecidos por seus donos lendários (como o Machado de Durin). Claro, é inteiramente possível que eles deem nomes às suas armas, mas os mantenham em segredo.
 
-## Virtues
+## Virtudes
 
-> They ... were believed to have strange powers of sight and hearing, and to understand the languages of beasts and birds.
+> Eles ... eram tidos como possuidores de estranhos poderes de visão e audição, e como capazes de entender as línguas das bestas e das aves.
 
-Virtues are special abilities that complement a hero's arsenal of Skills and Combat Proficiencies, describing aptitudes that come naturally to an adventurer, or that arise through time and practice. Much more than simple talents, Virtues define the heroic stature of the Player-heroes.
+Virtudes são habilidades especiais que complementam o arsenal de Perícias e Proficiências de Combate de um herói, descrevendo aptidões que vêm naturalmente a um aventureiro, ou que surgem com o tempo e a prática. Muito mais do que simples talentos, as Virtudes definem a estatura heroica dos heróis-jogadores.
 
-> Heroes from all Cultures choose a first Virtue during character creation, and may choose a new one each time they gain a new rank in WISDOM.
+> Heróis de todas as Culturas escolhem uma primeira Virtude durante a criação de personagem, e podem escolher uma nova cada vez que ganham um novo grau em SABEDORIA.
 
-### Virtues List
+### Lista de Virtudes
 
-There are six Virtues for players to choose from. Each talent can be acquired multiple times, should a player wish so.
+Existem seis Virtudes para os jogadores escolherem. Cada talento pode ser adquirido múltiplas vezes, se o jogador desejar.
 
-**CONFIDENCE**
+**CONFIANÇA**
 
-Overcoming difficulties has reinforced your spirit and renewed your faith in a brighter future.
+Superar dificuldades reforçou seu espírito e renovou sua fé em um futuro melhor.
 
-- Raise your maximum Hope rating by 2 points.
+- Aumente em 2 pontos seu valor máximo de Esperança.
 
-**DOUR-HANDED**
+**MÃO FIRME**
 
-Your blows have become more forceful and your aim steadier, allowing you to do greater harm.
+Seus golpes se tornaram mais poderosos e sua mira mais firme, permitindo que você cause maior dano.
 
-- When inflicting Special Damage in combat, add +1 to your STRENGTH rating on a Heavy Blow, and +1 to the Feat Die numerical result on a Pierce.
+- Ao infligir Dano Especial em combate, some +1 ao seu valor de FORÇA em um Golpe Pesado, e +1 ao resultado numérico do Dado de Proeza em um Golpe Perfurante.
 
-**HARDINESS**
+**ROBUSTEZ**
 
-Your determination and stamina have improved through hardship and toil.
+Sua determinação e seu vigor melhoraram através de privações e labor.
 
-- Raise your maximum Endurance rating by 2 points.
+- Aumente em 2 pontos seu valor máximo de Resistência.
 
-**MASTERY**
+**MAESTRIA**
 
-You have practised certain skills until they have become as natural as breathing.
+Você praticou certas perícias até que se tornassem tão naturais quanto respirar.
 
-- Choose two Skills and make them *Favoured*.
+- Escolha duas Perícias e torne-as *Favorecidas*.
 
-**NIMBLENESS**
+**AGILIDADE**
 
-Your skill (or fortune?) in battle has increased with your growth in wisdom.
+Sua habilidade (ou sorte?) em batalha aumentou com seu crescimento em sabedoria.
 
-- Raise your Parry rating by 1 point.
+- Aumente em 1 ponto seu valor de Bloqueio.
 
-**PROWESS**
+**PROEZA**
 
-Adventuring is honing your inborn talents.
+A vida de aventuras está apurando seus talentos inatos.
 
-- Lower one of your Attribute TNs by 1.
+- Reduza em 1 o NA de um de seus Atributos.
 
-## Cultural Virtues
+## Virtudes Culturais
 
-> "I am Bard, of the line of Girion; I am the slayer of the Dragon!"
+> "Eu sou Bard, da linhagem de Girion; eu sou o matador do Dragão!"
 
-The following pages describe a number of Cultural Virtues, special abilities that allow for a greater individualisation of a hero. They represent the secret talents of the dwellers of Middle-earth, and let adventurers accomplish things that are seen as extraordinary, if not magical, by ordinary folk.
+As páginas seguintes descrevem uma série de Virtudes Culturais, habilidades especiais que permitem uma maior individualização de um herói. Elas representam os talentos secretos dos habitantes da Terra-média, e permitem que aventureiros realizem coisas vistas como extraordinárias, se não mágicas, pelo povo comum.
 
-All Cultural Virtues describe abilities that can be employed under specific circumstances, at a cost, or else requiring a die roll — Players are advised to read each description carefully.
+Todas as Virtudes Culturais descrevem habilidades que podem ser empregadas sob circunstâncias específicas, com um custo, ou então exigindo uma rolagem de dados — os jogadores são aconselhados a ler cada descrição com atenção.
 
-> All Heroic Cultures feature six Cultural Virtues that can be chosen exclusively by members of that Culture, when they gain a new rank in WISDOM (in place of a standard Virtue), and only starting with WISDOM 2.
+> Todas as Culturas Heroicas apresentam seis Virtudes Culturais que podem ser escolhidas exclusivamente por membros daquela Cultura, quando ganham um novo grau em SABEDORIA (em lugar de uma Virtude padrão), e somente a partir de SABEDORIA 2.
 
-### Virtues of the Bardings
+### Virtudes dos Bardos
 
-The Bardings are Northmen of the noblest blood — a valiant people with a tradition of powerful kings. Considered lost for many long years, their ancient heritage has been tempered anew in dragon-fire, and is today once again in capable hands.
+Os Bardos são Nortenhos do mais nobre sangue — um povo valente com uma tradição de reis poderosos. Considerada perdida por muitos e longos anos, sua herança ancestral foi temperada de novo no fogo de dragão, e hoje está uma vez mais em mãos capazes.
 
 **CRAM**
 
-You have been taught the ancient recipe of cram, a biscuit-ish cake that keeps good indefinitely, made by your folk for long journeys. Albeit certainly not entertaining (and in fact, mostly a chewing exercise), it is doubtlessly sustaining and very nutritious.
+Você aprendeu a antiga receita do cram, um bolo semelhante a um biscoito que se conserva indefinidamente, feito pelo seu povo para longas jornadas. Embora certamente não seja divertido (e, de fato, seja em grande parte um exercício de mastigação), é sem dúvida sustentador e muito nutritivo.
 
-- Each time you gain Fatigue from a Journey Event, you gain 1 point less.
-- Additionally, when you take a Short Rest, you and all members of the Company regain an extra amount of lost Endurance equal to your WISDOM rating.
+- Cada vez que você ganha Fadiga por um Evento de Jornada, você ganha 1 ponto menos.
+- Além disso, quando você faz um Descanso Curto, você e todos os membros da Companhia recuperam uma quantidade extra de Resistência perdida igual ao seu valor de SABEDORIA.
 
-> *...they rested for a while and had such a breakfast as they could, chiefly cram and water.*
+> *...descansaram por um tempo e tomaram o café da manhã que puderam, principalmente cram e água.*
 
-**DRAGON-SLAYER**
+**MATADOR DE DRAGÕES**
 
-The legend of Bard the Bowman has inspired many young men and women from Dale, so much so that they long to prove their worth with the killing of a great monster. As many have before you, you have long pondered on the ways to deal with large creatures, hoping one day to gain renown defeating them.
+A lenda de Bard, o Arqueiro, inspirou muitos jovens homens e mulheres de Valle, tanto que eles anseiam por provar seu valor matando um grande monstro. Como muitos antes de você, você há muito reflete sobre as maneiras de lidar com criaturas enormes, esperando um dia conquistar renome ao derrotá-las.
 
-- When you are fighting creatures with Might 2 or more, all your attack rolls are *Favoured*.
+- Quando você está lutando contra criaturas com Poder (Might) 2 ou mais, todas as suas rolagens de ataque são *Favorecidas*.
 
-> *"I am Bard, and by my hand was the dragon slain and your treasure delivered."*
+> *"Eu sou Bard, e por minha mão o dragão foi morto e vosso tesouro entregue."*
 
-**DWARF-FRIEND**
+**AMIGO DOS ANÕES**
 
-The days of the Dragon have forged a strong alliance between the Bardings and the Dwarves of Erebor.
+Os dias do Dragão forjaram uma forte aliança entre os Bardos e os Anões de Erebor.
 
-- If your Fellowship focus is a Dwarf, when you both fight in a Defensive stance you and your Fellowship focus may attempt the Protect Companion combat task to benefit the other as a secondary action.
-- Additionally, Dwarves are always considered to be Friendly towards you during the Interaction stage of a council.
+- Se o foco do seu Companheirismo é um Anão, quando ambos lutam em uma postura Defensiva, você e o foco do seu Companheirismo podem tentar a tarefa de combate Proteger Companheiro para beneficiar o outro como uma ação secundária.
+- Além disso, Anões são sempre considerados Amistosos em relação a você durante a etapa de Interação de um conselho.
 
-> *"Nowhere are there any men so friendly to us as the Men of Dale."*
+> *"Em nenhum lugar existem homens tão amigos de nós como os Homens de Valle."*
 
-**FIERCE SHOT**
+**TIRO FEROZ**
 
-The Black Arrow that brought down Smaug the Dragon may have been fated to do so, but the hand that sent it flying so fiercely was exceedingly strong. When you throw a spear or bend your bow, you make sure that your grip is steady and your aim true.
+A Flecha Negra que derrubou Smaug, o Dragão, pode ter sido destinada a isso, mas a mão que a lançou tão ferozmente era extremamente forte. Quando você arremessa uma lança ou retesa seu arco, você garante que sua pegada seja firme e sua mira, certeira.
 
-- When you score a Piercing Blow on a ranged attack, the PROTECTION roll of the target is *Ill-favoured*.
+- Quando você causa um Golpe Perfurante em um ataque à distância, a rolagem de PROTEÇÃO do alvo é *Desfavorecida*.
 
-> *The great bow twanged... the arrow... smote and vanished, barb, shaft and feather...*
+> *O grande arco vibrou... a flecha... atingiu e desapareceu, farpa, haste e pena...*
 
-**HIGH DESTINY**
+**ALTO DESTINO**
 
-Stories tell that those who belong to the bloodline of Dale are destined for greatness, a fact proven true by your King and his story. Do you share the same destiny of those of the line of Girion?
+As histórias contam que aqueles que pertencem à linhagem de Valle estão destinados à grandeza, um fato comprovado pelo seu Rei e sua história. Você compartilha o mesmo destino daqueles da linhagem de Girion?
 
-- The first time that you receive a Wound that would normally kill you — a deadly wound — you are saved by some miraculous circumstance that leaves you Wounded but alive, and you immediately raise your maximum Hope rating by 2 points. Then, your destiny is completed (you can do this only once).
+- A primeira vez que você recebe um Ferimento que normalmente o mataria — um ferimento mortal — você é salvo por alguma circunstância milagrosa que o deixa Ferido, mas vivo, e você imediatamente aumenta em 2 pontos seu valor máximo de Esperança. Então, seu destino está cumprido (você pode fazer isso apenas uma vez).
 
-> *"Bard is not lost!" he cried. "He dived from Esgaroth, when the enemy was slain. I am Bard, of the line of Girion..."*
+> *"Bard não está perdido!", ele gritou. "Ele saltou de Esgaroth quando o inimigo foi morto. Eu sou Bard, da linhagem de Girion..."*
 
-**THE LANGUAGE OF BIRDS**
+**A LÍNGUA DOS PÁSSAROS**
 
-Stories told in the North speak of how Dalemen can become so wise as to comprehend the speech of birds, and so by understanding their song be forewarned of impending threats, or be able to spot a weakness in their enemies' defences.
+Histórias contadas no Norte falam de como os homens de Valle podem se tornar tão sábios que chegam a compreender a fala dos pássaros e, assim, ao entender seu canto, ser avisados de ameaças iminentes, ou ser capazes de identificar uma fraqueza nas defesas de seus inimigos.
 
-- You can communicate with any bird with appropriate Skill rolls, usually using COURTESY, PERSUADE, or SONG, to receive tidings, deliver messages, and so on.
-- Additionally, when you are outside, once during each Combat, Council or Journey, you can choose to become Inspired on any one roll.
+- Você pode se comunicar com qualquer pássaro com rolagens de Perícia apropriadas, normalmente usando CORTESIA, PERSUASÃO ou CANTO, para receber notícias, entregar mensagens, e assim por diante.
+- Além disso, quando você está ao ar livre, uma vez durante cada Combate, Conselho ou Jornada, você pode escolher se tornar Inspirado em uma rolagem qualquer.
 
-> *"...it was only an old thrush. Unafraid it perched by his ear and it brought him news. Marvelling he found he could understand its tongue..."*
+> *"...era apenas um velho tordo. Sem medo, pousou junto ao seu ouvido e lhe trouxe notícias. Maravilhado, ele descobriu que podia entender sua língua..."*
 
-### Virtues of the Dwarves
+### Virtudes dos Anões
 
-The reserved and surly character of Dwarves has often been misinterpreted by others as hostility or untrustworthiness. Their secretiveness has even led other folks to believe that they possess strange and uncanny powers.
+O caráter reservado e rude dos Anões muitas vezes foi mal interpretado por outros como hostilidade ou falta de confiabilidade. Seu segredismo levou até outros povos a acreditar que eles possuem poderes estranhos e sobrenaturais.
 
 **BARUK KHAZÂD!**
 
-The secret tongue of the Dwarves is guarded as a treasure of the past, yet their battle-cry is well-known and feared by their chief foes.
+A língua secreta dos Anões é guardada como um tesouro do passado, mas seu grito de guerra é bem conhecido e temido por seus principais inimigos.
 
-- Once per combat, when you fight in a Forward stance you can make your attack roll *Favoured* and attempt the Intimidate Foe combat task as a secondary action.
+- Uma vez por combate, quando você luta em uma postura Avançada, você pode tornar sua rolagem de ataque *Favorecida* e tentar a tarefa de combate Intimidar Inimigo como uma ação secundária.
 
-> *"Baruk Khazâd! Khazâd ai-mênu!" An axe swung and swept back. Two Orcs fell headless. The rest fled.*
+> *"Baruk Khazâd! Khazâd ai-mênu!" Um machado girou e voltou. Dois Orcs caíram sem cabeça. O resto fugiu.*
 
-**BROKEN SPELLS**
+**FEITIÇOS QUEBRADOS**
 
-In ancient times, the Dwarves made mighty spells. You have been taught fragments of old enchantments that retain some power to this day.
+Nos tempos antigos, os Anões criavam poderosos feitiços. Você aprendeu fragmentos de antigos encantamentos que retêm algum poder até hoje.
 
-- Choose one Skill for each category (STRENGTH, HEART, and WITS) and mark them with a dot (or rune!) on your character sheet. Whenever you use any one of the three marked Skills, you can spend 1 Hope to achieve a Magical success.
+- Escolha uma Perícia de cada categoria (FORÇA, CORAÇÃO e ASTÚCIA) e marque-as com um ponto (ou runa!) em sua ficha de personagem. Sempre que você usar qualquer uma das três Perícias marcadas, você pode gastar 1 Esperança para obter um sucesso Mágico.
 
-> *...they spoke fragments of broken spells of opening...*
+> *...proferiram fragmentos de feitiços quebrados de abertura...*
 
-**DARK FOR DARK BUSINESS**
+**ESCURO PARA NEGÓCIOS ESCUROS**
 
-Your kind is not troubled by mere darkness in itself, as most of the members of other cultures are. On the contrary, you have grown to like the dark better than the light, finding yourself at ease in its cold embrace.
+Seu povo não se incomoda com a mera escuridão em si, como a maioria dos membros de outras culturas se incomoda. Ao contrário, você passou a gostar mais do escuro do que da luz, sentindo-se à vontade em seu abraço frio.
 
-- When you are in the dark (at night, or underground) you are Inspired on all your rolls.
+- Quando você está no escuro (à noite ou sob a terra), você é Inspirado em todas as suas rolagens.
 
-> *"We like the dark," said the dwarves. "Dark for dark business! There are many hours before dawn."*
+> *"Nós gostamos do escuro", disseram os anões. "Escuro para negócios escuros! Há muitas horas antes do amanhecer."*
 
-**DURIN'S WAY**
+**O MODO DE DURIN**
 
-The Dwarves have fought many wars in deep places beneath the earth. You have been taught how to best defend yourself while fighting underground. As a result, you know how to exploit corners, darkness, and other natural obstacles to your advantage.
+Os Anões travaram muitas guerras em lugares profundos sob a terra. Você aprendeu a melhor forma de se defender lutando sob a terra. Como resultado, você sabe como explorar cantos, escuridão e outros obstáculos naturais em sua vantagem.
 
-- Add +2 to your Parry rating when fighting underground, or in otherwise cramped quarters, like inside a building.
+- Some +2 ao seu valor de Bloqueio quando lutar sob a terra, ou em outros lugares apertados, como dentro de um edifício.
 
-> *That was the beginning of the War of the Dwarves and the Orcs, which was long and deadly, and fought for the most part in deep places beneath the earth.*
+> *Aquele foi o começo da Guerra dos Anões e dos Orcs, que foi longa e mortal, e travada em grande parte em lugares profundos sob a terra.*
 
-**STONE-HARD**
+**DURO COMO PEDRA**
 
-The Dwarves were made to be strong and endure, for they came unto the world when a great evil ruled Middle-earth. As long as your spirit supports your strength, you can resist any hurt of the body more hardily than most.
+Os Anões foram feitos para serem fortes e resistir, pois vieram ao mundo quando um grande mal governava a Terra-média. Enquanto seu espírito sustentar sua força, você pode resistir a qualquer dano ao corpo mais tenazmente do que a maioria.
 
-- All your PROTECTION rolls are *Favoured*, as long as you are not Miserable.
+- Todas as suas rolagens de PROTEÇÃO são *Favorecidas*, desde que você não esteja Arrasado.
 
-> *They are (…) secretive, laborious, retentive of the memory of injuries (and of benefits) ...*
+> *Eles são (…) reservados, laboriosos, guardando a memória das ofensas (e dos benefícios) ...*
 
-**UNTAMEABLE SPIRIT**
+**ESPÍRITO INDOMÁVEL**
 
-Dwarves were made from their beginning to resist any form of domination. You have strengthened your resolve against all but the most subtle of the weapons of the Enemy.
+Os Anões foram feitos desde seu princípio para resistir a qualquer forma de dominação. Você fortaleceu sua determinação contra todas, exceto as mais sutis, das armas do Inimigo.
 
-- Raise your maximum Hope rating by 1 point. You *gain (1d)* on all Shadow Tests made to resist the effects of Sorcery.
+- Aumente em 1 ponto seu valor máximo de Esperança. Você *ganha (1d)* em todos os Testes de Sombra feitos para resistir aos efeitos de Feitiçaria.
 
-> *Though they could be slain or broken, they could not be reduced to shadows enslaved to another will...*
+> *Embora pudessem ser mortos ou quebrados, não podiam ser reduzidos a sombras escravizadas a outra vontade...*
 
-### Virtues of the Elves
+### Virtudes dos Elfos
 
-Elves are synonymous with magic for most inhabitants of Middle-earth. The word 'magic' itself invokes images of their grace, the products of their craft, and their unearthly beauty.
+Elfos são sinônimo de magia para a maioria dos habitantes da Terra-média. A própria palavra "magia" evoca imagens de sua graça, dos produtos de seu ofício e de sua beleza sobrenatural.
 
-**AGAINST THE UNSEEN**
+**CONTRA O INVISÍVEL**
 
-Elves can perceive creatures that dwell in the wraith-world, be they spirits or ghosts, even when they are normally invisible to the eyes of the living and appear only as a chilling whisper of voices. You have learnt to strengthen your heart against such terrors.
+Elfos podem perceber criaturas que habitam o mundo dos espectros, sejam espíritos ou fantasmas, mesmo quando normalmente são invisíveis aos olhos dos vivos e se manifestam apenas como um sussurro gelado de vozes. Você aprendeu a fortalecer seu coração contra tais terrores.
 
-- All your Shadow Tests due to Dread are *Favoured*, and you additionally *gain (1d)* on those rolls forced upon you by an evil spirit or ghost (including creatures possessed by one).
+- Todos os seus Testes de Sombra devidos a Pavor são *Favorecidos*, e você adicionalmente *ganha (1d)* nas rolagens impostas a você por um espírito maligno ou fantasma (incluindo criaturas possuídas por um).
 
-> *"I also will come," said Legolas, "for I do not fear the Dead."*
+> *"Eu também irei", disse Legolas, "pois não temo os Mortos."*
 
-**DEADLY ARCHERY**
+**ARQUEIRIA MORTAL**
 
-Elves possess a natural talent for hitting the mark when using their bows. You have honed this talent almost to perfection, and your arrows find their target with uncanny precision.
+Elfos possuem um talento natural para acertar o alvo ao usar seus arcos. Você apurou esse talento quase à perfeição, e suas flechas encontram seu alvo com precisão sobrenatural.
 
-- When using a Bow (not a Great Bow) and fighting in Rearward Stance, you may attempt the Prepare Shot combat task as a secondary action.
+- Ao usar um Arco (não um Arco Grande) e lutar em postura de Retaguarda, você pode tentar a tarefa de combate Preparar Tiro como uma ação secundária.
 
-> *...their small knives... would have been of no use against the arrows of the Elves that could hit a bird's eye in the dark.*
+> *...suas pequenas facas... não teriam servido de nada contra as flechas dos Elfos, que podiam acertar o olho de um pássaro no escuro.*
 
 **ELBERETH GILTHONIEL!**
 
-The name of Elbereth, the Queen of the Stars, is revered by all the Eldar still dwelling in Middle-earth. You have resorted to calling on her name in moments of great need, asking the Kindler to bestow her grace upon you.
+O nome de Elbereth, a Rainha das Estrelas, é reverenciado por todos os Eldar que ainda habitam a Terra-média. Você passou a invocar seu nome em momentos de grande necessidade, pedindo à Acendedora que lhe conceda sua graça.
 
-- Raise your maximum Hope rating by 1 point. During the Adventuring Phase you can become Inspired on a number of rolls equal to your WISDOM rating.
+- Aumente em 1 ponto seu valor máximo de Esperança. Durante a Fase de Aventura, você pode se tornar Inspirado em um número de rolagens igual ao seu valor de SABEDORIA.
 
-> *"Elbereth Gilthoniel!" sighed Legolas as he looked up.*
+> *"Elbereth Gilthoniel!", suspirou Legolas ao olhar para cima.*
 
-**ELVISH DREAMS**
+**SONHOS ÉLFICOS**
 
-The spirit of Elves is so strong that their bodies recover swiftly from many ills and injuries. As your WISDOM has grown you have felt less and less the need to lie down to get better. Instead, you can recover from your exertions while awake, finding repose in the secret way of your folk.
+O espírito dos Elfos é tão forte que seus corpos se recuperam rapidamente de muitos males e ferimentos. À medida que sua SABEDORIA cresceu, você sentiu cada vez menos a necessidade de se deitar para melhorar. Em vez disso, você pode recuperar-se de seus esforços enquanto está acordado, encontrando repouso no modo secreto do seu povo.
 
-- You don't need to sleep, as long as you can engage in simple, repetitive activities. When you take a Short Rest you are considered to have had a Prolonged Rest instead.
+- Você não precisa dormir, desde que possa se ocupar de atividades simples e repetitivas. Quando você faz um Descanso Curto, é considerado que você teve um Descanso Prolongado.
 
-> *...he could sleep, if sleep it could be called by Men, resting his mind in the strange paths of elvish dreams, even as he walked open-eyed in the light of this world.*
+> *...ele podia dormir, se dormir se podia chamar pelos Homens, repousando a mente nos estranhos caminhos dos sonhos élficos, mesmo enquanto caminhava de olhos abertos à luz deste mundo.*
 
-**GLEAM OF WRATH**
+**BRILHO DE IRA**
 
-Your folk have seen many defeats, and many fruitless victories in their wars against the Shadow. The deadly rage that your kindred harbour for the Enemy infuses your weapons with a gleam of chill flame.
+Seu povo viu muitas derrotas e muitas vitórias infrutíferas em suas guerras contra a Sombra. A fúria mortal que sua gente guarda pelo Inimigo infunde suas armas com um brilho de chama gélida.
 
-- On a successful attack roll your adversary additionally loses one point of Hate or Resolve, plus one point for each Success icon (𝕊).
+- Em uma rolagem de ataque bem-sucedida, seu adversário adicionalmente perde um ponto de Ódio ou Determinação, mais um ponto por cada ícone de Sucesso (𝕊).
 
-> *The Elves were the first to charge. Their hatred for the Goblins is cold and bitter.*
+> *Os Elfos foram os primeiros a atacar. Seu ódio pelos Trasgos é frio e amargo.*
 
-**MEMORY OF ANCIENT DAYS**
+**MEMÓRIA DOS DIAS ANTIGOS**
 
-Long centuries and uncounted generations of Men seem but a little while to the Elves. Your memories go back to a time before Eriador became desolate, and your knowledge of the land is returning to you now that you are traveling again outside the boundaries of your realm.
+Longos séculos e incontáveis gerações de Homens parecem apenas um breve momento para os Elfos. Suas memórias remontam a um tempo antes de Eriador se tornar desolada, e seu conhecimento da terra está retornando a você agora que você viaja novamente para fora das fronteiras do seu reino.
 
-- When you are targeted by a Journey Event, the roll on the Journey Events table is done as if you were in a Border Land (the Loremaster rolls two Feat dice and keeps the best result).
+- Quando você é o alvo de um Evento de Jornada, a rolagem na tabela de Eventos de Jornada é feita como se você estivesse em uma Terra Fronteiriça (o Mestre rola dois Dados de Proeza e mantém o melhor resultado).
 
-> *"But it is not your own Shire," said Gildor. "Others dwelt here before hobbits were; and others will dwell here again when hobbits are no more."*
+> *"Mas não é o seu próprio Condado", disse Gildor. "Outros habitaram aqui antes que houvesse hobbits; e outros habitarão aqui novamente quando os hobbits não existirem mais."*
 
-### Virtues of the Hobbits
+### Virtudes dos Hobbits
 
-Hobbits rarely display Virtues considered to be heroic by other Cultures, which partly explains their absence from history as written by Elves and Men. But to the discerning eye, these merry fellows reveal subtle qualities, often excelling in fields where stronger individuals might fail.
+Hobbits raramente exibem Virtudes consideradas heroicas por outras Culturas, o que explica em parte sua ausência da história tal como escrita por Elfos e Homens. Mas, ao olhar atento, esses sujeitos alegres revelam qualidades sutis, muitas vezes se destacando em campos nos quais indivíduos mais fortes falhariam.
 
-**ART OF DISAPPEARING**
+**ARTE DE DESAPARECER**
 
-Hobbits are said to have little or no magic about them, but the way they can choose to disappear quickly and quietly can be described by others only as supernatural. You have learnt to choose exactly the right moment to turn away from the attention of others, sometimes unconsciously anticipating the need to disappear.
+Dizem que os Hobbits têm pouca ou nenhuma magia, mas o modo como conseguem desaparecer rápida e silenciosamente só pode ser descrito por outros como sobrenatural. Você aprendeu a escolher exatamente o momento certo para se afastar da atenção dos outros, às vezes antecipando inconscientemente a necessidade de desaparecer.
 
-- If a location or a situation offers even the smallest opportunity to hide or sneak silently away, make a STEALTH roll: If you get one or more Success icons (𝕊), you can spend one to simply disappear.
+- Se um local ou uma situação oferece até a menor oportunidade de se esconder ou escapulir silenciosamente, faça uma rolagem de FURTIVIDADE: se você obtiver um ou mais ícones de Sucesso (𝕊), você pode gastar um para simplesmente desaparecer.
 
-If anyone expects you to be there, it will seem as if you have vanished into thin air. You can choose to reveal yourself at any moment by simply stepping out into the open from your hiding place.
+Se alguém esperar que você esteja ali, parecerá que você se desvaneceu no ar. Você pode escolher se revelar a qualquer momento, simplesmente saindo do seu esconderijo para o descoberto.
 
-> *They possessed from the first the art of disappearing swiftly and silently, when large folk whom they do not wish to meet came blundering by...*
+> *Possuíam desde o princípio a arte de desaparecer rápida e silenciosamente, quando gente grande que não desejavam encontrar vinha passando desajeitadamente...*
 
-**BRAVE AT A PINCH**
+**CORAJOSO NUM APERTO**
 
-One of the Wise once said that you have to put a Hobbit in a tight place before you find out what is in them. You prefer to avoid finding yourself in one, but you are also sure you would be able to take good care of yourself in the circumstances.
+Um dos Sábios disse uma vez que é preciso colocar um Hobbit em um aperto antes de descobrir o que há dentro dele. Você prefere evitar se encontrar em um, mas também está certo de que seria capaz de cuidar bem de si mesmo nessas circunstâncias.
 
-- As long as you are Miserable, Weary, or Wounded, you are Inspired on all your rolls.
+- Enquanto você estiver Arrasado, Exausto ou Ferido, você é Inspirado em todas as suas rolagens.
 
-> *"...he is one of the best, one of the best — as fierce as a dragon in a pinch."*
+> *"...ele é um dos melhores, um dos melhores — feroz como um dragão num aperto."*
 
-**SMALL FOLK**
+**GENTE PEQUENA**
 
-Hobbits are a little people, but their resourcefulness far exceeds their stature. You have learnt how to exploit your small size to your advantage in a fight.
+Hobbits são um povo pequeno, mas sua desenvoltura excede em muito sua estatura. Você aprendeu a explorar seu tamanho reduzido em sua vantagem em uma luta.
 
-- When you are engaged in close combat with a creature bigger than you (very often!) you add +2 to your Parry rating. Additionally, you can assume a Rearward stance in combat even if there is only one other Company member fighting in a Close Combat stance.
+- Quando você está engajado em combate corpo a corpo com uma criatura maior que você (muito frequentemente!), você soma +2 ao seu valor de Bloqueio. Além disso, você pode assumir uma postura de Retaguarda em combate mesmo se houver apenas um outro membro da Companhia lutando em uma postura de Combate Corpo a Corpo.
 
-> *For they are a little people, smaller than Dwarves...*
+> *Pois são um povo pequeno, menores que os Anões...*
 
-**SURE AT THE MARK**
+**MIRA CERTEIRA**
 
-Hobbits are nimble and keen-eyed, qualities that make them good archers. You have honed this natural talent to perfection, so much so that you just need to stoop for a stone to find yourself armed with a deadly weapon.
+Hobbits são ágeis e têm olhos aguçados, qualidades que os tornam bons arqueiros. Você apurou esse talento natural à perfeição, tanto que basta se abaixar para pegar uma pedra e você se encontra armado com uma arma mortal.
 
-- All your ranged attacks are *Favoured*. If you attack by throwing a stone, the roll produces a Piercing Blow on a result of 𝕊, with an Injury rating of 12.
+- Todos os seus ataques à distância são *Favorecidos*. Se você atacar arremessando uma pedra, a rolagem produz um Golpe Perfurante com um resultado de 𝕊, com um valor de Ferimento de 12.
 
-> *They shot well with the bow, for they were keen-eyed and sure at the mark. Not only with bows and arrows.*
+> *Atiravam bem com o arco, pois tinham olhos aguçados e mira certeira. E não apenas com arcos e flechas.*
 
-**THREE IS COMPANY**
+**TRÊS É COMPANHIA**
 
-The Wise say that it is sometimes best to trust to friendship than to great wisdom. This is particularly true for Hobbits, as everyone knows that it is hardly possible to separate them from their friends. You have given your trust to your fellow Company members, and a true friendship has grown from the bond unifying you.
+Os Sábios dizem que às vezes é melhor confiar na amizade do que na grande sabedoria. Isso é particularmente verdadeiro para os Hobbits, pois todos sabem que é quase impossível separá-los de seus amigos. Você depositou sua confiança nos companheiros de sua Companhia, e uma verdadeira amizade cresceu do vínculo que os une.
 
-- Raise your Company's Fellowship rating by 1 point. Additionally, you may select a second Fellowship Focus.
+- Aumente em 1 ponto o valor de Companheirismo da sua Companhia. Além disso, você pode selecionar um segundo Foco de Companheirismo.
 
-> *"We hobbits ought to stick together, and we will. I shall go, unless they chain me up."*
+> *"Nós hobbits devemos ficar juntos, e ficaremos. Eu irei, a menos que me acorrentem."*
 
-**TOUGH AS OLD TREE-ROOTS**
+**RESISTENTE COMO RAÍZES ANTIGAS**
 
-They say that Hobbits are difficult to dismay or kill, and that they recover their health at a prodigious pace if allowed to enjoy some peace and quiet. You have discovered that you recover wonderfully from falls and bruises (at the cost of some considerable pain).
+Dizem que Hobbits são difíceis de desanimar ou matar, e que recuperam a saúde a um ritmo prodigioso se lhes for permitido desfrutar de alguma paz e tranquilidade. Você descobriu que se recupera admiravelmente de quedas e contusões (ao custo de uma dor considerável).
 
-- When you are Wounded and must roll to determine the severity of your injury, you roll two Feat Dice instead of one and choose the better of the two results. In addition, double your STRENGTH score when calculating the number of Endurance points you recover when resting.
+- Quando você está Ferido e deve rolar para determinar a gravidade do seu ferimento, você rola dois Dados de Proeza em vez de um e escolhe o melhor dos dois resultados. Além disso, dobre seu valor de FORÇA ao calcular o número de pontos de Resistência que você recupera ao descansar.
 
-> *"They are a remarkable race," said the Warden, nodding his head. "Very tough in the fibre, I deem."*
+> *"Eles são uma raça notável", disse o Guardião, acenando com a cabeça. "Muito resistentes na fibra, eu diria."*
 
-### Virtues of the Men of Bree
+### Virtudes dos Homens de Bri
 
-The Bree-folk live a sheltered life, it is true; but there is an upside in being fond of a warm hearth and the company of friends — you know there is something worth fighting for.
+O povo de Bri leva uma vida protegida, é verdade; mas há uma vantagem em gostar de uma lareira quente e da companhia dos amigos — você sabe que existe algo pelo que vale a pena lutar.
 
-**BREE-PONY**
+**PÔNEI DE BRI**
 
-Bree-ponies are very similar to their owners, the Bree-folk — they don't seem to have anything special compared to their peers in other parts of Middle-earth, and yet some of them display uncommon courage and exceptional memory. You have acquired an unusually brave and intelligent beast that follows you everywhere.
+Pôneis de Bri são muito parecidos com seus donos, o povo de Bri — não parecem ter nada de especial em comparação com seus pares em outras partes da Terra-média e, no entanto, alguns deles demonstram coragem incomum e memória excepcional. Você adquiriu um animal extraordinariamente corajoso e inteligente que o segue por todos os lugares.
 
-- Raise your maximum Hope rating by 1 point. Additionally, your pony has a Vigour rating of 4 (regardless of your Standard of Living).
+- Aumente em 1 ponto seu valor máximo de Esperança. Além disso, seu pônei tem um valor de Vigor de 4 (independentemente do seu Padrão de Vida).
 
-Your pony never leaves your side. If you are forced to abandon it, for example to enter an underground passage, you can choose to find the pony where you left it when you return, or to have it find its way back to Bree.
+Seu pônei nunca deixa seu lado. Se você for forçado a abandoná-lo, por exemplo para entrar em uma passagem subterrânea, você pode escolher encontrar o pônei onde o deixou ao retornar, ou fazer com que ele encontre o caminho de volta para Bri.
 
-> *Bill the pony was with them, and as before he had a good deal of baggage, but he trotted along beside Sam and seemed well content.*
+> *Bill, o pônei, estava com eles e, como antes, carregava boa parte da bagagem, mas trotava ao lado de Sam e parecia bem contente.*
 
-**DEFIANCE**
+**DESAFIO**
 
-Many realms have risen and fallen in the Lone-lands of Eriador since the Elder Days. Only ruins remain to mark their boundaries. Yet, the Bree-men have endured, revealing an unexpected reserve of strength and vigour in the face of adversity.
+Muitos reinos se ergueram e caíram nas Terras Solitárias de Eriador desde os Dias Antigos. Apenas ruínas restam para marcar suas fronteiras. Ainda assim, os Homens de Bri perduraram, revelando uma inesperada reserva de força e vigor diante da adversidade.
 
-- At the end of each Combat scene, if you are not Wounded or Miserable you recover a number of Endurance points equal to your HEART or VALOUR score, whichever is higher.
+- No fim de cada cena de Combate, se você não estiver Ferido nem Arrasado, você recupera um número de pontos de Resistência igual ao seu valor de CORAÇÃO ou de VALOR, o que for maior.
 
-> *Few had survived the turmoils of the Elder Days; but when the Kings returned again over the Great Sea they had found the Bree-men still there...'*
+> *Poucos sobreviveram aos tumultos dos Dias Antigos; mas quando os Reis retornaram de novo através do Grande Mar, encontraram os Homens de Bri ainda ali...*
 
-**DESPERATE COURAGE**
+**CORAGEM DESESPERADA**
 
-You have lived all your life on the edge of the Wild, but the worst news that has come to Bree in your time concerned only brigands or packs of hungry wolves. You don't know yet what the likes of you can do against the Shadow in the East, but you are sure you will stand against it, no matter the cost.
+Você viveu toda a sua vida na orla das Terras Selvagens, mas a pior notícia que chegou a Bri em seu tempo dizia respeito apenas a bandidos ou matilhas de lobos famintos. Você ainda não sabe o que alguém como você pode fazer contra a Sombra no Leste, mas está certo de que resistirá a ela, custe o que custar.
 
-- When you choose to spend Hope on a roll, you can choose to also gain 1 Shadow to be Inspired for that roll.
+- Quando você escolhe gastar Esperança em uma rolagem, você pode escolher também ganhar 1 Sombra para ficar Inspirado naquela rolagem.
 
-> *"Are you still willing to help me?" "I am," said Mr. Butterbur. "More than ever."*
+> *"Ainda está disposto a me ajudar?" "Estou", disse o Sr. Carrapicho. "Mais do que nunca."*
 
-**FRIENDLY AND FAMILIAR**
+**AMIGÁVEL E FAMILIAR**
 
-Since you started your adventures, you have realised that your folk's custom of trading with foreigners may help you in your endeavours. Your nice manners and friendly demeanor easily gain the sympathies of those you meet, and your ability to inquire about the doings of strangers, without letting your curiosity get the better of you, provide you with many opportunities to learn from those you meet along the way.
+Desde que começou suas aventuras, você percebeu que o costume do seu povo de negociar com forasteiros pode ajudá-lo em seus empreendimentos. Suas boas maneiras e seu jeito amigável facilmente conquistam a simpatia daqueles que você encontra, e sua habilidade de indagar sobre os afazeres de estranhos, sem deixar que a curiosidade o domine, lhe proporciona muitas oportunidades de aprender com aqueles que encontra pelo caminho.
 
-- Raise by 1 the maximum number of Skill rolls that you may attempt in the course of a council. Additionally, the folk encountered are always considered Friendly towards you.
+- Aumente em 1 o número máximo de rolagens de Perícia que você pode tentar no decorrer de um conselho. Além disso, o povo encontrado é sempre considerado Amistoso em relação a você.
 
-> *...they were more friendly and familiar with Hobbits, Dwarves, Elves, and other inhabitants of the world about them than was (or is) usual with Big People.*
+> *...eram mais amigáveis e familiares com Hobbits, Anões, Elfos e outros habitantes do mundo ao seu redor do que era (ou é) usual entre a Gente Grande.*
 
-**STRANGE AS NEWS FROM BREE**
+**ESTRANHO COMO NOTÍCIAS DE BRI**
 
-It is indeed true that the affairs of the four villages are the chief concern of the Bree-folk, but the most inquisitive among the inhabitants are always ready to gather what tidings come from distant lands. You have learnt that listening to the strange tales that travellers often talk about can prove to be very precious.
+É de fato verdade que os assuntos das quatro aldeias são a principal preocupação do povo de Bri, mas os mais curiosos entre os habitantes estão sempre prontos a reunir as notícias que vêm de terras distantes. Você aprendeu que ouvir as estranhas histórias que os viajantes costumam contar pode se mostrar muito valioso.
 
-- During any Fellowship Phase you can make an INSIGHT or RIDDLE roll. If you succeed, you receive a rumour from the Loremaster.
+- Durante qualquer Fase de Companhia, você pode fazer uma rolagem de PERSPICÁCIA ou ENIGMA. Se você tiver sucesso, você recebe um rumor do Mestre.
 
-> *Strange as News from Bree was still a saying in the Eastfarthing, descending from those days, when news from North, South, and East could be heard in the inn...*
+> *"Estranho como Notícias de Bri" ainda era um dito no Quadrante Leste, descendente daqueles dias, quando notícias do Norte, do Sul e do Leste podiam ser ouvidas na hospedaria...*
 
-**THE ART OF SMOKING**
+**A ARTE DE FUMAR**
 
-You have mastered the art of smoking pipe-weed, and you always carry your pipe with you, as well as a bag of tobacco, for using it grants you patience and clarity of mind.
+Você dominou a arte de fumar erva-de-fumo, e sempre carrega seu cachimbo consigo, bem como uma bolsa de tabaco, pois usá-lo lhe concede paciência e clareza de espírito.
 
-- Whenever you regain one or more points of Hope, you recover one additional Hope point (regardless of whether it's the Adventuring or Fellowship Phase).
+- Sempre que você recuperar um ou mais pontos de Esperança, você recupera um ponto de Esperança adicional (independentemente de ser a Fase de Aventura ou a Fase de Companhia).
 
-> *And certainly it was from Bree that the art of smoking the genuine weed spread in the recent centuries...*
+> *E certamente foi de Bri que a arte de fumar a erva genuína se espalhou nos séculos recentes...*
 
-### Virtues of the Rangers of the North
+### Virtudes dos Rangers do Norte
 
-The Rangers are what remains in the North of the great people that came to Middle-earth out of the West, the Númenóreans. Their nobility of blood is exemplified by their many talents, even if their number has dwindled and their struggle has destined them to a life of secrecy.
+Os Rangers são o que resta no Norte do grande povo que veio à Terra-média do Oeste, os Númenórianos. Sua nobreza de sangue é exemplificada por seus muitos talentos, mesmo que seu número tenha diminuído e sua luta os tenha destinado a uma vida de segredo.
 
-**ENDURANCE OF THE RANGER**
+**RESISTÊNCIA DO RANGER**
 
-They say that a Ranger with a clear trail to follow can never be weary. You hope the saying will prove true, as it will be your fate to often travel in haste, to seek distant lands on urgent errands or to relentlessly hunt your enemies.
+Dizem que um Ranger com uma trilha clara a seguir nunca pode ficar exausto. Você espera que o dito se prove verdadeiro, pois será seu destino viajar muitas vezes com pressa, buscar terras distantes em missões urgentes ou caçar implacavelmente seus inimigos.
 
-- If you wear a suit of Leather armour or no armour at all, and carry no shield, you never gain Fatigue during a journey.
+- Se você usar uma armadura de Couro ou nenhuma armadura, e não carregar escudo, você nunca ganha Fadiga durante uma jornada.
 
-> *"Hardy is the race of Elendil!"*
+> *"Resistente é a raça de Elendil!"*
 
-**FORESIGHT OF THEIR KINDRED**
+**PRESCIÊNCIA DE SUA GENTE**
 
-The Rangers of the North still possess a measure of the foresight that their ancestors possessed in full. In the Twilight of the Third Age, this gift manifests as a sense of watchfulness, and of fear, arising to warn a Ranger of a danger that has not yet come to pass.
+Os Rangers do Norte ainda possuem uma medida da presciência que seus ancestrais possuíam por inteiro. No Crepúsculo da Terceira Era, esse dom se manifesta como um senso de vigilância e de temor, que surge para advertir um Ranger de um perigo que ainda não se concretizou.
 
-- During an Adventuring Phase, you may invoke your gift of foresight a number of times equal to your WISDOM rating, to bestow it upon yourself or on another member of the Company. This gift can be spent at any moment to reroll all the dice involved in any one roll, whether made by the Player-hero or an adversary targeting them.
+- Durante uma Fase de Aventura, você pode invocar seu dom de presciência um número de vezes igual ao seu valor de SABEDORIA, para conferi-lo a si mesmo ou a outro membro da Companhia. Esse dom pode ser gasto a qualquer momento para rolar novamente todos os dados envolvidos em uma rolagem qualquer, seja feita pelo herói-jogador ou por um adversário que o tenha como alvo.
 
-> *"And I say to you: if you pass the doors of Moria, beware!"*
+> *"E eu vos digo: se passardes as portas de Moria, tomai cuidado!"*
 
-**HEIR OF ARNOR**
+**HERDEIRO DE ARNOR**
 
-The days of your folk have darkened, and not many of you remain; but ever the memory of the Kings is passed from generation to generation. An artefact going back to the days of Lost Arnor has been in possession of your family in line unbroken. Now you have been deemed worthy to become its keeper.
+Os dias do seu povo se escureceram, e não muitos de vocês restam; mas sempre a memória dos Reis é passada de geração em geração. Um artefato que remonta aos dias do Arnor Perdido está em posse da sua família em linha ininterrupta. Agora você foi considerado digno de se tornar seu guardião.
 
-- With the help of the Loremaster, use the rules on page 161 to create either a Marvellous Artefact, or a Famous Weapon possessing a single Enchanted Reward. The item is generally of Númenórean craftsmanship, but might even be of Elven or Dwarven make. When you retire, this object is passed on to your heir as an additional heirloom.
+- Com a ajuda do Mestre, use as regras do capítulo de Tesouro para criar um Artefato Maravilhoso ou uma Arma Famosa que possua uma única Recompensa Encantada. O item é geralmente de fabricação Númenóriana, mas pode até ser de feitura Élfica ou Anã. Quando você se aposentar, esse objeto é passado ao seu herdeiro como uma herança adicional.
 
-> *"Here is the ring of Barahir," he said, "the token of our kinship from afar; and here also are the shards of Narsil."*
+> *"Aqui está o anel de Barahir", ele disse, "o símbolo do nosso parentesco de longe; e aqui estão também os fragmentos de Narsil."*
 
-**ROYALTY REVEALED**
+**REALEZA REVELADA**
 
-Your kin belongs to a bloodline of kings, but they have learnt to hide from their enemies in the twilight years of their kingdom. Should you choose to reveal your heritage, your noble bearing will cause your allies to cast away their doubts. You reveal yourself by shouting an ancestral battle-cry, or unsheathing a weapon of high lineage, or by showing a device or coat of arms.
+Sua gente pertence a uma linhagem de reis, mas aprendeu a se esconder de seus inimigos nos anos crepusculares de seu reino. Se você escolher revelar sua herança, seu porte nobre fará com que seus aliados afastem suas dúvidas. Você se revela gritando um grito de guerra ancestral, ou desembainhando uma arma de alta linhagem, ou mostrando um brasão ou escudo de armas.
 
-- Once per combat, when you fight in an Open stance you may attempt the Rally Comrades combat task as a secondary action. Additionally, all members of the Company (you included) are Inspired on all their rolls in the following round.
+- Uma vez por combate, quando você luta em uma postura Aberta, você pode tentar a tarefa de combate Reunir Companheiros como uma ação secundária. Além disso, todos os membros da Companhia (você incluído) ficam Inspirados em todas as suas rolagens na rodada seguinte.
 
-> *Aragorn threw back his cloak. The elven-sheath glittered as he grasped it, and the bright blade of Andúril shone like a sudden flame as he swept it out. "Elendil!" he cried.*
+> *Aragorn jogou o manto para trás. A bainha élfica brilhou quando ele a agarrou, e a lâmina reluzente de Andúril resplandeceu como uma chama súbita quando ele a arrancou. "Elendil!", ele gritou.*
 
-**STRENGTH OF WILL**
+**FORÇA DE VONTADE**
 
-You have been raised in a land dotted with desolate ruins and burial mounds. You have heard the dead whisper with cold voices out of lonely barrows, while ghostly lights dance on haunted hills. When your will strengthens your heart, there is hardly anything in this world that can dismay you.
+Você foi criado em uma terra pontilhada de ruínas desoladas e túmulos funerários. Você ouviu os mortos sussurrarem com vozes frias saindo de tumbas solitárias, enquanto luzes fantasmagóricas dançam sobre colinas assombradas. Quando sua vontade fortalece seu coração, quase não há nada neste mundo que possa desanimá-lo.
 
-- You *gain (1d)* on all Shadow Tests made to resist the effects of Dread.
+- Você *ganha (1d)* em todos os Testes de Sombra feitos para resistir aos efeitos de Pavor.
 
-> *"Does he feel no fear?" muttered the Dwarf.*
+> *"Ele não sente medo?", murmurou o Anão.*
 
-**WAYS OF THE WILD**
+**CAMINHOS DAS TERRAS SELVAGENS**
 
-The Rangers of the North roam ceaselessly, hunting for wicked things and guarding all frontiers. For you the Wild has become as familiar as the road that leads home is familiar to Hobbits, and the land itself may reveal useful tidings.
+Os Rangers do Norte vagam incessantemente, caçando coisas malignas e guardando todas as fronteiras. Para você, as Terras Selvagens se tornaram tão familiares quanto a estrada que leva para casa é familiar aos Hobbits, e a própria terra pode revelar informações úteis.
 
-- Whenever you are making a roll using EXPLORE, HUNTING, or TRAVEL, you can spend 1 Hope to achieve a Magical success. Additionally, you are always allowed to cover more than one role during a journey.
+- Sempre que você fizer uma rolagem usando EXPLORAR, CAÇA ou VIAJAR, você pode gastar 1 Esperança para obter um sucesso Mágico. Além disso, você sempre tem permissão para cobrir mais de um papel durante uma jornada.
 
-> *"Where sight fails the earth may bring us rumour," said Aragorn. "The land must groan under their hated feet."*
+> *"Onde a visão falha, a terra pode nos trazer rumores", disse Aragorn. "A terra deve gemer sob seus pés odiados."*

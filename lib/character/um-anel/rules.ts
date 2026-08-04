@@ -1,5 +1,11 @@
 import { ARMOUR_BY_ID, CULTURE_BY_ID, SHIELD_BY_ID, WEAPON_BY_ID } from "./data";
-import type { TorArmourLoadout, TorAttributes, TorCultureId, TorWarGearItem } from "./types";
+import type {
+  TorArmourLoadout,
+  TorAttributes,
+  TorCombatProficiencyRatings,
+  TorCultureId,
+  TorWarGearItem,
+} from "./types";
 import type { TorWeaponDef } from "./data";
 
 /** NA (Número-Alvo) de um Atributo = 20 - valor do Atributo (Core Rules p.29). */
@@ -31,6 +37,29 @@ export function isTorIllFavouredByShadow(params: {
   hopeMax: number;
 }): boolean {
   return params.shadow + params.shadowScars >= params.hopeMax;
+}
+
+/**
+ * Graduação de um Ataque de Briga — desarmado, adaga, cacete, porrete ou arma
+ * improvisada.
+ *
+ * Livro (quadro "Ataques de Briga", em `04-caracteristicas.md` e
+ * `09-starter-set-regras-condensadas.md`): "role dados iguais à sua Proficiência
+ * de Combate **mais alta**, mas *perca (1d)*".
+ *
+ * NÃO é zero. Brigar depende do treinamento marcial do herói: quem tem Espadas 3
+ * se defende melhor de mãos vazias que quem nunca pegou arma. Zerar aqui deixava
+ * o herói rolando só o Dado de Proeza, que sozinho vai no máximo a 10 e por isso
+ * nunca alcança um NA de FORÇA típico (18 + Bloqueio) — a chance de acerto caía a
+ * zero fora da Runa de Gandalf, e o herói também perdia qualquer chance de ícone
+ * de Sucesso (logo, de Dano Especial).
+ */
+export function torBrawlingRank(proficiencies: TorCombatProficiencyRatings): number {
+  const values = Object.values(proficiencies).filter((v) => Number.isFinite(v));
+  const highest = values.length > 0 ? Math.max(...values) : 0;
+  // O "perca (1d)" não pode virar rank negativo (02-resolucao-de-acoes.md:
+  // penalidades descem "até um mínimo de zero Dados de Sucesso").
+  return Math.max(0, highest - 1);
 }
 
 export function computeDerivedStats(

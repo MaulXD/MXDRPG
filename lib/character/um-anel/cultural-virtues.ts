@@ -227,7 +227,11 @@ export const TOR_CULTURAL_VIRTUES: TorCulturalVirtue[] = [
     id: "realeza-revelada",
     name: "Realeza Revelada",
     cultureId: "rangers",
-    description: "Uma vez por combate, em postura Aberto, pode tentar Reanimar Companheiros como ação secundária. Além disso, toda a Companhia fica Inspirada na rodada seguinte.",
+    // "Reunir Companheiros" é o nome da tarefa de combate da postura Aberta em
+    // stances.ts e no compêndio (tradução de "Rally Comrades", cap. 6). Antes
+    // dizia "Reanimar Companheiros" — nome que não existe em nenhum outro lugar
+    // do app, então o Mestre não achava a tarefa que a Virtude manda tentar.
+    description: "Uma vez por combate, em postura Aberta, pode tentar Reunir Companheiros como ação secundária. Além disso, toda a Companhia fica Inspirada na rodada seguinte.",
   },
   {
     id: "forca-de-vontade",

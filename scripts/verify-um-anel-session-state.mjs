@@ -199,5 +199,37 @@ for (const [file, src] of [
 }
 
 
+/* ── Teto da ASTÚCIA no bônus de Yule ─────────────────────────────────
+   Achado na rodada 6: `normalizeFellowship` clampava witsScore em 6, mas os
+   arrays de Atributo de data.ts oferecem ASTÚCIA 7 (Elfos de Lindon, Hobbits
+   do Condado, Altos-Elfos de Valfenda). O 7 digitado pelo Mestre voltava 6 do
+   normalizador, e cada herói perdia 1 ponto de Perícia por ano de campanha.
+
+   O teste amarra o teto ao MAIOR `argucia` de data.ts em vez de fixar 7: se um
+   suplemento trouxer ASTÚCIA 8, falha aqui e aponta pro clamp certo. */
+
+const DATA_TS = r("lib", "character", "um-anel", "data.ts");
+
+const arguciaValues = [...DATA_TS.matchAll(/argucia:\s*(\d+)/g)].map((m) => Number(m[1]));
+const maxArgucia = arguciaValues.length > 0 ? Math.max(...arguciaValues) : 0;
+ok("data.ts tem arrays de Atributo com ASTÚCIA", arguciaValues.length >= 18, `achou ${arguciaValues.length}`);
+
+const witsClamp = stripComments(STATE).match(/witsScore:\s*int\(r\.witsScore,\s*\d+,\s*\d+,\s*(\d+)\)/);
+ok("normalizeFellowship clampa witsScore", Boolean(witsClamp));
+ok(
+  `teto do witsScore (${witsClamp?.[1]}) cobre a maior ASTÚCIA de data.ts (${maxArgucia})`,
+  witsClamp && Number(witsClamp[1]) >= maxArgucia,
+  `teto=${witsClamp?.[1]} maior argucia=${maxArgucia}`
+);
+// O input do painel não pode ser mais restritivo que o normalizador, senão o
+// Mestre não consegue nem digitar o valor que o backend aceitaria.
+const panelMax = FELLOWSHIP_PANEL.match(/max=\{(\d+)\}\s*\n\s*value=\{state\.witsScore\}/);
+ok("painel declara max no input de Astúcia", Boolean(panelMax));
+ok(
+  `max do painel (${panelMax?.[1]}) cobre a maior ASTÚCIA (${maxArgucia})`,
+  panelMax && Number(panelMax[1]) >= maxArgucia,
+  `painel=${panelMax?.[1]} maior argucia=${maxArgucia}`
+);
+
 console.log(`\nverify-um-anel-session-state: ${pass} passaram, ${fail} falharam`);
 if (fail > 0) process.exit(1);
