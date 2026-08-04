@@ -104,6 +104,38 @@ npm run sync:data:check       # após editar livros/
 
 ---
 
+### 2026-08-03 — Fase B, rodada 3/12: tradução de 13-apendice-patronos-e-ficha.md
+
+**Feito:** apêndice traduzido (342 linhas) — os 6 Patronos do Core com biografia, ficha, Bônus de
+Companhia e Vantagem; o sistema de **Marcos** (formato de 6 partes); o Marco de exemplo *A Estrela na
+Bruma* com o bloco da Elwen; o gerador de **Coisas Sem Nome** (8 tabelas completas, inclusive as
+Tabelas 6-8 de estatísticas, formas de ataque e Habilidades Sinistras); e o layout completo da **ficha
+oficial** e do **Diário de Jornada**. Restam **9** capítulos em inglês.
+
+**Auditoria — nenhuma divergência. Três verificações mecânicas, todas limpas:**
+
+1. **Bônus de Companhia dos 7 Patronos** (`patrons.ts`): Balin +1, Bilbo **+2**, Círdan +1, Gandalf
+   **+2**, Gilraen +1, Bombadil **+2**, Elrond +1 — todos corretos, e os nomes de Vantagem batem. São
+   os 6 do Core mais Elrond, que vem do suplemento de Valfenda.
+2. **Bloco da Elwen** (`adversaries.ts`): Nível 5, Resistência 24, Vigor 2, Ódio 5, Bloqueio +2,
+   Proteção 2, as duas armas com dano/ferimento/especial corretos, e as 4 Habilidades Sinistras com
+   texto fiel — exato.
+3. **Tabela 6 das Coisas Sem Nome** (`nameless-things.ts`): as 7 faixas do Dado de Proeza, com Nível,
+   Proteção, Bloqueio, Resistência, Vigor, Proficiência e número de Habilidades — linha por linha
+   correta.
+
+**Falso alarme que evitei reportar:** a estrutura de Marcos parecia ter 7 passos e o livro define 6 —
+mas o sétimo `step:` que o grep achou era a linha da **declaração de tipo**, não uma entrada. Conferi
+antes de abrir bug. Registro porque é o tipo de "achado" que viraria ruído se eu não tivesse olhado.
+
+**Nota de tradução (D22):** a folha oficial de Diário de Jornada usa grade hexagonal no Percurso.
+Anotei a adaptação para **trecho** dentro do próprio capítulo traduzido, para quem lê o livro no repo
+não estranhar a divergência com o código.
+
+**Validação:** `tsc` limpo · build compila · `npm run test` verde.
+
+---
+
 ### 2026-08-03 — Fase B, rodada 2/12: tradução de 12-o-mundo-eriador.md + 2 nomes em inglês corrigidos
 
 **Feito:** `livros/um-anel/12-o-mundo-eriador.md` traduzido (293 linhas) — o capítulo de cenário
