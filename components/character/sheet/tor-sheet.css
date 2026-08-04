@@ -494,3 +494,52 @@
   border-top: 3px double var(--tor-border-strong);
   padding-top: 0.75rem;
 }
+
+/* Ações do cabeçalho da ficha — export PDF. Fica à direita no desktop e desce
+   para linha própria quando o cabeçalho aperta (a ficha vive tanto em página
+   quanto em janela flutuante redimensionável). */
+.tor-sheet__masthead-actions {
+  margin-left: auto;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.4rem;
+  flex-shrink: 0;
+}
+
+.tor-sheet__pdf-btn {
+  padding: 0.3rem 0.7rem;
+  border-radius: 6px;
+  border: 1px solid var(--chrome-border-bright);
+  background: transparent;
+  color: var(--text-muted);
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.tor-sheet__pdf-btn:hover:not(:disabled) {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.tor-sheet__pdf-btn:disabled {
+  opacity: 0.55;
+  cursor: progress;
+}
+
+@media (max-width: 767px) {
+  .tor-sheet__masthead-actions {
+    margin-left: 0;
+    width: 100%;
+  }
+}
+
+@media (pointer: coarse) {
+  .tor-sheet__pdf-btn {
+    min-height: var(--touch-target);
+  }
+}

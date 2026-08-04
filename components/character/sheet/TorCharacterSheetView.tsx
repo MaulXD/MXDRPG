@@ -39,6 +39,15 @@ import type { PortraitBundle } from "@/lib/media/image-upload-client";
 import type { PortraitFocus } from "@/lib/media/portrait-focus";
 import "@/components/character/sheet-ddb.css";
 import "./tor-sheet.css";
+import dynamic from "next/dynamic";
+
+const TorSheetPdfExportButton = dynamic(
+  () =>
+    import("@/components/character/TorSheetPdfExportButton").then(
+      (m) => m.TorSheetPdfExportButton
+    ),
+  { ssr: false }
+);
 
 type Props = {
   character: TorCharacterSheet;
@@ -217,6 +226,9 @@ export function TorCharacterSheetView({
             <span aria-hidden>·</span>
             <span>Padrão de Vida: {standard?.label}</span>
           </p>
+        </div>
+        <div className="tor-sheet__masthead-actions">
+          <TorSheetPdfExportButton character={character} className="tor-sheet__pdf-btn" />
         </div>
       </header>
 

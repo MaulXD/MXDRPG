@@ -104,6 +104,43 @@ npm run sync:data:check       # após editar livros/
 
 ---
 
+### 2026-08-03 — feat(um-anel): export PDF da ficha + guard de cor virou real
+
+**Pedido:** corrigir os bugs existentes e voltar à construção.
+
+**Passo a passo:**
+
+1. **Export PDF da ficha do Um Anel (fecha D32).** `TorSheetPdfDocument` + `TorSheetPdfExportButton`, reaproveitando o motor do Eldarin (`exportSheetPdf`: html2canvas → jsPDF). O que é próprio do sistema é só o layout — o motor de captura é infraestrutura sem conteúdo de jogo, então usá-lo não fere o isolamento de hub.
+
+2. **Layout segue os agrupamentos da ficha oficial** (identidade, Atributos com ND, Recursos, Perícias por grupo com marca de Favorecida, Proficiências, Equipamento de Guerra, armadura, Traços/Recompensas/Virtudes). **Não reproduz a arte** — a arte é da Free League; o que o jogador leva para a mesa são os valores.
+
+3. **A Carga total aparece no PDF com a conta explícita** (`equipamento + Fadiga`) e a regra de Exausto escrita embaixo. É o mesmo bug corrigido hoje: quem imprime a ficha precisa saber por que está Exausto.
+
+4. **Proteção é derivada, não campo.** `tsc` pegou: eu tinha escrito `character.protectionDice`, que não existe — o valor sai de `computeProtectionDice(armour)`.
+
+5. **O guard de cor do PDF era decorativo — virou real.** `verify-sheet-pdf` definia `UNSAFE_COLOR_VALUE` (bloqueia `color-mix()`, `oklch()`, `color()`…) e testava o **regex contra strings de exemplo**, mas **nunca varria os CSS**. Ou seja: a proteção existia no papel e uma cor insegura entraria sem ninguém notar — e o bloco sairia transparente no PDF capturado. Agora varre os 3 arquivos de layout de impressão, e também acusa `var(--token)` em propriedade de cor (os tokens do site resolvem para `color-mix()` em vários casos).
+
+6. **Quinta vez no mesmo padrão de erro meu:** o scan novo acusou o **próprio comentário** do CSS, que documenta a restrição citando `color-mix()` e `oklch()` por nome. Filtrar por prefixo `*` não resolvia — linhas de continuação de bloco `/* … */` não começam com `*`. Agora remove comentários de verdade, trocando por espaços para os números de linha continuarem batendo com o arquivo.
+
+7. **Host de captura é montado só durante a exportação.** Manter o layout de impressão sempre no DOM custaria render em toda ficha aberta, e a ficha da mesa já é o componente mais pesado. Desmonta inclusive no erro — host oculto esquecido atrapalharia a próxima captura.
+
+8. **Import dinâmico do botão** — `jspdf` + `html2canvas` são pesados e não devem entrar no bundle de quem só abre a ficha.
+
+**Arquivos tocados:**
+- `components/character/TorSheetPdfDocument.tsx` + `tor-sheet-pdf.css` — **novos:** layout de impressão
+- `components/character/TorSheetPdfExportButton.tsx` — **novo:** botão + host de captura
+- `components/character/sheet/TorCharacterSheetView.tsx` + `tor-sheet.css` — botão no cabeçalho, responsivo
+- `scripts/verify-sheet-pdf.mjs` — guard aplicado aos CSS de verdade (31 → 37 testes)
+
+**Commits / deploy:** branch `fix/login-google-e-responsivo-um-anel`.
+
+**Como testar:**
+- Abrir ficha do Um Anel → "Exportar PDF" → o arquivo deve trazer todos os campos, sem bloco transparente
+- `node scripts/verify-sheet-pdf.mjs` → 37 testes, incluindo a varredura dos 3 CSS
+- Adicionar `color-mix(...)` em `tor-sheet-pdf.css` → o teste deve **falhar** apontando a linha
+
+---
+
 ### 2026-08-03 — fix(um-anel): três bugs de regra nas condições Exausto e Arrasado
 
 **Pedido:** avançar para a Fase I (ficha interativa). Ao auditar a ficha antes de mexer, achei que boa parte de D32 já existia — rolagem por clique, steppers, pills de condição. O que **não** estava certo eram as fórmulas das condições derivadas.
