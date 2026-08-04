@@ -14,7 +14,8 @@ export type MesaRailIconName =
   | "status"
   | "compendium"
   | "torJourney"
-  | "torCouncil";
+  | "torCouncil"
+  | "torFellowship";
 
 type Props = {
   name: MesaRailIconName;
@@ -247,6 +248,18 @@ export function MesaRailIcon({ name, className = "foundry-icon-bar__icon" }: Pro
         <RailSvg className={className}>
           <path d="M4.5 6.5h10v6h-6l-4 3z" {...S} />
           <path d="M9.5 15.5h10v-6h-3" {...S} opacity="0.55" />
+        </RailSvg>
+      );
+
+    /**
+     * Fase de Companhia — glyph GENÉRICO provisório (lareira/abrigo: o descanso
+     * prolongado entre aventuras). Mesma ressalva dos outros dois.
+     */
+    case "torFellowship":
+      return (
+        <RailSvg className={className}>
+          <path d="M4 11 12 5l8 6v8H4z" {...S} />
+          <path d="M9.5 19v-4.5h5V19" {...S} opacity="0.6" />
         </RailSvg>
       );
 
