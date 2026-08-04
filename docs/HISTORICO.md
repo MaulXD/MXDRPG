@@ -104,6 +104,44 @@ npm run sync:data:check       # após editar livros/
 
 ---
 
+### 2026-08-03 — Fase B, rodada 2/12: tradução de 12-o-mundo-eriador.md + 2 nomes em inglês corrigidos
+
+**Feito:** `livros/um-anel/12-o-mundo-eriador.md` traduzido (293 linhas) — o capítulo de cenário
+inteiro: Condado, Lago Crepúsculo, Terras de Bri em detalhe, Estrada do Leste, Caminho Verde, Colinas
+dos Túmulos, Colinas do Norte e do Sul, Colinas do Tempo, Angmar, Ettenmoors, Monte Gram, Matas dos
+Trolls, Tharbad, Lindon, Montanhas Azuis, mais as 6 tabelas de encontro por Dado de Proeza e a seção
+"Aventurar-se na Terra-média". Restam **10** capítulos em inglês.
+
+**Auditoria — 2 achados corrigidos e 1 lacuna registrada:**
+
+1. **Dois nomes de adversário estavam em inglês**, violando a convenção de UI em PT-BR
+   (`docs/CLAUDE-PROJETO.md`). E nome de adversário aparece no compêndio **e** no nameplate do token
+   no mapa, então vazava direto para a mesa:
+   - `"Barrow-wight"` → **"Tumulário"**
+   - `"Cave-troll Furtivo"` (meio em inglês) → **"Troll das Cavernas Furtivo"** — o vizinho já usava
+     a forma PT-BR "Grande Troll das Cavernas"
+
+   Os `id` continuam em inglês de propósito: são chave estável, e renomear quebraria salas salvas.
+   20 dos 22 nomes já estavam certos, o que explica os dois terem passado.
+
+2. **Teste novo** que impede nome em inglês de voltar, com lista de marcadores. Não inclui Orc,
+   Goblin, Troll nem Warg, que ficam no original de propósito na tradução brasileira de Tolkien.
+
+3. **Lacuna da Fase J registrada:** três adversários nomeados deste capítulo **não estão** no
+   bestiário — **Rei-Tumulário** (Nível 9, Resistência 45, 4 Habilidades Sinistras), **Búrzgul**
+   (Nível 5) e **Ash**, o Warg dele (Nível 4). Os blocos completos agora estão traduzidos no
+   markdown, prontos para importar em D20.
+
+**Sexto erro meu do mesmo tipo:** ao escrever o teste de nomes, usei `Guard` sem fronteira de
+palavra no final — casou com "**Guarda** Orc" e "**Guarda**-costas Grande Orc", que são português.
+`Bandit` teria casado com "Bandido" também. Os seis erros desta sessão foram todos asserção
+negativa com regex casando fora do escopo. Adicionei a fronteira nas duas pontas e comentei o porquê
+no próprio teste.
+
+**Validação:** `tsc` limpo · build compila · `npm run test` verde (39 testes em stances, era 33).
+
+---
+
 ### 2026-08-03 — Fase B, rodada 1/12: tradução de 10-rivendell.md + auditoria
 
 **Pedido:** loop auto-pace traduzindo um capítulo por rodada, auditando as regras contra o código na mesma passada.

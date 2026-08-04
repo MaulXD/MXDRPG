@@ -1,293 +1,504 @@
-# The World: Eriador — The One Ring 2e (fonte: Core Rules, p.175-210)
+# O Mundo: Eriador — O Um Anel 2ª ed. (fonte: Regras Básicas, p.175-210)
 
-> Conteúdo original em inglês — aguardando tradução colaborativa.
-> Fonte: the one ring/The_One_Ring_Core_Rules.pdf
-
----
-
-## Chapter 9 — The World (p.175)
-
-Chapter opener. Epigraph: *"…he kept in a drawer at Bag End the old cloak and hood that he had worn on his travels; and the ring, secured by a fine chain, remained in his pocket."*
-
-Introductory text (p.176): This chapter presents the default setting for *The One Ring* — Eriador as it was towards the end of the Third Age. It introduces key locations, personalities and events, mainly for the Loremaster's use in building Adventuring Phases. Suggested approach: start the Company from a fixed location (Bree or the Shire) and explore outward. The game is set "officially" in the year 2965 of the Third Age — 25 years after Bilbo's adventure. Sauron has returned to Mordor and the Ringwraiths hold Dol Guldur. In the quiet west, Dwarves travel the East Road in greater numbers, Elves wander beyond the Tower Hills, but dark things are stirring again, guided by an evil will.
-
-**Sidebar — North-Western Middle-earth (p.177):** Orientation text: the Misty Mountains dominate the region; Eriador (once the North-kingdom) lies west of them; Rhovanion with Mirkwood lies east; the Long Lake and Lonely Mountain lie beyond that; Rohan opens to the south; Gondor and Mordor lie further southeast.
+> Traduzido para PT-BR. Topônimos seguem a tradução brasileira consagrada de Tolkien (Condado,
+> Bri, Valfenda, Montanhas Nevoentas, Colinas dos Túmulos); nomes em Sindarin/Quenya e nomes
+> próprios ficam no original (Imladris, Annúminas, Nenuial, Búrzgul).
+>
+> Nomes de perícia usam os ids reais de `lib/character/um-anel/data.ts` — SCAN é **VASCULHAR**,
+> AWARENESS é **PERCEPÇÃO**.
+>
+> Fonte: `the one ring/The_One_Ring_Core_Rules.pdf`
 
 ---
 
-## Eriador (overview, p.176)
+## Capítulo 9 — O Mundo (p.175)
 
-Eriador ("the lonely land" in Grey-elven speech) was once the domain of ancient kings; now it is largely ruins, remembered by few. Small, insular pockets of civilization endure (Bree-land, the Shire), mostly unaware of the dangers around them. Despite the danger, there is melancholy beauty in its ruins, and hope that prosperity may one day return.
+Abertura de capítulo. Epígrafe: *"…ele guardava numa gaveta em Bolsão o velho manto e capuz que
+usara em suas viagens; e o anel, seguro por uma corrente fina, permanecia em seu bolso."*
 
-## The Shire (p.176-177)
+Texto introdutório (p.176): Este capítulo apresenta o cenário padrão de *O Um Anel* — Eriador como
+era no fim da Terceira Era. Introduz locais, personalidades e eventos-chave, principalmente para o
+Mestre usar ao montar Fases de Aventura. Abordagem sugerida: começar a Companhia num local fixo
+(Bri ou o Condado) e explorar para fora. O jogo se passa "oficialmente" no ano 2965 da Terceira Era
+— 25 anos depois da aventura de Bilbo. Sauron retornou a Mordor e os Espectros do Anel ocupam Dol
+Guldur. No oeste tranquilo, Anões viajam pela Estrada do Leste em maior número e Elfos vagam além
+das Colinas da Torre, mas coisas escuras se agitam de novo, guiadas por uma vontade maligna.
 
-Home of the Hobbits, at the heart of Eriador, bordered by the Brandywine River and the Old Forest to the east and the Far Downs to the west. A sheltered, peculiar land, protected by unseen watchful guardians (the Rangers), whose folk almost never travel far. Dwarven traders pass through regularly but rarely stop. Hobbits' significance in the great events of the age has so far gone unnoticed by outsiders and by the Enemy alike. (Detailed Shire information is in *The One Ring Starter Set*.)
+**Caixa de texto — Noroeste da Terra-média (p.177):** Texto de orientação: as Montanhas Nevoentas
+dominam a região; Eriador (outrora o Reino do Norte) fica a oeste delas; Rhovanion com a Floresta
+das Trevas fica a leste; o Lago Comprido e a Montanha Solitária ficam além; Rohan se abre ao sul;
+Gondor e Mordor ficam mais a sudeste.
 
-**The Brandywine River sidebar (p.178):** The Baranduin flows south out of Lake Evendim, across the North Moors, dividing the Eastfarthing of the Shire from Buckland and the Old Forest, then southwest through Minhiriath, emptying into the sea near Eryn Vorn. Two known crossings: the Brandywine Bridge (where the East Road leaves the Shire) and Sarn Ford (seldom used, far south).
+---
 
-## Lake Evendim (p.177-179)
+## Eriador (visão geral, p.176)
 
-The great lake at the base of the Hills of Evendim, called Nenuial ("Lake of Twilight") in Sindarin. Its shores hosted generations of Men and Dúnedain until the Fell Winter floods (~50 years ago) submerged much of the ruined city of Annúminas and changed the shoreline. The waters are eerily still, mist-shrouded, and rumoured to hide small unexplored islands and forgotten treasure.
+Eriador ("a terra solitária", na fala Élfica Cinzenta) foi outrora domínio de reis antigos; hoje é
+em grande parte ruína, lembrada por poucos. Bolsões pequenos e insulares de civilização perduram
+(Terras de Bri, o Condado), quase sempre alheios aos perigos ao redor. Apesar do perigo, há uma
+beleza melancólica em suas ruínas, e a esperança de que a prosperidade um dia retorne.
 
-- **Annúminas:** Former capital of the North Kingdom, abandoned over two thousand years ago when the Dúnedain moved their capital to Fornost Erain. Now mostly submerged ruins; ghost-ship visions ("Twilight Ships") reportedly appear on starry, moonless nights.
-  - **Sidebar — The Twilight Ships (mechanic, p.179):** Player-heroes who witness the vision react differently: those who are Miserable must exchange a point of Shadow for a Shadow Scar; those who are not Miserable instead regain 1 point of Hope.
-  - **The Western Tower:** The tallest surviving tower of Annúminas, at the end of a broken, submerged pier. Rises above the water only about once a year, in winter, and can otherwise only be reached by boat or (rarely) by walking on ice.
-- **The Hills of Evendim:** Once home to a folk that predates the Men of the West (ancient stone markings remain); now wild and dangerous, home to wandering Trolls and monsters that prowl the lakeshore for travellers.
-- **The Forgotten Hamlet — Eskerdale (sidebar, p.179):** An isolated village of Men in a deep valley of the Hills of Evendim, founded generations ago; increasingly withdrawn under chieftain Oswin's rule; recently locals seem cursed or broken in spirit.
-  - **Mechanic:** Finding Eskerdale is a Skill Endeavour, Resistance 6, using Explore, Hunting, Riddle, or Scan. Those who find it must show they are not a threat (e.g., a Courtesy roll) — Rangers *lose (1d)* on this roll. Consulting Eskerdale's people lets a hero *gain (1d)* on their next Explore, Hunting, or Lore roll related to the Evendim region.
-- **NPCs — Beinion and Arin of Evendim (stat card, p.180):** Self-appointed Ranger guardians of Annúminas and the lake. **NAME:** Beinion and Arin of Evendim. **OCCUPATION:** Rangers. **TRAITS:** Bold, Faithful, Fair-spoken (Arin), True-hearted (Beinion). Beinion is worried about pregnant Arin's safety and secretly wishes she'd retire; she refuses.
+## O Condado (p.176-177)
 
-## The Bree-land (p.180-190)
+Lar dos Hobbits, no coração de Eriador, limitado pelo rio Brandevin e pela Floresta Velha ao leste
+e pelas Colinas Distantes ao oeste. Uma terra abrigada e peculiar, protegida por guardiões vigilantes
+e invisíveis (os Rangers), cujo povo quase nunca viaja longe. Mercadores Anões passam com
+regularidade, mas raramente param. A importância dos Hobbits nos grandes eventos da era passou até
+agora despercebida por forasteiros e pelo Inimigo. (Informação detalhada do Condado está no *Starter
+Set de O Um Anel*.)
 
-A community of Men and Hobbits ("Big and Little Folk") that has endured since the Elder Days, on the Great East Road. Bree-folk are insular but welcoming to travellers, aware of "ancient riddles best left unanswered."
+**Caixa de texto — O rio Brandevin (p.178):** O Baranduin corre para o sul a partir do Lago
+Crepúsculo, cruza as Charnecas do Norte, divide a Quarta Leste do Condado de Terrabolsão e da
+Floresta Velha, e então segue a sudoeste por Minhiriath, desembocando no mar perto de Eryn Vorn.
+Duas travessias conhecidas: a Ponte do Brandevin (onde a Estrada do Leste deixa o Condado) e o Vau
+Sarn (pouco usado, bem ao sul).
 
-### Bree (chief village, p.180-189)
-- Bree sits on a hill; approached via chimney-smoke and a hedge/ditch. Gates open dawn to dusk, guarded by gatekeepers; questions asked only after nightfall. A smaller, seldom-used northern gate leads to the Greenway/North Road.
-- Big Folk live in stone houses on the lower hillside; Little Folk (Hobbits) live higher up, in the "new town."
-- A Reeve holds nominal leadership (current: Cole Pickthorn); Bree-wardens keep informal order.
-- **The Prancing Pony:** The great inn at the town centre, run by innkeeper **Barnabas Butterbur**. Welcomes all, including ill-favoured Rangers (always seated in the back). Serves "Barnabas's Best" ale.
-  - **NPC — Barnabas Butterbur (stat card, p.183):** **NAME:** Barnabas Butterbur. **OCCUPATION:** Innkeeper. **TRAITS:** Patient, Rustic.
-  - **Sidebar — An Evening at the Prancing Pony (Feat Die table, mechanic, p.182):**
-    | Feat Die | Result | Description |
+## Lago Crepúsculo (p.177-179)
+
+O grande lago ao pé das Colinas do Crepúsculo, chamado Nenuial ("Lago do Crepúsculo") em Sindarin.
+Suas margens acolheram gerações de Homens e Dúnedain até que as enchentes do Inverno Cruel (cerca de
+50 anos atrás) submergiram boa parte da cidade arruinada de Annúminas e mudaram a linha da costa. As
+águas são estranhamente paradas, envoltas em névoa, e o rumor diz que escondem pequenas ilhas
+inexploradas e tesouro esquecido.
+
+- **Annúminas:** Antiga capital do Reino do Norte, abandonada há mais de dois mil anos, quando os
+  Dúnedain mudaram a capital para Fornost Erain. Hoje são ruínas em grande parte submersas; visões
+  de naus fantasmas ("Naus do Crepúsculo") supostamente aparecem em noites estreladas sem lua.
+  - **Caixa de texto — As Naus do Crepúsculo (mecânica, p.179):** Heróis que testemunham a visão
+    reagem de forma diferente: quem está **Arrasado** deve trocar um ponto de Sombra por uma
+    Cicatriz de Sombra; quem **não** está Arrasado, em vez disso, recupera 1 ponto de Esperança.
+  - **A Torre Ocidental:** A torre mais alta que restou de Annúminas, no fim de um cais quebrado e
+    submerso. Só emerge da água cerca de uma vez por ano, no inverno, e de outra forma só se alcança
+    de barco ou (raramente) caminhando sobre o gelo.
+- **As Colinas do Crepúsculo:** Outrora lar de um povo anterior aos Homens do Oeste (marcas antigas
+  em pedra permanecem); hoje selvagens e perigosas, lar de Trolls errantes e monstros que rondam a
+  margem do lago à espera de viajantes.
+- **A Aldeia Esquecida — Eskerdale (caixa de texto, p.179):** Um povoado isolado de Homens num vale
+  profundo das Colinas do Crepúsculo, fundado gerações atrás; cada vez mais retraído sob o governo
+  do chefe Oswin; recentemente os moradores parecem amaldiçoados ou quebrados de espírito.
+  - **Mecânica:** Encontrar Eskerdale é um Empenho de Perícia, Resistência 6, usando Explorar, Caça,
+    Enigmas ou Vasculhar. Quem encontra precisa mostrar que não é ameaça (por exemplo, uma rolagem de
+    Cortesia) — Rangers *perdem (1d)* nessa rolagem. Consultar o povo de Eskerdale permite ao herói
+    *ganhar (1d)* na próxima rolagem de Explorar, Caça ou Saber relacionada à região do Crepúsculo.
+- **PNJs — Beinion e Arin do Crepúsculo (ficha, p.180):** Guardiões Rangers autonomeados de
+  Annúminas e do lago. **NOME:** Beinion e Arin do Crepúsculo. **OCUPAÇÃO:** Rangers. **TRAÇOS:**
+  Audaz, Fiel, Bem-falante (Arin), Coração Sincero (Beinion). Beinion está preocupado com a
+  segurança de Arin, que está grávida, e secretamente desejaria que ela se recolhesse; ela recusa.
+
+## As Terras de Bri (p.180-190)
+
+Uma comunidade de Homens e Hobbits ("Gente Grande e Gente Pequena") que perdura desde os Dias
+Antigos, na Grande Estrada do Leste. O povo de Bri é insular, mas acolhedor com viajantes, ciente de
+"enigmas antigos que é melhor deixar sem resposta".
+
+### Bri (a principal aldeia, p.180-189)
+
+- Bri fica numa colina; chega-se a ela pela fumaça das chaminés e por uma cerca-viva com fosso. Os
+  portões abrem do amanhecer ao anoitecer, guardados por porteiros; perguntas só são feitas depois
+  do cair da noite. Um portão norte menor e pouco usado leva ao Caminho Verde / Estrada do Norte.
+- A Gente Grande vive em casas de pedra na encosta baixa; a Gente Pequena (Hobbits) vive mais acima,
+  na "cidade nova".
+- Um Prefeito detém liderança nominal (atualmente: Cole Pickthorn); os guardiões de Bri mantêm uma
+  ordem informal.
+- **O Pônei Empinado:** A grande estalagem no centro da cidade, comandada pelo estalajadeiro
+  **Barnabas Butterbur**. Recebe todos, inclusive Rangers malvistos (sempre acomodados no fundo).
+  Serve a cerveja "A Melhor de Barnabas".
+  - **PNJ — Barnabas Butterbur (ficha, p.183):** **NOME:** Barnabas Butterbur. **OCUPAÇÃO:**
+    Estalajadeiro. **TRAÇOS:** Paciente, Rústico.
+  - **Caixa de texto — Uma noite no Pônei Empinado (tabela de Dado de Proeza, mecânica, p.182):**
+
+    | Dado de Proeza | Resultado | Descrição |
     |---|---|---|
-    | ⚿ (auto-success icon) | The Grey Pilgrim | Gandalf is visiting; the whole house is astir. |
-    | 1 | Ill-favoured Ranger | A Ranger of the North sits quietly; locals leer/mutter. |
-    | 2 | Visitors from Buckland | Hobbits from Buckland trading for pipe-weed. |
-    | 3 | Dwarf Travellers | Dwarves sampling Barnabas's Best, singing loudly. |
-    | 4 | Greenway Refugees | Homesteaders whose farm was sacked last night seek refuge. |
-    | 5 | Fitch Talltree | The Forester of Archet seeks warriors for a hunt in the Chetwood. |
-    | 6 | Impending Brawl | John Ferny argues loudly with other patrons; a fight looms. |
-    | 7 | Rousing Ballad | Patrons sing ballads; a successful SONG roll recovers 1 Hope. |
-    | 8 | Showing Some Coin | A wealthy merchant buys a round; some patrons eye his purse. |
-    | 9 | Ponies Loose at The Pony! | The ostler yells that the horses have escaped — accident or theft? |
-    | 10 | Bragging Treasure Hunters | Tomb robbers boast of Barrow-downs loot with strange script. |
-    | ⊘ (eye icon) | Skulking Southerner | A sallow-faced southerner bullies locals for news. |
-- **Sidebar — The Big and the Little (p.181):** Rules for creating a Bree-hobbit PC: use the Men of Bree rules (p.40) with exceptions — Bree-hobbits calculate Endurance, Hope, and Parry using the Hobbits' tables; limited to Hobbit weapons; must pick Cultural Virtues from: Bree-pony, Desperate Courage, Small Folk, Strange as News from Bree, The Art of Smoking, Tough as Old Tree Roots. Common surnames: Banks, Brockhouse, Longhole, Sandheaver, Tunnelly, Underhill.
-- **East Row:** Youngest district; settled by Tharbad refugees generations ago; more insular than other neighbourhoods. **NPC — John Ferny (stat card, p.184):** disreputable horse-trader/ostler. **NAME:** John Ferny. **OCCUPATION:** Horse-trader, Ostler. **TRAITS:** Canny, Secretive.
-- **The Green:** Central lawn, framed by the Counting-house, the Armoury (Warden's Armoury, headquarters of the Bree-wardens), and the Reeve's House (court/administration). Hosts festivals and market days.
-- **Lower Hillside:** Home to craftsmen (blacksmiths, tailors, leatherworkers) and "Cellar-hobbits" who rent basement space from Big Folk families.
-  - **Sidebar — Toss a Coin in the Well (mechanic, p.185):** Player-heroes who toss a coin in the Old Town Well the day they depart Bree on a journey *gain (1d)* on their first Event Resolution roll of that journey.
-  - The Dwarf-House: a temporary lodging for Dwarven merchants, steward Luki resident.
-- **Upper Hillside:** Less affluent, home to Bree-hobbits; includes the Schoolhouse (open to all Bree residents).
-- **Combe:** Second-largest Bree-land settlement, mostly Men, some Hobbit families (Tunnelly line, living in interconnected smials called "the Smial"). The Lamplighter Inn (proprietor Karla Tunnelly) serves the best food outside The Pony.
-  - **NPC — Oswald Breeker (stat card, p.186):** Wealthy, cantankerous landowner of Combe; secretly aids the Rangers with lore/library access. **NAME:** Oswald Breeker. **OCCUPATION:** Wealthy landowner. **TRAITS:** Grim, Inquisitive, Secretive. **Mechanic:** Rangers or others who win Oswald's favour *gain (1d)* to Lore rolls concerning the history of Bree-land and Arnor.
-  - **Sidebar — Goblin Raids (p.186):** Adventure hook — livestock butchered near Combe by a hidden Goblin band; Bree-wardens have not intervened.
-- **Staddle:** Adjacent to Bree, largely Hobbit (Tunnelly family), matriarch Grandmother Tunnelly keeps order and presides over the Summer Smoke Ring Festival.
-  - **NPC — Adelard Took (stat card, p.187):** Champion smoke-ring blower, taught by Balin son of Fundin. **NAME:** Adelard Took. **OCCUPATION:** Champion Smoker. **TRAITS:** Bold, Honourable.
-  - **Sidebar — The Summer Smoke Ring Festival (mechanic, p.187):** A Skill Endeavour using Craft, Courtesy, or Riddle, Resistance 3, 4 attempts allowed. Failing once = no imagination/skill, continue; a second failure with the eye-icon = coughing fit, eliminated. Success: Adelard gives an elegant pipe worth 1 point of Treasure.
-- **Archet:** Hidden under the southern Chetwood, fewer than twenty cabins, led by a Forester (currently **Fitch Talltree**) rather than a mayor. Famous for hunting bows; a secret hillock fort watches the East Road.
-  - **NPC — Fitch Talltree, the Forester of Archet (stat card, p.188):** **NAME:** Fitch Talltree. **OCCUPATION:** Forester. **TRAITS:** Keen-eyed, Rustic, Tall. Backstory: seeks revenge against the Troll that killed his father; may recruit Player-heroes for the hunt.
-  - **Sidebar — Archet Hunting Bows (mechanic, p.188):** To earn a bow, a Player-hero must render a service to Archet, then complete a 3-day solitary hunt (Hunting Skill Endeavour, Resistance 6, two rolls/day, three days to return with a buck worth ≥10 points). Alternatively, gaining a Reward while at Archet during Fellowship Phase can grant the bow instead of a normal Reward. **Effect:** with an Archet Hunting Bow, ranged attacks/Hunting rolls add either +3 or the wielder's Valour rating, whichever is higher.
+    | Runa de Gandalf | O Peregrino Cinzento | Gandalf está de visita; a casa inteira se agita. |
+    | 1 | Ranger malvisto | Um Ranger do Norte senta em silêncio; os locais o encaram e murmuram. |
+    | 2 | Visitantes de Terrabolsão | Hobbits de Terrabolsão negociando erva-de-fumo. |
+    | 3 | Anões viajantes | Anões experimentando A Melhor de Barnabas, cantando alto. |
+    | 4 | Refugiados do Caminho Verde | Colonos cuja fazenda foi saqueada na noite anterior buscam refúgio. |
+    | 5 | Fitch Talltree | O Guarda-florestal de Archet busca guerreiros para uma caçada na Mata de Chet. |
+    | 6 | Briga iminente | John Ferny discute alto com outros fregueses; uma briga se aproxima. |
+    | 7 | Balada animada | Os fregueses cantam baladas; uma rolagem de Canção bem-sucedida recupera 1 Esperança. |
+    | 8 | Mostrando moedas | Um mercador rico paga uma rodada; alguns fregueses olham para sua bolsa. |
+    | 9 | Pôneis soltos no Pônei! | O cavalariço grita que os cavalos escaparam — acidente ou roubo? |
+    | 10 | Caçadores de tesouro se vangloriando | Ladrões de tumbas se vangloriam de pilhagem das Colinas dos Túmulos com escrita estranha. |
+    | Olho de Sauron | Sulista dissimulado | Um sulista de rosto amarelado intimida os locais em busca de notícias. |
 
-### The Chetwood (p.188-190)
-A wide, wild forest stretching from Bree-hill to the Weather Hills, diverse and mysterious at its heart; thick canopy blocks sunlight.
+- **Caixa de texto — Os Grandes e os Pequenos (p.181):** Regras para criar um herói Hobbit de Bri:
+  use as regras dos Homens de Bri (p.40) com exceções — Hobbits de Bri calculam Resistência,
+  Esperança e Bloqueio pelas tabelas dos Hobbits; limitados a armas de Hobbit; devem escolher
+  Virtudes Culturais entre: Pônei de Bri, Coragem Desesperada, Gente Pequena, Estranho como Notícias
+  de Bri, A Arte de Fumar, Duro como Raiz de Árvore Velha. Sobrenomes comuns: Banks, Brockhouse,
+  Longhole, Sandheaver, Tunnelly, Underhill.
+- **Fileira Leste:** O distrito mais novo; colonizado por refugiados de Tharbad gerações atrás; mais
+  insular que os outros bairros. **PNJ — John Ferny (ficha, p.184):** negociante de cavalos e
+  cavalariço de má reputação. **NOME:** John Ferny. **OCUPAÇÃO:** Negociante de cavalos, Cavalariço.
+  **TRAÇOS:** Sagaz, Discreto.
+- **O Gramado:** Praça central, emoldurada pela Casa da Contadoria, pelo Arsenal (Arsenal do
+  Guardião, quartel-general dos guardiões de Bri) e pela Casa do Prefeito (tribunal e administração).
+  Sedia festivais e dias de mercado.
+- **Encosta Baixa:** Lar de artesãos (ferreiros, alfaiates, coureiros) e dos "Hobbits-de-porão", que
+  alugam espaço de subsolo de famílias da Gente Grande.
+  - **Caixa de texto — Jogue uma moeda no poço (mecânica, p.185):** Heróis que jogam uma moeda no
+    Poço Velho da Cidade no dia em que deixam Bri numa jornada *ganham (1d)* na primeira rolagem de
+    Resolução de Evento daquela jornada.
+  - A Casa dos Anões: hospedaria temporária para mercadores Anões, com o administrador Luki
+    residente.
+- **Encosta Alta:** Menos próspera, lar dos Hobbits de Bri; inclui a Escola (aberta a todos os
+  residentes de Bri).
+- **Combe:** Segundo maior povoado das Terras de Bri, quase todo de Homens, com algumas famílias
+  Hobbit (a linhagem Tunnelly, vivendo em smials interligados chamados "o Smial"). A Estalagem do
+  Acendedor de Lampiões (proprietária Karla Tunnelly) serve a melhor comida fora do Pônei.
+  - **PNJ — Oswald Breeker (ficha, p.186):** Proprietário de terras rico e rabugento de Combe;
+    secretamente ajuda os Rangers com saber e acesso à biblioteca. **NOME:** Oswald Breeker.
+    **OCUPAÇÃO:** Proprietário de terras rico. **TRAÇOS:** Severo, Inquisitivo, Discreto.
+    **Mecânica:** Rangers ou outros que conquistem o favor de Oswald *ganham (1d)* em rolagens de
+    Saber sobre a história das Terras de Bri e de Arnor.
+  - **Caixa de texto — Ataques de Goblins (p.186):** Gancho de aventura — gado abatido perto de
+    Combe por um bando escondido de Goblins; os guardiões de Bri não intervieram.
+- **Staddle:** Adjacente a Bri, em grande parte Hobbit (família Tunnelly), com a matriarca Vovó
+  Tunnelly mantendo a ordem e presidindo o Festival do Anel de Fumaça de Verão.
+  - **PNJ — Adelard Took (ficha, p.187):** Campeão de soprar anéis de fumaça, ensinado por Balin,
+    filho de Fundin. **NOME:** Adelard Took. **OCUPAÇÃO:** Fumante campeão. **TRAÇOS:** Audaz,
+    Honrado.
+  - **Caixa de texto — O Festival do Anel de Fumaça de Verão (mecânica, p.187):** Um Empenho de
+    Perícia usando Ofício, Cortesia ou Enigmas, Resistência 3, 4 tentativas permitidas. Falhar uma
+    vez = falta de imaginação ou perícia, continue; uma segunda falha com o Olho de Sauron = ataque
+    de tosse, eliminado. Sucesso: Adelard dá um cachimbo elegante que vale 1 ponto de Tesouro.
+- **Archet:** Escondida sob o sul da Mata de Chet, menos de vinte cabanas, liderada por um
+  Guarda-florestal (atualmente **Fitch Talltree**) em vez de um prefeito. Famosa por arcos de caça;
+  um forte secreto num montículo vigia a Estrada do Leste.
+  - **PNJ — Fitch Talltree, o Guarda-florestal de Archet (ficha, p.188):** **NOME:** Fitch Talltree.
+    **OCUPAÇÃO:** Guarda-florestal. **TRAÇOS:** Olhos Aguçados, Rústico, Alto. História: busca
+    vingança contra o Troll que matou seu pai; pode recrutar heróis para a caçada.
+  - **Caixa de texto — Arcos de Caça de Archet (mecânica, p.188):** Para ganhar um arco, o herói
+    precisa prestar um serviço a Archet e depois completar uma caçada solitária de 3 dias (Empenho de
+    Perícia de Caça, Resistência 6, duas rolagens por dia, três dias para voltar com um cervo que
+    valha 10 pontos ou mais). Alternativamente, ganhar uma Recompensa enquanto estiver em Archet
+    durante a Fase de Companhia pode conceder o arco em vez de uma Recompensa normal. **Efeito:** com
+    um Arco de Caça de Archet, ataques à distância e rolagens de Caça somam **+3 ou o Valor do
+    portador, o que for maior**.
 
-- **Sidebar — Travelling in the Chetwood (Feat Die table, mechanic, p.189):**
-  | Feat Die | Result | Description |
+### A Mata de Chet (p.188-190)
+
+Uma floresta ampla e selvagem que se estende da colina de Bri até as Colinas do Tempo, diversa e
+misteriosa em seu coração; a copa espessa bloqueia a luz do sol.
+
+- **Caixa de texto — Viajar pela Mata de Chet (tabela de Dado de Proeza, mecânica, p.189):**
+
+  | Dado de Proeza | Resultado | Descrição |
   |---|---|---|
-  | ⚿ | Fitch Talltree | Encounter the Forester himself; may aid or guide. |
-  | 1-2 | Mistaken for Orcs | A Chetwood hunter fires an arrow, having mistaken the party for Orcs. |
-  | 3-4 | Abandoned Homestead | A ransacked cabin, signs of bloody struggle. |
-  | 5-6 | Hunted by Wolves | Tracked by wolves; a successful Hunting roll throws them off. |
-  | 7-8 | Sinkhole | Characters sink in mud; Athletics roll needed to escape; gain 3 Fatigue, lose a day of travel. |
-  | 9-10 | Goblin Scouts | Goblins from the Weather Hills spot and try to ambush the party. |
-  | ⊘ | Troll of the Weather Hills | A Troll spots the party and attacks openly. |
-- **The Midgewater Marshes:** East of the Chetwood; boggy, midge-infested, treacherous wetland with a noisy, squeaking cricket-relative insect; no one lingers there willingly.
+  | Runa de Gandalf | Fitch Talltree | Encontro com o próprio Guarda-florestal; pode ajudar ou guiar. |
+  | 1-2 | Confundidos com Orcs | Um caçador da Mata de Chet dispara uma flecha, tendo confundido o grupo com Orcs. |
+  | 3-4 | Herdade abandonada | Uma cabana saqueada, com sinais de luta sangrenta. |
+  | 5-6 | Caçados por lobos | Rastreados por lobos; uma rolagem de Caça bem-sucedida os desorienta. |
+  | 7-8 | Atoleiro | Os personagens afundam na lama; rolagem de Atletismo para escapar; ganham 3 de Fadiga e perdem um dia de viagem. |
+  | 9-10 | Batedores Goblins | Goblins das Colinas do Tempo avistam o grupo e tentam uma emboscada. |
+  | Olho de Sauron | Troll das Colinas do Tempo | Um Troll avista o grupo e ataca abertamente. |
 
-## The Great East Road (p.189-192)
+- **Os Pântanos Mosquiteiros:** A leste da Mata de Chet; alagado, infestado de mosquitos, terreno
+  traiçoeiro com um insetão parente do grilo que faz um ruído estridente; ninguém se demora ali por
+  vontade própria.
 
-Ancient road, said to originate in the Iron Hills, running to the Grey Havens on the Gulf of Lhûn. Quality varies from paved stone to overgrown mud. Traffic has increased since the death of Smaug and restoration of Dale/Erebor.
+## A Grande Estrada do Leste (p.189-192)
 
-- **Sidebar — Over the Edge of the Wild (p.190):** Notes on Rhovanion/Wilderland beyond the Misty Mountains, once home to Smaug, now safer since his death and the Necromancer's expulsion from Dol Guldur.
-- **The Forsaken Inn:** A ramshackle inn on the eastern edge of the Bree-land, attracting criminals and desperate wanderers; proprietor known only as "Jack the Forsaken."
-- **Sidebar — Encounters on the East Road (Feat Die table, mechanic, p.191):**
-  | Feat Die | Result | Description |
+Estrada antiga, que diz-se nascer nas Colinas de Ferro e ir até os Portos Cinzentos, no Golfo de
+Lhûn. A qualidade varia de pedra pavimentada a lama tomada pelo mato. O tráfego aumentou desde a
+morte de Smaug e a restauração de Valle e Erebor.
+
+- **Caixa de texto — Além da Beira do Ermo (p.190):** Notas sobre Rhovanion e o Ermo além das
+  Montanhas Nevoentas, outrora lar de Smaug, hoje mais seguro desde a morte dele e a expulsão do
+  Necromante de Dol Guldur.
+- **A Estalagem Abandonada:** Uma estalagem caindo aos pedaços na borda leste das Terras de Bri, que
+  atrai criminosos e andarilhos desesperados; o proprietário é conhecido apenas como "Jack, o
+  Abandonado".
+- **Caixa de texto — Encontros na Estrada do Leste (tabela de Dado de Proeza, mecânica, p.191):**
+
+  | Dado de Proeza | Resultado | Descrição |
   |---|---|---|
-  | ⚿ | Rangers | Followers reveal themselves as Rangers who guide the party briefly; *gain (1d)* on next Travel roll on the East Road. |
-  | 1 | Mournful Stones | A cold, melancholy wind through ruined stones. |
-  | 2 | Fallen King | A statue of an ancient King, wreathed in Kingsfoil (a Hunting roll identifies it; harvested, it grants *gain (1d)* on a Healing roll, consumed in the process). |
-  | 3 | Carrion Eyes | Ill-tempered crows watch the party before flying north — possibly spies. |
-  | 4 | Predators in the Firelight | Wild Wolves stalk the camp; an Awe roll drives them off. |
-  | 5 | Sun Upon the Stone | Sunlight briefly reveals a ruined tower's former greatness. |
-  | 6 | Lost Merchant | An injured Dwarf merchant rewards aid with 1 Treasure (silver). |
-  | 7 | Highway Robbers | A disguised Robber lures the party into an ambush. |
-  | 8 | Strange Stars in High Towers | A cold light in a broken tower follows the party's steps. |
-  | 9 | Goblin Scouts | A Goblin Archer tracks the party; unnoticed, they're ambushed that night. |
-  | 10 | Song of Kings | A ghostly singing maiden appears by water, then fades. |
-  | ⊘ | Troll-hole | The party stumbles into a Troll's lair, waking a Cave-troll. |
+  | Runa de Gandalf | Rangers | Perseguidores se revelam Rangers que guiam o grupo por um trecho; *ganha (1d)* na próxima rolagem de Viagem na Estrada do Leste. |
+  | 1 | Pedras Pesarosas | Um vento frio e melancólico entre pedras arruinadas. |
+  | 2 | Rei Caído | Uma estátua de um Rei antigo, coberta de athelas (uma rolagem de Caça a identifica; colhida, concede *ganha (1d)* numa rolagem de Cura, e é consumida no processo). |
+  | 3 | Olhos de Carniça | Corvos mal-humorados observam o grupo antes de voar para o norte — possivelmente espiões. |
+  | 4 | Predadores à luz da fogueira | Lobos selvagens rondam o acampamento; uma rolagem de Imponência os afasta. |
+  | 5 | Sol Sobre a Pedra | A luz do sol revela por um instante a antiga grandeza de uma torre arruinada. |
+  | 6 | Mercador Perdido | Um mercador Anão ferido recompensa a ajuda com 1 de Tesouro (prata). |
+  | 7 | Assaltantes de Estrada | Um Assaltante disfarçado atrai o grupo para uma emboscada. |
+  | 8 | Estrelas Estranhas em Torres Altas | Uma luz fria numa torre quebrada acompanha os passos do grupo. |
+  | 9 | Batedores Goblins | Um Arqueiro Goblin rastreia o grupo; se não for notado, eles são emboscados naquela noite. |
+  | 10 | Canção de Reis | Uma donzela fantasma cantando aparece junto à água e depois se dissipa. |
+  | Olho de Sauron | Toca de Troll | O grupo entra por acidente no covil de um Troll, despertando um Troll das Cavernas. |
 
-## The Greenway (p.192-194)
+## O Caminho Verde (p.192-194)
 
-Once the North Road, joining Arnor to Gondor; now grass-grown near Bree, hence its nickname. Lined with ancient ruins; has a dark reputation for bandits, though honest, isolated homesteader communities (descended from Tharbad refugees) also endure along it.
+Outrora a Estrada do Norte, ligando Arnor a Gondor; hoje tomado pela grama perto de Bri, daí o
+apelido. Ladeado por ruínas antigas; tem reputação sombria de bandidos, embora comunidades honestas
+e isoladas de colonos (descendentes de refugiados de Tharbad) também perdurem ao longo dele.
 
-- **Sidebar — Ruins along the Greenway (Feat Die table, mechanic, p.193):**
-  | Feat Die | Result | Description |
+- **Caixa de texto — Ruínas ao longo do Caminho Verde (tabela de Dado de Proeza, mecânica, p.193):**
+
+  | Dado de Proeza | Resultado | Descrição |
   |---|---|---|
-  | ⚿ | Ancient Hospitality | A hospitable old lord in a small keep (Courtesy roll); at dawn, Shadow reduces by 1, but the keep/lord seem never to have existed. |
-  | 1 | Abandoned Stable | A wild steed can be calmed (Hunting/Enhearten) and trained over a week (3 tests, each needing at least one Success icon). |
-  | 2 | The Watch Ends | A ghostly soldier standing watch atop a tower on a crescent-moon night. |
-  | 3 | Ring of Petals and Stone | A stone circle of wildflowers that no predators cross. |
-  | 4 | Elven Minstrel | A travelling Elf-woman; patience with her yields a night of song, recover 1 Hope; rudeness loses the benefit. |
-  | 5 | Southerner Ambush | A disguised Southerner Raider lures the party into ambush. |
-  | 6 | Orc Stragglers | Orcs hiding under a wall; Awareness detects them; else they may ambush a small group. |
-  | 7 | Collapsed Cairn | A Scan roll reveals a barrow dug open — now a Barrow-wight's lair. |
-  | 8 | Burnt Homestead | A Scan roll reveals occupants died to Orc arrows before the fire. |
-  | 9 | Displaced Southerner | A weary Southerner shares stories for food/fire. |
-  | 10 | Slain Wanderer | A Ranger's corpse; a Lore roll identifies him; his brooch, if returned, may yield a favor. |
-  | ⊘ | Corrupted Tomb | A tomb now home to Fell Wraiths from ancient Angmar, who harass/delay the party. |
+  | Runa de Gandalf | Hospitalidade Antiga | Um velho senhor hospitaleiro num pequeno castelo (rolagem de Cortesia); ao amanhecer, a Sombra reduz em 1, mas o castelo e o senhor parecem nunca ter existido. |
+  | 1 | Estábulo Abandonado | Um corcel selvagem pode ser acalmado (Caça/Encorajar) e treinado ao longo de uma semana (3 testes, cada um exigindo ao menos um ícone de Sucesso). |
+  | 2 | A Vigília Termina | Um soldado fantasma de guarda no topo de uma torre, em noite de lua crescente. |
+  | 3 | Anel de Pétalas e Pedra | Um círculo de pedra com flores silvestres que predador nenhum atravessa. |
+  | 4 | Menestrel Élfica | Uma Elfa viajante; ter paciência com ela rende uma noite de canção e recupera 1 Esperança; grosseria perde o benefício. |
+  | 5 | Emboscada Sulista | Um Sulista disfarçado atrai o grupo para uma emboscada. |
+  | 6 | Orcs Desgarrados | Orcs escondidos sob um muro; Percepção os detecta; senão podem emboscar um grupo pequeno. |
+  | 7 | Túmulo Desmoronado | Uma rolagem de Vasculhar revela um túmulo aberto à força — hoje covil de um Tumulário. |
+  | 8 | Herdade Queimada | Uma rolagem de Vasculhar revela que os moradores morreram de flechas Orc antes do incêndio. |
+  | 9 | Sulista Desalojado | Um Sulista exausto compartilha histórias em troca de comida e fogo. |
+  | 10 | Andarilho Morto | O cadáver de um Ranger; uma rolagem de Saber o identifica; seu broche, se devolvido, pode render um favor. |
+  | Olho de Sauron | Tumba Corrompida | Uma tumba hoje habitada por Espectros Funestos da antiga Angmar, que perseguem e atrasam o grupo. |
 
-## The Barrow-downs (p.194-195)
+## As Colinas dos Túmulos (p.194-195)
 
-East of the Shire, beyond the Old Forest; a maze-like country of green-grey hills, dangerous fog rises at sunset. Barrow-wight spirits inhabit crypts under the mounds; travellers who lose their way and fail to resist their call are imprisoned.
+A leste do Condado, além da Floresta Velha; um país labiríntico de colinas verde-acinzentadas, onde
+uma névoa perigosa sobe ao pôr do sol. Espíritos Tumulários habitam criptas sob os montículos;
+viajantes que se perdem e falham em resistir ao seu chamado ficam aprisionados.
 
-- **Sidebar — The Cold Stone (mechanic, p.194):** A hill at the Downs' centre topped by a single monolith. Climbing it and waiting for night guarantees a Barrow-wight encounter; touching the monolith grants 1 point of Shadow.
-- **The Great Barrow:** A vast underground burial complex on one of the highest hills; the lair of the **Wight-king**, chief of all creatures haunting Tyrn Gorthad, said to be the last King of Cardolan (or a fell captain who once served Angmar).
-  - **Adversary stat block — The Wight-king (p.195):**
-    - **Traits:** Cunning, Fierce, Vengeful
-    - **Attribute Level:** 9
-    - **Endurance:** 45 | **Might:** 2 | **Hate:** 9 | **Parry:** – | **Armour:** 4
-    - **Combat Proficiencies:** Ancient Sword 3 (5/18, Pierce), Icy Touch 3 (6/12, Break Shield)
-    - **Fell Abilities:**
-      - *Darker than the Darkness* — Spend 1 Hate to summon supernatural darkness; Player-heroes in close combat *lose (2d)* on their first attack against the creature; ranged attacks *lose (2d)* for the whole fight.
-      - *Denizen of the Dark* — All attack rolls are Favoured while in darkness.
-      - *Dreadful Spells* — Spend 1 Hate to make one Player-hero gain 3 Shadow points (Sorcery). Targets who fail their Shadow test or are Miserable fall unconscious, roused only with a Song roll, otherwise wake after one hour.
-      - *Hate Sunlight* — The creature loses 1 Hate at the start of each round exposed to full sunlight.
-    - Speaks the Common Tongue and the Black Speech of Mordor.
+- **Caixa de texto — A Pedra Fria (mecânica, p.194):** Uma colina no centro das Colinas, encimada por
+  um único monólito. Escalá-la e esperar a noite garante um encontro com Tumulário; tocar o monólito
+  concede 1 ponto de Sombra.
+- **O Grande Túmulo:** Um vasto complexo funerário subterrâneo numa das colinas mais altas; o covil do
+  **Rei-Tumulário**, chefe de todas as criaturas que assombram Tyrn Gorthad, dito ser o último Rei de
+  Cardolan (ou um capitão funesto que outrora serviu Angmar).
+  - **Bloco de adversário — O Rei-Tumulário (p.195):**
+    - **Traços:** Astuto, Feroz, Vingativo
+    - **Nível de Atributo:** 9
+    - **Resistência:** 45 | **Vigor:** 2 | **Ódio:** 9 | **Bloqueio:** – | **Proteção:** 4
+    - **Proficiências de Combate:** Espada Antiga 3 (5/18, Perfurar), Toque Gélido 3 (6/12, Quebrar
+      Escudo)
+    - **Habilidades Sinistras:**
+      - *Mais Escuro que a Escuridão* — Gasta 1 de Ódio para invocar escuridão sobrenatural; heróis em
+        combate corpo a corpo *perdem (2d)* no primeiro ataque contra a criatura; ataques à distância
+        *perdem (2d)* durante toda a luta.
+      - *Morador do Escuro* — Todas as rolagens de ataque são Favorecidas enquanto estiver no escuro.
+      - *Feitiços Terríveis* — Gasta 1 de Ódio para fazer um herói ganhar 3 pontos de Sombra
+        (Feitiçaria). Alvos que falham no Teste de Sombra ou que estão Arrasados caem inconscientes,
+        despertados apenas com uma rolagem de Canção; senão acordam depois de uma hora.
+      - *Odeia a Luz do Sol* — A criatura perde 1 de Ódio no início de cada rodada exposta à luz plena
+        do sol.
+    - Fala a Língua Comum e a Língua Negra de Mordor.
 
-## The North Downs (p.195-198)
+## As Colinas do Norte (p.195-198)
 
-High hills and gullies stretching northeast toward Angmar's old Lone-lands; once the heart of a great kingdom, now empty and ruined. Recently, robbers and brigands have made lairs in half-ruined towers.
+Colinas altas e ravinas que se estendem a nordeste, rumo às antigas Terras Solitárias de Angmar;
+outrora o coração de um grande reino, hoje vazias e arruinadas. Recentemente, ladrões e bandoleiros
+fizeram covis em torres meio-arruinadas.
 
-- **Sidebar — Ruins and Broken Stones (Feat Die table, mechanic, p.197):**
-  | Feat Die | Result | Description |
+- **Caixa de texto — Ruínas e Pedras Quebradas (tabela de Dado de Proeza, mecânica, p.197):**
+
+  | Dado de Proeza | Resultado | Descrição |
   |---|---|---|
-  | ⚿ | A Secret Hoard | A Scan roll reveals a marble slab hiding treasure (amount at Loremaster's discretion). |
-  | 1 | Forgotten Words | An Adûnaic inscription; a Lore roll translates it, hinting at the Dome of Sight, Throne Room of Arvedui, or Records of the Last King. |
-  | 2 | A Lingering Shadow | An Awareness roll reveals a shadowing spy who vanishes if called out. |
-  | 3 | Home Brought to Ruin | A ruined noble house of Arthedain, marked also by Angmar's ruin. |
-  | 4 | Scavengers | Three Highway Robbers looting a tomb (1-2 Treasure). |
-  | 5 | Voices from the Past | Sounds of ancient battle, fading without warning. |
-  | 6-8 | Unstable Foundations | The ground gives way into a collapsed building's chamber. |
-  | 9 | Battered War Gear | A repairable helm bearing the crest of the Kings of Arnor. |
-  | 10 | Restless Soul | A shared dream asks for proper burial; a Scan roll finds a collapsed watchtower and a fallen guard's skeleton. |
-  | ⊘ | Spirits out of Angmar | Fell Wraiths (equal in number to the party) rise from a burned ruin. |
-- **Fornost Erain:** Ruined city in the southern foothills, called "Deadmen's Dike" by Bree-folk; sacked by Angmar long ago; only Rangers dare dwell nearby. Ranger Talandil is a self-appointed guardian trying to clear bandits from the area.
-  - **The Dome of Sight:** A collapsed domed chamber that once housed the Seeing Stones of the North Kingdom (the Amon Sûl stone and the Stone of Annúminas — both now lost); a starlit-sky mosaic is still partly visible.
-  - **The Throne Room of Arvedui:** A vast underground chamber, said to survive intact under the ruins of the Hall of Eärendur; a throne carved with a many-rayed star.
-  - **The Records of the Last King:** A hidden private library of King Arvedui, containing insight into the final king's mind and affairs, if discovered.
+  | Runa de Gandalf | Um Tesouro Secreto | Uma rolagem de Vasculhar revela uma laje de mármore escondendo tesouro (quantidade a critério do Mestre). |
+  | 1 | Palavras Esquecidas | Uma inscrição em Adûnaico; uma rolagem de Saber a traduz, aludindo à Cúpula da Visão, à Sala do Trono de Arvedui, ou aos Registros do Último Rei. |
+  | 2 | Uma Sombra Persistente | Uma rolagem de Percepção revela um espião seguindo o grupo, que desaparece se for chamado. |
+  | 3 | Lar Levado à Ruína | Uma casa nobre arruinada de Arthedain, marcada também pela ruína de Angmar. |
+  | 4 | Saqueadores | Três Assaltantes de Estrada pilhando uma tumba (1-2 de Tesouro). |
+  | 5 | Vozes do Passado | Sons de uma batalha antiga, que se dissipam sem aviso. |
+  | 6-8 | Fundações Instáveis | O chão cede, dando para a câmara de um edifício desmoronado. |
+  | 9 | Equipamento de Guerra Castigado | Um elmo reparável com o brasão dos Reis de Arnor. |
+  | 10 | Alma Inquieta | Um sonho compartilhado pede sepultamento adequado; uma rolagem de Vasculhar encontra uma torre de vigia desmoronada e o esqueleto de um guarda tombado. |
+  | Olho de Sauron | Espíritos de Angmar | Espectros Funestos (em número igual ao do grupo) se erguem de uma ruína queimada. |
 
-## The South Downs (p.198-199)
+- **Fornost Erain:** Cidade arruinada no sopé sul, chamada "Vala dos Mortos" pelo povo de Bri;
+  saqueada por Angmar há muito tempo; só Rangers ousam morar por perto. O Ranger Talandil é um
+  guardião autonomeado tentando limpar bandidos da área.
+  - **A Cúpula da Visão:** Uma câmara abobadada desmoronada que outrora abrigou as Pedras Videntes do
+    Reino do Norte (a pedra de Amon Sûl e a Pedra de Annúminas — ambas hoje perdidas); um mosaico de
+    céu estrelado ainda é parcialmente visível.
+  - **A Sala do Trono de Arvedui:** Uma vasta câmara subterrânea que diz-se sobreviver intacta sob as
+    ruínas do Salão de Eärendur; um trono entalhado com uma estrela de muitos raios.
+  - **Os Registros do Último Rei:** Uma biblioteca particular escondida do Rei Arvedui, contendo
+    revelações sobre a mente e os assuntos do último rei, se for descoberta.
 
-A range of dreary, empty hills, running roughly a hundred miles, west of the Greenway, north of the East Road.
+## As Colinas do Sul (p.198-199)
 
-- **The Howling Hollows:** Wolf-caves burrowed under the hills; home to a pack of a dozen Wolves; increasingly, worse creatures are drawn here too.
-- **Búrzgul:** Orc chieftain from Goblin Gate leading a band that has joined forces with the Wolves of the Howling Hollows, secretly building a threat unknown to the Rangers.
-  - **Adversary stat block — Búrzgul (p.199):**
-    - **Traits:** Cruel, Keen-eyed
-    - **Attribute Level:** 5
-    - **Endurance:** 22 | **Might:** 1 | **Hate:** 5 | **Parry:** +3 | **Armour:** 3
-    - **Combat Proficiencies:** Scimitar 3 (3/16, Break Shield), Spear 2 (3/14, Pierce)
-    - **Special tag:** Overbear
-    - **Fell Abilities:**
-      - *Orc-poison* — If an attack produces at least 1 Success icon, the target is poisoned (see p.134).
-      - *Snake-like Speed* — When targeted by an attack, spend 1 Hate to make the attack roll Ill-favoured.
-      - *Yell of Triumph* — Spend 1 Hate to restore 1 Hate to all other Orcs in the fight.
-  - **Ash (Búrzgul's Warg companion) — adversary stat block (p.199):**
-    - **Traits:** Cunning, Swift
-    - **Attribute Level:** 4
-    - **Endurance:** 20 | **Might:** 1 | **Hate:** 4 | **Parry:** +2 | **Armour:** 1
-    - **Combat Proficiencies:** Fangs 3 (4/14, Pierce), Claws 2 (5/14)
-    - **Fell Abilities:**
-      - *Fear of Fire* — Considered Ill-favoured on all rolls in close combat with a torch/burning-item wielder.
-      - *Savage Assault* — Spend 1 Hate after a Fangs attack to immediately roll a Claws attack on the same target.
+Uma cadeia de colinas monótonas e vazias, correndo por cerca de cem milhas, a oeste do Caminho Verde
+e ao norte da Estrada do Leste.
 
-## The Weather Hills (p.199)
+- **As Cavas Uivantes:** Cavernas de lobos escavadas sob as colinas; lar de uma alcateia de uma dúzia
+  de Lobos; cada vez mais, criaturas piores também são atraídas para lá.
+- **Búrzgul:** Cacique Orc do Portão dos Goblins, liderando um bando que uniu forças com os Lobos das
+  Cavas Uivantes, construindo em segredo uma ameaça desconhecida pelos Rangers.
+  - **Bloco de adversário — Búrzgul (p.199):**
+    - **Traços:** Cruel, Olhos Aguçados
+    - **Nível de Atributo:** 5
+    - **Resistência:** 22 | **Vigor:** 1 | **Ódio:** 5 | **Bloqueio:** +3 | **Proteção:** 3
+    - **Proficiências de Combate:** Cimitarra 3 (3/16, Quebrar Escudo), Lança 2 (3/14, Perfurar)
+    - **Marca especial:** Sobrepujar
+    - **Habilidades Sinistras:**
+      - *Veneno de Orc* — Se um ataque produzir ao menos 1 ícone de Sucesso, o alvo é envenenado (ver
+        p.134).
+      - *Velocidade de Serpente* — Ao ser alvo de um ataque, gasta 1 de Ódio para tornar a rolagem de
+        ataque Desfavorecida.
+      - *Grito de Triunfo* — Gasta 1 de Ódio para restaurar 1 de Ódio a todos os outros Orcs da luta.
+  - **Ash (o Warg companheiro de Búrzgul) — bloco de adversário (p.199):**
+    - **Traços:** Astuto, Veloz
+    - **Resistência:** 20 | **Vigor:** 1 | **Ódio:** 4 | **Bloqueio:** +2 | **Proteção:** 1
+    - **Nível de Atributo:** 4
+    - **Proficiências de Combate:** Presas 3 (4/14, Perfurar), Garras 2 (5/14)
+    - **Habilidades Sinistras:**
+      - *Medo do Fogo* — Considerado Desfavorecido em todas as rolagens em combate corpo a corpo com
+        quem porta tocha ou item em chamas.
+      - *Assalto Selvagem* — Gasta 1 de Ódio depois de um ataque de Presas para rolar imediatamente um
+        ataque de Garras no mesmo alvo.
 
-A long, northward ridge, starting at Weathertop in the south. Ruins of ancient forts/watchtowers from the Angmar wars dot the bleak, treeless hilltops.
+## As Colinas do Tempo (p.199)
 
-- **Weathertop (Amon Sûl):** Southernmost, tallest hill; once held one of the Seeing Stones brought from Númenor; the watchtower was burned and broken in the Angmar wars, only a ring of stonework remains. Rangers pay tribute here and sometimes leave encrypted notes/supplies.
+Uma longa crista rumo ao norte, começando no Topo do Vento ao sul. Ruínas de fortes e torres de vigia
+antigos das guerras de Angmar pontilham os cumes desolados e sem árvores.
+
+- **Topo do Vento (Amon Sûl):** A colina mais ao sul e mais alta; outrora guardou uma das Pedras
+  Videntes trazidas de Númenor; a torre de vigia foi queimada e quebrada nas guerras de Angmar, e só
+  resta um anel de alvenaria. Rangers prestam tributo aqui e às vezes deixam notas cifradas e
+  suprimentos.
 
 ## Angmar (p.200)
 
-North of the Ettenmoors and Mount Gram; the old witch-realm, once ruled by the Witch-king (Chief of the Ringwraiths) from Carn Dûm, who destroyed the North Kingdom of Arnor before being driven off. Now, dark rumours suggest Angmar is stirring again as a new servant of Sauron may occupy the fortress; Orcs, Trolls, and Hill-men are answering an old call.
+Ao norte de Ettenmoors e do Monte Gram; o antigo reino-bruxo, outrora governado pelo Rei-Bruxo (Chefe
+dos Espectros do Anel) a partir de Carn Dûm, que destruiu o Reino do Norte de Arnor antes de ser
+expulso. Hoje, rumores sombrios sugerem que Angmar se agita de novo, com um novo servo de Sauron
+possivelmente ocupando a fortaleza; Orcs, Trolls e Homens das Colinas respondem a um chamado antigo.
 
-- **Carn Dûm:** The old seat of the Witch-king, hidden in an icy labyrinth of passes through the Mountains of Angmar. Rumours of rekindled forges and gathering armies are heard as far as Bree.
+- **Carn Dûm:** A antiga sede do Rei-Bruxo, escondida num labirinto gelado de passagens pelas
+  Montanhas de Angmar. Rumores de forjas reacesas e exércitos se reunindo são ouvidos até em Bri.
 
-## The Ettenmoors (p.200-201)
+## Ettenmoors (p.200-201)
 
-A bleak, fog-shrouded highland of moors and marshland under the Misty Mountains; even Rangers avoid it. Many Trolls dwell here, wandering in a fog that sunlight rarely pierces.
+Um planalto desolado e envolto em névoa, de charnecas e pântanos sob as Montanhas Nevoentas; até os
+Rangers o evitam. Muitos Trolls habitam aqui, vagando numa névoa que a luz do sol raramente perfura.
 
-## Mount Gram (p.201)
+## Monte Gram (p.201)
 
-The highest peak of a range marking Angmar's southern border with the Ettenmoors; home of Golfimbul (Hobbit legend, slain by Bandobras "Bullroarer" Took at the Battle of Greenfields). Orcs, Goblins, and Trolls have restored their numbers here, rivalling the days of Angmar's power.
+O pico mais alto de uma cadeia que marca a fronteira sul de Angmar com Ettenmoors; lar de Golfimbul
+(lenda Hobbit, morto por Bandobras "Berrador" Took na Batalha dos Campos Verdes). Orcs, Goblins e
+Trolls restauraram seus números aqui, rivalizando com os dias do poder de Angmar.
 
-## The Trollshaws (p.202-203)
+## As Matas dos Trolls (p.202-203)
 
-Between the Hoarwell and Loudwater rivers, east of the Last Bridge; a rough, rocky landscape riddled with Troll caverns, plus ruined towers/castles. Dangerous predators and foes lurk in its woodlands.
+Entre os rios Fontegris e Águas Ruidosas, a leste da Última Ponte; uma paisagem rochosa e acidentada
+crivada de cavernas de Troll, além de torres e castelos arruinados. Predadores perigosos e inimigos
+se escondem em suas matas.
 
-- **Sidebar — Troll-holes (Feat Die table, mechanic, p.202):**
-  | Feat Die | Result | Description |
+- **Caixa de texto — Tocas de Troll (tabela de Dado de Proeza, mecânica, p.202):**
+
+  | Dado de Proeza | Resultado | Descrição |
   |---|---|---|
-  | ⚿ | Abandoned | A Troll turned to stone by the sun; a Scan roll finds 1-2 Treasure among its loot. |
-  | 1-2 | Root Nest | A slippery, muddy hole under a split tree. |
-  | 3-4 | Crumbling Tower | An unstable Troll-lair in a collapsed tower. |
-  | 5-6 | Shallow Cave | A small cave near the East Road, easily avoided. |
-  | 7-8 | Behind the Falls | A lair behind a small waterfall. |
-  | 9-10 | Under Construction | A Troll actively tearing open a new cave entrance. |
-  | ⊘ | Not Alone | A seemingly abandoned cave hides a Troll deeper within. |
-- **The Last Bridge:** ~100 miles east of Weathertop, a great stone bridge over the Hoarwell in three arches; crossing it means entering the Trollshaws, the last chance to turn back to civilisation.
+  | Runa de Gandalf | Abandonada | Um Troll transformado em pedra pelo sol; uma rolagem de Vasculhar encontra 1-2 de Tesouro entre seu espólio. |
+  | 1-2 | Ninho de Raízes | Um buraco escorregadio e lamacento sob uma árvore rachada. |
+  | 3-4 | Torre em Ruínas | Um covil de Troll instável numa torre desmoronada. |
+  | 5-6 | Caverna Rasa | Uma caverna pequena perto da Estrada do Leste, fácil de evitar. |
+  | 7-8 | Atrás da Cachoeira | Um covil atrás de uma pequena cachoeira. |
+  | 9-10 | Em Construção | Um Troll rasgando ativamente a entrada de uma caverna nova. |
+  | Olho de Sauron | Não Está Sozinho | Uma caverna aparentemente abandonada esconde um Troll mais no fundo. |
+
+- **A Última Ponte:** Cerca de 100 milhas a leste do Topo do Vento, uma grande ponte de pedra sobre o
+  Fontegris, em três arcos; cruzá-la significa entrar nas Matas dos Trolls, a última chance de voltar
+  para a civilização.
 
 ## Tharbad (p.203-204)
 
-A ruined city where the Greyflood ceases to be navigable; once a thriving market town, devastated by the Fell Winter floods 50 years ago (bridge washed away). Now ruled by former bandit Gurnow, who promises restoration. (Detailed info in *Ruins of the Lost Realm* supplement.)
+Uma cidade arruinada onde o Fluxo Cinzento deixa de ser navegável; outrora um movimentado povoado de
+mercado, devastado pelas enchentes do Inverno Cruel 50 anos atrás (a ponte foi levada pela água).
+Hoje governada pelo ex-bandido Gurnow, que promete restauração. (Informação detalhada no suplemento
+*Ruins of the Lost Realm*.)
 
 ## Lindon (p.203-204, 206)
 
-The wide seaward Elven realm west of the Blue Mountains, remnant of Beleriand; comprises Forlindon and Harlindon around the Gulf of Lhûn. No Men cross into Lindon, though Dwarves maintain remote halls in the Blue Mountains on both sides of the Gulf.
+O amplo reino Élfico à beira-mar, a oeste das Montanhas Azuis, remanescente de Beleriand; compreende
+Forlindon e Harlindon em torno do Golfo de Lhûn. Homem nenhum cruza para Lindon, embora Anões
+mantenham salões remotos nas Montanhas Azuis em ambos os lados do Golfo.
 
-- **Mithlond (the Grey Havens):** At the mouth of the Gulf of Lhûn, where Elven-ships depart Middle-earth; master is **Círdan the Shipwright**, acknowledged ruler of Lindon since Gil-galad's death; counted among the Wise, sends messengers to counsel with Elrond.
+- **Mithlond (os Portos Cinzentos):** Na foz do Golfo de Lhûn, de onde as naus Élficas partem da
+  Terra-média; o senhor é **Círdan, o Construtor de Naus**, governante reconhecido de Lindon desde a
+  morte de Gil-galad; contado entre os Sábios, envia mensageiros para se aconselhar com Elrond.
 
-## The Blue Mountains (p.204)
+## As Montanhas Azuis (p.204)
 
-The Ered Luin; ancient range where Nogrod and Belegost (destroyed at the end of the First Age) once stood. Many halls and mines remain open/populated (not all belonging to the House of Durin), with trade and travel connecting the Blue Mountains, Erebor, and the Iron Hills — Dwarves passing the East Road are a reliable source of news for the Shire and Bree.
+As Ered Luin; cadeia antiga onde outrora estavam Nogrod e Belegost (destruídas no fim da Primeira
+Era). Muitos salões e minas seguem abertos e povoados (não todos pertencentes à Casa de Durin), com
+comércio e viagem ligando as Montanhas Azuis, Erebor e as Colinas de Ferro — Anões que passam pela
+Estrada do Leste são fonte confiável de notícias para o Condado e para Bri.
 
-## Other Lands (sidebar, p.204, brief)
+## Outras Terras (caixa de texto, p.204, resumido)
 
-Mentions beyond Eriador for context: the Gap of Rohan (leading to Calenardhon/Rohan), the Great River and Gondor, and **Mordor** — encircled by broken peaks, dominated by Orodruin (Mount Doom) where Sauron forged the One Ring and has now returned to rebuild his power beneath Barad-dûr.
-
----
-
-## Adventuring in Middle-earth (p.207-209)
-
-Epigraph: *"The brave things in the old tales and songs, Mr. Frodo: adventures, as I used to call them..."*
-
-Follow-up to Chapter 6's framing advice, offering questions to keep the world of Middle-earth central to Adventuring Phases.
-
-### When? (p.207)
-Time matters — every event becomes part of the Company's Tale of Years, alongside the historical chronology of the setting.
-- **Current Season:** The passing of seasons is a strong descriptive/mechanical tool — seasons affect gameplay (e.g., mountain travel is harder in winter, easier in spring).
-- **Current Year:** Tracking the passage of years situates the Company's deeds within the wider chronology, adding depth. Companies may witness great gatherings, cross paths with groups tied to timeline events, or hear news from people they meet on their Journeys.
-
-### Where? (p.207)
-Either a precise location matters to the action (chosen from this chapter or source material, see also Landmarks, p.221), or a generic setting suffices.
-- **Exploring Middle-earth:** Bringing the Company to locations from Tolkien's books (e.g., Rivendell's Hall of Fire, the White Tower of Elostirion) can make an ordinary Adventuring Phase memorable. The Loremaster can challenge Skills with simple tests tied to such locations (e.g., a Scan roll while crossing the Trollshaws might locate the glade of the three Stone-trolls from *The Hobbit*).
-
-### What? (p.207-209)
-Defines the heart of the Adventuring Phase — the information presented to players at a session's start.
-- Often summarised via a rumour gathered in the previous Fellowship Phase, or tied to a prior Adventuring Phase's events.
-- **Sidebar — Keeping It Thematic (p.208):** Suggestion to pay tribute to the source material by borrowing story hooks/chapter titles from *The Hobbit* or *The Lord of the Rings*, reinterpreted with personal investment. Examples given: *The Shadow of the Past* (the Company's first meeting organised/observed by their Patron, or an old letter involving a lost relative); *There and Back Again* (a rumour about a lost place/item a renowned character failed to reclaim); *Over Hill and Under Hill* (session starts mid-Journey to a hero-connected place); *A Knife in the Dark* (a safe inn turns dangerous as a Shadow agent tries to murder a Player-hero); *Riddles in the Dark* (the Company meets a dark, ancient creature known as a folk tale).
-- **Simplicity:** An Adventuring Phase doesn't need to be about an epic threat — smaller events, woven together over time, gain greater significance.
-- **Plot Twists:** The Loremaster can complicate an otherwise straightforward Adventuring Phase; sometimes it may end without a clear answer, opening further investigation later.
-
-### Why? (p.209)
-Addresses why Player-heroes get personally involved — heroes brave dangers others avoid because of a personal stake.
-
-### Who? (p.209)
-The Loremaster needs to populate the world with memorable characters as Tolkien did.
-- **Role Models:** Meeting a favourite hero from the stories helps players feel integrated into the epic, adding personal investment.
-- **Supporting Cast:** Loremaster characters should be used sparingly; consider having the famous character need the Player-heroes' help (or rescue) rather than overshadowing them.
-- **Patrons:** During play, the Company may adopt an important personality as their Patron — a source of story hooks and support, and a recurring motif; must not be reduced to a mere gameplay asset. (Full Patrons content: see next document, Appendix A, p.212.)
+Menções para além de Eriador, como contexto: a Brecha de Rohan (levando a Calenardhon/Rohan), o Grande
+Rio e Gondor, e **Mordor** — cercada por picos quebrados, dominada por Orodruin (a Montanha da
+Perdição), onde Sauron forjou o Um Anel e para onde retornou a fim de reconstruir seu poder sob
+Barad-dûr.
 
 ---
 
-*(End of Chapter 9. The chapter closes on a full-page illustration, unnumbered, printed p.210 — Rangers and hobbits amid snowy ruins.)*
+## Aventurar-se na Terra-média (p.207-209)
+
+Epígrafe: *"As coisas valentes dos contos e canções antigas, Sr. Frodo: aventuras, como eu costumava
+chamá-las…"*
+
+Continuação do conselho de enquadramento do Capítulo 6, oferecendo perguntas para manter o mundo da
+Terra-média no centro das Fases de Aventura.
+
+### Quando? (p.207)
+
+O tempo importa — cada evento se torna parte do Conto dos Anos da Companhia, ao lado da cronologia
+histórica do cenário.
+
+- **Estação atual:** A passagem das estações é uma ferramenta forte, descritiva e mecânica — estações
+  afetam o jogo (por exemplo, viajar pelas montanhas é mais difícil no inverno e mais fácil na
+  primavera).
+- **Ano atual:** Acompanhar a passagem dos anos situa os feitos da Companhia na cronologia mais ampla,
+  dando profundidade. Companhias podem testemunhar grandes reuniões, cruzar caminho com grupos ligados
+  a eventos da linha do tempo, ou ouvir notícias de quem encontram nas Jornadas.
+
+### Onde? (p.207)
+
+Ou um local preciso importa para a ação (escolhido deste capítulo ou do material de origem, ver também
+Marcos, p.221), ou um cenário genérico basta.
+
+- **Explorar a Terra-média:** Levar a Companhia a lugares dos livros de Tolkien (por exemplo, o Salão
+  do Fogo de Valfenda, a Torre Branca de Elostirion) pode tornar memorável uma Fase de Aventura comum.
+  O Mestre pode desafiar Perícias com testes simples ligados a esses lugares (por exemplo, uma rolagem
+  de Vasculhar ao cruzar as Matas dos Trolls pode localizar a clareira dos três Trolls de Pedra de *O
+  Hobbit*).
+
+### O quê? (p.207-209)
+
+Define o coração da Fase de Aventura — a informação apresentada aos jogadores no começo da sessão.
+
+- Muitas vezes resumida por um boato colhido na Fase de Companhia anterior, ou ligada aos eventos de
+  uma Fase de Aventura prévia.
+- **Caixa de texto — Manter o Tema (p.208):** Sugestão de homenagear o material de origem tomando
+  ganchos de história e títulos de capítulo de *O Hobbit* ou *O Senhor dos Anéis*, reinterpretados com
+  investimento pessoal. Exemplos dados: *A Sombra do Passado* (o primeiro encontro da Companhia
+  organizado ou observado pelo Patrono, ou uma carta antiga envolvendo um parente perdido); *Lá e de
+  Volta Outra Vez* (um boato sobre um lugar ou item perdido que um personagem renomado falhou em
+  reclamar); *Por Cima e Por Baixo da Montanha* (a sessão começa no meio de uma Jornada para um lugar
+  ligado a um herói); *Uma Faca no Escuro* (uma estalagem segura se torna perigosa quando um agente da
+  Sombra tenta assassinar um herói); *Enigmas no Escuro* (a Companhia encontra uma criatura escura e
+  antiga conhecida como conto popular).
+- **Simplicidade:** Uma Fase de Aventura não precisa girar em torno de uma ameaça épica — eventos
+  menores, tecidos juntos ao longo do tempo, ganham maior significado.
+- **Reviravoltas:** O Mestre pode complicar uma Fase de Aventura que de outro modo seria direta; às
+  vezes ela pode terminar sem resposta clara, abrindo investigação futura.
+
+### Por quê? (p.209)
+
+Trata de por que os heróis se envolvem pessoalmente — heróis enfrentam perigos que outros evitam por
+causa de um interesse pessoal.
+
+### Quem? (p.209)
+
+O Mestre precisa povoar o mundo com personagens memoráveis, como Tolkien fez.
+
+- **Modelos:** Encontrar um herói favorito das histórias ajuda os jogadores a se sentirem integrados
+  ao épico, somando investimento pessoal.
+- **Elenco de apoio:** Personagens do Mestre devem ser usados com parcimônia; considere fazer o
+  personagem famoso precisar da ajuda (ou do resgate) dos heróis, em vez de ofuscá-los.
+- **Patronos:** Durante o jogo, a Companhia pode adotar uma personalidade importante como Patrono —
+  fonte de ganchos de história e apoio, e motivo recorrente; não deve ser reduzido a mero recurso de
+  jogo. (Conteúdo completo de Patronos: ver o documento seguinte, Apêndice A, p.212.)
+
+---
+
+*(Fim do Capítulo 9. O capítulo encerra com uma ilustração de página inteira, sem número, impressa na
+p.210 — Rangers e hobbits entre ruínas cobertas de neve.)*
