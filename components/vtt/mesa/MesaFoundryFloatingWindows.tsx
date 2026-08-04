@@ -309,6 +309,7 @@ export function MesaFoundryFloatingWindows(props: MesaFoundryFloatingWindowsProp
           <TorCouncilPanel
             roomId={roomId}
             canManage={Boolean(effectiveIsGm)}
+            council={torSession?.council ?? null}
             onUpdate={() => void onRefresh()}
           />
         </FoundryWindow>
@@ -331,6 +332,7 @@ export function MesaFoundryFloatingWindows(props: MesaFoundryFloatingWindowsProp
           <TorFellowshipPanel
             roomId={roomId}
             canManage={Boolean(effectiveIsGm)}
+            fellowship={torSession?.fellowship ?? null}
             onUpdate={() => void onRefresh()}
           />
         </FoundryWindow>

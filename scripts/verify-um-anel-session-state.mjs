@@ -25,6 +25,10 @@ const REGISTRY = r("lib", "room", "internal", "registry.ts");
 const ROUTE = r("app", "api", "room", "[roomId]", "tor-session", "route.ts");
 const STORE = r("lib", "room", "store.ts");
 const PANEL = r("components", "vtt", "TorJourneyPanel.tsx");
+const COUNCIL_PANEL = r("components", "vtt", "TorCouncilPanel.tsx");
+const FELLOWSHIP_PANEL = r("components", "vtt", "TorFellowshipPanel.tsx");
+const RAIL = r("components", "vtt", "mesa", "MesaFoundryDockRail.tsx");
+const FLOATING = r("components", "vtt", "mesa", "MesaFoundryFloatingWindows.tsx");
 
 let pass = 0;
 let fail = 0;
@@ -144,6 +148,56 @@ ok(
   "Painel trata eventId desconhecido",
   /Evento desconhecido/.test(PANEL)
 );
+
+/* ── Os TRÊS painéis leem da sala, não de estado local ───────────── */
+
+const councilCode = stripComments(COUNCIL_PANEL);
+ok("Conselho recebe council por prop", /council:\s*TorCouncilState \| null;/.test(COUNCIL_PANEL));
+ok("Conselho grava via patchTorSession", /patchTorSession\(roomId,/.test(councilCode));
+ok(
+  "Conselho encerra com null",
+  /patchTorSession\(roomId,\s*\{\s*council:\s*null\s*\}\)/.test(councilCode)
+);
+// `outcome` tem de derivar do estado da sala, senão o painel discorda dela.
+ok(
+  "Conselho: outcome deriva de council",
+  /const outcome = council \? torCouncilOutcome\(council\) : null;/.test(councilCode)
+);
+ok("Conselho: jogador vê placar em leitura", /Nenhum conselho em curso/.test(COUNCIL_PANEL));
+
+const fellowCode = stripComments(FELLOWSHIP_PANEL);
+ok(
+  "Companhia recebe fellowship por prop",
+  /fellowship:\s*TorFellowshipProgress \| null;/.test(FELLOWSHIP_PANEL)
+);
+ok("Companhia grava via patchTorSession", /patchTorSession\(roomId,/.test(fellowCode));
+// O calendário é o dado que MAIS importa persistir: decide quando cai o Yule.
+ok(
+  "Companhia: Yule deriva do calendário persistido",
+  /state\.phasesThisYear \+ 1 >= TOR_PHASES_PER_YEAR/.test(fellowCode)
+);
+ok(
+  "Companhia: encerrar Fase avança o calendário na sala",
+  /year:\s*advanced\.calendar\.year/.test(fellowCode) &&
+    /phasesThisYear:\s*advanced\.calendar\.phasesThisYear/.test(fellowCode)
+);
+ok("Companhia: escolhas zeram na Fase seguinte", /picks:\s*\[\],/.test(fellowCode));
+
+/* ── A prop chega do snapshot até os três ────────────────────────── */
+
+for (const [file, src] of [
+  ["DockRail", RAIL],
+  ["FloatingWindows", FLOATING],
+]) {
+  ok(`${file}: declara torSession`, /torSession\?:\s*RoomSnapshot\["torSession"\];/.test(src));
+  ok(`${file}: passa progress à Jornada`, /progress=\{torSession\?\.journey \?\? null\}/.test(src));
+  ok(`${file}: passa council ao Conselho`, /council=\{torSession\?\.council \?\? null\}/.test(src));
+  ok(
+    `${file}: passa fellowship à Companhia`,
+    /fellowship=\{torSession\?\.fellowship \?\? null\}/.test(src)
+  );
+}
+
 
 console.log(`\nverify-um-anel-session-state: ${pass} passaram, ${fail} falharam`);
 if (fail > 0) process.exit(1);

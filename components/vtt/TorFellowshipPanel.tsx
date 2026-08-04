@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useMemo, useState } from "react";
-import { postRoomChat } from "@/hooks/useRoomSync";
+import { patchTorSession, postRoomChat } from "@/hooks/useRoomSync";
 import { TOR_UNDERTAKINGS } from "@/lib/character/um-anel/undertakings";
 import {
   TOR_PHASES_PER_YEAR,
@@ -12,15 +12,21 @@ import {
   formatTorCalendarMessage,
   torUndertakingBudget,
   validateTorUndertakings,
-  type TorCalendar,
   type TorPhaseOutcome,
 } from "@/lib/combat/um-anel/progression";
+import type { TorFellowshipProgress } from "@/lib/combat/um-anel/session-state";
 import "./tor-journey.css";
 
 type Props = {
   roomId: string;
   /** Só o Mestre abre e encerra a Fase de Companhia. */
   canManage: boolean;
+  /**
+   * Estado vindo do snapshot da sala. O calendário da campanha (ano e Fase)
+   * PRECISA persistir: é o que decide quando cai o Yule, e perder isso
+   * desalinharia a progressão de toda a Companhia.
+   */
+  fellowship: TorFellowshipProgress | null;
   onUpdate: () => void;
 };
 
@@ -31,21 +37,29 @@ const OUTCOME_LABEL: Record<TorPhaseOutcome, string> = {
   notavel: "Feito digno da atenção do Senhor Sombrio",
 };
 
-export function TorFellowshipPanel({ roomId, canManage, onUpdate }: Props) {
-  const [calendar, setCalendar] = useState<TorCalendar>({ year: 2965, phasesThisYear: 0 });
-  const [companySize, setCompanySize] = useState(4);
-  const [witsScore, setWitsScore] = useState(3);
-  const [outcome, setOutcome] = useState<TorPhaseOutcome>("marginal");
-  const [picks, setPicks] = useState<string[]>([]);
+/** Estado inicial de uma campanha nova — 2965 T.E., como o Starter Set. */
+const INITIAL: TorFellowshipProgress = {
+  year: 2965,
+  phasesThisYear: 0,
+  companySize: 4,
+  witsScore: 3,
+  outcome: "marginal",
+  picks: [],
+};
+
+export function TorFellowshipPanel({ roomId, canManage, fellowship, onUpdate }: Props) {
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState<string | null>(null);
 
+  /** Enquanto a sala não tem calendário, opera sobre o inicial. */
+  const state = fellowship ?? INITIAL;
+
   /** A próxima Fase é Yule? Deriva do calendário — nunca de um botão manual. */
-  const nextIsYule = calendar.phasesThisYear + 1 >= TOR_PHASES_PER_YEAR;
+  const nextIsYule = state.phasesThisYear + 1 >= TOR_PHASES_PER_YEAR;
 
   const budget = useMemo(
-    () => torUndertakingBudget({ isYule: nextIsYule, companySize }),
-    [nextIsYule, companySize]
+    () => torUndertakingBudget({ isYule: nextIsYule, companySize: state.companySize }),
+    [nextIsYule, state.companySize]
   );
 
   const undertakings = useMemo(
@@ -56,78 +70,134 @@ export function TorFellowshipPanel({ roomId, canManage, onUpdate }: Props) {
   const validation = useMemo(
     () =>
       validateTorUndertakings(
-        picks.map((id) => ({
+        state.picks.map((id) => ({
           id,
           yuleOnly: undertakings.find((u) => u.id === id)?.yuleOnly ?? false,
         })),
-        { isYule: nextIsYule, companySize }
+        { isYule: nextIsYule, companySize: state.companySize }
       ),
-    [picks, undertakings, nextIsYule, companySize]
+    [state.picks, state.companySize, undertakings, nextIsYule]
   );
 
-  const toggle = useCallback((id: string) => {
-    setPicks((p) => (p.includes(id) ? p.filter((x) => x !== id) : [...p, id]));
-  }, []);
+  const guard = useCallback(
+    async (fn: () => Promise<void>) => {
+      if (busy) return;
+      setBusy(true);
+      setErr(null);
+      try {
+        await fn();
+      } catch (e) {
+        setErr(e instanceof Error ? e.message : "Falha ao salvar");
+      } finally {
+        setBusy(false);
+      }
+    },
+    [busy]
+  );
 
-  const closePhase = useCallback(async () => {
-    if (busy || !validation.ok) return;
-    setBusy(true);
-    setErr(null);
-    try {
-      const advanced = advanceTorCalendar(calendar, { witsScore });
-      const chosen = picks
-        .map((id) => undertakings.find((u) => u.id === id)?.name ?? id)
-        .join(", ");
+  /** Grava um patch parcial do calendário/escolhas na sala. */
+  const save = useCallback(
+    (patch: Partial<TorFellowshipProgress>) =>
+      guard(async () => {
+        await patchTorSession(roomId, { fellowship: { ...state, ...patch } });
+        onUpdate();
+      }),
+    [guard, roomId, state, onUpdate]
+  );
 
-      const relief = TOR_SHADOW_RELIEF[outcome];
-      const lines = [
-        formatTorCalendarMessage(advanced),
-        `Resultado da Fase de Aventura: ${OUTCOME_LABEL[outcome]}` +
-          (relief > 0 ? ` — cada herói remove até ${relief} de Sombra` : ""),
-        advanced.isYule
-          ? "Yule: todos recuperam TODA a Esperança"
-          : "Todos recuperam Esperança igual ao Coração",
-        chosen ? `Empreitadas: ${chosen}` : "Nenhuma Empreitada escolhida",
-      ];
+  const toggle = useCallback(
+    (id: string) => {
+      const picks = state.picks.includes(id)
+        ? state.picks.filter((x) => x !== id)
+        : [...state.picks, id];
+      void save({ picks });
+    },
+    [state.picks, save]
+  );
 
-      await postRoomChat(roomId, { kind: "chat", text: lines.join(" · ") });
-      onUpdate();
+  const closePhase = useCallback(
+    () =>
+      guard(async () => {
+        if (!validation.ok) return;
+        const advanced = advanceTorCalendar(
+          { year: state.year, phasesThisYear: state.phasesThisYear },
+          { witsScore: state.witsScore }
+        );
+        const chosen = state.picks
+          .map((id) => undertakings.find((u) => u.id === id)?.name ?? id)
+          .join(", ");
+        const relief = TOR_SHADOW_RELIEF[state.outcome];
 
-      setCalendar(advanced.calendar);
-      setPicks([]);
-    } catch (e) {
-      setErr(e instanceof Error ? e.message : "Falha ao publicar no chat");
-    } finally {
-      setBusy(false);
-    }
-  }, [busy, validation.ok, calendar, witsScore, picks, undertakings, outcome, roomId, onUpdate]);
+        const lines = [
+          formatTorCalendarMessage(advanced),
+          `Resultado da Fase de Aventura: ${OUTCOME_LABEL[state.outcome]}` +
+            (relief > 0 ? ` — cada herói remove até ${relief} de Sombra` : ""),
+          advanced.isYule
+            ? "Yule: todos recuperam TODA a Esperança"
+            : "Todos recuperam Esperança igual ao Coração",
+          chosen ? `Empreitadas: ${chosen}` : "Nenhuma Empreitada escolhida",
+        ];
 
+        await postRoomChat(roomId, { kind: "chat", text: lines.join(" · ") });
+        // O calendário avança e as escolhas zeram para a Fase seguinte.
+        await patchTorSession(roomId, {
+          fellowship: {
+            ...state,
+            year: advanced.calendar.year,
+            phasesThisYear: advanced.calendar.phasesThisYear,
+            picks: [],
+          },
+        });
+        onUpdate();
+      }),
+    [guard, validation.ok, state, undertakings, roomId, onUpdate]
+  );
+
+  /** Cabeçalho do calendário — igual para Mestre e jogador. */
+  const calendarHeader = (
+    <>
+      <p className="tor-journey__remaining">
+        Ano {state.year} · Fase {state.phasesThisYear + 1}/{TOR_PHASES_PER_YEAR}
+        {nextIsYule ? " — YULE" : ""}
+      </p>
+      {nextIsYule ? (
+        <p className="tor-journey__pending-hint">
+          Encerrar esta Fase vira o ano: todos envelhecem 1 ano e ganham pontos de Perícia
+          iguais à Astúcia.
+        </p>
+      ) : null}
+    </>
+  );
+
+  /* ── Jogador: calendário e Empreitadas em leitura ────────────────── */
   if (!canManage) {
     return (
       <div className="tor-journey">
-        <p className="vtt-combat-hint">
-          Só o Mestre conduz a Fase de Companhia. Acompanhe no chat da mesa.
-        </p>
+        <section className="tor-journey__section">
+          <p className="eyebrow">Fase de Companhia</p>
+          {calendarHeader}
+          {state.picks.length > 0 ? (
+            <ul className="tor-journey__log">
+              {state.picks.map((id) => (
+                <li key={id}>{undertakings.find((u) => u.id === id)?.name ?? id}</li>
+              ))}
+            </ul>
+          ) : (
+            <p className="tor-journey__pending-hint">Nenhuma Empreitada escolhida ainda.</p>
+          )}
+        </section>
       </div>
     );
   }
 
+  /* ── Mestre ───────────────────────────────────────────────────────── */
   return (
     <div className="tor-journey">
       {err ? <p className="dice-err">{err}</p> : null}
 
       <section className="tor-journey__section">
         <p className="eyebrow">Calendário</p>
-        <p className="tor-journey__remaining">
-          Ano {calendar.year} · Fase {calendar.phasesThisYear + 1}/{TOR_PHASES_PER_YEAR}
-          {nextIsYule ? " — YULE" : ""}
-        </p>
-        {nextIsYule ? (
-          <p className="tor-journey__pending-hint">
-            Encerrar esta Fase vira o ano: todos envelhecem 1 ano e ganham pontos de Perícia
-            iguais à Astúcia.
-          </p>
-        ) : null}
+        {calendarHeader}
 
         <div className="tor-journey__grid">
           <label>
@@ -136,8 +206,11 @@ export function TorFellowshipPanel({ roomId, canManage, onUpdate }: Props) {
               type="number"
               min={1}
               max={8}
-              value={companySize}
-              onChange={(e) => setCompanySize(Math.max(1, Number(e.target.value) || 1))}
+              value={state.companySize}
+              disabled={busy}
+              onChange={(e) =>
+                void save({ companySize: Math.max(1, Number(e.target.value) || 1) })
+              }
             />
           </label>
           <label>
@@ -146,8 +219,9 @@ export function TorFellowshipPanel({ roomId, canManage, onUpdate }: Props) {
               type="number"
               min={0}
               max={6}
-              value={witsScore}
-              onChange={(e) => setWitsScore(Math.max(0, Number(e.target.value) || 0))}
+              value={state.witsScore}
+              disabled={busy}
+              onChange={(e) => void save({ witsScore: Math.max(0, Number(e.target.value) || 0) })}
             />
           </label>
         </div>
@@ -159,8 +233,9 @@ export function TorFellowshipPanel({ roomId, canManage, onUpdate }: Props) {
           <label>
             Resultado da Fase de Aventura
             <select
-              value={outcome}
-              onChange={(e) => setOutcome(e.target.value as TorPhaseOutcome)}
+              value={state.outcome}
+              disabled={busy}
+              onChange={(e) => void save({ outcome: e.target.value as TorPhaseOutcome })}
             >
               {TOR_PHASE_OUTCOMES.map((o) => (
                 <option key={o} value={o}>
@@ -177,7 +252,7 @@ export function TorFellowshipPanel({ roomId, canManage, onUpdate }: Props) {
 
       <section className="tor-journey__section">
         <p className="eyebrow">
-          Empreitadas — {picks.length}/{budget.total}
+          Empreitadas — {state.picks.length}/{budget.total}
         </p>
         <p className="tor-journey__pending-hint">
           {nextIsYule
@@ -193,8 +268,8 @@ export function TorFellowshipPanel({ roomId, canManage, onUpdate }: Props) {
                 <label className={blocked ? "is-blocked" : undefined}>
                   <input
                     type="checkbox"
-                    checked={picks.includes(u.id)}
-                    disabled={blocked}
+                    checked={state.picks.includes(u.id)}
+                    disabled={blocked || busy}
                     onChange={() => toggle(u.id)}
                   />
                   {u.name}
@@ -205,9 +280,7 @@ export function TorFellowshipPanel({ roomId, canManage, onUpdate }: Props) {
           })}
         </ul>
 
-        {!validation.ok ? (
-          <p className="dice-err">{validation.reason}</p>
-        ) : null}
+        {!validation.ok ? <p className="dice-err">{validation.reason}</p> : null}
       </section>
 
       <button

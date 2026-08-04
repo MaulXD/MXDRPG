@@ -331,6 +331,7 @@ export function MesaFoundryDockRail({
             <TorCouncilPanel
               roomId={roomId}
               canManage={Boolean(effectiveIsGm)}
+              council={torSession?.council ?? null}
               onUpdate={() => void onRefresh()}
             />
           </div>
@@ -354,6 +355,7 @@ export function MesaFoundryDockRail({
             <TorFellowshipPanel
               roomId={roomId}
               canManage={Boolean(effectiveIsGm)}
+              fellowship={torSession?.fellowship ?? null}
               onUpdate={() => void onRefresh()}
             />
           </div>

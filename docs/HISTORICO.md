@@ -164,7 +164,13 @@ npm run sync:data:check       # após editar livros/
 
 20. **`started` deriva de `progress`**, não de um `useState` paralelo — duas fontes de verdade fariam o painel discordar da sala depois de um SSE. O jogador sem permissão passa a ver o placar em modo leitura em vez de uma mensagem de "só o Mestre".
 
-21. **Autorização:** handler exige `canManageRoom` **e** `rpgSystemId === "um-anel"` — o campo nunca aparece num estado do Eldarin. 30 testes novos cobrem normalização, semântica do patch, autorização, isolamento e o acoplamento painel↔sala.
+21. **Autorização:** handler exige `canManageRoom` **e** `rpgSystemId === "um-anel"` — o campo nunca aparece num estado do Eldarin.
+
+22. **Os três painéis ligados à persistência.** Jornada, Conselho e Fase de Companhia leem do snapshot e escrevem via `patchTorSession`. Nenhum deles mantém `useState` paralelo do que a sala já sabe: `started` deriva de `progress`, `outcome` deriva de `council`, e o Yule deriva de `phasesThisYear` do calendário persistido. Local ficou só o que é rascunho antes de gravar (configuração da rota, Resistência escolhida, perícia selecionada).
+
+23. **O calendário da campanha é o dado que mais importava persistir** — é ele que decide quando cai o Yule. Perder isso desalinharia a progressão de Valor/Sabedoria de toda a Companhia, e nenhum jogador teria como notar.
+
+24. **Jogador sem permissão passa a ver placar em leitura** nos três painéis, em vez da mensagem "só o Mestre conduz". 48 testes cobrem normalização, semântica do patch, autorização, isolamento e o acoplamento painel↔sala nos três.
 
 **Ainda pendente do mesmo diagnóstico (depende do servidor, não do código):**
 
