@@ -1,218 +1,401 @@
-# Rivendell — The One Ring 2e (fonte: TOR_Rivendell.pdf)
+# Valfenda — O Um Anel 2ª ed. (fonte: TOR_Rivendell.pdf)
 
-> Conteúdo original em inglês — aguardando tradução colaborativa.
-> Fonte: the one ring/TOR_Rivendell.pdf
+> Traduzido para PT-BR. Nomes de lugares seguem a tradução brasileira consagrada de Tolkien
+> (Valfenda, Montanhas Nevoentas, Águas Ruidosas); nomes próprios de pessoas e topônimos em
+> Sindarin/Quenya ficam no original (Imladris, Bruinen, Khazad-dûm).
+>
+> Fonte: `the one ring/TOR_Rivendell.pdf`
 
 ---
 
-## Credits (page 1)
+## Créditos (página 1)
 
-- Lead Writers: Francesco Nepitello and Jacob Rodgers
-- Game Designers: Francesco Nepitello and Marco Maggi
-- Additional Rules Development: Michele Garbuggio
-- Concept Art: Alvaro Tapia
-- Screen Art: Martin Grip
-- Other Art: Jan Pospíšil, Antonio De Luca, Daniele Sorrentino
-- Graphic Design: Christian Granath, Dan Algstrand, Niklas Brandt
-- Brand Manager: Robert Hyde / Sophisticated Games
-- Maps: Niklas Brandt
-- Event Manager: Anna Westerling
-- Editors: John Marron, Jacob Rodgers
-- PR Manager: Boel Bermann
-- Project Managers: Martin Takaichi, Tomas Härenstam
-- Streaming: Doug Shute, Matthew Jowett
-- Special thanks to: Claudio Muraro and Umberto Pignatelli
+- Autores principais: Francesco Nepitello e Jacob Rodgers
+- Design de jogo: Francesco Nepitello e Marco Maggi
+- Desenvolvimento adicional de regras: Michele Garbuggio
+- Arte conceitual: Alvaro Tapia
+- Arte do escudo: Martin Grip
+- Outras artes: Jan Pospíšil, Antonio De Luca, Daniele Sorrentino
+- Design gráfico: Christian Granath, Dan Algstrand, Niklas Brandt
+- Gerência de marca: Robert Hyde / Sophisticated Games
+- Mapas: Niklas Brandt
+- Gerência de eventos: Anna Westerling
+- Edição: John Marron, Jacob Rodgers
+- Gerência de imprensa: Boel Bermann
+- Gerência de projeto: Martin Takaichi, Tomas Härenstam
+- Transmissão: Doug Shute, Matthew Jowett
+- Agradecimentos especiais a: Claudio Muraro e Umberto Pignatelli
 - ISBN: 978-91-89143-47-0
 
-This booklet is a small (16-page) supplement bundled with the Starter Set, covering the setting of Imladris/Rivendell (pages 2–9) and the **High Elves of Rivendell** playable Culture (pages 10–12). Pages 13–16 are blank/decorative back-matter.
+Este é um suplemento curto (16 páginas) que acompanha o Starter Set, cobrindo o cenário de
+Imladris/Valfenda (páginas 2–9) e a Cultura jogável dos **Altos-Elfos de Valfenda** (páginas
+10–12). As páginas 13–16 são decorativas, sem conteúdo de regras.
 
 ---
 
-## RIVENDELL — Setting (pages 2–9) — condensed summary
+## VALFENDA — Cenário (páginas 2–9) — resumo condensado
 
-**Epigraph:** "The Elves may fear the Dark Lord, and they may fly before him, but never again will they listen to him or serve him. And here in Rivendell there live still some of his chief foes: the Elven-wise, lords of the Eldar from beyond the furthest seas."
+**Epígrafe:** "Os Elfos podem temer o Senhor do Escuro, e podem fugir dele, mas nunca mais darão
+ouvidos a ele nem o servirão. E aqui em Valfenda ainda vivem alguns de seus principais inimigos:
+os Elfos-sábios, senhores dos Eldar de além dos mares mais distantes."
 
-The valley known as **Imladris** ("deep valley of the cleft" in Elvish) is a secret Elven kingdom that has endured for thousands of years, promising peace, recovery, lore, and advice to those who find their way to it. Its master, **Elrond Halfelven**, is a great healer and lore-master and a stalwart foe of the Enemy.
+O vale conhecido como **Imladris** ("vale profundo da fenda", em Élfico) é um reino Élfico secreto
+que perdurou por milhares de anos, prometendo paz, recuperação, saber e conselho a quem consegue
+encontrar o caminho até ele. Seu senhor, **Elrond Meio-Elfo**, é grande curandeiro e mestre do
+saber, e inimigo obstinado do Inimigo.
 
-- Founded in the Second Age when Elrond led the High Elves of Eregion here, fleeing the destruction of their land. The hosts of the Last Alliance mustered at Imladris before marching to Mordor.
-- In the early Third Age, Rivendell was part of the realm of Arnor, then supported its successor kingdoms of Arthedain, Cardolan, and Rhudaur. Arthedain was the last to fall to the Witch-king of Angmar — when this happened, Elrond bid the Chieftains of the Dúnedain to dwell in his house. Today, Rivendell holds the heirlooms of the House of Isildur, awaiting a king's return.
-- In the twilight years of the Third Age (the game's timeframe), Rivendell is still a refuge for travellers of good intent seeking counsel or protection from Elrond — but the path there is not easy to find.
+- Fundado na Segunda Era, quando Elrond conduziu até aqui os Altos-Elfos de Eregion, fugindo da
+  destruição de sua terra. As hostes da Última Aliança se reuniram em Imladris antes de marchar
+  para Mordor.
+- No início da Terceira Era, Valfenda fazia parte do reino de Arnor, e depois apoiou seus reinos
+  sucessores: Arthedain, Cardolan e Rhudaur. Arthedain foi o último a cair diante do Rei-Bruxo de
+  Angmar — quando isso aconteceu, Elrond convidou os Chefes dos Dúnedain a morar em sua casa. Hoje
+  Valfenda guarda as relíquias da Casa de Isildur, esperando o retorno de um rei.
+- Nos anos do crepúsculo da Terceira Era (o período do jogo), Valfenda ainda é refúgio para
+  viajantes de boa intenção que buscam conselho ou proteção de Elrond — mas o caminho até lá não é
+  fácil de encontrar.
 
-### The Hidden Valley
-Travellers from Eriador approaching the Misty Mountains cross a high moor broken by steep valleys; only those who know the proper route find the path marked by small white stones leading to the sheer drop above Rivendell. The valley is reached by a switchback path down to the river at the bottom (the river Bruinen). The path is steep; wanderers with ponies should lead their animals on foot.
+### O Vale Oculto
 
-Elves of the valley often sing outside at night — visitors might think the songs silly/full of merriment, but many of the Elves have suffered terrible tragedies over their long lives and sing to keep darkness away. Those wishing to see Elrond are sent to the bridge leading to the Last Homely House; those who want to join the singing are invited to stay. Elven songs are said to convey deep knowledge — Elves seem to know much about a visitor, even things never told to them, "as quickly as the waters flow, or even quicker."
+Viajantes de Eriador que se aproximam das Montanhas Nevoentas cruzam uma charneca alta cortada por
+vales escarpados; só quem conhece a rota certa encontra a trilha marcada por pequenas pedras
+brancas que leva ao precipício acima de Valfenda. Chega-se ao vale por um caminho em ziguezague que
+desce até o rio no fundo (o rio Bruinen). O caminho é íngreme; andarilhos com pôneis devem conduzir
+os animais a pé.
 
-### The Last Homely House
-Elrond's house is a large mansion — many halls, open porches, passageways, and rooms: libraries, solars, walkways, gardens, council chambers, bannock bakeries, kitchens. Bells ring at different hours signalling meals, arrivals, or that the master is ready to meet guests.
+Os Elfos do vale costumam cantar ao ar livre à noite — visitantes podem achar as canções bobas ou
+cheias de alegria demais, mas muitos desses Elfos sofreram tragédias terríveis em suas longas vidas
+e cantam para manter a escuridão à distância. Quem deseja ver Elrond é enviado à ponte que leva à
+Última Casa Acolhedora; quem quer se juntar ao canto é convidado a ficar. Diz-se que as canções
+Élficas carregam conhecimento profundo — os Elfos parecem saber muito sobre um visitante, inclusive
+coisas que nunca lhes foram contadas, "tão rápido quanto as águas correm, ou ainda mais rápido".
 
-**Rivendell Overview map (page 3), numbered locations:**
-1. Elrond's House
-2. Stables
-3. Sanctuary
-4. Smithy
-5. Residence
-6. Infirmary
-7. Glorfindel's House
-8. Training Grounds
-9. Armoury
-10. Outbuilding
-11. Erestor's House
-12. Bathhouse
-13. Bridge
+### A Última Casa Acolhedora
 
-**Sidebar — Safe Borders:** Travellers on the East Road toward the Misty Mountains must cross the Ford of Bruinen (the river Loudwater in Common tongue). Elrond commands the waters of the Bruinen and can flood the Ford if needed. The enchantment of Rivendell and its master makes it nearly impossible for the Enemy's servants or casual wanderers to find the valley — without Elrond's leave or a proper guide, the terrain seems devoid of landmarks and even experienced travellers get lost.
-- **Rule:** As the company nears the valley, the Scout must make a SCAN roll to find the white stone path. If the Scout is an Elf, the roll *gains (1d)*. If they have never been to Rivendell before, the roll *loses (1d)* instead. The Scout can make two rolls each day; each set of failures represents a day spent searching among gullies/ravines or edging around dangerous terrain.
+A casa de Elrond é uma grande mansão — muitos salões, varandas abertas, passagens e aposentos:
+bibliotecas, solares, galerias, jardins, câmaras de conselho, padarias, cozinhas. Sinos tocam em
+horas distintas anunciando refeições, chegadas, ou que o senhor está pronto para receber
+convidados.
 
-### The Entrance Hall
-Reached via a narrow stone bridge (wide enough for a pony/horse led by the bridle; Elven horses cross unguided). Lit by bright lanterns at night. A guide (often a younger member of Elrond's household) waits at the glade or bridge if travellers are expected.
+**Mapa geral de Valfenda (página 3), locais numerados:**
 
-The Entrance Hall floor is paved with flagstones from the Misty Mountains; lanterns hang from carved beams; many tapestries (banners, flags, pennants) recall Imladris's history as host to many warriors — long ago Elrond himself was herald of Gil-galad, King of the Noldor, and marched to Mordor against Sauron. A central lantern, a gift from the smiths of Khazad-dûm to Celebrimbor of Hollin, gives reddish light and keeps the chamber cool regardless of the sun. A corridor leads to the Hall of Fire (left) and the Great Hall (right); stairs lead to upper storeys and vaults below.
+1. Casa de Elrond
+2. Estábulos
+3. Santuário
+4. Forja
+5. Residência
+6. Enfermaria
+7. Casa de Glorfindel
+8. Campo de Treinamento
+9. Arsenal
+10. Anexo
+11. Casa de Erestor
+12. Casa de Banhos
+13. Ponte
 
-### The Great Hall
-The main hall for formal meals and high feast days. Three times longer than wide, entered via a screened passage below a balcony alcove where Elven minstrels play music. A dais holds the high table; other tables run perpendicular on either side of an open central hearth. Tall southern windows admit winter light; a passageway leads to outdoor terraces, other doors to kitchens/pantry.
+**Caixa de texto — Fronteiras Seguras:** Viajantes na Estrada do Leste em direção às Montanhas
+Nevoentas precisam cruzar o Vau do Bruinen (o rio Águas Ruidosas, na língua Comum). Elrond comanda
+as águas do Bruinen e pode inundar o Vau se necessário. O encantamento de Valfenda e de seu senhor
+torna quase impossível que servos do Inimigo ou andarilhos casuais encontrem o vale — sem a licença
+de Elrond ou um guia adequado, o terreno parece desprovido de marcos e até viajantes experientes se
+perdem.
 
-Elrond traditionally sits at the end of the long table with his most distinguished guests to either side; the true place of honour is at the middle of the high table, once occupied by Elrond's wife Celebrían (daughter of Galadriel and Celeborn) before she departed for the Undying Lands — now reserved for Arwen when in Rivendell. A great tapestry shows a white ship riding the waves of the Great Sea toward the setting sun; it sometimes seems to move as if in a breeze.
+- **Regra:** Quando a companhia se aproxima do vale, o Batedor deve fazer uma rolagem de VASCULHAR
+  para achar a trilha de pedras brancas. Se o Batedor for Elfo, a rolagem *ganha (1d)*. Se nunca
+  esteve em Valfenda antes, a rolagem *perde (1d)*. O Batedor pode fazer duas rolagens por dia; cada
+  conjunto de falhas representa um dia gasto procurando entre ravinas e barrancos, ou contornando
+  terreno perigoso.
 
-### The Hall of Fire
-**Sidebar — Making Music in Rivendell:** The Hall of Fire is the perfect place for composing music and finding the right words for a song. **Rule:** Player-heroes singing a song composed in Rivendell *gain (1d)* when performing it (see rules for Singing Songs, core rules p.123).
+### O Salão de Entrada
 
-Usually empty and quiet except on high days/celebrations. No tables; chairs for guests/residents. Special seats reserved for Elrond and family. A great hearth with carved pillars burns all year, with little other light. On most days only a few people are here seeking silence or a place for thought/dozing in comfort; when occupied, the Elves fill the hall to listen to song/instruments — mortals often find themselves carried away by the minstrels' performances, drifting as if on a sea of music with visions of distant lands and ancient days.
+Alcançado por uma ponte estreita de pedra (larga o bastante para um pônei ou cavalo conduzido pelas
+rédeas; cavalos Élficos cruzam sem condução). Iluminado por lanternas brilhantes à noite. Um guia
+(muitas vezes um membro mais jovem da casa de Elrond) espera na clareira ou na ponte quando há
+viajantes esperados.
 
-### The East Porch
-Elrond's location of choice for important meetings/councils, ideally held in early morning so attendees can watch sunrise, hear the river and birdsong — reminding everyone of the beauty of Middle-earth and the value of its preservation. Custom concludes such meetings by noon (Elves can thrive on speech alone; not so other folk). Adjacent to the high garden with a mountain stream below; pathways lead down the Bruinen or north to the pine-woods at the top of the valley.
+O piso do Salão de Entrada é lajeado com pedra das Montanhas Nevoentas; lanternas pendem de vigas
+entalhadas; muitas tapeçarias (estandartes, bandeiras, flâmulas) recordam a história de Imladris
+como anfitriã de muitos guerreiros — há muito tempo Elrond foi herald de Gil-galad, Rei dos Noldor,
+e marchou para Mordor contra Sauron. Uma lanterna central, presente dos ferreiros de Khazad-dûm a
+Celebrimbor de Hollin, dá luz avermelhada e mantém a câmara fresca independentemente do sol. Um
+corredor leva ao Salão do Fogo (à esquerda) e ao Grande Salão (à direita); escadas levam aos andares
+superiores e às abóbadas abaixo.
 
-### The Upper Floors
-Guest rooms of various types/sizes, plus private quarters of Elrond, his family, and household members who live in the house itself (some choose other buildings as private residences). Rooms have flat ceilings with dark wooden beams, one or more windows, a comfortable bed, mirror, and other bedroom furniture. There is also a solar above the Great Hall — a room for leisure, reading, writing, thinking — with a marble chess table by the largest windows; wooden chess pieces stand ready. Rumour says the game set was a gift to Elrond from Elendil of Númenor, and that Elendil often found a worthy opponent in Gil-galad, High King of the Elves.
+### O Grande Salão
 
-### The Library of Elrond
-Ground-floor library with many maps and books, mostly concerning the doings of Elves in the Elder Days, several in scripts/languages forgotten by most scholars, very little recorded in the Common tongue — Elrond's lore is still waiting for someone to unlock it, a labour that couldn't be completed in a single lifetime.
+O salão principal para refeições formais e dias de grande festa. Três vezes mais comprido que largo,
+acessado por uma passagem com biombo sob uma alcova de sacada onde menestréis Élficos tocam. Um
+estrado sustenta a mesa principal; outras mesas correm perpendicularmente de ambos os lados de uma
+lareira central aberta. Janelas altas ao sul admitem a luz do inverno; uma passagem leva a terraços
+externos, e outras portas às cozinhas e à copa.
 
-Elrond also keeps a **personal library** on an upper floor, accessible only to his most trusted advisors — containing irreplaceable manuscripts by Celebrimbor and others, plus a small collection of dangerous knowledge: treatises by the wizard Saruman on the nature/power of the Shadow, passages of the Black Speech recorded from captured enemies, and the mad ravings of those who learned too much of the Enemy's ways.
+Elrond tradicionalmente se senta na ponta da mesa comprida com seus convidados mais distintos de
+cada lado; o verdadeiro lugar de honra é no meio da mesa principal, ocupado outrora por Celebrían,
+esposa de Elrond (filha de Galadriel e Celeborn), antes de ela partir para as Terras Imortais — hoje
+reservado a Arwen quando ela está em Valfenda. Uma grande tapeçaria mostra uma nau branca cavalgando
+as ondas do Grande Mar em direção ao sol poente; às vezes parece se mover, como se soprada pela
+brisa.
 
-### The Vaults
-Beneath the manor house: cellars, pantries, and other underground chambers. Directly accessible from kitchens/upstairs larders are vast stores of foodstuffs, wine, liquor, cisterns of water, supplies — Elrond remembers Imladris being besieged before and keeps it well-prepared. In deeper, more hidden chambers are storerooms for items recovered from the destruction of Eregion and other efforts over the years — sealed/locked, carefully inventoried; little here could aid open defiance of the Shadow (Rivendell is a place of healing and lore, with very few pieces of wargear kept).
+### O Salão do Fogo
 
-### Other Buildings in the Valley
-Bath-houses, granaries, mills, stables, smithies, an armoury. Terraces with stone seats near the river for resting/watching the day go by. A training ground where the valley's protectors exercise their martial skills and where, since time immemorial, Dúnedain youth have been instructed in the ways of battle. Orchards, vineyards, and fields stretch along the valley (some further north/south now lie fallow). Stone ruins of once-great halls that fell to ruin over the millennia are nearby, plus other smaller buildings occupied by Elves for whom Rivendell is only a temporary resting place on their journey to the Great Sea.
+**Caixa de texto — Fazer Música em Valfenda:** O Salão do Fogo é o lugar perfeito para compor música
+e encontrar as palavras certas para uma canção. **Regra:** Heróis que cantam uma canção composta em
+Valfenda *ganham (1d)* ao executá-la (ver regras de Cantar Canções, Regras Básicas p.123).
 
-### The Folk of Rivendell
-Long ago, Rivendell was home to many survivors of Eregion, but their numbers have dwindled — one of the greatest hosts of Elves and Men seen in these lands was quartered here too, but only a few returned from the long war against Mordor, and others among the Fair Folk left Middle-earth from great sorrow. Still, Rivendell is home to several individuals, stalwart enemies of the Shadow, offering refuge to many others.
+Normalmente vazio e silencioso, exceto em dias de festa e celebração. Sem mesas; cadeiras para
+convidados e residentes. Assentos especiais reservados a Elrond e à família. Uma grande lareira com
+pilares entalhados queima o ano inteiro, com pouca outra luz. Na maioria dos dias há apenas algumas
+pessoas ali buscando silêncio ou um lugar para pensar e cochilar em conforto; quando ocupado, os
+Elfos enchem o salão para ouvir canto e instrumentos — mortais muitas vezes se veem levados pelas
+apresentações dos menestréis, à deriva como num mar de música, com visões de terras distantes e dias
+antigos.
+
+### A Varanda Leste
+
+O local preferido de Elrond para reuniões e conselhos importantes, idealmente realizados no começo
+da manhã para que os presentes vejam o nascer do sol e ouçam o rio e o canto dos pássaros —
+lembrando a todos a beleza da Terra-média e o valor de preservá-la. O costume encerra essas reuniões
+até o meio-dia (Elfos podem prosperar apenas de conversa; outros povos, não). Adjacente ao jardim
+alto, com um riacho da montanha abaixo; caminhos descem pelo Bruinen ou seguem ao norte até os
+pinheirais no topo do vale.
+
+### Os Andares Superiores
+
+Quartos de hóspedes de vários tipos e tamanhos, mais os aposentos privados de Elrond, de sua família
+e dos membros da casa que vivem no próprio edifício (alguns escolhem outros prédios como residência
+particular). Os quartos têm teto plano com vigas de madeira escura, uma ou mais janelas, uma cama
+confortável, espelho e outros móveis. Há também um solar acima do Grande Salão — sala de lazer,
+leitura, escrita e reflexão — com uma mesa de xadrez de mármore junto às janelas maiores; as peças
+de madeira ficam prontas. Diz o rumor que o jogo foi presente de Elendil de Númenor a Elrond, e que
+Elendil costumava encontrar em Gil-galad, Alto Rei dos Elfos, um adversário à sua altura.
+
+### A Biblioteca de Elrond
+
+Biblioteca no andar térreo com muitos mapas e livros, em sua maioria sobre os feitos dos Elfos nos
+Dias Antigos, vários em escritas e línguas esquecidas pela maioria dos estudiosos, e muito pouco
+registrado na língua Comum — o saber de Elrond ainda espera alguém que o destranque, um labor que
+não se completaria numa única vida.
+
+Elrond mantém também uma **biblioteca pessoal** num andar superior, acessível apenas a seus
+conselheiros de maior confiança — contendo manuscritos insubstituíveis de Celebrimbor e outros, além
+de uma pequena coleção de conhecimento perigoso: tratados do mago Saruman sobre a natureza e o poder
+da Sombra, passagens da Língua Negra registradas de inimigos capturados, e os delírios insanos
+daqueles que aprenderam demais sobre os modos do Inimigo.
+
+### As Abóbadas
+
+Sob a casa senhorial: adegas, copas e outras câmaras subterrâneas. Diretamente acessíveis das
+cozinhas e despensas há vastos estoques de alimentos, vinho, licor, cisternas de água e suprimentos
+— Elrond lembra que Imladris já foi sitiada e a mantém bem preparada. Em câmaras mais fundas e
+ocultas há depósitos para itens recuperados da destruição de Eregion e de outros esforços ao longo
+dos anos — selados e trancados, cuidadosamente inventariados; pouco ali serviria para desafio aberto
+à Sombra (Valfenda é lugar de cura e saber, com muito pouco equipamento de guerra guardado).
+
+### Outros Edifícios do Vale
+
+Casas de banho, celeiros, moinhos, estábulos, forjas, um arsenal. Terraços com assentos de pedra
+junto ao rio, para descansar e ver o dia passar. Um campo de treinamento onde os protetores do vale
+exercitam suas habilidades marciais e onde, desde tempos imemoriais, os jovens Dúnedain são
+instruídos nas artes da batalha. Pomares, vinhedos e campos se estendem pelo vale (alguns mais ao
+norte e ao sul hoje jazem em pousio). Ruínas de pedra de salões outrora grandiosos, arruinados ao
+longo dos milênios, ficam por perto, além de outros edifícios menores ocupados por Elfos para quem
+Valfenda é apenas parada temporária na jornada até o Grande Mar.
+
+### O Povo de Valfenda
+
+Há muito tempo, Valfenda foi lar de muitos sobreviventes de Eregion, mas seu número diminuiu — uma
+das maiores hostes de Elfos e Homens já vista nestas terras também se aquartelou aqui, mas poucos
+retornaram da longa guerra contra Mordor, e outros do Belo Povo deixaram a Terra-média por grande
+tristeza. Ainda assim, Valfenda é lar de vários indivíduos, inimigos obstinados da Sombra, e oferece
+refúgio a muitos outros.
 
 ---
 
-## House of Elrond floor-plan (page 5), numbered rooms
+## Planta da Casa de Elrond (página 5), aposentos numerados
 
-1. Front Porch
-2. Corridor
-3. The Hall of Fire
-4. North Vestibule
-5. Storage
-6. The Entrance Hall
-7. To the Vaults
-8. Butler
-9. Armoury
-10. Pantry
-11. Kitchen
-12. East Porch
-13. To the Upper Floors
-14. The Great Hall
-15. South Vestibule
+1. Varanda da Frente
+2. Corredor
+3. O Salão do Fogo
+4. Vestíbulo Norte
+5. Depósito
+6. O Salão de Entrada
+7. Para as Abóbadas
+8. Copeiro
+9. Arsenal
+10. Copa
+11. Cozinha
+12. Varanda Leste
+13. Para os Andares Superiores
+14. O Grande Salão
+15. Vestíbulo Sul
 
 ---
 
-## Notable NPCs of Rivendell (pages 6–8) — full stat-block excerpts
+## PNJs Notáveis de Valfenda (páginas 6–8) — trechos dos blocos de estatística
 
-### Elrond Halfelven
-*"He was as noble and as fair in face as an elf-lord, as strong as a warrior, as wise as a wizard, as venerable as a king of dwarves, as kind as summer."*
+### Elrond Meio-Elfo
 
-The Master of Rivendell has dwelt in Middle-earth for thousands of years. Called the "Halfelven" for his descent from both Elves and Men; given the choice to follow the path of the Firstborn or the fate of Men, Elrond chose Elvenkind. Counted among the most powerful Elf-lords still in Middle-earth, one of Sauron's chief foes, and has the gift of foresight.
+*"Era tão nobre e belo de rosto quanto um senhor Elfo, tão forte quanto um guerreiro, tão sábio
+quanto um mago, tão venerável quanto um rei dos anões, tão gentil quanto o verão."*
 
-In the early Third Age, Elrond wedded **Celebrían**, daughter of Galadriel and Celeborn of Lothlórien. Their children: the twins **Elladan** and **Elrohir**, and daughter **Arwen**. Celebrían was captured by Orcs while returning from visiting her parents across the Misty Mountains and given a poisoned wound; rescued by her sons, she never fully recovered despite Elrond's great skill as a healer, and departed for the Undying Lands. Elrond did not accompany her — instead he strengthened his resolve to guide the folk of Middle-earth against the Enemy.
+O Senhor de Valfenda habita a Terra-média há milhares de anos. Chamado "Meio-Elfo" por descender
+tanto de Elfos quanto de Homens; tendo a escolha entre seguir o caminho dos Primogênitos ou o
+destino dos Homens, Elrond escolheu o povo Élfico. Contado entre os mais poderosos senhores Elfos
+que restam na Terra-média, é um dos principais inimigos de Sauron e tem o dom da premonição.
 
-Elrond is the bearer of **Vilya, the Ring of Air**, one of the three Rings forged in Eregion by Celebrimbor. He received it from Gil-galad, the High King, and kept it secret and unused for centuries (the Rings of Power risked being mastered by the One Ring). When the One Ring disappeared from all knowledge, Elrond started using Vilya to preserve the sanctuary of Rivendell and the ancient wisdom contained therein.
+No início da Terceira Era, Elrond se casou com **Celebrían**, filha de Galadriel e Celeborn de
+Lothlórien. Seus filhos: os gêmeos **Elladan** e **Elrohir**, e a filha **Arwen**. Celebrían foi
+capturada por Orcs ao voltar de uma visita aos pais do outro lado das Montanhas Nevoentas, e recebeu
+um ferimento envenenado; resgatada pelos filhos, nunca se recuperou por completo apesar da grande
+perícia de Elrond como curandeiro, e partiu para as Terras Imortais. Elrond não a acompanhou — em
+vez disso, fortaleceu sua determinação de guiar os povos da Terra-média contra o Inimigo.
 
-**NAME:** Elrond Halfelven
-**OCCUPATION:** Healer, Lore-master
-**DISTINCTIVE FEATURES:** Fair-spoken, Lordly, Subtle
+Elrond é o portador de **Vilya, o Anel do Ar**, um dos três Anéis forjados em Eregion por
+Celebrimbor. Recebeu-o de Gil-galad, o Alto Rei, e o manteve em segredo e sem uso por séculos (os
+Anéis de Poder corriam o risco de ser dominados pelo Um Anel). Quando o Um Anel desapareceu de todo
+conhecimento, Elrond começou a usar Vilya para preservar o santuário de Valfenda e a sabedoria
+antiga nele contida.
 
-**Encountering Elrond:** Seems neither young nor old, combining the strength of a young warrior with the wisdom of a venerable king; his true age can be guessed by looking into his eyes (light like remote and ancient stars). Dark hair, no trace of a beard. Seldom leaves the valley but sends many scouts about the land, so is always well-informed and may know the identity/reasons of visitors before meeting them. Holds most of his councils on the eastern porch of his house, weather permitting.
+**NOME:** Elrond Meio-Elfo
+**OCUPAÇÃO:** Curandeiro, Mestre do Saber
+**TRAÇOS DISTINTIVOS:** Bem-falante, Senhorial, Sutil
 
-**Elrond as a Patron:** Since the turn of the age, Elrond has been preparing for the final war with the Dark Lord. He was present when Isildur failed to destroy the One Ring, and has feared Sauron's return ever since. He is always seeking allies and will support all who come to him for help fighting the Shadow. Elrond is a generous listener, willing to deal with all folk, considers all requests for advice/help as long as they come from proven-trustworthy individuals; he rarely provides direct aid, valuing the safety and secrecy of his land above all.
+**Encontrar Elrond:** Não parece nem jovem nem velho, combinando a força de um jovem guerreiro com a
+sabedoria de um rei venerável; sua verdadeira idade só se adivinha olhando em seus olhos (luz como de
+estrelas remotas e antigas). Cabelo escuro, sem traço de barba. Raramente deixa o vale, mas envia
+muitos batedores pela terra, então está sempre bem informado e pode conhecer a identidade e as razões
+dos visitantes antes de encontrá-los. Realiza a maioria de seus conselhos na varanda leste de sua
+casa.
 
-**Patron table (page 7):**
-| Patron | Favoured Callings | Fellowship Points | Additional Advantage | Agenda |
+**Elrond como Patrono:** Desde a virada da era, Elrond vem se preparando para a guerra final com o
+Senhor do Escuro. Estava presente quando Isildur falhou em destruir o Um Anel, e desde então teme o
+retorno de Sauron. Está sempre buscando aliados e apoiará todos que vierem a ele por ajuda para
+combater a Sombra. É ouvinte generoso, disposto a tratar com todos os povos, e considera todo pedido
+de conselho ou ajuda desde que venha de indivíduos de confiança comprovada; raramente oferece ajuda
+direta, valorizando a segurança e o sigilo de sua terra acima de tudo.
+
+**Tabela de Patrono (página 7):**
+
+| Patrono | Chamados Favorecidos | Pontos de Companhia | Vantagem Adicional | Agenda |
 |---|---|---|---|---|
-| Elrond Halfelven | Scholar, Warden | +1 | *Greatest of Lore-masters.* By choosing the Meet Patron Undertaking to visit Elrond, you additionally apply a modifier of +1 to all Feat die rolls made to determine journey events, and you learn all there is to be discovered about the qualities of all Marvellous Artefacts and Wondrous Items in the Company's possession. | Protect the land, preserve the legacy of the ages |
+| Elrond Meio-Elfo | Erudito, Guardião | +1 | *Maior dos Mestres do Saber.* Ao escolher a Empreitada Encontrar Patrono para visitar Elrond, você também aplica +1 em todas as rolagens de Dado de Proeza feitas para determinar eventos de jornada, e aprende tudo o que há para descobrir sobre as qualidades de todos os Artefatos Maravilhosos e Itens Prodigiosos na posse da Companhia. | Proteger a terra, preservar o legado das eras |
 
 ### Arwen Undómiel
-*"Arwen turned towards him, and the light of her eyes fell on him from afar and pierced his heart."*
 
-Daughter of Elrond and Celebrían. The Elves of Rivendell say her beauty is the likeness of Lúthien come again, and that is why she is called Undómiel, the Evenstar, signifying that the days of the Elves are coming to an end. Born in Rivendell, she often visits her mother's folk in Lórien.
+*"Arwen voltou-se para ele, e a luz de seus olhos o alcançou de longe e trespassou seu coração."*
 
-**NAME:** Arwen Undómiel
-**OCCUPATION:** Healer, Weaver
-**DISTINCTIVE FEATURES:** Fair, Generous, Lordly
+Filha de Elrond e Celebrían. Os Elfos de Valfenda dizem que sua beleza é a semelhança de Lúthien
+retornada, e é por isso que a chamam Undómiel, a Estrela da Tarde, significando que os dias dos
+Elfos estão chegando ao fim. Nascida em Valfenda, visita com frequência o povo de sua mãe em Lórien.
 
-**Sidebar — Elven Beauty:** The first time a mortal Player-hero sees Arwen, they recover 1 point of Hope as her presence and grace encourages them. An Elven character can additionally convert a Shadow Scar into a point of Shadow — "not all sorrow is evil."
+**NOME:** Arwen Undómiel
+**OCUPAÇÃO:** Curandeira, Tecelã
+**TRAÇOS DISTINTIVOS:** Bela, Generosa, Senhorial
 
-### Elladan and Elrohir
-*"And Elves, sir! Elves here, and Elves there! Some like kings, terrible and splendid; and some as merry as children."*
+**Caixa de texto — Beleza Élfica:** A primeira vez que um herói mortal vê Arwen, recupera 1 ponto de
+Esperança, pois a presença e a graça dela o encorajam. Um personagem Elfo pode adicionalmente
+converter uma Cicatriz de Sombra em um ponto de Sombra — "não toda tristeza é maligna".
 
-The twin sons of Elrond, counted among the most valiant lords of Rivendell. Closely resemble their father and each other (few can tell them apart). Share a hatred of the Enemy honed sharp by the fate that befell their mother. Often serve as messengers, know the lands on both sides of the Misty Mountains well. When not on a mission for their father, they venture out on errantry, hunting down adversaries that dare come close to Rivendell.
+### Elladan e Elrohir
 
-**NAME:** Elladan and Elrohir
-**OCCUPATION:** Scouts, Warriors
-**DISTINCTIVE FEATURES:** Keen-eyed, Swift, Tall
+*"E Elfos, senhor! Elfos aqui e Elfos ali! Alguns como reis, terríveis e esplêndidos; e outros
+alegres como crianças."*
+
+Os filhos gêmeos de Elrond, contados entre os mais valentes senhores de Valfenda. Muito parecidos com
+o pai e entre si (poucos conseguem distingui-los). Compartilham um ódio ao Inimigo afiado pelo destino
+que se abateu sobre a mãe. Servem frequentemente como mensageiros e conhecem bem as terras de ambos
+os lados das Montanhas Nevoentas. Quando não estão em missão para o pai, saem em busca de feitos,
+caçando adversários que ousem se aproximar de Valfenda.
+
+**NOME:** Elladan e Elrohir
+**OCUPAÇÃO:** Batedores, Guerreiros
+**TRAÇOS DISTINTIVOS:** Olhos Aguçados, Velozes, Altos
 
 ### Erestor
-*"Beside Glorfindel there were several other counsellors of Elrond's household, of whom Erestor was the chief..."*
 
-Elrond's closest friend and wisest counsellor. At his master's side for several millennia, present when they first found the valley of Imladris. A skilled scribe and illustrator of manuscripts, but his most accomplished talent is brewing **miruvor**, the cordial of Imladris — a process known only to him.
+*"Ao lado de Glorfindel havia vários outros conselheiros da casa de Elrond, dos quais Erestor era o
+principal…"*
 
-**NAME:** Erestor
-**OCCUPATION:** Counsellor, Scribe
-**DISTINCTIVE FEATURES:** Cunning, Faithful, Secretive
+O amigo mais próximo e o conselheiro mais sábio de Elrond. Ao lado de seu senhor por vários milênios,
+estava presente quando encontraram pela primeira vez o vale de Imladris. Escriba hábil e ilustrador
+de manuscritos, mas seu talento mais notável é preparar o **miruvor**, o cordial de Imladris —
+processo conhecido só por ele.
 
-**Sidebar — Miruvor:** Erestor has many formulations, but here are two that Elrond may gift a company heading into danger:
-- **TRAVELLING CORDIAL.** Player-heroes drinking the cordial *gain (1d)* on a Skill roll made to resolve a journey event.
-- **MEDICINAL TONIC.** Injured Player-heroes drinking the tonic halve the number of days required for a Wound to heal, rounding up.
+**NOME:** Erestor
+**OCUPAÇÃO:** Conselheiro, Escriba
+**TRAÇOS DISTINTIVOS:** Astuto, Fiel, Discreto
+
+**Caixa de texto — Miruvor:** Erestor tem muitas formulações, mas estas são duas que Elrond pode dar
+de presente a uma companhia que parte para o perigo:
+
+- **CORDIAL DE VIAGEM.** Heróis que bebem o cordial *ganham (1d)* numa rolagem de Perícia feita para
+  resolver um evento de jornada.
+- **TÔNICO MEDICINAL.** Heróis feridos que bebem o tônico reduzem à metade o número de dias
+  necessários para um Ferimento sarar, arredondando para cima.
 
 ### Glorfindel
-*"...his hair was of shining gold, his face fair and young and fearless and full of joy; his eyes were bright and keen, and his voice like music..."*
 
-A prince of the Elves, returned out of the West to serve as the defender of Imladris, Elrond's chosen lieutenant and herald. Has served Rivendell for uncounted years, leading the forces of Imladris in battle against Angmar and other enemies, standing against even the Witch-king. One of the mightiest of the Firstborn — both Elven-wise and powerful enough to ride openly against the most terrible of Sauron's servants. Rides the Elven steed **Asfaloth**; if Asfaloth must bear another rider he will do so at great speed with no danger to his charge.
+*"…seu cabelo era de ouro brilhante, seu rosto belo, jovem, destemido e cheio de alegria; seus olhos
+eram brilhantes e aguçados, e sua voz como música…"*
 
-**NAME:** Glorfindel
-**OCCUPATION:** Herald, Errant Hero
-**DISTINCTIVE FEATURES:** Fair, Fair-spoken, Lordly
+Um príncipe dos Elfos, retornado do Oeste para servir como defensor de Imladris, tenente e herald
+escolhido de Elrond. Serve Valfenda há anos incontáveis, conduzindo as forças de Imladris em batalha
+contra Angmar e outros inimigos, enfrentando até o Rei-Bruxo. Um dos mais poderosos dos Primogênitos
+— tanto Elfo-sábio quanto poderoso o bastante para cavalgar abertamente contra os mais terríveis
+servos de Sauron. Monta o corcel Élfico **Asfaloth**; se Asfaloth precisar carregar outro cavaleiro,
+o fará a grande velocidade e sem perigo para quem leva.
+
+**NOME:** Glorfindel
+**OCUPAÇÃO:** Herald, Herói Errante
+**TRAÇOS DISTINTIVOS:** Belo, Bem-falante, Senhorial
 
 ---
 
-## HIGH ELVES OF RIVENDELL — Playable Culture (pages 10–12)
+## ALTOS-ELFOS DE VALFENDA — Cultura jogável (páginas 10–12)
 
-*"Indeed there is a power in Rivendell to withstand the might of Mordor, for a while."*
+*"De fato há em Valfenda um poder capaz de resistir à força de Mordor, por algum tempo."*
 
-Imladris has long served as a secret refuge for the High Elves, and the time is coming for them to challenge the Enemy once more. They are not afraid, but sorrowful, for they are few in number and have seen much tragedy over the long years — but they will not forsake Middle-earth. Though ancient Elf-lords live in Rivendell with strength greater in wisdom and lore than in warfare, others (like Glorfindel) cannot forsake their duty as protectors of Imladris. Other Elves follow the example of Elladan and Elrohir and venture forth in search of adventure — some are so young they haven't witnessed the ruin brought by the Shadow, and Elrond fears their inexperience might lead them to recklessness and an untimely death fighting the Enemy.
+Imladris serviu por muito tempo como refúgio secreto dos Altos-Elfos, e chega o tempo de desafiarem o
+Inimigo mais uma vez. Não têm medo, mas tristeza, pois são poucos em número e viram muita tragédia ao
+longo dos longos anos — mas não abandonarão a Terra-média. Embora antigos senhores Elfos vivam em
+Valfenda com força maior em sabedoria e saber que em guerra, outros (como Glorfindel) não conseguem
+abandonar seu dever de protetores de Imladris. Outros Elfos seguem o exemplo de Elladan e Elrohir e
+partem em busca de aventura — alguns tão jovens que não testemunharam a ruína trazida pela Sombra, e
+Elrond teme que a inexperiência os leve à imprudência e a uma morte prematura lutando contra o
+Inimigo.
 
-### Characteristics
-All High Elves are tall and lithe, endowed with great strength and endurance. Appearance varies — in Rivendell one finds Elves with tresses dark as night, or golden locks, or long silver hair. They share one thing with all Elves: they seem ageless, looking neither old nor young.
+### Características
 
-### Cultural Blessing — Elven-wise
-The High Elves have fought the Dark Lord for years uncounted and will continue to oppose the Enemy without rest or respite.
-- **Rule:** If you are not Miserable, you can spend 1 point of Hope to achieve a Magical success on a skill roll. In addition, add 1 point to one Attribute of your choice.
+Todos os Altos-Elfos são altos e esguios, dotados de grande força e resistência. A aparência varia —
+em Valfenda encontram-se Elfos de tranças escuras como a noite, cachos dourados, ou longos cabelos
+prateados. Compartilham uma coisa com todos os Elfos: parecem sem idade, nem velhos nem jovens.
 
-### Beset by Woe
-The High Elves never forget the mark the Shadow leaves on their spirit.
-- **Rule:** You can remove accumulated Shadow points exclusively during a Yule Fellowship Phase (see Spiritual Recovery in the core rules).
+### Bênção Cultural — Sábio-Élfico
 
-### Standard of Living — Prosperous
-The vaults of Rivendell are filled with all manner of relics and treasures of the olden days. Although dwindling in number, the High Elves of Imladris have little need of anything from beyond their borders.
+Os Altos-Elfos combateram o Senhor do Escuro por anos incontáveis e continuarão a se opor ao Inimigo
+sem descanso nem trégua.
 
-### Attributes
-Choose one set of Attributes, or roll a Success die:
+- **Regra:** Se você não estiver Arrasado, pode gastar 1 ponto de Esperança para obter um sucesso
+  Mágico numa rolagem de perícia. Além disso, some 1 ponto a um Atributo de sua escolha.
 
-| ROLL | STRENGTH | HEART | WITS |
+### Assolado pela Desgraça
+
+Os Altos-Elfos nunca esquecem a marca que a Sombra deixa em seu espírito.
+
+- **Regra:** Você pode remover pontos de Sombra acumulados exclusivamente durante uma Fase de
+  Companhia de Yule (ver Recuperação Espiritual nas Regras Básicas).
+
+### Padrão de Vida — Próspero
+
+As abóbadas de Valfenda estão repletas de todo tipo de relíquia e tesouro dos dias antigos. Embora
+diminuam em número, os Altos-Elfos de Imladris pouco precisam de qualquer coisa de além de suas
+fronteiras.
+
+### Atributos
+
+Escolha um conjunto de Atributos, ou role um Dado de Sucesso:
+
+| ROLAGEM | FORÇA | CORAÇÃO | ASTÚCIA |
 |---|---|---|---|
 | 1 | 5 | 2 | 7 |
 | 2 | 4 | 3 | 7 |
@@ -221,74 +404,119 @@ Choose one set of Attributes, or roll a Success die:
 | 5 | 5 | 4 | 5 |
 | 6 | 6 | 2 | 6 |
 
-### Derived Stats
-Calculate the following based on chosen Attribute ratings:
+### Estatísticas Derivadas
 
-| Stat | Formula |
+Calcule as seguintes com base nos Atributos escolhidos:
+
+| Estatística | Fórmula |
 |---|---|
-| Endurance | STRENGTH + 22 |
-| Hope | HEART + 6 |
-| Parry | WITS + 12 |
+| Resistência | FORÇA + 22 |
+| Esperança | CORAÇÃO + 6 |
+| Bloqueio | ASTÚCIA + 12 |
 
-### Skills
-Copy the listed Skill ranks onto the character sheet; then choose one Skill among the two underlined and mark it as Favoured.
+### Perícias
 
-| Skill | Rank | Skill | Rank | Skill | Rank |
+Copie as graduações listadas na ficha de personagem; depois escolha uma Perícia entre as duas
+sublinhadas e marque-a como Favorecida.
+
+| Perícia | Grad. | Perícia | Grad. | Perícia | Grad. |
 |---|---|---|---|---|---|
-| AWE | 2 | ENHEARTEN | 0 | PERSUADE | 0 |
-| ATHLETICS | 2 | TRAVEL | 1 | STEALTH | 0 |
-| **AWARENESS** (underlined) | 2 | **HEALING** (underlined) | 2 | SCAN | 0 |
-| HUNTING | 0 | COURTESY | 1 | EXPLORE | 0 |
-| SONG | 2 | BATTLE | 2 | RIDDLE | 0 |
-| CRAFT | 2 | — | — | LORE | 3 |
+| IMPONÊNCIA | 2 | ENCORAJAR | 0 | PERSUASÃO | 0 |
+| ATLETISMO | 2 | VIAGEM | 1 | FURTIVIDADE | 0 |
+| **PERCEPÇÃO** (sublinhada) | 2 | **CURA** (sublinhada) | 2 | VASCULHAR | 0 |
+| CAÇA | 0 | CORTESIA | 1 | EXPLORAR | 0 |
+| CANÇÃO | 2 | BATALHA | 2 | ENIGMAS | 0 |
+| OFÍCIO | 2 | — | — | SABER | 3 |
 
-(Choose one of AWARENESS or HEALING as Favoured.)
+(Escolha PERCEPÇÃO ou CURA como Favorecida.)
 
-### Combat Proficiencies
-Copy the following Combat Proficiency ranks onto the character sheet, selecting a preferred Proficiency when offered a choice:
+### Proficiências de Combate
 
-| Proficiency | Rank |
+Copie as graduações a seguir na ficha, escolhendo a Proficiência preferida quando houver opção:
+
+| Proficiência | Grad. |
 |---|---|
-| Spears OR Swords (choose one) | 2 |
-| Choose one Combat Proficiency | 1 |
+| Lanças OU Espadas (escolha uma) | 2 |
+| Escolha uma Proficiência de Combate | 1 |
 
-### Distinctive Features
-Choose two Distinctive Features among those listed: Fair, Keen-eyed, Lordly, Inquisitive, Merry, Proud, Subtle, Wilful.
+### Traços Distintivos
 
-### Languages and Typical Names
-The High Elves of Rivendell speak **Sindarin** in all daily matters, and the Ancient Tongue, **Quenya**, for ceremony, in song, and in high matters of lore.
+Escolha dois Traços Distintivos entre os listados: Belo, Olhos Aguçados, Senhorial, Inquisitivo,
+Alegre, Orgulhoso, Sutil, Obstinado.
 
-**Sidebar — High-Elven Names:** The complexity of the naming conventions of the High Elves is beyond the scope of this document, but here are examples for inspiration:
-- **Male names:** Aegnor, Beleg, Celegorm, Daeron, Edrahil, Fingon, Finrod, Gwindor, Mablung, Maeglin, Orodreth, Saeros.
-- **Female names:** Amarië, Ancalimë, Berúthiel, Celebrindal, Elwing, Finduilas, Firiel, Idril, Lothiriel, Míriel, Nimloth, Nimrodel.
+### Idiomas e Nomes Típicos
 
-### Virtues of the High Elves
-High Elves of Rivendell can choose their Virtues from those of the Elves of Lindon, adding the following to the list:
+Os Altos-Elfos de Valfenda falam **Sindarin** em todos os assuntos do dia a dia, e a Língua Antiga,
+**Quenya**, em cerimônias, em canções e em assuntos elevados de saber.
 
-**ARTIFICER OF EREGION** — You have studied the ancient craft of the greatest craftsmen of your kin, the Elven-smiths of Eregion.
-- Next Yule, you may either add a single Enchanted Reward of Elven craftsmanship to a weapon of your choice, or create a Marvellous Artefact (your choice).
-- In addition, during any Fellowship Phase you can make a CRAFT or LORE roll. If you succeed, you learn all there is to be discovered about the qualities of a single Marvellous Artefact or Wondrous Item in the Company's possession (as if you chose the Study Magical Items undertaking, except you may study a single item).
-- *Flavour quote: "Many eyes were turned to Elrond in fear and wonder as he told of the Elven-smiths of Eregion and their friendship with Moria, and their eagerness for knowledge."*
+**Caixa de texto — Nomes dos Altos-Elfos:** A complexidade das convenções de nomes dos Altos-Elfos
+está além do escopo deste documento, mas aqui há exemplos para inspiração:
 
-**BEAUTY OF THE STARS** — Your poise and grace is unearthly and can have a surprising power over individuals not belonging to the Fair Folk.
-- Raise your maximum Hope score by 1 point.
+- **Nomes masculinos:** Aegnor, Beleg, Celegorm, Daeron, Edrahil, Fingon, Finrod, Gwindor, Mablung,
+  Maeglin, Orodreth, Saeros.
+- **Nomes femininos:** Amarië, Ancalimë, Berúthiel, Celebrindal, Elwing, Finduilas, Fíriel, Idril,
+  Lothíriel, Míriel, Nimloth, Nimrodel.
 
-**MIGHT OF THE FIRSTBORN** — High Elves have the power within them to deny the servants of the Enemy.
-- When an adversary spends a point of Hate or Resolve to activate a Fell Ability, you can spend a point of Hope to cancel its effects.
-- *Flavour quote: "...on his brow sat wisdom, and in his hand was strength."*
+### Virtudes dos Altos-Elfos
 
-**SKILL OF THE ELDAR** — When a High Elf is at the height of their skill, even ordinary tasks may seem magical in the eyes of mortals.
-- When you roll a Success icon (℧) on the Feat die, your result counts as a Magical success without needing to spend Hope.
-- *Flavour quote: "...we put the thought of all that we love into all that we make."*
+Altos-Elfos de Valfenda podem escolher suas Virtudes entre as dos Elfos de Lindon, acrescentando as
+seguintes à lista:
 
-**Additional council/spokesperson virtue (also listed on page 12, under Virtues of the High Elves):**
-- If you are the spokesperson during a council, you raise its time limit by 1, OR you can choose to make all Mortals present during a council retain only a vague memory of what was said or agreed. This counts as a lesser magical effect for the purposes of increasing Eye Awareness (see the core rules).
-- *Flavour quote: "Pippin afterwards recalled little of either food or drink for his mind was so filled with the light upon the Elf-faces."*
+**ARTÍFICE DE EREGION** — Você estudou o ofício antigo dos maiores artesãos de seu povo, os
+Elfos-ferreiros de Eregion.
+
+- No próximo Yule, você pode acrescentar uma única Recompensa Encantada de fabricação Élfica a uma
+  arma de sua escolha, ou criar um Artefato Maravilhoso (sua escolha).
+- Além disso, durante qualquer Fase de Companhia você pode fazer uma rolagem de OFÍCIO ou SABER. Se
+  tiver sucesso, aprende tudo o que há para descobrir sobre as qualidades de um único Artefato
+  Maravilhoso ou Item Prodigioso na posse da Companhia (como se tivesse escolhido a Empreitada
+  Estudar Itens Mágicos, exceto que estuda um único item).
+- *Citação: "Muitos olhos se voltaram para Elrond em temor e assombro enquanto ele falava dos
+  Elfos-ferreiros de Eregion e de sua amizade com Moria, e de sua avidez por conhecimento."*
+
+**BELEZA DAS ESTRELAS** — Sua postura e graça são sobrenaturais e podem ter um poder surpreendente
+sobre indivíduos que não pertencem ao Belo Povo.
+
+- Aumente sua Esperança máxima em 1 ponto.
+
+**PODER DOS PRIMOGÊNITOS** — Os Altos-Elfos têm em si o poder de negar os servos do Inimigo.
+
+- Quando um adversário gasta um ponto de Ódio ou Resolução para ativar uma Habilidade Sinistra, você
+  pode gastar um ponto de Esperança para cancelar seus efeitos.
+- *Citação: "…em sua fronte assentava a sabedoria, e em sua mão estava a força."*
+
+**PERÍCIA DOS ELDAR** — Quando um Alto-Elfo está no auge de sua perícia, mesmo tarefas comuns podem
+parecer mágicas aos olhos dos mortais.
+
+- Quando você rola um ícone de Sucesso no Dado de Proeza, seu resultado conta como sucesso Mágico sem
+  precisar gastar Esperança.
+- *Citação: "…colocamos o pensamento de tudo o que amamos em tudo o que fazemos."*
+
+**Virtude adicional de conselho/porta-voz (também listada na página 12, entre as Virtudes dos
+Altos-Elfos):**
+
+- Se você é o porta-voz durante um conselho, aumenta o limite de tempo dele em 1, OU pode escolher
+  fazer com que todos os Mortais presentes no conselho retenham apenas uma lembrança vaga do que foi
+  dito ou acordado. Isso conta como efeito mágico menor para fins de aumentar a Atenção do Olho (ver
+  Regras Básicas).
+- *Citação: "Pippin depois se lembrava de pouco da comida ou da bebida, pois sua mente estava tão
+  cheia da luz sobre os rostos dos Elfos."*
 
 ---
 
-## Notes for character-sheet field validation
+## Notas para validação dos campos da ficha
 
-This booklet confirms the High Elves of Rivendell Culture uses the exact same field structure as other Cultures in the core rules: Attributes (STRENGTH/HEART/WITS, chosen from a fixed table or rolled), Derived Stats (Endurance, Hope, Parry — all computed via simple formulas off Attributes), a fixed Skill-rank distribution with a binary Favoured choice, Combat Proficiency ranks (with an either/or choice plus one free pick), two chosen Distinctive Features from a fixed list, a Cultural Blessing (unique passive/active ability), a "Beset by Woe" note (an Elf-specific Shadow-recovery restriction, tied to the core rules' Shadow/Fellowship Phase system), a Standard of Living rating, Languages, and a Virtues list (Culture-specific special abilities gained through play/advancement, referencing the "Elves of Lindon" Virtue list from the core rules as a base, which this document extends).
+Este suplemento confirma que a Cultura dos Altos-Elfos de Valfenda usa exatamente a mesma estrutura
+de campos das outras Culturas das Regras Básicas: Atributos (FORÇA/CORAÇÃO/ASTÚCIA, escolhidos de uma
+tabela fixa ou rolados), Estatísticas Derivadas (Resistência, Esperança, Bloqueio — todas calculadas
+por fórmulas simples a partir dos Atributos), uma distribuição fixa de graduações de Perícia com uma
+escolha binária de Favorecida, graduações de Proficiência de Combate (com uma escolha ou/ou mais uma
+livre), dois Traços Distintivos escolhidos de uma lista fixa, uma Bênção Cultural (habilidade
+passiva/ativa única), uma nota "Assolado pela Desgraça" (restrição de recuperação de Sombra
+específica de Elfos, ligada ao sistema de Sombra/Fase de Companhia das Regras Básicas), um Padrão de
+Vida, Idiomas, e uma lista de Virtudes (habilidades especiais da Cultura obtidas em jogo/progressão,
+referenciando a lista de Virtudes dos "Elfos de Lindon" das Regras Básicas como base, que este
+documento estende).
 
-Pages 13–16 of the PDF are blank/decorative (ornamental border art and solid colour back cover) — no additional rules content.
+As páginas 13–16 do PDF são decorativas (arte ornamental de borda e contracapa em cor sólida) — sem
+conteúdo adicional de regras.

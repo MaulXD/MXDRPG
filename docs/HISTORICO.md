@@ -104,6 +104,24 @@ npm run sync:data:check       # após editar livros/
 
 ---
 
+### 2026-08-03 — Fase B, rodada 1/12: tradução de 10-rivendell.md + auditoria
+
+**Pedido:** loop auto-pace traduzindo um capítulo por rodada, auditando as regras contra o código na mesma passada.
+
+**Feito:** `livros/um-anel/10-rivendell.md` traduzido (294 linhas) — cenário de Imladris, plantas, os 5 PNJs notáveis com blocos de estatística, e a Cultura jogável dos Altos-Elfos de Valfenda. Marcador "aguardando tradução colaborativa" removido. Restam **11** capítulos em inglês.
+
+**Auditoria — nenhuma divergência encontrada.** Conferi contra o código:
+- Patrono Elrond (`patrons.ts`): bônus de Companhia +1, "Maior dos Mestres do Saber", +1 no Dado de Proeza de eventos de jornada, Chamados Erudito/Guardião — **tudo correto**
+- Cultura Altos-Elfos (`data.ts`): os 6 conjuntos de atributos, Resistência +22, Esperança +6, Bloqueio +12, bênção "Sábio-Élfico", Padrão Próspero — **tudo correto**
+
+A extração anterior deste capítulo foi feita com cuidado. Vale registrar o resultado limpo: a auditoria embutida não é teatro, e quando não acha nada isso também é informação.
+
+**Nota de tradução:** a regra de achar Valfenda usa SCAN no original, traduzido como **VASCULHAR** — que é o id real da perícia em `data.ts`. Traduzir como "Percepção" teria criado divergência com o código.
+
+**Validação:** `tsc` limpo · build compila · `npm run test` verde.
+
+---
+
 ### 2026-08-03 — feat(um-anel): export PDF da ficha + guard de cor virou real
 
 **Pedido:** corrigir os bugs existentes e voltar à construção.
