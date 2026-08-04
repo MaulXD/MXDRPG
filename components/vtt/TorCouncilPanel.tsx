@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useState } from "react";
-import { postRoomChat } from "@/hooks/useRoomSync";
+import { patchTorSession, postRoomChat } from "@/hooks/useRoomSync";
 import { rollTorCheck, featDieRollPayload } from "@/lib/character/um-anel/dice";
 import { SKILL_LABEL } from "@/lib/character/um-anel/data";
 import {
@@ -24,10 +24,14 @@ type Props = {
   roomId: string;
   /** Só o Mestre define a Resistência e conduz o Conselho. */
   canManage: boolean;
+  /**
+   * Estado vindo do snapshot da sala — sobrevive a recarga e chega a todos os
+   * jogadores por SSE, então o placar do Conselho é público.
+   */
+  council: TorCouncilState | null;
   onUpdate: () => void;
 };
 
-/** Graduações possíveis de uma perícia (0–6 Dados de Sucesso). */
 const RANKS = [0, 1, 2, 3, 4, 5, 6] as const;
 
 /** ND padrão de mesa quando o Mestre não define outro. */
@@ -37,98 +41,142 @@ function skillLabel(id: string): string {
   return (SKILL_LABEL as Record<string, string>)[id] ?? id;
 }
 
-export function TorCouncilPanel({ roomId, canManage, onUpdate }: Props) {
-  const [resistance, setResistance] = useState<TorCouncilResistance>(6);
-  const [state, setState] = useState<TorCouncilState | null>(null);
+export function TorCouncilPanel({ roomId, canManage, council, onUpdate }: Props) {
+  // Só a Resistência e a perícia escolhida são locais — o resto vem da sala.
+  const [draftResistance, setDraftResistance] = useState<TorCouncilResistance>(6);
   const [introSkill, setIntroSkill] = useState<string>(TOR_INTRODUCTION_SKILLS[0]);
   const [interSkill, setInterSkill] = useState<string>(TOR_INTERACTION_SKILLS[0]);
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState<string | null>(null);
 
-  const outcome = state ? torCouncilOutcome(state) : null;
+  const outcome = council ? torCouncilOutcome(council) : null;
   const finished = outcome != null && outcome !== "ongoing";
 
-  const say = useCallback(
-    async (text: string, featValue?: number) => {
-      try {
-        await postRoomChat(roomId, {
-          kind: "chat",
-          text,
-          ...(featValue != null ? { torFeatDie: { sides: 12, value: featValue } } : {}),
-        });
-        onUpdate();
-      } catch (e) {
-        setErr(e instanceof Error ? e.message : "Falha ao publicar no chat");
-      }
-    },
-    [roomId, onUpdate]
-  );
-
-  /** Introdução: a rolagem do porta-voz define o limite de tempo do Conselho. */
-  const introduce = useCallback(
-    async (rank: number) => {
+  const guard = useCallback(
+    async (fn: () => Promise<void>) => {
       if (busy) return;
       setBusy(true);
       setErr(null);
       try {
+        await fn();
+      } catch (e) {
+        setErr(e instanceof Error ? e.message : "Falha ao salvar");
+      } finally {
+        setBusy(false);
+      }
+    },
+    [busy]
+  );
+
+  /** Narra no chat e persiste na sala. Ver TorJourneyPanel para a mesma ordem. */
+  const commit = useCallback(
+    async (text: string, featValue: number, next: TorCouncilState | null) => {
+      await postRoomChat(roomId, {
+        kind: "chat",
+        text,
+        torFeatDie: { sides: 12, value: featValue },
+      });
+      await patchTorSession(roomId, { council: next });
+      onUpdate();
+    },
+    [roomId, onUpdate]
+  );
+
+  const introduce = useCallback(
+    (rank: number) =>
+      guard(async () => {
         const roll = rollTorCheck({ rank, tn: DEFAULT_TN });
         const intro = resolveTorIntroduction({
-          resistance,
+          resistance: draftResistance,
           passed: roll.success,
           successIcons: roll.successIcons,
         });
-        setState(startTorCouncil(resistance, intro));
-        await say(
-          `Conselho — ${TOR_RESISTANCE_META[resistance].label} (Resistência ${resistance}). ` +
+        await commit(
+          `Conselho — ${TOR_RESISTANCE_META[draftResistance].label} (Resistência ${draftResistance}). ` +
             formatTorIntroductionMessage("Porta-voz", skillLabel(introSkill), intro),
-          featDieRollPayload(roll.featDie).value
+          featDieRollPayload(roll.featDie).value,
+          startTorCouncil(draftResistance, intro)
         );
-      } finally {
-        setBusy(false);
-      }
-    },
-    [busy, resistance, introSkill, say]
+      }),
+    [guard, commit, draftResistance, introSkill]
   );
 
-  /** Uma tentativa de Interação. Conta mesmo na falha — é o que aperta o tempo. */
   const interact = useCallback(
-    async (rank: number) => {
-      if (!state || busy || finished) return;
-      setBusy(true);
-      setErr(null);
-      try {
+    (rank: number) =>
+      guard(async () => {
+        if (!council || finished) return;
         const roll = rollTorCheck({ rank, tn: DEFAULT_TN });
-        const result = resolveTorInteraction(state, {
+        const result = resolveTorInteraction(council, {
           passed: roll.success,
           successIcons: roll.successIcons,
         });
-        setState(result.state);
-        await say(
+        await commit(
           formatTorInteractionMessage("Herói", skillLabel(interSkill), result),
-          featDieRollPayload(roll.featDie).value
+          featDieRollPayload(roll.featDie).value,
+          result.state
         );
-      } finally {
-        setBusy(false);
-      }
-    },
-    [state, busy, finished, interSkill, say]
+      }),
+    [guard, commit, council, finished, interSkill]
   );
 
+  const end = useCallback(
+    () =>
+      guard(async () => {
+        await patchTorSession(roomId, { council: null });
+        onUpdate();
+      }),
+    [guard, roomId, onUpdate]
+  );
+
+  /** Placar — igual para Mestre e jogador. */
+  const scoreboard = council ? (
+    <>
+      <p className="tor-journey__remaining">
+        {council.successes}/{council.resistance} sucessos ·{" "}
+        {Math.max(0, council.timeLimit - council.attemptsUsed)} tentativa
+        {council.timeLimit - council.attemptsUsed === 1 ? "" : "s"}
+      </p>
+      {council.disasterOnFailure ? (
+        <p className="tor-journey__pending-hint">
+          A Introdução falhou — se o Conselho falhar, termina em Desastre.
+        </p>
+      ) : null}
+      {finished ? (
+        <div className="tor-journey__pending">
+          <p className="tor-journey__pending-title">
+            {outcome === "success"
+              ? "Conselho ganho"
+              : outcome === "disaster"
+                ? "Desastre"
+                : "Conselho falhou"}
+          </p>
+        </div>
+      ) : null}
+    </>
+  ) : null;
+
+  /* ── Jogador: placar somente leitura ─────────────────────────────── */
   if (!canManage) {
     return (
       <div className="tor-journey">
-        <p className="vtt-combat-hint">
-          Só o Mestre conduz o Conselho. Acompanhe no chat da mesa.
-        </p>
+        {council ? (
+          <section className="tor-journey__section">
+            <p className="eyebrow">Conselho</p>
+            {scoreboard}
+          </section>
+        ) : (
+          <p className="vtt-combat-hint">Nenhum conselho em curso.</p>
+        )}
       </div>
     );
   }
 
+  /* ── Mestre ───────────────────────────────────────────────────────── */
   return (
     <div className="tor-journey">
       {err ? <p className="dice-err">{err}</p> : null}
 
-      {!state ? (
+      {!council ? (
         <>
           <section className="tor-journey__section">
             <p className="eyebrow">Resistência</p>
@@ -136,9 +184,9 @@ export function TorCouncilPanel({ roomId, canManage, onUpdate }: Props) {
               <label>
                 Dificuldade do pedido
                 <select
-                  value={resistance}
+                  value={draftResistance}
                   onChange={(e) =>
-                    setResistance(Number(e.target.value) as TorCouncilResistance)
+                    setDraftResistance(Number(e.target.value) as TorCouncilResistance)
                   }
                 >
                   {TOR_COUNCIL_RESISTANCES.map((r) => (
@@ -150,7 +198,7 @@ export function TorCouncilPanel({ roomId, canManage, onUpdate }: Props) {
               </label>
             </div>
             <p className="tor-journey__pending-hint">
-              {TOR_RESISTANCE_META[resistance].description}
+              {TOR_RESISTANCE_META[draftResistance].description}
             </p>
           </section>
 
@@ -187,70 +235,50 @@ export function TorCouncilPanel({ roomId, canManage, onUpdate }: Props) {
           </section>
         </>
       ) : (
-        <>
-          <section className="tor-journey__section">
-            <p className="eyebrow">Interação</p>
-            <p className="tor-journey__remaining">
-              {state.successes}/{state.resistance} sucessos ·{" "}
-              {Math.max(0, state.timeLimit - state.attemptsUsed)} tentativa
-              {state.timeLimit - state.attemptsUsed === 1 ? "" : "s"}
-            </p>
-            {state.disasterOnFailure ? (
-              <p className="tor-journey__pending-hint">
-                A Introdução falhou — se o Conselho falhar, termina em Desastre.
-              </p>
-            ) : null}
+        <section className="tor-journey__section">
+          <p className="eyebrow">Interação</p>
+          {scoreboard}
 
-            {finished ? (
-              <div className="tor-journey__pending">
-                <p className="tor-journey__pending-title">
-                  {outcome === "success"
-                    ? "Conselho ganho"
-                    : outcome === "disaster"
-                      ? "Desastre"
-                      : "Conselho falhou"}
-                </p>
+          {!finished ? (
+            <>
+              <div className="tor-journey__grid">
+                <label>
+                  Perícia usada
+                  <select value={interSkill} onChange={(e) => setInterSkill(e.target.value)}>
+                    {TOR_INTERACTION_SKILLS.map((s) => (
+                      <option key={s} value={s}>
+                        {skillLabel(s)}
+                      </option>
+                    ))}
+                  </select>
+                </label>
               </div>
-            ) : (
-              <>
-                <div className="tor-journey__grid">
-                  <label>
-                    Perícia usada
-                    <select value={interSkill} onChange={(e) => setInterSkill(e.target.value)}>
-                      {TOR_INTERACTION_SKILLS.map((s) => (
-                        <option key={s} value={s}>
-                          {skillLabel(s)}
-                        </option>
-                      ))}
-                    </select>
-                  </label>
-                </div>
-                <div className="tor-journey__ranks">
-                  <p className="tor-journey__pending-hint">Graduação de quem está falando</p>
-                  {RANKS.map((r) => (
-                    <button
-                      key={r}
-                      type="button"
-                      className="btn-ghost"
-                      disabled={busy}
-                      onClick={() => void interact(r)}
-                    >
-                      {r}d
-                    </button>
-                  ))}
-                </div>
-              </>
-            )}
+              <div className="tor-journey__ranks">
+                <p className="tor-journey__pending-hint">Graduação de quem está falando</p>
+                {RANKS.map((r) => (
+                  <button
+                    key={r}
+                    type="button"
+                    className="btn-ghost"
+                    disabled={busy}
+                    onClick={() => void interact(r)}
+                  >
+                    {r}d
+                  </button>
+                ))}
+              </div>
+            </>
+          ) : null}
 
-            <button
-              type="button"
-              className="btn-ghost tor-journey__reset"
-              onClick={() => setState(null)}
-            >
-              {finished ? "Novo conselho" : "Encerrar conselho"}
-            </button>
-          </section>
-        </>
+          <button
+            type="button"
+            className="btn-ghost tor-journey__reset"
+            disabled={busy}
+            onClick={() => void end()}
+          >
+            {finished ? "Novo conselho" : "Encerrar conselho"}
+          </button>
+        </section>
       )}
     </div>
   );
