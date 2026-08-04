@@ -19,6 +19,11 @@ const TorJourneyPanel = dynamic(
   { ssr: false }
 );
 
+const TorCouncilPanel = dynamic(
+  () => import("@/components/vtt/TorCouncilPanel").then((m) => m.TorCouncilPanel),
+  { ssr: false }
+);
+
 const DiceRoller = dynamic(
   () => import("@/components/vtt/DiceRoller").then((m) => m.DiceRoller),
   { ssr: false }
@@ -271,6 +276,28 @@ export function MesaFoundryFloatingWindows(props: MesaFoundryFloatingWindowsProp
           onClose={() => onCloseWindow("torJourney")}
         >
           <TorJourneyPanel
+            roomId={roomId}
+            canManage={Boolean(effectiveIsGm)}
+            onUpdate={() => void onRefresh()}
+          />
+        </FoundryWindow>
+      ) : null}
+
+      {rpgSystemId === "um-anel" && isFloating("torCouncil") ? (
+        <FoundryWindow
+          title="Conselho"
+          layout={panel("torCouncil")}
+          className="foundry-window--tor-council"
+          onLayoutChange={(patch) => onPatchWindow("torCouncil", patch)}
+          onFocus={() => onFocusWindow("torCouncil")}
+          onMinimize={() =>
+            panel("torCouncil").minimized
+              ? onRestoreWindow("torCouncil")
+              : onMinimizeWindow("torCouncil")
+          }
+          onClose={() => onCloseWindow("torCouncil")}
+        >
+          <TorCouncilPanel
             roomId={roomId}
             canManage={Boolean(effectiveIsGm)}
             onUpdate={() => void onRefresh()}

@@ -27,6 +27,11 @@ const TorJourneyPanel = dynamic(
   { ssr: false }
 );
 
+const TorCouncilPanel = dynamic(
+  () => import("@/components/vtt/TorCouncilPanel").then((m) => m.TorCouncilPanel),
+  { ssr: false }
+);
+
 const TorCompendiumPage = dynamic(
   () => import("@/components/compendium/TorCompendiumPage").then((m) => m.TorCompendiumPage),
   { ssr: false }
@@ -134,7 +139,7 @@ export function MesaFoundryDockRail({
       onOpenPopup={onOpenPopup}
       showGm={effectiveCanControlCombat}
       showInvite={showInviteUi}
-      showJourney={rpgSystemId === "um-anel" && Boolean(effectiveIsGm)}
+      showTorGmTools={rpgSystemId === "um-anel" && Boolean(effectiveIsGm)}
       dockOpen={dockOpen}
     >
       {!isFloating("chat") ? (
@@ -292,6 +297,29 @@ export function MesaFoundryDockRail({
         >
           <div className="mesa-panel-scroll mesa-panel-scroll--rail">
             <TorJourneyPanel
+              roomId={roomId}
+              canManage={Boolean(effectiveIsGm)}
+              onUpdate={() => void onRefresh()}
+            />
+          </div>
+        </FoundryDockPanel>
+      ) : null}
+
+      {rpgSystemId === "um-anel" && !isFloating("torCouncil") ? (
+        <FoundryDockPanel
+          title="Conselho"
+          open={panel("torCouncil").open}
+          minimized={panel("torCouncil").minimized}
+          className="foundry-dock-panel--tor-council"
+          onClose={() => onClosePanel("torCouncil")}
+          onMinimize={() =>
+            panel("torCouncil").minimized
+              ? onRestorePanel("torCouncil")
+              : onMinimizePanel("torCouncil")
+          }
+        >
+          <div className="mesa-panel-scroll mesa-panel-scroll--rail">
+            <TorCouncilPanel
               roomId={roomId}
               canManage={Boolean(effectiveIsGm)}
               onUpdate={() => void onRefresh()}
