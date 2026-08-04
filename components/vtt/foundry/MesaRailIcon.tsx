@@ -13,7 +13,8 @@ export type MesaRailIconName =
   | "invite"
   | "status"
   | "compendium"
-  | "torJourney";
+  | "torJourney"
+  | "torCouncil";
 
 type Props = {
   name: MesaRailIconName;
@@ -234,6 +235,18 @@ export function MesaRailIcon({ name, className = "foundry-icon-bar__icon" }: Pro
           <path d="M6 18.5c0-3.5 3-4 6-4s6-.5 6-4" {...S} />
           <circle cx="6" cy="18.5" r="1.8" {...S} />
           <circle cx="18" cy="6.2" r="1.8" {...S} />
+        </RailSvg>
+      );
+
+    /**
+     * Conselho — glyph GENÉRICO provisório (duas falas em conversa). Mesma
+     * ressalva do torJourney: não é arte final.
+     */
+    case "torCouncil":
+      return (
+        <RailSvg className={className}>
+          <path d="M4.5 6.5h10v6h-6l-4 3z" {...S} />
+          <path d="M9.5 15.5h10v-6h-3" {...S} opacity="0.55" />
         </RailSvg>
       );
 

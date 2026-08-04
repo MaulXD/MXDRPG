@@ -23,6 +23,7 @@ export const FOUNDRY_DOCK_PANEL_IDS: MesaWindowId[] = [
   "status",
   "compendium",
   "torJourney",
+  "torCouncil",
 ];
 
 type Registry = Partial<Record<MesaWindowId, FoundryWindowLayout>>;
@@ -45,6 +46,7 @@ const DEFAULT_LAYOUTS: Record<MesaWindowId, Omit<FoundryWindowLayout, "open" | "
   status: { x: 52, y: 48, width: 400, height: 520 },
   torFicha: { x: 360, y: 48, width: 460, height: 640 },
   torJourney: { x: 400, y: 48, width: 360, height: 560 },
+  torCouncil: { x: 420, y: 64, width: 340, height: 460 },
   compendium: { x: 72, y: 40, width: 560, height: 620 },
 };
 

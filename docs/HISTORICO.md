@@ -140,6 +140,12 @@ npm run sync:data:check       # após editar livros/
 
 11. **Integração completa:** novo `MesaWindowId`, layout padrão, entrada em `FOUNDRY_DOCK_PANEL_IDS`, painel no dock e em janela flutuante, e ícone no rail — tudo condicionado a `rpgSystemId === "um-anel"` **e** ser Mestre, respeitando o despacho por sistema (D10). CSS responsivo desde o início, com container query (o painel vive tanto no dock estreito quanto em janela redimensionável) e alvos de toque de 44px nos botões de graduação.
 
+**Na mesma sessão — painel de Conselho**
+
+12. **`components/vtt/TorCouncilPanel.tsx`** — segundo motor a ficar jogável. O Mestre fixa a Resistência (3/6/9), o porta-voz rola a Introdução (que define o limite de tempo), e cada tentativa de Interação acumula sucessos. O painel mostra `sucessos/Resistência` e tentativas restantes, avisa quando a Introdução falhou (Conselho passa a arriscar Desastre) e trava ao terminar. Tudo publicado no chat com o d12 anexado.
+
+13. **Prop renomeada por honestidade:** `showJourney` passou a controlar dois painéis, então virou `showTorGmTools` — o nome antigo mentiria sobre o escopo e alguém acabaria adicionando um terceiro painel sob um nome que fala de Jornada.
+
 **Ainda pendente do mesmo diagnóstico (depende do servidor, não do código):**
 
 - **`SESSION_SECRET` estável em produção.** O commit `be69f6f` (31/07) passou a exigir HMAC no cookie e rejeita o formato antigo de propósito — isso deslogou todo mundo **uma vez**, o que é esperado. Se estiver repetindo a cada deploy, o segredo não está estável no Contabo (`scripts/local/setup.sh` gera um aleatório; se algo parecido roda no servidor, cada recriação invalida todas as sessões).
