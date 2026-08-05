@@ -154,6 +154,41 @@ ok(
 );
 ok("TorAttackParams tem defenderIllFavoured", /defenderIllFavoured\?:\s*boolean;/.test(ATTACK));
 
+/* ── Desfavorecido nos TRÊS sítios ─────────────────────────────────────
+   Esta condição já foi "corrigida" duas vezes e reapareceu numa terceira. Os
+   sítios são: (1) Teste de Proteção do defensor, (2) rolagens de Perícia e de
+   Proficiência em dice.ts, e (3) a rolagem de ATAQUE do próprio herói.
+
+   O terceiro era o mais silencioso: `attackerIllFavoured` já existia em
+   TorAttackParams e já era usado na rolagem, mas o handler só preenchia o do
+   DEFENSOR — então o mesmo herói ficava Desfavorecido ao se defender e não ao
+   atacar. Este bloco tranca os três juntos pra não haver um quarto. */
+
+ok("TorAttackParams tem attackerIllFavoured", /attackerIllFavoured\?:\s*boolean;/.test(ATTACK));
+ok(
+  "motor passa attackerIllFavoured à rolagem de ataque",
+  /illFavoured:\s*params\.attackerIllFavoured/.test(attackCode)
+);
+const handlerCode = stripC(HANDLER);
+ok(
+  "handler deriva Desfavorecido do ATACANTE pelo helper",
+  /attackerIllFavoured = isTorIllFavouredByShadow\(\{[\s\S]{0,200}?hopeMax: sheet\.hope\.max/.test(
+    handlerCode
+  )
+);
+ok("handler passa attackerIllFavoured ao motor", /^\s*attackerIllFavoured,$/m.test(handlerCode));
+// Arrasado do atacante continua separado — a correção não pode ter fundido os dois.
+ok(
+  "atacante Arrasado segue campo próprio",
+  /attackerMiserable = sheet\.conditions\.miserable/.test(handlerCode)
+);
+// O terceiro sítio: dice.ts, já coberto em verify-um-anel-dice.mjs. Aqui só se
+// confirma que o helper compartilhado é o mesmo nos três, sem cópia da fórmula.
+ok(
+  "handler não recalcula a fórmula à mão",
+  !/shadow \+ [a-zA-Z.]*shadowScars >= [a-zA-Z.]*hope\.max/.test(handlerCode)
+);
+
 // O handler deriva Desfavorecido de Sombra + Cicatrizes vs Esperança MÁXIMA,
 // pelo helper compartilhado (era fórmula inline; virou helper na rodada 5 pra
 // não haver cópia divergindo entre handler, dice.ts e resolve-attack.ts).

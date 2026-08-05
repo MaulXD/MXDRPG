@@ -137,5 +137,47 @@ ok("compêndio registra Resistência 3", /\*\*Resist[êe]ncia:\*\*\s*3/.test(MD)
 ok("compêndio registra Resistência 6", /\*\*Resist[êe]ncia:\*\*\s*6/.test(MD));
 ok("compêndio registra Resistência 9", /\*\*Resist[êe]ncia:\*\*\s*9/.test(MD));
 
+/* ── DESASTRE tem DOIS gatilhos independentes ──────────────────────────
+   Livro (06-fases-de-aventura-combate.md): "DESASTRE: os heróis-jogadores
+   fracassam em todas as rolagens disponíveis, OU obtêm um número de rolagens
+   bem-sucedidas mas não conseguem igualar a Resistência após uma Introdução
+   malfeita".
+
+   Só o segundo estava implementado. Uma Companhia que abre BEM o conselho
+   (Introdução com sucesso, logo `disasterOnFailure` falso) e depois falha em
+   TODAS as tentativas recebia "failure" — o livro manda Desastre, porque zero
+   sucesso é o pior desfecho possível, independente da Introdução. */
+
+const BOOK_COMBATE = readFileSync(
+  join(__dirname, "..", "livros", "um-anel", "06-fases-de-aventura-combate.md"),
+  "utf8"
+);
+ok(
+  "livro: Desastre por fracassar em TODAS as rolagens",
+  /DESASTRE:\*\*[\s\S]{0,120}?fracassam em todas as rolagens\s*disponíveis, ou obtêm/i.test(
+    BOOK_COMBATE
+  )
+);
+
+const outcomeBody = fnBody(SRC, "torCouncilOutcome");
+ok("torCouncilOutcome isolado", outcomeBody.length > 60);
+ok(
+  "zero sucessos é Desastre, independente da Introdução",
+  /state\.successes === 0\) return "disaster"/.test(outcomeBody)
+);
+ok(
+  "Introdução malfeita segue sendo o outro gatilho",
+  /state\.disasterOnFailure \? "disaster" : "failure"/.test(outcomeBody)
+);
+// A ordem não pode mudar: alcançar a Resistência vence antes de qualquer
+// avaliação de Desastre, inclusive na última tentativa.
+const idxSuccess = outcomeBody.indexOf('>= state.resistance) return "success"');
+const idxZero = outcomeBody.indexOf('state.successes === 0');
+ok(
+  "sucesso é avaliado ANTES do Desastre",
+  idxSuccess >= 0 && idxZero >= 0 && idxSuccess < idxZero,
+  `sucesso@${idxSuccess} zero@${idxZero}`
+);
+
 console.log(`\nverify-um-anel-council: ${pass} passaram, ${fail} falharam`);
 if (fail > 0) process.exit(1);

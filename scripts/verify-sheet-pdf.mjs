@@ -312,4 +312,47 @@ for (const rel of PDF_CSS_FILES) {
   });
 }
 
+/* ── Vocabulário e números da ficha do Um Anel no PDF ──────────────────
+   Dois achados da auditoria do capítulo 4:
+
+   1. O PDF rotulava o Número-Alvo como "ND" — sigla de Nível de Dificuldade, que
+      é vocabulário do OUTRO sistema deste repositório (Eldarin). Todo o resto do
+      app do Um Anel usa "NA". Um termo trocado na única peça que o jogador
+      imprime e leva pra mesa.
+   2. O PDF imprimia `character.parry` puro, sem o modificador do escudo, então o
+      bônus do escudo não aparecia em NENHUM número da ficha exportada —
+      divergindo da ficha na tela e do token de combate, que somam. */
+
+/** Lê um arquivo do repo normalizando CRLF (no Windows um checkout entrega CRLF). */
+const read = (rel) =>
+  readFileSync(
+    join(dirname(fileURLToPath(import.meta.url)), "..", ...rel.split("/")),
+    "utf8"
+  ).replace(/\r\n/g, "\n");
+
+test("PDF do Um Anel usa NA, não ND", () => {
+  const src = read("components/character/TorSheetPdfDocument.tsx");
+  assert.match(src, /NA \{attributeTN\(character\.attributes\[a\]\)\}/);
+  assert.ok(
+    !/>ND \{attributeTN/.test(src) && !/ND \{attributeTN/.test(src),
+    'PDF ainda rotula o Número-Alvo como "ND"'
+  );
+});
+
+test("PDF do Um Anel soma o escudo ao Bloqueio", () => {
+  const src = read("components/character/TorSheetPdfDocument.tsx");
+  assert.match(src, /value=\{character\.parry \+ character\.shieldParryBonus\}/);
+});
+
+test("compêndio rotula armas de briga como Briga", () => {
+  const src = read("components/compendium/TorCompendiumPage.tsx");
+  // "Desarmado" é falso para Adaga, Cacete e Porrete, e escondia a regra que
+  // importa: briga usa a Proficiência mais alta do herói perdendo (1d).
+  assert.match(src, /w\.proficiency === "brawling" \? "Briga"/);
+  assert.ok(
+    !/w\.proficiency === "brawling" \? "Desarmado"/.test(src),
+    'compêndio ainda chama a Proficiência de briga de "Desarmado"'
+  );
+});
+
 console.log(`\nverify-sheet-pdf: OK (${passed} tests)`);

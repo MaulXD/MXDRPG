@@ -10,7 +10,12 @@ export type TorAdversaryAction = {
   /** Graduação da Proficiência de Combate do adversário nessa arma. */
   rating: number;
   damage: number;
-  /** Golpe Perfurante dispara em Proeza ≥ este valor (10 ou Runa cobre a maioria). */
+  /**
+   * Ferimento: o NA do Teste de Proteção que um Golpe Perfurante obriga o alvo a
+   * fazer. NÃO é o limiar do golpe — esse é fixo em 10 ou [Runa] no Dado de
+   * Proeza. E não confundir com o Dano Especial PERFURAR, que gasta 1 ícone de
+   * Sucesso pra somar +1/+2/+3 ao resultado do Dado de Proeza.
+   */
   injury: number;
   /** Opções de Dano Especial disponíveis (texto — não mecanizadas no v1). */
   specialDamage?: string[];
