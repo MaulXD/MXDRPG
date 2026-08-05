@@ -53,11 +53,33 @@ export type TorJourneyProgress = {
   log: string[];
 };
 
+export type TorFellowshipHero = {
+  /** Nome exibido no anúncio do Yule — apelido, nunca nome real de conta. */
+  name: string;
+  /** ASTÚCIA do herói: define o bônus de Perícia DELE no Yule. */
+  wits: number;
+};
+
+/** Tamanho máximo da Companhia. */
+export const TOR_MAX_COMPANY = 8;
+
 export type TorFellowshipProgress = {
   year: number;
   phasesThisYear: number;
-  companySize: number;
-  witsScore: number;
+  /**
+   * Os heróis da Companhia.
+   *
+   * O bônus de Perícia do Yule é POR HERÓI: "todos os heróis-jogadores ganham um
+   * número de pontos de Perícia bônus igual ao **seu** nível de ASTÚCIA"
+   * (`07-fases-de-companhia-jornada.md`). Antes havia um `witsScore` único pra
+   * Companhia inteira, o que dava o mesmo bônus a todos e errava a maioria numa
+   * Companhia mista — um Elfo (Astúcia 7) recebia o mesmo que um Bardo (3).
+   *
+   * Também é a fonte do tamanho da Companhia: o orçamento de Empreitadas no Yule
+   * é 1 por herói, e derivar de `heroes.length` evita duas fontes de verdade que
+   * podem discordar.
+   */
+  heroes: TorFellowshipHero[];
   outcome: TorPhaseOutcome;
   /** Empreitadas escolhidas nesta Fase. */
   picks: string[];
@@ -140,6 +162,37 @@ function normalizeCouncil(raw: unknown): TorCouncilState | null {
   };
 }
 
+/**
+ * Recorta a lista de heróis vinda do JSONB.
+ *
+ * Teto de ASTÚCIA 7, não 6: os arrays de Atributo de `data.ts` oferecem ASTÚCIA 7
+ * pra Elfos de Lindon, Hobbits do Condado e Altos-Elfos de Valfenda. Com teto 6 o
+ * bônus de Perícia do Yule desses heróis era cortado em 1 ponto por ano.
+ * `verify-um-anel-session-state.mjs` amarra este teto ao maior `argucia` de
+ * `data.ts` — se um suplemento trouxer 8, o teste acusa aqui.
+ */
+function normalizeHeroes(r: Record<string, unknown>): TorFellowshipHero[] {
+  if (Array.isArray(r.heroes)) {
+    const list = r.heroes
+      .filter((h): h is Record<string, unknown> => Boolean(h) && typeof h === "object")
+      .slice(0, TOR_MAX_COMPANY)
+      .map((h, i) => ({
+        name:
+          typeof h.name === "string" && h.name.trim().length > 0
+            ? h.name.trim().slice(0, 40)
+            : `Herói ${i + 1}`,
+        wits: int(h.wits, 3, 0, 7),
+      }));
+    if (list.length > 0) return list;
+  }
+  // Migração de sala gravada por versão anterior, que tinha um `witsScore` único
+  // e um `companySize`. Reconstrói a lista preservando os números que estavam lá,
+  // pra ninguém perder o calendário da campanha numa atualização.
+  const size = int(r.companySize, 4, 1, TOR_MAX_COMPANY);
+  const wits = int(r.witsScore, 3, 0, 7);
+  return Array.from({ length: size }, (_, i) => ({ name: `Herói ${i + 1}`, wits }));
+}
+
 function normalizeFellowship(raw: unknown): TorFellowshipProgress | null {
   if (!raw || typeof raw !== "object") return null;
   const r = raw as Record<string, unknown>;
@@ -147,13 +200,7 @@ function normalizeFellowship(raw: unknown): TorFellowshipProgress | null {
     year: int(r.year, 2965, 1, 9999),
     // 0–2: a terceira Fase é o Yule, que zera e vira o ano.
     phasesThisYear: int(r.phasesThisYear, 0, 0, 2),
-    companySize: int(r.companySize, 4, 1, 8),
-    // Teto 7, não 6: os arrays de Atributo de data.ts oferecem ASTÚCIA 7 pra
-    // Elfos de Lindon, Hobbits do Condado e Altos-Elfos de Valfenda. Com teto 6
-    // o bônus de Perícia do Yule desses heróis era silenciosamente cortado em 1
-    // ponto por ano. verify-um-anel-session-state.mjs amarra este teto ao maior
-    // `argucia` de data.ts — se um suplemento trouxer 8, o teste acusa aqui.
-    witsScore: int(r.witsScore, 3, 0, 7),
+    heroes: normalizeHeroes(r),
     outcome: oneOf(r.outcome, TOR_PHASE_OUTCOMES, "marginal"),
     picks: strList(r.picks, 12),
   };

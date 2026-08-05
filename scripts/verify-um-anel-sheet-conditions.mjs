@@ -17,7 +17,18 @@
  * Fonte: livros/um-anel/04-caracteristicas.md §Fatigue/§Miserable,
  *        livros/um-anel/compendio/sombra.md
  */
-import { readFileSync } from "fs";
+import { readFileSync as rawReadFileSync } from "fs";
+
+/* Normaliza CRLF -> LF na leitura.
+
+   As asserções deste arquivo casam conteúdo com âncoras de início/fim de linha
+   e com trechos multilinha. No Windows, um clone novo — ou qualquer
+   `git checkout` com core.autocrlf — entrega CRLF, e aí `\n## Título\n` não
+   casa porque vem `\r` antes do `\n`. Comparar conteúdo não deve depender de
+   fim de linha: sem isto a suíte falha num repo recém-clonado, e passava aqui
+   só porque as ferramentas que escreveram os arquivos usavam LF. */
+const readFileSync = (p, enc) => rawReadFileSync(p, enc).replace(/\r\n/g, "\n");
+
 import { join, dirname } from "path";
 import { fileURLToPath } from "url";
 
@@ -50,13 +61,18 @@ console.log("verify-um-anel-sheet-conditions: condições derivadas da ficha");
 // silenciosamente validar uma fórmula sem fonte.
 ok(
   "livro: Exausto é Resistência <= Carga total",
-  /Weary if their Current Endurance score becomes equal to or lower than their total Load/i.test(
+  // Bilingue: o capitulo 04 foi traduzido durante a Fase B e esta assercao
+  // quebrou. Aceita as duas formas pra nao voltar a quebrar por traducao, e
+  // continua acusando se a REGRA mudar (o "igual ou inferior" e a Carga TOTAL).
+  /(Weary if their Current Endurance score becomes equal to or lower than their total Load|ficam Exaustos se seu valor de Resistência Atual se tornar igual ou inferior à sua Carga total)/i.test(
     BOOK
   )
 );
 ok(
   "livro: Fadiga eleva a Carga total",
-  /Fatigue points temporarily raise a travelling Player-hero's total Load/i.test(BOOK)
+  /(Fatigue points temporarily raise a travelling Player-hero's total Load|pontos de Fadiga elevam temporariamente a Carga total de um herói-jogador em viagem)/i.test(
+    BOOK
+  )
 );
 
 /* ── Exausto ──────────────────────────────────────────────────────── */
