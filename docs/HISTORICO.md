@@ -104,6 +104,77 @@ npm run sync:data:check       # após editar livros/
 
 ---
 
+### 2026-08-04 — Fase B, rodada 7: 2 capítulos + bônus de Yule por herói + guarda de truncamento
+
+**Pedido:** loop contínuo, workflow por rodada, verificação adversarial antes de tocar em produção.
+
+**Resultado parcial, e o motivo.** O workflow de 4 capítulos bateu no **limite de sessão** e perdeu 4
+de 6 agentes. Entregue: `04-caracteristicas` (610 linhas, 22/22 headings) e `06-fases-de-aventura-combate`
+(1164 linhas, 48/48). Perdidos: as traduções de `03-aventureiros` e `08-mestre-e-adversarios`, e as
+auditorias de 04 e 06. **Restam 2 capítulos traduzidos de 13, e 2 traduzidos mas ainda não auditados.**
+
+1. **Os dois capítulos mortos ficaram TRUNCADOS no working tree** — `03` com 487 linhas de 1160 (58 de
+   119 headings) e `08` com 330 de 1779 (13 de 69). Esses arquivos são a fonte da verdade das regras:
+   commitar assim apagaria metade das regras sem quebrar nenhum gate. Restaurados de `HEAD` antes de
+   qualquer outra coisa.
+
+2. **Guarda permanente contra isso: `scripts/verify-um-anel-traducao-completa.mjs`.** Compara a
+   contagem de **headings** e de **linhas de tabela** de cada capítulo com a versão do commit anterior.
+   Heading é métrica melhor que linha porque sobrevive à variação natural de comprimento entre inglês e
+   português. Também checa que, removido o marcador de pendência, o corpo está de fato em PT-BR (conta
+   palavras funcionais portuguesas) — pega o caso "removeu o marcador e deixou o texto em inglês".
+   Uma tradução que resume em vez de traduzir é a falha mais perigosa da Fase B: ela não quebra nada
+   visivelmente, só apaga regras.
+
+3. **Bônus de Perícia do Yule agora é por herói.** Era a divergência confirmada 3/3 que ficou em aberto
+   na rodada 6. `TorFellowshipProgress` guardava um `witsScore` único pra Companhia inteira; o livro dá
+   a cada herói pontos iguais à ASTÚCIA **dele**. Numa Companhia mista (Bardo 3, Anão 4, Elfo 7,
+   Hobbit 6) o número único errava a maioria, todo ano. Agora `heroes: TorFellowshipHero[]`, com o
+   tamanho da Companhia derivado de `heroes.length` — some o segundo campo que podia discordar.
+   `advanceTorCalendar` devolve `bonusSkillPointsByHero`, e o anúncio no chat nomeia quem recebeu o quê.
+   `normalizeHeroes` migra sala gravada por versão anterior, preservando os números que estavam lá.
+
+4. **Defeito de portabilidade nos testes, encontrado por acidente e real.** Ao restaurar `03` do git, o
+   arquivo voltou com **CRLF** e 20 asserções caíram: âncoras como `\n## Título\n` não casam quando vem
+   `\r` antes do `\n`. Isso significa que **qualquer clone novo no Windows** (ou qualquer checkout com
+   `core.autocrlf`) faria a suíte falhar — os greens anteriores eram artefato de as ferramentas que
+   escreveram os arquivos usarem LF. Os 14 testes que casam conteúdo passaram a normalizar CRLF → LF na
+   leitura. Comparar conteúdo não deve depender de fim de linha.
+
+5. **Erro meu no caminho, e como foi consertado.** O primeiro patch em massa dos 14 testes os
+   corrompeu: a string de substituição continha a sequência dólar-backtick, que em `String.replace`
+   significa "o texto antes do match" — o cabeçalho de cada arquivo foi reinjetado no meio do bloco
+   novo, e os `\n` escapados viraram quebras de linha reais dentro do literal do regex. Reparado com um
+   script que localiza o bloco corrompido pelo marcador e o substitui por uma versão correta,
+   preservando a linha de import (inclusive onde importa `readdirSync` junto).
+
+**Reancoragens da armadilha do pipeline:** traduzir 04 e 06 quebrou 3 asserções que citavam o inglês
+deles (`verify-um-anel-stances.mjs` no Golpe Perfurante; `verify-um-anel-sheet-conditions.mjs` em
+Exausto e Fadiga). Todas reancoradas em regex **bilíngue**, que aceita as duas formas e continua
+acusando se a REGRA mudar.
+
+**Arquivos tocados:**
+- `livros/um-anel/{04-caracteristicas,06-fases-de-aventura-combate}.md` — traduzidos
+- `lib/combat/um-anel/session-state.ts` — `TorFellowshipHero`, `heroes[]`, `normalizeHeroes` com migração
+- `lib/combat/um-anel/progression.ts` — `bonusSkillPointsByHero`, anúncio nominal
+- `components/vtt/TorFellowshipPanel.tsx` — lista de heróis (nome + Astúcia) no lugar dos dois campos
+- `scripts/verify-um-anel-traducao-completa.mjs` — **novo**, guarda de truncamento
+- 14 `scripts/verify-*.mjs` — normalização de CRLF na leitura
+- `scripts/verify-um-anel-{stances,sheet-conditions}.mjs` — reancoragem bilíngue
+- `scripts/verify-um-anel-{session-state,progression}.mjs` — asserções do bônus por herói
+- `package.json` — o novo guard entrou nos dois scripts de teste
+
+**Validação:** `npx tsc --noEmit` limpo · `npm run test` verde (**567 asserções**) · `npm run build`
+compila. A correção de CRLF foi provada com `03-aventureiros.md` ainda em CRLF: o teste que falhava 20
+vezes passa 79/79 sem tocar no arquivo.
+
+**Falta:** traduzir `03-aventureiros` (1160) e `08-mestre-e-adversarios` (1779); auditar `04` e `06`,
+que estão traduzidos mas sem auditoria; e a Fase J inteira.
+
+**Como testar:** `npm run test:um-anel`
+
+---
+
 ### 2026-08-04 — Fase B, rodada 6/12: 3 capítulos em paralelo (workflow) + 6 bugs de regra
 
 **Pedido:** loop contínuo, com ultracode ligado — orquestrar com workflow e verificar divergências

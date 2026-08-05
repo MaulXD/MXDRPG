@@ -1,611 +1,610 @@
-# Chapter 4 — Characteristics — The One Ring 2e (fonte: Core Rules, p.59-76)
+# Capítulo 4 — Características — O Um Anel 2ª ed. (fonte: Livro Básico, p.59-76)
 
-> Conteúdo original em inglês — aguardando tradução colaborativa.
 > Fonte: the one ring/The_One_Ring_Core_Rules.pdf
 
 ---
 
-> "... you have been chosen, and you must therefore use such strength and heart and wits as you have."
+> "... você foi escolhido, e portanto deve usar toda a força, o coração e a astúcia que possui."
 
-Heroes reveal themselves through their actions, as their strengths and weaknesses emerge when they are put to the test. They are a diverse folk, each with a unique combination of abilities and traits — some favour their strength and prowess to overcome the threats and difficulties they encounter, some rely on their fortitude and integrity to endure, and others appeal to their reasoning and astuteness to find a solution.
+Os heróis se revelam por meio de suas ações, à medida que suas forças e fraquezas emergem quando são postos à prova. São um povo diverso, cada um com uma combinação única de habilidades e traços — alguns preferem sua força e destreza para superar as ameaças e dificuldades que encontram, alguns confiam em sua fortaleza e integridade para resistir, e outros recorrem ao seu raciocínio e à sua sagacidade para achar uma solução.
 
-## Skills
+## Perícias
 
-> "There is food in the wild," said Strider; "berry, root, and herb; and I have some skill as a hunter at need."
+> "Há comida nas terras selvagens", disse Passolargo; "frutinhas, raízes e ervas; e eu tenho alguma habilidade como caçador, quando é preciso."
 
-In *The One Ring*, almost every action heroes can attempt is resolved using a Skill: whether a Player-hero is traversing the land trying to get back home (TRAVEL), running away from a threat (ATHLETICS), or listening intently to an orator's speech to weigh their words (INSIGHT).
+Em *O Um Anel*, quase toda ação que os heróis podem tentar é resolvida com uma Perícia: seja um herói-jogador atravessando as terras tentando voltar para casa (VIAJAR), fugindo de uma ameaça (ATLETISMO) ou escutando com atenção o discurso de um orador para pesar suas palavras (PERSPICÁCIA).
 
-In game terms, Skills and their ratings represent what Player-heroes are able to do and how good they are at doing it.
+Em termos de jogo, as Perícias e seus valores representam o que os heróis-jogadores são capazes de fazer e quão bons são nisso.
 
-> When using a Skill, players roll one Feat die and a number of Success Dice equal to the acting Player-hero's Skill rank — rolling only one Feat die if a Player-hero is unskilled (rank 0). To succeed, the roll result must match or beat the Attribute TN corresponding to the used Skill.
+> Ao usar uma Perícia, os jogadores rolam um Dado de Proeza e um número de Dados de Sucesso igual ao grau da Perícia do herói-jogador que age — rolando apenas um Dado de Proeza se o herói-jogador não tiver treinamento (grau 0). Para ter sucesso, o resultado da rolagem deve igualar ou superar o Número-Alvo (NA) do Atributo correspondente à Perícia usada.
 
-### Favoured Skills
+### Perícias Favorecidas
 
-A number of Skills can be marked as *Favoured* on a character sheet, checking the box to the left of their name. *Favoured* Skills highlight those abilities that come most naturally to a Player-hero.
+Um certo número de Perícias pode ser marcado como *Favorecida* na ficha de personagem, assinalando a caixa à esquerda de seu nome. As Perícias *Favorecidas* destacam aquelas habilidades que vêm mais naturalmente a um herói-jogador.
 
-> All rolls made using a *Favoured* Skill are *Favoured* rolls — the acting player rolls two Feat dice, keeping the best result.
+> Todas as rolagens feitas com uma Perícia *Favorecida* são rolagens *Favorecidas* — o jogador que age rola dois Dados de Proeza e mantém o melhor resultado.
 
-### Skill Categories
+### Categorias de Perícias
 
-Each Skill belongs to one of three categories, based on which Attribute TN it's rolled against. For ease of reference, the Skills are organised on a character sheet in three columns placed right under the Attribute box they depend on.
+Cada Perícia pertence a uma de três categorias, com base em qual NA de Atributo ela é rolada. Para facilitar a consulta, as Perícias são organizadas na ficha de personagem em três colunas, colocadas logo abaixo da caixa do Atributo do qual dependem.
 
-**STRENGTH SKILLS**
+**PERÍCIAS DE FORÇA**
 
-All Skills in this category rely largely on the Player-hero's physical aptitude. An adventurer with a high STRENGTH score is more likely to be imposing (AWE), to have a clear singing voice (SONG), to be fit and agile (ATHLETICS), to have good sight and hearing (AWARENESS, HUNTING), and to possess skilful hands (CRAFT).
+Todas as Perícias dessa categoria dependem em grande parte da aptidão física do herói-jogador. Um aventureiro com valor alto de FORÇA tem mais chance de ser imponente (IMPONÊNCIA), de ter uma voz clara ao cantar (CANTO), de ser em forma e ágil (ATLETISMO), de ter boa visão e audição (PERCEPÇÃO, CAÇA) e de possuir mãos habilidosas (OFÍCIO).
 
-> STRENGTH Skill rolls are resolved using a Player-hero's STRENGTH Target Number.
+> As rolagens de Perícias de FORÇA são resolvidas usando o Número-Alvo de FORÇA do herói-jogador.
 
-**HEART SKILLS**
+**PERÍCIAS DE CORAÇÃO**
 
-The Skills under this category depend on the Player-hero's force of spirit more than anything else. An adventurer with a high HEART score may be a charismatic leader (ENHEARTEN, BATTLE), an energetic guide (TRAVEL), a gracious gentleman (COURTESY), be able to read the hearts of others (INSIGHT), or to understand their hurt and how to heal them (HEALING).
+As Perícias dessa categoria dependem, mais do que de qualquer outra coisa, da força de espírito do herói-jogador. Um aventureiro com valor alto de CORAÇÃO pode ser um líder carismático (ENCORAJAR, BATALHA), um guia energético (VIAJAR), um cavalheiro gracioso (CORTESIA), capaz de ler o coração dos outros (PERSPICÁCIA) ou de compreender seu sofrimento e como curá-lo (CURA).
 
-> HEART Skill rolls are resolved using a Player-hero's HEART Target Number.
+> As rolagens de Perícias de CORAÇÃO são resolvidas usando o Número-Alvo de CORAÇÃO do herói-jogador.
 
-**WITS SKILLS**
+**PERÍCIAS DE ASTÚCIA**
 
-A Player-hero's mental aptitude affects those Skills that rely on quick thinking and creativity. A hero with a high WITS value will quickly learn witty oratory (PERSUADE), the arts of a burglar (STEALTH), show attentiveness (SCAN, EXPLORE), and will be clever and studious (RIDDLE, LORE).
+A aptidão mental de um herói-jogador afeta as Perícias que dependem de raciocínio rápido e criatividade. Um herói com valor alto de ASTÚCIA aprende rapidamente a oratória espirituosa (PERSUASÃO), as artes do ladrão (FURTIVIDADE), demonstra atenção (VASCULHAR, EXPLORAR) e é esperto e estudioso (ENIGMA, SABER).
 
-> WITS Skill rolls are resolved using a Player-hero's WITS Target Number.
+> As rolagens de Perícias de ASTÚCIA são resolvidas usando o Número-Alvo de ASTÚCIA do herói-jogador.
 
-### Skills List
+### Lista de Perícias
 
-The 18 Skills cover wide areas of knowledge and ability, enabling players and the Loremaster to resolve most situations encountered during play.
+As 18 Perícias cobrem amplas áreas de conhecimento e capacidade, permitindo aos jogadores e ao Mestre resolver a maior parte das situações encontradas durante o jogo.
 
-The following list presents the Skills in alphabetical order. A brief description is provided, to help players and the Loremaster to identify the type of actions that can be accomplished using each Skill.
+A lista a seguir apresenta as Perícias em ordem alfabética. Uma breve descrição é fornecida, para ajudar jogadores e Mestre a identificar o tipo de ações que podem ser realizadas com cada Perícia.
 
-**SKILL LIST:**
+**LISTA DE PERÍCIAS:**
 
-| Strength | Heart | Wits | Skill Group |
+| Força | Coração | Astúcia | Grupo de Perícias |
 |---|---|---|---|
-| AWE | ENHEARTEN | PERSUADE | Personality |
-| ATHLETICS | TRAVEL | STEALTH | Movement |
-| AWARENESS | INSIGHT | SCAN | Perception |
-| HUNTING | HEALING | EXPLORE | Survival |
-| SONG | COURTESY | RIDDLE | Custom |
-| CRAFT | BATTLE | LORE | Vocation |
+| IMPONÊNCIA | ENCORAJAR | PERSUASÃO | Personalidade |
+| ATLETISMO | VIAJAR | FURTIVIDADE | Movimento |
+| PERCEPÇÃO | PERSPICÁCIA | VASCULHAR | Percepção |
+| CAÇA | CURA | EXPLORAR | Sobrevivência |
+| CANTO | CORTESIA | ENIGMA | Costume |
+| OFÍCIO | BATALHA | SABER | Vocação |
 
-### Skill Groups
+### Grupos de Perícias
 
-The 18 Skills can be considered to be categorised together also by affinity into six 'Skill groups' of 3 Skills each, with each group being associated with a different type of activity. Players may find this categorisation useful when identifying the right ability to use for a task.
+As 18 Perícias também podem ser consideradas agrupadas por afinidade em seis "grupos de Perícias" de 3 Perícias cada, sendo cada grupo associado a um tipo diferente de atividade. Os jogadores podem achar essa categorização útil ao identificar a habilidade certa para uma tarefa.
 
-- **Personality Skills** (AWE, ENHEARTEN, PERSUADE). A hero's personality comes through in their capacity to impress, encourage, and influence others. A good level of proficiency in all three Skills in this group is the mark of a leader.
-- **Movement Skills** (ATHLETICS, TRAVEL, STEALTH). Overcoming obstacles, enduring long journeys, and moving secretly are the stuff adventurers are made of.
-- **Perception Skills** (AWARENESS, INSIGHT, SCAN). The ability to catch hidden details often pays off, be it noticing an odd noise that gives away an ambusher, catching the gleam in the eyes of a liar, or spotting the crack in the wall that reveals a secret door.
-- **Survival Skills** (HUNTING, HEALING, EXPLORE). The three Skills of this group, essential for a roving adventurer, make for an invaluable member of a company.
-- **Custom Skills** (SONG, COURTESY, RIDDLE). While heroes are often held to be uncivilised brutes by the common folk, their lives can sometimes depend on knowing the proper words, wisest song, or cleverest answer. Excelling in these Skills is considered a noble achievement.
-- **Vocation Skills** (CRAFT, BATTLE, LORE). Before their resolve hardened and pushed them on the road to adventure, adventurers probably led a life much like that of ordinary individuals: learning a trade, defending their people, and absorbing their accumulated wisdom.
+- **Perícias de Personalidade** (IMPONÊNCIA, ENCORAJAR, PERSUASÃO). A personalidade de um herói se manifesta em sua capacidade de impressionar, encorajar e influenciar os outros. Um bom nível de proficiência nas três Perícias desse grupo é a marca de um líder.
+- **Perícias de Movimento** (ATLETISMO, VIAJAR, FURTIVIDADE). Superar obstáculos, suportar longas jornadas e mover-se em segredo são a matéria de que os aventureiros são feitos.
+- **Perícias de Percepção** (PERCEPÇÃO, PERSPICÁCIA, VASCULHAR). A capacidade de captar detalhes ocultos muitas vezes compensa, seja ao notar um ruído estranho que denuncia quem prepara uma emboscada, captar o brilho nos olhos de um mentiroso ou identificar a fenda na parede que revela uma porta secreta.
+- **Perícias de Sobrevivência** (CAÇA, CURA, EXPLORAR). As três Perícias desse grupo, essenciais para um aventureiro errante, fazem de alguém um membro valiosíssimo de uma companhia.
+- **Perícias de Costume** (CANTO, CORTESIA, ENIGMA). Embora os heróis muitas vezes sejam tidos por brutos incivilizados pelo povo comum, suas vidas podem às vezes depender de conhecer as palavras adequadas, a canção mais sábia ou a resposta mais esperta. Destacar-se nessas Perícias é considerado uma conquista nobre.
+- **Perícias de Vocação** (OFÍCIO, BATALHA, SABER). Antes que sua determinação endurecesse e os empurrasse para a estrada da aventura, os aventureiros provavelmente levavam uma vida muito parecida com a de pessoas comuns: aprendendo um ofício, defendendo seu povo e absorvendo a sabedoria acumulada dele.
 
-### Skill Descriptions (Alphabetical)
+### Descrições das Perícias (em ordem alfabética do original)
 
-**ATHLETICS**
+**ATLETISMO**
 
-ATHLETICS is a broad Skill, covering most of the physical activities that a hero might undertake while adventuring, including running, leaping, climbing, and swimming. Heroes with high ATHLETICS Skill scores exhibit a winning combination of physical prowess, grace, and control, generally gained through continuous exercise and daily exertion.
+ATLETISMO é uma Perícia ampla, que cobre a maior parte das atividades físicas que um herói pode empreender enquanto aventura, incluindo correr, saltar, escalar e nadar. Heróis com valores altos em ATLETISMO exibem uma combinação vitoriosa de destreza física, graça e controle, geralmente obtida por exercício contínuo e esforço diário.
 
-A successful ATHLETICS roll produces a satisfactory outcome in the physical activity, while a failed roll might lead to serious harm, depending on the circumstances. A superior result suggests a spectacular achievement.
+Uma rolagem bem-sucedida de ATLETISMO produz um resultado satisfatório na atividade física, enquanto uma rolagem fracassada pode levar a danos sérios, dependendo das circunstâncias. Um resultado superior sugere um feito espetacular.
 
-> *Poor Mr Baggins had never had much practice in climbing trees, but they hoisted him up into the lowest branches of an enormous oak that grew right out into the path, and up he had to go as best he could.*
+> *O pobre Sr. Bolseiro nunca tinha tido muita prática em subir em árvores, mas eles o içaram até os ramos mais baixos de um carvalho enorme que crescia justamente sobre a trilha, e ele teve de subir o melhor que pudesse.*
 
-**AWARENESS**
+**PERCEPÇÃO**
 
-The AWARENESS Skill represents a hero's readiness to react and the ability to notice something unexpected, out of the ordinary, or difficult to detect. A high Skill score reflects both keen senses and the experience to understand what is seen or heard — a high level of watchfulness is extremely useful if a Player-hero serves as a look-out for the Company.
+A Perícia PERCEPÇÃO representa a prontidão de um herói para reagir e a capacidade de notar algo inesperado, fora do comum ou difícil de detectar. Um valor alto reflete tanto sentidos aguçados quanto a experiência de compreender o que se vê ou ouve — um alto nível de vigilância é extremamente útil se um herói-jogador serve de vigia para a Companhia.
 
-> *As Frodo watched he saw something dark pass across the lighter space between two trees, and then halt.*
+> *Enquanto Frodo observava, viu algo escuro passar pelo espaço mais claro entre duas árvores e então parar.*
 
-**AWE**
+**IMPONÊNCIA**
 
-This Skill measures the capacity to evoke respect in onlookers, and determines the impression the Player-heroes make on someone they meet for the first time. Depending on the circumstances and on the player's intentions, it can be used to instil wonderment, admiration, or even fear. AWE arises from a hero's native charisma, but can also be engineered by a dramatic entrance or impressive attire.
+Esta Perícia mede a capacidade de evocar respeito em quem observa, e determina a impressão que os heróis-jogadores causam em alguém que encontram pela primeira vez. Dependendo das circunstâncias e das intenções do jogador, pode ser usada para instilar assombro, admiração ou até medo. IMPONÊNCIA nasce do carisma natural de um herói, mas também pode ser construída com uma entrada dramática ou trajes impressionantes.
 
-Successful use of the AWE Skill evokes the chosen effect, while failure can lead to the opposite result. Achieving a superior success means that a hero has won the hearts of the onlookers or cowed them into silent submission.
+O uso bem-sucedido da Perícia IMPONÊNCIA evoca o efeito escolhido, enquanto o fracasso pode levar ao resultado oposto. Obter um sucesso superior significa que o herói conquistou o coração dos presentes ou os intimidou até a submissão silenciosa.
 
-> *For a moment it seemed to the eyes of Legolas that a white flame flickered on the brows of Aragorn like a shining crown.*
+> *Por um momento pareceu aos olhos de Legolas que uma chama branca tremulava na fronte de Aragorn como uma coroa brilhante.*
 
-**BATTLE**
+**BATALHA**
 
-A rating in this Skill shows a firm grasp of the rules of battle and the capability to manoeuver appropriately when involved in a violent confrontation. The BATTLE Skill can be used to gain an advantage when fighting against a group of foes, or leading a company of troops in open battle and maintaining order in the midst of chaos (individual fighting talents are covered by Combat Proficiencies on page 65).
+Um valor nesta Perícia demonstra domínio firme das regras da batalha e a capacidade de manobrar adequadamente quando envolvido em um confronto violento. A Perícia BATALHA pode ser usada para obter vantagem ao lutar contra um grupo de inimigos, ou para liderar uma companhia de tropas em batalha aberta e manter a ordem em meio ao caos (os talentos de luta individual são cobertos pelas Proficiências de Combate, mais adiante neste capítulo).
 
-> *"Fools!" laughed Bard, "to come thus beneath the Mountain's arm! They do not understand war above ground, whatever they may know of battle in the mines."*
+> *"Tolos!" riu Bard, "vir assim para debaixo do braço da Montanha! Eles não entendem a guerra acima do solo, por muito que saibam de batalha nas minas."*
 
-**COURTESY**
+**CORTESIA**
 
-The Free Peoples recognise common norms of decency and ancient conventions of behaviour. Observing these traditions demonstrates respect and is a way of quickly establishing a friendly footing even with complete strangers.
+Os Povos Livres reconhecem normas comuns de decência e convenções antigas de comportamento. Observar essas tradições demonstra respeito e é um jeito de estabelecer rapidamente uma relação amigável mesmo com completos estranhos.
 
-Succeeding in a COURTESY roll might mean the Player-heroes know what to say at the right moment to make a good impression with their host, or are mindful of their manners when receiving guests.
+Ter sucesso em uma rolagem de CORTESIA pode significar que os heróis-jogadores sabem o que dizer no momento certo para causar boa impressão em seu anfitrião, ou que são atentos às boas maneiras ao receber convidados.
 
-> *"You have nice manners for a thief and a liar," said the Dragon.*
+> *"Você tem boas maneiras para um ladrão e mentiroso", disse o Dragão.*
 
-**CRAFT**
+**OFÍCIO**
 
-The CRAFT Skill doesn't really cover the whole range of abilities of smiths, wrights, and other artisans, but it reflects a talent for making or mending things by hand. CRAFT can be used to repair the wheel of a cart, or construct an improvised raft with wood found on a river shore, or to start a fire on a windy hill.
+A Perícia OFÍCIO não cobre realmente toda a gama de habilidades de ferreiros, artífices e outros artesãos, mas reflete um talento para fazer ou consertar coisas com as mãos. OFÍCIO pode ser usada para reparar a roda de uma carroça, construir uma jangada improvisada com madeira encontrada na margem de um rio ou acender um fogo em uma colina ventosa.
 
-A high CRAFT score may indicate that the Player-hero was a craftsperson before starting a life of adventure. Some Cultures, such as the Dwarves and Noldorin Elves, revere crafts as the highest expression of creativity.
+Um valor alto em OFÍCIO pode indicar que o herói-jogador era um artesão antes de começar uma vida de aventura. Algumas Culturas, como os Anões e os Elfos Noldorin, reverenciam os ofícios como a mais alta expressão da criatividade.
 
-> *... the only craft little practised among them was shoe-making; but they had long and skilful fingers and could make many other useful and comely things.*
+> *... o único ofício pouco praticado entre eles era a fabricação de sapatos; mas tinham dedos longos e habilidosos e sabiam fazer muitas outras coisas úteis e belas.*
 
-**ENHEARTEN**
+**ENCORAJAR**
 
-Player-heroes can use the ENHEARTEN Skill to instil positive feelings in others, urging them to act on the matter at hand. They achieve this mainly through example, charisma, and personal conviction, rather than through the effective use of words (which falls under PERSUADE). This Skill can be used on individuals, but is particularly effective in influencing crowds. Player-heroes with high ENHEARTEN ratings can be forceful orators, passionate agitators, and well-loved leaders.
+Os heróis-jogadores podem usar a Perícia ENCORAJAR para instilar sentimentos positivos nos outros, instigando-os a agir sobre a questão em pauta. Conseguem isso principalmente pelo exemplo, pelo carisma e pela convicção pessoal, e não pelo uso eficaz das palavras (que cai sob PERSUASÃO). Esta Perícia pode ser usada em indivíduos, mas é particularmente eficaz para influenciar multidões. Heróis-jogadores com valores altos em ENCORAJAR podem ser oradores enérgicos, agitadores passionais e líderes muito estimados.
 
-A successful ENHEARTEN roll awakens a chosen feeling in the subject, as long as it is not in opposition to their current mood. A superior success is enough to influence wholly disinterested individuals, or turn rivals into supporters.
+Uma rolagem bem-sucedida de ENCORAJAR desperta um sentimento escolhido no alvo, desde que não se oponha ao humor atual dele. Um sucesso superior é suficiente para influenciar indivíduos totalmente desinteressados, ou para transformar rivais em apoiadores.
 
-> *... he returned to the walls, and passed round all their circuit, enhearten­ing the men...*
+> *... ele retornou às muralhas, e percorreu todo o seu circuito, encorajando os homens...*
 
-**EXPLORE**
+**EXPLORAR**
 
-Player-heroes rely on the EXPLORE Skill when they move through an unfamiliar area of the Wild. An EXPLORE roll may be required during a journey to find out where the Company is heading, or to get back on track after a detour; to cope with adverse weather conditions or other natural hazards; to create paths through the wilderness suitable for others to follow; or to choose a suitable place to set up camp. A high EXPLORE rating is an invaluable resource if a Player-hero is acting as a scout for the Company.
+Os heróis-jogadores recorrem à Perícia EXPLORAR quando se movem por uma área desconhecida das terras selvagens. Uma rolagem de EXPLORAR pode ser exigida durante uma jornada para descobrir para onde a Companhia está se dirigindo, ou para voltar ao caminho certo depois de um desvio; para lidar com condições climáticas adversas ou outros perigos naturais; para criar trilhas na natureza selvagem adequadas para que outros as sigam; ou para escolher um lugar apropriado para armar acampamento. Um valor alto em EXPLORAR é um recurso valiosíssimo se um herói-jogador atua como batedor da Companhia.
 
-> *"We have found a dry cave," they said, "not far round the next corner; and ponies and all could get inside."*
+> *"Encontramos uma caverna seca", disseram eles, "não muito longe da próxima curva; e os pôneis e tudo o mais podem entrar nela."*
 
-**HEALING**
+**CURA**
 
-The knowledge of how to relieve pain and apply remedies to restore health to the suffering is an ancient one, and treatments differ from culture to culture. However, almost all traditions agree on the treatment of serious injuries, which must be tended immediately to keep from worsening.
+O conhecimento de como aliviar a dor e aplicar remédios para restaurar a saúde de quem sofre é antigo, e os tratamentos diferem de cultura para cultura. Ainda assim, quase todas as tradições concordam no tratamento de ferimentos graves, que devem ser cuidados imediatamente para que não piorem.
 
-The HEALING Skill includes bone setting and the use of herbs or salves, but the outcome relies on the ability of the healer to understand what ails the sufferer and determine what should be done to help them.
+A Perícia CURA inclui reduzir fraturas e o uso de ervas ou unguentos, mas o resultado depende da capacidade do curandeiro de compreender o que aflige o paciente e determinar o que deve ser feito para ajudá-lo.
 
-> *As a matter of fact, Gandalf, who had often been in the mountains, had once rendered a service to the eagles and healed their lord from an arrow-wound.*
+> *De fato, Gandalf, que muitas vezes estivera nas montanhas, uma vez prestara um serviço às águias e curara seu senhor de um ferimento de flecha.*
 
-**HUNTING**
+**CAÇA**
 
-Knowing how to hunt is a fundamental skill, shared by most cultures of Middle-earth. A HUNTING roll may be required when pursuing a creature through wild areas, or to follow tracks and identify a quarry by its spoor. The HUNTING Skill also covers preparing traps and the training and use of hunting dogs or birds.
+Saber caçar é uma habilidade fundamental, compartilhada pela maioria das culturas da Terra-média. Uma rolagem de CAÇA pode ser exigida ao perseguir uma criatura por áreas selvagens, ou para seguir rastros e identificar uma presa por seus sinais. A Perícia CAÇA também cobre a preparação de armadilhas e o treinamento e uso de cães ou aves de caça.
 
-In wilder areas, hunters learn to apply their trade to more dangerous quarries — such as Orcs, Spiders, or Wargs — or else risk becoming the prey.
+Em áreas mais selvagens, os caçadores aprendem a aplicar seu ofício a presas mais perigosas — como Orcs, Aranhas ou Wargs — ou então correm o risco de se tornarem a presa.
 
-> *They dwelt most often by the edges of the woods, from which they could escape at times to hunt, or to ride or run over the open lands by moonlight or starlight...*
+> *Habitavam com mais frequência nas orlas das florestas, de onde podiam escapar por vezes para caçar, ou para cavalgar ou correr pelas terras abertas ao luar ou à luz das estrelas...*
 
-**INSIGHT**
+**PERSPICÁCIA**
 
-INSIGHT represents the ability to see beyond appearances and to recognise the hidden thoughts and beliefs of people. INSIGHT does not reveal if someone is lying, but the information it yields can be used to draw useful conclusions about people's motives. Heroes with a high INSIGHT score are often recognised as being sensible and discerning individuals, and many may seek their counsel.
+PERSPICÁCIA representa a capacidade de ver além das aparências e reconhecer os pensamentos e as crenças ocultas das pessoas. PERSPICÁCIA não revela se alguém está mentindo, mas a informação que ela fornece pode ser usada para tirar conclusões úteis sobre os motivos das pessoas. Heróis com valor alto em PERSPICÁCIA muitas vezes são reconhecidos como indivíduos sensatos e perceptivos, e muitos podem buscar seu conselho.
 
-A successful INSIGHT roll provides the Player-heroes with a reliable, but partial, portrait of the person they are observing. A superior success allows them to correctly guess additional details about an individual's state of mind. INSIGHT tests may be rolled in opposition to an adversary trying to sway or convince a Player-hero of something.
+Uma rolagem bem-sucedida de PERSPICÁCIA fornece aos heróis-jogadores um retrato confiável, mas parcial, da pessoa que estão observando. Um sucesso superior permite que eles adivinhem corretamente detalhes adicionais sobre o estado de espírito de um indivíduo. Testes de PERSPICÁCIA podem ser rolados em oposição a um adversário que tenta demover ou convencer um herói-jogador de algo.
 
-> *"There are locked doors and closed windows in your mind, and dark rooms behind them," said Faramir. "But in this I judge that you speak the truth."*
+> *"Há portas trancadas e janelas fechadas em sua mente, e salas escuras atrás delas", disse Faramir. "Mas nisto eu julgo que você fala a verdade."*
 
-**LORE**
+**SABER**
 
-LORE expresses a love for learning: be it a fascination with descriptions of distant lands or an interest in family genealogy. Whenever an action involves knowledge of some kind, a LORE test is required.
+SABER expressa um amor pelo aprendizado: seja um fascínio por descrições de terras distantes ou um interesse em genealogia familiar. Sempre que uma ação envolve conhecimento de algum tipo, um teste de SABER é exigido.
 
-Player-heroes are considered to be knowledgeable in the traditions of their own people, and so the Loremaster should rarely require a player to make a LORE roll for information regarding their own character's Culture, Background, or the area they originally came from.
+Os heróis-jogadores são considerados conhecedores das tradições de seu próprio povo, e por isso o Mestre raramente deveria exigir de um jogador uma rolagem de SABER para informações relativas à Cultura, ao Passado ou à região de origem de seu próprio personagem.
 
-> *He knew many histories and legends of long ago, of Elves and Men and the good and evil deeds of the Elder Days.*
+> *Ele conhecia muitas histórias e lendas de tempos remotos, de Elfos e Homens e dos feitos bons e maus dos Dias Antigos.*
 
-**PERSUADE**
+**PERSUASÃO**
 
-This Skill allows the Player-heroes to apply their reasoning to convince other individuals of an idea or course of action. It can be used to influence small groups of listeners, but only if in an appropriate context, such as a common hall. Persuasion requires more time than other Personality Skills, but can have a more lasting impact on other characters' actions. A high PERSUADE score denotes an uncommon eloquence, a love of speech and knowledge of its proper use on listeners. Wise people, advisers to chieftains and kings, and their messengers all share this passion for the spoken word.
+Esta Perícia permite aos heróis-jogadores aplicar seu raciocínio para convencer outros indivíduos de uma ideia ou de um curso de ação. Pode ser usada para influenciar pequenos grupos de ouvintes, mas apenas em um contexto apropriado, como um salão comunal. A persuasão exige mais tempo que outras Perícias de Personalidade, mas pode ter um impacto mais duradouro nas ações dos outros personagens. Um valor alto em PERSUASÃO denota uma eloquência incomum, um amor pela fala e o conhecimento de seu uso adequado sobre os ouvintes. Pessoas sábias, conselheiros de chefes e reis, e seus mensageiros, todos compartilham essa paixão pela palavra falada.
 
-The successful use of the PERSUADE Skill allows a Player-hero to convince an audience that their current position regarding a matter is flawed. A superior success convinces listeners of the quality of a hero's stance, and may even turn them into ardent believers.
+O uso bem-sucedido da Perícia PERSUASÃO permite a um herói-jogador convencer uma audiência de que sua posição atual a respeito de um assunto é falha. Um sucesso superior convence os ouvintes da qualidade da posição do herói, e pode até transformá-los em crentes ardorosos.
 
-> *Aragorn laughed. "Every man has something too dear to trust to another. But would you part an old man from his support? Come, will you not let us enter?"*
+> *Aragorn riu. "Todo homem tem algo caro demais para confiar a outro. Mas você separaria um ancião de seu apoio? Venha, não nos deixará entrar?"*
 
-**RIDDLE**
+**ENIGMA**
 
-Owing its name to the ancient game, the RIDDLE Skill represents the ability to draw conclusions from seemingly unconnected scraps of information by deduction, reasoning, and intuition. Adventurers also rely on RIDDLE whenever they are forced to talk about a subject but prefer to conceal part of what they know; for example, to tell something about themselves without revealing their identity.
+Devendo seu nome ao jogo antigo, a Perícia ENIGMA representa a capacidade de tirar conclusões de fragmentos de informação aparentemente desconexos por dedução, raciocínio e intuição. Os aventureiros também recorrem a ENIGMA sempre que são forçados a falar sobre um assunto, mas preferem ocultar parte do que sabem; por exemplo, para contar algo sobre si mesmos sem revelar sua identidade.
 
-As an accepted custom among many cultures, speaking in riddles is usually allowed among strangers meeting for the first time and wanting to speak guardedly. This Skill is also used to gain helpful insight from a spoken or written riddle.
+Como costume aceito entre muitas culturas, falar por enigmas é geralmente permitido entre estranhos que se encontram pela primeira vez e querem falar com reservas. Esta Perícia também é usada para obter percepções úteis a partir de um enigma falado ou escrito.
 
-> *"A Hobbit waded out into the water and back; but I cannot say how long ago." "How then do you read this riddle?" asked Gimli.*
+> *"Um Hobbit entrou na água e voltou; mas não sei dizer há quanto tempo." "E como você lê este enigma?" perguntou Gimli.*
 
-**SCAN**
+**VASCULHAR**
 
-Player-heroes can use the SCAN Skill when examining something closely or attentively. This Skill allows a Player-hero to skim through a book to locate a piece of relevant information, look for concealed doors or hidden inscriptions, recognise a familiar face in a crowd, or locate a set of tracks on the ground. SCAN rolls are generally initiated by the players rather than the Loremaster. One roll is required for each inspection of a small area, such as a room. AWARENESS, rather than SCAN, is used to see if a hero passively notices something.
+Os heróis-jogadores podem usar a Perícia VASCULHAR ao examinar algo de perto ou com atenção. Esta Perícia permite a um herói-jogador folhear um livro para localizar uma informação relevante, procurar portas escondidas ou inscrições ocultas, reconhecer um rosto familiar em uma multidão ou localizar um conjunto de rastros no chão. As rolagens de VASCULHAR geralmente são iniciadas pelos jogadores, e não pelo Mestre. Uma rolagem é exigida para cada inspeção de uma área pequena, como um aposento. PERCEPÇÃO, e não VASCULHAR, é usada para ver se um herói nota algo passivamente.
 
-A successful SCAN roll generally lets Player-heroes find what they are looking for — if it is to be found at all. A superior result usually means the object is found more quickly.
+Uma rolagem bem-sucedida de VASCULHAR geralmente permite que os heróis-jogadores encontrem o que procuram — se isso puder ser encontrado. Um resultado superior normalmente significa que o objeto é encontrado mais rapidamente.
 
-> *"Less welcome did the Lord Denethor show me then than of old, and grudgingly he permitted me to search among his hoarded scrolls and books."*
+> *"Menos acolhedor o Senhor Denethor se mostrou comigo então que outrora, e a contragosto permitiu-me buscar entre seus pergaminhos e livros guardados."*
 
-**SONG**
+**CANTO**
 
-Hobbits and Men, Elves and Dwarves, even Goblins and maybe Orcs: all creatures of Middle-earth celebrate by playing music and singing songs. Great deeds and grim misfortunes are remembered in verse, and pleasant or comic stories are told to ease spirits and find comfort.
+Hobbits e Homens, Elfos e Anões, até Goblins e talvez Orcs: todas as criaturas da Terra-média celebram tocando música e cantando canções. Grandes feitos e desgraças terríveis são lembrados em verso, e histórias agradáveis ou cômicas são contadas para aliviar os ânimos e encontrar consolo.
 
-The SONG Skill is used to recite poems, sing songs, or play instruments suitable to a character's Culture. It can also be used to learn new works or create original compositions.
+A Perícia CANTO é usada para recitar poemas, cantar canções ou tocar instrumentos apropriados à Cultura de um personagem. Também pode ser usada para aprender obras novas ou criar composições originais.
 
-> *As they sang, the Hobbit felt the love of beautiful things made by hands and by cunning and by magic moving through him, a fierce and jealous love, the desire of the hearts of Dwarves.*
+> *Enquanto cantavam, o Hobbit sentiu passar por si o amor por coisas belas feitas por mãos e por engenho e por magia, um amor feroz e ciumento, o desejo do coração dos Anões.*
 
-**STEALTH**
+**FURTIVIDADE**
 
-Player-heroes resort to STEALTH whenever they need to act in a furtive or secret way. The Skill includes hiding, moving quietly, and shadowing others. These activities often rely on quickness and precision, so a stealthy Player-hero combines practised caution with the ability to judge the right moment to take a chance. Hunters, burglars, and solitary fighters use STEALTH to prosper in their trade.
+Os heróis-jogadores recorrem a FURTIVIDADE sempre que precisam agir de modo furtivo ou secreto. A Perícia inclui esconder-se, mover-se em silêncio e seguir outros à distância. Essas atividades muitas vezes dependem de rapidez e precisão, então um herói-jogador furtivo combina cautela praticada com a capacidade de julgar o momento certo de arriscar. Caçadores, ladrões e lutadores solitários usam FURTIVIDADE para prosperar em seu ofício.
 
-A successful STEALTH roll indicates that the hero has gone unnoticed, while failure almost certainly attracts attention. A superior success produces an outcome so flawless that it may even be impossible to notice the deed after the fact.
+Uma rolagem bem-sucedida de FURTIVIDADE indica que o herói passou desapercebido, enquanto o fracasso quase certamente atrai atenção. Um sucesso superior produz um resultado tão impecável que pode até ser impossível notar o feito depois de consumado.
 
-> *So silent was his going that smoke on a gentle wind could hardly have surpassed it, and he was inclined to feel a bit proud of himself as he drew near the lower door.*
+> *Tão silencioso foi seu andar que fumaça em uma brisa leve dificilmente o teria superado, e ele se sentia um pouco orgulhoso de si mesmo ao se aproximar da porta inferior.*
 
-**TRAVEL**
+**VIAJAR**
 
-In the Third Age, the cities, villages, and towns of Middle-earth are often separated by many leagues of wild or deserted areas. Roads that used to lead safely to distant realms now end in broken trails that go nowhere. Whichever way the Company chooses to go, it will be a long and weary road before they get there.
+Na Terceira Era, as cidades, vilas e povoados da Terra-média muitas vezes estão separados por muitas léguas de áreas selvagens ou desertas. Estradas que antes levavam com segurança a reinos distantes agora terminam em trilhas quebradas que não vão a lugar algum. Por qualquer caminho que a Companhia escolha ir, será uma estrada longa e cansativa antes de chegarem lá.
 
-A successful roll of TRAVEL may let a Player-hero estimate the length of a journey, read a map, and even evaluate whether a group of strangers on the road can be approached safely or if they should be left alone instead. A good TRAVEL Skill is an invaluable asset for the Guide of the Company when on a journey (see page 108).
+Uma rolagem bem-sucedida de VIAJAR pode permitir a um herói-jogador estimar a duração de uma jornada, ler um mapa e até avaliar se um grupo de estranhos na estrada pode ser abordado com segurança ou se deve ser deixado em paz. Uma boa Perícia VIAJAR é um recurso valiosíssimo para o Guia da Companhia durante uma jornada (ver capítulo 7).
 
-> *The country was much rougher and more barren than in the green vale of the Great River in Wilderland on the other side of the range, and their going would be slow...*
+> *A região era muito mais acidentada e estéril que no vale verde do Grande Rio nas Terras Selvagens do outro lado da cadeia, e o avanço deles seria lento...*
 
-## Combat Proficiencies
+## Proficiências de Combate
 
-> Legolas shot two through the throat. Gimli hewed the legs from under another that had sprung up on Balin's tomb. Boromir and Aragorn slew many.
+> Legolas atravessou dois pela garganta. Gimli decepou as pernas de outro que havia saltado sobre o túmulo de Balin. Boromir e Aragorn mataram muitos.
 
-Adventurers start with a number of Combat Proficiency ratings corresponding to the martial tradition of their Culture of origin. In game terms, Combat Proficiencies express how well Player-heroes conduct themselves when engaged in battle.
+Os aventureiros começam com um certo número de valores em Proficiências de Combate correspondentes à tradição marcial de sua Cultura de origem. Em termos de jogo, as Proficiências de Combate expressam quão bem os heróis-jogadores se conduzem quando engajados em batalha.
 
-> Rolls made using Combat Proficiencies are resolved as Skill rolls, rolling one Feat Die and a number of Success Dice equal to the rank possessed in the Combat Proficiency used. If you try to use a weapon you don't possess a rating for (rank 0), you roll only a Feat Die.
+> As rolagens feitas com Proficiências de Combate são resolvidas como rolagens de Perícia, rolando um Dado de Proeza e um número de Dados de Sucesso igual ao grau possuído na Proficiência de Combate usada. Se você tentar usar uma arma para a qual não possui valor (grau 0), rola apenas um Dado de Proeza.
 
-Combat Proficiencies are not divided into categories, as they are all rolled against the STRENGTH TN when making Attack rolls (see Combat, page 93 and following). For ease of reference, they are all listed on the character sheet in a column placed right under the STRENGTH box.
+As Proficiências de Combate não são divididas em categorias, pois todas são roladas contra o NA de FORÇA ao fazer rolagens de Ataque (ver Combate, capítulo 6). Para facilitar a consulta, todas são listadas na ficha de personagem em uma coluna colocada logo abaixo da caixa de FORÇA.
 
-Unlike Skills, Combat Proficiencies can never be *Favoured*, and they can be improved only by spending Adventure points (not Skill points).
+Diferente das Perícias, as Proficiências de Combate nunca podem ser *Favorecidas*, e só podem ser melhoradas gastando pontos de Aventura (não pontos de Perícia).
 
-### Combat Proficiencies List
+### Lista de Proficiências de Combate
 
-There are four different Combat Proficiencies in *The One Ring*: AXES, BOWS, SPEARS, and SWORDS. Each one represents a level of familiarity with a number of weapons of similar kind, allowing a Player-hero to attack using any weapon covered by that specific Proficiency.
+Existem quatro Proficiências de Combate diferentes em *O Um Anel*: MACHADOS, ARCOS, LANÇAS e ESPADAS. Cada uma representa um nível de familiaridade com um conjunto de armas de tipo semelhante, permitindo a um herói-jogador atacar usando qualquer arma coberta por aquela Proficiência específica.
 
-Descriptions and characteristics of the various weapons corresponding to each Proficiency can be found on page 73 in the Gear section.
+Descrições e características das várias armas correspondentes a cada Proficiência podem ser encontradas adiante, na seção de Equipamento de Guerra deste capítulo (a tabela numérica completa está no capítulo 3).
 
-**AXES**
+**MACHADOS**
 
-Axes and other bashing weapons are often preferred to swords by warriors who favour a more brutal approach to fighting. Historically, the axe is the weapon of choice for most Dwarves, and for their folk it surpasses the sword in both nobility and respect. Dwarven weaponsmiths apply their cunning to making axes of many different shapes and uses, and from metals of various colours.
+Machados e outras armas de impacto muitas vezes são preferidos às espadas por guerreiros que favorecem uma abordagem mais brutal à luta. Historicamente, o machado é a arma de escolha da maioria dos Anões, e para seu povo ele supera a espada tanto em nobreza quanto em respeito. Os armeiros Anões aplicam seu engenho na fabricação de machados de muitas formas e usos diferentes, e de metais de várias cores.
 
-The AXES Combat Proficiency allows a Player-hero to use an axe, a great axe, a long-hafted axe, but also a mattock.
+A Proficiência de Combate MACHADOS permite a um herói-jogador usar um machado, um grande machado, um machado de cabo longo e também uma picareta.
 
-> *He was clothed in a tunic of wool down to his knees, and was leaning on a large axe.*
+> *Estava vestido com uma túnica de lã até os joelhos, e se apoiava em um grande machado.*
 
-**BOWS**
+**ARCOS**
 
-A traditional hunting weapon, the bow is also commonly used in warfare. Made from a single piece of wood, or from a composition of wood, horn, or even metal, bows are a versatile weapon. They can be used during sieges, from horseback, in dense woodland, or in the open field. Archers usually carry another weapon to draw when the enemy gets closer; they seldom carry shields, as they can't use them when shooting a bow.
+Arma tradicional de caça, o arco também é comumente usado na guerra. Feitos de uma única peça de madeira, ou de uma composição de madeira, chifre ou até metal, os arcos são uma arma versátil. Podem ser usados em cercos, a cavalo, em floresta densa ou em campo aberto. Os arqueiros normalmente carregam outra arma para empunhar quando o inimigo se aproxima; raramente carregam escudos, já que não podem usá-los ao atirar com o arco.
 
-The BOWS Combat Proficiency enables a Player-hero to make ranged attacks using a bow or a great bow.
+A Proficiência de Combate ARCOS permite a um herói-jogador fazer ataques à distância usando um arco ou um grande arco.
 
-> *"Praised be the bow of Galadriel, and the hand and eye of Legolas!"*
+> *"Louvado seja o arco de Galadriel, e a mão e o olho de Legolas!"*
 
-**SPEARS**
+**LANÇAS**
 
-The spear is arguably the most widespread weapon across Middle-earth, arming kings and soldiers, riders and infantry. It is often no more than a long wooden shaft, tipped by a leaf-shaped metal head, but some spears are works of majestic artisanship, valuable heirlooms of noble households. The length of a spear varies according to the use it is designed for. Spears can be wielded one or two-handed to thrust and lunge, cast to pierce from a distance, or used from horseback as lances. Warriors equipped with a spear typically use it in conjunction with a shield, and they usually carry an additional weapon, such as a sword or axe.
+A lança é provavelmente a arma mais difundida por toda a Terra-média, armando reis e soldados, cavaleiros e infantaria. Muitas vezes não é mais que uma longa haste de madeira, encimada por uma ponta metálica em forma de folha, mas algumas lanças são obras de majestoso artesanato, valiosas heranças de casas nobres. O comprimento de uma lança varia conforme o uso para o qual foi projetada. Lanças podem ser empunhadas com uma ou duas mãos para golpear e estocar, arremessadas para perfurar à distância, ou usadas a cavalo como lanças de cavalaria. Guerreiros equipados com lança normalmente a usam em conjunto com um escudo, e costumam carregar uma arma adicional, como uma espada ou um machado.
 
-The SPEARS Combat Proficiency allows a hero to make ranged and close combat attacks using a short spear or a spear, or to fight in close combat using a great spear.
+A Proficiência de Combate LANÇAS permite a um herói fazer ataques à distância e em combate corpo a corpo usando uma lança curta ou uma lança, ou lutar em combate corpo a corpo usando uma grande lança.
 
-> *He advanced until the point of his spear was within a foot of Aragorn's breast.*
+> *Ele avançou até que a ponta de sua lança estivesse a um palmo do peito de Aragorn.*
 
-**SWORDS**
+**ESPADAS**
 
-The sword with a straight blade has always been the weapon of choice among free Men and Elves. A mark of nobility or rank, swords of superior make are passed down by generations of warriors, and arms of ancient lineage are often imbued with spells and curses, the bane of the servants of the Shadow. Swords vary in size, shape, and quality as diverse as the folks that craft them. Many malevolent creatures have devised swords after their own fashion, usually crude counterfeits of those made by Men and Elves.
+A espada de lâmina reta sempre foi a arma de escolha entre os Homens livres e os Elfos. Marca de nobreza ou de posição, espadas de fabricação superior são passadas por gerações de guerreiros, e armas de linhagem antiga muitas vezes são imbuídas de encantamentos e maldições, a ruína dos servos da Sombra. As espadas variam em tamanho, forma e qualidade tanto quanto os povos que as forjam. Muitas criaturas malévolas conceberam espadas ao seu próprio modo, geralmente imitações grosseiras daquelas feitas por Homens e Elfos.
 
-The SWORDS Combat Proficiency enables a Player-hero to attack in close combat using short swords, swords, and long swords.
+A Proficiência de Combate ESPADAS permite a um herói-jogador atacar em combate corpo a corpo usando espadas curtas, espadas e espadas longas.
 
-> *"There is work for the Sword to do."*
+> *"Há trabalho para a Espada fazer."*
 
-**COMBAT PROFICIENCY LIST:**
+**LISTA DE PROFICIÊNCIAS DE COMBATE:**
 
-| Combat Proficiency | Weapons |
+| Proficiência de Combate | Armas |
 |---|---|
-| AXES | Axe, Great Axe, Long-hafted Axe, Mattock |
-| BOWS | Bow, Great Bow |
-| SPEARS | Short Spear, Spear, Great Spear |
-| SWORDS | Sword, Short Sword, Long Sword |
+| MACHADOS | Machado, Grande Machado, Machado de Cabo Longo, Picareta |
+| ARCOS | Arco, Grande Arco |
+| LANÇAS | Lança Curta, Lança, Grande Lança |
+| ESPADAS | Espada, Espada Curta, Espada Longa |
 
-### Brawling Attacks
+### Ataques de Briga
 
-Adventurers who must leave behind their trusted weapons may find themselves forced to fight unarmed, or to rely on a simple dagger, club, or an improvised weapon. When this happens, they rely on their martial training to save themselves.
+Aventureiros que precisam deixar para trás suas armas de confiança podem se ver forçados a lutar desarmados, ou a recorrer a uma adaga simples, a um cacete ou a uma arma improvisada. Quando isso acontece, contam com seu treinamento marcial para se salvarem.
 
-Player-heroes performing an attack while unarmed, or using a dagger, club, or an improvised weapon, roll a number of dice equal to their highest Combat Proficiency, but suffer a disadvantage: they *lose (1d)*.
+Heróis-jogadores que realizam um ataque desarmados, ou usando uma adaga, um cacete ou uma arma improvisada, rolam um número de dados igual à sua Proficiência de Combate mais alta, mas sofrem uma desvantagem: eles *perdem (1d)*.
 
-## Distinctive Features
+## Características Distintivas
 
-> They are quick of hearing and sharp-eyed, and though they are inclined to be fat and do not hurry unnecessarily, they are nonetheless nimble and deft in their movements.
+> Têm audição fina e vista aguçada, e embora tendam a engordar e não se apressem sem necessidade, são ainda assim ágeis e destros em seus movimentos.
 
-Distinctive Features describe aspects of an adventurer's build or temper, personality traits or physical peculiarities that provide them with an additional descriptive level. These features help players to picture their adventurers, and encourage deeper roleplaying.
+As Características Distintivas descrevem aspectos da constituição ou do temperamento de um aventureiro, traços de personalidade ou peculiaridades físicas que lhe fornecem um nível descritivo adicional. Essas características ajudam os jogadores a imaginar seus aventureiros e incentivam uma interpretação mais profunda.
 
-Players are invited to take into account their heroes' Distinctive Features throughout the game and to use them as guidelines, in particular when choosing a course of action for their adventurers.
+Os jogadores são convidados a levar em conta as Características Distintivas de seus heróis ao longo do jogo e a usá-las como diretrizes, em particular ao escolher um curso de ação para seus aventureiros.
 
-> Additionally, players can invoke a Distinctive Feature to improve their chances to succeed at a roll using a Skill. When this happens, the Player-hero is considered to be Inspired.
+> Além disso, os jogadores podem invocar uma Característica Distintiva para melhorar suas chances de sucesso em uma rolagem usando uma Perícia. Quando isso acontece, o herói-jogador é considerado Inspirado.
 
-A trait can be invoked on a roll only if, based on its description, it is reasonably plausible for someone with that quality to fare better than an individual without it.
+Um traço só pode ser invocado em uma rolagem se, com base em sua descrição, for razoavelmente plausível que alguém com aquela qualidade se saia melhor que um indivíduo sem ela.
 
-> **EXAMPLE:** One evening at the inn, Folco the Hobbit invites his companions to dance the Springle-ring, a rather vigorous dance, while he sings a song from the Westfarthing. Folco is a Merry fellow, and he chooses to make his SONG roll Inspired — If he spends a point of Hope, he gains (2d) instead of (1d).
+> **EXEMPLO:** Uma noite na taverna, Folco, o Hobbit, convida seus companheiros a dançar o Salta-anel, uma dança bastante vigorosa, enquanto ele canta uma canção da Quarta Ocidental. Folco é um sujeito Jovial, e escolhe tornar sua rolagem de CANTO Inspirada — se gastar um ponto de Esperança, ele ganha (2d) em vez de (1d).
 
-A full description for each trait is provided below.
+Uma descrição completa de cada traço é fornecida abaixo.
 
-### Changing a Distinctive Feature
+### Mudando uma Característica Distintiva
 
-Players who have played the same adventurer for a long time might eventually grow tired of the Distinctive Traits chosen for their Player-hero and feel the need for a change.
+Jogadores que interpretaram o mesmo aventureiro por muito tempo podem eventualmente se cansar dos Traços Distintivos escolhidos para seu herói-jogador e sentir necessidade de uma mudança.
 
-> Players can replace an old trait with a new one during a Yule Fellowship Phase, by choosing the Recount a Story Undertaking.
+> Os jogadores podem substituir um traço antigo por um novo durante uma Fase de Companhia de Yule, escolhendo o Empreendimento Contar uma História.
 
-Players should always exercise some common sense when they choose the new Distinctive Feature (and the old one being replaced) to avoid completely reinventing their Player-hero.
+Os jogadores devem sempre exercer algum bom senso ao escolher a nova Característica Distintiva (e a antiga que está sendo substituída), para evitar reinventar completamente seu herói-jogador.
 
-### Distinctive Features List
+### Lista de Características Distintivas
 
-There are 24 Distinctive Features in *The One Ring*. Six additional ones are exclusive to Callings, and are described in the relevant section of character creation (see page 44).
+Existem 24 Características Distintivas em *O Um Anel*. Outras seis são exclusivas das Vocações, e são descritas na seção relevante da criação de personagem (ver capítulo 3).
 
-**BOLD** — You trust your capabilities to the point that you are not easily daunted, readily placing yourself in danger.
+**AUDACIOSO** — Você confia tanto em suas capacidades que não se abala facilmente, colocando-se em perigo de bom grado.
 
-**CUNNING** — Your wit is sharp, and you are ready to use it to your advantage.
+**ASTUTO** — Sua mente é afiada, e você está pronto para usá-la a seu favor.
 
-**EAGER** — You are filled with excitement and impatience when an endeavour piques your interest.
+**ÁVIDO** — Você se enche de empolgação e impaciência quando um empreendimento desperta seu interesse.
 
-**FAITHFUL** — You are steadfastly devoted to those ideals or individuals you have chosen to follow, and your unwavering loyalty often supports you in your deeds.
+**FIEL** — Você é firmemente devotado aos ideais ou indivíduos que escolheu seguir, e sua lealdade inabalável muitas vezes o sustenta em seus feitos.
 
-**FAIR** — You are considered attractive by most people, even by those not belonging to your folk.
+**BELO** — Você é considerado atraente pela maioria das pessoas, mesmo por aquelas que não pertencem ao seu povo.
 
-**FAIR-SPOKEN** — Your speech and manners are naturally pleasant and respectful, and your words rarely provoke offense.
+**BEM-FALANTE** — Sua fala e maneiras são naturalmente agradáveis e respeitosas, e suas palavras raramente causam ofensa.
 
-**FIERCE** — When provoked, or when you deem it necessary, you may allow your savage side to emerge.
+**FEROZ** — Quando provocado, ou quando julga necessário, você pode deixar emergir seu lado selvagem.
 
-**GENEROUS** — You give with open hands and heart, always mindful of the needs of others.
+**GENEROSO** — Você dá com as mãos e o coração abertos, sempre atento às necessidades dos outros.
 
-**HONOURABLE** — You believe in acting fairly and doing what is morally right.
+**HONRADO** — Você acredita em agir com justiça e fazer o que é moralmente correto.
 
-**INQUISITIVE** — Your curious nature is easily aroused, often by what is often not your concern. The positive side is that you are not easily deceived by appearances.
+**CURIOSO** — Sua natureza curiosa é facilmente despertada, muitas vezes por aquilo que não é da sua conta. O lado positivo é que você não se deixa enganar facilmente pelas aparências.
 
-**KEEN-EYED** — The keenness of your eyesight surpasses that of most folk.
+**OLHOS DE LINCE** — A acuidade da sua visão supera a da maioria das pessoas.
 
-**LORDLY** — Your dignified bearing arouses feelings of reverence and respect in onlookers.
+**NOBRE** — Seu porte digno desperta sentimentos de reverência e respeito em quem o observa.
 
-**MERRY** — Your spirit is not easily discouraged, and you can find light in the darkest of shadows.
+**JOVIAL** — Seu espírito não se abate facilmente, e você consegue encontrar luz nas sombras mais escuras.
 
-**PATIENT** — You are slow to lose your temper and can suffer fools, delays, or even hardship without complaint.
+**PACIENTE** — Você demora a perder a paciência e consegue suportar tolos, atrasos ou até dificuldades sem reclamar.
 
-**PROUD** — You hold your feats and achievements, or those of your people, in high esteem.
+**ORGULHOSO** — Você tem grande estima por seus feitos e conquistas, ou pelos do seu povo.
 
-**RUSTIC** — Your ways are simple, some might say even uncouth, but you know that not all that is gold does necessarily glitter.
+**RÚSTICO** — Seus modos são simples, alguns diriam até rudes, mas você sabe que nem tudo que é ouro reluz.
 
-**SECRETIVE** — You do not easily share your thoughts and prefer to conceal your intentions from the eyes of others, especially outsiders to your folk.
+**RESERVADO** — Você não compartilha seus pensamentos facilmente e prefere ocultar suas intenções dos olhos alheios, especialmente de estranhos ao seu povo.
 
-**STERN** — You possess a severe nature and express it in your behaviour, body language, and speech.
+**SEVERO** — Você possui uma natureza rigorosa e a expressa em seu comportamento, linguagem corporal e fala.
 
-**SUBTLE** — You may not be a Wizard, but often the ways you choose to achieve your goals are crafty, if not devious.
+**SUTIL** — Você não é um Mago, mas muitas vezes os caminhos que escolhe para alcançar seus objetivos são engenhosos, quando não astutos.
 
-**SWIFT** — You move swiftly and are quick to take action.
+**VELOZ** — Você se move rapidamente e é ágil para agir.
 
-**TALL** — You tower above most of your folk.
+**ALTO** — Você se destaca em altura entre a maioria do seu povo.
 
-**TRUE-HEARTED** — You are sincere, and your words and actions show your honest intentions.
+**CORAÇÃO VERDADEIRO** — Você é sincero, e suas palavras e ações revelam suas intenções honestas.
 
-**WARY** — You are always mindful of your surroundings and observant of the speech and behaviour of strangers.
+**CAUTELOSO** — Você está sempre atento ao seu redor e observa a fala e o comportamento de estranhos.
 
-**WILFUL** — You are firm in temperament and belief, and usually base your actions solely on your own judgement.
+**OBSTINADO** — Você é firme em temperamento e convicção, e costuma basear suas ações apenas no próprio julgamento.
 
-## Endurance and Hope
+## Resistência e Esperança
 
-> Health and hope grew strong in them, and they were content with each good day as it came, taking pleasure in every meal, and in every word and song.
+> A saúde e a esperança cresceram fortes neles, e eles se contentavam com cada bom dia conforme chegava, tirando prazer de cada refeição, e de cada palavra e canção.
 
-Endurance and Hope are what keep adventurers on the road, providing them with reserves of energy and with that additional momentum that sometimes is the only chance a hero has to prevail.
+Resistência e Esperança são o que mantém os aventureiros na estrada, fornecendo-lhes reservas de energia e aquele impulso adicional que às vezes é a única chance que um herói tem de prevalecer.
 
-Both ratings are calculated during character creation, and are based on a hero's Culture of origin and on their STRENGTH and HEART stats.
+Ambos os valores são calculados durante a criação de personagem, e se baseiam na Cultura de origem do herói e em seus valores de FORÇA e CORAÇÃO.
 
-> The resulting values are maximum scores: during play, heroes lose Endurance points as the result of exertion and of suffering harm, and they spend Hope voluntarily when they must succeed against difficult odds.
+> Os valores resultantes são pontuações máximas: durante o jogo, os heróis perdem pontos de Resistência como resultado de esforço e de dano sofrido, e gastam Esperança voluntariamente quando precisam ter sucesso contra probabilidades difíceis.
 
-Players record their maximum Endurance and Hope values on their character sheet using the boxes found under the corresponding stats, while they use the Current Endurance and Current Hope boxes to keep track of any changes that occur during play (alternatively, players can track them using different coloured counters or glass beads).
+Os jogadores registram seus valores máximos de Resistência e Esperança na ficha de personagem usando as caixas encontradas sob os valores correspondentes, enquanto usam as caixas de Resistência Atual e Esperança Atual para acompanhar quaisquer mudanças que ocorram durante o jogo (alternativamente, os jogadores podem acompanhá-los usando marcadores de cores diferentes ou contas de vidro).
 
-*(Nota de extração: a fórmula exata de cálculo por Cultura não aparece nestas páginas — o texto remete ao processo de criação de personagem, provavelmente detalhado no Capítulo 2/3 do livro, fora do intervalo de páginas 59-90 coberto nesta extração.)*
+*(Nota de extração: a fórmula exata de cálculo por Cultura não aparece nestas páginas — o texto remete ao processo de criação de personagem, provavelmente detalhado nos capítulos 2/3 do livro, fora do intervalo de páginas coberto por esta extração.)*
 
-### Endurance
+### Resistência
 
-Endurance represents a Player-hero's resistance and is taken into account whenever an adventurer is subjected to some form of harm. In particular, Player-heroes lose Endurance during combat, when they suffer physical damage from any other source, or as a consequence of any strenuous task requiring great effort.
+Resistência representa a capacidade de aguentar de um herói-jogador e é levada em conta sempre que um aventureiro é submetido a alguma forma de dano. Em particular, os heróis-jogadores perdem Resistência durante o combate, quando sofrem dano físico de qualquer outra fonte, ou como consequência de qualquer tarefa extenuante que exija grande esforço.
 
-> Player-heroes whose Endurance is reduced to zero drop unconscious, and wake up after one hour with 1 Endurance point (unless they are also Wounded, see Wounds, page 101).
+> Heróis-jogadores cuja Resistência é reduzida a zero caem inconscientes, e acordam depois de uma hora com 1 ponto de Resistência (a menos que também estejam Feridos, ver Ferimentos, capítulo 6).
 
-**WEARY**
+**EXAUSTO**
 
-Used in conjunction with a hero's carried Load (see Gear, page 47). Endurance determines when the weight and bulk of any equipment starts to affect a Player-hero's performance.
+Usada em conjunto com a Carga transportada por um herói (ver Equipamento, capítulo 3). A Resistência determina quando o peso e o volume de qualquer equipamento começam a afetar o desempenho de um herói-jogador.
 
-> **FATIGUE** — Travelling causes the Player-heroes to accumulate Fatigue points, representing a form of exhaustion caused by protracted loss of sleep and the general discomfort of spending days in the open. Fatigue enters play exclusively in conjunction with the rules for journeys (see page 108).
+> **FADIGA** — Viajar faz com que os heróis-jogadores acumulem pontos de Fadiga, representando uma forma de esgotamento causada pela perda prolongada de sono e pelo desconforto geral de passar dias ao ar livre. A Fadiga entra em jogo exclusivamente em conjunto com as regras de jornadas (ver capítulo 7).
 >
-> When gained, Fatigue points temporarily raise a travelling Player-hero's total Load, effectively making it easier to become Weary.
+> Quando ganhos, os pontos de Fadiga elevam temporariamente a Carga total de um herói-jogador em viagem, tornando efetivamente mais fácil ficar Exausto.
 
-> Heroes become Weary if their Current Endurance score becomes equal to or lower than their total Load. When this happens, the Weary box on their character sheet is checked.
+> Os heróis ficam Exaustos se seu valor de Resistência Atual se tornar igual ou inferior à sua Carga total. Quando isso acontece, a caixa Exausto na ficha de personagem é assinalada.
 
-Player-heroes remain Weary until their Endurance score rises above their Load again (see below).
+Os heróis-jogadores permanecem Exaustos até que seu valor de Resistência suba acima de sua Carga novamente (ver abaixo).
 
-**RESTING**
+**DESCANSANDO**
 
-Player-heroes regain lost Endurance points by resting. The extent of the Player-heroes' recovery depends on whether they take a short rest, or a prolonged one.
+Os heróis-jogadores recuperam pontos de Resistência perdidos descansando. A extensão da recuperação dos heróis-jogadores depende de eles fazerem um descanso curto ou um prolongado.
 
-**SHORT REST:** Under most circumstances, a day of adventuring allows for a maximum of one short rest, usually in the middle of the day. If precise timing is needed, a short rest may be said to correspond to at least one hour of inactivity.
+**DESCANSO CURTO:** Na maioria das circunstâncias, um dia de aventura permite no máximo um descanso curto, geralmente no meio do dia. Se for necessária uma medida precisa de tempo, pode-se dizer que um descanso curto corresponde a pelo menos uma hora de inatividade.
 
-> With a short rest, adventurers recover a number of lost Endurance points equal to their STRENGTH rating (Wounded heroes do not recover any points at all).
+> Com um descanso curto, os aventureiros recuperam um número de pontos de Resistência perdidos igual ao seu valor de FORÇA (heróis Feridos não recuperam ponto algum).
 
-**PROLONGED REST:** Under normal circumstances, the Company is allowed to take a single Prolonged Rest each day (usually, a night's sleep). The Loremaster may allow the group to take more than one Prolonged Rest if the Player-heroes are recovering in a safe and comfortable place.
+**DESCANSO PROLONGADO:** Em circunstâncias normais, a Companhia pode fazer um único Descanso Prolongado por dia (geralmente, uma noite de sono). O Mestre pode permitir que o grupo faça mais de um Descanso Prolongado se os heróis-jogadores estiverem se recuperando em um lugar seguro e confortável.
 
-> Player-heroes taking a prolonged rest recover all lost Endurance points, or a number of Endurance points equal to their STRENGTH score if their Wounded box is checked.
+> Heróis-jogadores que fazem um descanso prolongado recuperam todos os pontos de Resistência perdidos, ou um número de pontos de Resistência igual ao seu valor de FORÇA se sua caixa Ferido estiver assinalada.
 
-### Hope
+### Esperança
 
-Hope is a hero's reserve of spiritual fortitude and positivity. A hopeful character can keep going when physically stronger heroes have already succumbed to despair.
+Esperança é a reserva de fortaleza espiritual e positividade de um herói. Um personagem esperançoso consegue seguir adiante quando heróis fisicamente mais fortes já sucumbiram ao desespero.
 
-During play, players can spend Hope to gain a Hope bonus on any die roll, or to trigger the effects of certain Cultural Virtues.
+Durante o jogo, os jogadores podem gastar Esperança para obter um bônus de Esperança em qualquer rolagem de dados, ou para ativar os efeitos de certas Virtudes Culturais.
 
-> Player-heroes whose Hope score is reduced to zero are spiritually drained — it is impossible for them to find the energy required to push themselves beyond their limits.
+> Heróis-jogadores cuja Esperança é reduzida a zero estão espiritualmente esgotados — é impossível para eles encontrar a energia necessária para se impulsionarem além de seus limites.
 
-**MISERABLE**
+**ARRASADO**
 
-In the course of the game, Player-heroes face threats capable of shaking their determination and will to fight. As a consequence, they accumulate Shadow points.
+No curso do jogo, os heróis-jogadores enfrentam ameaças capazes de abalar sua determinação e vontade de lutar. Como consequência, acumulam pontos de Sombra.
 
-> Heroes become Miserable when their Shadow score matches or overcomes their current Hope.
+> Os heróis ficam Arrasados quando seu valor de Sombra iguala ou supera sua Esperança atual.
 
-When this happens, check the Miserable box on the character sheet. A Player-hero remains Miserable until their Hope rating surpasses their Shadow score again, either because they regain Hope, or because they find a way to get rid of Shadow (see The Shadow, page 136).
+Quando isso acontece, assinale a caixa Arrasado na ficha de personagem. Um herói-jogador permanece Arrasado até que seu valor de Esperança supere novamente seu valor de Sombra, seja porque recupera Esperança, seja porque encontra um jeito de se livrar da Sombra (ver A Sombra, capítulo 8).
 
-**RECOVERING HOPE**
+**RECUPERANDO ESPERANÇA**
 
-Recovering Hope points indicates that the Player-heroes are reaffirming their lost sense of confidence. There are three main ways to recover Hope:
+Recuperar pontos de Esperança indica que os heróis-jogadores estão reafirmando seu perdido senso de confiança. Há três maneiras principais de recuperar Esperança:
 
-**SPEND FELLOWSHIP:** During the Adventuring Phase, whenever the Company is resting, the Player-heroes may spend any number of Fellowship points to distribute an equal number of Hope points among the Player-heroes (all players must agree on the distribution).
+**GASTAR COMPANHEIRISMO:** Durante a Fase de Aventura, sempre que a Companhia estiver descansando, os heróis-jogadores podem gastar qualquer número de pontos de Companheirismo para distribuir um número igual de pontos de Esperança entre os heróis-jogadores (todos os jogadores devem concordar com a distribuição).
 
-**TAKING A BREAK FROM ADVENTURING:** During the Fellowship Phase, all Player-heroes recover a number of Hope points equal to their HEART score (see Fellowship Phases, page 119).
+**FAZER UMA PAUSA NAS AVENTURAS:** Durante a Fase de Companhia, todos os heróis-jogadores recuperam um número de pontos de Esperança igual ao seu valor de CORAÇÃO (ver Fases de Companhia, capítulo 7).
 
-**RESTING:** Finally, Player-heroes who are down to zero Hope recover a single point of Hope once they take a Prolonged Rest.
+**DESCANSAR:** Por fim, heróis-jogadores que estejam com zero de Esperança recuperam um único ponto de Esperança ao fazer um Descanso Prolongado.
 
-> **SERIOUS INJURIES** — Endurance loss should not be confused with being Wounded. While being hit in combat results in a loss of Endurance, adventurers are only at risk of death when hit by a Piercing Blow — a precise attack that threatens to bypass their armour and defences completely and cause serious injury (see the rules for Combat on page 93 and following, for the effects of Wounds and their severity).
+> **FERIMENTOS GRAVES** — A perda de Resistência não deve ser confundida com estar Ferido. Enquanto ser atingido em combate resulta em perda de Resistência, os aventureiros só correm risco de morte quando atingidos por um Golpe Perfurante — um ataque preciso que ameaça contornar completamente sua armadura e suas defesas e causar ferimento grave (ver as regras de Combate no capítulo 6, para os efeitos dos Ferimentos e sua gravidade).
 
-## Standards of Living
+## Padrões de Vida
 
-> Bilbo was very rich and very peculiar, and had been the wonder of the Shire for sixty years, ever since his remarkable disappearance and unexpected return.
+> Bilbo era muito rico e muito peculiar, e havia sido a maravilha do Condado por sessenta anos, desde seu notável desaparecimento e retorno inesperado.
 
-The characters in *The One Ring* are adventurers: individuals used to relying on their abilities to find sustenance in the wild, rather than by putting their hands into their money bags. To avoid the need for overly-detailed rules for economics, the game provides each of them with a Standard of Living.
+Os personagens de *O Um Anel* são aventureiros: indivíduos acostumados a confiar em suas habilidades para encontrar sustento nas terras selvagens, em vez de meter as mãos nas bolsas de dinheiro. Para evitar a necessidade de regras excessivamente detalhadas de economia, o jogo fornece a cada um deles um Padrão de Vida.
 
-> In addition to affecting a hero's starting gear (see page 47), Standards of Living come into play whenever it must be determined whether an adventurer can afford to pay for some out-of-pocket expenses, like buying a meal at the inn, or paying a fisherman for renting a boat.
+> Além de afetar o equipamento inicial de um herói (ver capítulo 3), os Padrões de Vida entram em jogo sempre que for preciso determinar se um aventureiro pode se dar ao luxo de pagar algumas despesas do próprio bolso, como comprar uma refeição na taverna ou pagar um pescador pelo aluguel de um barco.
 
-Using the descriptions found below, the Loremaster and the players should be able to judge in most circumstances what a Player-hero can afford.
+Usando as descrições encontradas abaixo, o Mestre e os jogadores devem ser capazes de julgar, na maioria das circunstâncias, o que um herói-jogador pode pagar.
 
-### Standard of Living Descriptions
+### Descrições dos Padrões de Vida
 
-There are six Standards of Living: Poor, Frugal, Common, Prosperous, Rich, and Very Rich. At the start of a game, Player-heroes are ranked based on their culture of origin — players must make a note of their starting Standard of Living, and record the corresponding worth in Treasure points using the Treasure space on their character sheets.
+Existem seis Padrões de Vida: Pobre, Frugal, Comum, Próspero, Rico e Muito Rico. No início de um jogo, os heróis-jogadores são classificados com base em sua cultura de origem — os jogadores devem anotar seu Padrão de Vida inicial e registrar o valor correspondente em pontos de Tesouro usando o espaço Tesouro em suas fichas de personagem.
 
-**POOR**
+**POBRE**
 
-Impoverished folks are probably suffering from a bad harvest season, a fell winter, or the aftermath of a disease or war. They struggle every day to find what they need to survive, and have no time or resources to look for anything beyond the bare necessities, let alone equip themselves for adventure.
+Os povos empobrecidos provavelmente estão sofrendo com uma estação de colheita ruim, um inverno cruel ou as consequências de uma doença ou guerra. Lutam todos os dias para encontrar o que precisam para sobreviver, e não têm tempo nem recursos para buscar qualquer coisa além do estritamente necessário, muito menos para se equipar para a aventura.
 
 **FRUGAL**
 
-Frugal folk usually live off the produce of their own lands and pastures. They wear simple clothes at most times, although they may possess finer garments for special gatherings like seasonal festivals, marriages, or funerals. Any jewels and other superior ornaments are treasured as possessions belonging to the community, and are passed down through generations of appointed keepers.
+Os povos frugais geralmente vivem do produto de suas próprias terras e pastagens. Vestem roupas simples na maior parte do tempo, embora possam possuir trajes mais finos para ocasiões especiais como festivais sazonais, casamentos ou funerais. Quaisquer joias e outros ornamentos superiores são guardados como bens pertencentes à comunidade, e passados por gerações de guardiões designados.
 
-Adventurers coming from a Frugal folk do not usually carry anything of unusual worth (unless as part of their war gear), with the possible exception of one or two pieces of expensive clothing or common jewellery, like a rich mantle or a golden necklace or bracelet; (probably a token of their status among their peers). Consequently, Frugal Player-heroes can rarely afford to pay for anything, and prefer to find or make what they need instead.
+Aventureiros vindos de um povo Frugal normalmente não carregam nada de valor incomum (a não ser como parte de seu equipamento de guerra), com a possível exceção de uma ou duas peças de roupa caras ou joias comuns, como um manto rico ou um colar ou bracelete de ouro (provavelmente um sinal de seu status entre seus pares). Em consequência, heróis-jogadores Frugais raramente podem pagar por qualquer coisa, e preferem encontrar ou fazer o que precisam.
 
-- STARTING TREASURE RATING: 0
+- VALOR DE TESOURO INICIAL: 0
 
-**COMMON**
+**COMUM**
 
-A folk benefitting from a Common Standard of Living probably hasn't suffered meaningful setbacks in recent years. Wealth is more widespread than among a Frugal folk, but may be distributed unevenly. Poverty is rare, as is excessive wealth.
+Um povo que se beneficia de um Padrão de Vida Comum provavelmente não sofreu contratempos significativos nos últimos anos. A riqueza é mais difundida que entre um povo Frugal, mas pode estar distribuída de modo desigual. A pobreza é rara, assim como a riqueza excessiva.
 
-Player-heroes enjoying a Common Standard of Living have enough resources to look after themselves, and to pay for such things as simple accommodation and meals. Ever mindful of the cost of any luxury, they often lead an austere life, or resort to haggling to lower the price of whatever they are trying to get hold of.
+Heróis-jogadores que gozam de um Padrão de Vida Comum têm recursos suficientes para cuidar de si mesmos e para pagar coisas como acomodação e refeições simples. Sempre atentos ao custo de qualquer luxo, muitas vezes levam uma vida austera, ou recorrem à barganha para baixar o preço do que estão tentando obter.
 
-- STARTING TREASURE RATING: 30
+- VALOR DE TESOURO INICIAL: 30
 
-**PROSPEROUS**
+**PRÓSPERO**
 
-Almost all families belonging to a Prosperous Culture can afford to live in separate, private houses. Important individuals wear fine clothing and often have one or two attendants in their service at home, like a gardener and a butler.
+Quase todas as famílias pertencentes a uma Cultura Próspera podem se dar ao luxo de viver em casas separadas e privadas. Indivíduos importantes vestem roupas finas e muitas vezes têm um ou dois criados a seu serviço em casa, como um jardineiro e um mordomo.
 
-Player-heroes coming from a Prosperous Culture can usually pay for their share of any out-of-pocket expenses encountered along their journey, and might even pay for another member of the Company, if need be. This includes, for example, paying for comfortable accommodation, spending some time drinking in Company at an inn, and hiring beasts of burden.
+Heróis-jogadores vindos de uma Cultura Próspera geralmente podem pagar sua parte de qualquer despesa do próprio bolso encontrada ao longo de sua jornada, e podem até pagar por outro membro da Companhia, se necessário. Isso inclui, por exemplo, pagar por acomodação confortável, passar algum tempo bebendo em Companhia em uma taverna e alugar animais de carga.
 
-- STARTING TREASURE RATING: 90
+- VALOR DE TESOURO INICIAL: 90
 
-**RICH**
+**RICO**
 
-This level of prosperity is usually a transitory condition for a folk, as great wealth can easily attract the attention of many enemies. Members of a Rich Culture live amidst many luxuries, reaping the fruits of a flourishing trade or an extensive treasure. Although those less well-off warn that affluence can easily lead to spiritual or even physical weakness, the availability of material wealth may instead set an individual free to focus on more lofty matters, like the perfection of a trade or art.
+Esse nível de prosperidade geralmente é uma condição transitória para um povo, já que grande riqueza pode facilmente atrair a atenção de muitos inimigos. Membros de uma Cultura Rica vivem entre muitos luxos, colhendo os frutos de um comércio florescente ou de um vasto tesouro. Embora os menos afortunados advirtam que a opulência pode facilmente levar à fraqueza espiritual ou até física, a disponibilidade de riqueza material pode, em vez disso, libertar um indivíduo para se concentrar em assuntos mais elevados, como a perfeição de um ofício ou de uma arte.
 
-Rich adventurers fare even better than their Prosperous fellows, but not excessively so. Their life on the move does not let them take full advantage of their resources, as a good proportion of their wealth will be made up of land and riches that are not portable.
+Aventureiros Ricos se saem ainda melhor que seus companheiros Prósperos, mas não excessivamente. A vida em movimento não lhes permite aproveitar plenamente seus recursos, já que boa parte de sua riqueza será composta de terras e bens que não são portáteis.
 
-- STARTING TREASURE RATING: 180
+- VALOR DE TESOURO INICIAL: 180
 
-**VERY RICH**
+**MUITO RICO**
 
-No culture in Middle-earth enjoys this level of prosperity. To reach it, Player-heroes must spend years adventuring, looking for hoards of gold and defeating the creatures jealously guarding them. If they do not die in the attempt, they deserve to spend their remaining years without any monetary concern, as they can afford anything that might take their fancy.
+Nenhuma cultura da Terra-média goza desse nível de prosperidade. Para alcançá-lo, os heróis-jogadores devem passar anos se aventurando, procurando tesouros de ouro e derrotando as criaturas que os guardam com ciúme. Se não morrerem na tentativa, merecem passar os anos restantes sem qualquer preocupação monetária, pois podem pagar por qualquer coisa que lhes caia no gosto.
 
-Player-heroes begin the game with a starting Treasure rating corresponding to their cultural Standard of Living. They attain a superior rank when their Treasure score matches that of the rank above theirs, as shown in the table below.
+Os heróis-jogadores começam o jogo com um valor de Tesouro inicial correspondente ao Padrão de Vida de sua cultura. Alcançam um patamar superior quando seu valor de Tesouro iguala aquele do patamar acima do seu, como mostrado na tabela abaixo.
 
-> Players record their heroes' individual Treasure ratings on their character sheets. As their Treasure rating rises, Player-heroes see their Standard of Living go up accordingly.
+> Os jogadores registram os valores individuais de Tesouro de seus heróis em suas fichas de personagem. Conforme seu valor de Tesouro sobe, os heróis-jogadores veem seu Padrão de Vida subir na mesma medida.
 
-**IMPROVE STANDARD OF LIVING:**
+**MELHORAR O PADRÃO DE VIDA:**
 
-| Starting Standard of Living | Treasure Rating |
+| Padrão de Vida Inicial | Valor de Tesouro |
 |---|---|
 | Frugal | 0 |
-| Common | 30 |
-| Prosperous | 90 |
-| Rich | 180 |
-| Very Rich | 300+ |
+| Comum | 30 |
+| Próspero | 90 |
+| Rico | 180 |
+| Muito Rico | 300+ |
 
-### Hoarding Riches
+### Acumulando Riquezas
 
-Having several chests filled with gold under the bed makes it far easier for an adventurer to go around with a pouch filled with coins. The worth of all valuables that Player-heroes can find in the course of their adventures is expressed in terms of Treasure points.
+Ter vários baús cheios de ouro debaixo da cama torna muito mais fácil para um aventureiro andar por aí com uma bolsa cheia de moedas. O valor de todos os bens preciosos que os heróis-jogadores podem encontrar no curso de suas aventuras é expresso em pontos de Tesouro.
 
-## War Gear
+## Equipamento de Guerra
 
-> The Company took little gear of war, for their hope was in secrecy not in battle. Aragorn had Andúril but no other weapon, and he went forth clad only in rusty green and brown, as a Ranger of the wilderness.
+> A Companhia levou pouco equipamento de guerra, pois sua esperança estava no segredo, não na batalha. Aragorn tinha Andúril, mas nenhuma outra arma, e partiu vestido apenas de verde e marrom desbotados, como um Ranger das terras selvagens.
 
-All heroes start their adventuring career fully equipped with all the war gear they consider best suited to a life of adventure. In the game, this gear is represented by an adventurer's Weapons and Armour.
+Todos os heróis começam sua carreira de aventureiros completamente equipados com todo o equipamento de guerra que consideram mais adequado a uma vida de aventura. No jogo, esse equipamento é representado pelas Armas e Armaduras de um aventureiro.
 
-### Weapons
+### Armas
 
-Here follow flavourful descriptions for each type of weapon available to adventurers just setting out in Middle-earth.
+Seguem descrições evocativas de cada tipo de arma disponível para aventureiros que apenas começam sua jornada na Terra-média.
 
-**AXE** — A fighting variation on the common woodcutting tool, axes hang from the belt of many adventurers raised in or near forests.
+**MACHADO** — Uma variação de combate da ferramenta comum de cortar madeira, machados pendem do cinto de muitos aventureiros criados em florestas ou perto delas.
 
-**BOW** — The simple bow is not very different from a hunting-bow. It never measures more than five feet in length, so as to be strung more quickly.
+**ARCO** — O arco simples não é muito diferente de um arco de caça. Nunca mede mais de um metro e meio de comprimento, para poder ser armado mais rapidamente.
 
-**CLUB** — A club is probably the simplest form of weapon. It may consist of a crude, heavy piece of wood, a nasty instrument reinforced with iron, or an elaborately-carved staff used also as a symbol of status.
+**PORRETE** — Um porrete é provavelmente a forma mais simples de arma. Pode consistir em um pedaço grosseiro e pesado de madeira, um instrumento cruel reforçado com ferro, ou um bastão elaboradamente entalhado usado também como símbolo de status.
 
-**CUDGEL** — A cudgel is any bashing implement used with one hand, like a small club or short staff.
+**CACETE** — Um cacete é qualquer instrumento de impacto usado com uma mão, como um pequeno porrete ou um bastão curto.
 
-**DAGGER** — One-handed blades have a range of uses, from skinning animals to settling disputes among brutes. Daggers and knives are very common, and in the wild areas of the land, no-one is found without one in their belt.
+**ADAGA** — Lâminas de uma mão têm uma variedade de usos, de esfolar animais a resolver disputas entre brutos. Adagas e facas são muito comuns, e nas áreas selvagens das terras não se encontra ninguém sem uma no cinto.
 
-**GREAT AXE** — The great axe is an impressive weapon that can only be wielded with two hands. Its heavy head can leave both a deep dint on armour as a club and cleave it as a sword.
+**GRANDE MACHADO** — O grande machado é uma arma impressionante que só pode ser empunhada com as duas mãos. Sua cabeça pesada pode deixar uma funda mossa na armadura como uma clava e fendê-la como uma espada.
 
-**GREAT BOW** — As tall as a Man and offering superior potency, a great bow can only be used by warriors with the height and stature to bend it fully. An arrow from a great bow can pierce the toughest of armour.
+**GRANDE ARCO** — Alto como um Homem e oferecendo potência superior, um grande arco só pode ser usado por guerreiros com a altura e a estatura para retesá-lo por completo. Uma flecha de um grande arco pode perfurar a mais resistente das armaduras.
 
-**GREAT SPEAR** — With a shaft longer than any other spear, a great spear cannot be used as a ranged weapon, and must be wielded with two hands.
+**GRANDE LANÇA** — Com uma haste mais longa que qualquer outra lança, uma grande lança não pode ser usada como arma à distância, e deve ser empunhada com as duas mãos.
 
-**LONG-HAFTED AXE** — Borne with one or two hands, a long-hafted axe is designed to hack through the toughest of armour. It is difficult to manoeuvre but when mastered it is a fearful weapon. A skilled fighter learns to fight with the long haft as well as the heavy axe head.
+**MACHADO DE CABO LONGO** — Portado com uma ou duas mãos, um machado de cabo longo é projetado para fender a mais resistente das armaduras. É difícil de manobrar, mas quando dominado é uma arma temível. Um lutador habilidoso aprende a lutar tanto com o cabo longo quanto com a pesada cabeça do machado.
 
-**LONG SWORD** — Only superior smiths can produce longer blades. These wonderful Elven and Dwarven weapons, and the keen blades forged from strange metals by the Men of the West, are often known as long swords. A long sword may either be wielded with one hand, or used to hack and sweep with two hands.
+**ESPADA LONGA** — Apenas ferreiros superiores conseguem produzir lâminas mais longas. Essas maravilhosas armas Élficas e Anãs, e as lâminas afiadas forjadas com metais estranhos pelos Homens do Oeste, são muitas vezes conhecidas como espadas longas. Uma espada longa pode ser empunhada com uma mão, ou usada para fender e desferir golpes amplos com as duas mãos.
 
-**MATTOCK** — A heavy digging implement sporting a curved head with a point on one side and a spade-like blade on the other. It was used to fearsome effect by the Dwarves who followed Dáin Ironfoot during the Battle of Five Armies.
+**PICARETA** — Um pesado instrumento de cavar, com uma cabeça curva com uma ponta em um lado e uma lâmina em forma de pá no outro. Foi usada com efeito temível pelos Anões que seguiram Dáin Pé-de-Ferro durante a Batalha dos Cinco Exércitos.
 
-**SHORT SPEAR** — Approximately six feet in length, a spear can be hurled as a javelin, or deftly thrust with one hand.
+**LANÇA CURTA** — Com aproximadamente um metro e oitenta de comprimento, uma lança curta pode ser arremessada como um dardo, ou desferida com destreza com uma mão.
 
-**SHORT SWORD** — Large daggers and knives, or smaller swords created for close-quarters combat.
+**ESPADA CURTA** — Adagas e facas grandes, ou espadas menores criadas para combate em espaços apertados.
 
-**SPEAR** — Maybe the most versatile weapon of all, a spear can be thrown, or used with one or two hands.
+**LANÇA** — Talvez a arma mais versátil de todas, uma lança pode ser arremessada, ou usada com uma ou duas mãos.
 
-**SWORD** — A straight-bladed, two-edged sword, wielded in one hand to hew or thrust. This is the most common type of sword.
+**ESPADA** — Uma espada de lâmina reta e dois fios, empunhada com uma mão para golpear ou estocar. Este é o tipo mais comum de espada.
 
-> *Nota de extração: a tabela numérica completa de armas (Damage/Injury/Load/Combat Proficiency/Notes) não está fisicamente no capítulo 4 — o texto do Cap.4 (p.66) remete a ela dizendo apenas que descrições e "características" das armas estão "on page 73". A TABELA MECÂNICA com todos os números está de fato no Capítulo 3 ("Starting Gear" / "Gear", livro p.48), lida durante esta extração para completar o pedido. Reproduzida abaixo na íntegra.*
+> *Nota de extração: a tabela numérica completa de armas (Dano/Ferimento/Carga/Proficiência de Combate/Notas) não está fisicamente no capítulo 4 — o texto do capítulo 4 remete a ela dizendo apenas que descrições e "características" das armas estão na seção de Equipamento. A TABELA MECÂNICA com todos os números está de fato no capítulo 3 ("Equipamento Inicial" / "Equipamento"), lida durante esta extração para completar o pedido. Reproduzida abaixo na íntegra.*
 
-**WEAPONS:**
+**ARMAS:**
 
-| Weapon | Damage | Injury | Load | Combat Proficiency | Notes |
+| Arma | Dano | Ferimento | Carga | Proficiência de Combate | Notas |
 |---|---|---|---|---|---|
-| Unarmed | 1 | — | 0 | Brawling* | Includes throwing stones. Cannot cause a Piercing Blow |
-| Dagger | 2 | 14 | 0 | Brawling* | — |
-| Cudgel | 3 | 12 | 0 | Brawling* | — |
-| Club | 4 | 14 | 1 | Brawling* | — |
-| Short Sword | 3 | 16 | 1 | Swords | — |
-| Sword | 4 | 16 | 2 | Swords | — |
-| Long Sword | 5 | 16 (1h)/18 (2h) | 3 | Swords | Can be used 1 or 2-handed |
-| Short Spear | 3 | 14 | 2 | Spears | Can be thrown |
-| Spear | 4 | 14 (1h)/16 (2h) | 3 | Spears | Can be 1 or 2-handed. Can be thrown |
-| Great Spear | 5 | 16 | 4 | Spears | 2-handed |
-| Axe | 5 | 18 | 2 | Axes | — |
-| Long-hafted Axe | 6 | 18 (1h)/20 (2h) | 3 | Axes | Can be used 1 or 2-handed |
-| Great Axe | 7 | 20 | 4 | Axes | 2-handed |
-| Mattock | 7 | 18 | 3 | Axes | 2-handed |
-| Bow | 3 | 14 | 2 | Bows | Ranged weapon |
-| Great Bow | 4 | 16 | 4 | Bows | Ranged weapon |
+| Desarmado | 1 | — | 0 | Briga* | Inclui arremesso de pedras. Não pode causar Golpe Perfurante |
+| Adaga | 2 | 14 | 0 | Briga* | — |
+| Cacete | 3 | 12 | 0 | Briga* | — |
+| Porrete | 4 | 14 | 1 | Briga* | — |
+| Espada Curta | 3 | 16 | 1 | Espadas | — |
+| Espada | 4 | 16 | 2 | Espadas | — |
+| Espada Longa | 5 | 16 (1m) / 18 (2m) | 3 | Espadas | Pode ser usada com 1 ou 2 mãos |
+| Lança Curta | 3 | 14 | 2 | Lanças | Pode ser arremessada |
+| Lança | 4 | 14 (1m) / 16 (2m) | 3 | Lanças | Pode ser usada com 1 ou 2 mãos. Pode ser arremessada |
+| Grande Lança | 5 | 16 | 4 | Lanças | 2 mãos |
+| Machado | 5 | 18 | 2 | Machados | — |
+| Machado de Cabo Longo | 6 | 18 (1m) / 20 (2m) | 3 | Machados | Pode ser usado com 1 ou 2 mãos |
+| Grande Machado | 7 | 20 | 4 | Machados | 2 mãos |
+| Picareta | 7 | 18 | 3 | Machados | 2 mãos |
+| Arco | 3 | 14 | 2 | Arcos | Arma à distância |
+| Grande Arco | 4 | 16 | 4 | Arcos | Arma à distância |
 
-\* Weapons used to make Brawling Attacks (see page 67).
+\* Armas usadas para fazer Ataques de Briga (ver Ataques de Briga, neste capítulo).
 
-### Armour and Shields
+### Armaduras e Escudos
 
-A suit of defensive gear is an essential asset for any warrior. Its level of protection, weight, and beauty depends on the material used and the cunning of its maker.
+Um conjunto de equipamento defensivo é um recurso essencial para qualquer guerreiro. Seu nível de proteção, peso e beleza depende do material usado e do engenho de quem o fez.
 
-A newly-created character starts with one suit of armour, and may choose to wear a helm and carry one shield.
+Um personagem recém-criado começa com um conjunto de armadura, e pode escolher usar um elmo e carregar um escudo.
 
-**LEATHER ARMOUR** — The simplest suit of armour available, leather armour is made of layers of cured and hardened animal hide sewn together. It is ideal for hunting or travelling as it is lightweight and comfortable, especially compared to mail armour. Leather armour may be crafted as a shirt, or a close-fitting corslet with long sleeves, extending its protection to the wearer's hips.
+**ARMADURA DE COURO** — O conjunto de armadura mais simples disponível, a armadura de couro é feita de camadas de pele animal curtida e endurecida costuradas juntas. É ideal para caçar ou viajar, pois é leve e confortável, especialmente comparada à armadura de malha. A armadura de couro pode ser confeccionada como uma camisa, ou como uma couraça justa de mangas longas, estendendo sua proteção até os quadris de quem a veste.
 
-**MAIL ARMOUR** — Mail is the most effective type of armour encountered in Middle-earth at the end of the Third Age. These suits of close-fitting metal rings are created to protect from cutting and thrusting weapons. From the shining hauberks of Elven lords to the black mail of Orc-chieftains, mail armour appears in widely different qualities. Ancient coats of Dwarf-make, when found, are matchless and prized possessions.
+**ARMADURA DE MALHA** — A malha é o tipo mais eficaz de armadura encontrado na Terra-média no fim da Terceira Era. Esses conjuntos de anéis metálicos justos são criados para proteger de armas de corte e de estocada. Das hauberques brilhantes dos senhores Élficos à malha negra dos chefes Orcs, a armadura de malha aparece em qualidades muito diversas. Cotas antigas de fabricação Anã, quando encontradas, são incomparáveis e possessões preciosas.
 
-A mail shirt is a chain garment protecting the back, chest, and abdomen of its wearer, while a coat of mail is a shirt with long sleeves.
+Uma cota de malha é uma peça de anéis que protege as costas, o peito e o abdome de quem a veste, enquanto um sobretudo de malha é uma cota com mangas longas.
 
-**HELM** — Worn in battle or for ceremonial purposes, helms are usually made of leather or iron, but sometimes of more precious metals. The shape of a helm or its decoration is often distinctive, as it helps identify the wearer or their folk. More often than not, the protective features of the helm, especially nose-guards or close-fitting cheek-guards, obscure the face and make it impossible to recognise the wearer otherwise.
+**ELMO** — Usados em batalha ou para fins cerimoniais, os elmos geralmente são feitos de couro ou ferro, mas às vezes de metais mais preciosos. A forma de um elmo ou sua decoração muitas vezes é distintiva, pois ajuda a identificar quem o usa ou seu povo. Na maioria das vezes, os recursos protetivos do elmo, especialmente as proteções nasais ou as proteções de bochecha justas, obscurecem o rosto e tornam impossível reconhecer quem o veste de outra forma.
 
-**SHIELDS** — Armour is often ineffective against the heaviest of weapons, such as hammers or other blunt instruments of war, and many warriors use shields to deflect incoming blows. Usually made of wood covered in leather and reinforced with metal, shields vary in form and purpose.
+**ESCUDOS** — A armadura muitas vezes é ineficaz contra as mais pesadas das armas, como martelos ou outros instrumentos de guerra de impacto, e muitos guerreiros usam escudos para desviar os golpes que chegam. Geralmente feitos de madeira coberta de couro e reforçada com metal, os escudos variam em forma e propósito.
 
-- **BUCKLER:** Circular and made of wood reinforced by a protruding metal boss, bucklers are usually smaller and lighter than regular shields.
-- **GREAT SHIELD:** Kite-shaped, round or barrel-shaped, these shields are carried by the sturdiest of warriors, and are used to carry back their bodies should they fall, but are considered too cumbersome and unwieldy by some.
-- **SHIELD:** Round or oval, shields are made of several layers of wood, often reinforced by a large central iron boss, usually decorated and engraved. A regular shield offers good protection from arrows, and is very effective at close quarters.
+- **BROQUEL:** Circulares e feitos de madeira reforçada por um umbo metálico protuberante, os broquéis geralmente são menores e mais leves que escudos comuns.
+- **GRANDE ESCUDO:** Em forma de amêndoa, redondos ou em forma de barril, esses escudos são carregados pelos mais robustos dos guerreiros, e são usados para levar de volta seus corpos caso caiam, mas são considerados desajeitados e incômodos demais por alguns.
+- **ESCUDO:** Redondos ou ovais, os escudos são feitos de várias camadas de madeira, muitas vezes reforçadas por um grande umbo central de ferro, geralmente decorado e gravado. Um escudo comum oferece boa proteção contra flechas, e é muito eficaz em curta distância.
 
-> *Nota de extração: assim como a tabela de armas, a tabela numérica de armaduras/escudos está no Capítulo 3 (livro p.48), não no Capítulo 4. Reproduzida abaixo na íntegra.*
+> *Nota de extração: assim como a tabela de armas, a tabela numérica de armaduras/escudos está no capítulo 3, não no capítulo 4. Reproduzida abaixo na íntegra.*
 
-**ARMOUR:**
+**ARMADURAS:**
 
-| Armour | Protection | Load | Type |
+| Armadura | Proteção | Carga | Tipo |
 |---|---|---|---|
-| Leather Shirt | 1d | 3 | Leather armour |
-| Leather Corslet | 2d | 6 | Leather armour |
-| Mail-shirt** | 3d | 9 | Mail armour |
-| Coat of Mail** | 4d | 12 | Mail armour |
-| Helm* | +1d | 4 | Headgear |
+| Camisa de Couro | 1d | 3 | Armadura de couro |
+| Couraça de Couro | 2d | 6 | Armadura de couro |
+| Cota de Malha** | 3d | 9 | Armadura de malha |
+| Sobretudo de Malha** | 4d | 12 | Armadura de malha |
+| Elmo* | +1d | 4 | Proteção de cabeça |
 
-\* May be removed in combat to lower Load.
-\*\* See Standard of Living requirements on page 100.
+\* Pode ser removido em combate para reduzir a Carga.
+\*\* Ver as exigências de Padrão de Vida no capítulo 6.
 
-**SHIELDS:**
+**ESCUDOS:**
 
-| Shields | Parry Modifier | Load |
+| Escudos | Modificador de Bloqueio | Carga |
 |---|---|---|
-| Buckler | +1 | 2 |
-| Shield** | +2 | 4 |
-| Great Shield** | +3 | 6 |
+| Broquel | +1 | 2 |
+| Escudo** | +2 | 4 |
+| Grande Escudo** | +3 | 6 |
 
-\*\* See Standard of Living requirements on page 100.
+\*\* Ver as exigências de Padrão de Vida no capítulo 6.

@@ -14,7 +14,11 @@ import {
   validateTorUndertakings,
   type TorPhaseOutcome,
 } from "@/lib/combat/um-anel/progression";
-import type { TorFellowshipProgress } from "@/lib/combat/um-anel/session-state";
+import {
+  TOR_MAX_COMPANY,
+  type TorFellowshipHero,
+  type TorFellowshipProgress,
+} from "@/lib/combat/um-anel/session-state";
 import "./tor-journey.css";
 
 type Props = {
@@ -37,12 +41,25 @@ const OUTCOME_LABEL: Record<TorPhaseOutcome, string> = {
   notavel: "Feito digno da atenção do Senhor Sombrio",
 };
 
+/** Troca um campo de um herói sem mutar a lista (o estado vem do snapshot). */
+function patchHero(
+  heroes: TorFellowshipHero[],
+  index: number,
+  patch: Partial<TorFellowshipHero>
+): TorFellowshipHero[] {
+  return heroes.map((h, i) => (i === index ? { ...h, ...patch } : h));
+}
+
 /** Estado inicial de uma campanha nova — 2965 T.E., como o Starter Set. */
 const INITIAL: TorFellowshipProgress = {
   year: 2965,
   phasesThisYear: 0,
-  companySize: 4,
-  witsScore: 3,
+  heroes: [
+    { name: "Herói 1", wits: 3 },
+    { name: "Herói 2", wits: 3 },
+    { name: "Herói 3", wits: 3 },
+    { name: "Herói 4", wits: 3 },
+  ],
   outcome: "marginal",
   picks: [],
 };
@@ -58,8 +75,8 @@ export function TorFellowshipPanel({ roomId, canManage, fellowship, onUpdate }: 
   const nextIsYule = state.phasesThisYear + 1 >= TOR_PHASES_PER_YEAR;
 
   const budget = useMemo(
-    () => torUndertakingBudget({ isYule: nextIsYule, companySize: state.companySize }),
-    [nextIsYule, state.companySize]
+    () => torUndertakingBudget({ isYule: nextIsYule, companySize: state.heroes.length }),
+    [nextIsYule, state.heroes.length]
   );
 
   const undertakings = useMemo(
@@ -74,9 +91,9 @@ export function TorFellowshipPanel({ roomId, canManage, fellowship, onUpdate }: 
           id,
           yuleOnly: undertakings.find((u) => u.id === id)?.yuleOnly ?? false,
         })),
-        { isYule: nextIsYule, companySize: state.companySize }
+        { isYule: nextIsYule, companySize: state.heroes.length }
       ),
-    [state.picks, state.companySize, undertakings, nextIsYule]
+    [state.picks, state.heroes.length, undertakings, nextIsYule]
   );
 
   const guard = useCallback(
@@ -121,7 +138,7 @@ export function TorFellowshipPanel({ roomId, canManage, fellowship, onUpdate }: 
         if (!validation.ok) return;
         const advanced = advanceTorCalendar(
           { year: state.year, phasesThisYear: state.phasesThisYear },
-          { witsScore: state.witsScore }
+          { heroes: state.heroes }
         );
         const chosen = state.picks
           .map((id) => undertakings.find((u) => u.id === id)?.name ?? id)
@@ -162,8 +179,8 @@ export function TorFellowshipPanel({ roomId, canManage, fellowship, onUpdate }: 
       </p>
       {nextIsYule ? (
         <p className="tor-journey__pending-hint">
-          Encerrar esta Fase vira o ano: todos envelhecem 1 ano e ganham pontos de Perícia
-          iguais à Astúcia.
+          Encerrar esta Fase vira o ano: todos envelhecem 1 ano e cada herói ganha pontos de
+          Perícia iguais à própria Astúcia.
         </p>
       ) : null}
     </>
@@ -199,32 +216,65 @@ export function TorFellowshipPanel({ roomId, canManage, fellowship, onUpdate }: 
         <p className="eyebrow">Calendário</p>
         {calendarHeader}
 
-        <div className="tor-journey__grid">
-          <label>
-            Heróis na Companhia
-            <input
-              type="number"
-              min={1}
-              max={8}
-              value={state.companySize}
-              disabled={busy}
-              onChange={(e) =>
-                void save({ companySize: Math.max(1, Number(e.target.value) || 1) })
-              }
-            />
-          </label>
-          <label>
-            Astúcia (bônus de Yule)
-            <input
-              type="number"
-              min={0}
-              max={7}
-              value={state.witsScore}
-              disabled={busy}
-              onChange={(e) => void save({ witsScore: Math.max(0, Number(e.target.value) || 0) })}
-            />
-          </label>
+        {/* Um herói por linha, com a ASTÚCIA dele. O bônus de Perícia do Yule é
+            por herói, conforme a própria Astúcia — um campo único pra Companhia
+            dava o mesmo bônus a todos e errava a maioria numa Companhia mista. */}
+        <p className="tor-journey__remaining">
+          Companhia — a Astúcia de cada herói define o bônus de Perícia dele no Yule
+        </p>
+        <div className="tor-journey__heroes">
+          {state.heroes.map((hero, i) => (
+            <div className="tor-journey__hero" key={i}>
+              <label>
+                Herói {i + 1}
+                <input
+                  type="text"
+                  value={hero.name}
+                  maxLength={40}
+                  disabled={busy}
+                  onChange={(e) => void save({ heroes: patchHero(state.heroes, i, { name: e.target.value }) })}
+                />
+              </label>
+              <label>
+                Astúcia
+                <input
+                  type="number"
+                  min={0}
+                  max={7}
+                  value={hero.wits}
+                  disabled={busy}
+                  onChange={(e) =>
+                    void save({
+                      heroes: patchHero(state.heroes, i, {
+                        wits: Math.max(0, Math.min(7, Number(e.target.value) || 0)),
+                      }),
+                    })
+                  }
+                />
+              </label>
+              <button
+                type="button"
+                className="tor-journey__hero-remove"
+                disabled={busy || state.heroes.length <= 1}
+                onClick={() => void save({ heroes: state.heroes.filter((_, k) => k !== i) })}
+                aria-label={`Remover ${hero.name}`}
+              >
+                Remover
+              </button>
+            </div>
+          ))}
         </div>
+        <button
+          type="button"
+          disabled={busy || state.heroes.length >= TOR_MAX_COMPANY}
+          onClick={() =>
+            void save({
+              heroes: [...state.heroes, { name: `Herói ${state.heroes.length + 1}`, wits: 3 }],
+            })
+          }
+        >
+          Adicionar herói
+        </button>
       </section>
 
       <section className="tor-journey__section">

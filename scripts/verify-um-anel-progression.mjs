@@ -10,7 +10,18 @@
  *  - Valor → Recompensa; Sabedoria → Virtude (Cultural só a partir de Sabedoria 2)
  *  - Cicatrizes NÃO saem na recuperação da Fase
  */
-import { readFileSync } from "fs";
+import { readFileSync as rawReadFileSync } from "fs";
+
+/* Normaliza CRLF -> LF na leitura.
+
+   As asserções deste arquivo casam conteúdo com âncoras de início/fim de linha
+   e com trechos multilinha. No Windows, um clone novo — ou qualquer
+   `git checkout` com core.autocrlf — entrega CRLF, e aí `\n## Título\n` não
+   casa porque vem `\r` antes do `\n`. Comparar conteúdo não deve depender de
+   fim de linha: sem isto a suíte falha num repo recém-clonado, e passava aqui
+   só porque as ferramentas que escreveram os arquivos usavam LF. */
+const readFileSync = (p, enc) => rawReadFileSync(p, enc).replace(/\r\n/g, "\n");
+
 import { join, dirname } from "path";
 import { fileURLToPath } from "url";
 
@@ -151,11 +162,28 @@ const calBody = fnBody(SRC, "advanceTorCalendar");
 ok("Yule vira o ano", /year:\s*calendar\.year\s*\+\s*1/.test(calBody));
 ok("Yule zera a contagem de Fases", /phasesThisYear:\s*0/.test(calBody));
 ok("Yule envelhece 1 ano", /yearsAged:\s*isYule\s*\?\s*1\s*:\s*0/.test(calBody));
+// O bônus é POR HERÓI, conforme a ASTÚCIA de cada um. Antes era um número só
+// pra Companhia inteira, o que errava a maioria numa Companhia mista.
 ok(
-  "Yule dá pontos de Perícia = Astúcia",
-  /bonusSkillPoints:\s*isYule\s*\?\s*Math\.max\(0,\s*opts\.witsScore\)/.test(calBody)
+  "Yule dá pontos de Perícia por herói, conforme a Astúcia dele",
+  /bonusSkillPointsByHero:\s*isYule[\s\S]{0,140}?opts\.heroes\.map\(\(h\) => \(\{ name: h\.name, points: Math\.max\(0, h\.wits\) \}\)\)/.test(
+    calBody
+  )
 );
-ok("Fase comum não envelhece nem bonifica", /:\s*0,?\s*$/m.test(calBody));
+ok(
+  "advanceTorCalendar recebe a lista de heróis, não um número único",
+  /opts:\s*\{\s*heroes:/.test(calBody) && !/witsScore/.test(calBody)
+);
+ok("Fase comum não bonifica ninguém", /:\s*\[\],?\s*$/m.test(calBody));
+ok("Fase comum não envelhece", /yearsAged:\s*isYule\s*\?\s*1\s*:\s*0/.test(calBody));
+
+// O anúncio no chat tem de nomear quem recebeu o quê — sem isso a mesa não
+// percebe que os valores diferem entre heróis.
+const msgBody = fnBody(SRC, "formatTorCalendarMessage");
+ok(
+  "anúncio do Yule lista o bônus de cada herói",
+  /bonusSkillPointsByHero[\s\S]{0,160}?h\.name[\s\S]{0,40}?h\.points/.test(msgBody)
+);
 
 /* ── Empreitadas ──────────────────────────────────────────────────── */
 

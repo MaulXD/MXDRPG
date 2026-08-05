@@ -230,17 +230,25 @@ export type TorAdvanceCalendarResult = {
   isYule: boolean;
   /** Todos envelhecem 1 ano no Yule. */
   yearsAged: number;
-  /** Bônus de pontos de Perícia igual à Astúcia, só em Yule. */
-  bonusSkillPoints: number;
+  /**
+   * Bônus de pontos de Perícia do Yule, POR HERÓI. Vazio fora do Yule.
+   *
+   * O livro dá a cada herói pontos iguais à ASTÚCIA **dele**, então um número só
+   * pra Companhia inteira erraria todos menos um numa Companhia mista.
+   */
+  bonusSkillPointsByHero: TorHeroSkillBonus[];
 };
+
+export type TorHeroSkillBonus = { name: string; points: number };
 
 /**
  * Avança o calendário uma Fase de Companhia. A terceira Fase do ano é Yule:
- * vira o ano, todos envelhecem e ganham pontos de Perícia iguais à Astúcia.
+ * vira o ano, todos envelhecem e cada herói ganha pontos de Perícia iguais à
+ * própria ASTÚCIA.
  */
 export function advanceTorCalendar(
   calendar: TorCalendar,
-  opts: { witsScore: number }
+  opts: { heroes: ReadonlyArray<{ name: string; wits: number }> }
 ): TorAdvanceCalendarResult {
   const nextCount = calendar.phasesThisYear + 1;
   const isYule = nextCount >= TOR_PHASES_PER_YEAR;
@@ -251,7 +259,9 @@ export function advanceTorCalendar(
       : { year: calendar.year, phasesThisYear: nextCount },
     isYule,
     yearsAged: isYule ? 1 : 0,
-    bonusSkillPoints: isYule ? Math.max(0, opts.witsScore) : 0,
+    bonusSkillPointsByHero: isYule
+      ? opts.heroes.map((h) => ({ name: h.name, points: Math.max(0, h.wits) }))
+      : [],
   };
 }
 
@@ -391,7 +401,12 @@ export function formatTorCalendarMessage(result: TorAdvanceCalendarResult): stri
   if (!result.isYule) {
     return `Fase de Companhia ${result.calendar.phasesThisYear}/${TOR_PHASES_PER_YEAR} do ano ${result.calendar.year}`;
   }
-  return `YULE — o ano vira para ${result.calendar.year}, todos envelhecem 1 ano e ganham ${result.bonusSkillPoints} pontos de Perícia (Astúcia)`;
+  // Cada herói recebe conforme a própria ASTÚCIA — o anúncio nomeia quem recebeu
+  // o quê, senão a mesa não tem como saber que os valores diferem entre si.
+  const porHeroi = result.bonusSkillPointsByHero
+    .map((h) => `${h.name} +${h.points}`)
+    .join(", ");
+  return `YULE — o ano vira para ${result.calendar.year}, todos envelhecem 1 ano e cada herói ganha pontos de Perícia iguais à própria Astúcia${porHeroi ? ` (${porHeroi})` : ""}`;
 }
 
 /** Reexport para quem orquestra a Fase inteira num só lugar. */

@@ -11,7 +11,18 @@
  *  - `torSession` precisa estar no SNAPSHOT, senão os jogadores não veem o
  *    placar e a persistência não resolve o problema que motivou o trabalho
  */
-import { readFileSync } from "fs";
+import { readFileSync as rawReadFileSync } from "fs";
+
+/* Normaliza CRLF -> LF na leitura.
+
+   As asserções deste arquivo casam conteúdo com âncoras de início/fim de linha
+   e com trechos multilinha. No Windows, um clone novo — ou qualquer
+   `git checkout` com core.autocrlf — entrega CRLF, e aí `\n## Título\n` não
+   casa porque vem `\r` antes do `\n`. Comparar conteúdo não deve depender de
+   fim de linha: sem isto a suíte falha num repo recém-clonado, e passava aqui
+   só porque as ferramentas que escreveram os arquivos usavam LF. */
+const readFileSync = (p, enc) => rawReadFileSync(p, enc).replace(/\r\n/g, "\n");
+
 import { join, dirname } from "path";
 import { fileURLToPath } from "url";
 
@@ -199,36 +210,75 @@ for (const [file, src] of [
 }
 
 
-/* ── Teto da ASTÚCIA no bônus de Yule ─────────────────────────────────
-   Achado na rodada 6: `normalizeFellowship` clampava witsScore em 6, mas os
-   arrays de Atributo de data.ts oferecem ASTÚCIA 7 (Elfos de Lindon, Hobbits
-   do Condado, Altos-Elfos de Valfenda). O 7 digitado pelo Mestre voltava 6 do
-   normalizador, e cada herói perdia 1 ponto de Perícia por ano de campanha.
+/* ── Bônus de Perícia do Yule é POR HERÓI ──────────────────────────────
+   Achado na rodada 6 (confirmado 3/3 pelos refutadores): o estado guardava um
+   `witsScore` único pra Companhia inteira e um `companySize` separado, mas o
+   livro dá a cada herói pontos iguais à ASTÚCIA **dele**. Numa Companhia mista
+   (Bardo 3, Anão 4, Elfo 7, Hobbit 6) o número único errava a maioria.
 
-   O teste amarra o teto ao MAIOR `argucia` de data.ts em vez de fixar 7: se um
-   suplemento trouxer ASTÚCIA 8, falha aqui e aponta pro clamp certo. */
+   Corrigido na rodada 7: `heroes: TorFellowshipHero[]`, com o tamanho da
+   Companhia derivado de `heroes.length` — uma fonte de verdade só. */
 
 const DATA_TS = r("lib", "character", "um-anel", "data.ts");
+const stateCode = stripComments(STATE);
 
 const arguciaValues = [...DATA_TS.matchAll(/argucia:\s*(\d+)/g)].map((m) => Number(m[1]));
 const maxArgucia = arguciaValues.length > 0 ? Math.max(...arguciaValues) : 0;
-ok("data.ts tem arrays de Atributo com ASTÚCIA", arguciaValues.length >= 18, `achou ${arguciaValues.length}`);
-
-const witsClamp = stripComments(STATE).match(/witsScore:\s*int\(r\.witsScore,\s*\d+,\s*\d+,\s*(\d+)\)/);
-ok("normalizeFellowship clampa witsScore", Boolean(witsClamp));
 ok(
-  `teto do witsScore (${witsClamp?.[1]}) cobre a maior ASTÚCIA de data.ts (${maxArgucia})`,
+  "data.ts tem arrays de Atributo com ASTÚCIA",
+  arguciaValues.length >= 18,
+  `achou ${arguciaValues.length}`
+);
+
+ok("estado guarda lista de heróis", /heroes:\s*TorFellowshipHero\[\];/.test(STATE));
+ok("herói tem ASTÚCIA própria", /wits:\s*number;/.test(STATE));
+
+// A REGRESSÃO: um número único de ASTÚCIA pra Companhia inteira.
+ok(
+  "NÃO existe mais witsScore único no tipo do estado",
+  !/witsScore:\s*number;/.test(stateCode)
+);
+ok(
+  "NÃO existe mais companySize no tipo do estado (deriva de heroes.length)",
+  !/companySize:\s*number;/.test(stateCode)
+);
+
+// Teto da ASTÚCIA por herói amarrado ao maior `argucia` de data.ts: se um
+// suplemento trouxer 8, falha aqui e aponta pro clamp certo.
+const witsClamp = stateCode.match(/wits:\s*int\(h\.wits,\s*\d+,\s*\d+,\s*(\d+)\)/);
+ok("normalizeHeroes clampa a ASTÚCIA de cada herói", Boolean(witsClamp));
+ok(
+  `teto da ASTÚCIA (${witsClamp?.[1]}) cobre a maior de data.ts (${maxArgucia})`,
   witsClamp && Number(witsClamp[1]) >= maxArgucia,
   `teto=${witsClamp?.[1]} maior argucia=${maxArgucia}`
 );
+
+// Sala gravada por versão anterior tinha witsScore + companySize. Perder isso
+// zeraria o calendário da campanha, que é o dado que mais importa persistir.
+ok(
+  "normalizeHeroes migra sala antiga (witsScore + companySize)",
+  /int\(r\.companySize/.test(stateCode) && /int\(r\.witsScore/.test(stateCode)
+);
+ok("lista de heróis tem tamanho máximo", /TOR_MAX_COMPANY/.test(stateCode));
+
 // O input do painel não pode ser mais restritivo que o normalizador, senão o
-// Mestre não consegue nem digitar o valor que o backend aceitaria.
-const panelMax = FELLOWSHIP_PANEL.match(/max=\{(\d+)\}\s*\n\s*value=\{state\.witsScore\}/);
-ok("painel declara max no input de Astúcia", Boolean(panelMax));
+// Mestre não consegue digitar o valor que o backend aceitaria.
+const panelMax = FELLOWSHIP_PANEL.match(/max=\{(\d+)\}\s*\n\s*value=\{hero\.wits\}/);
+ok("painel declara max no input de Astúcia do herói", Boolean(panelMax));
 ok(
   `max do painel (${panelMax?.[1]}) cobre a maior ASTÚCIA (${maxArgucia})`,
   panelMax && Number(panelMax[1]) >= maxArgucia,
   `painel=${panelMax?.[1]} maior argucia=${maxArgucia}`
+);
+
+// Tamanho da Companhia deriva da lista — sem segundo campo pra discordar.
+ok(
+  "painel deriva o tamanho da Companhia de heroes.length",
+  /companySize: state\.heroes\.length/.test(fellowCode)
+);
+ok(
+  "painel passa a lista de heróis ao avançar o calendário",
+  /\{ heroes: state\.heroes \}/.test(fellowCode)
 );
 
 console.log(`\nverify-um-anel-session-state: ${pass} passaram, ${fail} falharam`);

@@ -2,7 +2,18 @@
  * Valida compêndios após sync:data.
  * Uso: node scripts/verify-compendium-ids.mjs
  */
-import { readFileSync, readdirSync } from "fs";
+import { readFileSync as rawReadFileSync, readdirSync } from "fs";
+
+/* Normaliza CRLF -> LF na leitura.
+
+   As asserções deste arquivo casam conteúdo com âncoras de início/fim de linha
+   e com trechos multilinha. No Windows, um clone novo — ou qualquer
+   `git checkout` com core.autocrlf — entrega CRLF, e aí `\n## Título\n` não
+   casa porque vem `\r` antes do `\n`. Comparar conteúdo não deve depender de
+   fim de linha: sem isto a suíte falha num repo recém-clonado, e passava aqui
+   só porque as ferramentas que escreveram os arquivos usavam LF. */
+const readFileSync = (p, enc) => rawReadFileSync(p, enc).replace(/\r\n/g, "\n");
+
 import { join, dirname } from "path";
 import { fileURLToPath } from "url";
 
