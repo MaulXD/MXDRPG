@@ -597,6 +597,20 @@ export function weaponsForProficiency(
   return WEAPONS.filter((w) => w.proficiency === prof && weaponAllowedForCulture(w, culture));
 }
 
+/**
+ * TODAS as armas permitidas a uma Cultura, sem filtrar por Proficiência.
+ *
+ * `weaponsForProficiency` serve ao wizard, que escolhe uma arma por Proficiência.
+ * O editor de equipamento da ficha precisa da lista completa — e antes usava
+ * `WEAPONS` cru, sem filtro nenhum: depois da criação um Anão equipava Grande
+ * Escudo e um Hobbit um Grande Machado, violando Naugrim e Pequenos, que são
+ * proibições permanentes e não regras só de criação.
+ */
+export function weaponsForCulture(cultureId: TorCultureId): TorWeaponDef[] {
+  const culture = CULTURE_BY_ID[cultureId];
+  return WEAPONS.filter((w) => weaponAllowedForCulture(w, culture));
+}
+
 /** Escudos disponíveis pra uma Cultura (Hobbits/Anões não usam Grande Escudo). */
 export function shieldsForCulture(cultureId: TorCultureId): TorShieldDef[] {
   const culture = CULTURE_BY_ID[cultureId];

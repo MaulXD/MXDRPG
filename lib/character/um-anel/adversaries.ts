@@ -555,6 +555,112 @@ const TOR_ADVERSARIES_RAW: TorAdversaryStats[] = [
       },
     ],
   },
+
+  // ——— Adversários nomeados de Eriador (livros/um-anel/12-o-mundo-eriador.md) ———
+  {
+    id: "barrow-king",
+    name: "Rei-Tumulário",
+    traits: "Astuto, Feroz, Vingativo",
+    tier: "boss",
+    attributeLevel: 9,
+    endurance: 45,
+    might: 2,
+    hate: 9,
+    hateKind: "hate",
+    // O livro lista Bloqueio "–": sem escudo nem esquiva, o modificador é 0.
+    parry: 0,
+    armour: 4,
+    description:
+      "Chefe de todas as criaturas que assombram Tyrn Gorthad, no covil do Grande Túmulo. Dizem ser o último Rei de Cardolan — ou um capitão funesto que outrora serviu Angmar. Fala a Língua Comum e a Língua Negra de Mordor.",
+    actions: [
+      { id: "espada-antiga", label: "Espada Antiga", rating: 3, damage: 5, injury: 18, specialDamage: ["Perfurar"] },
+      { id: "toque-gelido", label: "Toque Gélido", rating: 3, damage: 6, injury: 12, specialDamage: ["Quebrar Escudo"] },
+    ],
+    fellAbilities: [
+      {
+        name: "Mais Escuro que a Escuridão",
+        text: "Gaste 1 Ódio pra invocar escuridão sobrenatural: heróis em combate corpo a corpo perdem (2d) no primeiro ataque contra a criatura, e ataques à distância perdem (2d) durante toda a luta.",
+      },
+      { name: "Morador das Trevas", text: "Todas as rolagens de ataque são Favorecidas enquanto estiver no escuro." },
+      {
+        name: "Feitiços Terríveis",
+        text: "Gaste 1 Ódio pra fazer um herói ganhar 3 pontos de Sombra (Feitiçaria). Alvos que falham no Teste de Sombra ou que estão Arrasados caem inconscientes, despertados apenas com uma rolagem de Canto; senão acordam depois de uma hora.",
+      },
+      { name: "Odeia a Luz do Sol", text: "Perde 1 Ódio no início de cada rodada exposto à luz plena do sol." },
+      // Mortos-vivos: as três de família (livro l.1002-1004).
+      {
+        name: "Sem Morte",
+        text: "Gaste 1 Ódio pra cancelar uma Ferida, ou dano que a levaria a 0 de Resistência. Ineficaz contra heróis empunhando arma mágica encantada para a Ruína dos Mortos-vivos.",
+      },
+      {
+        name: "Sem Coração",
+        text: "Imune à Tarefa de Combate Intimidar Inimigo, a menos que se obtenha um sucesso Mágico.",
+      },
+      {
+        name: "Infundir Medo",
+        text: "Gaste 1 Ódio pra fazer todos os heróis à vista ganharem 3 pontos de Sombra (Pavor). Quem falhar no Teste de Sombra fica intimidado e não pode gastar Esperança pelo resto da luta.",
+      },
+    ],
+  },
+  {
+    id: "burzgul",
+    name: "Búrzgul",
+    traits: "Cruel, Olhos Aguçados",
+    tier: "elite",
+    attributeLevel: 5,
+    endurance: 22,
+    might: 1,
+    hate: 5,
+    hateKind: "hate",
+    parry: 3,
+    armour: 3,
+    description:
+      "Cacique Orc do Portão dos Goblins, lidera um bando que uniu forças com os Lobos das Cavas Uivantes e constrói em segredo uma ameaça que os Rangers ainda não conhecem.",
+    actions: [
+      // "Sobrepujar" (Overbear no original) é listado à parte como Dano Especial
+      // sempre disponível, mas seu efeito não está definido em nenhum ponto do
+      // material extraído — ver a nota em 12-o-mundo-eriador.md. Fica registrado
+      // como texto pro Mestre, não mecanizado por chute.
+      { id: "cimitarra", label: "Cimitarra", rating: 3, damage: 3, injury: 16, specialDamage: ["Quebrar Escudo", "Sobrepujar"] },
+      { id: "lanca", label: "Lança", rating: 2, damage: 3, injury: 14, specialDamage: ["Perfurar", "Sobrepujar"] },
+    ],
+    fellAbilities: [
+      { name: "Veneno de Orc", text: "Se um ataque produzir ao menos 1 ícone de Sucesso, o alvo é envenenado." },
+      { name: "Velocidade de Serpente", text: "Ao ser alvo de um ataque, gaste 1 Ódio pra tornar a rolagem de ataque Desfavorecida." },
+      { name: "Grito de Triunfo", text: "Gaste 1 Ódio pra restaurar 1 Ódio a todos os outros Orcs da luta." },
+      { name: "Odeia a Luz do Sol", text: "Perde 1 Ódio no início de cada rodada exposto à luz plena do sol." },
+    ],
+  },
+  {
+    id: "ash-the-warg",
+    name: "Ash",
+    traits: "Astuto, Veloz",
+    tier: "elite",
+    attributeLevel: 4,
+    endurance: 20,
+    might: 1,
+    hate: 4,
+    hateKind: "hate",
+    parry: 2,
+    armour: 1,
+    description: "O Warg companheiro de Búrzgul, tão astuto quanto o Orc que cavalga a seu lado.",
+    actions: [
+      { id: "presas", label: "Presas", rating: 3, damage: 4, injury: 14, specialDamage: ["Perfurar"] },
+      { id: "garras", label: "Garras", rating: 2, damage: 5, injury: 14 },
+    ],
+    fellAbilities: [
+      {
+        name: "Medo do Fogo",
+        text: "Desfavorecido em todas as rolagens em combate corpo a corpo com quem porta tocha ou item em chamas.",
+      },
+      {
+        name: "Assalto Selvagem",
+        text: "Gaste 1 Ódio depois de um ataque de Presas pra rolar imediatamente um ataque de Garras no mesmo alvo.",
+      },
+      // Lobos das Terras Selvagens: habilidade de família (livro l.1082).
+      { name: "Grande Salto", text: "Gaste 1 Ódio pra atacar qualquer herói, em qualquer postura de combate, inclusive Retaguarda." },
+    ],
+  },
 ];
 
 const TIER_DIFFICULTY_RANK: Record<TorAdversaryStats["tier"], number> = {

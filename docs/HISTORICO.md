@@ -104,6 +104,50 @@ npm run sync:data:check       # após editar livros/
 
 ---
 
+### 2026-08-04 — Pendência do filtro de Cultura + Fase J começa (3 adversários de Eriador)
+
+**Pedido:** loop contínuo. Rodada sem workflow, de propósito: a fase que precisava de leque
+multi-agente (auditoria dos 4 capítulos densos) terminou, e adicionar 3 blocos de bestiário e um filtro
+de UI é trabalho serial. Lançar 40 agentes aqui seria desperdício.
+
+**1. Honrada a pendência que eu mesmo registrei.** O editor de equipamento da ficha listava as 16 armas
+e os 3 escudos **sem** os filtros de Cultura que o wizard aplica — depois da criação, um Anão equipava
+Grande Escudo e um Hobbit um Grande Machado. **Naugrim** e **Pequenos** são proibições permanentes, não
+regras só de criação, e a Carga e o Bloqueio recalculados em `normalize` entravam com o número errado no
+token de combate.
+
+Novo `weaponsForCulture()` em `data.ts` (o `weaponsForProficiency` existente serve ao wizard, que
+escolhe uma arma por Proficiência; a ficha precisa da lista completa). Duas camadas:
+- o `<select>` passou a listar só o permitido;
+- **e `addWeapon()` ganhou guarda própria** — filtrar só a UI deixaria a porta aberta pra um id antigo
+  ou forjado equipar arma vetada. Filtro de `<select>` é UI; regra tem de estar em quem grava.
+
+**2. Fase J começou: os 3 adversários nomeados de Eriador.** Estavam traduzidos em
+`12-o-mundo-eriador.md` e não existiam no bestiário:
+- **Rei-Tumulário** (Chefe, Nível 9, Resistência 45, Vigor 2, Proteção 4) — com as **três habilidades de
+  Mortos-vivos** de família além das quatro do próprio bloco. O Bloqueio "–" do livro virou 0.
+- **Búrzgul** (Elite, Nível 5, Resistência 22, Bloqueio +3) — Cacique Orc do Portão dos Goblins.
+- **Ash** (Elite, Nível 4, Resistência 20) — o Warg dele, com **Grande Salto** de família.
+
+`id` em inglês (chave estável — renomear quebraria salas salvas), `name` em PT-BR (aparece no nameplate
+do token).
+
+**Overbear não foi mecanizado.** O "Sobrepujar" do Búrzgul entra como texto de Dano Especial sempre
+disponível, porque o efeito de *Overbear* **não está definido em nenhum ponto do material extraído** —
+já registrado no markdown. Inventar um efeito criaria regra falsa indistinguível das verdadeiras.
+
+**Validação:** `npx tsc --noEmit` limpo · `npm run test` verde (**775 asserções**, zero falhas) ·
+`npm run build` compila. **4 testes negativos**: tirar o filtro, tirar a guarda de `addWeapon`, errar a
+Resistência do Rei-Tumulário ou tirar o Grande Salto do Ash faz o teste correspondente acusar.
+
+**Falta na Fase J:** auditar campo a campo os 21 blocos do Livro Básico contra o capítulo 8 (partição
+pronta, 6 famílias); dados 3D com faces do Um Anel (D19); aventuras (D31 — *Tales from Wilderland* e
+*Darkening of Mirkwood* são 1ª edição, converter não copiar). Lacunas funcionais registradas: Virtudes
+não entram nas rolagens; variante de NA 18 como opção de campanha; Elmo removível em combate;
+Habilidades Sinistras não mecanizadas.
+
+---
+
 ### 2026-08-04 — Auditoria dos capítulos 3 e 8 CONCLUÍDA: 11 divergências, 11 correções
 
 **Pedido:** loop contínuo, opção A — fechar a auditoria de regra dos 4 capítulos densos.

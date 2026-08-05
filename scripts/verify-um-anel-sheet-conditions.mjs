@@ -202,5 +202,45 @@ ok(
   !/Golpe Perfurante dispara em Proeza ≥ este valor/.test(ADV_TYPES)
 );
 
+/* ── Restrições de arma por Cultura valem DEPOIS da criação ────────────
+   Naugrim (Anões) e Pequenos (Hobbits) são proibições permanentes, não regras só
+   de criação. O editor de equipamento da ficha listava as 16 armas e os 3 escudos
+   sem filtro nenhum: depois da criação um Anão equipava Grande Escudo e um Hobbit
+   um Grande Machado, e a Carga e o Bloqueio recalculados em normalize entravam
+   com o número errado no token de combate. */
+
+const SHEET_VIEW = readFileSync(
+  join(__dirname, "..", "components", "character", "sheet", "TorCharacterSheetView.tsx"),
+  "utf8"
+);
+const DATA_CULT = readFileSync(
+  join(__dirname, "..", "lib", "character", "um-anel", "data.ts"),
+  "utf8"
+);
+
+ok(
+  "data.ts expõe weaponsForCulture (lista completa, sem filtrar por Proficiência)",
+  /export function weaponsForCulture\(cultureId: TorCultureId\)/.test(DATA_CULT)
+);
+ok("ficha filtra as armas pela Cultura", /weaponsForCulture\(character\.culture\)/.test(SHEET_VIEW));
+ok("ficha filtra os escudos pela Cultura", /shieldsForCulture\(character\.culture\)/.test(SHEET_VIEW));
+// A REGRESSÃO: listar WEAPONS/SHIELDS crus no editor.
+ok("editor NÃO lista WEAPONS sem filtro", !/\{WEAPONS\.map\(\(w\) => \(/.test(SHEET_VIEW));
+ok("editor NÃO lista SHIELDS sem filtro", !/\{SHIELDS\.map\(\(s\) => \(/.test(SHEET_VIEW));
+// Filtro de <select> é UI; a guarda de regra tem de estar na função que grava.
+ok(
+  "addWeapon recusa arma vetada à Cultura",
+  /if \(!allowedWeapons\.some\(\(w\) => w\.id === weapon\.id\)\) return;/.test(SHEET_VIEW)
+);
+// E as restrições precisam continuar existindo nos dados.
+ok(
+  "Anões vetam grande-arco, grande-lanca e grande-escudo",
+  /restrictedWeaponIds: \["grande-arco", "grande-lanca", "grande-escudo"\]/.test(DATA_CULT)
+);
+ok(
+  "Hobbits têm lista fechada de armas permitidas",
+  /allowedWeaponIdsOnly: \[/.test(DATA_CULT)
+);
+
 console.log(`\nverify-um-anel-sheet-conditions: ${pass} passaram, ${fail} falharam`);
 if (fail > 0) process.exit(1);
