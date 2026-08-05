@@ -181,5 +181,110 @@ ok(
   /id: "grande-troll-das-cavernas"[\s\S]{0,400}?endurance: 80[\s\S]{0,200}?might: 2/.test(ADV)
 );
 
+/* ── Fase J: os 3 adversários nomeados de Eriador ──────────────────────
+   Estavam traduzidos em 12-o-mundo-eriador.md e não existiam no bestiário. Os
+   números vêm daquele capítulo; o `id` fica em inglês porque é chave estável
+   (renomear quebraria salas salvas) e o `name` em PT-BR porque aparece no
+   nameplate do token. */
+
+const ERIADOR = readFileSync(root("livros", "um-anel", "12-o-mundo-eriador.md"), "utf8");
+
+const NOMEADOS = [
+  {
+    id: "barrow-king",
+    name: "Rei-Tumulário",
+    attributeLevel: 9,
+    endurance: 45,
+    might: 2,
+    hate: 9,
+    parry: 0,
+    armour: 4,
+    // Mortos-vivos: as três de família, além das quatro do próprio bloco.
+    familia: ["Sem Morte", "Sem Coração", "Infundir Medo"],
+  },
+  {
+    id: "burzgul",
+    name: "Búrzgul",
+    attributeLevel: 5,
+    endurance: 22,
+    might: 1,
+    hate: 5,
+    parry: 3,
+    armour: 3,
+    familia: ["Odeia a Luz do Sol"],
+  },
+  {
+    id: "ash-the-warg",
+    name: "Ash",
+    attributeLevel: 4,
+    endurance: 20,
+    might: 1,
+    hate: 4,
+    parry: 2,
+    armour: 1,
+    // Lobos das Terras Selvagens.
+    familia: ["Grande Salto"],
+  },
+];
+
+/** Campos numéricos do bloco daquele id. */
+function blocoDe(id) {
+  for (const parte of ADV.split(/\n  \{\n/).slice(1)) {
+    const corpo = parte.split(/\n  \},/)[0];
+    if (new RegExp(`id: "${id}"`).test(corpo)) return corpo;
+  }
+  return null;
+}
+
+for (const n of NOMEADOS) {
+  const bloco = blocoDe(n.id);
+  ok(`${n.id}: bloco existe`, Boolean(bloco));
+  if (!bloco) continue;
+
+  ok(`${n.id}: nome de exibição em PT-BR ("${n.name}")`, new RegExp(`name: "${n.name}"`).test(bloco));
+  for (const [campo, valor] of [
+    ["attributeLevel", n.attributeLevel],
+    ["endurance", n.endurance],
+    ["might", n.might],
+    ["hate", n.hate],
+    ["parry", n.parry],
+    ["armour", n.armour],
+  ]) {
+    ok(
+      `${n.id}: ${campo} = ${valor}`,
+      new RegExp(`${campo}: ${valor},`).test(bloco),
+      bloco.match(new RegExp(`${campo}: (\\d+)`))?.[1]
+    );
+  }
+  const habs = [...bloco.matchAll(/name: "([^"]+)",\s*\n?\s*text:/g)].map((m) => m[1]);
+  const faltam = n.familia.filter((h) => !habs.includes(h));
+  ok(`${n.id}: habilidades de família (${n.familia.join(" + ")})`, faltam.length === 0, faltam.join(", "));
+
+  // Os números têm de vir do capítulo, não de invenção.
+  ok(
+    `${n.id}: Resistência ${n.endurance} confere com o livro`,
+    new RegExp(`Resistência:\\*\\* ${n.endurance} `).test(ERIADOR)
+  );
+}
+
+// O Bloqueio do Rei-Tumulário é "–" no livro (sem escudo nem esquiva) → 0.
+ok(
+  'livro: Rei-Tumulário tem Bloqueio "–"',
+  /Rei-Tumulário[\s\S]{0,600}?\*\*Bloqueio:\*\* –/.test(ERIADOR)
+);
+
+// "Sobrepujar" fica como texto de Dano Especial: o efeito de Overbear não está
+// definido em nenhum ponto do material, então não foi mecanizado por chute.
+ok(
+  "Sobrepujar do Búrzgul fica só como texto de Dano Especial",
+  /specialDamage: \[[^\]]*"Sobrepujar"/.test(blocoDe("burzgul") || "")
+);
+ok(
+  "markdown registra que Overbear não tem efeito definido na fonte",
+  /Overbear\*? no original[\s\S]{0,400}?sem\s*\n?>?\s*definição na fonte/i.test(
+    ERIADOR.replace(/\n>\s*/g, " ")
+  )
+);
+
 console.log(`\nverify-um-anel-bestiario: ${pass} passaram, ${fail} falharam`);
 if (fail > 0) process.exit(1);

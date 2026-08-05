@@ -12,7 +12,6 @@ import {
   DISTINCTIVE_FEATURE_BY_ID,
   HELM,
   SHADOW_PATH_BY_ID,
-  SHIELDS,
   SHIELD_BY_ID,
   SKILLS,
   STANDARDS_OF_LIVING,
@@ -20,6 +19,8 @@ import {
   STARTING_VIRTUES,
   WEAPON_BY_ID,
   WEAPONS,
+  shieldsForCulture,
+  weaponsForCulture,
 } from "@/lib/character/um-anel/data";
 import {
   featDieRollPayload,
@@ -145,11 +146,18 @@ export function TorCharacterSheetView({
     });
   }
 
-  const [addWeaponId, setAddWeaponId] = useState(WEAPONS[0]?.id ?? "");
+  // Começa na primeira arma PERMITIDA à Cultura, não na primeira de WEAPONS.
+  const allowedWeapons = weaponsForCulture(character.culture);
+  const [addWeaponId, setAddWeaponId] = useState(allowedWeapons[0]?.id ?? "");
 
   function addWeapon() {
     const weapon = WEAPON_BY_ID[addWeaponId];
     if (!onResourceChange || !weapon) return;
+    // Guarda de regra, não só de UI: Naugrim e Pequenos são proibições
+    // permanentes. Filtrar só o <select> deixaria a porta aberta pra um id
+    // antigo ou forjado equipar uma arma vetada — e a Carga e o Bloqueio
+    // recalculados em normalize entrariam com o número errado.
+    if (!allowedWeapons.some((w) => w.id === weapon.id)) return;
     onResourceChange({
       warGear: [
         ...character.warGear,
@@ -442,7 +450,7 @@ export function TorCharacterSheetView({
         {interactive && onResourceChange ? (
           <div className="tor-sheet__gear-add">
             <select value={addWeaponId} onChange={(e) => setAddWeaponId(e.target.value)}>
-              {WEAPONS.map((w) => (
+              {allowedWeapons.map((w) => (
                 <option key={w.id} value={w.id}>
                   {w.label}
                 </option>
@@ -495,7 +503,7 @@ export function TorCharacterSheetView({
                 onChange={(e) => setShieldId(e.target.value || null)}
               >
                 <option value="">Nenhum</option>
-                {SHIELDS.map((s) => (
+                {shieldsForCulture(character.culture).map((s) => (
                   <option key={s.id} value={s.id}>
                     {s.label}
                   </option>
