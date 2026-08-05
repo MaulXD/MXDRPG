@@ -277,6 +277,12 @@ export type TorCultureDef = {
   combatProficiencyChoiceA: TorCombatProficiencyChoice;
   combatProficiencyChoiceB: TorCombatProficiencyChoice;
   distinctiveFeatureOptions: string[];
+  /**
+   * Bênção Cultural que concede +1 num Atributo à escolha. Era amarrado ao id
+   * "rangers" no wizard e em build-from-wizard, então os Altos-Elfos de Valfenda
+   * — cuja Bênção "Sábio-Élfico" tem a MESMA mecânica — perdiam o ponto.
+   */
+  blessingAttributeBonus?: boolean;
   restrictedWeaponIds?: string[];
   allowedWeaponIdsOnly?: string[];
 };
@@ -384,7 +390,7 @@ export const CULTURES: TorCultureDef[] = [
     name: "Hobbits do Condado",
     blessingName: "Bom-senso Hobbit",
     blessingText: "Suas rolagens de SABEDORIA são Favorecidas, e você ganha (1d) em todos os Testes de Sombra feitos para resistir aos efeitos da Cobiça.",
-    extraTraitName: "Meios-Homens",
+    extraTraitName: "Pequenos",
     extraTraitText: "Por causa de seu tamanho reduzido, Hobbits não podem usar armas maiores com eficácia. As armas disponíveis são: machado, arco, porrete, cacete, adaga, espada curta, lança curta e lança. Além disso, Hobbits não podem usar um grande escudo.",
     standardOfLiving: "comum",
     attributeOptions: [
@@ -448,6 +454,7 @@ export const CULTURES: TorCultureDef[] = [
     name: "Rangers do Norte",
     blessingName: "Reis dos Homens",
     blessingText: "Adicione 1 ponto a um Atributo à sua escolha.",
+    blessingAttributeBonus: true,
     extraTraitName: "Lealdade dos Dúnedain",
     extraTraitText: "Durante a Fase de Companhia você recupera no máximo um número de pontos de Esperança igual à metade do seu valor de CORAÇÃO (arredondando pra cima).",
     standardOfLiving: "frugal",
@@ -478,6 +485,7 @@ export const CULTURES: TorCultureDef[] = [
   {
     id: "altos-elfos-de-valfenda",
     name: "Altos-Elfos de Valfenda",
+    blessingAttributeBonus: true,
     blessingName: "Sábio-Élfico",
     blessingText: "Se você não estiver Arrasado, pode gastar 1 ponto de Esperança pra obter um sucesso Mágico numa rolagem de perícia. Além disso, some 1 ponto a um Atributo à sua escolha.",
     extraTraitName: "Marcado pelo Pesar",

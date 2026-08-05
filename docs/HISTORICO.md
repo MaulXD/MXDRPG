@@ -104,6 +104,67 @@ npm run sync:data:check       # após editar livros/
 
 ---
 
+### 2026-08-04 — Auditoria dos capítulos 3 e 8 CONCLUÍDA: 11 divergências, 11 correções
+
+**Pedido:** loop contínuo, opção A — fechar a auditoria de regra dos 4 capítulos densos.
+
+**Com isso os 4 capítulos densos estão auditados.** 13 candidatas → **11 confirmadas, 2 refutadas**.
+O capítulo 8 rendeu onde eu havia apostado: o bestiário, que tinha cobertura de teste quase nula.
+
+**O achado mais grave: Vigor era ignorado no combate.** O livro diz que "o Vigor indica o número de
+Ferimentos necessários para abater um inimigo de vez", e o campo `might` existia nos 22 blocos — mas
+nunca era copiado para o token, e o motor eliminava QUALQUER adversário no primeiro Ferimento. Os 8
+adversários de Vigor 2 morriam com metade do necessário: o **Grande Troll das Cavernas (Resistência 80,
+Proteção 3d) saía do combate num único Golpe Perfurante**. Corrigido com `might` e `wounds` no token, a
+decisão de abate no motor puro (que conhece Vigor e Ferimentos anteriores) e o `vitals` apenas contando
+— uma implementação da regra, não duas.
+
+**Habilidades de família não propagadas (7 blocos).** O livro diz "todos" para cada uma:
+- 3 dos 4 Trolls sem **Rijeza Hedionda** (que na prática dobra a Resistência) e **Cabeça-dura**;
+- os 3 Mortos-vivos sem **Infundir Medo** — a principal fonte de Sombra da família, 3 pontos de Pavor
+  em todos os heróis à vista;
+- o **Cão de Sauron** sem **Grande Salto**, justamente o mais perigoso da família (Vigor 2, Nível 5).
+  Sem ela, a postura de Retaguarda virava esconderijo seguro contra ele.
+
+**Nomes de Habilidade Sinistra que não existem no livro** — achado meu, no scan, não dos agentes: o app
+mostrava "Resistência Hedionda", "Obtuso" e "Golpe de Pavor" onde o livro diz **Rijeza Hedionda**,
+**Cabeça-dura** e **Infundir Medo**. Mesmo modo de falha do bug de "Reanimar Companheiros": o Mestre
+procura a habilidade no livro pelo nome que o app exibe e não encontra.
+
+**Criação de personagem (capítulo 3), 5 correções:**
+1. **Proficiência de Combate 2+1 = 3.** A escolha A usava `Math.max(…, 2)` e a B `+= 1` — escolher a
+   MESMA Proficiência nas duas dava graduação 3 de graça, o mesmo degrau que custaria 6 dos 10 pontos
+   de Experiência Prévia. A Cultura **copia** graduações da tabela, não incrementa.
+2. **Virtude inicial não somava nas derivadas.** Herói criado com Confiança ficava com Esperança máxima
+   2 abaixo do livro — e o limiar de Desfavorecido, que usa `hopeMax`, saía errado junto. As fichas do
+   Starter Set dizem "já contado no total" justamente porque a derivada é anotada com o efeito.
+3. **Campeão saía com 4 Traços Distintivos em vez de 3**, gravando o genérico e o especializado.
+4. **+1 de Atributo amarrado ao id `rangers`** — os Altos-Elfos de Valfenda, cuja Bênção tem a mesma
+   mecânica, perdiam o ponto (e com ele 1 de NA e 1 na derivada). Virou flag `blessingAttributeBonus`.
+5. **Traço dos Hobbits exibido como "Meios-Homens"**, string que não existe em `livros/um-anel/`. O
+   livro chama de **Pequenos**.
+
+**Refutadas (2):** "Reforçado Superior substitui o +2" e "todos os Orcs têm Odeia a Luz do Sol", ambas
+2/3.
+
+**Guarda nova: `scripts/verify-um-anel-bestiario.mjs`** (34 asserções) — trava o Vigor nos cinco pontos
+da cadeia (tipo do token, criação, motor, handler, vitals), exige as habilidades de família em todos os
+blocos de cada família, e proíbe o retorno dos nomes que não existem no livro.
+
+**Não corrigido, e por quê:** o editor de equipamento da ficha (`TorCharacterSheetView.tsx`) lista as 16
+armas e os 3 escudos **sem** aplicar os filtros de Cultura que o wizard usa — depois da criação, um Anão
+consegue equipar Grande Escudo e um Hobbit um Grande Machado, e os números errados entram no token via
+`normalize`. É divergência confirmada 0/3, mas o conserto é UI num componente grande e fica para a
+rodada seguinte, não por esquecimento.
+
+**Validação:** `npx tsc --noEmit` limpo · `npm run test` verde (**735 asserções**) · `npm run build`
+compila. **7 testes negativos** novos: reintroduzir cada correção faz o teste acusar.
+
+**Falta:** o filtro de Cultura no editor de equipamento; e a Fase J (bestiário completo com os 3
+faltantes, dados 3D, aventuras).
+
+---
+
 ### 2026-08-04 — Auditoria dos capítulos 4 e 6: 12 divergências, 12 correções
 
 **Pedido:** listar as melhores alternativas e já executar a melhor. Escolhida a **opção A** — fechar a

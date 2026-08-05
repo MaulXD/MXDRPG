@@ -1,5 +1,10 @@
 import { CALLING_BY_ID, CULTURE_BY_ID, SKILLS, STANDARDS_OF_LIVING, WEAPON_BY_ID } from "./data";
-import { computeDerivedStats, computeLoad, shieldParryBonus } from "./rules";
+import {
+  computeDerivedStats,
+  computeLoad,
+  shieldParryBonus,
+  torVirtueDerivedBonus,
+} from "./rules";
 import type {
   TorCharacterSheet,
   TorCombatProficiencyRatings,
@@ -27,7 +32,9 @@ export function buildTorCharacterFromWizard(
   if (!attrOption) throw new Error("Conjunto de Atributos inválido");
 
   const attributes = { ...attrOption };
-  if (culture.id === "rangers" && draft.rangerAttributeBonus) {
+  // Pela FLAG, não pelo id: a Bênção dos Altos-Elfos de Valfenda tem a mesma
+  // mecânica e perdia o ponto por estar fora do `if` amarrado a "rangers".
+  if (culture.blessingAttributeBonus && draft.rangerAttributeBonus) {
     attributes[draft.rangerAttributeBonus] += 1;
   }
 
@@ -46,15 +53,41 @@ export function buildTorCharacterFromWizard(
     combatProficiencies[draft.combatProficiencyChoiceA!],
     2
   );
-  combatProficiencies[draft.combatProficiencyChoiceB!] += 1;
+  // `Math.max`, não `+= 1`. A Cultura COPIA graduações da tabela (2 numa do par,
+  // 1 numa à escolha) — não incrementa. Com `+=`, escolher a MESMA Proficiência
+  // nas duas dava graduação 3 de graça: o mesmo degrau que custaria 6 dos 10
+  // pontos de Experiência Prévia. Escolher a mesma agora simplesmente desperdiça
+  // a segunda escolha, que é o resultado correto.
+  combatProficiencies[draft.combatProficiencyChoiceB!] = Math.max(
+    combatProficiencies[draft.combatProficiencyChoiceB!],
+    1
+  );
 
-  const derived = computeDerivedStats(culture.id, attributes);
+  // A Virtude inicial de valor fixo soma nas derivadas — o livro manda anotar a
+  // derivada JÁ com o efeito ("já contado no total" nas fichas do Starter Set).
+  const virtues = draft.virtue ? [draft.virtue] : [];
+  const virtueBonus = torVirtueDerivedBonus(virtues);
+  const base = computeDerivedStats(culture.id, attributes);
+  const derived = {
+    enduranceMax: base.enduranceMax + virtueBonus.enduranceMax,
+    hopeMax: base.hopeMax + virtueBonus.hopeMax,
+    parry: base.parry + virtueBonus.parry,
+  };
   const standard = STANDARDS_OF_LIVING.find((s) => s.id === culture.standardOfLiving)!;
 
-  const distinctiveFeatures = [...draft.distinctiveFeatures, calling.traitId];
-  if (calling.enemyLoreChoice && draft.enemyLoreChoice) {
-    distinctiveFeatures.push(`${calling.traitId}:${draft.enemyLoreChoice}`);
-  }
+  // O traço da Vocação entra UMA vez. Quando ele exige especialização (o
+  // Conhecimento do Inimigo do Campeão, onde o jogador escolhe o tipo de
+  // inimigo), entra só a forma especializada — antes gravava as duas, e o
+  // Campeão terminava com 4 Traços Distintivos em vez de 3, com a única
+  // informação que o livro manda escolher invisível na ficha.
+  const especializado =
+    calling.enemyLoreChoice && draft.enemyLoreChoice
+      ? `${calling.traitId}:${draft.enemyLoreChoice}`
+      : null;
+  const distinctiveFeatures = [
+    ...draft.distinctiveFeatures,
+    especializado ?? calling.traitId,
+  ];
 
   const warGear: TorWarGearItem[] = activeCombatProficiencies(draft).map((prof) => {
     const weaponId = draft.weaponChoices[prof]!;
@@ -115,7 +148,7 @@ export function buildTorCharacterFromWizard(
     valour: 1,
     wisdom: 1,
     rewards: draft.reward ? [draft.reward] : [],
-    virtues: draft.virtue ? [draft.virtue] : [],
+    virtues,
 
     treasure: standard.startingTreasure,
     adventurePoints: 0,

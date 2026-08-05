@@ -139,7 +139,15 @@ export type TorCombatTokenFields = {
   actions?: import("@/lib/character/um-anel/adversary-types").TorAdversaryAction[];
   /** Herói já com 1 Ferida marcada — a próxima é fatal. */
   wounded: boolean;
-  /** Adversário eliminado (Ferida ou Resistência 0). */
+  /**
+   * Só adversário — Vigor: "o número de Ferimentos necessários para abater um
+   * inimigo de vez, e o número de ataques que ele pode fazer durante uma rodada"
+   * (08-mestre-e-adversarios.md). Ausente é tratado como 1.
+   */
+  might?: number;
+  /** Só adversário — Ferimentos acumulados; ao alcançar o Vigor, é eliminado. */
+  wounds?: number;
+  /** Adversário eliminado (Ferimentos = Vigor, ou Resistência 0). */
   eliminated: boolean;
 };
 

@@ -62,6 +62,33 @@ export function torBrawlingRank(proficiencies: TorCombatProficiencyRatings): num
   return Math.max(0, highest - 1);
 }
 
+/**
+ * Bônus FIXOS que Virtudes iniciais somam às estatísticas derivadas.
+ *
+ * O livro manda anotar a derivada já com o efeito da Virtude — as fichas do
+ * Starter Set dizem "já contado no total" em cada uma delas
+ * (11-personagens-exemplo.md). Antes a Virtude era gravada só como id numa lista
+ * e nada somava o efeito: herói criado com Confiança ficava com Esperança máxima
+ * 2 abaixo do livro, e o limiar de Desfavorecido (que usa hopeMax) saía errado
+ * junto.
+ *
+ * Só as três de valor fixo entram aqui. Proeza reduz o NA de um Atributo,
+ * Maestria dá Perícias Favorecidas e Mão Firme age no Dano Especial — nenhuma é
+ * estatística derivada.
+ */
+export function torVirtueDerivedBonus(virtueIds: readonly string[]): {
+  enduranceMax: number;
+  hopeMax: number;
+  parry: number;
+} {
+  const has = (id: string) => virtueIds.includes(id);
+  return {
+    enduranceMax: has("robustez") ? 2 : 0,
+    hopeMax: has("confianca") ? 2 : 0,
+    parry: has("agilidade-de-aparar") ? 1 : 0,
+  };
+}
+
 export function computeDerivedStats(
   cultureId: TorCultureId,
   attributes: TorAttributes

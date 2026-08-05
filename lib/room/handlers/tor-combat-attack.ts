@@ -149,6 +149,10 @@ export async function executeRoomTorAttack(
     defenderMiserable,
     defenderIllFavoured,
     defenderAlreadyWounded: defCombat.wounded,
+    // Vigor e Ferimentos acumulados do adversário — sem isto o motor não sabe
+    // quantos Ferimentos faltam pra abatê-lo e eliminaria no primeiro.
+    defenderMight: defCombat.might,
+    defenderWounds: defCombat.wounds,
   });
 
   const patchedDefenderToken = applyTorAttackResultToDefender(defenderToken, result);
