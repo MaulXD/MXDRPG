@@ -40,3 +40,7 @@ preview-ficha.html
 # é redistribuição de material com direitos autorais. O conteúdo extraído/
 # transcrito em livros/um-anel/*.md é versionado à parte, por decisão do usuário.
 /the one ring/
+
+# Rascunho das traduções do Um Anel — o tradutor escreve aqui e só é movido
+# para livros/ depois de passar na verificação de completude. Nunca versionar.
+.tmp-traducao/

@@ -104,6 +104,51 @@ npm run sync:data:check       # após editar livros/
 
 ---
 
+### 2026-08-04 — Fase B CONCLUÍDA: 13/13 capítulos do Um Anel em PT-BR
+
+**Pedido:** continuar o loop e subir o que estiver feito.
+
+**Feito:** traduzidos os dois últimos e maiores capítulos — `03-aventureiros` (1159 linhas) e
+`08-mestre-e-adversarios` (1780 linhas). Com isso a **Fase B fecha em 13 de 13 capítulos**.
+
+1. **O modo de falha invertido funcionou.** Depois de a rodada 7 perder dois capítulos por truncamento,
+   os tradutores passaram a escrever em `.tmp-traducao/`, nunca sobre o original. Ambos entregaram
+   estrutura **exata**: `03` com 119 headings e 221 linhas de tabela, `08` com 69 e 285 — os mesmos
+   números do inglês. Só então movi para `livros/`. `.tmp-traducao/` entrou no `.gitignore`, porque eu
+   uso `git add -A` e rascunho de tradução não pode virar commit por descuido.
+
+2. **Verificação antes de mover, não depois.** Conferi headings, linhas de tabela, ausência do marcador
+   de pendência e proporção de palavras funcionais portuguesas (1628 em `03`, 3304 em `08`, contra 1
+   palavra inglesa em cada) antes de tocar em `livros/`.
+
+3. **Armadilha do pipeline, terceira e última cobrança.** Traduzir `08` quebrou 2 asserções e traduzir
+   `03` quebrou **20** — este último porque `verify-um-anel-pregens.mjs` fazia *parsing* do capítulo com
+   âncoras inglesas (`## Hobbits of the Shire`, `| Endurance | STRENGTH + 18 |`, `### Attributes`).
+
+   Em vez de só traduzir as âncoras, **tornei o parsing orientado a dados**: o mapa de Culturas agora é
+   derivado do campo `name` de `data.ts`, com os nomes em inglês como alternativa. Isso resolve duas
+   coisas de uma vez — acompanha futuras traduções sozinho, e passa a **exigir que o heading do livro e
+   o rótulo exibido no app sejam a mesma string**, acusando renomeação feita só num lado. Os rótulos das
+   tabelas ficaram bilíngues (`Resistência|Endurance`, `FORÇA|STRENGTH`, …).
+
+**Teste negativo:** corromper `enduranceBonus` dos Hobbits de 18 para 19 produz 8 falhas — a checagem da
+Cultura mais as 7 Resistências dos pré-gerados Hobbit. O parser está lendo o livro PT-BR de verdade, não
+passando por vacuidade.
+
+**Arquivos tocados:**
+- `livros/um-anel/{03-aventureiros,08-mestre-e-adversarios}.md` — traduzidos, marcadores removidos
+- `scripts/verify-um-anel-pregens.mjs` — parsing orientado a `data.ts` e rótulos bilíngues
+- `scripts/verify-um-anel-stances.mjs` — 2 asserções do capítulo 8 reancoradas bilíngues
+- `.gitignore` — `.tmp-traducao/`
+
+**Validação:** `npx tsc --noEmit` limpo · `npm run test` verde (**573 asserções**) · `npm run build` compila.
+
+**Falta:** auditoria de regra de `03`, `04`, `06` e `08` — os quatro capítulos mais densos, traduzidos
+mas ainda não confrontados com o código (o workflow em curso cobre `04` e `06`). Depois, a Fase J
+inteira: bestiário completo (D20), dados 3D (D19), aventuras (D31).
+
+---
+
 ### 2026-08-04 — Fase B, rodada 7: 2 capítulos + bônus de Yule por herói + guarda de truncamento
 
 **Pedido:** loop contínuo, workflow por rodada, verificação adversarial antes de tocar em produção.

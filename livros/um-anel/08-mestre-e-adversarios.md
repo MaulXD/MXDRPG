@@ -1,1779 +1,1780 @@
-# The Loremaster — The One Ring 2e (fonte: Core Rules, p.125-174)
+# O Mestre — O Um Anel 2ª ed. (fonte: Core Rules, p.125-174)
 
-> Conteúdo original em inglês — aguardando tradução colaborativa.
 > Fonte: the one ring/The_One_Ring_Core_Rules.pdf
 
 ---
 
-## Running the Game
+## Conduzindo o Jogo
 
-*"…there is nothing more that I can do to help it. The board is set, and the pieces are moving."*
+*"…não há mais nada que eu possa fazer para ajudar. O tabuleiro está posto, e as peças estão se movendo."*
 
-One of the most enjoyable features of all roleplaying games is the creative collaboration between the Loremaster and the players. But while the players are exclusively in charge of their own characters, the Loremaster is responsible for such things as the description of locations, the behaviour of the people and creatures encountered, and the consequences of the actions of all characters involved in a situation.
+Uma das características mais agradáveis de todos os jogos de interpretação de papéis é a colaboração criativa entre o Mestre e os jogadores. Mas, enquanto os jogadores cuidam exclusivamente de seus próprios personagens, o Mestre é responsável por coisas como a descrição dos lugares, o comportamento das pessoas e criaturas encontradas e as consequências das ações de todos os personagens envolvidos em uma situação.
 
-> In gaming terms, the Loremaster is tasked with structuring the gameplay, by presenting each scene of an Adventuring Phase.
+> Em termos de jogo, o Mestre tem a tarefa de estruturar a jogabilidade, apresentando cada cena de uma Fase de Aventura.
 
-Not all scenes in a session are the same — some take the best part of a gaming session, as they focus on the Player-heroes' attempts at achieving their objectives. Other scenes of lesser import are simply used to describe what happens between one main scene and another, when the Company enjoys a moment of respite or is busy planning what to do next.
+Não todas as cenas de uma sessão são iguais — algumas ocupam a maior parte de uma sessão de jogo, pois se concentram nas tentativas dos heróis-jogadores de alcançar seus objetivos. Outras cenas, de menor importância, servem simplesmente para descrever o que acontece entre uma cena principal e outra, quando a Companhia goza de um momento de descanso ou está ocupada planejando o que fazer em seguida.
 
-> The Loremaster is responsible for the framing of each main scene, while many details relating to the framing of secondary scenes can be left to the players.
+> O Mestre é responsável pelo enquadramento de cada cena principal, enquanto muitos detalhes relativos ao enquadramento das cenas secundárias podem ser deixados para os jogadores.
 
-From the point of view of the Loremaster, a typical session can be summarised as follows:
-1. The Loremaster presents each main scene to the players, framing the situation from the point of view of the Player-heroes; the players react to the circumstances, considering their options and then describing the actions of their Player-heroes;
-2. The Loremaster describes the consequences of the players' actions;
-3. Finally, the Loremaster advances the gameplay, either further developing the current scene, or wrapping it up and proceeding to frame a new one.
+Do ponto de vista do Mestre, uma sessão típica pode ser resumida assim:
+1. O Mestre apresenta cada cena principal aos jogadores, enquadrando a situação do ponto de vista dos heróis-jogadores; os jogadores reagem às circunstâncias, considerando suas opções e então descrevendo as ações de seus heróis-jogadores;
+2. O Mestre descreve as consequências das ações dos jogadores;
+3. Por fim, o Mestre faz a jogabilidade avançar, seja desenvolvendo mais a cena atual, seja encerrando-a e passando a enquadrar uma nova.
 
-### Handling Scenes
+### Lidando com as Cenas
 
-As seen in *Chapter 6*, the gameplay of *The One Ring* occurs over a series of scenes.
+Como visto no *capítulo 6*, a jogabilidade de *O Um Anel* ocorre ao longo de uma série de cenas.
 
-> Scenes represent meaningful episodes in the lives of the Player-heroes, situations putting their decisions and actions to the front and centre.
+> As cenas representam episódios significativos na vida dos heróis-jogadores, situações que colocam suas decisões e ações em primeiro plano.
 
-Anything happening in the game world that isn't directly related to the Player-heroes happens 'behind the scenes', and thus should not be the object of a scene.
+Tudo o que acontece no mundo do jogo e não esteja diretamente relacionado aos heróis-jogadores acontece "por trás das cenas" e, portanto, não deve ser objeto de uma cena.
 
-**1 — FRAMING A SCENE.** The Loremaster frames each scene, describing where it is taking place, setting the time of the day, and finally determining who is involved in it — this is the role of the Loremaster as Director (see page 128).
+**1 — ENQUADRAR UMA CENA.** O Mestre enquadra cada cena, descrevendo onde ela ocorre, definindo a hora do dia e finalmente determinando quem está envolvido nela — esse é o papel do Mestre como Diretor (ver neste capítulo).
 
-Once a scene is set, the players react to it, focusing on the goals they are pursuing and coming up with plans to achieve them.
+Uma vez montada a cena, os jogadores reagem a ela, concentrando-se nos objetivos que perseguem e elaborando planos para alcançá-los.
 
-> While the Loremaster is in charge of framing a scene, it is completely up to the players to decide how their Player-heroes intend to approach the situation that the scene described.
+> Embora o Mestre esteja encarregado de enquadrar a cena, cabe inteiramente aos jogadores decidir como seus heróis-jogadores pretendem abordar a situação descrita pela cena.
 
-For example, they may choose a course of action that is risky but promises a higher reward, or may prefer to play it safe and proceed with caution.
+Por exemplo, eles podem escolher um curso de ação arriscado mas que promete recompensa maior, ou podem preferir jogar pelo seguro e proceder com cautela.
 
-**SCENE EDITS:** Scenes do not necessarily happen one after the other. A scene following another that was just played does not have to take place immediately after the one preceding it, nor must it take place in a location that is nearby.
+**EDIÇÕES DE CENA:** As cenas não acontecem necessariamente uma após a outra. Uma cena que segue outra que acabou de ser jogada não precisa ocorrer imediatamente após a anterior, nem precisa acontecer em um lugar próximo.
 
-If a long stretch of game time passes from one scene to another, the Loremaster can describe what happens in the meantime as a cinematographic montage, while if the action moves to a location far away, the Loremaster should consider using the rules for journeys.
+Se um longo trecho de tempo de jogo se passa de uma cena para outra, o Mestre pode descrever o que acontece nesse meio-tempo como uma montagem cinematográfica; e se a ação se transfere para um lugar distante, o Mestre deveria considerar o uso das regras de jornadas.
 
-**2 — DESCRIBE THE CONSEQUENCES OF THE PLAYERS' ACTIONS.** Once the players have made their decision and have described their course of action, the Loremaster and the players employ the rules for Action Resolution and Heroic Ventures to manage all situations and conflicts — this is the role of The Loremaster as Referee (see page 128).
+**2 — DESCREVER AS CONSEQUÊNCIAS DAS AÇÕES DOS JOGADORES.** Depois que os jogadores tomaram sua decisão e descreveram seu curso de ação, o Mestre e os jogadores empregam as regras de Resolução de Ações e de Empresas Heroicas para conduzir todas as situações e conflitos — esse é o papel do Mestre como Árbitro (ver neste capítulo).
 
-The Loremaster assists the players when they choose actions for their characters to accomplish, calls for die rolls when required, and describes the consequences of those rolls.
+O Mestre auxilia os jogadores quando eles escolhem ações para seus personagens realizarem, pede rolagens de dados quando necessário e descreve as consequências dessas rolagens.
 
-> To advance the gameplay in a way that follows the choices of the players, the Loremaster must make sure that the consequences of all actions, whether they succeed or not, are given an appropriate narrative weight.
+> Para fazer a jogabilidade avançar de um modo que acompanhe as escolhas dos jogadores, o Mestre precisa garantir que as consequências de todas as ações, bem-sucedidas ou não, recebam o peso narrativo apropriado.
 
-Additional guidelines about how to determine the consequences of the actions of the players are presented on page 130.
+Diretrizes adicionais sobre como determinar as consequências das ações dos jogadores são apresentadas mais adiante neste capítulo.
 
-**3 — ADVANCE THE GAMEPLAY.** The Loremaster adds new narrative elements to the gameplay as necessary, driven by the actions of the players and their consequences — this is the role of The Loremaster as Narrator (see page 129).
+**3 — FAZER A JOGABILIDADE AVANÇAR.** O Mestre acrescenta novos elementos narrativos à jogabilidade conforme necessário, movido pelas ações dos jogadores e por suas consequências — esse é o papel do Mestre como Narrador (ver neste capítulo).
 
-> Taking into consideration what the players have done, the Loremaster develops several options about where the current situation may lead, to set up a follow-up scene in an organic way.
+> Levando em consideração o que os jogadores fizeram, o Mestre desenvolve várias opções sobre onde a situação atual pode levar, para montar uma cena seguinte de maneira orgânica.
 
-These options are not for the Loremaster to choose from — to give the players the opportunity to make real decisions, multiple options must always be presented as viable choices. The last thing a Loremaster should do is railroad players and make them conform to a pre-made idea of how a game should progress.
+Essas opções não existem para o Mestre escolher entre elas — para dar aos jogadores a oportunidade de tomar decisões reais, múltiplas opções devem sempre ser apresentadas como escolhas viáveis. A última coisa que um Mestre deveria fazer é conduzir os jogadores nos trilhos e obrigá-los a se conformar a uma ideia pronta de como o jogo deve progredir.
 
-Sometimes, the Loremaster may insert new narrative elements that are not connected to what has transpired so far. These events may be part of a series of 'scripted' events, or tied to a chronology or the agenda of a Loremaster Character.
+Às vezes, o Mestre pode inserir novos elementos narrativos que não estão ligados ao que se passou até então. Esses eventos podem fazer parte de uma série de acontecimentos "roteirizados", ou estar atados a uma cronologia ou à agenda de um Personagem do Mestre.
 
-## The Middle-earth Loremaster
+## O Mestre da Terra-média
 
-*"This Mithrandir was, I now guess, more than a lore-master: a great mover of the deeds that are done in our time."*
+*"Este Mithrandir era, agora suponho, mais que um mestre de saber: um grande instigador dos feitos que se realizam em nosso tempo."*
 
-The most important task of a Loremaster is to act as the interface between the players and Middle-earth. Evoking the right mood is essential in order to give the players the feeling that they are taking part in the unfolding events composing the Twilight of the Third Age.
+A tarefa mais importante de um Mestre é agir como interface entre os jogadores e a Terra-média. Evocar o clima adequado é essencial para dar aos jogadores a sensação de que estão tomando parte nos eventos que compõem o Crepúsculo da Terceira Era.
 
-It can seem a daunting prospect at first, but being the Loremaster is an immensely satisfying role for a Tolkien enthusiast, a chance to experience the world of Middle-earth as its own creator did — by orchestrating all the elements of the setting to produce new epic tales.
+Pode parecer uma perspectiva assustadora no começo, mas ser o Mestre é um papel imensamente satisfatório para um entusiasta de Tolkien, uma chance de experimentar o mundo da Terra-média como seu próprio criador fez — orquestrando todos os elementos do cenário para produzir novos contos épicos.
 
-### The Qualities of a Loremaster
+### As Qualidades de um Mestre
 
-The Loremaster's duties can be broken down into three roles: Director, Referee, and Narrator.
+Os deveres do Mestre podem ser divididos em três papéis: Diretor, Árbitro e Narrador.
 
-**THE LOREMASTER AS DIRECTOR.** When framing each scene of an Adventuring Phase, it is useful to think of the job of the Loremaster as being similar to that of a theatre or movie director — choosing and arranging the basic elements of the 'stage' that the characters will act on during the next session of play.
+**O MESTRE COMO DIRETOR.** Ao enquadrar cada cena de uma Fase de Aventura, é útil pensar no trabalho do Mestre como semelhante ao de um diretor de teatro ou cinema — escolhendo e arranjando os elementos básicos do "palco" no qual os personagens vão atuar durante a próxima sessão de jogo.
 
-> The Loremaster should not think of framing a scene as a complicated process — it is really simply about selecting a location, setting the time of the day, and describing who is present, including any minor or major Loremaster Characters (see page 185). Details are important, for example what the weather is like, but they should not clutter a description — everything can be expanded on later, once the players start exploring the scene, asking questions.
+> O Mestre não deveria pensar no enquadramento de uma cena como um processo complicado — trata-se realmente apenas de selecionar um lugar, definir a hora do dia e descrever quem está presente, incluindo quaisquer Personagens do Mestre menores ou maiores (ver capítulo 9). Detalhes são importantes, por exemplo como está o tempo, mas não devem entulhar uma descrição — tudo pode ser expandido depois, quando os jogadores começarem a explorar a cena, fazendo perguntas.
 
-What is important is that the Loremaster doesn't have to worry about telling a story, but only needs to provide the players with its basic ingredients. It is up to the players to pick them up, and compose them into a full-blown narrative through their choices and actions.
+O importante é que o Mestre não precisa se preocupar em contar uma história, mas apenas fornecer aos jogadores seus ingredientes básicos. Cabe aos jogadores recolhê-los e compô-los em uma narrativa plena por meio de suas escolhas e ações.
 
-To facilitate this process, when framing a scene the Loremaster should consider including some immediate prompts to action. Usually, such prompts take the form of visible or otherwise obvious hurdles obstructing their path. An obstacle can be some form of active, direct opposition (from an adversary or a Loremaster character, for example) or be the result of 'in-world', natural circumstances or threats, like bad weather conditions.
+Para facilitar esse processo, ao enquadrar uma cena o Mestre deveria considerar incluir alguns estímulos imediatos à ação. Normalmente, tais estímulos tomam a forma de obstáculos visíveis ou de outro modo evidentes obstruindo o caminho. Um obstáculo pode ser alguma forma de oposição ativa e direta (de um adversário ou de um personagem do Mestre, por exemplo) ou resultar de circunstâncias ou ameaças naturais, "de dentro do mundo", como más condições climáticas.
 
-**CONSISTENCY:** The key to successfully 'directing' a game of *The One Ring* is being able to weave descriptions that are always consistent, taking into consideration the lore and all the disparate elements that emerge from the gameplay session after session — the goals and ambitions of the members of a Company, the places they visit, and the people they meet.
+**COERÊNCIA:** A chave para "dirigir" com sucesso um jogo de *O Um Anel* é ser capaz de tecer descrições sempre coerentes, levando em consideração o saber e todos os elementos disparatados que emergem da jogabilidade sessão após sessão — os objetivos e ambições dos membros de uma Companhia, os lugares que visitam e as pessoas que conhecem.
 
-To achieve this, a good level of familiarity with the source material comes in extremely handy. *Chapter 9* presents details about the events, locations, and characters that compose the default setting for *The One Ring*.
+Para conseguir isso, um bom nível de familiaridade com o material de origem é extremamente útil. O *capítulo 9* apresenta detalhes sobre os eventos, lugares e personagens que compõem o cenário padrão de *O Um Anel*.
 
-**THE LOREMASTER AS REFEREE.** Roleplaying games combine game rules with a set of social and storytelling conventions. While these conventions place roleplaying games outside the constraints of traditional board or card games (which are defined solely by their rules), the correct application of the game mechanics depends on one essential element to work to their full potential: the presence of an impartial moderator — the Loremaster.
+**O MESTRE COMO ÁRBITRO.** Os jogos de interpretação de papéis combinam regras de jogo com um conjunto de convenções sociais e narrativas. Enquanto essas convenções colocam os jogos de interpretação fora das amarras dos jogos tradicionais de tabuleiro ou de cartas (que são definidos exclusivamente por suas regras), a aplicação correta das mecânicas de jogo depende de um elemento essencial para funcionar em todo o seu potencial: a presença de um moderador imparcial — o Mestre.
 
-> The Loremaster must be ready to adjudicate the rules at all times, whether testing the mettle of the Player-heroes during the Adventuring Phase, or helping players determine the outcome of their choices during the Fellowship Phase.
+> O Mestre deve estar pronto para arbitrar as regras a todo momento, seja testando a têmpera dos heróis-jogadores durante a Fase de Aventura, seja ajudando os jogadores a determinar o resultado de suas escolhas durante a Fase de Companhia.
 
-**FAIRNESS:** Acting as a referee, a Loremaster should strive to be fair and to apply the rules properly and impartially. The game mechanics are designed to provide players with a challenge, and to determine whether their Player-heroes are up to the test or not; to reward them with success if they are, or to make their lives more complicated (and interesting!) with the consequences of failure if they are not.
+**JUSTEZA:** Atuando como árbitro, o Mestre deveria esforçar-se por ser justo e por aplicar as regras adequada e imparcialmente. As mecânicas de jogo são desenhadas para oferecer aos jogadores um desafio e para determinar se seus heróis-jogadores estão ou não à altura do teste; para recompensá-los com o sucesso se estiverem, ou para tornar suas vidas mais complicadas (e interessantes!) com as consequências do fracasso se não estiverem.
 
-A biased Loremaster can easily ruin a game, as an unfair call when applying a rule brings the rules themselves to the players' attention, and their immersion in the game is disrupted.
+Um Mestre tendencioso pode facilmente arruinar um jogo, pois uma decisão injusta na aplicação de uma regra chama a atenção dos jogadores para as próprias regras, e sua imersão no jogo é rompida.
 
-**THE LOREMASTER AS NARRATOR.** As we have seen already, if playing a roleplaying game can create a story, that story arises from the interaction of the Loremaster's descriptions with the choices of the players. This means that the Loremaster should not prepare too much beforehand, to try and force a prewritten plot into the gameplay.
+**O MESTRE COMO NARRADOR.** Como já vimos, se jogar um jogo de interpretação de papéis pode criar uma história, essa história surge da interação das descrições do Mestre com as escolhas dos jogadores. Isso significa que o Mestre não deveria preparar demais de antemão, para tentar forçar uma trama pré-escrita dentro da jogabilidade.
 
-> It is easier, and probably wiser, for the Loremaster to set up each session as if it was a separate episode of a longer, semi-improvisational narrative, with each new one building organically upon the consequences of the previous sessions.
+> É mais fácil, e provavelmente mais sábio, que o Mestre monte cada sessão como se fosse um episódio separado de uma narrativa mais longa e semi-improvisada, com cada nova sessão construindo-se organicamente sobre as consequências das sessões anteriores.
 
-This does not mean that the Loremaster should solely improvise. In fact, each Adventuring Phase should feature one or more overarching 'schemes', pivotal plot elements that help the Loremaster to come up with new ideas to advance the narrative.
+Isso não significa que o Mestre deva apenas improvisar. De fato, cada Fase de Aventura deveria apresentar um ou mais "esquemas" abrangentes, elementos de trama fundamentais que ajudam o Mestre a ter novas ideias para fazer a narrativa avançar.
 
-In a way, Schemes are the objectives of the Company's enemies, managed by the Loremaster, to establish opposition to the actions of the players (published material for *The One Ring* presents Schemes as an integral part of their premise and text).
+De certa forma, os Esquemas são os objetivos dos inimigos da Companhia, conduzidos pelo Mestre para estabelecer oposição às ações dos jogadores (o material publicado para *O Um Anel* apresenta os Esquemas como parte integrante de sua premissa e de seu texto).
 
-**ADAPTABILITY:** A quick and rich imagination and the willingness to adapt is a precious quality in a Loremaster, as it makes it easier to integrate the actions of the players with the narrative.
+**ADAPTABILIDADE:** Uma imaginação rápida e rica, e a disposição para adaptar-se, são qualidades preciosas em um Mestre, pois tornam mais fácil integrar as ações dos jogadores à narrativa.
 
-The Loremaster should never forget that the Player-heroes are the protagonists of their story, and their choices must always produce tangible effects within the game world.
+O Mestre nunca deveria esquecer que os heróis-jogadores são os protagonistas de sua própria história, e que suas escolhas devem sempre produzir efeitos tangíveis dentro do mundo do jogo.
 
-### Canon and the Loremaster
+### O Cânone e o Mestre
 
-Fans of the literary works of J.R.R. Tolkien have long debated the existence of a consistent canon — as described in *The Hobbit*, *The Lord of the Rings*, and later publications — that firmly defines the world and history of Middle-earth. This has often been cited as one of the major hurdles to roleplaying games set in Middle-earth, claiming as it does that the Player-heroes' adventures will 'interfere' with the actions of the sagas' known protagonists and 'break' the canon's consistency.
+Os fãs das obras literárias de J.R.R. Tolkien há muito debatem a existência de um cânone coerente — como descrito em *O Hobbit*, *O Senhor dos Anéis* e publicações posteriores — que defina firmemente o mundo e a história da Terra-média. Isso muitas vezes foi citado como um dos maiores obstáculos aos jogos de interpretação situados na Terra-média, alegando-se que as aventuras dos heróis-jogadores vão "interferir" nas ações dos protagonistas conhecidos das sagas e "quebrar" a coerência do cânone.
 
-The quick and easy answer to such concerns is that 'there is no such thing as an established Tolkien canon'; however, it is interesting to delve a little further into the subject, because a Loremaster can learn a great deal from tackling this apparently insurmountable obstacle.
+A resposta rápida e fácil a tais preocupações é que "não existe tal coisa como um cânone tolkieniano estabelecido"; entretanto, é interessante aprofundar-se um pouco mais no assunto, porque um Mestre pode aprender muito ao enfrentar esse obstáculo aparentemente insuperável.
 
-**AN 'UNRELIABLE NARRATOR'**
+**UM "NARRADOR NÃO CONFIÁVEL"**
 
-One of the ways a Loremaster can deal with the dilemma of altering facts perceived to be part of the Tolkien canon is to consider the information in the stories not as the words of an infallible, all-knowing narrator, but those of witnesses to the events — individuals who are subject to errors and personal bias (for example, *The Hobbit* relates the content of Bilbo Baggins' memoirs).
+Uma das maneiras pelas quais um Mestre pode lidar com o dilema de alterar fatos percebidos como parte do cânone tolkieniano é considerar as informações das histórias não como as palavras de um narrador infalível e onisciente, mas como as de testemunhas dos eventos — indivíduos sujeitos a erros e a preconceitos pessoais (por exemplo, *O Hobbit* relata o conteúdo das memórias de Bilbo Bolseiro).
 
-This literary device served Tolkien well as he strove to create a believable 'ancient history' which included the inevitable inconsistencies that arise in a narrative composed by different chroniclers over time, and there is no reason why a Loremaster cannot do the same, especially if there is a need to change an 'established' date or the details behind a known 'fact' or 'historical' figure.
+Esse artifício literário serviu bem a Tolkien enquanto ele se esforçava por criar uma "história antiga" verossímil que incluísse as inevitáveis incoerências que surgem em uma narrativa composta por diferentes cronistas ao longo do tempo, e não há razão para que um Mestre não possa fazer o mesmo, especialmente se houver necessidade de mudar uma data "estabelecida" ou os detalhes por trás de um "fato" conhecido ou de uma figura "histórica".
 
-To get an idea of how much the perspective of an unreliable narrator can distort perceptions — and possibly facts — one need look no further than the books themselves. Readers of *The Lord of the Rings* often find it difficult to reconcile the image of Gimli, the redoubtable axe-wielding warrior of Erebor, with the Dwarven companions of Bilbo in *The Hobbit*, who, captured by Trolls, Goblins, Spiders, and Wood-elves, more often than not end up being saved by their Hobbit burglar.
+Para ter uma ideia de quanto a perspectiva de um narrador não confiável pode distorcer percepções — e possivelmente fatos — basta olhar para os próprios livros. Leitores de *O Senhor dos Anéis* muitas vezes têm dificuldade em reconciliar a imagem de Gimli, o formidável guerreiro de Erebor empunhando um machado, com os companheiros Anões de Bilbo em *O Hobbit*, que, capturados por Trolls, Goblins, Aranhas e Elfos da Floresta, mais frequentemente do que não acabam sendo salvos por seu ladrão Hobbit.
 
-**FILLING IN THE BLANKS**
+**PREENCHENDO AS LACUNAS**
 
-Tolkien wove a rich narrative tapestry, composed of believable characters set against a vivid landscape and driven by motivations firmly grounded in myth and tradition. But even such an extensive and intricate chronicle does not thoroughly explore every nook and cranny of this imagined world and time period — far from it. As the narrative focus of the books shifts from one region to another, many locations and the events related to them remain obscure and are only briefly touched upon.
+Tolkien teceu uma rica tapeçaria narrativa, composta de personagens verossímeis situados contra uma paisagem vívida e movidos por motivações firmemente enraizadas no mito e na tradição. Mas mesmo uma crônica tão extensa e intricada não explora minuciosamente cada canto e recanto desse mundo e período imaginados — longe disso. Conforme o foco narrativo dos livros se desloca de uma região para outra, muitos lugares e os eventos a eles relacionados permanecem obscuros e são apenas brevemente mencionados.
 
-The 'filling-in-the-blanks' approach — based on the concept that the sagas are told from the subjective perspective of their protagonists, who are not familiar with every corner of Middle-earth — gives every Loremaster the freedom to create their own stories.
+A abordagem de "preencher as lacunas" — baseada no conceito de que as sagas são contadas da perspectiva subjetiva de seus protagonistas, que não conhecem cada canto da Terra-média — dá a todo Mestre a liberdade de criar suas próprias histórias.
 
-The setting material provided in this guide and in the various supplements for the game is an example of this. Many of the events occurring in the chosen time frame — the years covering the period from the discovery of the Ring to its destruction — are briefly mentioned in the source materials, and are therefore open for development and interpretation.
+O material de cenário fornecido neste guia e nos vários suplementos do jogo é um exemplo disso. Muitos dos eventos que ocorrem no período escolhido — os anos que cobrem o intervalo entre a descoberta do Anel e sua destruição — são brevemente mencionados nos materiais de origem, e estão portanto abertos ao desenvolvimento e à interpretação.
 
-**IT IS ALL ABOUT THE CHARACTERS**
+**É TUDO SOBRE OS PERSONAGENS**
 
-Another interesting view on canon comes from the author himself. While certainly very protective of his own creations in general, J.R.R. Tolkien stressed several times that what was ultimately dear to him was the integrity of his characters and their motivations, more than the preservation of his plots or other elements.
+Outra visão interessante sobre o cânone vem do próprio autor. Embora certamente muito protetor de suas criações em geral, J.R.R. Tolkien enfatizou várias vezes que o que lhe era em última instância caro era a integridade de seus personagens e de suas motivações, mais que a preservação de suas tramas ou de outros elementos.
 
-By applying this perspective to a game of *The One Ring*, it is clear that the game will remain true to its literary sources if the Loremaster pays due attention to the treatment of the canonical characters, and if the players strive to create and play plausible heroes.
+Aplicando essa perspectiva a um jogo de *O Um Anel*, fica claro que o jogo permanecerá fiel a suas fontes literárias se o Mestre der a devida atenção ao tratamento dos personagens canônicos, e se os jogadores se esforçarem por criar e interpretar heróis plausíveis.
 
-**LAST, BUT NOT LEAST…**
+**POR ÚLTIMO, MAS NÃO MENOS IMPORTANTE…**
 
-Nowadays, the bulk of Tolkien's Middle-earth-related publications give the impression of an immutable and consistent corpus. But when the author was alive, he was constantly rewriting and rearranging his own material, even making substantial changes to be inserted in new, revised editions of his books. Some of these changes corrected inconsistencies, but more often than not they were introduced to accommodate later plot changes and developments.
+Hoje em dia, o conjunto das publicações de Tolkien relacionadas à Terra-média dá a impressão de um corpus imutável e coerente. Mas quando o autor era vivo, ele reescrevia e reorganizava constantemente seu próprio material, chegando a fazer mudanças substanciais para inserir em edições novas e revistas de seus livros. Algumas dessas mudanças corrigiam incoerências, mas mais frequentemente do que não eram introduzidas para acomodar mudanças e desenvolvimentos posteriores da trama.
 
-For this reason, it is not unreasonable to assume that even Tolkien himself looked at his own work as being mutable — that even the chronologies he himself carefully created were to be considered provisional at best and not restricted to or bound by an established canon.
+Por essa razão, não é despropositado supor que mesmo Tolkien olhasse para a própria obra como mutável — que mesmo as cronologias que ele próprio criou com cuidado deviam ser consideradas provisórias na melhor das hipóteses, e não restritas ou presas a um cânone estabelecido.
 
-Taking everything into consideration, a Loremaster should not feel intimidated by the source material; rather, they should push ahead and add their own story threads to Professor Tolkien's wonderful and epic narrative tapestry.
+Levando tudo em consideração, um Mestre não deveria sentir-se intimidado pelo material de origem; ao contrário, deveria seguir adiante e acrescentar seus próprios fios de história à maravilhosa e épica tapeçaria narrativa do Professor Tolkien.
 
-## Tools for the Loremaster
+## Ferramentas para o Mestre
 
-*"Quite simple. Too simple for a learned lore-master in these suspicious days."*
+*"Bem simples. Simples demais para um erudito mestre de saber nestes dias suspeitosos."*
 
-The following section presents a number of rules that the Loremaster will find helpful when running the game. They add a layer of meaning to die rolls and especially to their consequences.
-- The Consequences of Failure section aims to help the Loremaster in adding variety to the result of the players' bad rolls;
-- Skill Endeavours details how to handle complicated actions that require more than a single roll to be completed;
-- Finally, the Sources of Injury section gives substance to failures causing harm to the Player-heroes outside of combat.
+A seção seguinte apresenta uma série de regras que o Mestre achará úteis ao conduzir o jogo. Elas acrescentam uma camada de significado às rolagens de dados e especialmente às suas consequências.
+- A seção As Consequências do Fracasso visa ajudar o Mestre a acrescentar variedade ao resultado das rolagens ruins dos jogadores;
+- Empreitadas de Perícia detalha como lidar com ações complicadas que exigem mais de uma única rolagem para serem concluídas;
+- Por fim, a seção Fontes de Dano dá substância aos fracassos que causam mal aos heróis-jogadores fora do combate.
 
-### The Consequences of Failure
+### As Consequências do Fracasso
 
-The rules for actions seen on page 17 allow players to determine what they get when they succeed at their die rolls — failing normally indicates that something went wrong and that the Player-heroes didn't obtain what they wanted.
+As regras de ações vistas no capítulo 1 permitem aos jogadores determinar o que obtêm quando são bem-sucedidos em suas rolagens — falhar normalmente indica que algo deu errado e que os heróis-jogadores não obtiveram o que queriam.
 
-Often things are not so clear-cut, though. While most instances may be so tranquil that even failing a roll doesn't spell complete failure, sometimes the circumstances surrounding a Skill roll are so adverse that a failure means that something bad happened.
+Muitas vezes, porém, as coisas não são tão nítidas. Ainda que a maioria dos casos possa ser tão tranquila que mesmo falhar numa rolagem não signifique fracasso completo, às vezes as circunstâncias em torno de uma rolagem de Perícia são tão adversas que uma falha significa que algo ruim aconteceu.
 
-> To give Skill rolls an additional layer of description, the Loremaster may choose a Risk level.
+> Para dar às rolagens de Perícia uma camada adicional de descrição, o Mestre pode escolher um nível de Risco.
 
-**RISK LEVELS:**
+**NÍVEIS DE RISCO:**
 
-| Risk Level | The failed roll results in a… | Examples |
+| Nível de Risco | A rolagem falha resulta em… | Exemplos |
 |---|---|---|
-| Standard | Simple Failure, OR Success with Woe | Eluding the watch of a Bounder in the Shire, entertaining a crowd of inebriated patrons at an inn, climbing a tall tree. |
-| Hazardous | Failure with Woe | Stealing mushrooms from a farm guarded by ferocious dogs, climbing atop a crumbling tower, or trying to swim the waters of a swift-running river. |
-| Foolish | Disaster! | Picking the pockets of a hungry Troll, playing a riddle game with a Dragon, or bandying words with an angry Wizard. |
+| Padrão | Falha Simples, OU Sucesso com Infortúnio | Escapar da vigilância de um Fronteiriço no Condado, entreter uma multidão de fregueses embriagados numa estalagem, escalar uma árvore alta. |
+| Arriscado | Falha com Infortúnio | Roubar cogumelos de uma fazenda guardada por cães ferozes, escalar até o topo de uma torre em ruínas, ou tentar atravessar a nado as águas de um rio de correnteza forte. |
+| Insensato | Desastre! | Bater a carteira de um Troll faminto, jogar um jogo de enigmas com um Dragão, ou trocar palavras com um Mago irado. |
 
-There are three Risk levels, making an action either Standard, Hazardous, or Foolish. When setting a Risk level higher than standard, the Loremaster should always warn the players that what they are attempting is more dangerous, describing what actually makes the action particularly hazardous, so that the players can see more clearly the potential consequences of what they are about to do.
-- **STANDARD ACTIONS** — Player-heroes making a Standard roll are performing under a limited level of pressure or risk, and thus exert a higher control over their circumstances.
-- **HAZARDOUS ACTIONS** — Player-heroes attempting a Hazardous roll are attempting something daring, accepting the risk of suffering serious negative consequences upon a failure.
-- **FOOLISH ACTIONS** — Attempting something Foolish and failing is sure to result in grievous negative consequences.
+Há três níveis de Risco, tornando uma ação Padrão, Arriscada ou Insensata. Ao definir um nível de Risco superior ao padrão, o Mestre deveria sempre advertir os jogadores de que o que estão tentando é mais perigoso, descrevendo o que de fato torna a ação particularmente arriscada, para que os jogadores possam ver com mais clareza as consequências potenciais do que estão a ponto de fazer.
+- **AÇÕES PADRÃO** — Heróis-jogadores fazendo uma rolagem Padrão atuam sob um nível limitado de pressão ou risco, e assim exercem maior controle sobre suas circunstâncias.
+- **AÇÕES ARRISCADAS** — Heróis-jogadores tentando uma rolagem Arriscada estão tentando algo audacioso, aceitando o risco de sofrer sérias consequências negativas em caso de falha.
+- **AÇÕES INSENSATAS** — Tentar algo Insensato e falhar certamente resultará em consequências negativas graves.
 
-**SIMPLE FAILURE, OR SUCCESS WITH WOE:** At a Standard Risk level, at the Loremaster's discretion, the acting Player-hero can simply fail, or be offered the chance to trade failure for a success marred by a negative occurrence.
+**FALHA SIMPLES, OU SUCESSO COM INFORTÚNIO:** Em um nível de Risco Padrão, a critério do Mestre, o herói-jogador que age pode simplesmente falhar, ou receber a chance de trocar a falha por um sucesso maculado por uma ocorrência negativa.
 
-> Succeeding with Woe means that the acting Player-hero succeeds, but at the cost of an unexpected inconvenience that devalues the performance, reducing its overall result, or that carries a negative side effect.
+> Ser bem-sucedido com Infortúnio significa que o herói-jogador que age tem sucesso, mas ao custo de um inconveniente inesperado que desvaloriza o desempenho, reduzindo seu resultado geral, ou que carrega um efeito colateral negativo.
 
-*Example: A Player-hero jumping across a chasm makes it to the other side but drops a weapon or shield; the Dragon didn't sniff out the sneaking hero but moved in his sleep and now blocks the exit; the intricate Dwarven lock has been opened, but the magical key used to unlock it is stuck.*
+*Exemplo: Um herói-jogador que salta sobre um abismo alcança o outro lado mas deixa cair uma arma ou escudo; o Dragão não farejou o herói furtivo mas se moveu no sono e agora bloqueia a saída; a intricada fechadura Anã foi aberta, mas a chave mágica usada para destrancá-la ficou presa.*
 
-**FAILURE WITH WOE.** The acting Player-hero fails, and an additional serious negative event adds a new concern that will need attending to.
+**FALHA COM INFORTÚNIO.** O herói-jogador que age falha, e um evento negativo sério adicional acrescenta uma nova preocupação que precisará ser resolvida.
 
-*Example: Prey escaping a hunter wails, risking attracting the attention of more dangerous creatures; an Orc-guard spots the hiding Player-hero and now is running to sound an alarm bell; the group of ruffians the Player-hero wanted to intimidate now draw their blades.*
+*Exemplo: A presa que escapa de um caçador uiva, correndo o risco de atrair a atenção de criaturas mais perigosas; um guarda Orc avista o herói-jogador escondido e agora corre para soar um sino de alarme; o grupo de rufiões que o herói-jogador queria intimidar agora saca as lâminas.*
 
-**DISASTER!** The attempt results in disaster! Not only does the roll not achieve its objective, but it causes a grievous negative event to take place. Unlike failure with woe, the negative effects of a disastrous roll cannot be prevented.
+**DESASTRE!** A tentativa resulta em desastre! Não só a rolagem não alcança seu objetivo, mas também faz com que ocorra um evento negativo grave. Ao contrário da falha com infortúnio, os efeitos negativos de uma rolagem desastrosa não podem ser evitados.
 
-*Example: A hero climbing a tree to spy upon an Orc encampment falls into the middle of the assembled enemies; the purse the Player-hero was trying to steal from the Troll's pocket sounds a warning and the hero is caught.*
+*Exemplo: Um herói que escala uma árvore para espionar um acampamento de Orcs cai no meio dos inimigos reunidos; a bolsa que o herói-jogador tentava roubar do bolso do Troll soa um alerta e o herói é apanhado.*
 
-### Skill Endeavours
+### Empreitadas de Perícia
 
-Sometimes a simple die roll falls short in describing the dynamics behind a complex task. This happens when an action is better described as a series of smaller feats, with each successful attempt bringing the Company closer to the accomplishment of the overall task.
+Às vezes uma simples rolagem de dados é insuficiente para descrever a dinâmica por trás de uma tarefa complexa. Isso acontece quando uma ação é melhor descrita como uma série de pequenos feitos, com cada tentativa bem-sucedida aproximando a Companhia da realização da tarefa geral.
 
-Examples of Skill Endeavours include undertakings like searching a wide area for clues or fortifying a steading before nightfall, following the tracks of a band of marauding Orcs before they return to their lands, or figuring out a complicated riddle, and so on.
+Exemplos de Empreitadas de Perícia incluem tarefas como examinar uma área ampla à procura de pistas ou fortificar uma propriedade antes do anoitecer, seguir os rastros de uma banda de Orcs saqueadores antes que retornem a suas terras, ou decifrar um enigma complicado, e assim por diante.
 
-> To complete a Skill Endeavour, the participating Player-heroes must achieve a set number of successful rolls — the endeavour's Resistance rating.
+> Para concluir uma Empreitada de Perícia, os heróis-jogadores participantes precisam obter um número determinado de rolagens bem-sucedidas — a Resistência da empreitada.
 
-**OPPOSED ACTIONS:** While unlikely, it may happen that a Player-hero is trying to accomplish something in direct opposition to another Player-hero. When this happens, the action roll becomes an opposed roll.
+**AÇÕES OPOSTAS:** Embora improvável, pode acontecer que um herói-jogador esteja tentando realizar algo em oposição direta a outro herói-jogador. Quando isso acontece, a rolagem de ação torna-se uma rolagem oposta.
 
-An opposed roll is resolved with everyone rolling simultaneously, using the same ability or different ones, depending on the circumstances. Everyone rolls against their relevant Attribute TN.
+Uma rolagem oposta é resolvida com todos rolando simultaneamente, usando a mesma habilidade ou habilidades diferentes, dependendo das circunstâncias. Cada um rola contra o NA do Atributo relevante.
 
-For example, you are discussing a learned topic while another Player-hero challenges you with witty remarks in front of an audience (LORE vs. RIDDLE), or two heroes are arm-wrestling (ATHLETICS vs. ATHLETICS).
+Por exemplo, você discute um tópico erudito enquanto outro herói-jogador o desafia com observações espirituosas diante de uma plateia (SABER vs. ENIGMA), ou dois heróis disputam braço de ferro (ATLETISMO vs. ATLETISMO).
 
-If more than one contestant scores a success, then the character who obtained the highest number of ᛥ icons is considered to have overcome the opposition. If all rolls fail or the results are tied, roll again or, if more appropriate, the contest ends in a draw.
+Se mais de um contendor obtiver um sucesso, então o personagem que obteve o maior número de ícones ᛥ é considerado ter superado a oposição. Se todas as rolagens falham ou os resultados empatam, role novamente ou, se for mais apropriado, a disputa termina em empate.
 
-**SKILL ENDEAVOUR SEQUENCE.** A Skill Endeavour is resolved applying the following steps:
-1. Set Resistance
-2. Set Time Limit
-3. Execution
+**SEQUÊNCIA DE UMA EMPREITADA DE PERÍCIA.** Uma Empreitada de Perícia é resolvida aplicando os seguintes passos:
+1. Definir a Resistência
+2. Definir o Limite de Tempo
+3. Execução
 
-When the Skill Endeavour is concluded, the Loremaster assesses its outcome (see Completing a Skill Endeavour).
+Quando a Empreitada de Perícia é concluída, o Mestre avalia seu resultado (ver Concluindo uma Empreitada de Perícia).
 
-**1. SET RESISTANCE:** Similarly to what they do with councils, the players describe what they intend to achieve with the endeavour, and the Loremaster adjudicates whether the attempt is Simple (Resistance 3), Laborious (Resistance 6), or Daunting (Resistance 9), taking into consideration the current gameplay circumstances:
-- In general terms, a Simple goal corresponds to a lengthy but manageable endeavour, like carrying a boat to the top of a steep slope, or putting out the fire consuming a house.
-- A Laborious attempt indicates a difficult and time-consuming affair, like searching a wide area to find a lost item, or digging a deep trench in hard terrain.
-- A Daunting goal is a hard and complicated endeavour, like repairing a rope bridge that spans a bottomless chasm, or researching obscure lore in a great library.
+**1. DEFINIR A RESISTÊNCIA:** De modo semelhante ao que fazem com os conselhos, os jogadores descrevem o que pretendem alcançar com a empreitada, e o Mestre julga se a tentativa é Simples (Resistência 3), Laboriosa (Resistência 6) ou Assustadora (Resistência 9), levando em consideração as circunstâncias atuais do jogo:
+- Em termos gerais, um objetivo Simples corresponde a uma empreitada longa mas administrável, como carregar um barco até o topo de uma encosta íngreme, ou apagar o fogo que consome uma casa.
+- Uma tentativa Laboriosa indica um assunto difícil e demorado, como examinar uma área ampla para encontrar um item perdido, ou cavar uma trincheira profunda em terreno duro.
+- Um objetivo Assustador é uma empreitada árdua e complicada, como reparar uma ponte de cordas que atravessa um abismo sem fundo, ou pesquisar saber obscuro em uma grande biblioteca.
 
-**2. SET TIME LIMIT:** Sometimes, the Company has a limited amount of time to achieve its goal. If the current circumstances require it, the Loremaster sets a time limit for the endeavour — that is, the total number of attempts that the Player-heroes are granted as a group to achieve their goal.
-- If the Company has only a short time, the time limit is equal to the Resistance of the endeavour;
-- If the Company has enough time, the time limit is set at a value equal to the Resistance score +1;
-- If there is plenty of time, the time limit is equal to Resistance +2.
+**2. DEFINIR O LIMITE DE TEMPO:** Às vezes, a Companhia tem uma quantidade limitada de tempo para alcançar seu objetivo. Se as circunstâncias atuais exigirem, o Mestre define um limite de tempo para a empreitada — isto é, o número total de tentativas que os heróis-jogadores recebem como grupo para alcançar seu objetivo.
+- Se a Companhia tem apenas pouco tempo, o limite de tempo é igual à Resistência da empreitada;
+- Se a Companhia tem tempo suficiente, o limite de tempo é definido em um valor igual à Resistência +1;
+- Se há tempo de sobra, o limite de tempo é igual à Resistência +2.
 
-How much time they have of course depends on the circumstances — for example, if the Player-heroes have an hour to search a room before its occupant returns, it could be considered plenty of time, while an hour is a short time if they need to search an entire castle.
+Quanto tempo eles têm depende, claro, das circunstâncias — por exemplo, se os heróis-jogadores têm uma hora para examinar um quarto antes que seu ocupante retorne, isso poderia ser considerado tempo de sobra, ao passo que uma hora é pouco tempo se precisarem examinar um castelo inteiro.
 
-Similarly, if an endeavour does not require the imposition of a time limit, then the Loremaster must evaluate how long the Company takes to complete it, again taking into consideration the nature of the task and the current circumstances.
+De modo semelhante, se uma empreitada não requer a imposição de um limite de tempo, então o Mestre deve avaliar quanto tempo a Companhia leva para concluí-la, novamente levando em consideração a natureza da tarefa e as circunstâncias atuais.
 
-> This is generally accomplished by adjudicating how often the Player-heroes can make their rolls. For example, searching a wide area for tracks while travelling may allow the Player-heroes to roll twice a day, while scaling the side of a cliff may ask for a roll every hour or so.
+> Isso geralmente se faz decidindo com que frequência os heróis-jogadores podem fazer suas rolagens. Por exemplo, examinar uma área ampla em busca de rastros durante uma viagem pode permitir aos heróis-jogadores rolar duas vezes por dia, enquanto escalar a lateral de um penhasco pode pedir uma rolagem a cada hora, mais ou menos.
 
-**3. EXECUTION:** This is when the Player-heroes start making their rolls. By their very nature, Skill Endeavours may allow Player-heroes to use different Skills towards the same goal, but also to use the same Skill repeatedly, if the circumstances allow it (for example, ATHLETICS, to dig a ditch).
+**3. EXECUÇÃO:** É aqui que os heróis-jogadores começam a fazer suas rolagens. Por sua própria natureza, as Empreitadas de Perícia podem permitir que os heróis-jogadores usem Perícias diferentes para o mesmo objetivo, mas também que usem a mesma Perícia repetidamente, se as circunstâncias permitirem (por exemplo, ATLETISMO, para cavar uma vala).
 
-> A Skill Endeavour is concluded when the Player-heroes reach the amount of successful rolls required, or they run out of time.
+> Uma Empreitada de Perícia é concluída quando os heróis-jogadores alcançam a quantidade de rolagens bem-sucedidas exigida, ou quando o tempo acaba.
 
-**COMPLETING A SKILL ENDEAVOUR.** A Skill Endeavour is completed successfully when the Player-heroes match or exceed the Resistance rating with successful Skill rolls. A failure happens when the Player-heroes abandon the task, or their time runs out and the Company is interrupted by whatever caused the imposition of a time limit.
+**CONCLUINDO UMA EMPREITADA DE PERÍCIA.** Uma Empreitada de Perícia é concluída com sucesso quando os heróis-jogadores igualam ou excedem a Resistência com rolagens de Perícia bem-sucedidas. Uma falha acontece quando os heróis-jogadores abandonam a tarefa, ou quando seu tempo acaba e a Companhia é interrompida por aquilo que provocou a imposição do limite de tempo.
 
-In case of success, the players achieve their objective. In case of a failure, the Loremaster must determine exactly what happens, based on the nature of the Skill Endeavour itself.
+Em caso de sucesso, os jogadores alcançam seu objetivo. Em caso de falha, o Mestre deve determinar exatamente o que acontece, com base na natureza da própria Empreitada de Perícia.
 
-**FAILING ROLLS DURING A SKILL ENDEAVOUR.** A failed roll made while attempting to complete a Skill Endeavour may mean very different things, based on the specific circumstances of the effort.
+**ROLAGENS FALHAS DURANTE UMA EMPREITADA DE PERÍCIA.** Uma rolagem falha feita ao tentar concluir uma Empreitada de Perícia pode significar coisas muito diferentes, com base nas circunstâncias específicas do esforço.
 
-Using the guidelines given on page 131 for Risk Levels, the Loremaster can adjudicate the consequences of each failed Skill roll, assessing its consequences as those due to a simple *failure*, a *failure with woe*, or *disaster*!
-- **A SIMPLE FAILURE.** Failing a roll during a Skill Endeavour which is not performed under stress normally only causes a delay. It may take longer to achieve the action, but the resolution of the action may continue.
-- **FAILURE WITH WOE.** A negative consequence takes place. Examples include falling for a short distance suffering a loss of Endurance, or inhaling smoke while extinguishing a fire.
-- **DISASTER!** The Skill Endeavour fails completely and cannot be resumed.
+Usando as diretrizes dadas neste capítulo para os Níveis de Risco, o Mestre pode julgar as consequências de cada rolagem de Perícia falha, avaliando seus efeitos como os devidos a uma simples *falha*, a uma *falha com infortúnio*, ou a um *desastre*!
+- **UMA FALHA SIMPLES.** Falhar uma rolagem durante uma Empreitada de Perícia que não é realizada sob pressão normalmente só causa um atraso. Pode levar mais tempo para realizar a ação, mas a resolução da ação pode continuar.
+- **FALHA COM INFORTÚNIO.** Uma consequência negativa acontece. Exemplos incluem cair por uma curta distância sofrendo perda de Resistência, ou inalar fumaça enquanto se extingue um incêndio.
+- **DESASTRE!** A Empreitada de Perícia falha completamente e não pode ser retomada.
 
-### Sources of Injury
+### Fontes de Dano
 
-There are many ways for heroes to get hurt during an Adventuring Phase, and not all perils come from visible adversaries on the field of battle — drowning in the frigid waters of a lake or breathing noxious fumes emerging from an ancient tomb can kill an adventurer as well as a raging fire or falling from a great height.
+Há muitas maneiras de os heróis se ferirem durante uma Fase de Aventura, e não todos os perigos vêm de adversários visíveis no campo de batalha — afogar-se nas águas glaciais de um lago ou respirar vapores nocivos que emergem de uma tumba antiga pode matar um aventureiro tão bem quanto um incêndio furioso ou uma queda de grande altura.
 
-Often, Player-heroes take damage from a source of injury as the result of failing a roll — for example, failing a roll of ATHLETICS while climbing, or swimming across a river. Other times, it depends on the circumstances — for example, a Player-hero is exposed to frigid winds without wearing the proper garments.
+Muitas vezes, os heróis-jogadores sofrem dano de uma fonte de dano como resultado de falhar uma rolagem — por exemplo, falhar uma rolagem de ATLETISMO ao escalar, ou ao atravessar um rio a nado. Outras vezes, depende das circunstâncias — por exemplo, um herói-jogador está exposto a ventos glaciais sem vestir as roupas apropriadas.
 
-**ENDURANCE LOSS LEVELS.** In game terms, harm suffered by a Player-hero is generally translated as a loss of Endurance. Outside of combat, damage suffered is ranked in three levels — moderate, severe, and grievous, and is determined by comparing a Feat die roll to the Endurance Loss table below:
-- If the Endurance loss is moderate, the Loremaster makes a *Favoured* Feat die roll;
-- If the Endurance loss is severe, the Loremaster rolls a Feat die;
-- If the Endurance loss is grievous, the Loremaster makes an *Ill-favoured* Feat die roll.
+**NÍVEIS DE PERDA DE RESISTÊNCIA.** Em termos de jogo, o mal sofrido por um herói-jogador é geralmente traduzido como perda de Resistência. Fora do combate, o dano sofrido é classificado em três níveis — moderado, severo e gravíssimo, e é determinado comparando uma rolagem de Dado de Proeza à tabela de Perda de Resistência abaixo:
+- Se a perda de Resistência é moderada, o Mestre faz uma rolagem *Favorecida* de Dado de Proeza;
+- Se a perda de Resistência é severa, o Mestre rola um Dado de Proeza;
+- Se a perda de Resistência é gravíssima, o Mestre faz uma rolagem *Desfavorecida* de Dado de Proeza.
 
-**ENDURANCE LOSS:**
+**PERDA DE RESISTÊNCIA:**
 
-| Feat Die Result | Player-hero is… | Effect |
+| Resultado do Dado de Proeza | O herói-jogador está… | Efeito |
 |---|---|---|
-| ⊘ (Eye) | Knocked out | The Player-hero is reduced to zero Endurance |
-| 1–10 | Bruised | The Player-hero loses an amount of Endurance equal to the numerical result |
-| ᛥ (Gandalf rune) | Unscathed | The Player-hero is unharmed |
+| ⊘ (Olho) | Desacordado | O herói-jogador é reduzido a zero de Resistência |
+| 1–10 | Machucado | O herói-jogador perde uma quantidade de Resistência igual ao resultado numérico |
+| ᛥ (runa de Gandalf) | Ileso | O herói-jogador sai incólume |
 
-Different sources of harm inflict damage differently, as shown in the table below. For example, falling damage may vary based on the height fallen or on the landing surface, while fire damage may depend on the intensity and level of exposure.
+Diferentes fontes de mal infligem dano de modos distintos, como mostra a tabela abaixo. Por exemplo, o dano de queda pode variar com base na altura da queda ou na superfície de aterrissagem, enquanto o dano de fogo pode depender da intensidade e do nível de exposição.
 
-**SKILL ENDEAVOURS, RISK, AND DAMAGE.** The various Sources of Injury detailed here can be used to inflict harm on the Player-heroes as a consequence of their performance, based on the rules for Skill rolls with Risk and those for Skill Endeavours, the Loremaster may apply the following:
-- A Failure or a Success with Woe may cause a moderate loss of Endurance;
-- A Failure with Woe may result in a severe loss of Endurance;
-- Disaster can provoke a grievous loss of Endurance.
+**EMPREITADAS DE PERÍCIA, RISCO E DANO.** As várias Fontes de Dano detalhadas aqui podem ser usadas para infligir mal aos heróis-jogadores como consequência de seu desempenho; com base nas regras de rolagens de Perícia com Risco e nas de Empreitadas de Perícia, o Mestre pode aplicar o seguinte:
+- Uma Falha ou um Sucesso com Infortúnio pode causar uma perda moderada de Resistência;
+- Uma Falha com Infortúnio pode resultar em uma perda severa de Resistência;
+- Um Desastre pode provocar uma perda gravíssima de Resistência.
 
-**FATAL INJURIES:** If Player-heroes suffer an incident that should in all likelihood prove fatal, they die instantly when Wounded or when they gain the Dying condition. Examples include falling from an extreme height onto rocky terrain, being trapped under the ruins of a burning structure, or drowning in freezing waters.
+**DANOS FATAIS:** Se os heróis-jogadores sofrem um incidente que com toda a probabilidade seria fatal, eles morrem instantaneamente quando ficam Feridos ou quando ganham a condição Morrendo. Exemplos incluem cair de uma altura extrema sobre terreno rochoso, ficar preso sob as ruínas de uma estrutura em chamas, ou afogar-se em águas congelantes.
 
-**POISON:** A poisoned Player-hero cannot rest and must roll for the corresponding Endurance loss at the end of each day — if the roll produces a ᛥ, the hero takes no damage and is not poisoned any more. A successful HEALING roll done at the start of a day also removes the effects of poison — the roll *loses (1d)* if the poison is Severe, and *loses (2d)* if Grievous.
+**VENENO:** Um herói-jogador envenenado não pode descansar e deve rolar a perda de Resistência correspondente ao fim de cada dia — se a rolagem produzir um ᛥ, o herói não sofre dano e não está mais envenenado. Uma rolagem bem-sucedida de CURA feita no início de um dia também remove os efeitos do veneno — a rolagem *perde (1d)* se o veneno é Severo, e *perde (2d)* se é Gravíssimo.
 
-**SOURCES OF INJURY:**
+**FONTES DE DANO:**
 
-| Source | Moderate | Severe | Grievous | Notes |
+| Fonte | Moderado | Severo | Gravíssimo | Notas |
 |---|---|---|---|---|
-| Extreme Cold | Chilling winds | Deep snow | Frigid waters | Roll each half hour. Hero is Dying if down to zero Endurance. |
-| Falling | Short fall (10 feet max, or soft landing) | Long fall (30 feet max, or hard landing) | Deadly fall (great height, or dangerous landing) | Hero is Wounded if down to zero Endurance. |
-| Fire | Torch flame, campfire | Brazier, burning house | Funeral pyre, Dragon fire | Roll each round. Hero is also Wounded if down to zero Endurance. |
-| Suffocation | Choking fumes | Drowning | Strangulation | Roll each round. Hero is Dying if down to zero Endurance. |
-| Poison | Food poisoning | Snake-bite, Orc-poison | Spider-poison | Roll each day. Hero is Dying if down to zero Endurance. |
+| Frio Extremo | Ventos glaciais | Neve profunda | Águas geladas | Role a cada meia hora. O herói está Morrendo se cair a zero de Resistência. |
+| Queda | Queda curta (10 pés no máximo, ou aterrissagem macia) | Queda longa (30 pés no máximo, ou aterrissagem dura) | Queda mortal (grande altura, ou aterrissagem perigosa) | O herói fica Ferido se cair a zero de Resistência. |
+| Fogo | Chama de tocha, fogueira | Braseiro, casa em chamas | Pira funerária, fogo de Dragão | Role a cada rodada. O herói também fica Ferido se cair a zero de Resistência. |
+| Asfixia | Vapores asfixiantes | Afogamento | Estrangulamento | Role a cada rodada. O herói está Morrendo se cair a zero de Resistência. |
+| Veneno | Intoxicação alimentar | Mordida de serpente, veneno de Orc | Veneno de Aranha | Role a cada dia. O herói está Morrendo se cair a zero de Resistência. |
 
-## Loremaster Characters
+## Personagens do Mestre
 
-*'That's right! Barliman is my name. Barliman Butterbur at your service!'*
+*'Isso mesmo! Cevadilha é o meu nome. Cevadilha Carrapicho, a seu serviço!'*
 
-Loremaster characters is the best tool a Loremaster has to create a believable setting for the players. The adventurers interact briefly with a great many of them during each scene — they compose the army of 'extras' who populate a village they enter, crowd the streets of a town, and frequent the inn the Company stops at to get some rest. Others serve a purpose that goes beyond of acting simply as a backdrop for the deeds of the Player-heroes, and can be encountered more than once. Finally, there are famous personalities, those characters that are part of the history of Middle-earth as created in the stories — individuals that the Player-heroes will have the chance to meet in the course of their career.
+Os personagens do Mestre são a melhor ferramenta que um Mestre tem para criar um cenário verossímil para os jogadores. Os aventureiros interagem brevemente com muitíssimos deles durante cada cena — eles compõem o exército de "figurantes" que povoam uma aldeia em que entram, apinham as ruas de uma cidade e frequentam a estalagem em que a Companhia para para descansar. Outros servem a um propósito que vai além de agir simplesmente como pano de fundo para os feitos dos heróis-jogadores, e podem ser encontrados mais de uma vez. Por fim, há as personalidades famosas, aqueles personagens que fazem parte da história da Terra-média tal como criada nas histórias — indivíduos que os heróis-jogadores terão a chance de conhecer no curso de sua carreira.
 
-### Distinctive Features
+### Características Distintivas
 
-Usually, what the Loremaster needs to play the part of a Loremaster character is just a name, a short description, and an idea of the purpose that the character serves in the current scene.
+Normalmente, o que o Mestre precisa para interpretar o papel de um personagem do Mestre é apenas um nome, uma descrição curta e uma ideia do propósito que o personagem serve na cena atual.
 
-Sometimes this is not enough, and additional information becomes necessary, either because the interaction develops (or degenerates!) during play as a result of the Company's actions, or because the introduction of the Loremaster character served a greater purpose.
+Às vezes isso não é suficiente, e informações adicionais tornam-se necessárias, seja porque a interação se desenvolve (ou degenera!) durante o jogo como resultado das ações da Companhia, seja porque a introdução do personagem do Mestre serviu a um propósito maior.
 
-The addition of one or more well-chosen traits to the description of a Loremaster character is generally all that is needed to give depth to an individual.
+A adição de um ou mais traços bem escolhidos à descrição de um personagem do Mestre é geralmente tudo o que se precisa para dar profundidade a um indivíduo.
 
-To better define a character, the Loremaster chooses an occupation or a field of expertise, and then adds one or two Distinctive Features (choosing from those available to heroes, or even inventing new ones on the spot).
+Para definir melhor um personagem, o Mestre escolhe uma ocupação ou um campo de especialidade e então acrescenta uma ou duas Características Distintivas (escolhendo entre as disponíveis aos heróis, ou até inventando novas na hora).
 
-By doing so, a faceless figure in the background becomes an 'old but trusted servant', a 'grim-faced, keen-eyed guard', a 'wise woman learned in herb-lore' — a short but vivid description that helps the Loremaster and the players to picture the character more readily.
+Ao fazer isso, uma figura sem rosto ao fundo torna-se um "servo velho mas de confiança", um "guarda de rosto severo e olhos aguçados", uma "mulher sábia versada no saber das ervas" — uma descrição curta mas vívida que ajuda o Mestre e os jogadores a imaginar o personagem mais prontamente.
 
-**NAMING LOREMASTER CHARACTERS:** A quick way to give substance to Loremaster characters is to give each of them a name. In a game set in Middle-earth, this is easier said than done, as each Culture follows specific naming conventions.
+**NOMEANDO PERSONAGENS DO MESTRE:** Um modo rápido de dar substância aos personagens do Mestre é dar a cada um deles um nome. Em um jogo situado na Terra-média isso é mais fácil dizer que fazer, pois cada Cultura segue convenções específicas de nomeação.
 
-To avoid fumbling through the rules each time a player asks the name of one of your characters, it would be wise for the Loremaster to keep a list of names handy from those found in the character generation chapter (see Heroic Cultures, pages 33–43).
+Para evitar folhear as regras a cada vez que um jogador pergunta o nome de um de seus personagens, seria sábio que o Mestre mantivesse à mão uma lista de nomes daqueles encontrados no capítulo de criação de personagens (ver Culturas Heroicas, capítulo 3).
+### Personagens do Mestre e Rolagens de Dados
 
-### Loremaster Characters and Die Rolls
+Na maior parte do tempo, a interação de um herói-jogador com personagens do Mestre é resolvida sem rolagens de dados — conversa natural e conhecimento do cenário são tudo o que se precisa.
 
-Most of the time, the interaction of a Player-hero with Loremaster characters is resolved without die rolls — natural conversation and knowledge of the setting are all that is required.
+> Quando isso não é suficiente, o Mestre e os jogadores recorrem às regras usuais de Resolução de Ações, considerando se os personagens do Mestre são vistos como obstáculos pela Companhia, ou se prestam assistência (ver mais adiante neste capítulo).
 
-> When this is not enough, the Loremaster and the players resort to the usual rules for Action Resolution, considering whether Loremaster characters are seen as obstacles by the Company, or if they give assistance (see page 136).
+Se a interação com um personagem do Mestre levar a um conflito aberto, o personagem deve ser convertido em Adversário gerando as características necessárias para o Combate (ver Adversários, neste capítulo).
 
-Should the interaction with a Loremaster character lead to outright conflict, the character must be cast as an Adversary by generating the characteristics needed for Combat (see page 142).
+**PERSONAGENS DO MESTRE COMO OBSTÁCULOS.** Quando um personagem do Mestre impede o curso de ação da Companhia, os jogadores podem resolver a situação com uma rolagem de dados.
 
-**LOREMASTER CHARACTERS AS OBSTACLES.** When a Loremaster character hinders the course of action of the Company, the players can resolve the situation with a die roll.
+> Passar às escondidas por alguém, tentar persuadir ou intimidar um indivíduo, mesmo correr mais rápido que um perseguidor, são todos exemplos de ações que podem ser conduzidas de modo simples e rápido usando as regras usuais de Resolução de Ações.
 
-> Sneaking past someone, trying to persuade or intimidate an individual, even outrunning a pursuer, are all examples of actions that can be handled simply and quickly using the usual rules for Action Resolution.
+Na maioria dos casos, uma simples rolagem de Perícia é suficiente para representar a complicação, mas se um personagem do Mestre possuir uma Característica Distintiva que possa ser considerada como agravante da ação do herói que age, então o Mestre pode aplicar uma penalidade:
 
-In most cases, a simple Skill roll is enough to represent the complication, but if a Loremaster character possesses a Distinctive Feature that can be considered to aggravate the action of the acting hero, then the Loremaster can apply a penalty:
+> A rolagem do herói que age *perde (1d)* se a Característica Distintiva estiver tornando a ação particularmente difícil.
 
-> The acting hero's die roll *loses (1d)* if the Distinctive Feature is making the action particularly difficult.
+*Exemplo: A Companhia tenta localizar o paradeiro de um Goblin selvagem terrivelmente Reservado que aterroriza o campo perto de Archet. Os heróis-jogadores rolam CAÇA, perdendo (1d).*
 
-*Example: The Company is trying to locate the whereabouts of a terribly Secretive wild Goblin terrorising the countryside near Archet. The Player-heroes roll HUNTING, losing (1d).*
+Se, ao contrário, um personagem do Mestre exibe uma Característica Distintiva que possa ser interpretada como uma falha, ela pode melhorar as chances do herói que age:
 
-If, on the contrary, a Loremaster character displays a Distinctive Feature that can be interpreted as a flaw, it may improve the chances of the acting hero instead:
+> A rolagem do herói que age *ganha (1d)* se a Característica Distintiva estiver tornando a ação mais fácil.
 
-> The acting hero's die roll *gains (1d)* if the Distinctive Feature is making the action easier.
+*Exemplo: Um grupo de pescadores perigosos deteve um Hobbit que foi à sua aldeia para obter passagem livre por suas terras. O guarda é um guerreiro Ousado, que não faz grande conceito de sua prisioneira mediana. A heroína-jogadora ganha (1d) em sua tentativa de fuga usando FURTIVIDADE.*
 
-*Example: A group of dangerous fisher-folk detained a Hobbit who went to their village to gain free passage across their land. The guard is a Bold warrior, who doesn't think much of his halfling prisoner. The Player-hero gains (1d) on her escape attempt using STEALTH.*
+**PERSONAGENS DO MESTRE QUE PRESTAM ASSISTÊNCIA.** Se a presença de um personagem do Mestre pode ser considerada benéfica à ação de um herói-jogador, então a rolagem correspondente pode receber um modificador positivo.
 
-**LOREMASTER CHARACTERS PROVIDING ASSISTANCE.** If the presence of a Loremaster character can be considered to benefit the action of a Player-hero, then the corresponding roll can receive a positive modifier.
+Apenas personagens do Mestre que possuam uma Característica Distintiva apropriada podem apoiar a ação de um herói-jogador:
 
-Only Loremaster characters possessing an appropriate Distinctive Feature can support the action of a Player-hero:
+> A rolagem do herói que age *ganha (1d)* se a Característica Distintiva do personagem do Mestre for considerada benéfica, ou *ganha (2d)* se o traço puder ser considerado como garantia de um nível superior de apoio.
 
-> The acting hero's die roll *gains (1d)* if the Loremaster character's Distinctive Feature is considered to be beneficial, or *gains (2d)* if the trait can be deemed to ensure a superior level of support.
+*Exemplo: A Companhia recebeu orientação de Tom Bombadil para achar seu caminho na Floresta Velha — o conselho do velho Tom é sólido, se bem que um pouco confuso — todas as rolagens de VIAJAR feitas para navegar pelos bosques ganham (1d).*
 
-*Example: The Company has been given direction by Tom Bombadil to find their way in the Old Forest — old Tom's advice is sound, if a little confusing — all TRAVEL rolls made to navigate the woods gain (1d).*
+## A Sombra
 
-## The Shadow
+*'E essa é outra razão pela qual o Anel deveria ser destruído: enquanto estiver no mundo, será um perigo até para os Sábios. Pois nada é mau no princípio.'*
 
-*'And that is another reason why the Ring should be destroyed: as long as it is in the world it will be a danger even to the Wise. For nothing is evil in the beginning.'*
+A Terra-média está sob ataque das forças das trevas desde sua criação. Em cada era, o mundo foi ameaçado pelos desígnios de um Senhor do Escuro, um Inimigo poderoso e implacável no desejo de dominar tudo. Sauron o Grande, um espírito maligno de imenso poder, pode já estar muito mais perto da vitória do que qualquer um ousa temer. A presença do Inimigo pesa sobre os corações da maioria dos habitantes da Terra-média, com exceção de alguns poucos afortunados que vivem nos refúgios do noroeste. Multidões que vivem a leste e ao sul já o adoram como o único deus que jamais conheceram.
 
-Middle-earth has been under attack by the forces of darkness since its creation. Across each age, the world has been threatened by the designs of a Dark Lord, a powerful Enemy relentless in the desire to dominate all. Sauron the Great, an evil spirit of immense power, might already be far closer to victory than any dare dread. The presence of the Enemy weighs upon the hearts of most inhabitants of Middle-earth, with the exception of a fortunate few living in the havens of the northwest. Multitudes living to the east and south worship him already as the only god they have ever known.
+Os Povos Livres estão entre os poucos que acalentaram um lampejo de esperança: o conhecimento de que, tão poderoso quanto pareça ser, Sauron pode ser resistido e mesmo derrotado por uma oposição inabalável. Inúmeras batalhas foram ganhas ou perdidas por alianças dos povos da Terra-média. Ainda que a Sombra nunca tenha deixado de retornar sob nova forma, mesmo após as derrotas mais retumbantes, tampouco a esperança jamais abandonou por completo os corações daqueles que lutam contra ela.
 
-The Free Peoples are among those few who have cherished a glimmer of hope: the knowledge that, as powerful as he appears to be, Sauron can be resisted and even defeated by steadfast opposition. Countless battles have been won or lost by alliances of the folk of Middle-earth. Though the Shadow has never failed to return in a new shape, even after the most resounding defeats, neither has hope ever fully deserted the hearts of those who fight against it.
+Mas a Sombra não conta apenas com instrumentos de guerra e com os feitos ardilosos de seus servos para semear medo e dúvida. As tentações que habitam mesmo o coração dos valentes sempre foram suas aliadas — guerreiros Valorosos, aventureiros e reis podem todos desviar-se de seu caminho de bom grado, dadas as circunstâncias adequadas. Não importa quão puros creiam ser seus motivos, ou quão justos os fins, ceder a seus desejos mais escuros acabará por levá-los a exercer seu poder para ganho pessoal ou para a dominação dos outros.
 
-But the Shadow does not rely solely upon instruments of war and the devious deeds of its servants to breed fear and doubt. The temptations that dwell even in the hearts of the brave have ever been its ally — Valiant warriors, adventurers, and kings can all stray from their path willingly, given the right circumstances. No matter how pure they believe their motives to be, or how just the ends, giving in to their darkest desires will eventually lead them to exert their power for personal gain or the domination of others.
+### Pontos de Sombra
 
-### Shadow Points
+Desafiar um Inimigo quase todo-poderoso e enfrentar seus terríveis lacaios inevitavelmente instila um sentimento de medo e dúvida nos heróis-jogadores, um sentimento que com o tempo passa a pesar fortemente sobre seus corações e mentes.
 
-Challenging an almost all-powerful Enemy and facing its terrible minions is bound to instil a sense of fear and doubt in the Player-heroes, a sentiment that in time comes to weigh heavily on their hearts and minds.
+No jogo, esse fardo é representado pela acumulação de pontos de Sombra e pelas fontes que forçam seu ganho.
 
-In the game, this burden is represented by the accumulation of Shadow points, and by the sources that force their gain.
+> No curso do jogo, os heróis-jogadores veem sua Sombra subir e descer, à medida que ganham pontos durante a Fase de Aventura como consequência de suas ações, e então possivelmente os perdem fazendo um Teste de Sombra, endurecendo sua determinação (ver Endurecer a Vontade), ou remediando seu dano espiritual durante uma Fase de Companhia (ver Recuperação Espiritual, capítulo 7).
 
-> In the course of play, the Player-heroes see their Shadow score ebb and flow, as they gain points during the Adventuring Phase as a consequence of their actions, and then they possibly lose them by making a Shadow Test, by strengthening their resolve (see Harden Will), or by mending their spiritual hurt during a Fellowship Phase (see Spiritual Recovery, page 119).
+Os pontos de Sombra são registrados marcando-os na caixa apropriada da ficha de personagem, ao lado da Esperança do herói. Os heróis não podem acumular Sombra em excesso de sua Esperança máxima (quaisquer pontos adicionais ganhos não elevam a Sombra do herói).
 
-Shadow points are kept track of by marking them in the appropriate box on the character sheet, next to a hero's Hope rating. Heroes cannot accumulate Shadow in excess of their maximum Hope score (any additional points gained do not raise a hero's Shadow score).
+**TESTES DE SOMBRA.** Diversas fontes de Sombra permitem aos jogadores fazer uma rolagem para cancelar, ou pelo menos reduzir, a quantidade de pontos ganhos. Chamadas de Testes de Sombra, essas rolagens são baseadas em VALOR ou em SABEDORIA, dependendo da fonte específica de Sombra.
 
-**SHADOW TESTS.** A number of sources of Shadow allow players to make a roll to cancel, or at least reduce the amount of points gained. Called Shadow Tests, these rolls are based using either VALOUR or WISDOM, depending on the specific source of Shadow.
+Os Testes de Sombra são resolvidos como qualquer outra rolagem, usando um Dado de Proeza mais um número de Dados de Sucesso igual à classificação apropriada do personagem.
 
-Shadow Tests are resolved as any other roll, by using a Feat die, plus a number of Success dice equal to the character's appropriate rating.
+> Quando um Teste de Sombra é passado, o herói reduz o número de pontos de Sombra ganhos em 1 ponto no sucesso, mais 1 por cada ícone de Sucesso (ᛥ) rolado.
 
-> When a Shadow Test is passed, the hero reduces the number of Shadow points gained by 1 point on a success, plus 1 for each Success icon (ᛥ) rolled.
+As fontes de Sombra que podem ser resistidas com um teste (Pavor, Cobiça e Feitiçaria) são descritas mais adiante neste capítulo.
 
-The sources of Shadow that can be resisted with a test (Dread, Greed, and Sorcery) are described later in this chapter.
+**AS CONSEQUÊNCIAS DA SOMBRA.** Ameaça sorrateira, a Sombra torna-se verdadeiramente perigosa quando o número de pontos acumulados por um herói-jogador iguala ou supera sua Esperança atual:
 
-**THE CONSEQUENCES OF SHADOW.** A creeping threat, Shadow becomes truly dangerous when the number of points accumulated by a Player-hero matches or overcomes their current Hope score:
+> Quando isso acontece, os heróis-jogadores tornam-se Arrasados e veem todas as suas rolagens prejudicadas pelo fato de que rolar um ícone ⊘ no Dado de Proeza resulta em falha, independentemente do NA e do resultado efetivo obtido pela rolagem.
 
-> When this happens, Player-heroes become Miserable, and see all their rolls hampered by the fact that rolling an ⊘ icon on the Feat die results in failure, regardless of the TN and the actual result obtained by the roll.
+Mas os heróis-jogadores sofrem consequências ainda mais sérias se seu ganho de Sombra não for contido:
 
-But Player-heroes suffer even more serious consequences if their Shadow gain is left unchecked:
+> Os heróis-jogadores cuja Sombra alcança sua Esperança máxima estão tão sobrecarregados por seus temores que se tornam *Desfavorecidos* em todas as rolagens.
 
-> Player-heroes whose Shadow score reaches their maximum Hope rating are so overburdened by their fears that they become *Ill-favoured* on all rolls.
+Há apenas um modo de recuperar-se de tais profundezas de desespero — o herói-jogador precisa passar por um acesso de loucura.
 
-There is only one way to recover from such depths of desperation — the Player-hero must experience a bout of madness.
+**ENDURECER A VONTADE**
 
-**HARDEN WILL**
+Aventureiros que se debatem sob o fardo da Sombra podem recorrer a suas reservas mais íntimas de energia espiritual para endurecer sua determinação, antes que seja tarde demais. Para alguns, esse esforço toma a forma de uma demonstração de força desesperada; outros gozam de um momento de clareza em seu instante mais escuro, quando tudo parece perdido, e de súbito todas as dúvidas são afastadas:
 
-Adventurers who are struggling under the burden of the Shadow may tap into their innermost reserves of spiritual energy to harden their determination, before it's too late. For some, this effort takes the form of a demonstration of desperate strength; others enjoy a moment of clarity in their darkest moment, when all seems lost, and suddenly all doubts are cast away:
+> Em termos de jogo, os heróis-jogadores cuja Sombra acumulada ainda não iguala sua Esperança máxima podem escolher remover toda a sua Sombra atual, substituindo-a por uma única Cicatriz de Sombra.
 
-> In game terms, Player-heroes whose accumulated Shadow does not yet match their maximum Hope score may choose to remove all their current Shadow, replacing it with a single Shadow Scar.
+Uma Cicatriz de Sombra é um ponto de Sombra "permanente" que só pode ser removido durante uma Fase de Companhia de Yule, escolhendo a tarefa Curar Cicatrizes (ver capítulo 7), mas que é de resto considerado como um ponto de Sombra normal para todos os efeitos.
 
-A Shadow Scar is a 'permanent' Shadow point that can be removed only during a Yule Fellowship Phase, by choosing the Heal Scars undertaking (see page 121), but is otherwise considered as a normal Shadow point for all purposes.
+*O rosto simples de hobbit de Sam ficou severo, quase carrancudo, enquanto a vontade se endurecia nele, e ele sentiu por todos os membros um arrepio, como se estivesse se tornando alguma criatura de pedra e aço que nem o desespero, nem o cansaço, nem milhas áridas sem fim pudessem subjugar.*
 
-*Sam's plain hobbit-face grew stern, almost grim, as the will hardened in him, and he felt through all his limbs a thrill, as if he was turning into some creature of stone and steel that neither despair nor weariness nor endless barren miles could subdue.*
+### Fontes de Sombra
 
-### Sources of Shadow
+Os aventureiros ganham Sombra de muitas maneiras. Quando sua determinação é abalada ao testemunhar eventos angustiantes ou ao enfrentar inimigos terríveis, então a fonte de pontos de Sombra é o Pavor; se estão cometendo ações desprezíveis, estão maculando sua consciência com Malfeitorias; se tomam posse de objetos preciosos e poderosos, podem ser tentados pela Cobiça; por fim, se caem vítimas de magias escuras, têm de resistir aos efeitos da Feitiçaria.
 
-Adventurers gain Shadow in many ways. When their determination is shaken by witnessing distressing events or facing terrible foes, then the source of Shadow points is Dread; if they are committing despicable actions, they are tainting their conscience with Misdeeds; if they take possession of precious and powerful objects, they may be tempted by Greed; finally, if they fall victim to dark magics they have to resist the effects of Sorcery.
+**PAVOR**
 
-**DREAD**
+O terror é uma lança na mão do Inimigo. Os aventureiros ganham pontos de Sombra sempre que testemunham algo capaz de despertar medo ou semear dúvidas em seus corações, seja enfrentar uma criatura horrível saída dos fossos mais escuros de Mordor, entrar em um lugar onde as sombras são adensadas por uma maldição antiga, ou experimentar diretamente o terrível poder do Inimigo.
 
-Terror is a spear in the hand of the Enemy. Adventurers gain Shadow points whenever they witness something capable of striking fear or sowing doubts into their hearts, be it facing a horrible creature out of the darkest pits of Mordor, entering a place where shadows are made thicker by an ancient curse, or experiencing directly the terrible power of the Enemy.
+A extensão do ganho de Sombra depende da fonte de Pavor — a tabela abaixo fornece uma série de exemplos para ajudar o Mestre a julgar (outras fontes, como o terror causado por uma criatura ou por um feitiço escuro, são discutidas em detalhe em Adversários, neste capítulo).
 
-The extent of the Shadow gain depends on the source of Dread — the table below provides a number of examples to help the Loremaster adjudicate (other sources, like the terror caused by a creature or a dark spell, are discussed in detail in the Adversaries, page 142).
+> Os aventureiros podem reduzir ou cancelar os efeitos do Pavor com um Teste de Sombra (VALOR).
 
-> Adventurers may reduce or cancel the effects of Dread with a Shadow Test (VALOUR).
+*Mas o rei permanecia sentado sobre Crina-de-neve, imóvel, contemplando a agonia de Minas Tirith, como se golpeado subitamente pela angústia, ou pelo pavor. Ele parecia encolher-se, curvado pela idade. Merry mesmo sentiu como se um grande peso de horror e dúvida houvesse se assentado sobre ele.*
 
-*But the king sat upon Snowmane, motionless, gazing upon the agony of Minas Tirith, as if stricken suddenly by anguish, or by dread. He seemed to shrink down, cowed by age. Merry himself felt as if a great weight of horror and doubt had settled upon him.*
+**FONTES DE PAVOR:**
 
-**SOURCES OF DREAD:**
-
-| Source | Example | Shadow Points Gained |
+| Fonte | Exemplo | Pontos de Sombra Ganhos |
 |---|---|---|
-| Natural but unexpected tragic event, or very grievous occurrence. | Serious or mortal accident, death in the family, natural catastrophe | 1 |
-| Gruesome killing, dreadful experience, Orc-work. | Discovering villagers savagely mutilated, experiencing slavery | 2 |
-| Harrowing experience, physical and spiritual torment. | Experiencing torture, being haunted by a Wight | 3 |
-| Experiencing directly the power of the Enemy. | Seeing the mustering of a Shadow army, seeing the Eye in a Palantír | 4 |
+| Evento trágico natural mas inesperado, ou ocorrência muito grave. | Acidente sério ou mortal, morte na família, catástrofe natural | 1 |
+| Matança horrenda, experiência pavorosa, obra de Orcs. | Descobrir aldeões selvagemente mutilados, experimentar a escravidão | 2 |
+| Experiência atroz, tormento físico e espiritual. | Sofrer tortura, ser assombrado por um Tumulário | 3 |
+| Experimentar diretamente o poder do Inimigo. | Ver a reunião de um exército da Sombra, ver o Olho num Palantír | 4 |
 
-**GREED**
+**COBIÇA**
 
-Hoards of gold and great stores of enchanted weapons and armour lie in forgotten caves. Heroes risk being corrupted by their own desire whenever they put their hands on gold and precious objects that were tainted by laying in the dark for a long time.
+Montes de ouro e grandes reservas de armas e armaduras encantadas jazem em cavernas esquecidas. Os heróis correm o risco de ser corrompidos por seu próprio desejo sempre que põem as mãos em ouro e objetos preciosos maculados por ter jazido no escuro por longo tempo.
 
-When the Player-heroes find a hoard of treasure, they may gain a number of Shadow points if the hoard was tainted (see Treasure, on page 158).
+Quando os heróis-jogadores encontram um acervo de tesouro, podem ganhar uma quantidade de pontos de Sombra se o acervo estiver maculado (ver Tesouro, neste capítulo).
 
-> Adventurers may reduce or cancel the effects of Greed with a Shadow Test (WISDOM).
+> Os aventureiros podem reduzir ou cancelar os efeitos da Cobiça com um Teste de Sombra (SABEDORIA).
 
-*"It is mine, I tell you. My own. My Precious. Yes, my Precious."*
+*"É meu, eu lhe digo. Meu próprio. Meu Precioso. Sim, meu Precioso."*
 
-**MISDEEDS**
+**MALFEITORIAS**
 
-Companions often confront challenges that are so demanding that they might be tempted to adopt extreme measures, especially if they aim to achieve a noble goal. When this happens, the Loremaster must consider if a course of action can be considered a Misdeed.
+Os companheiros muitas vezes enfrentam desafios tão exigentes que podem ser tentados a adotar medidas extremas, especialmente se visam a um objetivo nobre. Quando isso acontece, o Mestre deve considerar se um curso de ação pode ser considerado uma Malfeitoria.
 
-Player-heroes gain Shadow points whenever they commit an act that is essentially wrong or even nefarious in nature, regardless of the objective they are trying to achieve. The Misdeeds table can be used as the basis of the Loremaster's decision.
+Os heróis-jogadores ganham pontos de Sombra sempre que cometem um ato essencialmente errado ou até nefando por natureza, independentemente do objetivo que tentam alcançar. A tabela de Malfeitorias pode ser usada como base da decisão do Mestre.
 
-> A Misdeed is a special instance of Shadow gain, as it cannot be reduced or cancelled by a Shadow Test of any kind.
+> Uma Malfeitoria é um caso especial de ganho de Sombra, pois não pode ser reduzida ou cancelada por Teste de Sombra de qualquer tipo.
 
-The Loremaster should usually warn the players when they are about to carry out a Misdeed.
+O Mestre deveria normalmente advertir os jogadores quando estão a ponto de cometer uma Malfeitoria.
 
-*"You can say that I was too strong and took it by force. For I am too strong for you, halfling," he cried; and suddenly he sprang over the stone and leaped at Frodo.*
+*"Você pode dizer que eu era forte demais e o tomei à força. Pois sou forte demais para você, mediano", ele gritou; e de súbito saltou sobre a pedra e lançou-se contra Frodo.*
 
-**INTENTION:** It is important to note that merely attempting to do something despicable is a Misdeed, regardless of whether the action succeeds or not. Moreover, it is possible to commit a Misdeed unknowingly, for example attacking someone considered to be guilty of a heinous crime, but who later turns out to be innocent. In this case, the Player-heroes should not gain Shadow automatically, but only if they don't attempt to make reparations when their mistake comes to light. If their reaction is one of contrition and they show an earnest attempt to put the situation right, then they can be allowed to make a Shadow Test (WISDOM) to reduce or cancel the Shadow gain.
+**INTENÇÃO:** É importante notar que meramente tentar fazer algo desprezível é uma Malfeitoria, independentemente de a ação ter êxito ou não. Além disso, é possível cometer uma Malfeitoria sem saber, por exemplo atacar alguém considerado culpado de um crime hediondo, mas que depois se revela inocente. Nesse caso, os heróis-jogadores não deveriam ganhar Sombra automaticamente, mas apenas se não tentarem fazer reparações quando seu erro vier à luz. Se sua reação for de contrição e mostrarem uma tentativa sincera de corrigir a situação, então pode-se permitir que façam um Teste de Sombra (SABEDORIA) para reduzir ou cancelar o ganho de Sombra.
 
-**MISDEEDS:**
+**MALFEITORIAS:**
 
-| Action | Shadow Points Gained |
+| Ação | Pontos de Sombra Ganhos |
 |---|---|
-| Violent threats and malicious lies; heedless cruelty | 1 |
-| Manipulating others; abusing your authority; deliberate cruelty | 2 |
-| Theft or plunder; oathbreaking or cowardice; treachery | 3 |
-| Torment or torture; killing or crippling a surrendered foe or harmless folk | 4 |
-| Murder; willingly taking actions in the service of the Enemy | 4 plus 1 Shadow Scar |
+| Ameaças violentas e mentiras maliciosas; crueldade irrefletida | 1 |
+| Manipular outros; abusar de sua autoridade; crueldade deliberada | 2 |
+| Furto ou pilhagem; quebra de juramento ou covardia; traição | 3 |
+| Tormento ou tortura; matar ou mutilar um inimigo rendido ou gente inofensiva | 4 |
+| Assassinato; tomar ações voluntariamente a serviço do Inimigo | 4 mais 1 Cicatriz de Sombra |
 
-**SORCERY**
+**FEITIÇARIA**
 
-It is said that those who are in the favour of the Dark Lord are often rewarded with evil knowledge. Some are able to wield such knowledge to terrible effect, twisting it into a form of dark magic. Adventurers gain Shadow when they fall victim of the dreadful spells of the Enemy and his minions.
+Dizem que aqueles que estão nos favores do Senhor do Escuro são muitas vezes recompensados com conhecimento maligno. Alguns são capazes de manejar tal conhecimento com efeito terrível, torcendo-o em uma forma de magia escura. Os aventureiros ganham Sombra quando caem vítimas dos feitiços temíveis do Inimigo e de seus lacaios.
 
-The number of Shadow points gained by the Player-heroes depends on the power of the sorcerous spell. Often, gaining Shadow points as the consequence of Sorcery has additional negative consequences.
+O número de pontos de Sombra ganhos pelos heróis-jogadores depende do poder do feitiço. Muitas vezes, ganhar pontos de Sombra como consequência de Feitiçaria tem consequências negativas adicionais.
 
-> Adventurers may reduce or cancel the effects of Sorcery with a Shadow Test (WISDOM).
+> Os aventureiros podem reduzir ou cancelar os efeitos da Feitiçaria com um Teste de Sombra (SABEDORIA).
 
-*Then the leader, who was now half across the Ford, stood up menacing in his stirrups, and raised up his hand. Frodo was stricken dumb.*
+*Então o líder, que já estava a meio caminho do Vau, ergueu-se ameaçador em seus estribos e levantou a mão. Frodo ficou mudo.*
 
-- **BETRAYAL:** The Player-hero fails to keep their word or to perform an assigned duty, and the Company suffers the consequences. For example, the hero fails to watch over a prisoner properly and the prisoner escapes.
-- **FEAR:** The heroes fall prey to their fears, and flee from any source of danger, thinking only about preserving themselves from any threat.
-- **LUST:** Lusting characters feel an irresistible desire for an object not belonging to them, and try to take it, secretly or overtly.
-- **RAGE:** Raging characters brood over real or imaginary wrongs until they react aggressively to a perceived threat or source of opposition.
+- **TRAIÇÃO:** O herói-jogador deixa de cumprir sua palavra ou de executar um dever atribuído, e a Companhia sofre as consequências. Por exemplo, o herói falha em vigiar um prisioneiro adequadamente e o prisioneiro escapa.
+- **MEDO:** Os heróis caem presas de seus temores e fogem de qualquer fonte de perigo, pensando apenas em preservar-se de qualquer ameaça.
+- **LUXÚRIA:** Personagens luxuriosos sentem um desejo irresistível por um objeto que não lhes pertence, e tentam tomá-lo, às escondidas ou abertamente.
+- **FÚRIA:** Personagens furiosos ruminam sobre injustiças reais ou imaginárias até reagirem agressivamente a uma ameaça percebida ou a uma fonte de oposição.
 
-If nothing seems to fit the circumstances, a standard bout of madness can take the form of an aggression of any type, verbal or physical, upon the most likely and available target (a character's Fellowship Focus often qualifies as such).
+Se nada parece adequar-se às circunstâncias, um acesso padrão de loucura pode tomar a forma de uma agressão de qualquer tipo, verbal ou física, sobre o alvo mais provável e disponível (o Foco de Companheirismo de um personagem muitas vezes se qualifica como tal).
 
-### Madness
+### Loucura
 
-As seen on page 137, Player-heroes whose Shadow score reaches their maximum Hope rating become *Ill-favoured* on all rolls. Once they reach this point, they can get rid of Shadow only in one way — by playing out a bout of madness, a violent reaction marking a significant step in their downward course towards degeneration.
+Como visto neste capítulo, os heróis-jogadores cuja Sombra alcança sua Esperança máxima tornam-se *Desfavorecidos* em todas as rolagens. Uma vez que atinjam esse ponto, só podem livrar-se da Sombra de um modo — interpretando um acesso de loucura, uma reação violenta que marca um passo significativo em seu curso descendente rumo à degeneração.
 
-> To play out a bout of madness, players must describe how their characters lose control for a short period of time, doing something they will later regret.
+> Para interpretar um acesso de loucura, os jogadores devem descrever como seus personagens perdem o controle por um breve período de tempo, fazendo algo do que mais tarde se arrependerão.
 
-To describe their loss of control, players should take into consideration the source of the last Shadow gain that pushed their heroes beyond their limit, a character's Shadow Path, or one of their Flaws (see Shadow Paths overleaf).
+Para descrever sua perda de controle, os jogadores deveriam levar em consideração a fonte do último ganho de Sombra que empurrou seus heróis além de seus limites, o Caminho da Sombra do personagem, ou uma de suas Falhas (ver Caminhos da Sombra a seguir).
 
-Here are some examples of the consequences of a bout of madness:
+Aqui estão alguns exemplos das consequências de um acesso de loucura:
 
-A bout of madness is a violent outburst, a dangerous crisis that frees a Player-hero from the burden of the Shadow, but that may have serious, long-term consequences (see Madness, on page 139).
+Um acesso de loucura é uma explosão violenta, uma crise perigosa que liberta um herói-jogador do fardo da Sombra, mas que pode ter consequências sérias e de longo prazo (ver Loucura, neste capítulo).
 
-Player-heroes quickly regain control of themselves once their bout of madness passes. They see their mind finally cleared of the tangle of fear and doubt they fell into before facing the crisis.
+Os heróis-jogadores retomam rapidamente o controle de si mesmos quando o acesso de loucura passa. Veem sua mente finalmente limpa do emaranhado de medo e dúvida em que caíram antes de enfrentar a crise.
 
-> They are no longer *Ill-favoured* and remove all their current Shadow points, but they advance one step along their Shadow Path (page 140).
+> Eles não estão mais *Desfavorecidos* e removem todos os seus pontos de Sombra atuais, mas avançam um passo ao longo de seu Caminho da Sombra (ver a seguir).
 
-A bout of madness must take place during the current Adventuring Phase (player-heroes ending the Adventuring Phase with a Shadow score matching their maximum Hope can be considered to have left the Company and are retired from the game).
+Um acesso de loucura deve ocorrer durante a Fase de Aventura atual (heróis-jogadores que terminam a Fase de Aventura com uma Sombra igual à sua Esperança máxima podem ser considerados como tendo deixado a Companhia e são aposentados do jogo).
 
-*"What have I done? Frodo, Frodo!" he called. "Come back! A madness took me, but it has passed. Come back!"*
+*"O que foi que eu fiz? Frodo, Frodo!" ele chamou. "Volte! Uma loucura tomou conta de mim, mas passou. Volte!"*
 
-### Shadow Paths
+### Caminhos da Sombra
 
-**SHADOW PATHS:**
+**CAMINHOS DA SOMBRA:**
 
-| | Bout of Madness | Curse of Vengeance | Dragon-sickness | Lure of Power | Lure of Secrets | Path of Despair | Wandering-madness |
+| | Acesso de Loucura | Maldição da Vingança | Doença do Dragão | Atração do Poder | Atração dos Segredos | Caminho do Desespero | Loucura Errante |
 |---|---|---|---|---|---|---|---|
-| # 1 | Spiteful | Grasping | Resentful | Haughty | Troubled | Idle |
-| # 2 | Brutal | Mistrustful | Arrogant | Scornful | Wavering | Forgetful |
-| # 3 | Cruel | Deceitful | Overconfident | Scheming | Guilt-ridden | Uncaring |
-| # 4 | Murderous | Thieving | Tyrannical | Traitorous | Fearful | Cowardly |
+| # 1 | Rancoroso | Ganancioso | Ressentido | Soberbo | Inquieto | Indolente |
+| # 2 | Brutal | Desconfiado | Arrogante | Desdenhoso | Vacilante | Esquecido |
+| # 3 | Cruel | Enganador | Presunçoso | Intrigante | Culpado | Insensível |
+| # 4 | Assassino | Ladrão | Tirânico | Traiçoeiro | Temeroso | Covarde |
 
-*(Note: column header "Bout of Madness" labels row numbers #1–#4; the remaining six columns — Curse of Vengeance, Dragon-sickness, Lure of Power, Lure of Secrets, Path of Despair, Wandering-madness — are the six Shadow Paths, one per Calling.)*
+*(Nota: o cabeçalho de coluna "Acesso de Loucura" rotula os números das linhas #1–#4; as seis colunas restantes — Maldição da Vingança, Doença do Dragão, Atração do Poder, Atração dos Segredos, Caminho do Desespero, Loucura Errante — são os seis Caminhos da Sombra, um por Vocação.)*
 
-In addition to resetting their Shadow score, every time a hero suffers a bout of madness they advance along the Shadow Path corresponding to their chosen Calling. All paths are articulated along a number of steps towards degeneration, with each step marked by the acquisition of a different Flaw — a Distinctive Feature with a negative connotation.
+Além de zerar sua Sombra, cada vez que um herói sofre um acesso de loucura ele avança ao longo do Caminho da Sombra correspondente à sua Vocação escolhida. Todos os caminhos se articulam ao longo de uma série de passos rumo à degeneração, com cada passo marcado pela aquisição de uma Falha diferente — uma Característica Distintiva com conotação negativa.
 
-A Player-hero's Calling determines which Flaws are acquired, based on the character's Shadow Path (see table above).
+A Vocação de um herói-jogador determina quais Falhas são adquiridas, com base no Caminho da Sombra do personagem (ver tabela acima).
 
-**SUCCUMBING TO THE SHADOW.** Heroes who develop the full complement of four Flaws risk succumbing totally to the Shadow:
+**SUCUMBIR À SOMBRA.** Heróis que desenvolvem o complemento completo de quatro Falhas correm o risco de sucumbir totalmente à Sombra:
 
-> The next time that their Shadow score reaches their maximum Hope rating they do not become *Ill-favoured* but are taken out of play instead.
+> Na próxima vez que sua Sombra alcançar sua Esperança máxima, eles não se tornam *Desfavorecidos*, mas são retirados do jogo.
 
-A Player-hero who succumbs to the Shadow is going to disappear from the game soon, probably as a consequence of one of the following events:
-- **LOST TO MADNESS:** When Men, Hobbits, or Dwarves fall under the Shadow, they succumb to madness. More often than not, this results sooner or later in their death, as they threaten others to the extent that they end up being killed, or starve to death in some solitary place, forsaken by folk and beasts.
-- **RETURN TO VALINOR:** When the burden of the Shadow overpowers Elves, they seek to leave Middle-earth as soon as possible, to sail for the Uttermost West and be healed of the sadness and misery of this world.
+Um herói-jogador que sucumbe à Sombra vai desaparecer do jogo em breve, provavelmente como consequência de um dos seguintes eventos:
+- **PERDIDO NA LOUCURA:** Quando Homens, Hobbits ou Anões caem sob a Sombra, sucumbem à loucura. Mais frequentemente do que não, isso resulta cedo ou tarde em sua morte, pois ameaçam outros a ponto de acabarem sendo mortos, ou morrem de inanição em algum lugar solitário, abandonados por gentes e bestas.
+- **RETORNO A VALINOR:** Quando o fardo da Sombra domina os Elfos, eles buscam deixar a Terra-média o mais cedo possível, para navegar rumo ao Extremo Oeste e serem curados da tristeza e da miséria deste mundo.
 
-The details about the fate of a Player-hero who descends a Shadow Path to its bottom are up to the Loremaster and the player controlling the fallen character. They should work together to find a way to incorporate the hero's destiny into the ongoing game.
+Os detalhes sobre o destino de um herói-jogador que desce um Caminho da Sombra até o fundo ficam a cargo do Mestre e do jogador que controla o personagem tombado. Eles deveriam trabalhar juntos para achar um modo de incorporar o destino do herói ao jogo em andamento.
 
-### Using Flaws
+### Usando as Falhas
 
-**FLAWED HEROES:** Flawed adventurers haven't lost the possibility of being heroes. Many of the characters described in the books display the influence of the Shadow to some measure - certainly Boromir, or Frodo, but also Aragorn and even Gandalf. In most cases, they were able to keep their weaknesses in check, avoiding corruption's most dire consequences.
+**HERÓIS COM FALHAS:** Aventureiros com Falhas não perderam a possibilidade de serem heróis. Muitos dos personagens descritos nos livros exibem em alguma medida a influência da Sombra — certamente Boromir, ou Frodo, mas também Aragorn e mesmo Gandalf. Na maioria dos casos, eles foram capazes de manter suas fraquezas sob controle, evitando as consequências mais funestas da corrupção.
 
-Every time heroes develop a Flaw they are renouncing their higher ambitions and embracing simpler, more primitive emotions. They are trading respect for arrogance, love for lust, trust for suspicion.
+Cada vez que os heróis desenvolvem uma Falha, estão renunciando a suas ambições mais elevadas e abraçando emoções mais simples e primitivas. Estão trocando respeito por arrogância, amor por luxúria, confiança por suspeita.
 
-The Loremaster should take into account the effects of a Flaw whenever the performance of a Player-hero can be made worse by it.
+O Mestre deveria levar em conta os efeitos de uma Falha sempre que o desempenho de um herói-jogador possa ser piorado por ela.
 
-> If a Player-hero is using a Skill that can plausibly be affected by a Flaw, the roll is made *Ill-favoured*.
+> Se um herói-jogador está usando uma Perícia que possa plausivelmente ser afetada por uma Falha, a rolagem é feita *Desfavorecida*.
 
-*Example: An Arrogant hero is making a COURTESY roll. The Loremaster considers that her pompous conduct may worsen her chances to succeed, so the roll is made Ill-favoured.*
+*Exemplo: Uma heroína Arrogante faz uma rolagem de CORTESIA. O Mestre considera que sua conduta pomposa pode piorar suas chances de sucesso, então a rolagem é feita Desfavorecida.*
 
-The following sections describe the various Flaws that Player-heroes may develop as a result of their degeneration, grouped by Shadow Path. The Loremaster can use the definitions listed here to determine the effects of a bout of madness, and the players may use them to keep in mind how a Flaw should affect the behaviour of a Player-hero.
+As seções seguintes descrevem as várias Falhas que os heróis-jogadores podem desenvolver como resultado de sua degeneração, agrupadas por Caminho da Sombra. O Mestre pode usar as definições listadas aqui para determinar os efeitos de um acesso de loucura, e os jogadores podem usá-las para ter em mente como uma Falha deve afetar o comportamento de um herói-jogador.
 
-**CURSE OF VENGEANCE**
+**MALDIÇÃO DA VINGANÇA**
 
-*"I wish I had Gandalf here! Curse him for his choice of you! … As for you, I will throw you to the rocks!" he cried and lifted Bilbo in his arms.*
+*"Como eu queria ter Gandalf aqui! Maldito seja ele pela sua escolha de você! … Quanto a você, vou jogá-lo nas rochas!" ele gritou e ergueu Bilbo nos braços.*
 
-- **SPITEFUL:** You often repay real or imagined wrongs with vicious rudeness. Depending on the provocation, you may simply be very impolite, or downright insulting.
-- **BRUTAL:** You react violently to provocations and show little restraint under most circumstances.
-- **CRUEL:** You don't care if your actions cause pain and suffering to others, and are needlessly savage with your enemies.
-- **MURDEROUS:** You become Murderous when you start to consider killing as a perfectly natural way to achieve a goal or simply to make things go your way.
+- **RANCOROSO:** Você muitas vezes retribui injustiças reais ou imaginárias com rudeza viciosa. Dependendo da provocação, você pode simplesmente ser muito mal-educado, ou francamente insultante.
+- **BRUTAL:** Você reage violentamente às provocações e mostra pouca contenção na maioria das circunstâncias.
+- **CRUEL:** Você não se importa se suas ações causam dor e sofrimento aos outros, e é desnecessariamente selvagem com seus inimigos.
+- **ASSASSINO:** Você se torna Assassino quando começa a considerar o matar como um modo perfeitamente natural de alcançar um objetivo ou simplesmente de fazer as coisas do seu jeito.
 
-**DRAGON-SICKNESS**
+**DOENÇA DO DRAGÃO**
 
-*…he fell under the Dragon-sickness, and took most of the gold and fled with it, and died of starvation in the Waste, deserted by his companions.*
+*…ele caiu sob a doença do Dragão, e tomou a maior parte do ouro e fugiu com ele, e morreu de inanição no Ermo, abandonado por seus companheiros.*
 
-- **GRASPING:** If you become Grasping, you seek to accumulate gold and precious items above all else, just for the sake of possessing them.
-- **MISTRUSTFUL:** When your prized possessions start to weigh you down and become a treasure to be guarded, even the good advice of friends appears to mask dubious intentions.
-- **DECEITFUL:** You feel no shame in misleading others with lies and stratagems, as long as your machinations further your ends and corrupted needs.
-- **THIEVING:** You have discovered that anything you desire can be yours — you just have to take it. You have earned the right to take all you want when you sacrificed the love of your peers and your own self-respect.
+- **GANANCIOSO:** Se você se torna Ganancioso, busca acumular ouro e itens preciosos acima de tudo, apenas pelo prazer de possuí-los.
+- **DESCONFIADO:** Quando seus bens estimados começam a pesar sobre você e a se tornar um tesouro a ser guardado, mesmo o bom conselho dos amigos parece mascarar intenções duvidosas.
+- **ENGANADOR:** Você não sente vergonha em desencaminhar os outros com mentiras e estratagemas, desde que suas maquinações favoreçam seus fins e suas necessidades corrompidas.
+- **LADRÃO:** Você descobriu que qualquer coisa que deseja pode ser sua — basta tomá-la. Você conquistou o direito de tomar tudo o que quer quando sacrificou o amor de seus pares e seu próprio respeito próprio.
 
-**LURE OF POWER**
+**ATRAÇÃO DO PODER**
 
-*"It is by our own folly that the Enemy will defeat us," cried Boromir. "How it angers me! Fool! Obstinate fool! Running wilfully to death and ruining our cause."*
+*"É por nossa própria tolice que o Inimigo vai nos derrotar", gritou Boromir. "Como isso me enfurece! Tolo! Tolo obstinado! Correndo voluntariamente para a morte e arruinando nossa causa."*
 
-- **RESENTFUL:** You risk becoming bitter and angry with the people you ought to lead. You often feel that you risk your life for individuals that fail to see the wisdom of your words.
-- **ARROGANT:** You don't miss an opportunity to underline your own importance, often belittling your peers and companions.
-- **OVERCONFIDENT:** Overconfidence denotes overweening pride, a sentiment that blinds you to your own limits and weaknesses. You endeavour to do anything you set your mind upon, regardless of the consequences that might befall others.
-- **TYRANNICAL:** You escalate your actions and desires to the level of a just cause. Your disregard for the lives of others is so profound that you go to any lengths to achieve your ends, regardless of the cost or methods employed to accomplish them. Any dissenting opinion is considered as utter betrayal.
+- **RESSENTIDO:** Você corre o risco de tornar-se amargo e irado com as pessoas que deveria liderar. Muitas vezes sente que arrisca a vida por indivíduos que não conseguem ver a sabedoria de suas palavras.
+- **ARROGANTE:** Você não perde oportunidade de sublinhar sua própria importância, muitas vezes menosprezando seus pares e companheiros.
+- **PRESUNÇOSO:** A presunção denota um orgulho desmedido, um sentimento que o cega para seus próprios limites e fraquezas. Você se esforça por fazer qualquer coisa em que ponha a cabeça, independentemente das consequências que possam recair sobre outros.
+- **TIRÂNICO:** Você eleva suas ações e desejos ao nível de uma causa justa. Seu desprezo pela vida dos outros é tão profundo que você vai a qualquer extremo para alcançar seus fins, sem importar o custo ou os métodos empregados para realizá-los. Qualquer opinião dissonante é considerada traição absoluta.
 
-**LURE OF SECRETS**
+**ATRAÇÃO DOS SEGREDOS**
 
-*"The roots of those mountains must be roots indeed; there must be great secrets buried there which have not been discovered since the beginning."*
+*"As raízes daquelas montanhas devem ser raízes de fato; deve haver grandes segredos sepultados ali que não foram descobertos desde o princípio."*
 
-- **HAUGHTY:** You don't recognise easily the wisdom found in the words and actions of others, and tend to turn aside all advice and offers of help.
-- **SCORNFUL:** You treat the propositions of others with disdain, making use of every opportunity to mock them for their presumed inadequacy.
-- **SCHEMING:** You keep your thoughts and intentions to yourself at all times, never giving advice or heeding only your own judgement. You might sometimes agree with the propositions of others, but only to be free to follow your own choices later.
-- **TRAITOROUS:** When you become Traitorous you cannot be trusted to keep your word. You are ready to betray your own friends and allies, if it would turn to your advantage.
+- **SOBERBO:** Você não reconhece facilmente a sabedoria encontrada nas palavras e ações dos outros, e tende a recusar todo conselho e oferta de ajuda.
+- **DESDENHOSO:** Você trata as propostas dos outros com desdém, aproveitando toda oportunidade para zombar deles por sua presumida inadequação.
+- **INTRIGANTE:** Você mantém seus pensamentos e intenções para si a todo momento, nunca dando conselhos e atendendo apenas ao seu próprio juízo. Você pode às vezes concordar com as propostas dos outros, mas apenas para ficar livre de seguir suas próprias escolhas depois.
+- **TRAIÇOEIRO:** Quando você se torna Traiçoeiro, não se pode confiar que cumpra sua palavra. Você está pronto a trair seus próprios amigos e aliados, se isso lhe for vantajoso.
 
-**PATH OF DESPAIR**
+**CAMINHO DO DESESPERO**
 
-*"Now the Company is all in ruin. It is I that have failed. Vain was Gandalf's trust in me. What shall I do now?"*
+*"Agora a Companhia está em ruínas. Fui eu que falhei. Vã foi a confiança de Gandalf em mim. O que devo fazer agora?"*
 
-- **TROUBLED:** You feel a sense of disquiet that makes it hard for you to read a situation clearly and offer counsel to others.
-- **WAVERING:** Caution can be the enemy of action, and when you become Wavering you cannot set your mind upon a choice quickly and effectively. You vacillate between the various options you see before you.
-- **GUILT-RIDDEN:** The curse of those who defend others is to feel remorse when their actions go amiss, pushing you to refuse any daring course of action.
-- **FEARFUL:** When you become Fearful you are so beset by worries and concerns that you cannot force yourself to risk doing anything that will potentially endanger yourself and those you care for.
+- **INQUIETO:** Você sente um desassossego que torna difícil ler uma situação com clareza e oferecer conselho aos outros.
+- **VACILANTE:** A cautela pode ser inimiga da ação, e quando você se torna Vacilante não consegue decidir-se rápida e eficazmente. Você oscila entre as várias opções que vê à sua frente.
+- **CULPADO:** A maldição daqueles que defendem os outros é sentir remorso quando suas ações dão errado, empurrando-o a recusar qualquer curso de ação audacioso.
+- **TEMEROSO:** Quando você se torna Temeroso, está tão assediado por preocupações e apreensões que não consegue forçar-se a arriscar qualquer coisa que possa pôr em perigo você e aqueles de quem cuida.
 
-**WANDERING-MADNESS**
+**LOUCURA ERRANTE**
 
-*"I feel I need a holiday, a very long holiday, as I have told you before. Probably a permanent holiday: I don't expect I shall return."*
+*"Sinto que preciso de umas férias, umas férias muito longas, como já lhe disse antes. Provavelmente férias permanentes: não espero voltar."*
 
-- **IDLE:** It takes a lot to stir Idle adventurers into action. You are easily distracted, and must be cajoled to fully participate in endeavours.
-- **FORGETFUL:** Being Forgetful indicates that you are often daydreaming and absent-minded, and find it difficult to remember even important things.
-- **UNCARING:** When you become Uncaring you lose touch with the world outside of yourself. You can't bring yourself to feel compassion, and quickly lose interest in matters that do not concern you directly.
-- **COWARDLY:** You care only for your own safety under any circumstances, and will go to any lengths to save yourself when a threat arises.
+- **INDOLENTE:** Custa muito mover aventureiros Indolentes à ação. Você se distrai facilmente e precisa ser persuadido a participar plenamente das empreitadas.
+- **ESQUECIDO:** Ser Esquecido indica que você muitas vezes sonha acordado e está distraído, e tem dificuldade em lembrar até coisas importantes.
+- **INSENSÍVEL:** Quando você se torna Insensível, perde o contato com o mundo fora de si mesmo. Você não consegue sentir compaixão e rapidamente perde interesse em assuntos que não lhe dizem respeito diretamente.
+- **COVARDE:** Você só se importa com sua própria segurança em qualquer circunstância, e vai a qualquer extremo para salvar-se quando surge uma ameaça.
 
-## Adversaries
+## Adversários
 
-*For the folk of Arnor dwindled, and their foes devoured them…*
+*Pois o povo de Arnor diminuiu, e seus inimigos os devoraram…*
 
-Not all the servants of the Enemy are Orcs, Trolls or Wraiths. Among the foes of those who choose to oppose the Shadow are many who cannot be distinguished easily from their friends, if at all. And in times of doubt, a deadly threat may come from otherwise steadfast allies, turned into ruthless adversaries by simple misunderstanding, or, worse, by treachery or betrayal.
+Não todos os servos do Inimigo são Orcs, Trolls ou Espectros. Entre os inimigos daqueles que escolhem opor-se à Sombra há muitos que não podem ser facilmente distinguidos de seus amigos, se é que podem. E em tempos de dúvida, uma ameaça mortal pode vir de aliados de resto inabaláveis, transformados em adversários implacáveis por um simples mal-entendido ou, pior, por perfídia ou traição.
 
-This chapter presents a selection of adversaries, from the various cunning and evil creatures of Middle-earth, to misguided individuals that end up opposing the deeds of the Player-heroes.
+Este capítulo apresenta uma seleção de adversários, das várias criaturas ardilosas e malignas da Terra-média até indivíduos desviados que acabam opondo-se aos feitos dos heróis-jogadores.
 
-### Format of Presentation
+### Formato de Apresentação
 
-To make the life of a Loremaster easier, all game information regarding adversaries is presented using a standardised format. The capabilities of a foe are described using a set of terms and characteristics that are similar to those used to define heroes, but that make use of simplified rules meant to speed up the gameplay.
+Para facilitar a vida do Mestre, todas as informações de jogo relativas aos adversários são apresentadas usando um formato padronizado. As capacidades de um inimigo são descritas usando um conjunto de termos e características semelhantes aos usados para definir os heróis, mas que fazem uso de regras simplificadas destinadas a acelerar a jogabilidade.
 
-**ATTRIBUTE LEVEL**
+**NÍVEL DE ATRIBUTO**
 
-This single value replaces the three Attributes used to describe Player-heroes and can be used to gauge the threat level posed by a single adversary of a type.
+Esse valor único substitui os três Atributos usados para descrever os heróis-jogadores e pode ser usado para avaliar o nível de ameaça representado por um único adversário de um tipo.
 
-> In combat, this numerical rating is applied as a modifier to several mechanics, like for example a number of Special Damage opportunities and Fell Abilities.
+> Em combate, essa classificação numérica é aplicada como modificador a várias mecânicas, como por exemplo diversas oportunidades de Dano Especial e Habilidades Sinistras.
 
-**MIGHT AND ENDURANCE**
+**VIGOR E RESISTÊNCIA**
 
-All Adversaries possess a number of Endurance points, and a Might rating. Endurance measures the resistance of the adversary to the exhaustion of combat and harm; Might indicates the number of Wounds required to slay a foe outright, and the number of attacks it can make during a round of combat.
-- All adversaries are taken out of combat if their Endurance is reduced to zero.
-- Adversaries can make a number of attacks up to their Might score, targeting multiple foes in the same round, or the same opponent multiple times.
+Todos os Adversários possuem uma quantidade de pontos de Resistência e um Vigor. A Resistência mede a resistência do adversário à exaustão do combate e ao dano; o Vigor indica o número de Ferimentos necessários para abater um inimigo de vez, e o número de ataques que ele pode fazer durante uma rodada de combate.
+- Todos os adversários são retirados do combate se sua Resistência for reduzida a zero.
+- Os adversários podem fazer um número de ataques até seu Vigor, mirando múltiplos inimigos na mesma rodada, ou o mesmo oponente múltiplas vezes.
 
-Adversaries can never opt to be knocked back to reduce the severity of a loss of Endurance.
+Os adversários nunca podem optar por ser empurrados para trás a fim de reduzir a severidade de uma perda de Resistência.
 
-**HATE OR RESOLVE**
+**ÓDIO OU RESOLUÇÃO**
 
-Each Adversary description includes a numerical rating measuring their fighting drive and fuelling their special abilities — in game terms, Hate and Resolve serve a function that is similar to that of Hope for the Player-heroes.
+Cada descrição de Adversário inclui uma classificação numérica que mede seu impulso de combate e alimenta suas habilidades especiais — em termos de jogo, Ódio e Resolução cumprem uma função semelhante à da Esperança para os heróis-jogadores.
+Mais especificamente:
+- O Mestre pode reduzir o Ódio ou a Resolução de um adversário para fazê-lo *ganhar (1d)* em uma rolagem durante o combate (geralmente, rolagens de ataque ou de Proteção).
+- Muitas vezes, um gasto de Ódio ou Resolução é exigido por diversas Habilidades Sinistras (ver adiante).
+- Por fim, se uma criatura começa uma rodada sem pontos de Ódio ou Resolução, ela é considerada Exausta.
 
-More specifically:
-- The Loremaster can reduce an adversary's Hate or Resolve score to make them *gain (1d)* on a die roll during combat (generally, attack or Protection rolls).
-- Often, an expenditure of Hate or Resolve is required by several Fell Abilities (see next page).
-- Finally, if a creature begins a round without Hate or Resolve points, it is considered to be Weary.
+**ÓDIO:** Adversários com uma classificação de pontos de Ódio devem ser considerados lacaios ou servos do Inimigo. Suas ações não são facilmente mal interpretadas, pois sempre visam a machucar ou de outro modo prejudicar os heróis-jogadores de um modo ou de outro, desejando apenas satisfazer a vontade de seu Mestre. Podem optar por fugir se estiverem em posição desvantajosa, mas nunca cederão ou se renderão, nem darão quartel a menos que forçados pelas circunstâncias ou por ordens diretas.
 
-**HATE:** Adversaries with a Hate point rating are to be considered minions or servants of the Enemy. Their actions are not easily misinterpreted, as they always aim at hurting or otherwise damaging the Player-heroes in one way or another, desiring only to satisfy their Master's will. They may opt to flee if in a disadvantageous position, but will never yield or surrender, nor give quarter unless forced by circumstances or direct orders.
+> Todos os lacaios de Sauron e todas as criaturas monstruosas têm uma classificação de Ódio.
 
-> All minions of Sauron and all monstrous creatures have a Hate rating.
+**RESOLUÇÃO:** Adversários a quem se atribui uma Resolução não são inimigos jurados dos Povos Livres, mas podem tomar armas para opor-se a uma Companhia de heróis como consequência de sua escolha de lealdade, ou devido a circunstâncias infelizes. Inimigos com Resolução carecem da motivação implacável que move os lacaios do Senhor do Escuro, e podem render-se quando em desvantagem numérica, ou quando as baixas se tornam excessivas.
 
-**RESOLVE:** Adversaries that are given a Resolve score are not sworn enemies of the Free Folk, but may take up arms to oppose a Company of heroes as a consequence of their choice of allegiance, or due to unfortunate circumstances. Foes with a Resolve score lack the relentless motivation that drives the minions of the Dark Lord, and may surrender when outnumbered, or when casualties become excessive.
+> Homens Maus e outros adversários não monstruosos muitas vezes têm uma classificação de Resolução.
 
-> Evil Men and other non-monstrous adversaries often have a Resolve rating.
+**ÓDIO VS RESOLUÇÃO:** Há outra diferença importante entre inimigos com Ódio e inimigos com Resolução: enquanto lutar contra lacaios do Inimigo dificilmente pode colocar a integridade dos heróis-jogadores em questão, o ato de atacar ou matar um adversário com Resolução deveria sempre ser avaliado pelo Mestre como possível Malfeitoria (ver neste capítulo).
 
-**HATE VS RESOLVE:** There is another important difference between foes with a Hate rating and ones with a Resolve score: while fighting minions of the Enemy can hardly call the integrity of the Player-heroes into question, the act of attacking or killing an adversary with a Resolve rating should always be evaluated by the Loremaster as a possible Misdeed (see page 138).
+> Para determinar isso, os Mestres podem fazer a si mesmos algumas perguntas simples: a luta foi provocada pelos heróis-jogadores ou eles foram atacados? Havia outra opção além do combate? Matar era necessário, ou os adversários estavam propensos a se render?
 
-> To ascertain this, Loremasters can ask themselves some simple questions: was the fight provoked by the Player-heroes or were they attacked? Was there another option to combat? Was killing necessary, or were the adversaries prone to surrender?
+**BLOQUEIO**
 
-**PARRY**
+O Bloqueio de um adversário é um modificador numérico que é somado ao NA de FORÇA de qualquer herói-jogador que tente acertá-lo em combate.
 
-An adversary's Parry rating is a numerical modifier that is added to the STRENGTH TN of any Player-hero trying to hit the adversary in combat.
+**ARMADURA**
 
-**ARMOUR**
+A Armadura de um adversário funciona do mesmo modo que a de um herói — é usada pelo Mestre para fazer um teste de Proteção quando o adversário é atingido por um Golpe Perfurante.
 
-An adversary's Armour rating works in the same way as a hero's — it is used by the Loremaster to make a Protection test when the adversary is hit by a Piercing Blow.
+**PROFICIÊNCIAS DE COMBATE**
 
-**COMBAT PROFICIENCIES**
+Cada adversário apresenta uma Proficiência de Combate primária e uma secundária, representando seus principais meios de ataque.
 
-Each adversary features a primary and a secondary Combat Proficiency, representing its main means of attack.
+Cada forma de ataque listada é seguida primeiro por sua classificação, depois por seus valores de Dano/Ferimento e, finalmente, pelas oportunidades de Dano Especial (se houver) disponíveis àquele tipo de Adversário (ver a lista de opções abaixo).
 
-Each listed attack form is followed first by its rating, then by its stats as Damage/Injury, and finally by the Special Damage opportunities (if any) that are available to that Adversary type (see the list of options below).
+**OPÇÕES DE DANO ESPECIAL**
 
-**SPECIAL DAMAGE OPTIONS**
+De modo semelhante ao que acontece com os heróis-jogadores, se uma rolagem de ataque bem-sucedida feita por um adversário produzir um ou mais ícones de Sucesso (ᛥ), o Mestre pode gastá-los para acionar resultados especiais.
+- Todos os resultados especiais listados aqui exigem 1 ícone de Sucesso para ser acionados. Múltiplos resultados ᛥ podem ser usados para acionar resultados diferentes, ou o mesmo resultado múltiplas vezes.
+- Todos os adversários podem sempre escolher acionar um resultado de dano especial de Golpe Pesado.
 
-Similarly to what happens with the Player-heroes, if a successful attack roll made by an adversary produces one or more Success icons (ᛥ), the Loremaster can spend them to trigger special results.
-- All special results listed here require 1 Success icon to be triggered. Multiple ᛥ results can be used to trigger different results, or the same one multiple times.
-- All adversaries can always choose to trigger a Heavy Blow special damage result.
+Outras opções são listadas no bloco de estatísticas de cada criatura individual, e podem depender do tipo de ataque empregado, ou estar sempre disponíveis e, como tal, ser listadas separadamente, sob as Proficiências de Combate da criatura.
 
-Other options are listed on each individual creature's stat block, and may depend on the attack type employed, or be always available and as such listed separately, under the creature's Combat Proficiencies.
+Seguem as descrições das opções de dano especial disponíveis aos adversários:
 
-Here follow the descriptions of the special damage options available to adversaries:
+- **QUEBRAR ESCUDO:** O ataque golpeia repetidamente o escudo do herói-jogador alvo, quebrando-o em pedaços. O alvo perde o bônus de Bloqueio de seu escudo (um escudo aprimorado por Recompensas ou qualidades mágicas não pode ser quebrado e portanto não é afetado).
+- **GOLPE PESADO:** O ataque inflige uma perda adicional de Resistência igual ao Nível de Atributo do atacante.
+- **PERFURAR:** O atacante acerta um golpe bem mirado, modificando o resultado do Dado de Proeza da rolagem de ataque em +2.
+- **AGARRAR:** O atacante segura o alvo — a vítima só pode lutar em postura Avançada fazendo ataques de Briga. Heróis agarrados podem libertar-se gastando um ícone ᛥ de uma rolagem de ataque bem-sucedida.
 
-- **BREAK SHIELD:** The attack strikes repeatedly at the shield of the targeted Player-hero, smashing it to pieces. The target loses their shield's bonus to Parry (a shield enhanced by Rewards or magical qualities cannot be smashed and thus is not affected).
-- **HEAVY BLOW:** The attack inflicts an additional loss of Endurance equal to the Attribute Level of the attacker.
-- **PIERCE:** The attacker scores a well-aimed strike, modifying the Feat die result of the attack roll by +2.
-- **SEIZE:** The attacker holds on to the target — the victim can only fight in Forward stance making Brawling attacks. Seized heroes may free themselves spending a ᛥ icon from a successful attack roll.
+**HABILIDADES SINISTRAS**
 
-**FELL ABILITIES**
+A maioria dos adversários exibe um conjunto de talentos especiais, representando seus poderes inatos e suas esquisitices comportamentais.
 
-Most adversaries display an array of special talents, representing their innate powers and behavioural oddities.
+Todas as Habilidades Sinistras dos adversários são listadas em seus blocos individuais de estatísticas. O Mestre tem o direito de fazer uso de uma Habilidade Sinistra mesmo quando ela exige o gasto do último ponto de Ódio ou Resolução possuído pelo adversário. A menos que indicado de outro modo, um adversário pode usar uma Habilidade Sinistra além de atacar, desde que tenha os pontos necessários para gastar.
 
-All adversaries' Fell Abilities are listed in their individual stat boxes. The Loremaster is entitled to make use of a Fell Ability even when it requires the expenditure of the last Hate or Resolve point possessed by the adversary. Unless otherwise noted, an adversary may use a Fell Ability in addition to attacking, so long as they have the necessary points to spend.
+**RESULTADOS DO DADO DE PROEZA PARA ADVERSÁRIOS:** Quando o Mestre faz uma rolagem para resolver uma ação tentada por um servo da Sombra, pode ser considerado mais apropriado ao tema inverter o significado dos dois ícones especiais do Dado de Proeza: o ícone ⊘ torna-se o resultado mais alto possível e produz um sucesso automático, enquanto a runa ᛥ torna-se o resultado mais baixo possível e é lida como 0.
 
-**FEAT DIE RESULTS FOR ADVERSARIES:** When the Loremaster is making a die roll to resolve an action attempted by a servant of the Shadow, it can be considered more appropriate to the theme to switch the meaning of the two special icons on the Feat Die: the ⊘ icon becomes the highest result possible and yields an automatic success, while the ᛥ rune becomes the lowest result possible and is read as 0.
+> Assim, por exemplo, a maioria dos adversários obtém Golpe Perfurante com um resultado de 10 ou ⊘ em seu Dado de Proeza.
 
-> So for example, most adversaries score Piercing Blow on a roll of 10 or ⊘ result on their Feat Die.
+**FORA DO COMBATE:** Uma vez terminada uma batalha vitoriosa, os heróis-jogadores muitas vezes precisam lidar com os mortos e os moribundos. Se a informação for relevante, o Mestre pode considerar que adversários retirados do combate por serem reduzidos a zero de Resistência ainda podem estar mal e mal vivos quando a luta terminou, e podem até sobreviver se resgatados.
 
-**OUT OF COMBAT:** Once a victorious battle is over, the Player-heroes often must deal with the dead and dying. If the information is relevant, the Loremaster can consider that adversaries that were taken out of combat reducing them to zero Endurance could be still barely alive when a fight has ended, and might even survive if rescued.
+**CARACTERÍSTICAS DISTINTIVAS:** O Mestre pode dar um nível adicional de profundidade à descrição dos adversários dando-lhes uma ou duas Características Distintivas, a serem usadas seguindo as regras de Personagens do Mestre como Obstáculos (ver neste capítulo). O bloco de estatísticas de cada adversário listado neste capítulo inclui algumas sugestões.
 
-**DISTINCTIVE FEATURES:** The Loremaster may give an additional level of depth to the description of adversaries by giving them one or two Distinctive Features, to be used following the rules for Loremaster Characters as Obstacles (see page 135). Each adversary's stat box listed in this chapter includes some suggestions.
+### Homens Maus
 
-### Evil Men
+Indivíduos cruéis como bandidos, saqueadores e escravagistas que rondam as Terras Solitárias da Terra-média caem nesta categoria. Não obstante sua vontade maliciosa, os Homens Maus não são servidores de Sauron, e podem acabar opondo-se aos heróis-jogadores por razões que não dependem de uma aliança com o Senhor do Escuro.
 
-Cruel individuals like brigands, marauders and slavers prowling the Lone-lands of Middle-earth fall within this category. Their malicious will notwithstanding, Evil Men are not servitors of Sauron, and they can end up opposing the Player-heroes for reasons not depending on an allegiance with the Dark Lord.
+#### Sulistas Hostis
 
-#### Hostile Southerners
+O povo de Bri chama de "Sulista" todo estrangeiro que sobe pela Estrada Verde. A grande maioria está simplesmente fugindo de algum problema, procurando terras onde possa encontrar alguma paz. Outros não são tão bem-intencionados…
 
-The people of Bree call 'Southerner' every foreigner coming up the Greenway. The vast majority are simply moving away from some trouble, looking for lands where they can find some peace. Others are not so well-meaning…
+*"Se não se encontrar espaço para eles, eles mesmos vão encontrar. Têm direito de viver, tanto quanto os outros…"*
 
-*"If room isn't found for them, they'll find it for themselves. They've a right to live, same as other folk…"*
+##### Saqueador Sulista
 
-##### Southerner Raider
+Quando um inverno particularmente rigoroso passou, Homens do Sul podem reunir bandas de guerra e procurar alguma propriedade isolada para pilhar, antes de recuar tão rapidamente de volta às névoas de onde vieram.
 
-When a particularly harsh winter has passed, Men from the South may assemble war parties and look for some isolated homestead to plunder, before retreating just as quickly back into the mists where they came from.
-
-| SOUTHERNER RAIDER | Canny, Hardened |
+| SAQUEADOR SULISTA | Astuto, Endurecido |
 |---|---|
-| Attribute Level | 4 |
-| Endurance | 16 |
-| Might | 1 |
-| Resolve | 4 |
-| Parry | +1 |
-| Armour | 2 |
+| Nível de Atributo | 4 |
+| Resistência | 16 |
+| Vigor | 1 |
+| Resolução | 4 |
+| Bloqueio | +1 |
+| Armadura | 2 |
 
-**Combat Proficiencies:** Axe 3 (5/18), Short Spear 2 (3/14, Pierce)
+**Proficiências de Combate:** Machado 3 (5/18), Lança Curta 2 (3/14, Perfurar)
 
-**Fell Abilities:** *Fierce Folk.* Spend 1 Resolve point to *gain (1d)* and make the attack roll *Favoured*.
+**Habilidades Sinistras:** *Gente Feroz.* Gaste 1 ponto de Resolução para *ganhar (1d)* e tornar a rolagem de ataque *Favorecida*.
 
-##### Southerner Champion
+##### Campeão Sulista
 
-A Southerner Champion may be a chieftain from Dunland, a bandit lord capable of uniting a number of fractious warriors into a small army, or just a particularly vicious brigand.
+Um Campeão Sulista pode ser um chefe de Dunlândia, um senhor bandido capaz de unir uma quantidade de guerreiros briguentos em um pequeno exército, ou apenas um bandido particularmente cruel.
 
-| SOUTHERNER CHAMPION | Cruel, Tough |
+| CAMPEÃO SULISTA | Cruel, Resistente |
 |---|---|
-| Attribute Level | 5 |
-| Endurance | 20 |
-| Might | 1 |
-| Resolve | 5 |
-| Parry | +2 |
-| Armour | 3 |
+| Nível de Atributo | 5 |
+| Resistência | 20 |
+| Vigor | 1 |
+| Resolução | 5 |
+| Bloqueio | +2 |
+| Armadura | 3 |
 
-**Combat Proficiencies:** Spear 3 (4/14, Pierce), Long-hafted Axe 3 (6/18, Break Shield)
+**Proficiências de Combate:** Lança 3 (4/14, Perfurar), Machado de Cabo Longo 3 (6/18, Quebrar Escudo)
 
-**Fell Abilities:** *Fierce Folk.* Spend 1 Resolve point to *gain (1d)* on an attack and to make the roll *Favoured*.
+**Habilidades Sinistras:** *Gente Feroz.* Gaste 1 ponto de Resolução para *ganhar (1d)* em um ataque e tornar a rolagem *Favorecida*.
 
-#### Ruffians
+#### Rufiões
 
-Local robbers, cut-throats, brigands and other assorted criminals fall within this category of potential adversaries. Such foes can be encountered on the lonely roads of Eriador, but they are as likely to be met in a dark alley in Bree.
+Ladrões locais, degoladores, bandidos e outros criminosos variados caem nesta categoria de adversários potenciais. Tais inimigos podem ser encontrados nas estradas solitárias de Eriador, mas é igualmente provável encontrá-los num beco escuro em Bri.
 
-*"Where d'you think you're going?" said one, the largest and most evil-looking of the crew.*
+*"Para onde você pensa que está indo?" disse um deles, o maior e de aparência mais malévola do grupo.*
 
-##### Footpad
+##### Salteador
 
-A cowardly bandit, ready to rob a defenceless victim, but capable of ambushing a lonely companion with the help of others.
+Um bandido covarde, pronto a roubar uma vítima indefesa, mas capaz de emboscar um companheiro solitário com a ajuda de outros.
 
-| FOOTPAD | Nimble, Wary |
+| SALTEADOR | Ágil, Cauteloso |
 |---|---|
-| Attribute Level | 2 |
-| Endurance | 8 |
-| Might | 1 |
-| Resolve | 2 |
-| Parry | – |
-| Armour | 1 |
+| Nível de Atributo | 2 |
+| Resistência | 8 |
+| Vigor | 1 |
+| Resolução | 2 |
+| Bloqueio | – |
+| Armadura | 1 |
 
-**Combat Proficiencies:** Cudgel 2 (3/12), Bow 2 (3/14, Pierce)
+**Proficiências de Combate:** Porrete 2 (3/12), Arco 2 (3/14, Perfurar)
 
-**Fell Abilities:** *Craven.* When affected by the Intimidate Foe combat task, the creature also loses 1 Resolve.
+**Habilidades Sinistras:** *Covarde.* Quando afetada pela tarefa de combate Intimidar Inimigo, a criatura também perde 1 de Resolução.
 
-##### Ruffian Chief
+##### Chefe dos Rufiões
 
-Tougher or simply fiercer, a chief is a ruffian who has reached the top with the help of a sharper mind, or blade.
+Mais duro ou simplesmente mais feroz, um chefe é um rufião que chegou ao topo com a ajuda de uma mente — ou de uma lâmina — mais afiada.
 
-| RUFFIAN CHIEF | Ruthless, Secretive |
+| CHEFE DOS RUFIÕES | Implacável, Reservado |
 |---|---|
-| Attribute Level | 3 |
-| Endurance | 12 |
-| Might | 1 |
-| Resolve | 3 |
-| Parry | +1 |
-| Armour | 2 |
+| Nível de Atributo | 3 |
+| Resistência | 12 |
+| Vigor | 1 |
+| Resolução | 3 |
+| Bloqueio | +1 |
+| Armadura | 2 |
 
-**Combat Proficiencies:** Short Sword 3 (3/16), Bow 2 (3/14, Pierce)
+**Proficiências de Combate:** Espada Curta 3 (3/16), Arco 2 (3/14, Perfurar)
 
-**Fell Abilities:** *Yell of Triumph.* Spend 1 Resolve to restore 1 Resolve to all other Ruffians in the fight.
+**Habilidades Sinistras:** *Grito de Triunfo.* Gaste 1 de Resolução para restaurar 1 de Resolução a todos os outros Rufiões na luta.
 
-##### Highway Robber
+##### Ladrão de Estrada
 
-More dangerous than a common brigand, a highway robber is used to a life in the Wild, and has learned how to deal with armed victims.
+Mais perigoso que um bandido comum, um ladrão de estrada está acostumado à vida nas Terras Selvagens e aprendeu a lidar com vítimas armadas.
 
-| HIGHWAY ROBBER | Swift, Vengeful |
+| LADRÃO DE ESTRADA | Rápido, Vingativo |
 |---|---|
-| Attribute Level | 4 |
-| Endurance | 16 |
-| Might | 1 |
-| Resolve | 4 |
-| Parry | – |
-| Armour | 2 |
+| Nível de Atributo | 4 |
+| Resistência | 16 |
+| Vigor | 1 |
+| Resolução | 4 |
+| Bloqueio | – |
+| Armadura | 2 |
 
-**Combat Proficiencies:** Spear 3 (4/14, Pierce), Bow 2 (3/14, Pierce)
+**Proficiências de Combate:** Lança 3 (4/14, Perfurar), Arco 2 (3/14, Perfurar)
 
-**Fell Abilities:** *Snake-like Speed.* When targeted by an attack, spend 1 Resolve to make the attack roll *Ill-favoured*.
+**Habilidades Sinistras:** *Velocidade Serpentina.* Quando alvo de um ataque, gaste 1 de Resolução para tornar a rolagem de ataque *Desfavorecida*.
 
 ### Orcs
 
-Bred by the first Dark Power in the early years of the world to serve him in many wars, Orcs are once again multiplying. They are strong and agile creatures, quick and robust, and ready to learn or devise new methods or instruments of torment. Their appearance and size differs from tribe to tribe, but many prominent features are common to all Orcs, such as short legs, broad, squinting eyes, wide mouths and long fangs.
+Criados pelo primeiro Poder Escuro nos primeiros anos do mundo para servi-lo em muitas guerras, os Orcs estão novamente se multiplicando. São criaturas fortes e ágeis, rápidas e robustas, e prontas a aprender ou conceber novos métodos ou instrumentos de tormento. Sua aparência e tamanho diferem de tribo para tribo, mas muitas características proeminentes são comuns a todos os Orcs, tais como pernas curtas, olhos largos e estrábicos, bocas amplas e presas longas.
 
-Their malicious spirit is full of hatred for all living things, including their own kind, and when left to their own devices, Orcs often end up quarrelling fiercely over futile questions. But when they face their enemies they are quick to set their disagreements aside.
+Seu espírito malicioso é cheio de ódio por todas as coisas vivas, incluindo os de sua própria espécie, e quando deixados por sua conta os Orcs muitas vezes acabam brigando ferozmente por questões fúteis. Mas quando enfrentam seus inimigos são rápidos em deixar suas discordâncias de lado.
 
-Some Orcs direct their spite towards some specific folk. To reflect this, the Loremaster may add to an Orc adversary the Hatred Fell Ability.
-- **HATRED (SUBJECT).** When targeting the object of their hate, all attacks are *Favoured*.
+Alguns Orcs dirigem seu rancor a algum povo específico. Para refletir isso, o Mestre pode acrescentar a um adversário Orc a Habilidade Sinistra Ódio Mortal.
+- **ÓDIO MORTAL (ALVO).** Ao mirar o objeto de seu ódio, todos os ataques são *Favorecidos*.
 
-For example, the Orcs and Goblins of Goblin-town hate Dwarves, and will attack a Company that includes Dwarves with blind fury. The Orcs of Mount Gram fiercely hate all Hobbits instead, and will relentlessly attack a Company including any.
+Por exemplo, os Orcs e Goblins de Goblinópolis odeiam Anões, e vão atacar uma Companhia que inclua Anões com fúria cega. Os Orcs do Monte Gram, por sua vez, odeiam ferozmente todos os Hobbits, e vão atacar implacavelmente uma Companhia que inclua algum.
 
-Moreover, all Orcs suffer badly from the direct light of the sun. To reflect this, they all have the Hate Sunlight Fell Ability.
-- **HATE SUNLIGHT.** The creature loses 1 Hate for each round it is exposed to the full light of the sun.
+Além disso, todos os Orcs sofrem terrivelmente com a luz direta do sol. Para refletir isso, todos eles têm a Habilidade Sinistra Odeia a Luz do Sol.
+- **ODEIA A LUZ DO SOL.** A criatura perde 1 de Ódio por cada rodada em que está exposta à plena luz do sol.
 
-#### Great Orcs
+#### Grandes Orcs
 
-A powerful breed of Orc, Great Orcs are said to descend from servant spirits that once took an Orcish shape to serve the Dark Power's purposes. King Golfimbul, the Great Goblin, Azog and his son Bolg were Great Orcs.
+Uma raça poderosa de Orc, dizem que os Grandes Orcs descendem de espíritos servidores que outrora tomaram forma órquica para servir aos propósitos do Poder Escuro. O Rei Golfimbul, o Grande Goblin, Azog e seu filho Bolg eram Grandes Orcs.
 
-*…he was a great Orc with a huge iron-clad head, and yet agile and strong.*
+*…era um grande Orc com uma enorme cabeça revestida de ferro, e ainda assim ágil e forte.*
 
-##### Great Orc Chief
+##### Chefe dos Grandes Orcs
 
-Great Orcs are often encountered as leaders and chieftains of their weaker-blooded relatives.
+Os Grandes Orcs são muitas vezes encontrados como líderes e chefes de seus parentes de sangue mais fraco.
 
-| GREAT ORC CHIEF | Bold, Cunning |
+| CHEFE DOS GRANDES ORCS | Ousado, Ardiloso |
 |---|---|
-| Attribute Level | 7 |
-| Endurance | 48 |
-| Might | 2 |
-| Hate | 7 |
-| Parry | +3 |
-| Armour | 4 |
+| Nível de Atributo | 7 |
+| Resistência | 48 |
+| Vigor | 2 |
+| Ódio | 7 |
+| Bloqueio | +3 |
+| Armadura | 4 |
 
-**Combat Proficiencies:** Heavy Scimitar 3 (5/18, Break Shield), Broad-headed Spear 3 (5/16, Pierce)
+**Proficiências de Combate:** Cimitarra Pesada 3 (5/18, Quebrar Escudo), Lança de Ponta Larga 3 (5/16, Perfurar)
 
-**Fell Abilities:**
-- *Horrible Strength.* If the creature scored a Piercing Blow with a close combat attack, spend 1 Hate to make the target's Protection roll *Ill-favoured*.
-- *Snake-like Speed.* When targeted by an attack, spend 1 Hate to make the attack roll *Ill-favoured*.
-- *Yell of Triumph.* Spend 1 Hate to restore 1 Hate to all other Orcs in the fight.
+**Habilidades Sinistras:**
+- *Força Horrenda.* Se a criatura obteve um Golpe Perfurante com um ataque em combate corpo a corpo, gaste 1 de Ódio para tornar a rolagem de Proteção do alvo *Desfavorecida*.
+- *Velocidade Serpentina.* Quando alvo de um ataque, gaste 1 de Ódio para tornar a rolagem de ataque *Desfavorecida*.
+- *Grito de Triunfo.* Gaste 1 de Ódio para restaurar 1 de Ódio a todos os outros Orcs na luta.
 
-##### Great Orc Bodyguard
+##### Guarda-costas Grande Orc
 
-Less cunning than those who lead them, these fell creatures protect their captains at the cost of their lives.
+Menos ardilosas que aquelas que as lideram, essas criaturas sinistras protegem seus capitães ao custo de suas vidas.
 
-| GREAT ORC BODYGUARD | Fierce, Wary |
+| GUARDA-COSTAS GRANDE ORC | Feroz, Cauteloso |
 |---|---|
-| Attribute Level | 6 |
-| Endurance | 24 |
-| Might | 2 |
-| Hate | 6 |
-| Parry | +2 |
-| Armour | 3 |
+| Nível de Atributo | 6 |
+| Resistência | 24 |
+| Vigor | 2 |
+| Ódio | 6 |
+| Bloqueio | +2 |
+| Armadura | 3 |
 
-**Combat Proficiencies:** Orc-axe 3 (3/18, Break Shield), Broad-headed Spear 3 (5/16, Pierce)
+**Proficiências de Combate:** Machado Orc 3 (3/18, Quebrar Escudo), Lança de Ponta Larga 3 (5/16, Perfurar)
 
-**Fell Abilities:** *Hideous Toughness.* When an attack inflicts damage to the creature that would cause it to go to zero Endurance, it causes a Piercing Blow instead. Then, if the creature is still alive, it returns to full Endurance.
+**Habilidades Sinistras:** *Rijeza Hedionda.* Quando um ataque inflige à criatura um dano que a levaria a zero de Resistência, ele causa um Golpe Perfurante em vez disso. Então, se a criatura ainda estiver viva, ela retorna à Resistência plena.
 
-#### Orcs of the North
+#### Orcs do Norte
 
-Among the most numerous of the malicious creatures serving the Shadow, the Orcs of the Mountains are used to living and making war in the deep places beneath the earth, where their sight is keener than any other Orc. When they are encountered in their mines, they are savage fighters and reckless in assault, but they leave the dark under the mountains only when marching to war or to avenge their fallen kind, as they suffer badly from the light of the sun.
+Entre as mais numerosas das criaturas maliciosas que servem à Sombra, os Orcs das Montanhas estão acostumados a viver e a guerrear nos lugares profundos sob a terra, onde sua visão é mais aguçada que a de qualquer outro Orc. Quando são encontrados em suas minas, são lutadores selvagens e temerários no assalto, mas só deixam a escuridão sob as montanhas quando marcham para a guerra ou para vingar seus mortos, pois sofrem terrivelmente com a luz do sol.
 
-The Orcs of the North are a wild and independent lot, bent on their own purposes and aims when the Shadow's influence is weak, but ready to obey the will of their Master when directly subject to it. The smallest among them are often referred to as Goblins.
+Os Orcs do Norte são um povo bravio e independente, voltados a seus próprios propósitos e fins quando a influência da Sombra é fraca, mas prontos a obedecer à vontade de seu Mestre quando diretamente submetidos a ela. Os menores entre eles são muitas vezes chamados de Goblins.
 
-*"We have come all the way from the Mines to kill, and avenge our folk."*
+*"Viemos todo o caminho das Minas para matar, e vingar nosso povo."*
 
-##### Goblin Archer
+##### Arqueiro Goblin
 
-A Goblin Archer is an Orc chosen for his keen eyes. His ability to see in the dark, coupled with a steady hand, lets him shoot arrows with precision by night or day.
+Um Arqueiro Goblin é um Orc escolhido por seus olhos aguçados. Sua capacidade de ver no escuro, aliada a uma mão firme, permite-lhe atirar flechas com precisão de noite ou de dia.
 
-| GOBLIN ARCHER | Cunning, Keen-eyed |
+| ARQUEIRO GOBLIN | Ardiloso, Olhos Aguçados |
 |---|---|
-| Attribute Level | 2 |
-| Endurance | 8 |
-| Might | 1 |
-| Hate | 2 |
-| Parry | – |
-| Armour | 1 |
+| Nível de Atributo | 2 |
+| Resistência | 8 |
+| Vigor | 1 |
+| Ódio | 2 |
+| Bloqueio | – |
+| Armadura | 1 |
 
-**Combat Proficiencies:** Bow of Horn 3 (3/14, Pierce), Jagged Knife 2 (2/14)
+**Proficiências de Combate:** Arco de Corno 3 (3/14, Perfurar), Faca Denteada 2 (2/14)
 
-**Fell Abilities:**
-- *Craven.* When affected by the Intimidate Foe combat task, the creature also loses 1 Hate.
-- *Orc-poison.* If an attack results in a Wound, the target is also poisoned (see page 134 for the effects of poison).
+**Habilidades Sinistras:**
+- *Covarde.* Quando afetada pela tarefa de combate Intimidar Inimigo, a criatura também perde 1 de Ódio.
+- *Veneno de Orc.* Se um ataque resulta em Ferimento, o alvo também fica envenenado (ver neste capítulo os efeitos do veneno).
 
-##### Orc-chieftain
+##### Chefe Orc
 
-Only the most wicked and cruel Orcs live long enough to become chieftains and lead their tribe or warband to battle. An Orc-chieftain is easy to recognise, as it is usually the largest in a group, wielding the meanest weapons and donning superior armour. Often, tell-tale scars or mutilations mark a chieftain's long service under the Shadow.
+Somente os Orcs mais perversos e cruéis vivem o bastante para se tornar chefes e conduzir sua tribo ou banda de guerra à batalha. Um Chefe Orc é fácil de reconhecer, pois é geralmente o maior de um grupo, empunhando as armas mais vis e portando armadura superior. Muitas vezes, cicatrizes ou mutilações reveladoras marcam o longo serviço de um chefe sob a Sombra.
 
-| ORC-CHIEFTAIN | Cruel, Hardened |
+| CHEFE ORC | Cruel, Endurecido |
 |---|---|
-| Attribute Level | 5 |
-| Endurance | 20 |
-| Might | 1 |
-| Hate | 5 |
-| Parry | +3 |
-| Armour | 3 |
+| Nível de Atributo | 5 |
+| Resistência | 20 |
+| Vigor | 1 |
+| Ódio | 5 |
+| Bloqueio | +3 |
+| Armadura | 3 |
 
-**Combat Proficiencies:** Scimitar 3 (3/16), Spear 3 (3/14, Pierce)
+**Proficiências de Combate:** Cimitarra 3 (3/16), Lança 3 (3/14, Perfurar)
 
-**Fell Abilities:**
-- *Great Leap.* Spend 1 Hate to attack any Player-hero, in any combat stance, including Rearward.
-- *Snake-like Speed.* When targeted by an attack, spend 1 Hate to make the attack roll *Ill-favoured*.
-- *Yell of Triumph.* Spend 1 Hate to restore 1 Hate to all other Orcs in the fight.
+**Habilidades Sinistras:**
+- *Grande Salto.* Gaste 1 de Ódio para atacar qualquer herói-jogador, em qualquer postura de combate, incluindo a Retaguarda.
+- *Velocidade Serpentina.* Quando alvo de um ataque, gaste 1 de Ódio para tornar a rolagem de ataque *Desfavorecida*.
+- *Grito de Triunfo.* Gaste 1 de Ódio para restaurar 1 de Ódio a todos os outros Orcs na luta.
 
-##### Orc Guard
+##### Guarda Orc
 
-The strongest and boldest Orcs are equipped with the toughest armour they can find or put together, and are placed to keep watch on an area wielding a sword and sturdy shield.
+Os Orcs mais fortes e ousados são equipados com a armadura mais resistente que conseguem encontrar ou montar, e são postos a vigiar uma área empunhando espada e escudo robusto.
 
-| ORC GUARD | Strong, Vigilant |
+| GUARDA ORC | Forte, Vigilante |
 |---|---|
-| Attribute Level | 4 |
-| Endurance | 16 |
-| Might | 1 |
-| Hate | 4 |
-| Parry | +2 |
-| Armour | 3 |
+| Nível de Atributo | 4 |
+| Resistência | 16 |
+| Vigor | 1 |
+| Ódio | 4 |
+| Bloqueio | +2 |
+| Armadura | 3 |
 
-**Combat Proficiencies:** Scimitar 3 (3/16), Spear 3 (3/14, Pierce)
+**Proficiências de Combate:** Cimitarra 3 (3/16), Lança 3 (3/14, Perfurar)
 
-**Fell Abilities:** —
+**Habilidades Sinistras:** —
 
-##### Orc Soldier
+##### Soldado Orc
 
-Often armed with characteristic bent swords, Orc Soldiers are a loud, undisciplined lot. Only a forceful chieftain with a cruel whip and a sharp blade can keep them in line.
+Muitas vezes armados com espadas recurvas características, os Soldados Orcs são um grupo ruidoso e indisciplinado. Somente um chefe forte, com chicote cruel e lâmina afiada, consegue mantê-los na linha.
 
-| ORC SOLDIER | Rebellious, Vengeful |
+| SOLDADO ORC | Rebelde, Vingativo |
 |---|---|
-| Attribute Level | 3 |
-| Endurance | 12 |
-| Might | 1 |
-| Hate | 3 |
-| Parry | +1 |
-| Armour | 2 |
+| Nível de Atributo | 3 |
+| Resistência | 12 |
+| Vigor | 1 |
+| Ódio | 3 |
+| Bloqueio | +1 |
+| Armadura | 2 |
 
-**Combat Proficiencies:** Scimitar 3 (3/16), Spear 2 (3/14, Pierce)
+**Proficiências de Combate:** Cimitarra 3 (3/16), Lança 2 (3/14, Perfurar)
 
-**Fell Abilities:** *Craven.* At the start of the round, the adversary flees the battlefield if at zero Hate and is unengaged.
-
+**Habilidades Sinistras:** *Covarde.* No início da rodada, o adversário foge do campo de batalha se estiver com zero de Ódio e não estiver engajado.
 ### Trolls
 
-Trolls were created by the Great Enemy in the Elder Days — to fight in many bitter wars. They were made strong and powerful, and appear monstrous and misshapen, as if left unfinished by their cruel maker. It is not known whether Trolls were generated in many forms, or if they evolved since their first appearance, but by the end of the Third Age several breeds of Trolls can be encountered.
+Os Trolls foram criados pelo Grande Inimigo nos Dias Antigos — para lutar em muitas guerras amargas. Foram feitos fortes e poderosos, e parecem monstruosos e disformes, como se deixados inacabados por seu criador cruel. Não se sabe se os Trolls foram gerados em muitas formas, ou se evoluíram desde seu primeiro aparecimento, mas ao fim da Terceira Era várias raças de Trolls podem ser encontradas.
 
-Among the things that all Trolls have in common is that they are incredibly resistant to damage — they all possess the Hideous Toughness Fell Ability.
-- **HIDEOUS TOUGHNESS.** When an attack inflicts damage to the creature that would cause it to go to zero Endurance, it causes a Piercing Blow instead. Then, if the creature is still alive, it returns to full Endurance.
+Entre as coisas que todos os Trolls têm em comum está o fato de serem incrivelmente resistentes ao dano — todos possuem a Habilidade Sinistra Rijeza Hedionda.
+- **RIJEZA HEDIONDA.** Quando um ataque inflige à criatura um dano que a levaria a zero de Resistência, ele causa um Golpe Perfurante em vez disso. Então, se a criatura ainda estiver viva, ela retorna à Resistência plena.
 
-Finally, all Trolls appear more or less slow-witted — they all suffer from the Dull-witted Fell Ability.
-- **DULL-WITTED.** Player-heroes can attempt a special combat task against the creature while in Forward stance. The acting player makes a RIDDLE roll as the main action for the round: on a success, the Troll loses 1 point of Hate, plus 1 point for each Success icon (ᛥ) rolled.
+Por fim, todos os Trolls parecem mais ou menos obtusos — todos sofrem da Habilidade Sinistra Cabeça-dura.
+- **CABEÇA-DURA.** Os heróis-jogadores podem tentar uma tarefa de combate especial contra a criatura enquanto estiverem em postura Avançada. O jogador que age faz uma rolagem de ENIGMA como ação principal da rodada: no sucesso, o Troll perde 1 ponto de Ódio, mais 1 ponto por cada ícone de Sucesso (ᛥ) rolado.
 
-#### Cave-trolls
+#### Trolls das Cavernas
 
-Cave-trolls were created to fight and hunt deep under the earth. They have a dark skin with a greenish hue, covered with tight, robust scales, and appear shorter than other Trolls, as they are extremely hunched and often advance on all fours walking on their knuckles. Nobody knows if Cave-trolls can endure sunlight as they never leave their hunting grounds under mountains, hills and fells.
+Os Trolls das Cavernas foram criados para lutar e caçar nas profundezas da terra. Têm pele escura de tom esverdeado, coberta de escamas apertadas e robustas, e parecem mais baixos que outros Trolls, pois são extremamente corcundas e muitas vezes avançam de quatro, andando sobre os nós dos dedos. Ninguém sabe se os Trolls das Cavernas podem suportar a luz do sol, já que nunca deixam seus territórios de caça sob montanhas, colinas e charnecas.
 
-*A huge arm and shoulder, with a dark skin of greenish scales, was thrust through the widening gap.*
+*Um braço e um ombro enormes, com pele escura de escamas esverdeadas, foram empurrados pela brecha que se alargava.*
 
-##### Great Cave-troll
+##### Grande Troll das Cavernas
 
-Feared by its own handlers, a Great Cave-troll is sent by Orcs to smash the defences and the morale of the foes they fear the most.
+Temido por seus próprios condutores, um Grande Troll das Cavernas é enviado pelos Orcs para destroçar as defesas e a moral dos inimigos que mais temem.
 
-| GREAT CAVE-TROLL | Brutish, Wicked |
+| GRANDE TROLL DAS CAVERNAS | Brutamontes, Perverso |
 |---|---|
-| Attribute Level | 10 |
-| Endurance | 80 |
-| Might | 2 |
-| Hate | 10 |
-| Parry | – |
-| Armour | 3 |
+| Nível de Atributo | 10 |
+| Resistência | 80 |
+| Vigor | 2 |
+| Ódio | 10 |
+| Bloqueio | – |
+| Armadura | 3 |
 
-**Combat Proficiencies:** Crush 3 (6/12, Seize), Bite 2 (6/14, Pierce)
+**Proficiências de Combate:** Esmagar 3 (6/12, Agarrar), Mordida 2 (6/14, Perfurar)
 
-**Fell Abilities:**
-- *Strike Fear.* Spend 1 Hate to make all Player-heroes in sight gain 2 Shadow points (Dread). Those who fail their Shadow test are daunted and cannot spend Hope for the rest of the fight.
-- *Thick Hide.* Spend 1 Hate point to *gain (2d)* on a Protection roll.
+**Habilidades Sinistras:**
+- *Infundir Medo.* Gaste 1 de Ódio para fazer todos os heróis-jogadores à vista ganharem 2 pontos de Sombra (Pavor). Aqueles que falharem em seu Teste de Sombra ficam intimidados e não podem gastar Esperança pelo resto da luta.
+- *Couro Grosso.* Gaste 1 ponto de Ódio para *ganhar (2d)* em uma rolagem de Proteção.
 
-##### Cave-troll Slinker
+##### Troll das Cavernas Esgueirador
 
-This breed of Cave-troll is smaller than many of its kin, but still larger than most Orc-kind. Used to live in the depths of the earth, a Cave-troll Slinker often hunts alone and in the dark, relying on its acute sense of smell.
+Esta raça de Troll das Cavernas é menor que muitos de seus parentes, mas ainda maior que a maioria da laia dos Orcs. Acostumado a viver nas profundezas da terra, um Troll das Cavernas Esgueirador muitas vezes caça sozinho e no escuro, apoiando-se em seu agudo olfato.
 
-| CAVE-TROLL SLINKER | Stealthy, Wary |
+| TROLL DAS CAVERNAS ESGUEIRADOR | Furtivo, Cauteloso |
 |---|---|
-| Attribute Level | 6 |
-| Endurance | 50 |
-| Might | 2 |
-| Hate | 6 |
-| Parry | – |
-| Armour | 3 |
+| Nível de Atributo | 6 |
+| Resistência | 50 |
+| Vigor | 2 |
+| Ódio | 6 |
+| Bloqueio | – |
+| Armadura | 3 |
 
-**Combat Proficiencies:** Club 3 (6/16, Break Shield), Bite 2 (6/14, Pierce)
+**Proficiências de Combate:** Clava 3 (6/16, Quebrar Escudo), Mordida 2 (6/14, Perfurar)
 
-**Fell Abilities:**
-- *Denizen of the Dark.* All attack rolls are *Favoured* while in darkness.
-- *Fear of Fire.* The creature loses 1 Hate at the start of each round it is engaged in close combat with an adversary wielding a torch or other burning item.
-- *Thick Hide.* Spend 1 Hate point to *gain (2d)* on a Protection roll.
+**Habilidades Sinistras:**
+- *Habitante das Trevas.* Todas as rolagens de ataque são *Favorecidas* na escuridão.
+- *Medo do Fogo.* A criatura perde 1 de Ódio no início de cada rodada em que está engajada em combate corpo a corpo com um adversário que empunhe uma tocha ou outro item em chamas.
+- *Couro Grosso.* Gaste 1 ponto de Ódio para *ganhar (2d)* em uma rolagem de Proteção.
 
-#### Stone-trolls
+#### Trolls de Pedra
 
-Stone-trolls are predators, living in small groups in filthy caves strewn with the remains of unwary travellers. They seem to be somewhat more intelligent than other Troll types, maybe thanks to their habit of prowling in the proximity of populated areas.
+Os Trolls de Pedra são predadores, vivendo em pequenos grupos em cavernas imundas semeadas com os restos de viajantes incautos. Parecem ser um pouco mais inteligentes que outros tipos de Troll, talvez graças a seu hábito de rondar nas proximidades de áreas povoadas.
 
-A very ancient breed, Stone-trolls owe their name to the fact that they turn to stone if exposed to the light of the Sun.
+Raça muito antiga, os Trolls de Pedra devem seu nome ao fato de que se transformam em pedra se expostos à luz do Sol.
 
-*…there were three fair-sized trolls at hand in a nasty mood, quite likely to try toasted dwarf, or even pony, for a change…*
+*…havia três trolls de bom tamanho por perto e de mau humor, bem capazes de tentar anão tostado, ou mesmo pônei, para variar…*
 
-##### Stone-troll Robber
+##### Troll de Pedra Ladrão
 
-A Stone-troll Robber's appearance, while always frightful, is made less monstrous by their tendency to wear simple clothes, cook their food and use tools like drinking jugs and barrels.
+A aparência de um Troll de Pedra Ladrão, embora sempre assustadora, é tornada menos monstruosa por sua tendência a usar roupas simples, cozinhar sua comida e usar utensílios como jarros de beber e barris.
 
-| STONE-TROLL ROBBER | Hungry, Irritable |
+| TROLL DE PEDRA LADRÃO | Faminto, Irritável |
 |---|---|
-| Attribute Level | 8 |
-| Endurance | 60 |
-| Might | 2 |
-| Hate | 8 |
-| Parry | – |
-| Armour | 3 |
+| Nível de Atributo | 8 |
+| Resistência | 60 |
+| Vigor | 2 |
+| Ódio | 8 |
+| Bloqueio | – |
+| Armadura | 3 |
 
-**Combat Proficiencies:** Club 3 (6/16, Break Shield), Crush 2 (6/12, Seize)
+**Proficiências de Combate:** Clava 3 (6/16, Quebrar Escudo), Esmagar 2 (6/12, Agarrar)
 
-**Fell Abilities:**
-- *Hatred (Dwarves).* When fighting Dwarves, all the creature's rolls are *Favoured*.
-- *Horrible Strength.* If the creature scores a Piercing Blow, spend 1 Hate to make the target's Protection roll *Ill-favoured*.
+**Habilidades Sinistras:**
+- *Ódio Mortal (Anões).* Ao lutar contra Anões, todas as rolagens da criatura são *Favorecidas*.
+- *Força Horrenda.* Se a criatura obtém um Golpe Perfurante, gaste 1 de Ódio para tornar a rolagem de Proteção do alvo *Desfavorecida*.
 
-##### Stone-troll Chief
+##### Chefe dos Trolls de Pedra
 
-Small groups of Stone-trolls may band together around a stronger member of their breed, to attack caravans of merchants or isolated farmhouses.
+Pequenos grupos de Trolls de Pedra podem juntar-se em torno de um membro mais forte de sua raça, para atacar caravanas de mercadores ou casas de fazenda isoladas.
 
-| STONE-TROLL CHIEF | Cruel, Suspicious |
+| CHEFE DOS TROLLS DE PEDRA | Cruel, Desconfiado |
 |---|---|
-| Attribute Level | 9 |
-| Endurance | 70 |
-| Might | 2 |
-| Hate | 9 |
-| Parry | – |
-| Armour | 3 |
+| Nível de Atributo | 9 |
+| Resistência | 70 |
+| Vigor | 2 |
+| Ódio | 9 |
+| Bloqueio | – |
+| Armadura | 3 |
 
-**Combat Proficiencies:** Club 3 (6/16, Break Shield), Crush 2 (6/12, Seize)
+**Proficiências de Combate:** Clava 3 (6/16, Quebrar Escudo), Esmagar 2 (6/12, Agarrar)
 
-**Fell Abilities:**
-- *Hatred (Dwarves).* When fighting Dwarves, all the creature's rolls are *Favoured*.
-- *Horrible Strength.* If the creature scores a Piercing Blow, spend 1 Hate to make the target's Protection roll *Ill-favoured*.
-- *Yell of Triumph.* Spend 1 Hate to restore 1 Hate to all other Trolls in the fight.
+**Habilidades Sinistras:**
+- *Ódio Mortal (Anões).* Ao lutar contra Anões, todas as rolagens da criatura são *Favorecidas*.
+- *Força Horrenda.* Se a criatura obtém um Golpe Perfurante, gaste 1 de Ódio para tornar a rolagem de Proteção do alvo *Desfavorecida*.
+- *Grito de Triunfo.* Gaste 1 de Ódio para restaurar 1 de Ódio a todos os outros Trolls na luta.
 
-### Undead
+### Mortos-vivos
 
-Many horrors haunt the lonely lands of old Arnor, in the shadow of the darker woods and under the still waters of rotting marshes. Some say those shades are what remains of the ill-will of evil Men and proud Elves, others that they are spirits out of Angmar, sent to infest barren hills and lonely barrows; others blame dark sorcery and evil curses.
+Muitos horrores assombram as terras solitárias da velha Arnor, à sombra dos bosques mais escuros e sob as águas paradas de pântanos apodrecidos. Alguns dizem que essas sombras são o que resta da má-vontade de Homens malignos e Elfos orgulhosos, outros que são espíritos vindos de Angmar, enviados a infestar colinas estéreis e túmulos solitários; outros culpam a feitiçaria escura e maldições malignas.
 
-Whatever is their true nature, all Undead creatures are hard to defeat and provoke a sentiment of horror in those who encounter them — they all possess the following Fell Abilities.
-- **DEATHLESS.** Spend 1 Hate to cancel a Wound. When an attack inflicts damage to the creature that would cause it to go to zero Endurance, spend 1 Hate to bring the creature back to full Endurance instead. This ability is ineffective against Player-heroes wielding a magical weapon enchanted with spells for the Bane of the Undead.
-- **HEARTLESS:** The creature is not affected by the Intimidate Foe combat task, unless a Magical success is obtained.
-- **STRIKE FEAR:** Spend 1 Hate to make all Player-heroes in sight gain 3 Shadow points (Dread). Those who fail their Shadow test are daunted and cannot spend Hope for the rest of the fight.
+Qualquer que seja sua verdadeira natureza, todas as criaturas Mortas-vivas são difíceis de derrotar e provocam um sentimento de horror naqueles que as encontram — todas possuem as seguintes Habilidades Sinistras.
+- **IMORREDOURO.** Gaste 1 de Ódio para cancelar um Ferimento. Quando um ataque inflige à criatura um dano que a levaria a zero de Resistência, gaste 1 de Ódio para trazer a criatura de volta à Resistência plena em vez disso. Essa habilidade é ineficaz contra heróis-jogadores que empunhem uma arma mágica encantada com feitiços para a Ruína dos Mortos-vivos.
+- **SEM CORAÇÃO:** A criatura não é afetada pela tarefa de combate Intimidar Inimigo, a menos que se obtenha um sucesso Mágico.
+- **INFUNDIR MEDO:** Gaste 1 de Ódio para fazer todos os heróis-jogadores à vista ganharem 3 pontos de Sombra (Pavor). Aqueles que falharem em seu Teste de Sombra ficam intimidados e não podem gastar Esperança pelo resto da luta.
 
-#### Wights
+#### Tumulários
 
-Wights are malevolent creatures inhabiting the cold flesh of the dead. They hunger for the life and warmth of those who are so unlucky to stumble into a region troubled by their presence. They strike from the cover of thick mists, or under the cloak of night, seeking to subdue their prey with their spells. They are hard to kill, and even if their body is destroyed, the spirit that animates them is unharmed, and flees to find some other barren place to haunt.
+Os Tumulários são criaturas malévolas que habitam a carne fria dos mortos. Têm fome da vida e do calor daqueles que têm o azar de tropeçar em uma região atormentada por sua presença. Golpeiam sob a cobertura de névoas espessas, ou sob o manto da noite, buscando subjugar sua presa com seus feitiços. São difíceis de matar, e mesmo se seu corpo é destruído, o espírito que os anima fica ileso e foge para achar algum outro lugar ermo para assombrar.
 
-*Barrow-wights walked in the hollow places with a clink of rings on cold fingers, and gold chains in the wind.*
+*Tumulários caminhavam nos lugares fundos com um tinir de anéis em dedos frios, e correntes de ouro ao vento.*
 
-##### Barrow-wight
+##### Tumulário
 
-Sent to the hills of Tyrn Gorthad by the Witch-king of Angmar to plague his enemies in the wars against Arnor, a Barrow-wight appears as a tall, dark figure, with cold eyes lit by a pale light. It wears rings on its skeletal fingers, and gold chains around its neck. In its grip an ancient, pitted blade.
+Enviado às colinas de Tyrn Gorthad pelo Rei-bruxo de Angmar para atormentar seus inimigos nas guerras contra Arnor, um Tumulário aparece como uma figura alta e escura, com olhos frios acesos por uma luz pálida. Usa anéis nos dedos esqueléticos e correntes de ouro em volta do pescoço. Em seu punho, uma lâmina antiga e corroída.
 
-| BARROW-WIGHT | Cunning, Vengeful |
+| TUMULÁRIO | Ardiloso, Vingativo |
 |---|---|
-| Attribute Level | 6 |
-| Endurance | 24 |
-| Might | 1 |
-| Hate | 6 |
-| Parry | – |
-| Armour | 3 |
+| Nível de Atributo | 6 |
+| Resistência | 24 |
+| Vigor | 1 |
+| Ódio | 6 |
+| Bloqueio | – |
+| Armadura | 3 |
 
-**Combat Proficiencies:** Ancient Sword 3 (5/16, Pierce), Chilling Touch 2 (6/12, Seize)
+**Proficiências de Combate:** Espada Antiga 3 (5/16, Perfurar), Toque Gélido 2 (6/12, Agarrar)
 
-**Fell Abilities:**
-- *Denizen of the Dark.* All attack rolls are *Favoured* while in darkness.
-- *Dreadful Spells.* Spend 1 Hate to make one Player-hero gain 3 Shadow points (Sorcery). Targets who fail their Shadow test or who are Miserable fall unconscious and may be roused only with a SONG roll. Otherwise, they wake up after one hour.
-- *Hate Sunlight.* The creature loses 1 Hate at the start of each round it is exposed to the full light of the sun.
+**Habilidades Sinistras:**
+- *Habitante das Trevas.* Todas as rolagens de ataque são *Favorecidas* na escuridão.
+- *Feitiços Terríveis.* Gaste 1 de Ódio para fazer um herói-jogador ganhar 3 pontos de Sombra (Feitiçaria). Os alvos que falharem em seu Teste de Sombra ou que estiverem Arrasados caem inconscientes e só podem ser despertados com uma rolagem de CANTO. Do contrário, acordam depois de uma hora.
+- *Odeia a Luz do Sol.* A criatura perde 1 de Ódio no início de cada rodada em que está exposta à plena luz do sol.
 
-#### Wraiths
+#### Espectros
 
-It is said that many who fought in the wars against Angmar fell victim to the Black Shadow, a terrible illness spread by the Nazgûl. Many did not perish, and were slowly consumed by it instead.
+Dizem que muitos dos que lutaram nas guerras contra Angmar caíram vítimas da Sombra Negra, uma terrível doença espalhada pelos Nazgûl. Muitos não pereceram, e foram lentamente consumidos por ela em vez disso.
 
-Wraiths are creatures that once were living beings but whose lives were consumed by sorcery or by another evil power. They are now undead, and live in both the living world and the wraith-world. Wraiths maintain a physical shape, albeit partially faded and thus resistant to harm.
+Os Espectros são criaturas que outrora foram seres vivos, mas cujas vidas foram consumidas pela feitiçaria ou por outro poder maligno. Agora são mortos-vivos, e vivem tanto no mundo dos vivos quanto no mundo espectral. Os Espectros mantêm uma forma física, ainda que parcialmente desvanecida e, portanto, resistente ao dano.
 
-*"Begone, if you be not deathless! For living or dark undead, I will smite you, if you touch him."*
+*"Vá embora, se não és imortal! Pois vivo ou morto-vivo das trevas, eu te golpearei, se o tocares."*
 
-##### Fell Wraith
+##### Espectro Sinistro
 
-Fell Wraiths appear as crooked wanderers, roaming among ancient ruins, wrapped in cloaks hiding their spectral features. Their flesh is almost transparent, and their eyes seem to glow like embers. If encountered in the hours of twilight, they may pass as Men, as they can speak, even with an unusual hissing voice and strange accents. Fell Wraiths carry old weapons and battered shields, relics from an age of strife that they employ to deadly effectiveness.
+Os Espectros Sinistros aparecem como andarilhos curvados, vagando entre ruínas antigas, envoltos em mantos que ocultam suas feições espectrais. Sua carne é quase transparente, e seus olhos parecem brilhar como brasas. Se encontrados nas horas do crepúsculo, podem passar por Homens, pois conseguem falar, mesmo que com uma voz sibilante incomum e acentos estranhos. Os Espectros Sinistros carregam armas velhas e escudos amassados, relíquias de uma era de conflitos que empregam com eficácia mortal.
 
-| FELL WRAITH | Swift, Wary |
+| ESPECTRO SINISTRO | Rápido, Cauteloso |
 |---|---|
-| Attribute Level | 4 |
-| Endurance | 16 |
-| Might | 1 |
-| Hate | 4 |
-| Parry | +1 |
-| Armour | 2 |
+| Nível de Atributo | 4 |
+| Resistência | 16 |
+| Vigor | 1 |
+| Ódio | 4 |
+| Bloqueio | +1 |
+| Armadura | 2 |
 
-**Combat Proficiencies:** Pitted Blade 3 (4/16), Cruel Spear 2 (4/14, Pierce)
+**Proficiências de Combate:** Lâmina Corroída 3 (4/16), Lança Cruel 2 (4/14, Perfurar)
 
-**Fell Abilities:**
-- *Denizen of the Dark.* All attack rolls are *Favoured* while in darkness.
-- *Fear of Fire.* The creature loses 1 Hate at the start of each round it is engaged in close combat with an adversary wielding a torch or other sort of burning item.
+**Habilidades Sinistras:**
+- *Habitante das Trevas.* Todas as rolagens de ataque são *Favorecidas* na escuridão.
+- *Medo do Fogo.* A criatura perde 1 de Ódio no início de cada rodada em que está engajada em combate corpo a corpo com um adversário que empunhe uma tocha ou outro tipo de item em chamas.
 
-##### Marsh-dwellers
+##### Habitantes do Pântano
 
-The Marsh-dwellers are shambling humanoid creatures with a clammy pale flesh, like that of a corpse left to rot in the water. A fell light in their small eyes suggests a wicked vitality and intent. They dwell among ruins, where Men used to live once, often by dark pools of stagnant water. They hide underground in small groups, ready to ambush unwary travellers and drag them in the cellars where they hoard their stolen gold.
+Os Habitantes do Pântano são criaturas humanoides desengonçadas com carne pálida e viscosa, como a de um cadáver deixado a apodrecer na água. Uma luz sinistra em seus olhos pequenos sugere uma vitalidade e uma intenção perversas. Habitam entre ruínas, onde Homens outrora viveram, muitas vezes junto a poças escuras de água estagnada. Escondem-se no subsolo em pequenos grupos, prontos a emboscar viajantes incautos e arrastá-los para os porões onde acumulam seu ouro roubado.
 
-| MARSH DWELLERS | Fierce, Stealthy |
+| HABITANTES DO PÂNTANO | Feroz, Furtivo |
 |---|---|
-| Attribute Level | 3 |
-| Endurance | 12 |
-| Might | 1 |
-| Hate | 3 |
-| Parry | – |
-| Armour | 1 |
+| Nível de Atributo | 3 |
+| Resistência | 12 |
+| Vigor | 1 |
+| Ódio | 3 |
+| Bloqueio | – |
+| Armadura | 1 |
 
-**Combat Proficiencies:** Bite 3 (3/14, Pierce), Claws 2 (3/14, Seize)
+**Proficiências de Combate:** Mordida 3 (3/14, Perfurar), Garras 2 (3/14, Agarrar)
 
-**Fell Abilities:**
-- *Fear of Fire.* The creature loses 1 Hate at the start of each round it is engaged in close combat with an adversary wielding a torch or other sort of burning item.
-- *Hate Sunlight.* The creature loses 1 Hate at the start of each round it is exposed to the full light of the sun.
+**Habilidades Sinistras:**
+- *Medo do Fogo.* A criatura perde 1 de Ódio no início de cada rodada em que está engajada em combate corpo a corpo com um adversário que empunhe uma tocha ou outro tipo de item em chamas.
+- *Odeia a Luz do Sol.* A criatura perde 1 de Ódio no início de cada rodada em que está exposta à plena luz do sol.
 
-### Wolves of the Wild
+### Lobos das Terras Selvagens
 
-By the time of Bilbo's adventures, Wargs and Werewolves could be encountered at night in the eastern vales close to the Misty Mountains, where they prowl in search of prey. Years later, packs of Wolves have crossed the Hithaeglir, and can be found across Eriador.
+Na época das aventuras de Bilbo, Wargs e Lobisomens podiam ser encontrados à noite nos vales orientais próximos às Montanhas Nevoentas, onde rondam em busca de presas. Anos depois, matilhas de Lobos cruzaram as Hithaeglir e podem ser encontradas por toda Eriador.
 
-All Wolves share a prodigious agility that prevents their enemies from keeping a distance in combat — all Wolves of the Wild share the Great Leap Fell Ability.
-- **GREAT LEAP.** Spend 1 Hate to attack any Player-hero, in any combat stance, including Rearward.
+Todos os Lobos compartilham uma agilidade prodigiosa que impede seus inimigos de manter distância em combate — todos os Lobos das Terras Selvagens compartilham a Habilidade Sinistra Grande Salto.
+- **GRANDE SALTO.** Gaste 1 de Ódio para atacar qualquer herói-jogador, em qualquer postura de combate, incluindo a Retaguarda.
 
-| WILD WOLF | Keen-eyed, Grim |
+| LOBO SELVAGEM | Olhos Aguçados, Severo |
 |---|---|
-| Attribute Level | 3 |
-| Endurance | 12 |
-| Might | 1 |
-| Hate | 3 |
-| Parry | – |
-| Armour | 1 |
+| Nível de Atributo | 3 |
+| Resistência | 12 |
+| Vigor | 1 |
+| Ódio | 3 |
+| Bloqueio | – |
+| Armadura | 1 |
 
-**Combat Proficiencies:** Fangs 3 (3/14, Pierce)
+**Proficiências de Combate:** Presas 3 (3/14, Perfurar)
 
-**Fell Abilities:**
-- *Fear of Fire.* The creature loses 1 Hate at the start of each round it is engaged in close combat with an adversary wielding a torch or other sort of burning item.
-- *Snake-like Speed.* When targeted by an attack, spend 1 Hate to make the attack roll *Ill-favoured*.
+**Habilidades Sinistras:**
+- *Medo do Fogo.* A criatura perde 1 de Ódio no início de cada rodada em que está engajada em combate corpo a corpo com um adversário que empunhe uma tocha ou outro tipo de item em chamas.
+- *Velocidade Serpentina.* Quando alvo de um ataque, gaste 1 de Ódio para tornar a rolagem de ataque *Desfavorecida*.
 
 #### Wargs
 
-Wargs are a particularly evil breed of Wolves, possessing wicked cunning and displaying malicious intent. They communicate using a dreadful language, foul to the ears of listeners not sharing their love for cruel and hateful deeds. Wargs generally look like lean and powerfully-built grey wolves, with eyes shining in the dark, but their size and appearance vary according to age and experience.
+Os Wargs são uma raça de Lobos particularmente maligna, possuindo uma astúcia perversa e exibindo intenção maliciosa. Comunicam-se usando uma linguagem terrível, repugnante aos ouvidos de quem não compartilha seu amor por feitos cruéis e odiosos. Os Wargs geralmente parecem lobos cinzentos magros e de constituição poderosa, com olhos brilhando no escuro, mas seu tamanho e aparência variam conforme a idade e a experiência.
 
-*"How the wind howls!" he cried. "It is howling with wolf-voices. The Wargs have come west of the Mountains!"*
+*"Como o vento uiva!" ele gritou. "Está uivando com vozes de lobo. Os Wargs chegaram a oeste das Montanhas!"*
 
-##### Wild Wolf
+##### Lobo Selvagem
 
-The average Warg, a Wild Wolf, is slightly larger than an ordinary Wolf, and much more vicious. It can be encountered in a pack, but also as a solitary hunter or scout, ready to howl and alert other Wargs and evil creatures for miles around. Orcs learn how to ride upon Wild Wolves like men do on horses.
+O Warg comum, um Lobo Selvagem, é ligeiramente maior que um Lobo comum, e muito mais cruel. Pode ser encontrado em matilha, mas também como caçador ou batedor solitário, pronto a uivar e alertar outros Wargs e criaturas malignas por milhas ao redor. Os Orcs aprendem a montar sobre Lobos Selvagens como os homens fazem em cavalos.
 
-*(See stat block above under Wolves of the Wild — Wild Wolf is the base Warg statistic.)*
+*(Ver o bloco de estatísticas acima, em Lobos das Terras Selvagens — o Lobo Selvagem é a estatística básica do Warg.)*
 
-##### Wolf-chieftain
+##### Chefe dos Lobos
 
-Greater in stature, cruelty and cunning than ordinary Wargs, a Wolf-chieftain is called upon by its lesser kin to deal with serious threats, like bands of travelling adventurers trespassing into Warg territory. A Wolf-chieftain is never encountered alone, but always surrounded by a pack of Wild Wolves.
+Maior em estatura, crueldade e astúcia que os Wargs comuns, um Chefe dos Lobos é convocado por seus parentes menores para lidar com ameaças sérias, como bandas de aventureiros viajantes que invadem território de Wargs. Um Chefe dos Lobos nunca é encontrado sozinho, mas sempre rodeado por uma matilha de Lobos Selvagens.
 
-| WOLF-CHIEFTAIN | Swift, Vicious |
+| CHEFE DOS LOBOS | Rápido, Vicioso |
 |---|---|
-| Attribute Level | 4 |
-| Endurance | 16 |
-| Might | 1 |
-| Hate | 4 |
-| Parry | – |
-| Armour | 1 |
+| Nível de Atributo | 4 |
+| Resistência | 16 |
+| Vigor | 1 |
+| Ódio | 4 |
+| Bloqueio | – |
+| Armadura | 1 |
 
-**Combat Proficiencies:** Fangs 3 (4/14, Pierce), Claws 2 (4/14, Seize)
+**Proficiências de Combate:** Presas 3 (4/14, Perfurar), Garras 2 (4/14, Agarrar)
 
-**Fell Abilities:**
-- *Fear of Fire.* The creature loses 1 Hate at the start of each round it is engaged in close combat with an adversary wielding a torch or other burning item.
-- *Snake-like Speed.* When targeted by an attack, spend 1 Hate to make the attack roll *Ill-favoured*.
-- *Howl of Triumph.* Spend 1 Hate to restore 1 Hate to all other Wargs in the fight.
+**Habilidades Sinistras:**
+- *Medo do Fogo.* A criatura perde 1 de Ódio no início de cada rodada em que está engajada em combate corpo a corpo com um adversário que empunhe uma tocha ou outro item em chamas.
+- *Velocidade Serpentina.* Quando alvo de um ataque, gaste 1 de Ódio para tornar a rolagem de ataque *Desfavorecida*.
+- *Uivo de Triunfo.* Gaste 1 de Ódio para restaurar 1 de Ódio a todos os outros Wargs na luta.
 
-#### Werewolves
+#### Lobisomens
 
-It is suspected by the most learned among the Wise that the cruellest packs of Wargs might be led by the foulest of creatures: trusted servants of the Dark Lord returned from the Ancient World to serve him once again. Devouring spirits trapped in wolf-form, they hate the very soil they walk upon, and desire only to defile and ruin in an attempt to quench the dreadful hunger that consumes their mortal bodies.
+Suspeita-se, entre os mais eruditos dos Sábios, que as matilhas mais cruéis de Wargs possam ser lideradas pela mais vil das criaturas: servos de confiança do Senhor do Escuro retornados do Mundo Antigo para servi-lo mais uma vez. Espíritos devoradores presos em forma de lobo, odeiam o próprio solo em que caminham e desejam apenas macular e arruinar, na tentativa de saciar a fome terrível que consome seus corpos mortais.
 
-*"Listen, Hound of Sauron!" he cried. "Gandalf is here. Fly, if you value your foul skin! I will shrivel you from tail to snout, if you come within this ring."*
+*"Escute, Cão de Sauron!" ele gritou. "Gandalf está aqui. Fuja, se dá valor à sua pele imunda! Vou encolhê-lo da cauda ao focinho, se entrar neste círculo."*
 
-##### Hound of Sauron
+##### Cão de Sauron
 
-Chosen for its ferocity and malicious intelligence, a Hound of Sauron is a minion of the Dark Lord, a servant sent on a precise errand, be it the gathering of forces for a coming war, the hunt for a specific individual, or spying on an area. Hidden behind the shape of an ordinary Warg, a Hound of Sauron conceals much greater powers.
+Escolhido por sua ferocidade e inteligência maliciosa, um Cão de Sauron é um lacaio do Senhor do Escuro, um servo enviado em uma missão precisa, seja a reunião de forças para uma guerra vindoura, a caça a um indivíduo específico, ou a espionagem de uma área. Oculto sob a forma de um Warg comum, um Cão de Sauron esconde poderes muito maiores.
 
-| HOUND OF SAURON | Cunning, Fierce |
+| CÃO DE SAURON | Ardiloso, Feroz |
 |---|---|
-| Attribute Level | 5 |
-| Endurance | 20 |
-| Might | 2 |
-| Hate | 5 |
-| Parry | +1 |
-| Armour | 2 |
+| Nível de Atributo | 5 |
+| Resistência | 20 |
+| Vigor | 2 |
+| Ódio | 5 |
+| Bloqueio | +1 |
+| Armadura | 2 |
 
-**Combat Proficiencies:** Fangs 3 (5/14, Pierce), Claws 3 (5/14, Seize)
+**Proficiências de Combate:** Presas 3 (5/14, Perfurar), Garras 3 (5/14, Agarrar)
 
-**Fell Abilities:**
-- *Deadly Wound.* Wounded targets make an *Ill-favoured* Feat die roll to determine the severity of their injury.
-- *Hideous Toughness.* When an attack inflicts damage to the creature that would cause it to go to zero Endurance, it causes a Piercing Blow instead. Then, if the creature is still alive, it returns to full Endurance.
-- *Strike Fear.* Spend 1 Hate to make all Player-heroes in sight gain 3 Shadow points (Dread). Those who fail their Shadow test are daunted and cannot spend Hope for the rest of the fight.
+**Habilidades Sinistras:**
+- *Ferida Mortal.* Alvos Feridos fazem uma rolagem *Desfavorecida* de Dado de Proeza para determinar a severidade de seu ferimento.
+- *Rijeza Hedionda.* Quando um ataque inflige à criatura um dano que a levaria a zero de Resistência, ele causa um Golpe Perfurante em vez disso. Então, se a criatura ainda estiver viva, ela retorna à Resistência plena.
+- *Infundir Medo.* Gaste 1 de Ódio para fazer todos os heróis-jogadores à vista ganharem 3 pontos de Sombra (Pavor). Aqueles que falharem em seu Teste de Sombra ficam intimidados e não podem gastar Esperança pelo resto da luta.
 
-## Treasure
+## Tesouro
 
-*… about him on all sides, stretching away across the unseen floors, lay countless piles of precious things, gold wrought and unwrought, gems and jewels, and silver red-stained in the ruddy light.*
+*… ao seu redor por todos os lados, estendendo-se pelos pisos invisíveis, jaziam inúmeras pilhas de coisas preciosas, ouro trabalhado e não trabalhado, gemas e joias, e prata tingida de vermelho na luz rubra.*
 
-Travelling across a land that has seen three Ages of the world, the adventurers are sooner or later bound to discover some form of treasure, and possibly claim it for themselves. Whether it is the forgotten hoard of a dead Dragon, a pile of gold and gems closely guarded by a Troll, or the loot accumulated by generations of raiding Goblins, treasure provides the Company with a focus for their adventuring, a means for the Player-heroes to raise their personal prosperity, and another way to bring to light obscure tales from previous ages of Middle-earth.
+Viajando por uma terra que viu três Eras do mundo, os aventureiros cedo ou tarde estão destinados a descobrir alguma forma de tesouro, e possivelmente a reclamá-lo para si. Seja o acervo esquecido de um Dragão morto, um monte de ouro e gemas ciosamente guardado por um Troll, ou o espólio acumulado por gerações de Goblins saqueadores, o tesouro dá à Companhia um foco para suas aventuras, um meio para os heróis-jogadores elevarem sua prosperidade pessoal e outra maneira de trazer à luz contos obscuros de eras anteriores da Terra-média.
 
-But there is more than just gold and precious stones to be found in deserted caverns and dark dungeons under the earth — in past ages of the world, Men, Elves, and Dwarves long laboured to craft marvellous things from metal and stone, and put into their work all their lore, power, and subtle skill. These wondrous jewels, famous blades, and suits of armour were given to sons and daughters as gifts, hoarded as treasures by greedy kings, lusted after and even stolen by thieves and burglars. Finally, they were lost, and passed out of the memory of the living.
+Mas há mais que apenas ouro e pedras preciosas a serem achados em cavernas desertas e masmorras escuras sob a terra — em eras passadas do mundo, Homens, Elfos e Anões trabalharam longamente para forjar coisas maravilhosas de metal e pedra, e puseram em sua obra todo o seu saber, poder e habilidade subtil. Essas joias prodigiosas, lâminas famosas e cotas de armadura foram dadas a filhos e filhas como presentes, acumuladas como tesouros por reis gananciosos, cobiçadas e mesmo roubadas por ladrões e gatunos. Por fim, foram perdidas, e passaram para fora da memória dos vivos.
 
-Such remarkable things are not meant to remain lost forever. Their original purpose may have been forgotten with the passing of centuries, together with the name of their makers, but a day will come when a worthy blade will be found in a barrow among swords of lesser lineage, ready to serve a new fate in the hands of a hero; or, if the treasure had been left to rot in the shadow for too long, to work a curse upon them and draw them to a miserable end!
+Coisas tão notáveis não estão destinadas a permanecer perdidas para sempre. Seu propósito original pode ter sido esquecido com o passar dos séculos, junto com o nome de seus criadores, mas um dia virá em que uma lâmina digna será encontrada em um túmulo entre espadas de linhagem menor, pronta a servir a um novo destino nas mãos de um herói; ou, se o tesouro foi deixado a apodrecer na sombra por tempo demasiado, para lançar sobre eles uma maldição e arrastá-los a um fim miserável!
 
-### Hoards
+### Acervos
 
-Any source of Treasure points encountered by the Company when exploring caverns, lairs, and old ruins qualifies as a Hoard. Not all Hoards that Player-heroes can discover are equal though — as shown in the table below, they are ranked in three levels of increasing rarity: lesser, greater, and marvellous, based on how rich, old, or unspoilt they are.
+Qualquer fonte de pontos de Tesouro encontrada pela Companhia ao explorar cavernas, covis e ruínas antigas qualifica-se como um Acervo. Não todos os Acervos que os heróis-jogadores podem descobrir são iguais, porém — como mostra a tabela abaixo, são classificados em três níveis de raridade crescente: menor, maior e maravilhoso, com base em quão ricos, antigos ou intactos são.
 
-> On average, the Company should find a maximum of two Hoards during the same Adventuring Phase — a lesser Hoard and a greater one; or, a single marvellous Hoard.
+> Em média, a Companhia deveria encontrar no máximo dois Acervos durante a mesma Fase de Aventura — um Acervo menor e um maior; ou um único Acervo maravilhoso.
 
-When the Player-heroes stumble upon a Hoard, the first thing that the Loremaster must do is to make a roll to determine its worth in Treasure points.
+Quando os heróis-jogadores topam com um Acervo, a primeira coisa que o Mestre deve fazer é uma rolagem para determinar seu valor em pontos de Tesouro.
 
-> As shown in the Hoard table below, the value of a Hoard in Treasure points is determined by rolling from 1 to 3 Success dice, based on its type, and by multiplying the result by the number of Player-heroes in the Company.
+> Como mostra a tabela de Acervos abaixo, o valor de um Acervo em pontos de Tesouro é determinado rolando de 1 a 3 Dados de Sucesso, com base em seu tipo, e multiplicando o resultado pelo número de heróis-jogadores na Companhia.
 
-It is up to the members of the Company to divide the resulting value among themselves, splitting the Treasure rating as they see fit, and recording their share on their character sheets.
+Cabe aos membros da Companhia dividir o valor resultante entre si, repartindo o Tesouro como acharem melhor, e registrando sua parte em suas fichas de personagem.
 
-Generally, a Hoard's value in Treasure points represents an unspecified amount of silver, gold and gems — if the Loremaster wishes to be more specific, the rules for Precious Objects on the following page can be used to craft one or more unusual finds.
+Geralmente, o valor de um Acervo em pontos de Tesouro representa uma quantidade não especificada de prata, ouro e gemas — se o Mestre desejar ser mais específico, as regras de Objetos Preciosos mais adiante podem ser usadas para elaborar um ou mais achados incomuns.
 
-**HOARD TABLE:**
+**TABELA DE ACERVOS:**
 
-| Hoard Rating | Examples | Treasure Value per Player-hero | Magical Treasure Rolls |
+| Classificação do Acervo | Exemplos | Valor em Tesouro por herói-jogador | Rolagens de Tesouro Mágico |
 |---|---|---|---|
-| Lesser | Solitary Troll's loot, Goblin plunder, bandits' hoard | Roll 1 Success die | Roll the Feat die twice |
-| Greater | Old hoard, Dwarf-hoard | Roll 2 Success dice | Roll the Feat die four times |
-| Marvellous | Ancient hoard, Dwarven city's treasure trove, or Dragon-hoard | Roll 3 Success dice | Roll the Feat die six times |
+| Menor | Espólio de um Troll solitário, pilhagem de Goblins, acervo de bandidos | Role 1 Dado de Sucesso | Role o Dado de Proeza duas vezes |
+| Maior | Acervo antigo, acervo de Anões | Role 2 Dados de Sucesso | Role o Dado de Proeza quatro vezes |
+| Maravilhoso | Acervo ancestral, tesouraria de uma cidade Anã, ou acervo de Dragão | Role 3 Dados de Sucesso | Role o Dado de Proeza seis vezes |
 
-### Magical Treasure
+### Tesouro Mágico
 
-**MAGICAL TREASURE TABLE:**
+**TABELA DE TESOURO MÁGICO:**
 
-| Success Die Result | Nature of the Find | Description | If Found on an ⊘ Result |
+| Resultado do Dado de Sucesso | Natureza do Achado | Descrição | Se encontrado num resultado ⊘ |
 |---|---|---|---|
-| 1–3 | Marvellous Artefact | An enchanted object graced by a Blessing | Gain 1 Shadow (Greed) |
-| 4–5 | Wondrous Item | An enchanted object possessing two Blessings | Gain 2 Shadow (Greed) |
-| 6 | Famous Weapon or Armour | A weapon or suit of armour of superior make | Gain 3 Shadow (Greed) |
+| 1–3 | Artefato Maravilhoso | Um objeto encantado agraciado com uma Bênção | Ganhe 1 de Sombra (Cobiça) |
+| 4–5 | Item Prodigioso | Um objeto encantado possuindo duas Bênçãos | Ganhe 2 de Sombra (Cobiça) |
+| 6 | Arma ou Armadura Famosa | Uma arma ou cota de armadura de feitura superior | Ganhe 3 de Sombra (Cobiça) |
 
-**MAGICAL TREASURE ROLLS.** Once everyone in the Company has received their share of the treasure, it must be determined if anything possessing exceptional qualities lies buried among the silver and gold.
+**ROLAGENS DE TESOURO MÁGICO.** Depois que todos na Companhia receberam sua parte do tesouro, deve-se determinar se algo dotado de qualidades excepcionais jaz enterrado entre a prata e o ouro.
 
-To do this, the players or the Loremaster roll a Feat die a number of times (or many Feat dice together, if available), again based on the type of Hoard discovered:
+Para isso, os jogadores ou o Mestre rolam um Dado de Proeza um número de vezes (ou muitos Dados de Proeza juntos, se disponíveis), novamente com base no tipo de Acervo descoberto:
 
-> Each ᛥ and ⊘ result corresponds to the discovery of a magical piece of treasure. To find out exactly what each piece is, the players must roll on the Magical Treasure table above, once.
+> Cada resultado ᛥ e ⊘ corresponde à descoberta de uma peça mágica de tesouro. Para descobrir exatamente o que é cada peça, os jogadores devem rolar na tabela de Tesouro Mágico acima, uma vez.
 
-Once the number and nature of any Magical Treasure discovered has been determined, the Player-heroes must agree on who is going to keep each piece as their possession.
+Uma vez determinados o número e a natureza de qualquer Tesouro Mágico descoberto, os heróis-jogadores devem concordar sobre quem vai ficar com cada peça como sua posse.
 
-**CARRYING TREASURE.** Player-heroes stuff their pockets with coins and other valuables, or, more wisely, they can burden their pack animals with chests filled with their newfound riches.
+**CARREGANDO TESOURO.** Os heróis-jogadores enchem seus bolsos de moedas e outros objetos de valor ou, mais sabiamente, podem carregar seus animais de carga com arcas cheias de suas riquezas recém-achadas.
 
-> In terms of encumbrance, every single point of Treasure, individual Marvellous Artefact or Wondrous Item corresponds to one point of Load (famous Weapons and Armour have their individual Load ratings, based on the corresponding pieces of War Gear).
+> Em termos de sobrecarga, cada ponto de Tesouro, cada Artefato Maravilhoso individual e cada Item Prodigioso corresponde a um ponto de Carga (Armas e Armaduras famosas têm suas próprias Cargas individuais, com base nas peças correspondentes de Equipamento de Guerra).
 
-If the Player-heroes are not willing to carry the amount of gold, silver, gems, or other valuables they have found while adventuring, the Player-heroes may opt to hide it close to where they found it, with the intention of returning to recover it later.
+Se os heróis-jogadores não estiverem dispostos a carregar a quantidade de ouro, prata, gemas ou outros objetos de valor que encontraram enquanto aventuravam-se, podem optar por esconder tudo perto de onde acharam, com a intenção de retornar para recuperá-lo mais tarde.
 
-**EXTRAORDINARY PRECIOUS OBJECTS FROM THE STORIES:** The following Precious Objects are examples of valuable items whose worth greatly surpasses their simple rating in Treasure points:
-- The Ring of Barahir — A ring made by the Noldor ages ago, it is an heirloom of the house of the Chieftains of the Rangers of the North.
-- The Necklace of Girion — A necklace crafted for the Lord of Dale, made of five hundred emeralds "green as grass".
-- The Arkenstone — A wonderful, multi-faceted great white gem, called the Heart of the Mountain, a heirloom of the House of Durin.
+**OBJETOS PRECIOSOS EXTRAORDINÁRIOS DAS HISTÓRIAS:** Os Objetos Preciosos a seguir são exemplos de itens valiosos cujo valor supera em muito sua simples classificação em pontos de Tesouro:
+- O Anel de Barahir — Um anel feito pelos Noldor eras atrás, é uma relíquia da casa dos Chefes dos Rangers do Norte.
+- O Colar de Girion — Um colar forjado para o Senhor de Valle, feito de quinhentas esmeraldas "verdes como a grama".
+- A Pedra Arken — Uma maravilhosa e grande gema branca de muitas facetas, chamada o Coração da Montanha, relíquia da Casa de Durin.
 
-*"This is a thing of worth beyond your reckoning. For its ancientry alone. It has no power, save the esteem in which those hold it who love my house."*
+*"Isto é uma coisa de valor além de sua estimativa. Por sua antiguidade apenas. Não tem poder, salvo a estima em que a têm aqueles que amam minha casa."*
 
-### Creating Precious Objects
+### Criando Objetos Preciosos
 
-Precious Objects are gemstones, jewels, and other valuable ornaments whose main quality could be a particular significance as a family heirloom or antique, or an extraordinary and enchanting beauty, possibly due to a prodigious level of craftsmanship or a subtle virtue.
+Os Objetos Preciosos são gemas, joias e outros ornamentos valiosos cuja qualidade principal pode ser um significado particular como relíquia de família ou antiguidade, ou uma beleza extraordinária e encantadora, possivelmente devida a um nível prodigioso de arte ou a uma virtude subtil.
 
-> The value of a Precious Object in Treasure points is the amount that the Loremaster assigns to it, out of the rating generated for the Hoard discovered by the Company, but its inclusion in the game might serve a different purpose.
+> O valor de um Objeto Precioso em pontos de Tesouro é a quantidade que o Mestre lhe atribui, a partir do valor gerado para o Acervo descoberto pela Companhia, mas sua inclusão no jogo pode servir a um propósito diferente.
 
-For example, a golden crown found among the ruins of an ancient castle on the hills of Rhudaur may have more than a simple monetary value if it is brought to someone able to recognise it as a relic from a familiar past — should a Player-hero make a gift or otherwise offer such an item to members of a folk whose tradition hearkens back to the time when the item was crafted, they would receive a bonus amount for sentimental value in return.
+Por exemplo, uma coroa de ouro encontrada entre as ruínas de um castelo antigo nas colinas de Rhudaur pode ter mais que um simples valor monetário se for levada a alguém capaz de reconhecê-la como relíquia de um passado familiar — se um herói-jogador presentear ou de outro modo oferecer tal item a membros de um povo cuja tradição remonte ao tempo em que o item foi forjado, ele receberia em troca uma quantia adicional por valor sentimental.
 
-The tables presented below can be used to create an item at the moment it is uncovered, or to design it carefully beforehand. The Loremaster is encouraged to enrich the description of all Precious Objects or spend some time imagining wonderful things with rich backstories. It is not necessary to track down the full lineage of every fillet of Mithril hanging from a character's neck; a few hints to a tragic or heroic heritage is more than enough to evoke the right mood.
+As tabelas apresentadas abaixo podem ser usadas para criar um item no momento em que ele é descoberto, ou para desenhá-lo cuidadosamente de antemão. O Mestre é encorajado a enriquecer a descrição de todos os Objetos Preciosos ou a dedicar algum tempo a imaginar coisas maravilhosas com ricas histórias de fundo. Não é necessário rastrear a linhagem completa de cada fio de Mithril pendendo do pescoço de um personagem; algumas insinuações a uma herança trágica ou heroica são mais que suficientes para evocar o clima adequado.
 
-This sort of information may be revealed to a player who chooses the Meet Patron undertaking during a Fellowship phase (see page 121).
+Esse tipo de informação pode ser revelado a um jogador que escolha a tarefa Encontrar Patrono durante uma Fase de Companhia (ver capítulo 7).
 
-**PRECIOUS OBJECTS TABLES.** Roll a Success die for each table and check the result.
+**TABELAS DE OBJETOS PRECIOSOS.** Role um Dado de Sucesso para cada tabela e verifique o resultado.
 
-**1: FORM**
+**1: FORMA**
 
-| Roll | Result |
+| Rolagem | Resultado |
 |---|---|
-| 1 | Jewel (single gem) |
-| 2 | Brooch |
-| 3 | Necklace |
-| 4 | Circlet or crown |
-| 5 | Belt, chain, or armband |
-| 6 | Ring |
+| 1 | Joia (gema única) |
+| 2 | Broche |
+| 3 | Colar |
+| 4 | Diadema ou coroa |
+| 5 | Cinto, corrente ou braçadeira |
+| 6 | Anel |
 
-**2: MAIN MATERIAL**
+**2: MATERIAL PRINCIPAL**
 
-| Roll | Result |
+| Rolagem | Resultado |
 |---|---|
-| 1 | Pearl |
-| 2 | Sapphire |
-| 3 | Ruby |
-| 4 | Amethyst (pink to purple) |
-| 5 | Roll again: 1–2: Adamant (diamond); 3–4: 'white gem'; 5–6: clear crystal |
-| 6 | Roll again: 1–2: Emerald; 3–4: 'green gem'; 5–6: green crystal |
+| 1 | Pérola |
+| 2 | Safira |
+| 3 | Rubi |
+| 4 | Ametista (do rosa ao púrpura) |
+| 5 | Role novamente: 1–2: Adamante (diamante); 3–4: "gema branca"; 5–6: cristal transparente |
+| 6 | Role novamente: 1–2: Esmeralda; 3–4: "gema verde"; 5–6: cristal verde |
 
-**3: CRAFTSMANSHIP**
+**3: FEITURA**
 
-| Roll | Result |
+| Rolagem | Resultado |
 |---|---|
-| 1 | Mannish, Westernesse |
-| 2 | Elven, Eregion |
-| 3 | Dwarven, Khazad-dûm |
-| 4 | Dwarven, Erebor |
-| 5 | Dwarven, Beleriand (Nogrod or Belegost) |
-| 6 | Elven, Beleriand |
+| 1 | Humana, de Oesternésse |
+| 2 | Élfica, de Eregion |
+| 3 | Anã, de Khazad-dûm |
+| 4 | Anã, de Erebor |
+| 5 | Anã, de Beleriand (Nogrod ou Belegost) |
+| 6 | Élfica, de Beleriand |
 
-**GEMS, JEWELS, AND CRYSTALS:** Many beautiful gems freed from the roots of mountains and hills were cut and set in necklaces, crowns, circlets, and bracelets of precious metals by Dwarven smiths of great renown, in cities like Nogrod and Belegost, before Beleriand was broken. Many crystals and white or green gems of surpassing beauty were not dug from the earth, but created by the hands of Elven craftspeople and gem-smiths, and filled cunningly with flaming light.
+**GEMAS, JOIAS E CRISTAIS:** Muitas belas gemas libertadas das raízes de montanhas e colinas foram lapidadas e engastadas em colares, coroas, diademas e braceletes de metais preciosos por ferreiros Anões de grande renome, em cidades como Nogrod e Belegost, antes que Beleriand fosse rompida. Muitos cristais e gemas brancas ou verdes de beleza incomparável não foram escavados da terra, mas criados pelas mãos de artesãos e lapidários Elfos, e preenchidos habilmente com luz flamejante.
 
-### The Treasure Index
+### O Índice de Tesouros
 
-Finding a magic ring or a famous sword in *The One Ring* is not simply a matter of stumbling upon an exotic object. There is more to chance than coincidence in Middle-earth, as there are other powers at work far stronger.
+Encontrar um anel mágico ou uma espada famosa em *O Um Anel* não é simplesmente uma questão de topar com um objeto exótico. Há mais no acaso que coincidência na Terra-média, pois há outros poderes em ação muito mais fortes.
 
-A Loremaster wanting to add spell-bound gems and Elven blades to a game must first take some time to create a Treasure Index:
+Um Mestre que queira acrescentar ao jogo gemas encantadas e lâminas Élficas deve primeiro dedicar algum tempo a criar um Índice de Tesouros:
 
-> A Treasure Index is a list detailing all the magical items that can become part of the campaign. When something is uncovered with a Magical Treasure roll, the Loremaster refers to the Treasure Index to check exactly what has been brought to light.
+> Um Índice de Tesouros é uma lista que detalha todos os itens mágicos que podem fazer parte da campanha. Quando algo é descoberto com uma rolagem de Tesouro Mágico, o Mestre consulta o Índice de Tesouros para verificar exatamente o que veio à luz.
 
-Using the index allows the Loremaster to keep a tight control over the desired level of magic to introduce into the game, avoiding the problem of having too many heroes wandering around Middle-earth wielding Beleriand-forged blades or wearing Mithril armour.
+Usar o índice permite ao Mestre manter controle estrito sobre o nível desejado de magia a introduzir no jogo, evitando o problema de ter heróis demais vagando pela Terra-média empunhando lâminas forjadas em Beleriand ou vestindo armadura de Mithril.
 
-Additionally, the index lets the Loremaster 'time' the appearance of certain magical items in the campaign — for example, to follow a wide-arcing plot involving the discovery of a particular object. Certain events might be triggered by the fortuitous finding of a lost artefact, or the Player-heroes could be left wondering how to confront a seemingly invincible threat, until they finally 'stumble' upon a weapon capable of giving them an edge.
+Além disso, o índice permite ao Mestre "cronometrar" o aparecimento de certos itens mágicos na campanha — por exemplo, para acompanhar uma trama de longo arco envolvendo a descoberta de um objeto particular. Certos eventos poderiam ser desencadeados pelo achado fortuito de um artefato perdido, ou os heróis-jogadores poderiam ficar sem saber como confrontar uma ameaça aparentemente invencível, até que finalmente "topam" com uma arma capaz de lhes dar vantagem.
 
-Finally, the index helps in keeping magical objects unique and wondrous. Finding a magical item should represent a major turning point in a campaign, with definite consequences on the future of a hero. A magical object isn't just a new special ability, but a new feature in the game world.
+Por fim, o índice ajuda a manter os objetos mágicos únicos e prodigiosos. Encontrar um item mágico deveria representar um grande ponto de virada em uma campanha, com consequências definidas sobre o futuro de um herói. Um objeto mágico não é apenas uma nova habilidade especial, mas um novo elemento no mundo do jogo.
 
-**COMPILING A TREASURE INDEX.** Magical items in *The One Ring* are categorised as Marvellous Artefacts, Wondrous Items, and Famous Weapons and Armour. Treasure Index sheets can be downloaded from *freeleague-publishing.com* — one to keep track of Marvellous Artefacts and Wondrous Items, and another for Famous Weapons and Armour.
+**COMPILANDO UM ÍNDICE DE TESOUROS.** Os itens mágicos em *O Um Anel* são categorizados como Artefatos Maravilhosos, Itens Prodigiosos e Armas e Armaduras Famosas. Fichas de Índice de Tesouros podem ser baixadas em *freeleague-publishing.com* — uma para registrar Artefatos Maravilhosos e Itens Prodigiosos, e outra para Armas e Armaduras Famosas.
 
-> When compiling a Magical Treasure Index, the Loremaster includes as many Marvellous Artefacts as desired, while a specific list must be made to indicate precisely the number and nature of any Wondrous Items and Famous Weapons and Armour that the Player-heroes will have a chance to find (ideally, 1 to 3 Wondrous Items and 1 to 3 pieces of war gear for each Player-hero in the Company).
+> Ao compilar um Índice de Tesouro Mágico, o Mestre inclui quantos Artefatos Maravilhosos desejar, enquanto uma lista específica deve ser feita para indicar com precisão o número e a natureza de quaisquer Itens Prodigiosos e Armas e Armaduras Famosas que os heróis-jogadores terão chance de encontrar (idealmente, 1 a 3 Itens Prodigiosos e 1 a 3 peças de equipamento de guerra para cada herói-jogador na Companhia).
 
-**SAMPLE INDEXES:** Available for download from freeleague-publishing.com are a number of sample indexes, created with different goals in mind. The title of each index and its description detail its goal and application. Loremasters are encouraged to create their own indexes though, based around the composition of the Company playing in their campaigns.
+**ÍNDICES DE EXEMPLO:** Disponíveis para download em freeleague-publishing.com há vários índices de exemplo, criados com objetivos diferentes em mente. O título de cada índice e sua descrição detalham seu objetivo e sua aplicação. Os Mestres são encorajados, porém, a criar seus próprios índices, com base na composição da Companhia que joga em suas campanhas.
 
-**FATE AND PREDESTINATION:** The creation of custom special items to be found among Treasure is meant to represent predestination, the potential of a hero to become the instrument of a higher purpose and to play a role in the long-term development of a campaign. To further reinforce this, Magical Treasure is meant to be strictly individual: heroes should never pass the object found over to a different companion, especially when Famous Weapons and Armour are concerned. After all, it was Bilbo who was meant to find the Ring, not Balin, Gandalf, or Thorin.
+**DESTINO E PREDESTINAÇÃO:** A criação de itens especiais personalizados para serem encontrados entre o Tesouro visa representar a predestinação, o potencial de um herói para se tornar instrumento de um propósito superior e para desempenhar um papel no desenvolvimento de longo prazo de uma campanha. Para reforçar isso ainda mais, o Tesouro Mágico é estritamente individual: os heróis nunca deveriam passar o objeto encontrado a um companheiro diferente, especialmente quando se trata de Armas e Armaduras Famosas. Afinal, foi Bilbo quem estava destinado a encontrar o Anel, não Balin, Gandalf ou Thorin.
 
-**A FATEFUL DISCOVERY:** Marvellous Artefacts and Wondrous Items can become a meaningful addition to a campaign especially if their discovery is tied to some significant event, or if their introduction is meant to serve a particular purpose. When the Loremaster is compiling the Treasure Index, some time should be dedicated to considering the objective of an item, in the context of the campaign being played. Or, its goal might be left undefined, to be then filled in when the players provide the Loremaster with the right suggestions through their own actions.
+**UMA DESCOBERTA FATÍDICA:** Artefatos Maravilhosos e Itens Prodigiosos podem tornar-se uma adição significativa a uma campanha especialmente se sua descoberta estiver ligada a algum evento importante, ou se sua introdução visar a servir a um propósito particular. Quando o Mestre está compilando o Índice de Tesouros, algum tempo deveria ser dedicado a considerar o objetivo de um item, no contexto da campanha em curso. Ou seu objetivo pode ser deixado indefinido, para ser preenchido depois, quando os jogadores fornecerem ao Mestre as sugestões adequadas por meio de suas próprias ações.
 
-### Marvellous Artefacts and Wondrous Items
+### Artefatos Maravilhosos e Itens Prodigiosos
 
-Objects included in this category possess characteristics that mortals wouldn't hesitate to call magical: cloaks that hide their wearers from observing eyes, war-horns capable of setting fear in the hearts of enemies and joy in the hearts of friends, staves blessed with virtues of finding and returning.
+Os objetos incluídos nesta categoria possuem características que os mortais não hesitariam em chamar de mágicas: mantos que ocultam quem os veste de olhos observadores, cornos de guerra capazes de infundir medo nos corações dos inimigos e alegria nos corações dos amigos, cajados abençoados com virtudes de achar e retornar.
 
-Such objects are wound about with powerful enchantments called Blessings. An object possessing one Blessing is called a Marvellous Artefact, while one possessing two Blessings is a Wondrous Item.
+Tais objetos são envoltos em encantamentos poderosos chamados Bênçãos. Um objeto que possui uma Bênção é chamado de Artefato Maravilhoso, enquanto um que possui duas Bênçãos é um Item Prodigioso.
 
-A single Blessing bestowed upon an object lets its bearer affect the result of all rolls made using a specific Skill. An object possessing two Blessings will then modify the outcome of two different Skills.
+Uma única Bênção conferida a um objeto permite a seu portador afetar o resultado de todas as rolagens feitas usando uma Perícia específica. Um objeto que possua duas Bênçãos modificará então o resultado de duas Perícias diferentes.
 
-> The bearer of a Marvellous Artefact or Wondrous Item *gains (2d)* when making rolls using the Skill corresponding to its Blessing, and allows the Player-hero to achieve a magical success (see page 21).
+> O portador de um Artefato Maravilhoso ou de um Item Prodigioso *ganha (2d)* ao fazer rolagens usando a Perícia correspondente à sua Bênção, e a Bênção permite ao herói-jogador obter um sucesso mágico (ver capítulo 1).
 
-When a blessed item is found, the Loremaster either chooses an object included in the Treasure Index, or uses the Blessings tables overleaf to create one.
+Quando um item abençoado é encontrado, o Mestre ou escolhe um objeto incluído no Índice de Tesouros, ou usa as tabelas de Bênçãos a seguir para criar um.
 
-Marvellous Artefacts and Wondrous Items should be rare and unique, lest their worth be diminished in the eyes of the players. The Loremaster should use the directions contained in this chapter and their knowledge of the source material to create a limited number of such objects for inclusion in a Treasure Index — two or three per Player-hero at most. Should that list run out, the Loremaster may create additional ones, either taking the time to design them or rolling them up on the spot.
+Artefatos Maravilhosos e Itens Prodigiosos deveriam ser raros e únicos, para que seu valor não seja diminuído aos olhos dos jogadores. O Mestre deveria usar as instruções contidas neste capítulo e seu conhecimento do material de origem para criar um número limitado de tais objetos para inclusão em um Índice de Tesouros — dois ou três por herói-jogador no máximo. Se essa lista acabar, o Mestre pode criar mais, seja dedicando tempo a desenhá-los, seja gerando-os na hora.
 
-The capabilities of an object may not be readily apparent upon discovery. While it is possible that a hero finds out while adventuring, a Player-hero may learn about an item's Blessings by choosing the Meet Patron Fellowship phase undertaking (see page 121).
+As capacidades de um objeto podem não ser imediatamente aparentes na descoberta. Embora seja possível que um herói descubra durante as aventuras, um herói-jogador pode aprender sobre as Bênçãos de um item escolhendo a tarefa Encontrar Patrono da Fase de Companhia (ver capítulo 7).
 
-**BLESSINGS TABLES.** To determine which skill is affected by a Blessing the Loremaster rolls a Success die twice: the first roll selects the Skill 'group', the second roll identifies the affected Skill. The procedure must be repeated if the object is a Wondrous Item bestowed with two Blessings.
+**TABELAS DE BÊNÇÃOS.** Para determinar qual perícia é afetada por uma Bênção, o Mestre rola um Dado de Sucesso duas vezes: a primeira rolagem seleciona o "grupo" de Perícias, a segunda identifica a Perícia afetada. O procedimento deve ser repetido se o objeto for um Item Prodigioso dotado de duas Bênçãos.
 
-In brackets are listed options to help the Loremaster in choosing the type of object discovered, whether it is a ring, a cloak, a belt, or something else. If the same item possesses two Blessings, choose the type of object that seems more appropriate. To determine the craftsmanship of the find, you may use Table 3 on page 160.
+Entre parênteses estão listadas opções para ajudar o Mestre a escolher o tipo de objeto descoberto, seja um anel, um manto, um cinto ou outra coisa. Se o mesmo item possuir duas Bênçãos, escolha o tipo de objeto que pareça mais apropriado. Para determinar a feitura do achado, você pode usar a Tabela 3 apresentada anteriormente neste capítulo.
 
-**1: PERSONALITY**
+**1: PERSONALIDADE**
 
-| Roll | Result |
+| Rolagem | Resultado |
 |---|---|
-| 1–2 | Awe (ring, cloak, circlet, collar, belt, weapon sheath, staff, war-horn) |
-| 3–4 | Enhearten (ring, cloak, weapon sheath, staff, war-horn) |
-| 5–6 | Persuade (ring, cloak, circlet, collar) |
+| 1–2 | Imponência (anel, manto, diadema, gargantilha, cinto, bainha de arma, cajado, corno de guerra) |
+| 3–4 | Encorajar (anel, manto, bainha de arma, cajado, corno de guerra) |
+| 5–6 | Persuasão (anel, manto, diadema, gargantilha) |
 
-**2: MOVEMENT**
+**2: MOVIMENTO**
 
-| Roll | Result |
+| Rolagem | Resultado |
 |---|---|
-| 1–2 | Athletics (rope, boots, shoes) |
-| 3–4 | Travel (staff, belt, boots) |
-| 5–6 | Stealth (ring, cloak, shoes) |
+| 1–2 | Atletismo (corda, botas, sapatos) |
+| 3–4 | Viajar (cajado, cinto, botas) |
+| 5–6 | Furtividade (anel, manto, sapatos) |
 
-**3: PERCEPTION**
+**3: PERCEPÇÃO**
 
-| Roll | Result |
+| Rolagem | Resultado |
 |---|---|
-| 1–2 | Awareness (ring, circlet, collar) |
-| 3–4 | Insight (ring, circlet, collar) |
-| 5–6 | Scan (ring, circlet, staff) |
+| 1–2 | Percepção (anel, diadema, gargantilha) |
+| 3–4 | Perspicácia (anel, diadema, gargantilha) |
+| 5–6 | Vasculhar (anel, diadema, cajado) |
 
-**4: SURVIVAL**
+**4: SOBREVIVÊNCIA**
 
-| Roll | Result |
+| Rolagem | Resultado |
 |---|---|
-| 1–2 | Hunting (belt, hunting horn, staff) |
-| 3–4 | Healing (unusual, as potions and salves quickly lose their virtue) |
-| 5–6 | Explore (boots, staff, coil of rope) |
+| 1–2 | Caça (cinto, corno de caça, cajado) |
+| 3–4 | Cura (incomum, pois poções e unguentos rapidamente perdem sua virtude) |
+| 5–6 | Explorar (botas, cajado, rolo de corda) |
 
-**5: CUSTOM**
+**5: COSTUME**
 
-| Roll | Result |
+| Rolagem | Resultado |
 |---|---|
-| 1–2 | Courtesy (ring, circlet, pair of studs) |
-| 3–4 | Song (ring, musical instrument) |
-| 5–6 | Riddle (ring) |
+| 1–2 | Cortesia (anel, diadema, par de broches) |
+| 3–4 | Canto (anel, instrumento musical) |
+| 5–6 | Enigma (anel) |
 
-**6: VOCATION**
+**6: VOCAÇÃO**
 
-| Roll | Result |
+| Rolagem | Resultado |
 |---|---|
-| 1–2 | Craft (ring, crafting tool) |
-| 3–4 | Battle (crown, ring, staff, war-horn - rare, as it usually pertains to weapons) |
-| 5–6 | Lore (mirror, book, seeing-stone) |
+| 1–2 | Ofício (anel, ferramenta de ofício) |
+| 3–4 | Batalha (coroa, anel, cajado, corno de guerra — raro, pois normalmente diz respeito a armas) |
+| 5–6 | Saber (espelho, livro, pedra-vidente) |
 
-### Famous Weapons and Armour
+### Armas e Armaduras Famosas
 
-Weapons of extraordinary craftsmanship are already dealt with in the game using the rules for Rewards. While those items could arguably be considered magical, their lineage can hardly be compared with that of swords forged in Gondolin for the Goblin-wars.
+Armas de feitura extraordinária já são tratadas no jogo pelas regras de Recompensas. Embora esses itens possam discutivelmente ser considerados mágicos, sua linhagem dificilmente pode ser comparada à de espadas forjadas em Gondolin para as guerras dos Goblins.
 
-When a Player-hero gains possession of such an extraordinary weapon, the Loremaster must consult the campaign's Treasure Index — If the circumstances are appropriate, the Loremaster may select an item from those added to the Index specifically for the Player-hero.
+Quando um herói-jogador ganha posse de tal arma extraordinária, o Mestre deve consultar o Índice de Tesouros da campanha — se as circunstâncias forem apropriadas, o Mestre pode selecionar um item entre aqueles adicionados ao Índice especificamente para aquele herói-jogador.
 
-**DESIGNING FAMOUS WEAPONS AND ARMOUR.** To design a magical sword or a wondrous coat of armour for insertion into the Treasure Index, the Loremaster must follow a 5-step process, making a number of choices based on the current campaign and the composition of the Company:
-1. Choose Item Type
-2. Determine Craftsmanship
-3. Select Banes (Elven or Númenórean weapons only)
-4. Attribute Qualities
-5. Name the item
+**DESENHANDO ARMAS E ARMADURAS FAMOSAS.** Para desenhar uma espada mágica ou uma cota de armadura prodigiosa para inserção no Índice de Tesouros, o Mestre deve seguir um processo de 5 passos, fazendo uma série de escolhas com base na campanha atual e na composição da Companhia:
+1. Escolher o Tipo de Item
+2. Determinar a Feitura
+3. Selecionar Ruínas (apenas armas Élficas ou Númenórianas)
+4. Atribuir Qualidades
+5. Nomear o item
 
-**1. CHOOSE ITEM TYPE:** The first thing to choose is the most important one: what piece of war gear is the object of the design? Is it a weapon, or a piece of defensive gear, like a mail shirt, or a helm or shield?
+**1. ESCOLHER O TIPO DE ITEM:** A primeira coisa a escolher é a mais importante: qual peça de equipamento de guerra é o objeto do desenho? É uma arma, ou uma peça de equipamento defensivo, como uma camisa de malha, ou um elmo ou escudo?
 
-A Treasure Index must only include items that are designed explicitly for specific members of the Company; there is no place for a wondrous shield that none of the players will be interested in using.
+Um Índice de Tesouros deve incluir apenas itens desenhados explicitamente para membros específicos da Companhia; não há lugar para um escudo prodigioso que nenhum dos jogadores terá interesse em usar.
 
-For example, the Loremaster is designing a famous weapon meant for the Barding warden of the Company. The warrior uses a sword as his primary weapon. The Loremaster selects a sword as the item type.
+Por exemplo, o Mestre está desenhando uma arma famosa destinada ao Guardião Bardo da Companhia. O guerreiro usa uma espada como arma primária. O Mestre seleciona uma espada como tipo de item.
 
-**2. DETERMINE CRAFTSMANSHIP:** Weapons and armour can be of Elven, Dwarven, or Númenórean craftsmanship. The following paragraphs give some insight about which item types are most suited to a particular origin. Apart from defining in broad terms the history of an item, the choice of craftsmanship also determines whether a weapon should feature Banes or not, and affects the choice of Qualities (see Steps 3 and 4).
+**2. DETERMINAR A FEITURA:** Armas e armaduras podem ser de feitura Élfica, Anã ou Númenóriana. Os parágrafos seguintes dão alguma noção sobre quais tipos de item são mais adequados a uma origem particular. Além de definir em termos amplos a história de um item, a escolha da feitura também determina se uma arma deveria apresentar Ruínas ou não, e afeta a escolha das Qualidades (ver Passos 3 e 4).
 
-**Elven Craftsmanship:** The best enchanted weapons that may be found in forgotten hoards were made by Elvenwrights in Beleriand in the Elder Days, or in Eregion, for the wars against Sauron.
+**Feitura Élfica:** As melhores armas encantadas que podem ser encontradas em acervos esquecidos foram feitas por artífices Elfos em Beleriand nos Dias Antigos, ou em Eregion, para as guerras contra Sauron.
 
-Glamdring and Orcrist are good examples, not to mention Bilbo's (and later Frodo's) sword Sting.
+Glamdring e Orcrist são bons exemplos, sem mencionar Ferroada, a espada de Bilbo (e mais tarde de Frodo).
 
-> The Elves forged many famous long swords, daggers, and enchanted spears. Other weapons or pieces of defensive war gear are not unknown, but more difficult to find.
+> Os Elfos forjaram muitas espadas longas, adagas e lanças encantadas famosas. Outras armas ou peças de equipamento de guerra defensivo não são desconhecidas, mas são mais difíceis de encontrar.
 
-**Dwarven Craftsmanship:** Many extraordinary swords, helms, and suits of armour were wrought by Dwarves in their cities of Nogrod and Belegost, either for use by their most renowned chieftains and champions, or as gifts to the greatest lords amongst Elves and Men.
+**Feitura Anã:** Muitas espadas, elmos e cotas de armadura extraordinárias foram forjados pelos Anões em suas cidades de Nogrod e Belegost, seja para uso por seus chefes e campeões mais renomados, seja como presentes aos maiores senhores entre Elfos e Homens.
 
-The works of Telchar, the smith of Nogrod, are particularly renowned: the sword Narsil and the Helm of Hador were among his chief creations.
+As obras de Telchar, o ferreiro de Nogrod, são particularmente renomadas: a espada Narsil e o Elmo de Hador estavam entre suas principais criações.
 
-> The smiths of Nogrod and Belegost crafted especially swords and axes, shields, helms, and suits of armour.
+> Os ferreiros de Nogrod e Belegost forjaram especialmente espadas e machados, escudos, elmos e cotas de armadura.
 
-**Númenórean Craftsmanship:** The weaponsmiths among the Men of Westernesse were taught by the Noldor in the making of swords, axe-blades, spearheads, and knives. They acquired great skill, and put it to good use in forging many weapons using strange metals.
+**Feitura Númenóriana:** Os armeiros entre os Homens de Oesternésse foram ensinados pelos Noldor na feitura de espadas, lâminas de machado, pontas de lança e facas. Adquiriram grande habilidade e a puseram em bom uso forjando muitas armas com metais estranhos.
 
-The barrow-blades Tom Bombadil gave to the Hobbits were weapons of this sort; swords forged by the Númenóreans for their bitter wars against Carn Dûm in the Land of Angmar.
+As lâminas de túmulo que Tom Bombadil deu aos Hobbits eram armas desse tipo; espadas forjadas pelos Númenórianos para suas guerras amargas contra Carn Dûm na Terra de Angmar.
 
-> The Men of Westernesse excelled in the making of many weapons, but rarely devoted themselves to the creation of suits of armour, recognising the greater ability of Dwarf-smiths.
+> Os Homens de Oesternésse excederam na feitura de muitas armas, mas raramente se dedicaram à criação de cotas de armadura, reconhecendo a maior habilidade dos ferreiros Anões.
 
-**3. SELECT BANES:** Bane weapons describe instruments of war that have been wrought to defeat a specific enemy. If the magical item is of Elven or Númenórean craftsmanship, then it may be attributed with one or more Banes, as several of the special virtues that may be attributed to it are effective only against Bane creatures (see Enchanted Qualities, on page 165). A Bane weapon provides special benefits against one or more creature types.
+**3. SELECIONAR RUÍNAS:** As armas da Ruína descrevem instrumentos de guerra que foram forjados para derrotar um inimigo específico. Se o item mágico for de feitura Élfica ou Númenóriana, então pode receber uma ou mais Ruínas, pois várias das virtudes especiais que podem lhe ser atribuídas só são eficazes contra criaturas da Ruína (ver Qualidades Encantadas, neste capítulo). Uma arma da Ruína oferece benefícios especiais contra um ou mais tipos de criatura.
 
-Blades, spears, and arrow-heads forged in Númenor may have been wound about with spells for the bane of two creature types.
+Lâminas, lanças e pontas de flecha forjadas em Númenor podem ter sido envoltas em feitiços para a ruína de dois tipos de criatura.
 
-> Choose two types from the following: Orcs, Trolls, Wolves, Evil Men, Undead.
+> Escolha dois tipos entre os seguintes: Orcs, Trolls, Lobos, Homens Maus, Mortos-vivos.
 
-Items crafted by the Elven-smiths of Beleriand or Eregion were generally created with only one type of enemy in mind.
+Itens forjados pelos ferreiros Elfos de Beleriand ou Eregion foram geralmente criados com apenas um tipo de inimigo em mente.
 
-> Choose one type from: Orcs, Wolves, or Spiders.
+> Escolha um tipo entre: Orcs, Lobos ou Aranhas.
 
-Particularly ancient and rare, some blades may have been wrought for the bane of the Enemy itself, and as such may be particularly dangerous to all his servants and minions.
+Particularmente antigas e raras, algumas lâminas podem ter sido forjadas para a ruína do próprio Inimigo e, como tal, podem ser particularmente perigosas a todos os seus servos e lacaios.
 
-**4. ATTRIBUTE QUALITIES:** Player-heroes may improve their war gear by upgrading their weapons of choice using Rewards. Similarly, Famous Weapons and Armour owe their qualities to Rewards and Enchanted Rewards.
+**4. ATRIBUIR QUALIDADES:** Os heróis-jogadores podem melhorar seu equipamento de guerra aprimorando suas armas de escolha usando Recompensas. De modo semelhante, as Armas e Armaduras Famosas devem suas qualidades a Recompensas e a Recompensas Encantadas.
 
-Upon creation, a number of qualities must be attributed to the magical item, choosing among the Rewards listed on page 79, and the Enchanted Rewards described in this chapter, starting overleaf. The mix and number of qualities attributed to an object determine how powerful it will be.
-- Generally, a famous weapon or piece of defensive gear should feature a maximum of 3 qualities, and must include a minimum of one Enchanted Reward.
-- All qualities of an item can be recorded on the Magical Treasure Index in any order desired, keeping in mind that the qualities that are listed first are the ones that the owner will discover soonest (see overleaf).
+Na criação, uma quantidade de qualidades deve ser atribuída ao item mágico, escolhendo entre as Recompensas listadas no capítulo 5 e as Recompensas Encantadas descritas neste capítulo, a partir da próxima seção. A mistura e o número de qualidades atribuídas a um objeto determinam quão poderoso ele será.
+- Geralmente, uma arma famosa ou peça de equipamento defensivo deveria apresentar um máximo de 3 qualidades, e deve incluir um mínimo de uma Recompensa Encantada.
+- Todas as qualidades de um item podem ser registradas no Índice de Tesouro Mágico em qualquer ordem desejada, tendo em mente que as qualidades listadas primeiro são as que o proprietário descobrirá mais cedo (ver adiante).
 
-**5. NAME THE ITEM:** Precious Objects and Wondrous Artefacts rarely possess proper names — They are usually named after their maker, or after their most famous owner ('The Necklace of Girion', 'The Arkenstone of Thrain', 'The Phial of Galadriel'). On the contrary, Famous Weapons and Armour often have a name, or even more than one, if the item is known by different folks.
+**5. NOMEAR O ITEM:** Objetos Preciosos e Artefatos Prodigiosos raramente possuem nomes próprios — normalmente são nomeados a partir de seu criador, ou de seu proprietário mais famoso ("O Colar de Girion", "A Pedra Arken de Thráin", "A Ampola de Galadriel"). Ao contrário, Armas e Armaduras Famosas muitas vezes têm um nome, ou até mais de um, se o item é conhecido por povos diferentes.
 
-All pieces of war gear included in a Treasure Index should be given an appropriate name, along with a set of historical notes. The name of an item can be revealed to its bearer who researches it or asks a lore-master about it (see the Meet Patron Fellowship Phase undertaking, on page 121).
+Todas as peças de equipamento de guerra incluídas em um Índice de Tesouros deveriam receber um nome apropriado, junto com um conjunto de notas históricas. O nome de um item pode ser revelado a seu portador que o pesquise ou que pergunte a um mestre de saber a respeito (ver a tarefa Encontrar Patrono da Fase de Companhia, no capítulo 7).
 
-A player is, of course, free to name an item themselves much as Bilbo did with Sting — either because the object does not have a known name or the companion isn't interested in discovering it. The notes about Named Weapons on page 80 can provide useful suggestions.
+Um jogador é, claro, livre para nomear um item ele mesmo, muito como Bilbo fez com Ferroada — seja porque o objeto não tem um nome conhecido, seja porque o companheiro não tem interesse em descobri-lo. As notas sobre Armas Nomeadas no capítulo 5 podem fornecer sugestões úteis.
 
-**BANE WEAPONS:** In addition to being possibly more effective against the types of creatures they were crafted to defeat, Bane weapons are destructive to elements connected to the creatures that are the object of the Bane, and would immediately be recognised as such by them.
+**ARMAS DA RUÍNA:** Além de serem possivelmente mais eficazes contra os tipos de criatura que foram forjadas para derrotar, as armas da Ruína são destrutivas para elementos ligados às criaturas que são objeto da Ruína, e seriam imediatamente reconhecidas como tal por elas.
 
-For example, Orcs would not dare touch a blade forged for the bane of their kind, and a sword created for the destruction of giant Spiders would easily cut through the thickest of their webs.
+Por exemplo, os Orcs não ousariam tocar uma lâmina forjada para a ruína de sua laia, e uma espada criada para a destruição de Aranhas gigantes cortaria facilmente a mais espessa de suas teias.
 
-**HOW FAMOUS WEAPONS AND ARMOUR WORK.** When a companion first uses a Famous Weapon or Armour, the item displays only the characteristics of the first quality listed in its entry in the Loremaster's Treasure index.
+**COMO FUNCIONAM AS ARMAS E ARMADURAS FAMOSAS.** Quando um companheiro usa uma Arma ou Armadura Famosa pela primeira vez, o item exibe apenas as características da primeira qualidade listada em sua entrada no Índice de Tesouros do Mestre.
 
-The remaining features are secret and considered to be 'dormant'. They may be unlocked in the order that they have been listed on the Treasure Index in one of two ways — by gaining a new VALOUR rank, and by visiting the Treasury of their folk as a Fellowship Phase Undertaking.
+As demais características são secretas e consideradas "dormentes". Podem ser desbloqueadas na ordem em que foram listadas no Índice de Tesouros de duas maneiras — ganhando um novo grau em VALOR, e visitando a Tesouraria de seu povo como uma Tarefa de Fase de Companhia.
 
-**GAINING A NEW VALOUR RANK:** It is said that valour first needs strength, and then a weapon: the more the Player-heroes grow in heroic stature, the more powerful their magical items become.
+**GANHANDO UM NOVO GRAU EM VALOR:** Diz-se que o valor primeiro precisa de força, e depois de uma arma: quanto mais os heróis-jogadores crescem em estatura heroica, mais poderosos se tornam seus itens mágicos.
 
-> Each time that the Player-heroes are entitled to gain a new Reward as the consequence of gaining a new rank in VALOUR, they may choose instead to activate one quality of a Famous Weapon or Armour that belongs to them.
+> Cada vez que os heróis-jogadores têm direito a ganhar uma nova Recompensa como consequência de ganhar um novo grau em VALOR, podem escolher, em vez disso, ativar uma qualidade de uma Arma ou Armadura Famosa que lhes pertença.
 
-*Example: An Elven adventurer recently found the Raven Axe of Arnor in a Troll's hoard while exploring the Ettenmoors. It displayed its first quality — Foe-slaying — as soon as she found it. In a subsequent Fellowship phase she increases her VALOUR. Instead of choosing a new Reward, she chooses to activate the Raven Axe's next quality: Fell.*
+*Exemplo: Uma aventureira Elfa recentemente encontrou o Machado do Corvo de Arnor no acervo de um Troll ao explorar as Ettenmoors. Ele exibiu sua primeira qualidade — Mata-Inimigos — assim que ela o encontrou. Em uma Fase de Companhia subsequente ela aumenta seu VALOR. Em vez de escolher uma nova Recompensa, ela escolhe ativar a próxima qualidade do Machado do Corvo: Sinistro.*
 
-**VISITING THE TREASURY:** The treasuries of most folks have been created with the loot of many wars, but also by the findings of generations of adventurers.
+**VISITANDO A TESOURARIA:** As tesourarias da maioria dos povos foram criadas com o espólio de muitas guerras, mas também com os achados de gerações de aventureiros.
 
-> When Player-heroes gain possession of a Famous Weapon or Armour, they can return home as a Fellowship Phase undertaking (see page 121), to leave a piece of war gear enhanced by one or more Rewards as a gift to their folk.
+> Quando os heróis-jogadores ganham posse de uma Arma ou Armadura Famosa, podem retornar para casa como tarefa de Fase de Companhia (ver capítulo 7), para deixar uma peça de equipamento de guerra aprimorada por uma ou mais Recompensas como presente a seu povo.
 
-These gift-giving acts alter the identity of the Player-heroes in the eyes of their folk: they become the bearers of their newly-found enchanted items, and the objects left behind become 'cultural treasures'.
+Esses atos de doação alteram a identidade dos heróis-jogadores aos olhos de seu povo: eles se tornam os portadores de seus itens encantados recém-achados, e os objetos deixados atrás tornam-se "tesouros culturais".
 
-> In game terms, upon their visit to the treasury of their folk, Player-heroes trade the number of Rewards possessed by the piece of war gear given as a gift with the activation of an equal number of qualities on a Famous Weapon or Armour.
+> Em termos de jogo, ao visitar a tesouraria de seu povo, os heróis-jogadores trocam o número de Recompensas possuídas pela peça de equipamento de guerra dada como presente pela ativação de um número igual de qualidades em uma Arma ou Armadura Famosa.
 
-*Example: While clearing an abandoned Dwarven keep of Goblins, a Barding hero found the Rune-shield of Ossiriand, which displayed its first quality, Ancient Cunning Make. The adventurer previously carried a Reinforced shield, gifted to him by the elders of his city. The following Fellowship Phase he undertakes to visit the treasury of Dale, returning the shield so that it may faithfully serve another. As he is trading in one previous Reward, he can activate another quality possessed by the Rune-shield.*
+*Exemplo: Ao limpar de Goblins uma fortaleza Anã abandonada, um herói Bardo encontrou o Escudo de Runas de Ossiriand, que exibiu sua primeira qualidade, Feitura Ardilosa Antiga. O aventureiro carregava antes um escudo Reforçado, presenteado a ele pelos anciãos de sua cidade. Na Fase de Companhia seguinte ele se compromete a visitar a tesouraria de Valle, devolvendo o escudo para que ele possa servir fielmente a outro. Como está trocando uma Recompensa anterior, ele pode ativar outra qualidade possuída pelo Escudo de Runas.*
 
-**SEEKING A LORE-MASTER:** A companion who wishes to know more about a Famous Weapon or Armour may visit an appropriate location and choose the Meet Patron undertaking during a Yule Fellowship Phase (see page 121).
+**BUSCANDO UM MESTRE DE SABER:** Um companheiro que deseje saber mais sobre uma Arma ou Armadura Famosa pode visitar um lugar apropriado e escolher a tarefa Encontrar Patrono durante uma Fase de Companhia de Yule (ver capítulo 7).
 
-#### Enchanted Rewards
+#### Recompensas Encantadas
 
-All the qualities described here set the craftsmanship of an item apart from any other. The extraordinary characteristics of the object may be the result of ancient spells or graven runes, or they may be due to the innate qualities of the materials used for its crafting, or a combination of all such elements.
+Todas as qualidades descritas aqui distinguem a feitura de um item de qualquer outra. As características extraordinárias do objeto podem ser resultado de feitiços antigos ou de runas gravadas, ou podem ser devidas às qualidades inatas dos materiais usados em sua forja, ou a uma combinação de todos esses elementos.
 
-Often, the magical power of the object makes the item gleam with an unnatural light or appear as if burning with an enchanted flame, but in other cases the magical quality is more discreet, if noticeable at all. The Loremaster is encouraged to embellish the description of each Famous Weapon or Armour with appropriately epic details (or leave them to the owner of the object to devise).
+Muitas vezes, o poder mágico do objeto faz o item brilhar com uma luz sobrenatural ou parecer que arde com uma chama encantada, mas em outros casos a qualidade mágica é mais discreta, se é que perceptível. O Mestre é encorajado a embelezar a descrição de cada Arma ou Armadura Famosa com detalhes apropriadamente épicos (ou a deixá-los para o proprietário do objeto conceber).
 
-Each Enchanted Reward's description includes any requirement that the enhanced object must satisfy for the quality to be applied to it. Qualities indicating a specific craftsmanship (Elven, Dwarven, or Númenórean) exemplify the features of war gear created by weaponsmiths and armourers belonging to that culture.
+A descrição de cada Recompensa Encantada inclui qualquer requisito que o objeto aprimorado deva satisfazer para que a qualidade lhe seja aplicada. As qualidades que indicam uma feitura específica (Élfica, Anã ou Númenóriana) exemplificam as características do equipamento de guerra criado por armeiros e armadureiros pertencentes àquela cultura.
 
-> Loremasters must keep in mind that they may apply a maximum of 3 Rewards (Enchanted or ordinary) to a Famous Weapon or Armour, always including a minimum of 1 Enchanted Reward. All Enchanted Rewards are unique, meaning that they can only be applied once to the same item.
+> Os Mestres devem ter em mente que podem aplicar um máximo de 3 Recompensas (Encantadas ou comuns) a uma Arma ou Armadura Famosa, sempre incluindo um mínimo de 1 Recompensa Encantada. Todas as Recompensas Encantadas são únicas, o que significa que só podem ser aplicadas uma vez ao mesmo item.
 
-The Loremaster should note that the first six Enchanted Rewards are enhanced versions of those described on page 79 — qualities sharing a common descriptor cannot be attributed to the same item. (For example, a Grievous sword cannot be given the Superior Grievous Enchanted Quality.) Moreover, when designing an Elven or Númenórean weapon, the Loremaster should be sure to bestow upon it at least one Enchanted Reward that possesses the Bane requirement.
+O Mestre deve notar que as primeiras seis Recompensas Encantadas são versões aprimoradas daquelas descritas no capítulo 5 — qualidades que compartilham um descritor comum não podem ser atribuídas ao mesmo item. (Por exemplo, uma espada Terrível não pode receber a Qualidade Encantada Terrível Superior.) Além disso, ao desenhar uma arma Élfica ou Númenóriana, o Mestre deveria certificar-se de conferir-lhe ao menos uma Recompensa Encantada que possua o requisito de Ruína.
 
-**ANCIENT CLOSE FITTING**
-- **Craftsmanship:** Elven, Dwarven
-- **Item:** Armour, Helm
+**AJUSTE ANTIGO**
+- **Feitura:** Élfica, Anã
+- **Item:** Armadura, Elmo
 
-When you make a PROTECTION roll while wearing a piece of armour or helm with this quality you add 3 to the result, or a bonus equal to your VALOUR rating, whichever is higher.
+Quando você faz uma rolagem de PROTEÇÃO vestindo uma peça de armadura ou elmo com esta qualidade, você soma 3 ao resultado, ou um bônus igual ao seu VALOR, o que for maior.
 
-**ANCIENT CUNNING MAKE**
-- **Craftsmanship:** Elven, Dwarven
-- **Item:** Armour, Helm, or Shield
+**FEITURA ARDILOSA ANTIGA**
+- **Feitura:** Élfica, Anã
+- **Item:** Armadura, Elmo ou Escudo
 
-This quality lowers the Load rating of an item by 3 points, or by your VALOUR rating, whichever is higher (to a minimum of 0 Load).
+Esta qualidade reduz a Carga de um item em 3 pontos, ou pelo seu VALOR, o que for maior (até um mínimo de 0 de Carga).
 
-**SUPERIOR FELL**
-- **Craftsmanship:** Elven, Númenórean
-- **Item:** Any weapon
-- **Special:** Bane (if Númenórean)
+**SINISTRO SUPERIOR**
+- **Feitura:** Élfica, Númenóriana
+- **Item:** Qualquer arma
+- **Especial:** Ruína (se Númenóriana)
 
-If the weapon is of Elven Craftsmanship, add 4 to its Injury rating. If the weapon is of Númenórean craftsmanship, add 2 to its Injury rating, or a bonus equal to the bearer's VALOUR (whichever is higher) if used against a Bane creature.
+Se a arma é de feitura Élfica, some 4 ao seu Ferimento. Se a arma é de feitura Númenóriana, some 2 ao seu Ferimento, ou um bônus igual ao VALOR do portador (o que for maior) se usada contra uma criatura da Ruína.
 
-**SUPERIOR GRIEVOUS**
-- **Craftsmanship:** Dwarven, Númenórean
-- **Item:** Any weapon
-- **Special:** Bane (if Númenórean)
+**TERRÍVEL SUPERIOR**
+- **Feitura:** Anã, Númenóriana
+- **Item:** Qualquer arma
+- **Especial:** Ruína (se Númenóriana)
 
-If the weapon is of Dwarven craftsmanship, add 2 to its Damage rating. If the weapon is of Númenórean craftsmanship, add 1 to its Damage rating, or a bonus equal to the bearer's VALOUR if used against a Bane creature.
+Se a arma é de feitura Anã, some 2 ao seu Dano. Se a arma é de feitura Númenóriana, some 1 ao seu Dano, ou um bônus igual ao VALOR do portador se usada contra uma criatura da Ruína.
 
-**SUPERIOR KEEN**
-- **Craftsmanship:** Dwarven, Elven
-- **Item:** Any weapon
-- **Special:** Bane (if Elven)
+**AFIADO SUPERIOR**
+- **Feitura:** Anã, Élfica
+- **Item:** Qualquer arma
+- **Especial:** Ruína (se Élfica)
 
-If the weapon is of Dwarven craftsmanship, it scores a Piercing Blow on a result of 8+. If the weapon is of Elven craftsmanship, it scores a Piercing Blow on a result of 9+, or on a result of 10 minus a value equal to the bearer's VALOUR if used against a Bane creature.
+Se a arma é de feitura Anã, ela obtém um Golpe Perfurante com um resultado de 8+. Se a arma é de feitura Élfica, ela obtém um Golpe Perfurante com um resultado de 9+, ou com um resultado de 10 menos um valor igual ao VALOR do portador se usada contra uma criatura da Ruína.
 
-**SUPERIOR REINFORCED**
-- **Craftsmanship:** Any
-- **Item:** Shield
-- **Special:** Bane (if Elven or Númenórean)
+**REFORÇADO SUPERIOR**
+- **Feitura:** Qualquer
+- **Item:** Escudo
+- **Especial:** Ruína (se Élfica ou Númenóriana)
 
-This quality adds 2 to a shield's Parry bonus. If the shield is of Númenórean or Elven craftsmanship, add 1 to its Parry bonus, or a bonus equal to the bearer's VALOUR when fighting against a Bane creature.
+Esta qualidade soma 2 ao bônus de Bloqueio de um escudo. Se o escudo é de feitura Númenóriana ou Élfica, some 1 ao seu bônus de Bloqueio, ou um bônus igual ao VALOR do portador ao lutar contra uma criatura da Ruína.
 
-**BITING DART**
-- **Craftsmanship:** Elven
-- **Item:** Ranged weapon
-- **Special:** Bane
+**DARDO MORDENTE**
+- **Feitura:** Élfica
+- **Item:** Arma à distância
+- **Especial:** Ruína
 
-When you hit your target using a weapon with this quality you also inflict a loss of 1 point of Hate or Resolve, or 3 points if it's a Bane creature.
+Quando você acerta seu alvo usando uma arma com esta qualidade, você também inflige uma perda de 1 ponto de Ódio ou Resolução, ou 3 pontos se for uma criatura da Ruína.
 
-**CLEAVING**
-- **Craftsmanship:** any
-- **Item:** Close combat weapon
+**FENDEDOR**
+- **Feitura:** qualquer
+- **Item:** Arma de combate corpo a corpo
 
-When you kill a foe with a weapon blessed by this quality, you can immediately attack a second adversary engaged with you.
+Quando você mata um inimigo com uma arma abençoada por esta qualidade, você pode imediatamente atacar um segundo adversário engajado com você.
 
-**FLAME OF HOPE**
-- **Craftsmanship:** Dwarven
-- **Item:** Close combat weapon
+**CHAMA DA ESPERANÇA**
+- **Feitura:** Anã
+- **Item:** Arma de combate corpo a corpo
 
-When you hit your target with a weapon blessed by this quality, all members of the Company (you included) recover 1 point of Endurance, plus 1 for each ᛥ rolled.
+Quando você acerta seu alvo com uma arma abençoada por esta qualidade, todos os membros da Companhia (você incluído) recuperam 1 ponto de Resistência, mais 1 por cada ᛥ rolado.
 
-**FOE-SLAYING**
-- **Craftsmanship:** Elven, Númenórean
-- **Item:** Any weapon
-- **Special:** Bane
+**MATA-INIMIGOS**
+- **Feitura:** Élfica, Númenóriana
+- **Item:** Qualquer arma
+- **Especial:** Ruína
 
-When you score a Piercing Blow on a Bane creature, the PROTECTION roll of the target is *Ill-favoured*. If the roll was already *Ill-favoured* for any reason, then the Piercing Blow scores an automatic Wound instead.
+Quando você obtém um Golpe Perfurante em uma criatura da Ruína, a rolagem de PROTEÇÃO do alvo é *Desfavorecida*. Se a rolagem já era *Desfavorecida* por qualquer razão, então o Golpe Perfurante obtém um Ferimento automático em vez disso.
 
-**GLEAM OF TERROR**
-- **Craftsmanship:** Dwarven
-- **Item:** Close combat weapon
+**BRILHO DO TERROR**
+- **Feitura:** Anã
+- **Item:** Arma de combate corpo a corpo
 
-When you hit your target using a weapon with this quality you also inflict a loss of 2 points of Hate or Resolve.
+Quando você acerta seu alvo usando uma arma com esta qualidade, você também inflige uma perda de 2 pontos de Ódio ou Resolução.
 
-**HAMMERING**
-- **Craftsmanship:** any
-- **Item:** Close combat weapon
+**MARTELANTE**
+- **Feitura:** qualquer
+- **Item:** Arma de combate corpo a corpo
 
-A creature hit by this weapon and suffering an Endurance loss equal or superior to twice its Attribute level is additionally knocked back and must spend its next main action to stand up.
+Uma criatura atingida por esta arma e que sofra uma perda de Resistência igual ou superior ao dobro de seu Nível de Atributo é adicionalmente empurrada para trás e deve gastar sua próxima ação principal para se levantar.
 
-**HOLLOW STEEL**
-- **Craftsmanship:** Númenórean
-- **Item:** Bows
-- **Special:** no Bane required
+**AÇO OCO**
+- **Feitura:** Númenóriana
+- **Item:** Arcos
+- **Especial:** não requer Ruína
 
-You are always allowed to make one additional opening volley, even when no opening volleys are allowed (unless you are surprised).
+Você sempre pode fazer uma salva de abertura adicional, mesmo quando nenhuma salva de abertura é permitida (a menos que você esteja surpreendido).
 
-**LUMINESCENCE**
-- **Craftsmanship:** Elven
-- **Item:** Close combat weapon
-- **Special:** Bane
+**LUMINESCÊNCIA**
+- **Feitura:** Élfica
+- **Item:** Arma de combate corpo a corpo
+- **Especial:** Ruína
 
-This quality makes the weapon's blade shine with a pale, cold light when a Bane creature is nearby. You and all members of the Company succeed automatically on all rolls made to avoid being ambushed by such creatures.
+Esta qualidade faz a lâmina da arma brilhar com uma luz pálida e fria quando uma criatura da Ruína está por perto. Você e todos os membros da Companhia são automaticamente bem-sucedidos em todas as rolagens feitas para evitar ser emboscados por tais criaturas.
 
-**MITHRIL ARMOUR**
-- **Craftsmanship:** Dwarven
-- **Item:** Mail Armour
+**ARMADURA DE MITHRIL**
+- **Feitura:** Anã
+- **Item:** Armadura de Malha
 
-A mail shirt and a coat of mail made of Mithril have a Load rating of 3 and 6, respectively.
+Uma camisa de malha e uma cota de malha feitas de Mithril têm Carga de 3 e 6, respectivamente.
 
-**RUNE-SCORED ARMOUR**
-- **Craftsmanship:** Dwarven
-- **Item:** Armour
+**ARMADURA GRAVADA COM RUNAS**
+- **Feitura:** Anã
+- **Item:** Armadura
 
-When you make a PROTECTION test while wearing a Rune-scored Armour, you ignore the effects of being Miserable or Weary.
+Quando você faz um teste de PROTEÇÃO vestindo uma Armadura Gravada com Runas, você ignora os efeitos de estar Arrasado ou Exausto.
 
-**RUNE-SCORED HELM**
-- **Craftsmanship:** Dwarven
-- **Item:** Helm
+**ELMO GRAVADO COM RUNAS**
+- **Feitura:** Anã
+- **Item:** Elmo
 
-When you make a Skill roll attempting any Combat Task while wearing a Rune-scored Helm, you ignore the effects of being Miserable or Weary.
+Quando você faz uma rolagem de Perícia tentando qualquer Tarefa de Combate vestindo um Elmo Gravado com Runas, você ignora os efeitos de estar Arrasado ou Exausto.
 
-**RUNE-SCORED SHIELD**
-- **Craftsmanship:** Dwarven
-- **Item:** Shield
+**ESCUDO GRAVADO COM RUNAS**
+- **Feitura:** Anã
+- **Item:** Escudo
 
-When you are fighting with a Rune-scored Shield, attack rolls targeting you are made as if the adversary was Weary.
+Quando você luta com um Escudo Gravado com Runas, as rolagens de ataque que o visam são feitas como se o adversário estivesse Exausto.
 
-**RUNE-SCORED WEAPON**
-- **Craftsmanship:** Dwarven, Elven
-- **Item:** Any weapon
+**ARMA GRAVADA COM RUNAS**
+- **Feitura:** Anã, Élfica
+- **Item:** Qualquer arma
 
-When you make an attack roll using a weapon possessing this quality, you ignore the effects of being Miserable or Weary.
+Quando você faz uma rolagem de ataque usando uma arma que possua esta qualidade, você ignora os efeitos de estar Arrasado ou Exausto.
 
-**STRAIGHT FLIGHT**
-- **Craftsmanship:** Any
-- **Item:** Ranged weapon
+**VOO RETO**
+- **Feitura:** Qualquer
+- **Item:** Arma à distância
 
-The bearer of such a weapon always enjoys a clean shot, even when they are shooting against a strong wind, or their target is protected by darkness, or other elements that would modify their Attack roll negatively (the attacker ignores any modifiers due to complications).
+O portador de tal arma sempre goza de um tiro limpo, mesmo quando atira contra um vento forte, ou quando seu alvo está protegido pela escuridão, ou por outros elementos que modificariam negativamente sua rolagem de Ataque (o atacante ignora quaisquer modificadores devidos a complicações).
 
-### Cursed Items
+### Itens Malditos
 
-Items that have been buried in darkness for centuries represent a potential threat to adventurers and their lust for power. Sometimes, a treasure has been left to rot long enough for the Shadow to have accumulated an even darker fate.
+Itens que ficaram sepultados na escuridão por séculos representam uma ameaça potencial aos aventureiros e à sua ânsia de poder. Às vezes, um tesouro foi deixado a apodrecer tempo suficiente para que a Sombra acumulasse um destino ainda mais escuro.
 
-> If a Player-hero uncovered a piece of Magical Treasure, be it a Marvellous Artefact, a Wondrous Item, or a Famous Weapon and Armour, the Loremaster may additionally take the chance to introduce a Curse.
+> Se um herói-jogador descobriu uma peça de Tesouro Mágico, seja um Artefato Maravilhoso, um Item Prodigioso, ou uma Arma e Armadura Famosa, o Mestre pode adicionalmente aproveitar a chance de introduzir uma Maldição.
 
-A cursed item does not differ from an unmarked one in its virtues. The Loremaster simply proceeds to design the Curse that is laid upon it, either by choosing a Curse designed previously for the campaign, or by creating one on the spot using the rules below.
+Um item maldito não difere de um item sem mácula em suas virtudes. O Mestre simplesmente passa a desenhar a Maldição lançada sobre ele, seja escolhendo uma Maldição desenhada previamente para a campanha, seja criando uma na hora usando as regras abaixo.
 
-**HOW TO DESIGN A CURSE.** A Curse bestows an item with an additional feature, similar to a Blessing or a Reward, except that it has a detrimental effect rather than a positive one. The Loremaster may consult the list of sample Curses found overleaf to select the most appropriate one, or to use them as inspiration to design new ones.
+**COMO DESENHAR UMA MALDIÇÃO.** Uma Maldição confere a um item uma característica adicional, semelhante a uma Bênção ou a uma Recompensa, exceto que ela tem um efeito prejudicial em vez de positivo. O Mestre pode consultar a lista de Maldições de exemplo a seguir para selecionar a mais apropriada, ou para usá-las como inspiração para desenhar novas.
 
-A Curse may not be initially apparent, but instead be activated by a specific circumstance. Examples of circumstances that might trigger a Curse include: leaving the area where the cursed item was found; exposing the object to the light of the moon; at the first shedding of blood; in the presence of a specific type of creature; upon entering a dark land.
+Uma Maldição pode não ser aparente inicialmente, mas ser ativada por uma circunstância específica. Exemplos de circunstâncias que podem desencadear uma Maldição incluem: deixar a área onde o item maldito foi encontrado; expor o objeto à luz da lua; ao primeiro derramamento de sangue; na presença de um tipo específico de criatura; ao entrar em uma terra sombria.
 
-When creating a cursed item, the Loremaster must also secretly decide how its Curse can be lifted. This should be no small task and should definitely form the focus of an Adventuring phase in its own right. For example, a Curse might only be lifted at the place of the item's forging, or by the light of the same moon by which it was made. It might require the casting of an ancient spell lost to the ages or by the slaying of a particularly dangerous creature.
+Ao criar um item maldito, o Mestre deve também decidir secretamente como sua Maldição pode ser levantada. Isso não deveria ser tarefa pequena e deveria definitivamente formar o foco de uma Fase de Aventura por si só. Por exemplo, uma Maldição pode só ser levantada no lugar da forja do item, ou pela luz da mesma lua sob a qual foi feito. Pode exigir a conjuração de um feitiço antigo perdido nas eras ou a morte de uma criatura particularmente perigosa.
 
-Note that a cursed item is not an evil artefact, or a device created by the Enemy or meant to condemn a companion to a life of misery. It is a wonderful object bearing a lasting trace of darkness that, while it may make a hero's life more dangerous for a while, the introduction of a cursed item is primarily meant to make the game more exciting.
+Note que um item maldito não é um artefato maligno, ou um dispositivo criado pelo Inimigo ou destinado a condenar um companheiro a uma vida de miséria. É um objeto maravilhoso que carrega um traço duradouro de escuridão e que, ainda que possa tornar a vida de um herói mais perigosa por um tempo, a introdução de um item maldito visa primariamente a tornar o jogo mais emocionante.
 
-Once a Curse has been removed, the item reverts to being a regular magical item.
+Uma vez removida uma Maldição, o item volta a ser um item mágico comum.
 
-Here follow a number of examples.
+Seguem alguns exemplos.
 
-**CURSED PRECIOUS OBJECTS:** Generally, only Magical Treasure can be cursed, but if the Loremaster wishes, it is of course possible to lay a curse upon a heap of gold or a chest of precious gems, but usually that type of treasure just has an ill feeling about it and a character may struggle to sell it. To make things slightly darker, a cursed Precious Object might be denied any sentimental value (see page 160).
+**OBJETOS PRECIOSOS MALDITOS:** Geralmente, apenas Tesouro Mágico pode ser maldito, mas se o Mestre desejar, é claro que é possível lançar uma maldição sobre um monte de ouro ou uma arca de gemas preciosas, mas normalmente esse tipo de tesouro simplesmente tem um mau presságio a seu respeito e o personagem pode ter dificuldade em vendê-lo. Para tornar as coisas um pouco mais escuras, a um Objeto Precioso maldito pode ser negado qualquer valor sentimental (ver neste capítulo).
 
-**CURSE OF WEAKNESS:** The Cursed Player-hero displays the worst Flaw connected to their own Shadow Path.
-- **Cowardly (Wandering-madness).** When the curse takes hold of the bearer, all they can think of is turning tail and fleeing into the night.
-- **Fearful (Path of Despair).** The curse undermines the spirit of the bearer, casting a shadow of fear and doubt over every action and decision.
-- **Murderous (Curse of Vengeance).** A terrible thirst for blood and malevolence lies within the item, provoking the bearer to dark thoughts of violence and murder.
-- **Thieving (Dragon-sickness).** The item glitters with a sickly light that causes the bearer to desire more and more.
-- **Tyrannical (Lure of Power).** The item foments a sense of overconfidence and arrogance within the bearer, causing them to belittle and undermine their companions.
-- **Traitorous (Lure of Secrets).** The item fosters thoughts of paranoia and discord within the mind of its bearer, causing them to mistake their friends for foes.
+**MALDIÇÃO DA FRAQUEZA:** O herói-jogador Maldito exibe a pior Falha ligada a seu próprio Caminho da Sombra.
+- **Covarde (Loucura Errante).** Quando a maldição toma conta do portador, tudo o que ele consegue pensar é em dar as costas e fugir noite adentro.
+- **Temeroso (Caminho do Desespero).** A maldição mina o espírito do portador, lançando uma sombra de medo e dúvida sobre cada ação e decisão.
+- **Assassino (Maldição da Vingança).** Uma terrível sede de sangue e malevolência jaz dentro do item, provocando no portador pensamentos escuros de violência e assassinato.
+- **Ladrão (Doença do Dragão).** O item cintila com uma luz doentia que faz o portador desejar cada vez mais.
+- **Tirânico (Atração do Poder).** O item fomenta um sentimento de presunção e arrogância no portador, fazendo-o menosprezar e minar seus companheiros.
+- **Traiçoeiro (Atração dos Segredos).** O item alimenta pensamentos de paranoia e discórdia na mente de seu portador, fazendo-o confundir seus amigos com inimigos.
 
-Note that this Flaw is considered temporary, and does not count for the purposes of Succumbing to the Shadow.
+Note que essa Falha é considerada temporária, e não conta para os propósitos de Sucumbir à Sombra.
 
-**DARKEN:** When the item is revealed (a sword is unsheathed, a glove is removed to reveal a ring and so on) all shadows in the area seem to deepen, and all sources of light seem to grow weak. The phenomenon is particularly serious for the bearer of the item, who finds their sight impaired. Since no source of light is able to dispel this darkness, bystanders are confused and disoriented. This causes all appropriate rolls made by the bearer to *lose (1d)*.
+**ESCURECER:** Quando o item é revelado (uma espada é desembainhada, uma luva é retirada revelando um anel e assim por diante), todas as sombras da área parecem se adensar, e todas as fontes de luz parecem enfraquecer. O fenômeno é particularmente sério para o portador do item, que tem a visão prejudicada. Como nenhuma fonte de luz é capaz de dissipar essa escuridão, os presentes ficam confusos e desorientados. Isso faz com que todas as rolagens apropriadas feitas pelo portador *perdam (1d)*.
 
-**HUNTED:** The presence of the item does not go unnoticed, and one type of enemy (Orcs, Evil Men, the Enemy) perceive it when they come near it. In addition, journey events experienced by a travelling Company may be made to revolve this hunt.
+**CAÇADO:** A presença do item não passa despercebida, e um tipo de inimigo (Orcs, Homens Maus, o Inimigo) o percebe quando se aproxima dele. Além disso, os eventos de jornada vividos por uma Companhia em viagem podem ser feitos para girar em torno dessa caçada.
 
-**ILL-LUCK:** Bad luck dogs the bearer at every turn, their victories turned to defeats by simple — but persistent — misfortune. A roll of an ⊘ on the Feat die obtained on any roll means an automatic failure for the bearer (as if the Player-hero was Miserable).
+**MÁ SORTE:** O azar persegue o portador a cada passo, suas vitórias transformadas em derrotas por um infortúnio simples — mas persistente. Um resultado de ⊘ no Dado de Proeza obtido em qualquer rolagem significa uma falha automática para o portador (como se o herói-jogador estivesse Arrasado).
 
-**ILL-OMEN:** The bearer's arrival is preceded by dark warnings and fell omens, filling the hearts of former allies with dread and fear. This causes all rolls made by the bearer during a Council to *lose (1d)*.
+**MAU AUGÚRIO:** A chegada do portador é precedida por avisos escuros e presságios sinistros, enchendo os corações de antigos aliados de pavor e medo. Isso faz com que todas as rolagens feitas pelo portador durante um Conselho *perdam (1d)*.
 
-**MALICE:** The object does not love its bearer, and will try to cause them harm, or otherwise trouble them. If a roll concerns the item (as in the case of a Skill roll augmented by a Blessing, an attack roll for a weapon, a PROTECTION roll for armour), the companion is prevented from spending Hope to gain bonus dice.
+**MALÍCIA:** O objeto não ama seu portador, e tentará causar-lhe dano, ou de outro modo atormentá-lo. Se uma rolagem envolve o item (como no caso de uma rolagem de Perícia aumentada por uma Bênção, uma rolagem de ataque com uma arma, uma rolagem de PROTEÇÃO com armadura), o companheiro fica impedido de gastar Esperança para ganhar dados bônus.
 
-**OWNED:** The item is owned or was created by another creature, much as the Ring was owned by Sauron. The item may have found its way into the hands of the Player-hero so it might eventually return to its master. The Loremaster should decide upon a specific enemy to be the owner of the item, possibly choosing a recurring villain in the campaign. When in the presence of its owner, the item becomes useless: its special features turn out to be completely ineffective.
+**POSSUÍDO:** O item é possuído ou foi criado por outra criatura, muito como o Anel era possuído por Sauron. O item pode ter encontrado o caminho até as mãos do herói-jogador para que possa eventualmente retornar a seu mestre. O Mestre deveria decidir um inimigo específico como proprietário do item, possivelmente escolhendo um vilão recorrente na campanha. Quando na presença de seu proprietário, o item torna-se inútil: suas características especiais revelam-se completamente ineficazes.
 
-**SHADOW TAINT:** The item bears a greater shadow-stain upon it than most cursed items. As long as the hero carries the item, their Shadow score is augmented: by 1 point for an artefact with one Blessing, 2 for one with 2 Blessings; in the case of a Famous Weapon or Armour, the Shadow increase is equal to twice the number of Enchanted Rewards on the item. This Shadow increase cannot be removed or healed, and will raise the hero's Shadow score until the Curse is lifted.
+**MÁCULA DA SOMBRA:** O item carrega uma mancha de sombra maior que a maioria dos itens malditos. Enquanto o herói carregar o item, sua Sombra é aumentada: em 1 ponto para um artefato com uma Bênção, 2 para um com 2 Bênçãos; no caso de uma Arma ou Armadura Famosa, o aumento de Sombra é igual ao dobro do número de Recompensas Encantadas no item. Esse aumento de Sombra não pode ser removido ou curado, e elevará a Sombra do herói até que a Maldição seja levantada.
 
-**WEAKENING:** The item's Curse worms away at its bearer, bringing with it a terrible weakness. The Loremaster chooses either STRENGTH, HEART, or WITS. The bearer sees the associated Attribute TN raised by 2 points.
+**ENFRAQUECIMENTO:** A Maldição do item corrói seu portador, trazendo com ela uma terrível fraqueza. O Mestre escolhe FORÇA, CORAÇÃO ou ASTÚCIA. O portador vê o NA do Atributo associado elevado em 2 pontos.
 
-**DISCOVERING THE ONE RING:** Bilbo's discovery of the One Ring in Gollum's cave is a shining example of predestination, as discussed on page 161. Bilbo was meant to find the Ring, and then to pass it over to Frodo. Perhaps the Loremaster of Bilbo's campaign was planning very far ahead indeed — or maybe they didn't even realise at the time quite what they had created — the goal might have been merely to give the Burglar a Marvellous Artefact bestowed with a Blessing of STEALTH.
+**DESCOBRINDO O UM ANEL:** A descoberta do Um Anel por Bilbo na caverna de Gollum é um exemplo brilhante de predestinação, como discutido neste capítulo. Bilbo estava destinado a encontrar o Anel, e então a passá-lo a Frodo. Talvez o Mestre da campanha de Bilbo estivesse planejando muito à frente de fato — ou talvez nem percebesse na época exatamente o que havia criado — o objetivo poderia ter sido apenas dar ao Gatuno um Artefato Maravilhoso dotado de uma Bênção de FURTIVIDADE.
 
-But how can the Ruling Ring of Sauron be created under the Magical Treasure rules? The short answer is that it can't: it is the greatest magical artefact ever created in the history of Middle-earth after all. But let's indulge a little bit more… The Ring would probably have a Blessing of Stealth for its capability to make its wearer invisible, and eventually reveal later to bestow another Blessing on the skill that better defines its wearer's ambitions and desires: AWE for a mighty warrior, BATTLE for a leader of Men, CRAFT for someone who would desire to create things, INSIGHT for those who seek to know the hearts of others… But what about its Curses? Well, let's not even get started…
+Mas como o Anel Regente de Sauron poderia ser criado sob as regras de Tesouro Mágico? A resposta curta é que não pode: é afinal o maior artefato mágico jamais criado na história da Terra-média. Mas vamos nos permitir um pouco mais… O Anel provavelmente teria uma Bênção de Furtividade por sua capacidade de tornar quem o veste invisível, e eventualmente revelaria mais tarde outra Bênção na perícia que melhor define as ambições e desejos de quem o veste: IMPONÊNCIA para um poderoso guerreiro, BATALHA para um líder de Homens, OFÍCIO para alguém que desejasse criar coisas, PERSPICÁCIA para aqueles que buscam conhecer o coração dos outros… Mas e quanto às suas Maldições? Bem, não vamos nem começar…
 
-## The Eye of Mordor
+## O Olho de Mordor
 
-*"The number must be few, since your hope is in speed and secrecy. Had I a host of Elves in armour of the Elder Days, it would avail little, save to arouse the power of Mordor."*
+*"O número deve ser pequeno, pois sua esperança está na velocidade e no segredo. Se eu tivesse uma hoste de Elfos em armadura dos Dias Antigos, pouco valeria, salvo para despertar o poder de Mordor."*
 
-As the Twilight of the Third Age darkens and the War of the Ring approaches, the will of the Dark Lord pushes all wicked things to evil ends. Since its revelation in the year 2951, Sauron is awake and his spies and servants are abroad once again.
+Conforme o Crepúsculo da Terceira Era escurece e a Guerra do Anel se aproxima, a vontade do Senhor do Escuro empurra todas as coisas perversas a fins malignos. Desde sua revelação no ano de 2951, Sauron está desperto e seus espiões e servos estão de novo à solta.
 
-Many unfriendly things having little love for Elves, Dwarves, and Men are stirred into action, and those who dare to leave their homes find themselves often plagued by an ill-fortune. Distant folk grow suspicious and estranged once again. The arm of the Enemy grows longer every day.
+Muitas coisas hostis, com pouco amor por Elfos, Anões e Homens, são movidas à ação, e aqueles que ousam deixar seus lares muitas vezes se veem atormentados por uma má fortuna. Povos distantes tornam-se de novo suspeitosos e estranhos. O braço do Inimigo cresce mais longo a cada dia.
 
-The possibility that a Company catches the Eye of the Enemy is expressed in gaming terms through the rules for Eye Awareness and its major and most terrible consequence — the Hunt.
-- Eye Awareness is a rating measuring the level of attention that the Enemy reserves for the Company of Player-heroes. Its rating ebbs and flows based on their actions and wandering, and is kept track of from session to session.
-- When the Eye Awareness of a Company reaches a certain limit, it triggers the Hunt, representing the way that the Enemy is able to focus the hostility of the world itself towards the group of Player-heroes.
+A possibilidade de uma Companhia atrair o Olho do Inimigo é expressa em termos de jogo pelas regras de Atenção do Olho e sua consequência maior e mais terrível — a Caçada.
+- A Atenção do Olho é uma classificação que mede o nível de atenção que o Inimigo reserva à Companhia de heróis-jogadores. Seu valor sobe e desce com base em suas ações e suas andanças, e é registrado de sessão a sessão.
+- Quando a Atenção do Olho de uma Companhia alcança certo limite, ela desencadeia a Caçada, representando o modo pelo qual o Inimigo é capaz de concentrar a hostilidade do próprio mundo contra o grupo de heróis-jogadores.
 
-**OPTIONAL RULES?** The rules concerning the Eye of Mordor are particularly suitable to be introduced later in the game, when the Company has already been playing for a few years of game time. This is because they add a layer of complexity that not every group may find to their liking, and also because they are meant to represent how the Enemy reacts to the deeds of a successful group of adventurers.
+**REGRAS OPCIONAIS?** As regras relativas ao Olho de Mordor são particularmente adequadas para serem introduzidas mais tarde no jogo, quando a Companhia já está jogando há alguns anos de tempo de jogo. Isso porque elas acrescentam uma camada de complexidade que não todo grupo achará do seu gosto, e também porque visam a representar como o Inimigo reage aos feitos de um grupo bem-sucedido de aventureiros.
 
-### Eye Awareness
+### Atenção do Olho
 
-In general terms, the Eye Awareness rating of a Company is based on the number of Player-heroes in the group, which Heroic Cultures are represented in it, and the intensity of their adventuring activity. A larger and more active group of Player-heroes, including Heroic Cultures recognised as enemies of Sauron such as Rangers or Elves, has more chances to raise suspicions and stir the minions of the Shadow into action than a smaller group composed solely of Hobbits.
+Em termos gerais, a Atenção do Olho de uma Companhia é baseada no número de heróis-jogadores no grupo, em quais Culturas Heroicas estão representadas nele, e na intensidade de sua atividade de aventura. Um grupo maior e mais ativo de heróis-jogadores, incluindo Culturas Heroicas reconhecidas como inimigas de Sauron, como Rangers ou Elfos, tem mais chances de levantar suspeitas e mover os lacaios da Sombra à ação que um grupo menor composto somente de Hobbits.
 
-> To keep track of Eye Awareness it is best to use a number of counters or tokens (glass beads work fine) that should be placed on the gaming table, within reach of all players (about 20 tokens should suffice).
+> Para registrar a Atenção do Olho é melhor usar uma quantidade de marcadores ou fichas (contas de vidro funcionam bem) que devem ser colocados na mesa de jogo, ao alcance de todos os jogadores (cerca de 20 fichas deveriam ser suficientes).
 
-**STARTING EYE AWARENESS SCORE.** The starting Eye Awareness of a Company is calculated at the beginning of each Adventuring Phase. This value is determined by the composition of the group, as the Enemy keeps a closer watch on those individuals he hates, or fears, the most.
+**ATENÇÃO DO OLHO INICIAL.** A Atenção do Olho inicial de uma Companhia é calculada no começo de cada Fase de Aventura. Esse valor é determinado pela composição do grupo, pois o Inimigo mantém vigilância mais próxima sobre aqueles indivíduos que mais odeia, ou teme.
 
-Check the table below to find out the individual score corresponding to each hero in the Company (Loremaster characters journeying with the Company are not normally considered part of it for the purposes of calculating Eye Awareness).
-- To find the starting Eye Awareness of the Company, find its basic score using the table below (apply only the highest applicable entry), then add 1 for each Player-hero with a rating of VALOUR at 4 or more.
-- Additionally, the spies of the Enemy can be attracted by adventurers carrying powerful weapons: add 2 for each Famous Weapon and Armour carried by members of the Company.
+Consulte a tabela abaixo para descobrir o valor individual correspondente a cada herói da Companhia (personagens do Mestre que viajam com a Companhia não são normalmente considerados parte dela para os propósitos de calcular a Atenção do Olho).
+- Para achar a Atenção do Olho inicial da Companhia, encontre seu valor básico usando a tabela abaixo (aplique apenas a entrada mais alta aplicável), depois some 1 por cada herói-jogador com VALOR de 4 ou mais.
+- Além disso, os espiões do Inimigo podem ser atraídos por aventureiros que carreguem armas poderosas: some 2 por cada Arma e Armadura Famosa carregada por membros da Companhia.
 
-**THE COMPANY INCLUDES:**
+**A COMPANHIA INCLUI:**
 
-| Player-heroes | Eye Awareness |
+| Heróis-jogadores | Atenção do Olho |
 |---|---|
-| Only Hobbits or Men | 0 |
-| One or more Dwarves | 1 |
-| One or more Elves | 2 |
-| One or more Dúnedain or High Elves | 2 |
+| Apenas Hobbits ou Homens | 0 |
+| Um ou mais Anões | 1 |
+| Um ou mais Elfos | 2 |
+| Um ou mais Dúnedain ou Altos Elfos | 2 |
 
-**INCREASING EYE AWARENESS.** A Company's Eye Awareness score increases in the course of an Adventuring phase as a consequence of a number of circumstances, as detailed in the following paragraphs.
+**AUMENTANDO A ATENÇÃO DO OLHO.** A Atenção do Olho de uma Companhia aumenta no curso de uma Fase de Aventura como consequência de uma série de circunstâncias, conforme detalhado nos parágrafos seguintes.
 
-> The Loremaster must keep track of these instances, and update the Eye Awareness score of the company accordingly.
+> O Mestre deve registrar essas ocorrências e atualizar a Atenção do Olho da companhia conforme necessário.
 
-Note that most of the circumstances described here pertain to conditions happening outside of combat.
+Note que a maioria das circunstâncias descritas aqui diz respeito a condições que acontecem fora do combate.
 
-**ROLLING EYES:** When under the Shadow, even the most successful exploits can be tainted by fear and self-doubt.
+**OLHOS ROLADOS:** Sob a Sombra, mesmo as façanhas mais bem-sucedidas podem ser maculadas pelo medo e pela dúvida de si.
 
-> Raise the Eye Awareness of the Company by 1 point whenever a die roll made by a player outside of combat produces an ⊘ icon, regardless of whether the roll resulted in a success or a failure.
+> Aumente a Atenção do Olho da Companhia em 1 ponto sempre que uma rolagem feita por um jogador fora do combate produzir um ícone ⊘, independentemente de a rolagem ter resultado em sucesso ou em falha.
 
-If the Loremaster considers it appropriate, rolling an ⊘ under particularly dramatic or otherwise grave circumstances may increase the Eye Awareness by 2 points or more instead of 1. Conversely, if the company is currently in a place deemed by the Loremaster to be safe, an ⊘ might not provoke an increase at all.
+Se o Mestre considerar apropriado, rolar um ⊘ em circunstâncias particularmente dramáticas ou de outro modo graves pode aumentar a Atenção do Olho em 2 pontos ou mais em vez de 1. Ao contrário, se a companhia está atualmente em um lugar considerado pelo Mestre como seguro, um ⊘ pode não provocar aumento algum.
 
-**SHADOW GAIN:** A Player-hero tormented by grief and beset by the threat of corruption carries a burden that the Shadow is quick to recognise and exploit.
+**GANHO DE SOMBRA:** Um herói-jogador atormentado pela dor e assediado pela ameaça da corrupção carrega um fardo que a Sombra é rápida em reconhecer e explorar.
 
-> Whenever a Player-hero gains 1 or more Shadow points outside of combat, increase the Eye Awareness level by an equal amount.
+> Sempre que um herói-jogador ganha 1 ou mais pontos de Sombra fora do combate, aumente o nível de Atenção do Olho em quantidade igual.
 
-**USING MAGIC:** Blatant displays of magical power further augment a Company's Eye Awareness score, in a measure that is proportional to the magical effect.
+**USANDO MAGIA:** Demonstrações ostensivas de poder mágico aumentam ainda mais a Atenção do Olho de uma Companhia, em uma medida proporcional ao efeito mágico.
 
-> Spells cast by a Wizard or another Loremaster character capable of such feats provoke the increase of the Eye Awareness score by 1 point in case of a lesser effect, 2 points for a major spell, and 3 points for a really powerful spell.
+> Feitiços conjurados por um Mago ou por outro personagem do Mestre capaz de tais feitos provocam o aumento da Atenção do Olho em 1 ponto no caso de um efeito menor, 2 pontos para um feitiço maior, e 3 pontos para um feitiço realmente poderoso.
 
-Note that this does not apply to every use of magic — for example, tracing signs on a surface that will be visible only to friendly eyes, or embellishing pipe-smoke or fireworks with shapes and colours does not provoke the increase of Eye Awareness — unless they are done in the wrong place, or at the wrong time, of course!
+Note que isso não se aplica a todo uso de magia — por exemplo, traçar sinais em uma superfície que serão visíveis apenas a olhos amigos, ou embelezar fumaça de pipa ou fogos de artifício com formas e cores não provoca o aumento da Atenção do Olho — a menos que sejam feitos no lugar errado, ou na hora errada, claro!
 
-Examples of display of magical power include:
-- **LESSER EFFECTS (+1 POINT):** Illuminate a dark passage with a short blaze of magical light, open a locked door, play tricks with voices or sounds.
-- **MAJOR SPELLS (+2 POINTS):** Light a fire in a storm, block a door against a powerful adversary, make a tree burst into flames.
-- **POWERFUL SPELLS (+3 POINTS):** Rain lightning down upon an advancing enemy, lend speed to a travelling company, make the waters of a river swell with rage.
+Exemplos de demonstração de poder mágico incluem:
+- **EFEITOS MENORES (+1 PONTO):** Iluminar uma passagem escura com um breve clarão de luz mágica, abrir uma porta trancada, fazer truques com vozes ou sons.
+- **FEITIÇOS MAIORES (+2 PONTOS):** Acender um fogo numa tempestade, bloquear uma porta contra um adversário poderoso, fazer uma árvore irromper em chamas.
+- **FEITIÇOS PODEROSOS (+3 PONTOS):** Fazer chover relâmpagos sobre um inimigo que avança, emprestar velocidade a uma companhia em viagem, fazer as águas de um rio inflarem de fúria.
 
-**RESETTING EYE AWARENESS.** When an Adventuring phase ends, the tally for Eye Awareness is suspended for the length of the Fellowship phase. The Eye Awareness score of the Company is set again at its starting score at the beginning of the following Adventuring phase.
+**ZERANDO A ATENÇÃO DO OLHO.** Quando uma Fase de Aventura termina, a contagem da Atenção do Olho é suspensa pela duração da Fase de Companhia. A Atenção do Olho da Companhia é definida novamente em seu valor inicial no começo da Fase de Aventura seguinte.
 
-### The Hunt
+### A Caçada
 
-Using the rules explained above, the Eye Awareness level of a Company grows session after session during the Adventuring phase as a consequence of the actions of the Player-heroes. To determine whether this puts the Company at the risk of being noticed by the Enemy, the Loremaster must compare the Eye Awareness rating to another value, called the Company's Hunt threshold.
+Usando as regras explicadas acima, o nível de Atenção do Olho de uma Companhia cresce sessão após sessão durante a Fase de Aventura como consequência das ações dos heróis-jogadores. Para determinar se isso põe a Companhia em risco de ser notada pelo Inimigo, o Mestre deve comparar a Atenção do Olho a outro valor, chamado limiar da Caçada da Companhia.
 
-**HUNT THRESHOLD.** At any given time, the Hunt threshold of the Company is determined by the region where the heroes are located, based on the Region table below. If the Player-heroes travel from one region to another, the Hunt threshold will change accordingly.
+**LIMIAR DA CAÇADA.** A qualquer momento, o limiar da Caçada da Companhia é determinado pela região onde os heróis se encontram, com base na tabela de Regiões abaixo. Se os heróis-jogadores viajarem de uma região a outra, o limiar da Caçada mudará conforme.
 
-A number of modifiers can alter the value set by the region, as the Company takes precautions or is travelling under the protection of a powerful individual (see the Hunt Modifiers table below).
+Uma série de modificadores pode alterar o valor definido pela região, conforme a Companhia toma precauções ou viaja sob a proteção de um indivíduo poderoso (ver a tabela de Modificadores da Caçada abaixo).
 
-**REGION TABLE:**
+**TABELA DE REGIÕES:**
 
-| The Region Traversed is a… | Hunt Threshold |
+| A Região Atravessada é uma… | Limiar da Caçada |
 |---|---|
-| Border Land | 18 |
-| Wild Land | 16 |
-| Dark Land | 14 |
+| Terra Fronteiriça | 18 |
+| Terra Selvagem | 16 |
+| Terra Sombria | 14 |
 
-**HUNT MODIFIERS TABLE:**
+**TABELA DE MODIFICADORES DA CAÇADA:**
 
-| Hunt Modifier | Description |
+| Modificador da Caçada | Descrição |
 |---|---|
-| +4 | The Company is protected by the blessing of a Wizard, or another powerful Loremaster character |
-| +2 | The Company is travelling under false names, treading paths that are seldom trodden, or otherwise taking actions to be discreet and unobtrusive |
-| –2 | The Player-heroes have gained great renown in the area thanks to some exceptional deed |
-| –4 | The Enemy is actively looking for the Player-heroes, or their mission or goal is known to them |
+| +4 | A Companhia está protegida pela bênção de um Mago, ou de outro personagem do Mestre poderoso |
+| +2 | A Companhia viaja sob nomes falsos, trilhando caminhos raramente trilhados, ou de outro modo tomando ações para ser discreta e não chamar atenção |
+| –2 | Os heróis-jogadores ganharam grande renome na área graças a algum feito excepcional |
+| –4 | O Inimigo está ativamente à procura dos heróis-jogadores, ou sua missão ou objetivo é conhecido por ele |
 
-The status of the Company as far as the perception of the Enemy is concerned is evaluated comparing the Hunt Threshold to the Eye Awareness rating:
+A situação da Companhia no que tange à percepção do Inimigo é avaliada comparando o Limiar da Caçada à Atenção do Olho:
 
-> As long as the Eye Awareness rating of the Company is inferior to the Hunt threshold, the Player-heroes are considered to be hidden.
+> Enquanto a Atenção do Olho da Companhia for inferior ao limiar da Caçada, os heróis-jogadores são considerados escondidos.
 
-In the eyes of the Enemy the adventurers are just a group of stray wanderers, and their actions are of small concern.
+Aos olhos do Inimigo os aventureiros são apenas um grupo de andarilhos perdidos, e suas ações são de pouca importância.
 
-> Should the Eye Awareness match or exceed the Hunt threshold, the group would be revealed to the Eye, and something bad will happen as a consequence.
+> Se a Atenção do Olho igualar ou exceder o limiar da Caçada, o grupo será revelado ao Olho, e algo ruim acontecerá em consequência.
 
-**REVEALING THE COMPANY.** A Company is revealed to the Enemy when the Eye Awareness score of the company matches or exceeds the current Hunt threshold. When this happens, the Loremaster will introduce a Revelation episode, a dangerous event reflecting the increased hostility of the game world towards the members of the Company.
+**REVELANDO A COMPANHIA.** Uma Companhia é revelada ao Inimigo quando a Atenção do Olho da companhia iguala ou excede o limiar da Caçada atual. Quando isso acontece, o Mestre introduzirá um episódio de Revelação, um evento perigoso que reflete a hostilidade aumentada do mundo do jogo em relação aos membros da Companhia.
 
-The source of this hostility may differ wildly from one Revelation episode to another: it may be the result of the direct actions of servants of the Enemy aimed to thwart a Company's plans, an accident caused by the ill-will of another unfriendly power, or simply an unusual and sinister stroke of bad luck. There are many strange and dark powers in Middle-earth, and not all of them are necessarily in league with the Dark Lord…
+A fonte dessa hostilidade pode diferir muito de um episódio de Revelação a outro: pode ser o resultado das ações diretas de servos do Inimigo visando a frustrar os planos da Companhia, um acidente causado pela má-vontade de outro poder hostil, ou simplesmente um golpe incomum e sinistro de má sorte. Há muitos poderes estranhos e escuros na Terra-média, e não todos estão necessariamente aliados ao Senhor do Escuro…
 
-> As soon as the Loremaster has played out a Revelation episode, the Company is considered to be hidden again, and the Eye Awareness level of the company is set back at its starting level.
+> Assim que o Mestre tiver interpretado um episódio de Revelação, a Companhia é considerada escondida de novo, e o nível de Atenção do Olho da companhia é redefinido em seu valor inicial.
 
-From that moment on, the tally for Eye Awareness is resumed normally; and thus may lead to another Revelation episode should the score reach the Hunt threshold once again, and so on, until the end of the Adventuring phase.
+Daquele momento em diante, a contagem da Atenção do Olho é retomada normalmente; e assim pode levar a outro episódio de Revelação se o valor alcançar o limiar da Caçada mais uma vez, e assim por diante, até o fim da Fase de Aventura.
 
-**REVELATION EPISODES.** To determine the precise nature and consequences of a Revelation episode, the Loremaster should weigh the current circumstances of the Company and choose a course of events that will change the heroes' predicament for the worst. If the Player-heroes were already heading towards a difficult situation, now they will face one of their worst moments instead.
+**EPISÓDIOS DE REVELAÇÃO.** Para determinar a natureza e as consequências precisas de um episódio de Revelação, o Mestre deveria ponderar as circunstâncias atuais da Companhia e escolher um curso de eventos que mudará a situação dos heróis para pior. Se os heróis-jogadores já se dirigiam a uma situação difícil, agora enfrentarão um de seus piores momentos em vez disso.
 
-Regardless of the details, whatever happens to the Company must spring naturally out of the ongoing flow of events experienced during a session; no Orcs appearing out of nowhere to attack the Player-heroes while sleeping at Bag End!
+Independentemente dos detalhes, o que acontece à Companhia deve brotar naturalmente do fluxo contínuo de eventos vividos durante uma sessão; nada de Orcs surgindo do nada para atacar os heróis-jogadores enquanto dormem no Bolsão!
 
-Additionally, the nature of a Revelation episode should always suggest that there are strange forces at work; a distinctive aura that smells of something dark and foul; a malicious misfortune, the unusual behaviour of Men or beasts, the faint trace of sorcery.
+Além disso, a natureza de um episódio de Revelação deveria sempre sugerir que há forças estranhas em ação; uma aura distintiva que fede a algo escuro e imundo; um infortúnio malicioso, o comportamento incomum de Homens ou bestas, o traço tênue da feitiçaria.
 
-Generally, the current situation should provide the Loremaster with enough suggestions upon which to improvise. If this is not the case, then the resolution of a Revelation episode should be held off, until an appropriate situation appears (possibly even waiting for the following session of play).
+Geralmente, a situação atual deveria fornecer ao Mestre sugestões suficientes sobre as quais improvisar. Se não for o caso, então a resolução de um episódio de Revelação deveria ser postergada, até que uma situação apropriada apareça (possivelmente esperando até a sessão de jogo seguinte).
 
-A typical Revelation episode may include a hero losing the other companions during a journey or while fleeing, the group running out of food as provisions are found to be unexpectedly spoilt, a decision taken by heroes proving to be the worst possible choice, an individual the Company was waiting for failing to show up at a crucial moment, and so on.
+Um episódio de Revelação típico pode incluir um herói perdendo os outros companheiros durante uma jornada ou uma fuga, o grupo ficando sem comida porque as provisões se revelam inesperadamente estragadas, uma decisão tomada pelos heróis provando ser a pior escolha possível, um indivíduo que a Companhia esperava não aparecendo em um momento crucial, e assim por diante.
 
-**EXAMPLES OF REVELATION EPISODES**
+**EXEMPLOS DE EPISÓDIOS DE REVELAÇÃO**
 
-*"Is it the will of the Dark Tower that steers us? All my choices have proved ill."*
+*"É a vontade da Torre Escura que nos guia? Todas as minhas escolhas se provaram ruins."*
 
-Here follow several examples of how the Loremaster may worsen the situation of a revealed Company. A level of customisation is required, to adapt all suggestions to the actual situation of play.
+Seguem vários exemplos de como o Mestre pode agravar a situação de uma Companhia revelada. É necessário um nível de personalização, para adaptar todas as sugestões à situação real de jogo.
 
-1. *Out of the Frying Pan…* All actions concerning the resolution of a chosen situation inexplicably prove harder — all Skill rolls *lose (1d)*. For example, all rolls made for a journey's leg, or for the entire next encounter.
-2. *Láthspell.* The arrival of the Company at a location is interpreted as ill-news, and the heroes are given a colder welcome than expected: the goal of a Council as chosen by the Company is made more difficult — a reasonable request becomes bold, and a bold one becomes outrageous.
-3. *Do not tempt me!* A Player-hero gains 3 points of Shadow (Greed). The nature of the challenge may be overt or subtle, and should be based on the character's Shadow Path.
-4. *Lies and Threats.* An ally becomes an enemy, through coercion, betrayal, or even sorcery. The individual is now bent on doing harm to the Player-heroes, and either acts directly or schemes in the dark.
-5. *A Weariness of the Heart.* An unnatural sense of tiredness has gotten hold of the Company. Whether it is due to some subtle sorcery or else it is not clear, but all Player-heroes are considered Weary until the Loremaster deems it appropriate to the circumstances.
-6. *A Will That Lends Speed.* An enemy that the Company was chasing or holding prisoner escapes, as if helped or hidden by an unseen hand, or pursuers that were hunting the Company catch up with them unexpectedly.
-7. *Guided by Sinister Purpose.* A potential threat the Company had a chance to avoid is now waiting for them. An Orc patrol they could try to ambush now automatically spots them; a Troll they could sneak past sniffs them out at the worst possible moment; an unnamed terror that was sleeping in the deep places of the world is now aware of their passage.
-8. *Reckless Hate.* One enemy type that will be faced in combat next gains the special ability Hatred (subject), focused on one Heroic Culture represented in the Company.
-9. *Deadly Strife.* An enemy that will be faced in combat next starts the fight with an additional pool of Hate or Resolve points equal to the roll of a Success die. The Loremaster spends one point from the pool when a creature would reduce its Hate or Resolve score.
-10. *We Come to Kill.* One enemy type that will be faced in combat next gains:
+1. *Fora da Frigideira…* Todas as ações relativas à resolução de uma situação escolhida provam-se inexplicavelmente mais difíceis — todas as rolagens de Perícia *perdem (1d)*. Por exemplo, todas as rolagens feitas para uma etapa de jornada, ou para o próximo encontro inteiro.
+2. *Láthspell.* A chegada da Companhia a um lugar é interpretada como má notícia, e os heróis recebem uma recepção mais fria que o esperado: o objetivo de um Conselho, tal como escolhido pela Companhia, torna-se mais difícil — um pedido razoável torna-se audacioso, e um audacioso torna-se ultrajante.
+3. *Não me tente!* Um herói-jogador ganha 3 pontos de Sombra (Cobiça). A natureza do desafio pode ser aberta ou subtil, e deveria basear-se no Caminho da Sombra do personagem.
+4. *Mentiras e Ameaças.* Um aliado torna-se um inimigo, por coerção, traição ou mesmo feitiçaria. O indivíduo está agora determinado a fazer mal aos heróis-jogadores, e age diretamente ou conspira no escuro.
+5. *Um Cansaço do Coração.* Uma sensação sobrenatural de cansaço tomou conta da Companhia. Se é devida a alguma feitiçaria subtil ou não, não está claro, mas todos os heróis-jogadores são considerados Exaustos até que o Mestre julgue apropriado às circunstâncias.
+6. *Uma Vontade Que Empresta Velocidade.* Um inimigo que a Companhia perseguia ou mantinha prisioneiro escapa, como se ajudado ou escondido por uma mão invisível, ou perseguidores que caçavam a Companhia a alcançam inesperadamente.
+7. *Guiados por Propósito Sinistro.* Uma ameaça potencial que a Companhia tinha chance de evitar agora a espera. Uma patrulha de Orcs que eles poderiam tentar emboscar agora os avista automaticamente; um Troll pelo qual poderiam passar às escondidas os fareja no pior momento possível; um terror sem nome que dormia nos lugares profundos do mundo agora está ciente de sua passagem.
+8. *Ódio Temerário.* Um tipo de inimigo que será enfrentado no próximo combate ganha a habilidade especial Ódio Mortal (alvo), focada em uma Cultura Heroica representada na Companhia.
+9. *Contenda Mortal.* Um inimigo que será enfrentado no próximo combate começa a luta com uma reserva adicional de pontos de Ódio ou Resolução igual à rolagem de um Dado de Sucesso. O Mestre gasta um ponto da reserva quando uma criatura reduziria seu Ódio ou sua Resolução.
+10. *Vimos para Matar.* Um tipo de inimigo que será enfrentado no próximo combate ganha:
 
-**FELL ABILITY**: *Deadly Wound.* Wounded targets make an *Ill-favoured* Feat die roll to determine the severity of their injury.
+**HABILIDADE SINISTRA**: *Ferida Mortal.* Alvos Feridos fazem uma rolagem *Desfavorecida* de Dado de Proeza para determinar a severidade de seu ferimento.
+
+
+
+
+

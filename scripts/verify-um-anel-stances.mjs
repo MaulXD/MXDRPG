@@ -129,11 +129,17 @@ const attackCode = stripC(ATTACK);
 // Desfavorecido é a condição pior, ao atingir a Esperança máxima.
 ok(
   "livro: Arrasado faz o Olho virar falha",
-  /become Miserable[\s\S]{0,200}?rolling an .{0,3} icon on the Feat die results in failure/i.test(BOOK_GM)
+  // Bilingue: o cap.8 foi traduzido na Fase B. Aceita as duas formas e continua
+  // acusando se a REGRA mudar (o efeito de Arrasado e SO o Olho virar falha).
+  /(become Miserable[\s\S]{0,200}?rolling an .{0,3} icon on the Feat die results in failure|tornam-se Arrasados[\s\S]{0,200}?ícone .{0,3} no Dado de Proeza resulta em falha)/i.test(
+    BOOK_GM
+  )
 );
 ok(
   "livro: Desfavorecido vem da Sombra na Esperança máxima",
-  /Shadow score reaches their maximum Hope rating[\s\S]{0,80}?Ill-favoured/i.test(BOOK_GM)
+  /(Shadow score reaches their maximum Hope rating[\s\S]{0,80}?Ill-favoured|Sombra alcança sua Esperança máxima[\s\S]{0,120}?Desfavorecidos)/i.test(
+    BOOK_GM
+  )
 );
 
 // A REGRESSÃO: o Teste de Proteção usava `illFavoured: params.defenderMiserable`,

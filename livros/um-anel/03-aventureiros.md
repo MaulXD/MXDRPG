@@ -1,161 +1,160 @@
-# Adventurers — The One Ring 2e (fonte: Core Rules, p.27-58)
+# Capítulo 3 — Aventureiros — O Um Anel 2ª ed. (fonte: Livro Básico, p.27-58)
 
-> Conteúdo original em inglês — aguardando tradução colaborativa.
 > Fonte: the one ring/The_One_Ring_Core_Rules.pdf
 
 ---
 
-## Chapter 3 opening quote
+## Epígrafe de abertura do capítulo 3
 
-*"He had a strange feeling as the slow gurgling stream slipped by: his old life lay behind in the mists, dark adventure lay in front."*
+*"Ele teve uma sensação estranha enquanto o riacho lento e gorgolejante deslizava por ele: sua velha vida ficava para trás nas névoas, uma aventura sombria estava à frente."*
 
-## Introduction — Character Creation Overview
+## Introdução — Visão Geral da Criação de Personagem
 
-The following pages show you how to craft a Player-hero drawn from one of six Heroic Cultures. Using the guidelines presented in this chapter, you can create your own hero, complete with strengths and weaknesses, possessions, and aspirations.
+As páginas a seguir mostram como forjar um herói-jogador oriundo de uma das seis Culturas Heroicas. Usando as diretrizes apresentadas neste capítulo, você pode criar seu próprio herói, completo com forças e fraquezas, posses e aspirações.
 
-The character creation process consists of a number of steps, and aims to create fictional individuals that are as close as possible to their player's wishes, and that at the same time conform to the source material. The Loremaster should assist their players during this process, providing insight into the rules when needed, or simply advise a player in making choices that are both true to the game's setting and make a satisfying character to play.
+O processo de criação de personagem consiste em uma série de passos e visa criar indivíduos fictícios que estejam o mais próximo possível dos desejos de seu jogador e que, ao mesmo tempo, se conformem ao material de origem. O Mestre deve auxiliar seus jogadores durante esse processo, esclarecendo as regras quando necessário, ou simplesmente aconselhando um jogador a fazer escolhas que sejam fiéis ao cenário do jogo e que resultem em um personagem satisfatório de interpretar.
 
-### Your Characters
+### Seus Personagens
 
-To create a character, each player must first choose a Heroic Culture, selecting the one that is closest to the hero concept that they have in mind. All Cultures presented in this volume belong to the Free Peoples, brave nations that refuse the darkness and are often at open war with it. They represent the main choices for roleplaying in the Westlands of Eriador.
+Para criar um personagem, cada jogador deve primeiro escolher uma Cultura Heroica, selecionando aquela que estiver mais próxima do conceito de herói que tem em mente. Todas as Culturas apresentadas neste volume pertencem aos Povos Livres, nações valentes que recusam a escuridão e muitas vezes estão em guerra aberta contra ela. Elas representam as principais opções de interpretação nas Terras do Oeste de Eriador.
 
-1. Bardings — page 32
-2. Dwarves of Durin's Folk — page 34
-3. Elves of Lindon — page 36
-4. Hobbits of the Shire — page 38
-5. Men of Bree — page 40
-6. Rangers of the North — page 42
+1. Bardos — ver adiante neste capítulo
+2. Anões do Povo de Durin — ver adiante neste capítulo
+3. Elfos de Lindon — ver adiante neste capítulo
+4. Hobbits do Condado — ver adiante neste capítulo
+5. Homens de Bri — ver adiante neste capítulo
+6. Rangers do Norte — ver adiante neste capítulo
 
-Once they have made their choice, players refer to the appropriate Heroic Culture writeup page and follow the steps described below, copying all information onto the character sheet (see page 24).
+Feita a escolha, os jogadores consultam a página da Cultura Heroica apropriada e seguem os passos descritos abaixo, copiando todas as informações para a ficha de personagem (ver a ficha no capítulo 2).
 
-1. Record your Cultural Blessing
-2. Determine your Attributes, choosing a set or rolling a Success die
-3. Calculate your STRENGTH, HEART, and WITS Target Numbers — each TN is equal to 20 minus its corresponding Attribute score
-4. Calculate your Derived Stats: Endurance, Hope, and Parry
-5. Record your Skill and Combat Proficiency Ratings
-6. Choose your Distinctive Features
-7. Choose your Name and Age
+1. Anote sua Bênção Cultural
+2. Determine seus Atributos, escolhendo um conjunto ou rolando um Dado de Sucesso
+3. Calcule seus Números-Alvo de FORÇA, CORAÇÃO e ASTÚCIA — cada NA é igual a 20 menos o valor do Atributo correspondente
+4. Calcule suas Estatísticas Derivadas: Resistência, Esperança e Bloqueio
+5. Anote os níveis de suas Perícias e Proficiências de Combate
+6. Escolha suas Características Distintivas
+7. Escolha seu Nome e sua Idade
 
-### Answer the Call to Adventure
+### Atenda ao Chamado da Aventura
 
-Players finalise their character creation process by moving on to page 44 and applying the steps described below.
+Os jogadores finalizam o processo de criação de personagem passando à seção seguinte deste capítulo e aplicando os passos descritos abaixo.
 
-1. Choose a Calling, from among Captain, Champion, Messenger, Scholar, Treasure Hunter, and Warden
-2. Spend Previous Experience points
-3. Choose your starting Gear
-4. Record your VALOUR and WISDOM scores at 1 and choose your Starting Reward and Virtue
+1. Escolha uma Vocação, entre Capitão, Campeão, Mensageiro, Erudito, Caçador de Tesouros e Guardião
+2. Gaste os pontos de Experiência Prévia
+3. Escolha seu Equipamento inicial
+4. Anote seus valores de VALOR e SABEDORIA em 1 e escolha sua Recompensa e Virtude iniciais
 
-### Gather the Company
+### Reúna a Companhia
 
-Last, but not least, all players cooperate in adding details about how their newly-created adventurers met each other and formed a Company (see page 51). A Company may be composed of adventurers of any kind, but the sum of its parts is going to be influenced by the Player-heroes' selection of Heroic Culture and Calling.
+Por último, mas não menos importante, todos os jogadores cooperam para acrescentar detalhes sobre como seus aventureiros recém-criados se conheceram e formaram uma Companhia (ver adiante neste capítulo). Uma Companhia pode ser composta por aventureiros de qualquer tipo, mas a soma de suas partes será influenciada pela seleção de Cultura Heroica e Vocação dos heróis-jogadores.
 
 ---
 
-## Heroic Cultures
+## Culturas Heroicas
 
-*"Bilbo began to feel there really was something of a bold adventurer about himself after all…"*
+*"Bilbo começou a sentir que havia realmente algo de aventureiro audaz em si mesmo, no fim das contas…"*
 
-In Middle-earth, the culture to which an adventurer belongs often defines them more profoundly than simply in terms of customs and traditions. For this reason, the most important choice that players must make is to select the Culture of origin of their adventurers.
+Na Terra-média, a cultura à qual um aventureiro pertence muitas vezes o define de modo mais profundo do que simplesmente em termos de costumes e tradições. Por essa razão, a escolha mais importante que os jogadores devem fazer é selecionar a Cultura de origem de seus aventureiros.
 
-Each Heroic Culture's writeup is composed along the same format of presentation, illustrated in the following paragraphs.
+A descrição de cada Cultura Heroica é composta segundo o mesmo formato de apresentação, ilustrado nos parágrafos seguintes.
 
-### Characteristics
+### Características
 
-This section offers a number of details defining the appearance of a typical hero belonging to that culture and includes information about their adventuring age and martial tradition. A character's age is recorded on the character sheet. In general, heroes rarely start their adventuring career before they are deemed fully grown by their culture. On the other hand, if they progress too far into adulthood without answering the call to adventure, then they probably won't heed it at all.
+Esta seção oferece uma série de detalhes que definem a aparência de um herói típico pertencente àquela cultura e inclui informações sobre sua idade de aventura e sua tradição marcial. A idade de um personagem é anotada na ficha de personagem. Em geral, os heróis raramente iniciam sua carreira de aventureiros antes de serem considerados plenamente crescidos por sua cultura. Por outro lado, se avançam demais na vida adulta sem atender ao chamado da aventura, provavelmente jamais lhe darão ouvidos.
 
-Moreover, it provides the description of their Cultural Blessing — a special ability possessed by all Player-heroes belonging to that culture, from the Stout-hearted quality of the Bardings to the Redoubtable nature of the Dwarves (this part may additionally include information defining a particular weakness or limitation that is associated with all members of the culture).
+Além disso, ela fornece a descrição de sua Bênção Cultural — uma habilidade especial possuída por todos os heróis-jogadores pertencentes àquela cultura, do Coração Firme dos Bardos à natureza Inabalável dos Anões (esta parte pode incluir ainda informações que definem uma fraqueza ou limitação específica associada a todos os membros da cultura).
 
-The section is concluded by a rough indication of the starting resources available to the average adventurer belonging to that culture, in the form of a Standard of Living (see page 72). The game ranks the economic status of a folk in six tiers: Poor, Frugal, Common, Prosperous, Rich and Very Rich.
+A seção é concluída por uma indicação aproximada dos recursos iniciais disponíveis ao aventureiro médio pertencente àquela cultura, na forma de um Padrão de Vida (ver capítulo 4). O jogo classifica o status econômico de um povo em seis níveis: Pobre, Frugal, Comum, Próspero, Rico e Muito Rico.
 
-### Attributes
+### Atributos
 
-There are three Attributes in *The One Ring*: STRENGTH, HEART, and WITS. These scores describe an adventurer's fundamental physical, emotional, and mental capabilities—the comparison between the three ratings provides a rough outline of an adventurer that is recognisable at a glance: Is your hero physically stronger, or more spiritually robust? Or are their wits their most distinctive quality?
+Existem três Atributos em *O Um Anel*: FORÇA, CORAÇÃO e ASTÚCIA. Esses valores descrevem as capacidades físicas, emocionais e mentais fundamentais de um aventureiro — a comparação entre os três valores fornece um esboço aproximado de um aventureiro que é reconhecível de imediato: seu herói é fisicamente mais forte, ou mais robusto espiritualmente? Ou é sua astúcia a qualidade mais distintiva?
 
-- A Player-hero with a high STRENGTH score can be tough and fit, or quick and alert, or physically attractive or imposing. Every aspect of an adventurer that relies on vigour or physical well-being is represented in the game by STRENGTH.
-- HEART measures an adventurer's capacity for emotion, empathy, and enthusiasm. A Player-hero with a high HEART score can be fiery, energetic, and hard to daunt. Activities that benefit from a passionate or dynamic temper may be influenced by a Player-hero's HEART score.
-- A Player-hero with a high WITS rating can be clever, attentive, and ingenious. Any action that calls for an adventurer to be sharp-witted, sensible, or wise, benefits from a Player-hero's WITS score.
+- Um herói-jogador com valor alto de FORÇA pode ser rijo e em forma, ou rápido e alerta, ou fisicamente atraente ou imponente. Todo aspecto de um aventureiro que dependa de vigor ou bem-estar físico é representado no jogo pela FORÇA.
+- CORAÇÃO mede a capacidade de emoção, empatia e entusiasmo de um aventureiro. Um herói-jogador com valor alto de CORAÇÃO pode ser fogoso, energético e difícil de intimidar. Atividades que se beneficiam de um temperamento passional ou dinâmico podem ser influenciadas pelo valor de CORAÇÃO de um herói-jogador.
+- Um herói-jogador com valor alto de ASTÚCIA pode ser esperto, atento e engenhoso. Qualquer ação que exija de um aventureiro perspicácia, bom senso ou sabedoria se beneficia do valor de ASTÚCIA de um herói-jogador.
 
-### Target Numbers
+### Números-Alvo
 
-The three Attribute ratings are used to determine a Player-hero's standard TNs — the default difficulty levels of all rolls made to challenge the characteristics of a hero.
+Os três valores de Atributo são usados para determinar os NAs padrão de um herói-jogador — os níveis de dificuldade predefinidos de todas as rolagens feitas para desafiar as características de um herói.
 
-Each Attribute TN is equal to 20 minus its corresponding Attribute score:
+Cada NA de Atributo é igual a 20 menos o valor do Atributo correspondente:
 
-- The STRENGTH TN is used in conjunction with all STRENGTH Skills, and when resolving attack rolls.
-- The HEART TN is used in conjunction with all HEART Skills and when making VALOUR rolls, for example to resist the effects of dread.
-- The WITS TN is used in conjunction with all WITS Skills and when making rolls of WISDOM, for example to resist the effects of sorcery and greed.
+- O NA de FORÇA é usado em conjunto com todas as Perícias de FORÇA e ao resolver rolagens de ataque.
+- O NA de CORAÇÃO é usado em conjunto com todas as Perícias de CORAÇÃO e ao fazer rolagens de VALOR, por exemplo para resistir aos efeitos do pavor.
+- O NA de ASTÚCIA é usado em conjunto com todas as Perícias de ASTÚCIA e ao fazer rolagens de SABEDORIA, por exemplo para resistir aos efeitos da feitiçaria e da cobiça.
 
-### Derived Stats
+### Estatísticas Derivadas
 
-The Attribute scores of Player-heroes are used to determine three derived stats: their Endurance and Hope maximum scores, and their Parry rating.
+Os valores de Atributo dos heróis-jogadores são usados para determinar três estatísticas derivadas: seus valores máximos de Resistência e Esperança e seu valor de Bloqueio.
 
-Endurance and Hope are the fundamental resources that keep an adventurer going — Endurance points are lost while engaging in strenuous activities, Hope points are spent voluntarily by players when their Player-heroes try to overcome their limits. The Parry score sets the Target Number for all attack rolls targeting a Player-hero.
+Resistência e Esperança são os recursos fundamentais que mantêm um aventureiro em atividade — pontos de Resistência são perdidos ao se envolver em atividades extenuantes, pontos de Esperança são gastos voluntariamente pelos jogadores quando seus heróis-jogadores tentam superar seus limites. O valor de Bloqueio estabelece o Número-Alvo de todas as rolagens de ataque que tenham um herói-jogador como alvo.
 
-### Skills and Combat Proficiencies
+### Perícias e Proficiências de Combate
 
-Skills represent those abilities that adventurers employ most often, while Combat Proficiencies reflect the expertise of a Player-hero in fighting. The competence of a Player-hero is represented by a rating, ranging from 0 (lowest) to 6 (highest). Ratings in an ability are recorded by filling in the diamond-shaped boxes to the right of its name.
+As Perícias representam aquelas capacidades que os aventureiros empregam com mais frequência, enquanto as Proficiências de Combate refletem a expertise de um herói-jogador na luta. A competência de um herói-jogador é representada por um nível, variando de 0 (o mais baixo) a 6 (o mais alto). Os níveis em uma habilidade são anotados preenchendo os quadros em forma de losango à direita de seu nome.
 
-| Rating | Skill | Combat Proficiency |
+| Nível | Perícia | Proficiência de Combate |
 |---|---|---|
-| — | Unskilled | Untrained |
-| 1 (♦) | Poor | Beginner |
-| 2 (♦♦) | Average | Average |
-| 3 (♦♦♦) | Good | Experienced |
-| 4 (♦♦♦♦) | Superior | Veteran |
-| 5 (♦♦♦♦♦) | Outstanding | Master |
-| 6 (♦♦♦♦♦♦) | Prodigious | Heroic |
+| — | Sem Perícia | Sem Treino |
+| 1 (♦) | Fraca | Iniciante |
+| 2 (♦♦) | Média | Média |
+| 3 (♦♦♦) | Boa | Experiente |
+| 4 (♦♦♦♦) | Superior | Veterano |
+| 5 (♦♦♦♦♦) | Excepcional | Mestre |
+| 6 (♦♦♦♦♦♦) | Prodigiosa | Heroica |
 
-*(Nota de transcrição: os símbolos ♦ representam os losangos preenchidos usados na ficha original para marcar o rating.)*
+*(Nota de transcrição: os símbolos ♦ representam os losangos preenchidos usados na ficha original para marcar o nível.)*
 
-#### Sidebar: Many Tongues
+#### Quadro: Muitas Línguas
 
-Different languages can provide intriguing role-playing opportunities, if the Loremaster and the players are interested. This shouldn't get in the way of the fun, however. While Tolkien used the linguistic differences among the various realms of Middle-earth to good narrative effect, he also found it simpler to avoid steep cultural barriers and gave most ethnic groups (even Orcs and other more fantastical creatures, like Ents) at least a passing knowledge of what constituted a 'lingua franca,' the so-called Common Speech, or Westron. This allows players who don't want to deal with the complex relations among the various peoples and their languages to ignore the entire subject altogether without damaging the setting. But if you are willing to explore this angle, it is certainly worth investigating.
+Idiomas diferentes podem oferecer oportunidades intrigantes de interpretação, se o Mestre e os jogadores tiverem interesse. Isso não deve, no entanto, atrapalhar a diversão. Embora Tolkien tenha usado as diferenças linguísticas entre os vários reinos da Terra-média com bom efeito narrativo, ele também considerou mais simples evitar barreiras culturais abruptas e deu à maioria dos grupos étnicos (mesmo Orcs e outras criaturas mais fantásticas, como os Ents) ao menos um conhecimento superficial daquilo que constituía uma 'língua franca', a chamada Língua Comum, ou Westron. Isso permite que jogadores que não queiram lidar com as relações complexas entre os vários povos e suas línguas ignorem o assunto por completo, sem prejudicar o cenário. Mas, se você estiver disposto a explorar esse ângulo, certamente vale a pena investigar.
 
-### Distinctive Features
+### Características Distintivas
 
-The three Attributes — STRENGTH, HEART, and WITS — give a good impression of an adventurer, but they fall short in defining what sets one individual apart from another. Distinctive Features are traits typically displayed by heroes from a given Culture that are used to add nuance to their personality.
+Os três Atributos — FORÇA, CORAÇÃO e ASTÚCIA — dão uma boa impressão de um aventureiro, mas ficam aquém de definir o que separa um indivíduo de outro. As Características Distintivas são traços tipicamente exibidos por heróis de uma dada Cultura e são usadas para acrescentar nuance à sua personalidade.
 
-### Languages and Typical Names
+### Idiomas e Nomes Típicos
 
-Every reader of Tolkien knows how much the Professor loved languages — their structure, origins, and evolution — and to what length he laboured to devise the various names native to his fictional world, or to find suitable real-world ones. The language of most folks inhabiting Middle-earth has been given some attention, and the most important ones, like the different Elven tongues, sport a sizable vocabulary and consistent grammatical rules.
+Todo leitor de Tolkien sabe quanto o Professor amava as línguas — sua estrutura, origens e evolução — e o quanto se esforçou para conceber os vários nomes nativos de seu mundo fictício, ou para encontrar nomes adequados do mundo real. A língua da maioria dos povos que habitam a Terra-média recebeu alguma atenção, e as mais importantes, como os diferentes idiomas Élficos, ostentam um vocabulário considerável e regras gramaticais consistentes.
 
-Every name in *The Lord of the Rings* and *The Hobbit* has been carefully crafted, building upon solid linguistic foundations, and represents a precise cultural influence. The native language of every character-type presented in this chapter has been identified, and a list of personal names appropriate to each Culture is provided.
+Todo nome em *O Senhor dos Anéis* e em *O Hobbit* foi cuidadosamente elaborado, construído sobre fundamentos linguísticos sólidos, e representa uma influência cultural precisa. A língua nativa de cada tipo de personagem apresentado neste capítulo foi identificada, e uma lista de nomes pessoais apropriados a cada Cultura é fornecida.
 
-Players will find notes about the languages known by members of each particular people, and a list of character names for the players to choose from. Of course, players are free to name their characters in any way they prefer, but a level of consistency with the tradition of the culture they belong to is strongly advised.
+Os jogadores encontrarão notas sobre as línguas conhecidas pelos membros de cada povo em particular, e uma lista de nomes de personagem para escolher. Naturalmente, os jogadores são livres para nomear seus personagens da maneira que preferirem, mas um nível de consistência com a tradição da cultura a que pertencem é fortemente recomendado.
 
 ---
 
-## Bardings
+## Bardos
 
-*"He was a descendant in long line of Girion, Lord of Dale, whose wife and child had escaped down the Running River from the ruin long ago."*
+*"Ele era descendente em longa linhagem de Girion, Senhor de Valle, cuja esposa e filho havia muito tempo escaparam rio Corrente abaixo, fugindo da ruína."*
 
-The Bardings are Northmen of noble origins hailing from Wilderland, far off to the east. They rebuilt their city of Dale from its ashes after the slaying of the Dragon Smaug and they earned a new prosperity trading with nearby kingdoms of Elves and Dwarves.
+Os Bardos são Nortistas de origem nobre provenientes das Terras Selvagens, muito ao leste. Reconstruíram sua cidade de Valle a partir das cinzas depois da morte do Dragão Smaug e conquistaram uma nova prosperidade comerciando com os reinos vizinhos de Elfos e Anões.
 
-Each year, Barding merchants reach new faraway lands, as they look outside their borders to expand their trade and influence. Sometimes, warriors follow in their wake, hoping to prove their mettle against worthy adversaries, inspired by their King's slaying of the Dragon.
+Todos os anos, mercadores Bardos alcançam novas terras distantes, à medida que olham para fora de suas fronteiras a fim de expandir seu comércio e sua influência. Às vezes, guerreiros seguem em seu rastro, esperando provar seu valor contra adversários dignos, inspirados pela morte do Dragão pelas mãos de seu Rei.
 
-### Characteristics
+### Características
 
-Strong in body and fearless in spirit, the Northmen are the denizens of Middle-earth that many consider to be nearest in kin to the Men of the West. They are strong-limbed, with fair hair, although dark or even black hair is not unknown. Barding men tend to keep beards, and often let their hair grow to reach their shoulders. Women adventurers braid their hair in long, tight tresses.
+Fortes de corpo e destemidos de espírito, os Nortistas são os habitantes da Terra-média que muitos consideram os mais próximos em parentesco dos Homens do Oeste. São de membros fortes, com cabelos claros, embora cabelos escuros ou até negros não sejam desconhecidos. Os homens Bardos tendem a manter barbas e muitas vezes deixam o cabelo crescer até os ombros. As mulheres aventureiras trançam os cabelos em longas e apertadas tranças.
 
-Bardings rarely become adventurers before their 18th year, and retire in their forties, when they return home to serve their family and folk. When abroad they may be recognised by their gear, as they often carry equipment of superior make. Unlike most denizens of Wilderland, Bardings prefer to use swords over axes, and naturally favour the bow, after the example of their King.
+Bardos raramente se tornam aventureiros antes de seu 18º ano e se aposentam na casa dos quarenta, quando voltam para casa a fim de servir sua família e seu povo. Quando estão no exterior, podem ser reconhecidos por seu equipamento, pois muitas vezes carregam apetrechos de fabricação superior. Ao contrário da maioria dos habitantes das Terras Selvagens, os Bardos preferem usar espadas em vez de machados, e naturalmente favorecem o arco, seguindo o exemplo de seu Rei.
 
-### Cultural Blessing — Stout-hearted
+### Bênção Cultural — Coração Firme
 
-Stories tell that the Bardings lived under the shadow of a great Dragon for decades.
+As histórias contam que os Bardos viveram sob a sombra de um grande Dragão por décadas.
 
-> Your VALOUR rolls are Favoured.
+> Suas rolagens de VALOR são Favorecidas.
 
-*To the lineage of Gondor he added the fearless spirit of the Northmen…*
+*À linhagem de Gondor ele acrescentou o espírito destemido dos Nortistas…*
 
-### Standard of Living — Prosperous
+### Padrão de Vida — Próspero
 
-Thanks to its successful trading connections the city of Dale prospers. Those among the Bardings who choose a life of adventure are usually members of less affluent families — yet, their wealth is still superior to that of most of the denizens of Eriador.
+Graças a suas bem-sucedidas conexões comerciais, a cidade de Valle prospera. Aqueles entre os Bardos que escolhem uma vida de aventura geralmente são membros de famílias menos afluentes — ainda assim, sua riqueza continua superior à da maioria dos habitantes de Eriador.
 
-### Attributes
+### Atributos
 
-Choose one set of Attributes, or roll a Success die:
+Escolha um conjunto de Atributos, ou role um Dado de Sucesso:
 
-| Roll | Strength | Heart | Wits |
+| Rolagem | Força | Coração | Astúcia |
 |---|---|---|---|
 | 1 | 5 | 7 | 2 |
 | 2 | 4 | 7 | 3 |
@@ -164,89 +163,89 @@ Choose one set of Attributes, or roll a Success die:
 | 5 | 5 | 5 | 4 |
 | 6 | 6 | 6 | 2 |
 
-### Derived Stats
+### Estatísticas Derivadas
 
-Calculate the following scores based on your chosen Attribute ratings:
+Calcule os seguintes valores com base nos valores de Atributo escolhidos:
 
-| Stat | Formula |
+| Estatística | Fórmula |
 |---|---|
-| Endurance | STRENGTH + 20 |
-| Hope | HEART + 8 |
-| Parry | WITS + 12 |
+| Resistência | FORÇA + 20 |
+| Esperança | CORAÇÃO + 8 |
+| Bloqueio | ASTÚCIA + 12 |
 
-### Skills
+### Perícias
 
-Copy the listed Skill ranks onto the character sheet; then, choose one Skill among the two underlined and mark it as Favoured (underlined below: **Enhearten**, **Athletics**).
+Copie os níveis de Perícia listados para a ficha de personagem; então escolha uma Perícia entre as duas sublinhadas e marque-a como Favorecida (sublinhadas abaixo: **Encorajar**, **Atletismo**).
 
-| Skill | Rating | Skill | Rating | Skill | Rating |
+| Perícia | Nível | Perícia | Nível | Perícia | Nível |
 |---|---|---|---|---|---|
-| Awe | 1 | *Enhearten* (underlined) | 2 | Persuade | 3 |
-| *Athletics* (underlined) | 1 | Travel | 1 | Stealth | 0 |
-| Awareness | 0 | Insight | 2 | Scan | 1 |
-| Hunting | 2 | Healing | 0 | Explore | 1 |
-| Song | 1 | Courtesy | 2 | Riddle | 0 |
-| Craft | 1 | Battle | 2 | Lore | 1 |
+| Imponência | 1 | *Encorajar* (sublinhada) | 2 | Persuasão | 3 |
+| *Atletismo* (sublinhada) | 1 | Viajar | 1 | Furtividade | 0 |
+| Percepção | 0 | Perspicácia | 2 | Vasculhar | 1 |
+| Caça | 2 | Cura | 0 | Explorar | 1 |
+| Canto | 1 | Cortesia | 2 | Enigma | 0 |
+| Ofício | 1 | Batalha | 2 | Saber | 1 |
 
-### Combat Proficiencies
+### Proficiências de Combate
 
-Copy the following Combat Proficiency ranks onto the character sheet, selecting a preferred Proficiency when offered a choice.
+Copie os seguintes níveis de Proficiência de Combate para a ficha de personagem, selecionando uma Proficiência preferida quando lhe for oferecida uma escolha.
 
-| Combat Proficiency | Rating |
+| Proficiência de Combate | Nível |
 |---|---|
-| Bows OR Swords | 2 |
-| Choose one Combat Proficiency | 1 |
+| Arcos OU Espadas | 2 |
+| Escolha uma Proficiência de Combate | 1 |
 
-### Distinctive Features
+### Características Distintivas
 
-Choose two Distinctive Features among those listed: Bold, Eager, Fair, Fierce, Generous, Proud, Tall, Wilful.
+Escolha duas Características Distintivas entre as listadas: Audacioso, Ávido, Belo, Feroz, Generoso, Orgulhoso, Alto, Obstinado.
 
-### Languages and Typical Names
+### Idiomas e Nomes Típicos
 
-All Bardings speak Dalish, a language that can be described as a very old form of the Common Speech. As far as names are concerned, they are usually composed of one or two elements (for example, Dag — Day, or Lif-stan — Life Stone). Like most Northmen, Bardings often name their children after a renowned ancestor or relative, or choose a name beginning with the same sound or sharing one element with that of the father (whose name is often given with their first name when introduced formally — for example, Lifstan, son of Leiknir, or Ingrith, daughter of Ingolf).
+Todos os Bardos falam Dalês, uma língua que pode ser descrita como uma forma muito antiga da Língua Comum. Quanto aos nomes, geralmente são compostos por um ou dois elementos (por exemplo, Dag — Dia, ou Lif-stan — Pedra da Vida). Como a maioria dos Nortistas, os Bardos muitas vezes nomeiam seus filhos em homenagem a um ancestral ou parente renomado, ou escolhem um nome que comece com o mesmo som ou que compartilhe um elemento com o do pai (cujo nome é frequentemente dado junto com o primeiro nome quando são apresentados formalmente — por exemplo, Lifstan, filho de Leiknir, ou Ingrith, filha de Ingolf).
 
-**MALE NAMES:** Aegir, Arn, Brandulf, Domarr, Egil, Erland, Farald, Finn, Gautarr, Hafgrim, Hjalmar, Ingolf, Jofur, Kolbeinn, Leiknir, Lomund, Munan, Nari, Nefstan, Ottarr, Ragnarr, Reinald, Sigmarr, Steinarr, Thorald, Torwald, Ulfarr, Unnarr, Vandil, Varinn.
+**NOMES MASCULINOS:** Aegir, Arn, Brandulf, Domarr, Egil, Erland, Farald, Finn, Gautarr, Hafgrim, Hjalmar, Ingolf, Jofur, Kolbeinn, Leiknir, Lomund, Munan, Nari, Nefstan, Ottarr, Ragnarr, Reinald, Sigmarr, Steinarr, Thorald, Torwald, Ulfarr, Unnarr, Vandil, Varinn.
 
-**FEMALE NAMES:** Aldis, Asfrid, Bera, Bergdis, Dagmar, Eilif, Erna, Frida, Geira, Gudrun, Halla, Hild, Ingirun, Ingrith, Lif, Linhild, Kelda, Runa, Saldis, Sigga, Sigrun, Thora, Thordis, Thorhild, Ulfhild, Ulfrun, Una, Valdis, Vigdis, Walda.
+**NOMES FEMININOS:** Aldis, Asfrid, Bera, Bergdis, Dagmar, Eilif, Erna, Frida, Geira, Gudrun, Halla, Hild, Ingirun, Ingrith, Lif, Linhild, Kelda, Runa, Saldis, Sigga, Sigrun, Thora, Thordis, Thorhild, Ulfhild, Ulfrun, Una, Valdis, Vigdis, Walda.
 
 ---
 
-## Dwarves of Durin's Folk
+## Anões do Povo de Durin
 
-*"Only on the Road would travellers be found, most often Dwarves, hurrying along on business of their own, and with no help and few words to spare for strangers."*
+*"Somente na Estrada se encontravam viajantes, na maioria das vezes Anões, apressados em seus próprios negócios, sem ajuda e com poucas palavras a oferecer a estranhos."*
 
-The Dwarves are an ancient and proud folk, whose customs and traditions are mostly unknown to outsiders. A dwindling people, they have recently recovered some of their lost greatness, and a Dwarven King reigns once again under the Lonely Mountain, in Wilderland.
+Os Anões são um povo antigo e orgulhoso, cujos costumes e tradições são em grande parte desconhecidos pelos de fora. Um povo em declínio, recuperaram recentemente parte de sua grandeza perdida, e um Rei Anão reina outra vez sob a Montanha Solitária, nas Terras Selvagens.
 
-Many Dwarves cross into Eriador from the East, on their way to their mines in the Blue Mountains. They can often be seen marching along the East-West Road that runs through the Shire and ends at the Grey Havens.
+Muitos Anões cruzam para Eriador vindos do Leste, a caminho de suas minas nas Montanhas Azuis. Muitas vezes podem ser vistos marchando ao longo da Estrada Leste-Oeste, que atravessa o Condado e termina nos Portos Cinzentos.
 
-### Characteristics
+### Características
 
-The Dwarves are exceedingly strong for their height, and hard to break or corrupt, but often at odds with other folks over old quarrels or new slights. They are short and stocky, with robust limbs and heads crowned with long hair and longer beards that give them their typically elderly appearance. When on a journey or in battle they plait their forked beards and thrust them into their belts.
+Os Anões são excepcionalmente fortes para sua altura, e difíceis de quebrar ou corromper, mas com frequência em conflito com outros povos por causa de velhas desavenças ou novas ofensas. São baixos e robustos, com membros vigorosos e cabeças coroadas por longos cabelos e barbas ainda mais longas, que lhes dão sua aparência tipicamente idosa. Em jornada ou em batalha, trançam suas barbas bifurcadas e as enfiam nos cintos.
 
-Dwarves generally start their life on the road in their fifties, and do not usually consider retiring before their nineties. Around that time, many among them choose to dedicate themselves solely to the perfection of their crafts. In battle most Dwarves use axes and swords, but those belonging to their easternmost kin wield heavy two-handed mattocks, a weapon derived from their mining tools.
+Os Anões geralmente iniciam sua vida na estrada na casa dos cinquenta anos e normalmente não consideram se aposentar antes dos noventa. Por essa época, muitos entre eles escolhem dedicar-se exclusivamente à perfeição de seus ofícios. Em batalha, a maioria dos Anões usa machados e espadas, mas os pertencentes a seus parentes mais orientais empunham pesadas picaretas de duas mãos, uma arma derivada de suas ferramentas de mineração.
 
-### Cultural Blessing — Redoubtable
+### Bênção Cultural — Inabalável
 
-Dwarves make light of burdens, especially when it comes to wearing armour.
+Os Anões fazem pouco caso de fardos, especialmente quando se trata de vestir armadura.
 
-> You halve the Load rating of any armour you're wearing (rounding fractions up), including helms (but not shields).
+> Você reduz pela metade a Carga de qualquer armadura que estiver usando (arredondando frações para cima), incluindo elmos (mas não escudos).
 
-*Gimli the dwarf alone wore openly a short shirt of steel-rings, for dwarves make light of burdens…*
+*Gimli, o anão, era o único a usar abertamente uma curta camisa de anéis de aço, pois os anões fazem pouco caso de fardos…*
 
 ### Naugrim
 
-Dwarves are shorter than Men, but their work as miners and smiths endows them with powerful arms and shoulders. Yet, they still favour shorter weapons over longer ones.
+Os Anões são mais baixos que os Homens, mas seu trabalho como mineiros e ferreiros lhes confere braços e ombros poderosos. Ainda assim, preferem armas mais curtas às mais longas.
 
-> Dwarven adventurers cannot use the following pieces of war gear: great bow, great spear, and great shield.
+> Aventureiros Anões não podem usar as seguintes peças de equipamento de guerra: grande arco, grande lança e grande escudo.
 
-### Standard of Living — Prosperous
+### Padrão de Vida — Próspero
 
-With the fabulous Dragon-hoard of Erebor reclaimed and their kingdom restored, the Dwarves are much richer today than in the past.
+Com o fabuloso tesouro do Dragão de Erebor reconquistado e seu reino restaurado, os Anões são hoje muito mais ricos do que no passado.
 
-### Attributes
+### Atributos
 
-Choose one set of Attributes, or roll a Success die:
+Escolha um conjunto de Atributos, ou role um Dado de Sucesso:
 
-| Roll | Strength | Heart | Wits |
+| Rolagem | Força | Coração | Astúcia |
 |---|---|---|---|
 | 1 | 7 | 2 | 5 |
 | 2 | 7 | 3 | 4 |
@@ -255,89 +254,89 @@ Choose one set of Attributes, or roll a Success die:
 | 5 | 5 | 4 | 5 |
 | 6 | 6 | 2 | 6 |
 
-### Derived Stats
+### Estatísticas Derivadas
 
-Calculate the following scores based on your chosen Attribute ratings:
+Calcule os seguintes valores com base nos valores de Atributo escolhidos:
 
-| Stat | Formula |
+| Estatística | Fórmula |
 |---|---|
-| Endurance | STRENGTH + 22 |
-| Hope | HEART + 8 |
-| Parry | WITS + 10 |
+| Resistência | FORÇA + 22 |
+| Esperança | CORAÇÃO + 8 |
+| Bloqueio | ASTÚCIA + 10 |
 
-### Skills
+### Perícias
 
-Copy the listed Skill ranks onto the character sheet; then, choose one Skill among the two underlined and mark it as Favoured (underlined below: **Travel**, **Craft**).
+Copie os níveis de Perícia listados para a ficha de personagem; então escolha uma Perícia entre as duas sublinhadas e marque-a como Favorecida (sublinhadas abaixo: **Viajar**, **Ofício**).
 
-| Skill | Rating | Skill | Rating | Skill | Rating |
+| Perícia | Nível | Perícia | Nível | Perícia | Nível |
 |---|---|---|---|---|---|
-| Awe | 2 | Enhearten | 0 | Persuade | 0 |
-| Athletics | 1 | *Travel* (underlined) | 3 | Stealth | 0 |
-| Awareness | 0 | Insight | 0 | Scan | 3 |
-| Hunting | 0 | Healing | 0 | Explore | 2 |
-| Song | 1 | Courtesy | 1 | Riddle | 2 |
-| *Craft* (underlined) | 2 | Battle | 1 | Lore | 1 |
+| Imponência | 2 | Encorajar | 0 | Persuasão | 0 |
+| Atletismo | 1 | *Viajar* (sublinhada) | 3 | Furtividade | 0 |
+| Percepção | 0 | Perspicácia | 0 | Vasculhar | 3 |
+| Caça | 0 | Cura | 0 | Explorar | 2 |
+| Canto | 1 | Cortesia | 1 | Enigma | 2 |
+| *Ofício* (sublinhada) | 2 | Batalha | 1 | Saber | 1 |
 
-### Combat Proficiencies
+### Proficiências de Combate
 
-Copy the following Combat Proficiency ranks onto the character sheet, selecting a preferred Proficiency when offered a choice.
+Copie os seguintes níveis de Proficiência de Combate para a ficha de personagem, selecionando uma Proficiência preferida quando lhe for oferecida uma escolha.
 
-| Combat Proficiency | Rating |
+| Proficiência de Combate | Nível |
 |---|---|
-| Axes OR Swords | 2 |
-| Choose one Combat Proficiency | 1 |
+| Machados OU Espadas | 2 |
+| Escolha uma Proficiência de Combate | 1 |
 
-### Distinctive Features
+### Características Distintivas
 
-Choose two Distinctive Features among those listed: Cunning, Fierce, Lordly, Proud, Secretive, Stern, Wary, Wilful.
+Escolha duas Características Distintivas entre as listadas: Astuto, Feroz, Nobre, Orgulhoso, Reservado, Severo, Cauteloso, Obstinado.
 
-### Languages and Typical Names
+### Idiomas e Nomes Típicos
 
-All Dwarves speak the Common Tongue, but preserve a knowledge of a secret Dwarvish language. They receive a true name at birth that they do not reveal to members of other folks, and adopt another name in the tradition of their neighbours. This custom has been in use for so long that a number of names have become traditionally associated with Dwarves, and are used almost exclusively by them. Dwarves of renown are sometimes given an honorific title, celebrating an exceptional deed or distinctive quality (for example, Thorin Oakenshield or Dáin Ironfoot).
+Todos os Anões falam a Língua Comum, mas preservam o conhecimento de um idioma Anão secreto. Recebem um nome verdadeiro ao nascer, que não revelam a membros de outros povos, e adotam outro nome conforme a tradição de seus vizinhos. Esse costume está em uso há tanto tempo que uma série de nomes passou a ser tradicionalmente associada aos Anões, sendo usada quase exclusivamente por eles. Anões de renome às vezes recebem um título honorífico, celebrando um feito excepcional ou uma qualidade distintiva (por exemplo, Thorin Escudo-de-Carvalho ou Dáin Pé-de-Ferro).
 
-**MALE NAMES:** Ai, Anar, Beli, Bláin, Borin, Burin, Bruni, Farin, Flói, Frár, Frerin, Frór, Ginar, Gróin, Grór, Hanar, Hepti, Iari, Lófar, Lóni, Náli, Nár, Niping, Nói, Núr, Nýrád, Ónar, Póri, Regin, Svior, Veig, Vidar.
+**NOMES MASCULINOS:** Ai, Anar, Beli, Bláin, Borin, Burin, Bruni, Farin, Flói, Frár, Frerin, Frór, Ginar, Gróin, Grór, Hanar, Hepti, Iari, Lófar, Lóni, Náli, Nár, Niping, Nói, Núr, Nýrád, Ónar, Póri, Regin, Svior, Veig, Vidar.
 
-**FEMALE NAMES:** Adís, Afrid, Agda, Bersa, Birna, Dagrún, Dís, Drífa, Edda, Elin, Fenja, Frida, Geira, Gísla, Hadda, Hón, Ida, Ilmr, Jóra, Kára, Kóna, Lif, Linhild, Már, Mist, Nál, Oda, Ósk, Rán, Rinda, Sefa, Syn, Tóra, Trana, Úlfrún, Virún, Yrr.
+**NOMES FEMININOS:** Adís, Afrid, Agda, Bersa, Birna, Dagrún, Dís, Drífa, Edda, Elin, Fenja, Frida, Geira, Gísla, Hadda, Hón, Ida, Ilmr, Jóra, Kára, Kóna, Lif, Linhild, Már, Mist, Nál, Oda, Ósk, Rán, Rinda, Sefa, Syn, Tóra, Trana, Úlfrún, Virún, Yrr.
 
 ---
 
-## Elves of Lindon
+## Elfos de Lindon
 
-*"'Yes, it is Elves,' said Frodo. 'One can meet them sometimes in the Woody End.'"*
+*"'Sim, são Elfos', disse Frodo. 'Às vezes se pode encontrá-los no Extremo Arbóreo.'"*
 
-The Fair Folk of Eriador have dwelt in the Westlands since before the drowning of Beleriand. They are all members of the Firstborn, displaying a wisdom beyond the reach of Men. They rarely leave their sanctuaries in the Grey Havens, for these are their fading years.
+O Belo Povo de Eriador habita as Terras do Oeste desde antes do afundamento de Beleriand. São todos membros dos Primogênitos, exibindo uma sabedoria além do alcance dos Homens. Raramente deixam seus santuários nos Portos Cinzentos, pois estes são seus anos de declínio.
 
-More and more leave Middle-earth sailing West on grey ships, never to return. Those who still remain live mostly along the western coasts, where once were found great kingdoms of their kindreds. Wandering Elves can at times be encountered on the roads leading east in spring and autumn, when their companies leave their lands beyond the Tower Hills.
+Cada vez mais deixam a Terra-média navegando para o Oeste em navios cinzentos, para nunca mais voltar. Os que ainda permanecem vivem em sua maioria ao longo das costas ocidentais, onde antes se encontravam grandes reinos de suas linhagens. Elfos errantes podem por vezes ser encontrados nas estradas que levam ao leste na primavera e no outono, quando suas companhias deixam suas terras além das Colinas da Torre.
 
-### Characteristics
+### Características
 
-All Elves are endowed with tremendous vitality and great vigour. They are not subject to illness or old age, and thus can dwell within the circles of the world until they choose to leave it, or are slain.
+Todos os Elfos são dotados de tremenda vitalidade e grande vigor. Não estão sujeitos a doença ou velhice, e assim podem habitar dentro dos círculos do mundo até que escolham deixá-lo, ou sejam mortos.
 
-Elves may leave their homes at any time after they reach adulthood (at about a century of age). Adventurers older than 300 years are rare, as in time all Elves find the sea-longing that lies deep within their hearts to become irresistible. In battle, most Elves carry bows and spears. Many wield swords too, but by ancient tradition some still favour axes.
+Os Elfos podem deixar seus lares a qualquer momento depois de alcançarem a idade adulta (por volta de um século de idade). Aventureiros com mais de 300 anos são raros, pois com o tempo todos os Elfos descobrem que o anseio pelo mar que jaz no fundo de seus corações se torna irresistível. Em batalha, a maioria dos Elfos carrega arcos e lanças. Muitos também empunham espadas, mas por tradição antiga alguns ainda preferem machados.
 
-### Cultural Blessing — Elven-skill
+### Bênção Cultural — Talento Élfico
 
-By virtue of their birthright, Elves are capable of reaching levels of finesse unattainable by mortals.
+Por virtude de seu direito de nascença, os Elfos são capazes de alcançar níveis de refinamento inatingíveis para mortais.
 
-> If you are not Miserable, you can spend 1 point of Hope to achieve a Magical success on a skill roll.
+> Se você não estiver Arrasado, pode gastar 1 ponto de Esperança para obter um sucesso Mágico numa rolagem de perícia.
 
-*"Keen are the eyes of the Elves," he said. "Nay! The riders are little more than five leagues distant," said Legolas.*
+*"Aguçados são os olhos dos Elfos", disse ele. "Não! Os cavaleiros estão a pouco mais de cinco léguas de distância", disse Legolas.*
 
-### The Long Defeat
+### A Longa Derrota
 
-The Elves find it hard to forget the taint of the Shadow once it has left its mark on their spirit.
+Os Elfos têm dificuldade em esquecer a mácula da Sombra, uma vez que ela tenha deixado sua marca em seu espírito.
 
-> When it is time to remove accumulated Shadow during the Fellowship Phase, you can only remove a maximum of 1 point (see Spiritual Recovery, page 119).
+> Quando chegar a hora de remover a Sombra acumulada durante a Fase de Companhia, você só pode remover no máximo 1 ponto (ver Recuperação Espiritual, no capítulo 7).
 
-### Standard of Living — Frugal
+### Padrão de Vida — Frugal
 
-The Fair Folk live in harmony with Middle-earth and have little or no use for those things that others consider precious. They lack nothing, and craft beautiful things using the richest materials, but they don't profit from their wealth the way other folks do.
+O Belo Povo vive em harmonia com a Terra-média e tem pouco ou nenhum uso para aquilo que os outros consideram precioso. Nada lhes falta, e criam coisas belas usando os materiais mais ricos, mas não lucram com sua riqueza como os outros povos fazem.
 
-### Attributes
+### Atributos
 
-Choose one set of Attributes, or roll a Success die:
+Escolha um conjunto de Atributos, ou role um Dado de Sucesso:
 
-| Roll | Strength | Heart | Wits |
+| Rolagem | Força | Coração | Astúcia |
 |---|---|---|---|
 | 1 | 5 | 2 | 7 |
 | 2 | 4 | 3 | 7 |
@@ -346,89 +345,89 @@ Choose one set of Attributes, or roll a Success die:
 | 5 | 5 | 4 | 5 |
 | 6 | 6 | 2 | 6 |
 
-### Derived Stats
+### Estatísticas Derivadas
 
-Calculate the following scores based on your chosen Attribute ratings:
+Calcule os seguintes valores com base nos valores de Atributo escolhidos:
 
-| Stat | Formula |
+| Estatística | Fórmula |
 |---|---|
-| Endurance | STRENGTH + 20 |
-| Hope | HEART + 8 |
-| Parry | WITS + 12 |
+| Resistência | FORÇA + 20 |
+| Esperança | CORAÇÃO + 8 |
+| Bloqueio | ASTÚCIA + 12 |
 
-### Skills
+### Perícias
 
-Copy the listed Skill ranks onto the character sheet; then, choose one Skill among the two underlined and mark it as Favoured (underlined below: **Song**, **Lore**).
+Copie os níveis de Perícia listados para a ficha de personagem; então escolha uma Perícia entre as duas sublinhadas e marque-a como Favorecida (sublinhadas abaixo: **Canto**, **Saber**).
 
-| Skill | Rating | Skill | Rating | Skill | Rating |
+| Perícia | Nível | Perícia | Nível | Perícia | Nível |
 |---|---|---|---|---|---|
-| Awe | 2 | Enhearten | 1 | Persuade | 0 |
-| Athletics | 2 | Travel | 0 | Stealth | 3 |
-| Awareness | 2 | Insight | 0 | Scan | 0 |
-| Hunting | 0 | Healing | 1 | Explore | 0 |
-| *Song* (underlined) | 2 | Courtesy | 0 | Riddle | 0 |
-| Craft | 2 | Battle | 0 | *Lore* (underlined) | 3 |
+| Imponência | 2 | Encorajar | 1 | Persuasão | 0 |
+| Atletismo | 2 | Viajar | 0 | Furtividade | 3 |
+| Percepção | 2 | Perspicácia | 0 | Vasculhar | 0 |
+| Caça | 0 | Cura | 1 | Explorar | 0 |
+| *Canto* (sublinhada) | 2 | Cortesia | 0 | Enigma | 0 |
+| Ofício | 2 | Batalha | 0 | *Saber* (sublinhada) | 3 |
 
-### Combat Proficiencies
+### Proficiências de Combate
 
-Copy the following Combat Proficiency ranks onto the character sheet, selecting a preferred Proficiency when offered a choice.
+Copie os seguintes níveis de Proficiência de Combate para a ficha de personagem, selecionando uma Proficiência preferida quando lhe for oferecida uma escolha.
 
-| Combat Proficiency | Rating |
+| Proficiência de Combate | Nível |
 |---|---|
-| Bows OR Spears | 2 |
-| Choose one Combat Proficiency | 1 |
+| Arcos OU Lanças | 2 |
+| Escolha uma Proficiência de Combate | 1 |
 
-### Distinctive Features
+### Características Distintivas
 
-Choose two Distinctive Features among those listed: Fair, Keen-eyed, Lordly, Merry, Patient, Subtle, Swift, Wary.
+Escolha duas Características Distintivas entre as listadas: Belo, Olhos de Lince, Nobre, Jovial, Paciente, Sutil, Veloz, Cauteloso.
 
-### Languages and Typical Names
+### Idiomas e Nomes Típicos
 
-In addition to the Common Speech, all Elves speak their own, fair tongue — the Sindarin speech. For the most part, the Elves of Lindon bear names fashioned in that language.
+Além da Língua Comum, todos os Elfos falam seu próprio e belo idioma — a fala Sindarin. Em sua maior parte, os Elfos de Lindon portam nomes forjados nessa língua.
 
-**MALE NAMES:** Amras, Aredhel, Belegan or, Belegon, Calanhir, Carmagor, Dagorhir, Durandir, Edrahil, Ellahir, Fincalan, Fuindor, Galdagor, Galdor, Hallas, Hirimlad, Ithildir, Lascalan, Linaith, Mablin, Malanor, Nauros, Orgalad, Pelegorn, Sargon.
+**NOMES MASCULINOS:** Amras, Aredhel, Belegan or, Belegon, Calanhir, Carmagor, Dagorhir, Durandir, Edrahil, Ellahir, Fincalan, Fuindor, Galdagor, Galdor, Hallas, Hirimlad, Ithildir, Lascalan, Linaith, Mablin, Malanor, Nauros, Orgalad, Pelegorn, Sargon.
 
-**FEMALE NAMES:** Anórel, Aranel, Arbereth, Baraniel, Calanril, Celebrindal, Celenneth, Elanor, Elwing, Eraniel, Fimbrethil, Gloredhel, Idril, Irilde, Laurelin, Lörwend, Lothíriel, Meneloth, Moriel, Narieth, Narniel, Nimloth, Nimrodel, Níniel, Tarandîs.
+**NOMES FEMININOS:** Anórel, Aranel, Arbereth, Baraniel, Calanril, Celebrindal, Celenneth, Elanor, Elwing, Eraniel, Fimbrethil, Gloredhel, Idril, Irilde, Laurelin, Lörwend, Lothíriel, Meneloth, Moriel, Narieth, Narniel, Nimloth, Nimrodel, Níniel, Tarandîs.
 
 ---
 
-## Hobbits of the Shire
+## Hobbits do Condado
 
-*"…he wished to go and see the great mountains, and hear the pine-trees and the waterfalls, and explore the caves, and wear a sword instead of a walking-stick."*
+*"…ele desejava ir ver as grandes montanhas, e ouvir os pinheiros e as cachoeiras, e explorar as cavernas, e usar uma espada em vez de uma bengala."*
 
-Hobbits are a small and merry folk, possessing a love for time-honoured traditions and respectable ways, and a strong dislike for anything out of the ordinary. If Hobbits had their way, the days would go by in an unchanging world, as they have since anyone can remember. At least, in their land, the Shire.
+Os Hobbits são um povo pequeno e alegre, que ama as tradições consagradas pelo tempo e os modos respeitáveis, e tem forte aversão a qualquer coisa fora do comum. Se dependesse dos Hobbits, os dias passariam num mundo imutável, como têm passado desde que qualquer um consegue lembrar. Ao menos em sua terra, o Condado.
 
-But since the return of Mr Bilbo Baggins from his adventure with a group of Dwarves and a travelling Wizard, something has changed. Stories about remote lands, dark woods, Giants, Elves, and forgotten halls beneath the earth have started to circulate among Hobbits of a more adventurous sort. And with every year, another one or two discreetly disappear to go and have adventures.
+Mas, desde o retorno do Sr. Bilbo Bolseiro de sua aventura com um grupo de Anões e um Mago viajante, algo mudou. Histórias sobre terras remotas, bosques escuros, Gigantes, Elfos e salões esquecidos sob a terra começaram a circular entre os Hobbits de índole mais aventureira. E, a cada ano, um ou dois deles desaparece discretamente para ir viver aventuras.
 
-### Characteristics
+### Características
 
-Hobbits are much smaller than Men, even smaller than Dwarves, and might be mistaken for children of Men by those who do not know of their existence. They have never been warlike, but for all their gentle appearance they are surprisingly tough, and difficult to intimidate or kill. A merry folk, Hobbits possess a cheerful spirit and a friendliness that makes them good companions.
+Os Hobbits são muito menores que os Homens, ainda menores que os Anões, e poderiam ser confundidos com crianças dos Homens por quem não conhece sua existência. Nunca foram belicosos, mas, por toda sua aparência gentil, são surpreendentemente resistentes e difíceis de intimidar ou matar. Um povo alegre, os Hobbits possuem um espírito jovial e uma amabilidade que os torna bons companheiros.
 
-Hobbits do not abandon their comfortable lives easily, but when they do they usually wait for their coming of age at 33. A particularly reckless fellow might feel the call to adventure when in their tweens, as Hobbits call their twenties. When pushed to resort to weapons, Hobbits choose short swords and hunting bows, which they can shoot with uncanny precision.
+Os Hobbits não abandonam suas vidas confortáveis facilmente, mas, quando o fazem, geralmente esperam sua maioridade aos 33 anos. Um sujeito particularmente imprudente pode sentir o chamado da aventura em seus "vintanos", como os Hobbits chamam a casa dos vinte anos. Quando forçados a recorrer às armas, os Hobbits escolhem espadas curtas e arcos de caça, que sabem atirar com precisão espantosa.
 
-### Cultural Blessing — Hobbit-sense
+### Bênção Cultural — Bom-senso Hobbit
 
-Hobbits have learned their place in the world a long time ago, and they display a robust capacity for insight that many folks mistake for lack of courage. No visions or wild fantasies can tempt them, as they do not seek power or control over others.
+Os Hobbits aprenderam seu lugar no mundo há muito tempo, e exibem uma robusta capacidade de perspicácia que muitos povos confundem com falta de coragem. Nenhuma visão ou fantasia selvagem consegue tentá-los, pois não buscam poder ou controle sobre os outros.
 
-> Your WISDOM rolls are Favoured, and you gain (1d) on all Shadow Tests made to resist the effects of Greed.
+> Suas rolagens de SABEDORIA são Favorecidas, e você ganha (1d) em todos os Testes de Sombra feitos para resistir aos efeitos da Cobiça.
 
-*…they have a fund of wisdom and wise sayings that men have mostly never heard or have forgotten long ago.*
+*…eles têm um cabedal de sabedoria e ditos sábios que os homens em sua maioria nunca ouviram ou esqueceram há muito tempo.*
 
-### Halflings
+### Pequenos
 
-Due to their reduced size, Hobbits cannot use larger weapons effectively. The weapons available to Hobbits are:
+Devido a seu tamanho reduzido, os Hobbits não conseguem usar armas maiores de forma eficaz. As armas disponíveis aos Hobbits são:
 
-> Axe, bow, club, cudgel, dagger, short sword, short spear, spear. Additionally, Hobbits cannot use a great shield.
+> Machado, arco, porrete, cacete, adaga, espada curta, lança curta, lança. Além disso, os Hobbits não podem usar um grande escudo.
 
-### Standard of Living — Common
+### Padrão de Vida — Comum
 
-Hobbits live in peace, their land is well-tilled and their borders protected, but theirs is an isolated island in the middle of a desolate region, and trading is an uncommon occurrence.
+Os Hobbits vivem em paz, sua terra é bem cultivada e suas fronteiras protegidas, mas a sua é uma ilha isolada no meio de uma região desolada, e o comércio é uma ocorrência incomum.
 
-### Attributes
+### Atributos
 
-Choose one set of Attributes, or roll a Success die:
+Escolha um conjunto de Atributos, ou role um Dado de Sucesso:
 
-| Roll | Strength | Heart | Wits |
+| Rolagem | Força | Coração | Astúcia |
 |---|---|---|---|
 | 1 | 3 | 6 | 5 |
 | 2 | 3 | 7 | 4 |
@@ -437,85 +436,85 @@ Choose one set of Attributes, or roll a Success die:
 | 5 | 4 | 5 | 5 |
 | 6 | 2 | 6 | 6 |
 
-### Derived Stats
+### Estatísticas Derivadas
 
-Calculate the following scores based on your chosen Attribute ratings:
+Calcule os seguintes valores com base nos valores de Atributo escolhidos:
 
-| Stat | Formula |
+| Estatística | Fórmula |
 |---|---|
-| Endurance | STRENGTH + 18 |
-| Hope | HEART + 10 |
-| Parry | WITS + 12 |
+| Resistência | FORÇA + 18 |
+| Esperança | CORAÇÃO + 10 |
+| Bloqueio | ASTÚCIA + 12 |
 
-### Skills
+### Perícias
 
-Copy the listed Skill ranks onto the character sheet; then, choose one Skill among the two underlined and mark it as Favoured (underlined below: **Stealth**, **Courtesy**).
+Copie os níveis de Perícia listados para a ficha de personagem; então escolha uma Perícia entre as duas sublinhadas e marque-a como Favorecida (sublinhadas abaixo: **Furtividade**, **Cortesia**).
 
-| Skill | Rating | Skill | Rating | Skill | Rating |
+| Perícia | Nível | Perícia | Nível | Perícia | Nível |
 |---|---|---|---|---|---|
-| Awe | 0 | Enhearten | 0 | Persuade | 2 |
-| Athletics | 0 | Travel | 0 | *Stealth* (underlined) | 3 |
-| Awareness | 2 | Insight | 2 | Scan | 0 |
-| Hunting | 0 | Healing | 1 | Explore | 0 |
-| Song | 2 | *Courtesy* (underlined) | 2 | Riddle | 3 |
-| Craft | 1 | Battle | 0 | Lore | 0 |
+| Imponência | 0 | Encorajar | 0 | Persuasão | 2 |
+| Atletismo | 0 | Viajar | 0 | *Furtividade* (sublinhada) | 3 |
+| Percepção | 2 | Perspicácia | 2 | Vasculhar | 0 |
+| Caça | 0 | Cura | 1 | Explorar | 0 |
+| Canto | 2 | *Cortesia* (sublinhada) | 2 | Enigma | 3 |
+| Ofício | 1 | Batalha | 0 | Saber | 0 |
 
-### Combat Proficiencies
+### Proficiências de Combate
 
-Copy the following Combat Proficiency ranks onto the character sheet, selecting a preferred Proficiency when offered a choice.
+Copie os seguintes níveis de Proficiência de Combate para a ficha de personagem, selecionando uma Proficiência preferida quando lhe for oferecida uma escolha.
 
-| Combat Proficiency | Rating |
+| Proficiência de Combate | Nível |
 |---|---|
-| Bows OR Swords | 2 |
-| Choose one Combat Proficiency | 1 |
+| Arcos OU Espadas | 2 |
+| Escolha uma Proficiência de Combate | 1 |
 
-### Distinctive Features
+### Características Distintivas
 
-Choose two Distinctive Features among those listed: Eager, Fair-spoken, Faithful, Honourable, Inquisitive, Keen-eyed, Merry, Rustic.
+Escolha duas Características Distintivas entre as listadas: Ávido, Bem-falante, Fiel, Honrado, Curioso, Olhos de Lince, Jovial, Rústico.
 
-### Languages and Typical Names
+### Idiomas e Nomes Típicos
 
-Hobbits speak only the Common Speech, preserving the use of a few words and names of their own forgotten tongue. Names are composed of a first name and a family name. First names for men are usually simple and short, with women being often given names of flowers or precious stones, but among the older families a custom survives of giving more heroic and high-sounding names, whose origin can be traced back to a time before the Shire.
+Os Hobbits falam apenas a Língua Comum, preservando o uso de algumas palavras e nomes de sua própria língua esquecida. Os nomes são compostos por um primeiro nome e um nome de família. Os primeiros nomes dos homens geralmente são simples e curtos, sendo que às mulheres muitas vezes se dão nomes de flores ou pedras preciosas, mas entre as famílias mais antigas sobrevive o costume de dar nomes mais heroicos e altissonantes, cuja origem pode ser rastreada a um tempo anterior ao Condado.
 
-**MALE NAMES:** Andwise, Berilac, Bungo, Cottar, Doderic, Dudo, Erling, Fastred, Ferumbras, Folco, Gorhendad, Griffo, Halfred, Hamson, Ilberic, Isembold, Isengar, Longo, Marmadas, Marroc, Mungo, Odo, Orgulas, Otho, Posco, Reginard, Robin, Rudigar, Sadoc, Saradas, Tobold, Tolman.
+**NOMES MASCULINOS:** Andwise, Berilac, Bungo, Cottar, Doderic, Dudo, Erling, Fastred, Ferumbras, Folco, Gorhendad, Griffo, Halfred, Hamson, Ilberic, Isembold, Isengar, Longo, Marmadas, Marroc, Mungo, Odo, Orgulas, Otho, Posco, Reginard, Robin, Rudigar, Sadoc, Saradas, Tobold, Tolman.
 
-**FEMALE NAMES:** Adaldrida, Amaranth, Asphodel, Belba, Bell, Berylla, Camellia, Daisy, Eglantine, Estella, Gilly, Hanna, Lily, Malva, Marigold, May, Melilot, Menegilda, Mentha, Mirabella, Myrtle, Pearl, Peony, Pervinca, Pimpernel, Primrose, Primula, Prisca, Rosamunda, Ruby, Salvia.
+**NOMES FEMININOS:** Adaldrida, Amaranth, Asphodel, Belba, Bell, Berylla, Camellia, Daisy, Eglantine, Estella, Gilly, Hanna, Lily, Malva, Marigold, May, Melilot, Menegilda, Mentha, Mirabella, Myrtle, Pearl, Peony, Pervinca, Pimpernel, Primrose, Primula, Prisca, Rosamunda, Ruby, Salvia.
 
-**FAMILY NAMES:** Baggins, Boffin, Bolger, Bracegirdle, Brandybuck, Brown, Brownlock, Bunce, Burrows, Cotton, Gamgee, Gardner, Goldworthy, Goodbody, Goodchild, Grubb, Headstrong, Hornblower, Maggot, Noakes, North-tooks, Proudfoot, Puddifoot, Roper, Rumble, Sackville, Smallburrow, Took, Twofoot, Whitfoot.
+**NOMES DE FAMÍLIA:** Bolseiro, Boffin, Bolger, Cinta-Larga, Brandebuque, Brown, Brownlock, Bunce, Cotton, Gamgi, Gardner, Goldworthy, Boaparte, Bomfilho, Grubb, Cabeçadura, Corneteiro, Maggot, Noakes, Tûk-do-Norte, Pé-Orgulhoso, Puddifoot, Roper, Rumble, Sacola, Cavamiúda, Tûk, Dois-Pés, Pé-Branco.
 
 ---
 
-## Men of Bree
+## Homens de Bri
 
-*"'…four miles along the Road you'll come upon a village, Bree under Bree-hill, with doors looking westward.'"*
+*"'…quatro milhas ao longo da Estrada você chegará a uma aldeia, Bri, sob a Colina de Bri, com portas voltadas para o oeste.'"*
 
-The inhabitants of the Bree-land and its four villages lying about Bree-hill are the descendants of the ancient people that first dwelt in the region known today as Eriador, the Lone-lands. Few have survived the turmoils that have ravaged the area, but they are still there now.
+Os habitantes da Terra de Bri e de suas quatro aldeias situadas em torno da Colina de Bri são os descendentes do povo antigo que primeiro habitou a região conhecida hoje como Eriador, as Terras Solitárias. Poucos sobreviveram aos tumultos que devastaram a área, mas eles ainda estão lá.
 
-Today, the Men of Bree live at an old meeting of ways, and even if the traffic was far greater in former days, travellers of various sorts still make their way along those roads. Whoever enters the common room of the Inn of Bree is sure to hear strange tales and news from afar, and maybe be swept away by them.
+Hoje, os Homens de Bri vivem em um antigo encontro de caminhos e, mesmo que o tráfego fosse muito maior em tempos idos, viajantes de vários tipos ainda seguem por essas estradas. Quem entra no salão comum da Estalagem de Bri certamente ouvirá histórias estranhas e notícias de longe, e talvez seja arrebatado por elas.
 
-### Characteristics
+### Características
 
-Most Men of Bree are brown-haired and rather short, and tend to be stocky and broad. This, combined with their cheerful disposition, is the reason why they do not appear as outlandish as most foreigners do to their neighbours, the inhabitants of the Shire. But like Hobbits, their appearance can be deceiving: the Men of Bree can be simple and friendly, but they are independent and wise in their own way.
+A maioria dos Homens de Bri tem cabelos castanhos e é bastante baixa, e tende a ser robusta e larga. Isso, combinado com sua disposição alegre, é a razão pela qual não parecem tão exóticos quanto a maioria dos forasteiros aos olhos de seus vizinhos, os habitantes do Condado. Mas, como os Hobbits, sua aparência pode enganar: os Homens de Bri podem ser simples e amigáveis, mas são independentes e sábios a seu próprio modo.
 
-Actual adventurers from Bree-land are rare indeed. If they leave their villages at all, they do it when the vigour of youth is in their limbs, and usually return home to settle down before their fortieth year. Not being of a warlike disposition, the Bree-folk favour simple weapons, derived from everyday tools and hunting implements.
+Aventureiros de fato originários da Terra de Bri são raríssimos. Se chegam a deixar suas aldeias, fazem-no quando o vigor da juventude está em seus membros, e geralmente voltam para casa a fim de se estabelecer antes de seu quadragésimo ano. Não sendo de disposição belicosa, a gente de Bri favorece armas simples, derivadas de ferramentas do dia a dia e implementos de caça.
 
-### Cultural Blessing — Bree-blood
+### Bênção Cultural — Sangue de Bri
 
-Due to the position of their homeland, the Men of Bree enjoy better relationships with Hobbits, Dwarves, Elves, and other inhabitants of the world about them than is considered usual.
+Devido à posição de sua terra natal, os Homens de Bri gozam de relações melhores com Hobbits, Anões, Elfos e outros habitantes do mundo ao seu redor do que se considera usual.
 
-> Each Man of Bree in the Company increases the Fellowship Rating by 1 point.
+> Cada Homem de Bri na Companhia aumenta o Nível de Companhia em 1 ponto.
 
-*The Men of Bree were brown-haired, broad, and rather short, cheerful and independent: they belonged to nobody but themselves…*
+*Os Homens de Bri tinham cabelos castanhos, eram largos e bastante baixos, alegres e independentes: não pertenciam a ninguém além de si mesmos…*
 
-### Standard of Living — Common
+### Padrão de Vida — Comum
 
-Bree-land is not as wealthy as it once was, but these days the inhabitants of the four villages are no more rustic than their neighbours in the Shire, and no less well-off.
+A Terra de Bri não é tão rica quanto já foi, mas nestes dias os habitantes das quatro aldeias não são mais rústicos que seus vizinhos do Condado, nem menos bem de vida.
 
-### Attributes
+### Atributos
 
-Choose one set of Attributes, or roll a Success die:
+Escolha um conjunto de Atributos, ou role um Dado de Sucesso:
 
-| Roll | Strength | Heart | Wits |
+| Rolagem | Força | Coração | Astúcia |
 |---|---|---|---|
 | 1 | 2 | 5 | 7 |
 | 2 | 3 | 4 | 7 |
@@ -524,91 +523,91 @@ Choose one set of Attributes, or roll a Success die:
 | 5 | 4 | 5 | 5 |
 | 6 | 2 | 6 | 6 |
 
-### Derived Stats
+### Estatísticas Derivadas
 
-Calculate the following scores based on your chosen Attribute ratings:
+Calcule os seguintes valores com base nos valores de Atributo escolhidos:
 
-| Stat | Formula |
+| Estatística | Fórmula |
 |---|---|
-| Endurance | STRENGTH + 20 |
-| Hope | HEART + 10 |
-| Parry | WITS + 10 |
+| Resistência | FORÇA + 20 |
+| Esperança | CORAÇÃO + 10 |
+| Bloqueio | ASTÚCIA + 10 |
 
-### Skills
+### Perícias
 
-Copy the listed Skill ranks onto the character sheet; then, choose one Skill among the two underlined and mark it as Favoured (underlined below: **Insight**, **Riddle**).
+Copie os níveis de Perícia listados para a ficha de personagem; então escolha uma Perícia entre as duas sublinhadas e marque-a como Favorecida (sublinhadas abaixo: **Perspicácia**, **Enigma**).
 
-| Skill | Rating | Skill | Rating | Skill | Rating |
+| Perícia | Nível | Perícia | Nível | Perícia | Nível |
 |---|---|---|---|---|---|
-| Awe | 0 | Enhearten | 2 | Persuade | 2 |
-| Athletics | 1 | Travel | 1 | Stealth | 1 |
-| Awareness | 1 | *Insight* (underlined) | 2 | Scan | 1 |
-| Hunting | 1 | Healing | 0 | Explore | 1 |
-| Song | 1 | Courtesy | 3 | *Riddle* (underlined) | 2 |
-| Craft | 2 | Battle | 0 | Lore | 0 |
+| Imponência | 0 | Encorajar | 2 | Persuasão | 2 |
+| Atletismo | 1 | Viajar | 1 | Furtividade | 1 |
+| Percepção | 1 | *Perspicácia* (sublinhada) | 2 | Vasculhar | 1 |
+| Caça | 1 | Cura | 0 | Explorar | 1 |
+| Canto | 1 | Cortesia | 3 | *Enigma* (sublinhada) | 2 |
+| Ofício | 2 | Batalha | 0 | Saber | 0 |
 
-### Combat Proficiencies
+### Proficiências de Combate
 
-Copy the following Combat Proficiency ranks onto the character sheet, selecting a preferred Proficiency when offered a choice.
+Copie os seguintes níveis de Proficiência de Combate para a ficha de personagem, selecionando uma Proficiência preferida quando lhe for oferecida uma escolha.
 
-| Combat Proficiency | Rating |
+| Proficiência de Combate | Nível |
 |---|---|
-| Axes OR Spears | 2 |
-| Choose one Combat Proficiency | 1 |
+| Machados OU Lanças | 2 |
+| Escolha uma Proficiência de Combate | 1 |
 
-### Distinctive Features
+### Características Distintivas
 
-Choose two Distinctive Features among those listed: Cunning, Fair-spoken, Faithful, Generous, Inquisitive, Patient, Rustic, True-hearted.
+Escolha duas Características Distintivas entre as listadas: Astuto, Bem-falante, Fiel, Generoso, Curioso, Paciente, Rústico, Coração Verdadeiro.
 
-### Languages and Typical Names
+### Idiomas e Nomes Típicos
 
-The Men of Bree have forgotten their ancient, native speech, and speak the Common Tongue, albeit slightly altered in a local dialect. They use names that to foreign ears sound similar to those used by Hobbits in the Shire (Hobbits beg to differ, of course).
+Os Homens de Bri esqueceram sua antiga fala nativa e falam a Língua Comum, ainda que ligeiramente alterada em um dialeto local. Usam nomes que, a ouvidos estrangeiros, soam semelhantes aos usados pelos Hobbits do Condado (os Hobbits, é claro, discordam).
 
-**MALE NAMES:** Alfred, Artie, Bill, Bob, Carl, Ed, Fred, Giles, Herb, Larry, Nob, Oswald, Percy, Perry, Sid, Tom, Harry.
+**NOMES MASCULINOS:** Alfred, Artie, Bill, Bob, Carl, Ed, Fred, Giles, Herb, Larry, Nob, Oswald, Percy, Perry, Sid, Tom, Harry.
 
-**FEMALE NAMES:** Daisy, Emma, Etta, Fay, Fern, Flora, Gert, Holly, Lily, Myrtle, Poppy, Rose, Sage, Tilly, Violet.
+**NOMES FEMININOS:** Daisy, Emma, Etta, Fay, Fern, Flora, Gert, Holly, Lily, Myrtle, Poppy, Rose, Sage, Tilly, Violet.
 
-**FAMILY NAMES:** Appledore, Asterfire, Bellsap, Briarcleave, Butterbur, Cherryborn, Chesterstout, Droverwind, Ferny, Foxglove, Goatleaf, Hardybough, Heathertoes, Hedgedon, Kettlegrass, Lilyhawk, Mossburn, Mugworts, Oakstout, Pickthorn, Pollenroad, Rushlight, Shrubrose, Sweetroot, Thistlewool, Wayward.
+**NOMES DE FAMÍLIA:** Appledore, Asterfire, Bellsap, Briarcleave, Carrapicho, Cherryborn, Chesterstout, Droverwind, Ferny, Foxglove, Folha-de-Cabra, Hardybough, Dedos-de-Urze, Hedgedon, Kettlegrass, Lilyhawk, Mossburn, Mugworts, Oakstout, Pickthorn, Pollenroad, Rushlight, Shrubrose, Sweetroot, Thistlewool, Wayward.
 
 ---
 
-## Rangers of the North
+## Rangers do Norte
 
-*"…in the wild lands beyond Bree there were mysterious wanderers. The Bree-folk called them Rangers, and knew nothing of their origin."*
+*"…nas terras selvagens além de Bri havia andarilhos misteriosos. A gente de Bri os chamava de Rangers, e nada sabia de sua origem."*
 
-The Rangers of the North are a secret people, severely diminished in number with the passing of a thousand years. They wander in disguise among the ruins of what was once their kingdom of Arnor, tirelessly patrolling its many paths and roads.
+Os Rangers do Norte são um povo secreto, severamente diminuído em número com a passagem de mil anos. Vagam disfarçados entre as ruínas do que uma vez foi seu reino de Arnor, patrulhando incansavelmente seus muitos caminhos e estradas.
 
-While the years have lengthened, the task of the Rangers has always been the same: to keep the folk of Eriador free from care and fear. They labour secretly, keeping to themselves, and rarely giving their names to the travellers they save or to the folk whose farms they guard at night, when evil things come out from dark places.
+Enquanto os anos se alongaram, a tarefa dos Rangers sempre foi a mesma: manter o povo de Eriador livre de preocupação e medo. Trabalham em segredo, mantendo-se reservados, e raramente dando seus nomes aos viajantes que salvam ou ao povo cujas fazendas guardam à noite, quando coisas malignas saem de lugares escuros.
 
-### Characteristics
+### Características
 
-The Rangers are the last descendants in the North of the Dúnedain, kings among Men that once came to Middle-earth over the Sea out of Westernesse. When they do not disguise their features, they are tall and lordly, towering above most Men. They are often silent and grim of countenance, and look wise and mature beyond their years.
+Os Rangers são os últimos descendentes no Norte dos Dúnedain, reis entre os Homens que uma vez chegaram à Terra-média cruzando o Mar, vindos de Oesternesse. Quando não disfarçam suas feições, são altos e senhoris, elevando-se acima da maioria dos Homens. Muitas vezes são silenciosos e de semblante severo, e parecem sábios e maduros além de seus anos.
 
-Rangers take to the Wild around the age of twenty, but may begin to go on adventures even at a younger age. They retain their strength of body and will longer than most Men, but usually cease to travel far from Eriador when they reach their fifties. When in the Wild, they wear comfortable but weather-beaten garments, favouring high leather boots and heavy cloaks of dark grey or green cloth, with ample hoods that can be cast over a worn helm.
+Os Rangers partem para as terras selvagens por volta dos vinte anos de idade, mas podem começar a se aventurar até mesmo mais jovens. Retêm sua força de corpo e de vontade por mais tempo que a maioria dos Homens, mas geralmente deixam de viajar longe de Eriador ao alcançar a casa dos cinquenta. Nas terras selvagens, vestem roupas confortáveis mas gastas pelo tempo, preferindo botas altas de couro e mantos pesados de tecido cinza-escuro ou verde, com amplos capuzes que podem ser lançados sobre um elmo desgastado.
 
-### Cultural Blessing — Kings of Men
+### Bênção Cultural — Reis dos Homens
 
-Some say that the lordship of the folk of Arnor is a thing of the past. Yet, the Rangers of the North have inherited the sinews of those Men who wrested the Ring from the burning hand of Sauron.
+Alguns dizem que a senhoria do povo de Arnor é coisa do passado. Ainda assim, os Rangers do Norte herdaram os tendões daqueles Homens que arrancaram o Anel da mão em brasa de Sauron.
 
-> Add 1 point to one Attribute of your choice.
+> Adicione 1 ponto a um Atributo à sua escolha.
 
-*They were fair of face and tall, and the span of their lives was thrice that of the Men of Middle-earth.*
+*Eram belos de rosto e altos, e a extensão de suas vidas era o triplo daquela dos Homens da Terra-média.*
 
-### Allegiance of the Dúnedain
+### Lealdade dos Dúnedain
 
-The Rangers are devoted to fighting Sauron and his minions by an ancient tradition of war and strife. This obligation makes it harder for them to put their spirit at ease even when enjoying a respite from adventuring.
+Os Rangers são devotados a combater Sauron e seus lacaios por uma antiga tradição de guerra e luta. Essa obrigação torna mais difícil para eles acalmar o espírito, mesmo quando gozam de uma trégua nas aventuras.
 
-> During the Fellowship phase you recover a maximum number of Hope points equal to half your HEART score (rounding fractions up).
+> Durante a Fase de Companhia você recupera um número máximo de pontos de Esperança igual à metade de seu valor de CORAÇÃO (arredondando frações para cima).
 
-### Standard of Living — Frugal
+### Padrão de Vida — Frugal
 
-Rangers rarely wear or carry anything whose worth cannot be measured in a practical way. Their gear or garments are never considered precious for the gleam of stone or gold, but for their capability to endure long journeys and strenuous fights.
+Os Rangers raramente vestem ou carregam qualquer coisa cujo valor não possa ser medido de forma prática. Seu equipamento ou suas vestes nunca são considerados preciosos pelo brilho de pedra ou ouro, mas por sua capacidade de suportar longas jornadas e lutas extenuantes.
 
-### Attributes
+### Atributos
 
-Choose one set of Attributes, or roll a Success die:
+Escolha um conjunto de Atributos, ou role um Dado de Sucesso:
 
-| Roll | Strength | Heart | Wits |
+| Rolagem | Força | Coração | Astúcia |
 |---|---|---|---|
 | 1 | 7 | 5 | 2 |
 | 2 | 7 | 4 | 3 |
@@ -617,544 +616,544 @@ Choose one set of Attributes, or roll a Success die:
 | 5 | 5 | 5 | 4 |
 | 6 | 6 | 6 | 2 |
 
-### Derived Stats
+### Estatísticas Derivadas
 
-Calculate the following scores based on your chosen Attribute ratings:
+Calcule os seguintes valores com base nos valores de Atributo escolhidos:
 
-| Stat | Formula |
+| Estatística | Fórmula |
 |---|---|
-| Endurance | STRENGTH + 20 |
-| Hope | HEART + 6 |
-| Parry | WITS + 14 |
+| Resistência | FORÇA + 20 |
+| Esperança | CORAÇÃO + 6 |
+| Bloqueio | ASTÚCIA + 14 |
 
-### Skills
+### Perícias
 
-Copy the listed Skill ranks onto the character sheet; then, choose one Skill among the two underlined and mark it as Favoured (underlined below: **Hunting**, **Lore**).
+Copie os níveis de Perícia listados para a ficha de personagem; então escolha uma Perícia entre as duas sublinhadas e marque-a como Favorecida (sublinhadas abaixo: **Caça**, **Saber**).
 
-| Skill | Rating | Skill | Rating | Skill | Rating |
+| Perícia | Nível | Perícia | Nível | Perícia | Nível |
 |---|---|---|---|---|---|
-| Awe | 1 | Enhearten | 0 | Persuade | 0 |
-| Athletics | 2 | Travel | 2 | Stealth | 2 |
-| Awareness | 2 | Insight | 0 | Scan | 1 |
-| *Hunting* (underlined) | 2 | Healing | 2 | Explore | 2 |
-| Song | 0 | Courtesy | 0 | Riddle | 0 |
-| Craft | 0 | Battle | 2 | *Lore* (underlined) | 2 |
+| Imponência | 1 | Encorajar | 0 | Persuasão | 0 |
+| Atletismo | 2 | Viajar | 2 | Furtividade | 2 |
+| Percepção | 2 | Perspicácia | 0 | Vasculhar | 1 |
+| *Caça* (sublinhada) | 2 | Cura | 2 | Explorar | 2 |
+| Canto | 0 | Cortesia | 0 | Enigma | 0 |
+| Ofício | 0 | Batalha | 2 | *Saber* (sublinhada) | 2 |
 
-### Combat Proficiencies
+### Proficiências de Combate
 
-Copy the following Combat Proficiency ranks onto the character sheet, selecting a preferred Proficiency when offered a choice.
+Copie os seguintes níveis de Proficiência de Combate para a ficha de personagem, selecionando uma Proficiência preferida quando lhe for oferecida uma escolha.
 
-| Combat Proficiency | Rating |
+| Proficiência de Combate | Nível |
 |---|---|
-| Spears OR Swords | 2 |
-| Choose one Combat Proficiency | 1 |
+| Lanças OU Espadas | 2 |
+| Escolha uma Proficiência de Combate | 1 |
 
-### Distinctive Features
+### Características Distintivas
 
-Choose two Distinctive Features among those listed: Bold, Honourable, Secretive, Stern, Subtle, Swift, Tall, True-hearted.
+Escolha duas Características Distintivas entre as listadas: Audacioso, Honrado, Reservado, Severo, Sutil, Veloz, Alto, Coração Verdadeiro.
 
-### Languages and Typical Names
+### Idiomas e Nomes Típicos
 
-The native language of the Dúnedain is the Westron, or Common Speech. Some still learn the Sindarin Elven-tongue, as it is handed down from generation to generation. They retain an ancient tradition of naming their children using that fair speech.
+A língua nativa dos Dúnedain é o Westron, ou Língua Comum. Alguns ainda aprendem o idioma Élfico Sindarin, transmitido de geração em geração. Mantêm uma antiga tradição de nomear seus filhos usando essa bela fala.
 
-**MALE NAMES:** Adrahil, Amlaith, Arvegil, Baranor, Belechtor, Bergil, Celepharn, Cirion, Damrod, Dirhael, Duinhir, Egalmoth, Eradan, Findemir, Forlong, Golasdan, Hallas, Hirluin, Ingold, Iorlas, Malvegil, Ohtar, Orodreth, Tarannon, Targon.
+**NOMES MASCULINOS:** Adrahil, Amlaith, Arvegil, Baranor, Belechtor, Bergil, Celepharn, Cirion, Damrod, Dirhael, Duinhir, Egalmoth, Eradan, Findemir, Forlong, Golasdan, Hallas, Hirluin, Ingold, Iorlas, Malvegil, Ohtar, Orodreth, Tarannon, Targon.
 
-**FEMALE NAMES:** Anwen, Arbereth, Berúthiel, Baraniel, Calanril, Celenneth, Elnîth, Eraniel, Finduilas, Gilraen, Gilraeth, Gloredhel, Idril, Ioreth, Ivorwen, Lörwend, Lothíriel, Luindîs, Meneloth, Moriel, Morwen, Narieth, Narniel, Orothêl, Tarandîs.
+**NOMES FEMININOS:** Anwen, Arbereth, Berúthiel, Baraniel, Calanril, Celenneth, Elnîth, Eraniel, Finduilas, Gilraen, Gilraeth, Gloredhel, Idril, Ioreth, Ivorwen, Lörwend, Lothíriel, Luindîs, Meneloth, Moriel, Morwen, Narieth, Narniel, Orothêl, Tarandîs.
 
 ---
 
-## Callings
+## Vocações
 
-*"He found himself wondering at times, especially in the autumn, about the wild lands, and strange visions of mountains that he had never seen came into his dreams."*
+*"Ele se via, às vezes, especialmente no outono, imaginando as terras selvagens, e visões estranhas de montanhas que ele nunca vira apareciam em seus sonhos."*
 
-Leaving home and setting off on the road is a courageous choice, often considered reckless by a hero's family and folk. Adventurers leave behind all they know and love, so what is it that motivates and pushes them towards danger and the unknown?
+Deixar o lar e partir estrada afora é uma escolha corajosa, muitas vezes considerada imprudente pela família e pelo povo de um herói. Os aventureiros deixam para trás tudo o que conhecem e amam, então o que é que os motiva e os empurra rumo ao perigo e ao desconhecido?
 
-Whatever it is that motivates the Player-heroes, it must be something that for them is worth the risk of crossing swords with the curved blades of Orcs. In *The One Ring*, this motivation is represented by an adventurer's Calling.
+Qualquer que seja o que motive os heróis-jogadores, precisa ser algo que para eles valha o risco de cruzar espadas com as lâminas curvas dos Orcs. Em *O Um Anel*, essa motivação é representada pela Vocação de um aventureiro.
 
-> Choosing a Calling provides a player with a starting drive, the reason that pushed their character to become an adventurer. It is not meant to represent a profession or trade, but the sum of the ambitions and aspirations that eventually set them on the road.
+> Escolher uma Vocação fornece ao jogador um impulso inicial, a razão que levou seu personagem a se tornar um aventureiro. Não se pretende que represente uma profissão ou ofício, mas a soma das ambições e aspirações que por fim o colocaram na estrada.
 
-There are six Callings for a hero to answer:
+Há seis Vocações que um herói pode atender:
 
-1. Captain — page 44
-2. Champion — page 44
-3. Messenger — page 45
-4. Scholar — page 45
-5. Treasure Hunter — page 45
-6. Warden — page 46
+1. Capitão — ver adiante neste capítulo
+2. Campeão — ver adiante neste capítulo
+3. Mensageiro — ver adiante neste capítulo
+4. Erudito — ver adiante neste capítulo
+5. Caçador de Tesouros — ver adiante neste capítulo
+6. Guardião — ver adiante neste capítulo
 
-Each player should select the Calling that best adheres to their character concept, keeping in mind that coupling each Calling to a Heroic Culture results in 36 combinations — a Hobbit Treasure Hunter has very different reasons to go adventuring than a Hobbit Scholar, but this is probably even more true if the Treasure Hunter is a Dwarf, or an Elf.
+Cada jogador deve selecionar a Vocação que melhor se ajuste ao conceito de seu personagem, tendo em mente que combinar cada Vocação a uma Cultura Heroica resulta em 36 combinações — um Caçador de Tesouros Hobbit tem razões muito diferentes para se aventurar das de um Erudito Hobbit, mas isso provavelmente é ainda mais verdadeiro se o Caçador de Tesouros for um Anão, ou um Elfo.
 
-Callings follow a standard presentation:
+As Vocações seguem uma apresentação padrão:
 
-- **FAVOURED SKILLS.** Each Calling lists three Skills. When you select a Calling, you choose two Skills among those listed and mark them as Favoured Skills.
-- **ADDITIONAL DISTINCTIVE FEATURE.** Those who answer the same Calling share a peculiar ability, in the form of a unique Distinctive Trait.
-- **SHADOW PATH.** An adventurer's Shadow Path suggests the individual fate a Calling typically leads to if they fail to resist the Shadow's influence.
+- **PERÍCIAS FAVORECIDAS.** Cada Vocação lista três Perícias. Ao selecionar uma Vocação, você escolhe duas Perícias entre as listadas e as marca como Perícias Favorecidas.
+- **CARACTERÍSTICA DISTINTIVA ADICIONAL.** Aqueles que atendem à mesma Vocação compartilham uma habilidade peculiar, na forma de um Traço Distintivo único.
+- **CAMINHO DA SOMBRA.** O Caminho da Sombra de um aventureiro sugere o destino individual a que uma Vocação tipicamente conduz, caso ele não resista à influência da Sombra.
 
-### Captain
+### Capitão
 
-*"He stood up, and seemed suddenly to grow taller. In his eyes gleamed a light, keen and commanding."*
+*"Ele se levantou e parecia de repente ficar mais alto. Em seus olhos brilhava uma luz, aguda e imperiosa."*
 
-When the world is on the brink of ruin, it is the duty of all individuals of worth to rise and take the lead, whatever the risk. You have chosen to put your judgement to the service of others, to guide them in this dark hour. But you don't want others to heed your commands out of fear or obedience — you want them to follow you because they trust you.
+Quando o mundo está à beira da ruína, é dever de todos os indivíduos de valor erguer-se e assumir a liderança, qualquer que seja o risco. Você escolheu pôr seu julgamento a serviço dos outros, para guiá-los nesta hora escura. Mas você não quer que os outros obedeçam a suas ordens por medo ou obediência — você quer que o sigam porque confiam em você.
 
-**FAVOURED SKILLS:** Choose two Skills among BATTLE, ENHEARTEN, and PERSUADE and mark them as Favoured.
+**PERÍCIAS FAVORECIDAS:** Escolha duas Perícias entre BATALHA, ENCORAJAR e PERSUASÃO e marque-as como Favorecidas.
 
-**ADDITIONAL DISTINCTIVE FEATURE: LEADERSHIP.** You possess the ability to direct others to action. When under pressure, other people naturally turn to you for guidance.
+**CARACTERÍSTICA DISTINTIVA ADICIONAL: LIDERANÇA.** Você possui a capacidade de dirigir outros à ação. Sob pressão, as pessoas naturalmente recorrem a você em busca de orientação.
 
-**SHADOW PATH: LURE OF POWER.** When individuals are given a position of authority, either by rank, lineage, or stature, they may end up mistaking their own aggrandisement for the greater good of the people they should be guiding or keeping safe. Power is the quintessential temptation, and provides the Shadow with an easy way to win the hearts of those who desire it.
+**CAMINHO DA SOMBRA: FASCÍNIO PELO PODER.** Quando indivíduos recebem uma posição de autoridade, seja por posto, linhagem ou estatura, podem acabar confundindo seu próprio engrandecimento com o bem maior das pessoas que deveriam guiar ou manter em segurança. O poder é a tentação por excelência, e fornece à Sombra um modo fácil de conquistar o coração de quem o deseja.
 
-### Champion
+### Campeão
 
-*"War must be, while we defend our lives against a destroyer who would devour all…"*
+*"A guerra deve existir, enquanto defendemos nossas vidas contra um destruidor que devoraria tudo…"*
 
-You deem that there is but one way to oppose the return of the Shadow, and that is to conquer it by strength of arms. You are recognised as a warrior among your folk, a valiant fighter, onward into battle. For you, the road to adventure leads straight to wherever your foes prowl or hide.
+Você julga que há apenas um modo de se opor ao retorno da Sombra, e é conquistá-la pela força das armas. Você é reconhecido como um guerreiro entre seu povo, um lutador valente, sempre adiante na batalha. Para você, a estrada da aventura leva direto a onde quer que seus inimigos rondem ou se escondam.
 
-**FAVOURED SKILLS:** Choose two Skills among ATHLETICS, AWE, and HUNTING and mark them as Favoured.
+**PERÍCIAS FAVORECIDAS:** Escolha duas Perícias entre ATLETISMO, IMPONÊNCIA e CAÇA e marque-as como Favorecidas.
 
-**ADDITIONAL DISTINCTIVE FEATURE: ENEMY-LORE.** Enemy-lore is not a single Distinctive Feature; you must select the type of enemies it applies to, choosing from Evil Men, Orcs, Spiders, Trolls, Wargs, and Undead. This Distinctive Feature gives you knowledge of the characteristics, habits, strengths, and weaknesses of your chosen enemy.
+**CARACTERÍSTICA DISTINTIVA ADICIONAL: CONHECIMENTO DO INIMIGO.** Conhecimento do Inimigo não é uma única Característica Distintiva; você deve selecionar o tipo de inimigos a que se aplica, escolhendo entre Homens Maus, Orcs, Aranhas, Trolls, Wargs e Mortos-Vivos. Esta Característica Distintiva lhe dá conhecimento das características, hábitos, forças e fraquezas do inimigo escolhido.
 
-**SHADOW PATH: CURSE OF VENGEANCE.** Individuals who live by the sword are ever tempted to draw it, either literally or figuratively, when their will is thwarted or when they deem their honour to have been impugned by an insult. As corruption spreads in their spirit, their behaviour worsens, leading to more extreme violent reactions.
+**CAMINHO DA SOMBRA: MALDIÇÃO DA VINGANÇA.** Indivíduos que vivem pela espada são sempre tentados a desembainhá-la, literal ou figurativamente, quando sua vontade é contrariada ou quando julgam que sua honra foi maculada por um insulto. À medida que a corrupção se espalha em seu espírito, seu comportamento piora, levando a reações violentas mais extremas.
 
-### Messenger
+### Mensageiro
 
-*"Elrond is sending Elves, and they will get in touch with the Rangers, and maybe with Thranduil's folk in Mirkwood."*
+*"Elrond está enviando Elfos, e eles entrarão em contato com os Rangers, e talvez com o povo de Thranduil na Floresta das Trevas."*
 
-The Wise hold that evil days lie ahead, and that to keep hope, all who fight the Enemy must be as one. Yet, many miles and centuries of isolation separate the Free Peoples, and estrangement breeds mistrust. You have decided that it is your duty to travel to distant lands, carrying tidings and warning people of the coming danger.
+Os Sábios sustentam que dias maus se aproximam, e que, para manter a esperança, todos os que lutam contra o Inimigo devem ser como um só. Ainda assim, muitas milhas e séculos de isolamento separam os Povos Livres, e o estranhamento gera desconfiança. Você decidiu que é seu dever viajar a terras distantes, levando novas e advertindo as pessoas do perigo que se aproxima.
 
-**FAVOURED SKILLS:** Choose two Skills among COURTESY, SONG, and TRAVEL and mark them as Favoured.
+**PERÍCIAS FAVORECIDAS:** Escolha duas Perícias entre CORTESIA, CANTO e VIAJAR e marque-as como Favorecidas.
 
-**ADDITIONAL DISTINCTIVE FEATURE: FOLK-LORE.** You possess some knowledge of the many traditional customs, beliefs, and stories of the various communities that compose the Free Peoples. Likely the result of your wanderings, this information may help you when dealing with strangers, allowing you to come up with some useful facts regarding their folk or a smattering of the appropriate language.
+**CARACTERÍSTICA DISTINTIVA ADICIONAL: SABER POPULAR.** Você possui algum conhecimento dos muitos costumes, crenças e histórias tradicionais das várias comunidades que compõem os Povos Livres. Provavelmente resultado de suas andanças, essa informação pode ajudá-lo ao lidar com estranhos, permitindo que você apresente alguns fatos úteis sobre o povo deles ou algumas noções da língua apropriada.
 
-**SHADOW PATH: WANDERING-MADNESS.** Travelling afar might be the duty chosen by a messenger, but it carries the risk of never finding a place to fight for. The Road goes ever on and on, it's true, but whither then?
+**CAMINHO DA SOMBRA: LOUCURA ERRANTE.** Viajar para longe pode ser o dever escolhido por um mensageiro, mas carrega o risco de nunca encontrar um lugar pelo qual lutar. A Estrada segue sempre adiante, é verdade, mas para onde, então?
 
-### Scholar
+### Erudito
 
-*"Speak no secrets! Here is a scholar in the Ancient Tongue."*
+*"Não fale segredos! Aqui há um erudito na Língua Antiga."*
 
-For you, knowledge makes the wild world a less threatening place. Yellowed maps in lost books replace a fear of the unknown, and songs composed in ages past strengthen the weariest of hearts. A love of learning guides your every step, and illuminates the way for you and those who listen to your advice.
+Para você, o conhecimento torna o mundo selvagem um lugar menos ameaçador. Mapas amarelados em livros perdidos substituem o medo do desconhecido, e canções compostas em eras passadas fortalecem os mais fatigados dos corações. O amor pelo aprendizado guia cada um de seus passos e ilumina o caminho para você e para os que escutam seu conselho.
 
-**FAVOURED SKILLS:** Choose two Skills among CRAFT, LORE, and RIDDLE and mark them as Favoured.
+**PERÍCIAS FAVORECIDAS:** Escolha duas Perícias entre OFÍCIO, SABER e ENIGMA e marque-as como Favorecidas.
 
-**ADDITIONAL DISTINCTIVE FEATURE: RHYMES OF LORE.** Rhymes of Lore are short verses created by many Cultures to help them remember significant facts from ancient history which might otherwise be lost. Scholars of Middle-earth credit much of their ancient knowledge to such rhymes.
+**CARACTERÍSTICA DISTINTIVA ADICIONAL: VERSOS DE SABER.** Versos de Saber são pequenos versos criados por muitas Culturas para ajudá-las a lembrar fatos significativos da história antiga que de outro modo poderiam se perder. Os eruditos da Terra-média atribuem a tais versos grande parte de seu conhecimento antigo.
 
-**SHADOW PATH: LURE OF SECRETS.** Inquisitiveness and curiosity are desirable virtues in an individual, but knowledge can be put to malicious use, and learned individuals can look down on others as ignorant fools. Secrets are dangerous, as the very desire of uncovering them may corrupt the heart.
+**CAMINHO DA SOMBRA: FASCÍNIO PELOS SEGREDOS.** Inquisitividade e curiosidade são virtudes desejáveis em um indivíduo, mas o conhecimento pode ser posto a uso malicioso, e indivíduos instruídos podem olhar para os outros como tolos ignorantes. Os segredos são perigosos, pois o próprio desejo de desvendá-los pode corromper o coração.
 
-### Treasure Hunter
+### Caçador de Tesouros
 
-*"Far over the Misty Mountains cold, To dungeons deep and caverns old. We must away ere break of day, To seek the pale enchanted gold."*
+*"Além das Montanhas Nevoentas frias, A masmorras fundas e cavernas antigas. Precisamos partir antes de o dia raiar, Para buscar o pálido ouro encantado."*
 
-The world has seen the passing of the glory of many Dwarven kings and Elven lords, and their heritage is now buried in Orc-infested dungeons. Hoards of stolen gold and jewels, guarded by fell beasts, beckon all who dare to find them. You seek to recover what is lost, even when it means braving unspeakable dangers.
+O mundo viu passar a glória de muitos reis Anões e senhores Elfos, e sua herança está agora enterrada em masmorras infestadas de Orcs. Tesouros de ouro e joias roubadas, guardados por bestas cruéis, atraem todos os que ousam encontrá-los. Você busca recuperar o que está perdido, mesmo quando isso significa enfrentar perigos indizíveis.
 
-**FAVOURED SKILLS:** Choose two Skills among EXPLORE, SCAN, and STEALTH and mark them as Favoured.
+**PERÍCIAS FAVORECIDAS:** Escolha duas Perícias entre EXPLORAR, VASCULHAR e FURTIVIDADE e marque-as como Favorecidas.
 
-**ADDITIONAL DISTINCTIVE FEATURE: BURGLARY.** This venerable talent includes pickpocketing, lock picking and, in general, any shadowy way to get hold of the possessions of others or access protected areas.
+**CARACTERÍSTICA DISTINTIVA ADICIONAL: ARTE DO ROUBO.** Esse talento venerável inclui bater carteiras, arrombar fechaduras e, em geral, qualquer forma discreta de obter as posses alheias ou acessar áreas protegidas.
 
-**SHADOW PATH: DRAGON-SICKNESS.** Adventurers who find themselves on the Road to seek lost riches run the risk of catching the age-old disease capable of turning a pile of enchanted gold into bitter ashes. As the Shadow tightens its grip on their hearts, the world shrinks around them and their closely guarded possessions.
+**CAMINHO DA SOMBRA: MAL DO DRAGÃO.** Aventureiros que se encontram na Estrada em busca de riquezas perdidas correm o risco de contrair a antiquíssima doença capaz de transformar uma pilha de ouro encantado em cinzas amargas. À medida que a Sombra aperta seu domínio sobre seus corações, o mundo encolhe ao seu redor e em torno de suas posses zelosamente guardadas.
 
-### Warden
+### Guardião
 
-*"Travellers scowl at us, and countrymen give us scornful names."*
+*"Os viajantes nos olham de esguelha, e os camponeses nos dão nomes de escárnio."*
 
-In this age of the world, when shadows grow deeper with every passing year, you have sworn to defend all who cannot defend themselves. Often, your choice forces you to forsake civilised areas, to better guard their inhabitants from what lurks right outside their fences. This has made you a stranger in the eyes of the common folk, a threatening figure like those you are protecting them from.
+Nesta era do mundo, quando as sombras se aprofundam a cada ano que passa, você jurou defender todos os que não podem se defender. Muitas vezes, sua escolha o força a abandonar as áreas civilizadas, para melhor guardar seus habitantes daquilo que ronda logo além de suas cercas. Isso o tornou um estranho aos olhos do povo comum, uma figura ameaçadora como aquelas de que você os protege.
 
-**FAVOURED SKILLS:** Choose two Skills among AWARENESS, HEALING, and INSIGHT and mark them as Favoured.
+**PERÍCIAS FAVORECIDAS:** Escolha duas Perícias entre PERCEPÇÃO, CURA e PERSPICÁCIA e marque-as como Favorecidas.
 
-**ADDITIONAL DISTINCTIVE FEATURE: SHADOW-LORE.** You have recognised that there is a hidden thread unifying most of what is malicious, dark, and terrible in Middle-earth, and that the thread is thickening year after year. A quality shared by the wise of the land, the truth behind this knowledge is becoming clearer as time passes.
+**CARACTERÍSTICA DISTINTIVA ADICIONAL: CONHECIMENTO DA SOMBRA.** Você reconheceu que existe um fio oculto que unifica a maior parte do que é malicioso, sombrio e terrível na Terra-média, e que esse fio se adensa ano após ano. Qualidade compartilhada pelos sábios da terra, a verdade por trás desse conhecimento vai se tornando mais clara com o passar do tempo.
 
-**SHADOW PATH: PATH OF DESPAIR.** Self-doubt is often the way that the Shadow chooses to reach the heart of those who oppose it. For they know that the Enemy is strong and terrible and that those they protect are too naive or weak to fend for themselves. Every day they ask themselves: will my strength be enough to prevail, or will I drag down the innocent in defeat?
-
----
-
-## Previous Experience
-
-*"…we have had to earn our livings as best we could up and down the lands, often enough sinking as low as blacksmith-work or even coal mining."*
-
-The ability levels of all newly-created Player-heroes can now be raised, to represent their experiences prior to their life as adventurers.
-
-> Players have 10 points to spend on raising Skills and Combat Proficiencies. The cost of raising each ability is shown in the two tables to the right. The first table gives the costs for Skill levels, while the second shows the costs for Combat Proficiency levels.
-
-Players are free to raise their abilities as they see fit, as long as they have enough points to buy the desired level. Players can also buy ranks in Skills or Combat Proficiencies that their Player-heroes didn't possess at all, or buy multiple ranks in the same ability, as long as they pay the cost of each level individually.
-
-**EXAMPLE:** *A player wanting to go from LORE 1 to LORE 4 would spend a total of 10 points (2 to raise the Skill from 1 to 2, 3 to go from 2 to 3, and 5 to go from 3 to 4).*
-
-### Skill Costs
-
-| Skill Level to Attain | Cost |
-|---|---|
-| From — to 1 | 1 point |
-| From 1 to 2 | 2 points |
-| From 2 to 3 | 3 points |
-| From 3 to 4 | 5 points |
-
-### Combat Proficiency Costs
-
-| Level to Attain | Cost |
-|---|---|
-| From — to 1 | 2 points |
-| From 1 to 2 | 4 points |
-| From 2 to 3 | 6 points |
+**CAMINHO DA SOMBRA: CAMINHO DO DESESPERO.** A dúvida sobre si mesmo é muitas vezes o caminho que a Sombra escolhe para alcançar o coração de quem a ela se opõe. Pois eles sabem que o Inimigo é forte e terrível e que aqueles que protegem são ingênuos ou fracos demais para se defenderem. Todos os dias se perguntam: minha força será suficiente para prevalecer, ou arrastarei os inocentes comigo na derrota?
 
 ---
 
-## Starting Gear
+## Experiência Prévia
 
-*"…he got to Bywater just on the stroke of eleven, and found he had come without a pocket-handkerchief!"*
+*"…tivemos que ganhar nosso sustento da melhor forma que pudemos por essas terras, muitas vezes descendo tão baixo quanto trabalho de ferreiro ou até mineração de carvão."*
 
-All heroes start their adventuring career fully equipped with all the personal items and gear they consider best suited to a life on the road. In the game, such possessions are represented by an adventurer's war gear, travelling gear, and useful items.
+Os níveis de habilidade de todos os heróis-jogadores recém-criados podem agora ser elevados, para representar suas experiências anteriores à sua vida como aventureiros.
 
-### War Gear
+> Os jogadores têm 10 pontos para gastar elevando Perícias e Proficiências de Combate. O custo de elevar cada habilidade é mostrado nas duas tabelas à direita. A primeira tabela dá os custos para os níveis de Perícia, enquanto a segunda mostra os custos para os níveis de Proficiência de Combate.
 
-Adventuring is a demanding task, often requiring heroes to march for hours on end, along mountain paths or traversing fast-flowing rivers — wise heroes should fight the urge to choose the biggest weapons and the heaviest suits of armour, as a weighty and cumbersome burden is bound to seriously hamper their capabilities.
+Os jogadores são livres para elevar suas habilidades como julgarem melhor, desde que tenham pontos suficientes para comprar o nível desejado. Os jogadores também podem comprar níveis em Perícias ou Proficiências de Combate que seus heróis-jogadores não possuíam de forma alguma, ou comprar múltiplos níveis na mesma habilidade, desde que paguem o custo de cada nível individualmente.
 
-Before the game starts, players get to choose the weapons and armour they want their characters to carry, using the War Gear lists found overleaf (more details are found in the Gear section, on page 73).
+**EXEMPLO:** *Um jogador que queira ir de SABER 1 para SABER 4 gastaria um total de 10 pontos (2 para elevar a Perícia de 1 para 2, 3 para ir de 2 para 3 e 5 para ir de 3 para 4).*
 
-> Starting heroes can choose one weapon for each Combat Proficiency for which they have a rating, and their favoured selection of armour, helms, or shields.
+### Custos de Perícia
 
-Players should record their chosen weapons, armour and shields on their character sheets, paying attention to the following notes:
+| Nível de Perícia a Alcançar | Custo |
+|---|---|
+| De — para 1 | 1 ponto |
+| De 1 para 2 | 2 pontos |
+| De 2 para 3 | 3 pontos |
+| De 3 para 4 | 5 pontos |
 
-> The PROTECTION score of a coat of armour is recorded separately from that of a helm (as sometimes, during combat, a hero might resort to dropping it to reduce the carried Load and avoid becoming Weary too soon).
+### Custos de Proficiência de Combate
 
-Shields do not offer direct protection, but make a hero less likely to be hit, by providing a bonus to Parry.
+| Nível a Alcançar | Custo |
+|---|---|
+| De — para 1 | 2 pontos |
+| De 1 para 2 | 4 pontos |
+| De 2 para 3 | 6 pontos |
 
-> A shield's rating is recorded separately from the main box devoted to Parry, as a shield can be smashed by an opponent's blows.
+---
 
-(Weapons illustrated in this section: Dagger, Sword, Long Sword, Short Spear, Great spear, Axe, Long-hafted Axe, Great Axe, Mattock, Bow, Great Bow.)
+## Equipamento Inicial
 
-### Weapons Table
+*"…ele chegou a Beirágua justo às onze horas em ponto, e descobriu que tinha vindo sem um lenço de bolso!"*
 
-| Weapon | Damage | Injury | Load | Combat Proficiency | Notes |
+Todos os heróis começam sua carreira de aventureiros plenamente equipados com todos os itens pessoais e apetrechos que consideram mais adequados a uma vida na estrada. No jogo, tais posses são representadas pelo equipamento de guerra, pelo equipamento de viagem e pelos itens úteis de um aventureiro.
+
+### Equipamento de Guerra
+
+Aventurar-se é uma tarefa exigente, muitas vezes obrigando os heróis a marchar por horas a fio, por trilhas de montanha ou atravessando rios de correnteza rápida — heróis sábios devem resistir ao impulso de escolher as maiores armas e as mais pesadas armaduras, pois um fardo pesado e desajeitado certamente prejudicará seriamente suas capacidades.
+
+Antes de o jogo começar, os jogadores escolhem as armas e armaduras que querem que seus personagens carreguem, usando as listas de Equipamento de Guerra encontradas a seguir (mais detalhes se encontram na seção de Equipamento, no capítulo 4).
+
+> Heróis iniciantes podem escolher uma arma para cada Proficiência de Combate em que tenham nível, além de sua seleção preferida de armaduras, elmos ou escudos.
+
+Os jogadores devem anotar as armas, armaduras e escudos escolhidos em suas fichas de personagem, atentando às seguintes notas:
+
+> O valor de PROTEÇÃO de uma armadura é anotado separadamente daquele de um elmo (pois, às vezes, durante o combate, um herói pode recorrer a descartá-lo para reduzir a Carga carregada e evitar ficar Exausto muito cedo).
+
+Escudos não oferecem proteção direta, mas tornam um herói menos propenso a ser atingido, fornecendo um bônus ao Bloqueio.
+
+> O valor de um escudo é anotado separadamente do quadro principal dedicado ao Bloqueio, pois um escudo pode ser destruído pelos golpes de um oponente.
+
+(Armas ilustradas nesta seção: Adaga, Espada, Espada Longa, Lança Curta, Grande Lança, Machado, Machado de Cabo Longo, Grande Machado, Picareta, Arco, Grande Arco.)
+
+### Tabela de Armas
+
+| Arma | Dano | Ferimento | Carga | Proficiência de Combate | Notas |
 |---|---|---|---|---|---|
-| Unarmed | 1 | — | 0 | Brawling* | Includes throwing stones. Cannot cause a Piercing Blow |
-| Dagger | 2 | 14 | 0 | Brawling* | — |
-| Cudgel | 3 | 12 | 0 | Brawling* | — |
-| Club | 4 | 14 | 1 | Brawling* | — |
-| Short Sword | 3 | 16 | 1 | Swords | — |
-| Sword | 4 | 16 | 2 | Swords | — |
-| Long Sword | 5 | 16 (1h) / 18 (2h) | 3 | Swords | Can be used 1 or 2-handed |
-| Short Spear | 3 | 14 | 2 | Spears | Can be thrown |
-| Spear | 4 | 14 (1h) / 16 (2h) | 3 | Spears | Can be 1 or 2-handed. Can be thrown |
-| Great Spear | 5 | 16 | 4 | Spears | 2-handed |
-| Axe | 5 | 18 | 2 | Axes | — |
-| Long-hafted Axe | 6 | 18 (1h) / 20 (2h) | 3 | Axes | Can be used 1 or 2-handed |
-| Great Axe | 7 | 20 | 4 | Axes | 2-handed |
-| Mattock | 7 | 18 | 3 | Axes | 2-handed |
-| Bow | 3 | 14 | 2 | Bows | Ranged weapon |
-| Great Bow | 4 | 16 | 4 | Bows | Ranged weapon |
+| Desarmado | 1 | — | 0 | Briga* | Inclui arremesso de pedras. Não pode causar Golpe Perfurante |
+| Adaga | 2 | 14 | 0 | Briga* | — |
+| Cacete | 3 | 12 | 0 | Briga* | — |
+| Porrete | 4 | 14 | 1 | Briga* | — |
+| Espada Curta | 3 | 16 | 1 | Espadas | — |
+| Espada | 4 | 16 | 2 | Espadas | — |
+| Espada Longa | 5 | 16 (1m) / 18 (2m) | 3 | Espadas | Pode ser usada com 1 ou 2 mãos |
+| Lança Curta | 3 | 14 | 2 | Lanças | Pode ser arremessada |
+| Lança | 4 | 14 (1m) / 16 (2m) | 3 | Lanças | Pode ser usada com 1 ou 2 mãos. Pode ser arremessada |
+| Grande Lança | 5 | 16 | 4 | Lanças | 2 mãos |
+| Machado | 5 | 18 | 2 | Machados | — |
+| Machado de Cabo Longo | 6 | 18 (1m) / 20 (2m) | 3 | Machados | Pode ser usado com 1 ou 2 mãos |
+| Grande Machado | 7 | 20 | 4 | Machados | 2 mãos |
+| Picareta | 7 | 18 | 3 | Machados | 2 mãos |
+| Arco | 3 | 14 | 2 | Arcos | Arma à distância |
+| Grande Arco | 4 | 16 | 4 | Arcos | Arma à distância |
 
-*\* Weapons used to make Brawling Attacks (see page 67).*
+*\* Armas usadas para fazer Ataques de Briga (ver capítulo 4).*
 
-### Armour Table
+### Tabela de Armaduras
 
-| Armour | Protection | Load | Type |
+| Armadura | Proteção | Carga | Tipo |
 |---|---|---|---|
-| Leather Shirt | 1d | 3 | Leather armour |
-| Leather Corslet | 2d | 6 | Leather armour |
-| Mail-shirt** | 3d | 9 | Mail armour |
-| Coat of Mail** | 4d | 12 | Mail armour |
-| Helm* | +1d | 4 | Headgear |
+| Camisa de Couro | 1d | 3 | Armadura de couro |
+| Couraça de Couro | 2d | 6 | Armadura de couro |
+| Cota de Malha** | 3d | 9 | Armadura de malha |
+| Sobretudo de Malha** | 4d | 12 | Armadura de malha |
+| Elmo* | +1d | 4 | Proteção de cabeça |
 
-*\* May be removed in combat to lower Load.*
-*\*\* See Standard of Living requirements on page 100.*
+*\* Pode ser removido em combate para reduzir a Carga.*
+*\*\* Ver as exigências de Padrão de Vida no capítulo 6.*
 
-### Shields Table
+### Tabela de Escudos
 
-| Shield | Parry Modifier | Load |
+| Escudo | Modificador de Bloqueio | Carga |
 |---|---|---|
-| Buckler | +1 | 2 |
-| Shield** | +2 | 4 |
-| Great Shield** | +3 | 6 |
+| Broquel | +1 | 2 |
+| Escudo** | +2 | 4 |
+| Grande Escudo** | +3 | 6 |
 
-*\*\* See Standard of Living requirements on page 100.*
+*\*\* Ver as exigências de Padrão de Vida no capítulo 6.*
 
-### Travelling Gear
+### Equipamento de Viagem
 
-A hero's travelling gear includes the belongings that adventurers carry when on a journey, in addition to their weapons and armour. In winter, this includes boots and thick, warm clothes — a jacket, a fur-lined cloak, woollen hose (trousers), and blankets. During the warmer months, the adventurer may do away with the heaviest items, and just include light clothes and cloaks.
+O equipamento de viagem de um herói inclui os pertences que os aventureiros carregam quando em jornada, além de suas armas e armaduras. No inverno, isso inclui botas e roupas grossas e quentes — um casaco, um manto forrado de pele, calças de lã e cobertas. Durante os meses mais quentes, o aventureiro pode dispensar os itens mais pesados e incluir apenas roupas e mantos leves.
 
-> Travelling gear does need to be annotated in detail on a character's sheet only if a player wishes to do so, and is not given a Load rating.
+> O equipamento de viagem só precisa ser anotado em detalhe na ficha de um personagem se o jogador assim desejar, e não recebe um valor de Carga.
 
-### Useful Items
+### Itens Úteis
 
-Any tool, instrument, or device carried by a Player-hero to perform one or more specific tasks is a useful item. Things like a hammer, or a hunting knife, a coil of good rope, a lantern, or flint and steel to start a fire, and so on.
+Qualquer ferramenta, instrumento ou dispositivo carregado por um herói-jogador para realizar uma ou mais tarefas específicas é um item útil. Coisas como um martelo, ou uma faca de caça, um rolo de boa corda, uma lanterna, ou pedra e aço para acender fogo, e assim por diante.
 
-These are items that may gain the Player-heroes an advantage in game terms, but that also may allow them to do things that could not be done at all without them — for example, digging a hole in frozen ground can hardly be accomplished without a pickaxe.
+Esses são itens que podem conceder aos heróis-jogadores uma vantagem em termos de jogo, mas que também podem permitir-lhes fazer coisas que não poderiam ser feitas de forma alguma sem eles — por exemplo, cavar um buraco em solo congelado dificilmente pode ser realizado sem uma picareta.
 
-Players are free to choose their useful items, possibly inventing a reason why a particular object is so handy — options include a particular craftsmanship, or another exotic feature. The item can also be some form of consumable or perishable goods, like a bottle of liquor, or a balm — in that case, the Player-hero is considered to always have a supply that will last for the length of the Adventuring Phase.
+Os jogadores são livres para escolher seus itens úteis, possivelmente inventando uma razão pela qual um objeto em particular é tão prático — as opções incluem um artesanato particular ou alguma outra característica exótica. O item também pode ser alguma forma de bem consumível ou perecível, como uma garrafa de licor, ou um bálsamo — nesse caso, considera-se que o herói-jogador sempre tem um suprimento que durará por toda a Fase de Aventura.
 
-Useful items are listed on a Player-hero's character sheet. To determine if they gain a Player-hero an advantage, they must be associated with a Skill, possibly along with a brief definition of their use.
+Os itens úteis são listados na ficha de personagem de um herói-jogador. Para determinar se concedem uma vantagem a um herói-jogador, devem estar associados a uma Perícia, possivelmente junto com uma breve definição de seu uso.
 
-> If a Player-hero is making a roll outside of combat using a Skill associated with a useful item, and the Loremaster deems that this should grant the hero an advantage, the Player-hero gains (1d). Only one item can benefit the same die roll.
+> Se um herói-jogador estiver fazendo uma rolagem fora de combate usando uma Perícia associada a um item útil, e o Mestre julgar que isso deve conceder ao herói uma vantagem, o herói-jogador ganha (1d). Apenas um item pode beneficiar a mesma rolagem de dados.
 
-All Player-heroes start the game with a number of useful items based on their Standard of Living, according to the table below.
+Todos os heróis-jogadores começam o jogo com um número de itens úteis baseado em seu Padrão de Vida, de acordo com a tabela abaixo.
 
-### Useful Items Table
+### Tabela de Itens Úteis
 
-| Standard of Living | Culture | Number of Useful Items |
+| Padrão de Vida | Cultura | Número de Itens Úteis |
 |---|---|---|
-| Poor | — | none |
-| Frugal | Elves, Rangers | 1 item |
-| Common | Hobbits, Men of Bree | 2 items |
-| Prosperous | Bardings, Dwarves | 3 items |
-| Rich or Very Rich | — | 4 items |
+| Pobre | — | nenhum |
+| Frugal | Elfos, Rangers | 1 item |
+| Comum | Hobbits, Homens de Bri | 2 itens |
+| Próspero | Bardos, Anões | 3 itens |
+| Rico ou Muito Rico | — | 4 itens |
 
-#### Examples of Useful Items (sidebar)
+#### Exemplos de Itens Úteis (quadro)
 
-- A knife for skinning rabbits, a little box of salt to cook (HUNTING),
-- A coil of rope with grappling hook to climb (ATHLETICS),
-- A wind-proof lantern (SCAN),
-- An exotic musical instrument (SONG),
-- A balm to soothe pain (HEALING),
-- A suit of expensive clothing, earrings of pearl (AWE or COURTESY),
-- A liquor to infuse strength (ENHEARTEN),
-- A sunstone to navigate in bad weather (TRAVEL),
-- A fine pipe to find comfort (INSIGHT),
-- A detailed set of maps (EXPLORE),
-- A set of instruments to carve stone (CRAFT).
+- Uma faca para esfolar coelhos, uma caixinha de sal para cozinhar (CAÇA),
+- Um rolo de corda com gancho de escalada (ATLETISMO),
+- Uma lanterna à prova de vento (VASCULHAR),
+- Um instrumento musical exótico (CANTO),
+- Um bálsamo para aliviar a dor (CURA),
+- Um traje de roupas caras, brincos de pérola (IMPONÊNCIA ou CORTESIA),
+- Um licor para infundir força (ENCORAJAR),
+- Uma pedra-do-sol para navegar em mau tempo (VIAJAR),
+- Um belo cachimbo para encontrar consolo (PERSPICÁCIA),
+- Um conjunto detalhado de mapas (EXPLORAR),
+- Um conjunto de instrumentos para entalhar pedra (OFÍCIO).
 
-### Load
+### Carga
 
-Selecting the right amount of things to carry is the first test of a hero's mettle, and a light pack on a traveller's back is an indication of their experience in the trade.
+Selecionar a quantidade certa de coisas a carregar é o primeiro teste do valor de um herói, e uma mochila leve nas costas de um viajante é indicação de sua experiência no ofício.
 
-In game terms, the hindrance that carried items cause to an adventurer, both in terms of weight and discomfort, is represented by a Load rating.
+Em termos de jogo, o estorvo que os itens carregados causam a um aventureiro, tanto em termos de peso quanto de desconforto, é representado por um valor de Carga.
 
-> Load is monitored only as far as War Gear and Treasure is concerned. All heroes are considered to carry without discomfort a reasonable amount of personal items and gear for a life on the road (their Travelling Gear, carried also with the help of their pack animals — see Hobbit Ponies and Full-sized Horses, on page 50).
+> A Carga é monitorada apenas no que se refere a Equipamento de Guerra e Tesouro. Considera-se que todos os heróis carregam sem desconforto uma quantidade razoável de itens pessoais e apetrechos para uma vida na estrada (seu Equipamento de Viagem, carregado também com a ajuda de seus animais de carga — ver Pôneis Hobbits e Cavalos de Tamanho Normal, adiante neste capítulo).
 
-An adventurer can carry a total Load up to the character's maximum Endurance. Since the Endurance score determines when a hero starts getting tired, it is generally much wiser to keep that total much lower than the maximum allowed (see Endurance, on page 69).
+Um aventureiro pode carregar uma Carga total de até o valor máximo de Resistência do personagem. Como o valor de Resistência determina quando um herói começa a se cansar, geralmente é muito mais sábio manter esse total bem abaixo do máximo permitido (ver Resistência, no capítulo 4).
 
-> Players keep track of their hero's Load score on their character sheets, and must update it should it change during play — If they add or remove pieces of War Gear or Treasure to what the Player-hero normally carries, the Load rating is immediately adjusted to reflect the increased or reduced burden.
+> Os jogadores mantêm registro do valor de Carga de seu herói em suas fichas de personagem, e devem atualizá-lo caso ele mude durante o jogo — se adicionarem ou removerem peças de Equipamento de Guerra ou Tesouro daquilo que o herói-jogador normalmente carrega, o valor de Carga é imediatamente ajustado para refletir o fardo aumentado ou reduzido.
 
-The usefulness of ponies and horses as far as journeys are concerned is based on their Vigour rating.
+A utilidade de pôneis e cavalos no que se refere a jornadas baseia-se em seu valor de Vigor.
 
-> While travelling, all Player-heroes gain a number of points of Travel Fatigue, as a result of journey events. At the end of a journey, Player-heroes travelling with a mount reduce their Fatigue total by their beast's Vigour rating (see the rules for journeys, on page 108).
+> Enquanto viajam, todos os heróis-jogadores ganham um número de pontos de Fadiga de Viagem, como resultado de eventos de jornada. Ao fim de uma jornada, os heróis-jogadores que viajam com uma montaria reduzem seu total de Fadiga pelo valor de Vigor de seu animal (ver as regras de jornada, no capítulo 6).
 
-Additionally, ponies and horses can be laden with those riches the Player-heroes discover in the course of their adventuring (see Treasure, on page 158).
+Além disso, pôneis e cavalos podem ser carregados com as riquezas que os heróis-jogadores descobrem no curso de suas aventuras (ver Tesouro, no capítulo 8).
 
-> Each pack animal can carry Treasure up to 10 points of Load.
+> Cada animal de carga pode transportar Tesouro de até 10 pontos de Carga.
 
-*"In the end he would only take two small chests, one filled with silver, and the other with gold, such as one strong pony could carry."*
+*"No fim, ele só levaria dois pequenos baús, um cheio de prata e o outro de ouro, tanto quanto um pônei forte pudesse carregar."*
 
-### Hobbit-ponies and Full-sized Horses
+### Pôneis Hobbits e Cavalos de Tamanho Normal
 
-The best asset of an efficient travelling Company is an appropriate number of ponies or horses to ride or to employ as baggage-carriers. The number and quality of the mounts available to the Player-heroes depends on their individual Standard of Living (see the table below) but are kept track of as a shared asset.
+O melhor recurso de uma Companhia viajante eficiente é um número apropriado de pôneis ou cavalos para montar ou empregar como carregadores de bagagem. O número e a qualidade das montarias disponíveis aos heróis-jogadores dependem de seu Padrão de Vida individual (ver a tabela abaixo), mas são registrados como um recurso compartilhado.
 
-Ponies are sturdy little beasts; they cannot go much faster than a normal walking pace, especially when loaded with stores and tackle, but are good to help the Player-heroes cope with the toil of spending long hours on the road. Horses can go faster (see the Journey chapter, page 108), but few such animals are seen in the North, and most are used as pack animals or draught beasts.
+Os pôneis são pequenas bestas resistentes; não conseguem ir muito mais rápido que um passo normal de caminhada, especialmente quando carregados com provisões e apetrechos, mas são bons para ajudar os heróis-jogadores a lidar com o esforço de passar longas horas na estrada. Os cavalos podem ir mais rápido (ver o capítulo de jornada, capítulo 6), mas poucos desses animais são vistos no Norte, e a maioria é usada como animal de carga ou besta de tração.
 
-### Ponies and Horses Table
+### Tabela de Pôneis e Cavalos
 
-| Standard of Living | Mount Type and Quality | Vigour |
+| Padrão de Vida | Tipo e Qualidade da Montaria | Vigor |
 |---|---|---|
-| Poor or Frugal | The hero cannot afford a mount | — |
-| Common | The hero brings an old horse, or half-starved pony | 1 |
-| Prosperous | The hero brings a decent beast | 2 |
-| Rich or Very Rich | The hero brings a fine beast | 3 |
+| Pobre ou Frugal | O herói não pode arcar com uma montaria | — |
+| Comum | O herói traz um cavalo velho, ou um pônei meio faminto | 1 |
+| Próspero | O herói traz uma besta decente | 2 |
+| Rico ou Muito Rico | O herói traz uma besta excelente | 3 |
 
 ---
 
-## Starting Reward and Virtue
+## Recompensa e Virtude Iniciais
 
-*"He took from the box a small sword in an old shabby leathern scabbard."*
+*"Ele tirou da caixa uma pequena espada em uma velha bainha de couro gasta."*
 
-There are many things that may betray the true nature of adventurers. It may be their weather-beaten look, or the grim determination that surfaces when they set themselves to a difficult task. In game terms, nothing defines the stuff heroes are made of better than their special abilities and superior gear.
+Há muitas coisas que podem revelar a verdadeira natureza dos aventureiros. Pode ser sua aparência castigada pelo tempo, ou a determinação severa que emerge quando se lançam a uma tarefa difícil. Em termos de jogo, nada define melhor a matéria de que os heróis são feitos do que suas habilidades especiais e seu equipamento superior.
 
-The growth in stature of a hero in terms of power and renown is tracked in the game using two values — VALOUR and WISDOM. Both ratings are ranked from 1 to 6, reflecting the gradual transformation of a novice adventurer into a veteran hero.
+O crescimento em estatura de um herói em termos de poder e renome é registrado no jogo usando dois valores — VALOR e SABEDORIA. Ambos os valores são graduados de 1 a 6, refletindo a transformação gradual de um aventureiro novato em um herói veterano.
 
-> At the beginning of the game, the Player-heroes have yet to prove their worth, and start with a rating of 1 in both characteristics.
+> No início do jogo, os heróis-jogadores ainda têm de provar seu valor, e começam com nível 1 em ambas as características.
 
-Among their various effects on gameplay, VALOUR and WISDOM grant players special abilities: Abilities granted by gaining a new rank in WISDOM are called Virtues, while those gained by an increased rank in VALOUR are called Rewards.
+Entre seus vários efeitos na jogabilidade, VALOR e SABEDORIA concedem aos jogadores habilidades especiais: as habilidades concedidas ao ganhar um novo nível em SABEDORIA são chamadas Virtudes, enquanto as ganhas por um nível aumentado em VALOR são chamadas Recompensas.
 
-- Virtues give the Player-heroes access to the peculiar abilities of their folk.
-- Rewards are upgrades that enhance a hero's war gear.
+- As Virtudes dão aos heróis-jogadores acesso às habilidades peculiares de seu povo.
+- As Recompensas são melhorias que aprimoram o equipamento de guerra de um herói.
 
-At the start of the game, all players get to choose 1 Virtue and 1 Reward, selecting them among those listed in *Chapter 5*.
+No início do jogo, todos os jogadores escolhem 1 Virtude e 1 Recompensa, selecionando-as entre as listadas no *capítulo 5*.
 
-### Starting Rewards (page 79)
+### Recompensas Iniciais (capítulo 5)
 
-1. **Close-fitting** (armour or helm) — Add +2 to the result of your PROTECTION roll.
-2. **Cunning Make** (armour, helm or shield) — Reduce your Load rating by 2.
-3. **Fell** (weapon) — Raise the Injury rating of a weapon by 2.
-4. **Grievous** (weapon) — Raise the Damage rating of a weapon by 1.
-5. **Keen** (weapon) — Attack rolls score a Piercing Blow on a 9+.
-6. **Reinforced** (shield) — Raise a shield's Parry bonus by +1.
+1. **Ajustado** (armadura ou elmo) — Some +2 ao resultado da sua rolagem de PROTEÇÃO.
+2. **Fabricação Engenhosa** (armadura, elmo ou escudo) — Reduza seu valor de Carga em 2.
+3. **Cruel** (arma) — Aumente em 2 o valor de Ferimento de uma arma.
+4. **Grave** (arma) — Aumente em 1 o valor de Dano de uma arma.
+5. **Afiado** (arma) — Rolagens de ataque causam Golpe Perfurante com 9+.
+6. **Reforçado** (escudo) — Aumente em +1 o bônus de Bloqueio de um escudo.
 
-### Starting Virtues (page 80)
+### Virtudes Iniciais (capítulo 5)
 
-1. **Confidence** — Raise your Hope by 2.
-2. **Dour-handed** — Add +1 to the damage inflicted on a Heavy Blow.
-3. **Hardiness** — Raise your Endurance by 2.
-4. **Mastery** — Choose two Skills and make them Favoured.
-5. **Nimbleness** — Raise your Parry rating by 1.
-6. **Prowess** — Reduce one Attribute TN by 1.
+1. **Confiança** — Aumente sua Esperança em 2.
+2. **Mão Firme** — Some +1 ao dano infligido em um Golpe Pesado.
+3. **Robustez** — Aumente sua Resistência em 2.
+4. **Maestria** — Escolha duas Perícias e torne-as Favorecidas.
+5. **Agilidade** — Aumente seu valor de Bloqueio em 1.
+6. **Proeza** — Reduza o NA de um Atributo em 1.
 
 ---
 
-## The Company
+## A Companhia
 
-*"I am looking for someone to share in an adventure that I am arranging, and it's very difficult to find anyone."*
+*"Estou procurando alguém para compartilhar de uma aventura que estou organizando, e é muito difícil encontrar alguém."*
 
-Adventurers know that burdens are easier to bear when shared with others. That's one of the reasons why they gather in a Company, a group united by a common cause — be it to fight the Enemy, lead a hunt for a prized prey, or scour the land seeking lost or stolen treasure.
+Os aventureiros sabem que os fardos são mais fáceis de suportar quando compartilhados com outros. Essa é uma das razões pelas quais se reúnem em uma Companhia, um grupo unido por uma causa comum — seja combater o Inimigo, conduzir uma caçada a uma presa cobiçada, ou percorrer a terra em busca de tesouros perdidos ou roubados.
 
-The creation of the Company is a procedure that can be used to wrap a character creation session, or that can take place right before the first Adventuring Phase. The players introduce their adventurers and determine the circumstances that brought them together — in general, it is good to assume that the Company has been together for some time already when the game begins. The Loremaster assists the players, providing suggestions and advice.
+A criação da Companhia é um procedimento que pode ser usado para encerrar uma sessão de criação de personagens, ou que pode acontecer imediatamente antes da primeira Fase de Aventura. Os jogadores apresentam seus aventureiros e determinam as circunstâncias que os reuniram — em geral, é bom presumir que a Companhia já esteja junta há algum tempo quando o jogo começa. O Mestre auxilia os jogadores, fornecendo sugestões e conselhos.
 
-To create the Company, the players and the Loremaster must follow the sequence described below:
+Para criar a Companhia, os jogadores e o Mestre devem seguir a sequência descrita abaixo:
 
-1. Choose a Patron
-2. Choose a Safe Haven
-3. Determine the Company's Fellowship rating
-4. Choose Fellowship Focuses
+1. Escolha um Patrono
+2. Escolha um Refúgio Seguro
+3. Determine o Nível de Companhia da Companhia
+4. Escolha os Focos da Companhia
 
-### Patron
+### Patrono
 
-A Company may be brought together by chance or design. If it's not chance, then the meeting of the Player-heroes might have been directly arranged by one of the Wise and the Great of Middle-earth — their Patron.
+Uma Companhia pode ser reunida por acaso ou por desígnio. Se não for por acaso, então o encontro dos heróis-jogadores pode ter sido diretamente arranjado por um dos Sábios e Grandes da Terra-média — seu Patrono.
 
-A Patron is an influential individual who has taken an interest in the group, and that in the course of the game will offer the Company additional reasons to go adventuring, often providing both support and counsel. All Patrons work with the Player-heroes from time to time, following a personal agenda, but in general hoping to influence the events that are going to shape Middle-earth in the years to come.
+Um Patrono é um indivíduo influente que passou a se interessar pelo grupo e que, no curso do jogo, oferecerá à Companhia razões adicionais para se aventurar, muitas vezes fornecendo tanto apoio quanto conselho. Todos os Patronos trabalham com os heróis-jogadores de tempo em tempo, seguindo uma agenda pessoal, mas em geral esperando influenciar os eventos que moldarão a Terra-média nos anos por vir.
 
-> The Company starts the game choosing one Patron among those listed below (but additional ones may be added in the course of the game).
+> A Companhia começa o jogo escolhendo um Patrono entre os listados abaixo (mas outros podem ser acrescentados no curso do jogo).
 
-To select their Patron, the players should check their characteristics, and pick the one whose potential agenda seems more in agreement with their own goals as a group — for example, the list of Callings favoured by a Patron can be used as a good indication of what that individual might ask a Company as a favour or service in the course of play. The identity of the chosen Patron is recorded on the Company log sheet.
+Para selecionar seu Patrono, os jogadores devem verificar suas características e escolher aquele cuja agenda potencial pareça mais de acordo com seus próprios objetivos como grupo — por exemplo, a lista de Vocações favorecidas por um Patrono pode ser usada como boa indicação do que aquele indivíduo poderia pedir a uma Companhia como favor ou serviço no curso do jogo. A identidade do Patrono escolhido é anotada na folha de registro da Companhia.
 
-As can be seen by consulting the table below, all Patrons may provide a Fellowship Bonus, effectively raising the number of Fellowship points available to the members of the Company, and another peculiar form of advantage, usually connected to the expenditure of Fellowship points (see Fellowship Rating, page 54).
+Como se pode ver consultando a tabela abaixo, todos os Patronos podem fornecer um Bônus de Companhia, elevando efetivamente o número de pontos de Companhia disponíveis aos membros da Companhia, e outra forma peculiar de vantagem, geralmente ligada ao gasto de pontos de Companhia (ver Nível de Companhia, adiante neste capítulo).
 
-Player-heroes gain the opportunity to go and see a Patron when they are in the same place during a Fellowship Phase, choosing the Meet Patron undertaking (see page 121).
+Os heróis-jogadores ganham a oportunidade de ir visitar um Patrono quando estão no mesmo lugar durante uma Fase de Companhia, escolhendo o Empreendimento Encontrar o Patrono (ver capítulo 7).
 
-### Starting Patrons Table
+### Tabela de Patronos Iniciais
 
-| Patron | Favoured Callings | Fellowship Points | Additional Advantage | Agenda |
+| Patrono | Vocações Favorecidas | Pontos de Companhia | Vantagem Adicional | Agenda |
 |---|---|---|---|---|
-| Balin, son of Fundin | Captain, Champion | +1 | Spend Fellowship to make a combat roll Favoured. | Reclaim lost strongholds, eliminate enemy lieutenants, etc. |
-| Bilbo Baggins | Treasure Hunter, Scholar | +2 | Raise Fellowship by +1 when choosing the Meet Patron undertaking to visit Bilbo. | Recover lost lore and lost things. |
-| Círdan the Shipwright | Messenger, Scholar | +1 | Spend Fellowship to roll again all dice in a roll. Choose the Meet Patron undertaking to receive a rumour. | Rekindle hope, preserve the lore of the Ages. |
-| Gandalf the Grey | Messenger, Captain | +2 | Spend Fellowship to make a Shadow Test Favoured. | Warn the Free Peoples, inspire them to action. |
-| Gilraen, daughter of Dirhael | Champion, Warden | 0 | Resolve Journey Events within the old realm of Arnor as if in a Border Land. Choose the Meet Patron undertaking to receive a rumour. | Fight the Enemy, defend the weak. |
-| Tom Bombadil and Lady Goldberry | Warden, Treasure Hunter | +2 | Spend all your Fellowship to call Tom or Goldberry's intervention anywhere in Tom's country. | Protect the land, find and preserve what was buried. |
+| Balin, filho de Fundin | Capitão, Campeão | +1 | Gaste Companhia para tornar uma rolagem de combate Favorecida. | Reconquistar fortalezas perdidas, eliminar tenentes inimigos etc. |
+| Bilbo Bolseiro | Caçador de Tesouros, Erudito | +2 | Aumente a Companhia em +1 ao escolher o Empreendimento Encontrar o Patrono para visitar Bilbo. | Recuperar saber perdido e coisas perdidas. |
+| Círdan, o Armador | Mensageiro, Erudito | +1 | Gaste Companhia para rolar novamente todos os dados de uma rolagem. Escolha o Empreendimento Encontrar o Patrono para receber um rumor. | Reacender a esperança, preservar o saber das Eras. |
+| Gandalf, o Cinzento | Mensageiro, Capitão | +2 | Gaste Companhia para tornar um Teste de Sombra Favorecido. | Advertir os Povos Livres, inspirá-los à ação. |
+| Gilraen, filha de Dirhael | Campeão, Guardião | 0 | Resolva Eventos de Jornada dentro do antigo reino de Arnor como se estivesse em uma Terra de Fronteira. Escolha o Empreendimento Encontrar o Patrono para receber um rumor. | Combater o Inimigo, defender os fracos. |
+| Tom Bombadil e a Senhora Fruta d'Ouro | Guardião, Caçador de Tesouros | +2 | Gaste toda a sua Companhia para chamar a intervenção de Tom ou de Fruta d'Ouro em qualquer lugar da terra de Tom. | Proteger a terra, encontrar e preservar o que foi enterrado. |
 
-### The Safe Haven
+### O Refúgio Seguro
 
-The safe haven of the Company is a location that works as the starting base of operations for the group, and as its refuge to repair to for the Fellowship Phase. Usually, it's the place where the Player-heroes gathered for the first time.
+O refúgio seguro da Companhia é um local que funciona como base de operações inicial do grupo, e como seu refúgio para onde se retirar durante a Fase de Companhia. Geralmente, é o lugar onde os heróis-jogadores se reuniram pela primeira vez.
 
-> In Eriador, the ideal choice for a starting safe haven is certainly the village of Bree, as it stands at the crossroads of the East Road and North Road, and everyone who journeys across the land stops at The Prancing Pony for a pipe to smoke in comfort (see *Chapter 9* for more information about Bree and its inn).
+> Em Eriador, a escolha ideal para um refúgio seguro inicial é certamente a aldeia de Bri, pois fica no cruzamento da Estrada Leste e da Estrada Norte, e todos os que viajam pela terra param no Pônei Empinado para fumar um cachimbo com conforto (ver o *capítulo 12* para mais informações sobre Bri e sua estalagem).
 
-In the course of their exploration of Eriador the Company will find new places suitable to be used as safe havens, widening their options — for example, a Company might eventually add the city of Tharbad and Rivendell as possible safe havens.
+No curso de sua exploração de Eriador, a Companhia encontrará novos lugares adequados para serem usados como refúgios seguros, ampliando suas opções — por exemplo, uma Companhia pode eventualmente acrescentar a cidade de Tharbad e Valfenda como possíveis refúgios seguros.
 
-#### Sidebar: Long Have I Wandered by Roads Forgotten
+#### Quadro: Muito Vaguei por Estradas Esquecidas
 
-Telling the story of how a Player-hero reached the location where the Company first meets is a good way of introducing a character. Such a tale tells the other players where heroes come from, why they left, and possibly something about their abilities and aspirations.
+Contar a história de como um herói-jogador chegou ao local onde a Companhia se encontra pela primeira vez é um bom modo de apresentar um personagem. Tal relato conta aos outros jogadores de onde os heróis vêm, por que partiram e possivelmente algo sobre suas capacidades e aspirações.
 
-### Fellowship Rating
+### Nível de Companhia
 
-The group of Player-heroes is more than a band of roving mercenaries brought together by mere necessity. At its foundation are communal goals and a mutual respect. This feeling of trust is recreated in the game by the Company's Fellowship score.
+O grupo de heróis-jogadores é mais que uma banda de mercenários errantes reunidos por mera necessidade. Em sua fundação estão objetivos comuns e respeito mútuo. Esse sentimento de confiança é recriado no jogo pelo valor de Companhia do grupo.
 
-Expressed by a numerical value, Fellowship is a pool of points shared among all Player-heroes that is mainly spent to recover lost confidence:
+Expressa por um valor numérico, a Companhia é uma reserva de pontos compartilhada por todos os heróis-jogadores, gasta principalmente para recuperar a confiança perdida:
 
-> During the Adventuring Phase, Player-heroes can spend points of Fellowship to recover points of Hope when resting (see page 71),
+> Durante a Fase de Aventura, os heróis-jogadores podem gastar pontos de Companhia para recuperar pontos de Esperança ao descansar (ver capítulo 4),
 
-Additionally, Fellowship can be spent to trigger special effects tied to the Company's Patron (see Patrons, page 52).
+Além disso, a Companhia pode ser gasta para disparar efeitos especiais ligados ao Patrono da Companhia (ver Patronos, anteriormente neste capítulo).
 
-> The starting Fellowship score of the Company is equal to the number of Player-heroes in the group; this value can be augmented by a number of Virtues or Cultural Blessings, and by a bonus associated with the Company's Patron.
+> O valor inicial de Companhia da Companhia é igual ao número de heróis-jogadores no grupo; esse valor pode ser aumentado por uma série de Virtudes ou Bênçãos Culturais, e por um bônus associado ao Patrono da Companhia.
 
-Once calculated, the Company's Fellowship score is recorded by all players on their character sheets, in the designated space. For every point of Fellowship spent, all Player-heroes must adjust the amount on their character sheet.
+Uma vez calculado, o valor de Companhia da Companhia é anotado por todos os jogadores em suas fichas de personagem, no espaço designado. Para cada ponto de Companhia gasto, todos os heróis-jogadores devem ajustar o valor em sua ficha de personagem.
 
-> When all points have been used, the Company cannot spend any more Fellowship. Fellowship points are fully refreshed at the end of each gaming session.
+> Quando todos os pontos tiverem sido usados, a Companhia não pode gastar mais Companhia. Os pontos de Companhia são plenamente renovados ao fim de cada sessão de jogo.
 
-### Fellowship Focus
+### Foco da Companhia
 
-A Company's Fellowship rating represents the loyalty that adventurers feel towards each other. But some of them might share an additional level of companionship with another member of the Company. Such a bond may be due to the respect felt for someone wiser or nobler, a special friendship shared with an old acquaintance, the kinship shared with a fellow compatriot, the deep affection for a dear family member, or even pity for someone considered to be weak or unfit for adventuring.
+O Nível de Companhia de uma Companhia representa a lealdade que os aventureiros sentem uns pelos outros. Mas alguns deles podem compartilhar um nível adicional de companheirismo com outro membro da Companhia. Tal vínculo pode se dever ao respeito sentido por alguém mais sábio ou mais nobre, uma amizade especial compartilhada com um velho conhecido, o parentesco compartilhado com um compatriota, a afeição profunda por um familiar querido, ou até a piedade por alguém considerado fraco ou inadequado para se aventurar.
 
-Each player can choose one member of the Company as their Player-hero's Fellowship Focus (players can also opt for choosing their Fellowship Focus later, at any point during a game).
+Cada jogador pode escolher um membro da Companhia como o Foco da Companhia de seu herói-jogador (os jogadores também podem optar por escolher seu Foco da Companhia mais tarde, em qualquer momento do jogo).
 
-Players are free to indicate any other Player-hero as their choice, even one that has already been chosen by someone else. The bond doesn't have to be mutual: a hero who has been chosen by another hero as a Fellowship Focus is free to choose any other character as their own.
+Os jogadores são livres para indicar qualquer outro herói-jogador como sua escolha, mesmo um que já tenha sido escolhido por outra pessoa. O vínculo não precisa ser mútuo: um herói que tenha sido escolhido por outro herói como Foco da Companhia é livre para escolher qualquer outro personagem como o seu próprio.
 
-In game terms, Player-heroes provide a greater advantage when they help their Fellowship focus:
+Em termos de jogo, os heróis-jogadores fornecem uma vantagem maior quando ajudam seu Foco da Companhia:
 
-> Player-heroes providing support to their Fellowship Focus make them gain (2d) instead of (1d).
+> Heróis-jogadores que dão apoio ao seu Foco da Companhia fazem com que ele ganhe (2d) em vez de (1d).
 
-But the benefit of caring for someone comes at a price:
+Mas o benefício de se importar com alguém tem seu preço:
 
-> Player-heroes gain 1 Shadow point whenever their Fellowship Focus is Wounded, suffers a bout of madness, or is otherwise seriously harmed (this Shadow gain cannot be prevented with a Shadow Test — see page 137).
+> Os heróis-jogadores ganham 1 ponto de Sombra sempre que seu Foco da Companhia é Ferido, sofre um acesso de loucura, ou é de outro modo seriamente prejudicado (esse ganho de Sombra não pode ser evitado com um Teste de Sombra — ver capítulo 8).
 
-**EXAMPLE:** *As seen in the example for support on page 21, a Hobbit burglar is receiving support from her Barding companion to open a locked Dwarven door. The support action gains the Hobbit a bonus Success die. If the Barding was the burglar's Fellowship Focus, the Hobbit would gain (2d) instead of (1d).*
-
----
-
-## Experience
-
-*"Somehow the killing of the giant spider, all alone by himself in the dark without the help of the wizard or the dwarves or of anyone else, made a great difference to Mr Baggins."*
-
-Characters in *The One Ring* change as the game progresses. As they overcome the obstacles that fate presents them and complete the tasks they have set out to accomplish, they find themselves deeply transformed by the experience, much like people in real life.
-
-In game terms, players earn points at the end of each session and at the end of the Adventuring Phase. Then, they spend them during the Fellowship Phase, to improve their adventurers' abilities or to acquire new ones.
-
-There are two types of Experience points: Skill points, that are spent to acquire new ranks in any Skill, and Adventure points, that are used to improve Combat Proficiencies or gain new ranks in VALOUR or WISDOM.
-
-### Skill Points
-
-The capability of heroes to profit from their experiences and hone their abilities as a result is represented in the game by earning and spending Skill points.
-
-Players earn Skill points as follows:
-
-> All players gain 3 Skill points each at the end of every gaming session they attend.
-
-Finally, during each Yule Fellowship Phase, all players earn a number of additional Skill points equal to their adventurers' WITS rating (see page 120).
-
-**EXAMPLE:** *In the last Adventuring Phase, Folco the Hobbit has taken part in 3 gaming sessions, for a total of 9 Skill points. When the next Yule arrives, he will earn 6 additional points — his WITS rating.*
-
-### Adventure Points
-
-The sense of accomplishment of the Player-heroes, their confidence and skill at arms, and the hard-earned respect paid to them by their peers are represented by the award of Adventure points.
-
-Players earn Adventure points as follows:
-
-> All players receive 3 Adventure points each at the end of every gaming session they attend.
+**EXEMPLO:** *Como visto no exemplo de apoio no capítulo 2, uma gatuna Hobbit está recebendo apoio de sua companheira Barda para abrir uma porta Anã trancada. A ação de apoio concede à Hobbit um Dado de Sucesso bônus. Se a Barda fosse o Foco da Companhia da gatuna, a Hobbit ganharia (2d) em vez de (1d).*
 
 ---
 
-## Further Adventures
+## Experiência
 
-*"(Bilbo) … he had no close friends, until some of his younger cousins began to grow up. The eldest of these, and Bilbo's favourite, was young Frodo Baggins."*
+*"De algum modo, a morte da aranha gigante, sozinho por si mesmo no escuro sem a ajuda do mago ou dos anões ou de qualquer outra pessoa, fez uma grande diferença para o Sr. Bolseiro."*
 
-There are several ways that a hero's adventures might come to an end. Adventurers can die fighting against the servants of the Dark Lord, or their will can finally break under the burden of the Shadow. Or, if they are lucky, they can retire from adventuring willingly, to return to their own land and spend their remaining years amongst loved ones.
+Os personagens de *O Um Anel* mudam à medida que o jogo progride. Conforme superam os obstáculos que o destino lhes apresenta e completam as tarefas que se propuseram a realizar, encontram-se profundamente transformados pela experiência, muito como as pessoas na vida real.
 
-But the struggle against the Shadow knows no respite, and before heroes abandon it they should choose someone to take their place, lest they see their legacy be lost.
+Em termos de jogo, os jogadores ganham pontos ao fim de cada sessão e ao fim da Fase de Aventura. Então, gastam-nos durante a Fase de Companhia, para aprimorar as habilidades de seus aventureiros ou adquirir novas.
 
-### Adventuring Career
+Existem dois tipos de pontos de Experiência: pontos de Perícia, que são gastos para adquirir novos níveis em qualquer Perícia, e pontos de Aventura, que são usados para aprimorar Proficiências de Combate ou ganhar novos níveis em VALOR ou SABEDORIA.
 
-The life of an adventurer is hard for members of any culture. Dwarves and Elves may be long-lived in comparison to Hobbits and especially Men, but their ability to deal with the harsh struggle against the Shadow isn't really superior to others — In fact, it is rare for heroes from any Culture to go adventuring for more than two decades.
+### Pontos de Perícia
 
-> Player-heroes are expected to rise to excellence in about 10 years of game time — meaning, to reach ranks of 5+ in VALOUR and WISDOM, and comparable levels in a Combat Proficiency.
+A capacidade dos heróis de tirar proveito de suas experiências e assim aperfeiçoar suas habilidades é representada no jogo por ganhar e gastar pontos de Perícia.
 
-Heroes who get this far with their body and spirit intact should consider themselves very lucky and seriously think about retiring. But much before they do that, they should choose an heir — only by doing so heroes pass along as much of their experience as they can, before a well-aimed blow finally ends their career, or sorrow and regret nest too deeply into their soul.
+Os jogadores ganham pontos de Perícia da seguinte forma:
 
-### Raising an Heir
+> Todos os jogadores ganham 3 pontos de Perícia cada ao fim de cada sessão de jogo em que participam.
 
-Designating and raising an heir is the only way to continue playing with an adventurer that is related to their Player-heroes upon their death or retirement — Players who see their heroes die or leave active play without a ready heir must create a new, unrelated Player-hero using the usual rules.
+Por fim, durante cada Fase de Companhia de Yule, todos os jogadores ganham um número de pontos de Perícia adicionais igual ao valor de ASTÚCIA de seus aventureiros (ver capítulo 7).
 
-A Player-hero's heir can be anyone: a sister or a brother, a son or daughter, or a close or distant cousin fostered to follow in the footsteps of the adventurous relative; it doesn't have to be a family member at all — heroes who have no relatives to designate may choose someone else entirely.
+**EXEMPLO:** *Na última Fase de Aventura, Folco, o Hobbit, participou de 3 sessões de jogo, para um total de 9 pontos de Perícia. Quando chegar o próximo Yule, ele ganhará 6 pontos adicionais — seu valor de ASTÚCIA.*
 
-> To designate an heir, players must choose the Raise an Heir undertaking during any Yule Fellowship Phase (see page 120). Then, they must spend up to 5 Treasure points and an equal number of Adventure points to form the heir's Previous Experience reserve: for each Adventure point spent, raise the reserve by 1.
+### Pontos de Aventura
 
-The first time the Raise an Heir undertaking is chosen, players choose a name for their adventurer's heir, writing the name down on their character sheet. Once the heir has been named, players are free to choose again the Raise an Heir undertaking to spend up to 5 more Treasure and Adventure points and increase their heir's reserve.
+O sentimento de realização dos heróis-jogadores, sua confiança e habilidade com as armas, e o respeito duramente conquistado que lhes é prestado por seus pares são representados pela concessão de pontos de Aventura.
 
-A Player-hero's heir is ready to continue the Player-hero's legacy upon reaching 10 Previous Experience points. Player-heroes who prefer not to retire yet (and who don't die!) may continue to choose the Raise an Heir undertaking, adding points to the Previous Experience reserve, up to a maximum of 20 points.
+Os jogadores ganham pontos de Aventura da seguinte forma:
 
-#### Sidebar: Session Length and Advancement Rate
-
-The average length of a session of play is considered to clock at approximately three hours.
-
-> If a more granular rate of Experience points gain is desired, Player-heroes can be considered to earn 1 Skill point and 1 Adventure point for each hour of gaming.
-
-This advancement rate is of course a rough estimate, and can be adjusted to suit the playing style of a particular group. If a group considers to be able to pack more action into an hour of gaming than what is considered usual — for example, they complete in one evening an adventure that is presented as requiring two or more sessions — the advancement rate can be raised, to give 1.5 points per hour of gaming, or even more.
-
-### Creating the Heir
-
-When the time comes for the Player-hero to retire, it is time to create the heir, making use of the usual rules for character creation, with the following exceptions:
-
-- Players designate one of their hero's Favoured Skills as their family heritage. The heir receives this heritage ability as a free, additional Favoured Skill.
-- The starting Standard of Living of the heir is equal to that of the retiring Player-hero (instead of that of the culture).
-- Instead of receiving 10 points to raise a hero's starting Skills and Combat Proficiencies, players can spend the amount of points accumulated in their Previous Experience reserve, using the Skill and Combat Proficiency costs tables on page 46 (Skills cannot be raised above the fourth rank, and Combat Proficiencies cannot go beyond the third rank).
-
-Finally, if the Previous Experience reserve of the designated heir is equal to 15+, a single item in possession of the original Player-hero is passed on to the chosen heir as an Heirloom. If the Previous Experience reserve is equal to 20, a second Heirloom can be passed on.
-
-> An Heirloom is an item that has been upgraded with one or more Rewards, or a Wondrous Artefact or Famous Weapon or Armour.
-
-Famous Weapons or Armour have their first quality automatically activated when they are taken up by an heir. Further qualities can be 'awoken' in the manner described on page 78, as the new Hero gains levels of VALOUR. In the case of a Wondrous Artefact, its Blessings are revealed upon passing the item to the heir.
+> Todos os jogadores recebem 3 pontos de Aventura cada ao fim de cada sessão de jogo em que participam.
 
 ---
 
-*(End of Chapter 3 for the requested range — p.58 is a full-page illustration closing out the chapter's coverage of Company/Experience material, immediately preceding Chapter 4: Skills.)*
+## Novas Aventuras
+
+*"(Bilbo) … ele não tinha amigos próximos, até que alguns de seus primos mais jovens começaram a crescer. O mais velho destes, e o favorito de Bilbo, era o jovem Frodo Bolseiro."*
+
+Existem várias maneiras pelas quais as aventuras de um herói podem chegar ao fim. Os aventureiros podem morrer lutando contra os servos do Senhor Sombrio, ou sua vontade pode finalmente se quebrar sob o fardo da Sombra. Ou, se tiverem sorte, podem se aposentar das aventuras por vontade própria, para retornar à sua própria terra e passar seus anos restantes entre seus entes queridos.
+
+Mas a luta contra a Sombra não conhece descanso, e, antes que os heróis a abandonem, devem escolher alguém para tomar seu lugar, para não verem seu legado perdido.
+
+### Carreira de Aventureiro
+
+A vida de um aventureiro é dura para membros de qualquer cultura. Anões e Elfos podem ser longevos em comparação com os Hobbits e especialmente os Homens, mas sua capacidade de lidar com a luta árdua contra a Sombra não é realmente superior à dos outros — de fato, é raro que heróis de qualquer Cultura se aventurem por mais de duas décadas.
+
+> Espera-se que os heróis-jogadores alcancem a excelência em cerca de 10 anos de tempo de jogo — isto é, que alcancem níveis 5+ em VALOR e SABEDORIA, e níveis comparáveis em uma Proficiência de Combate.
+
+Heróis que chegam tão longe com corpo e espírito intactos devem se considerar muito sortudos e pensar seriamente em se aposentar. Mas muito antes de fazê-lo, devem escolher um herdeiro — só assim os heróis transmitem o máximo possível de sua experiência antes que um golpe bem-mirado finalmente termine sua carreira, ou que a mágoa e o remorso se aninhem fundo demais em sua alma.
+
+### Criando um Herdeiro
+
+Designar e criar um herdeiro é o único modo de continuar jogando com um aventureiro que seja parente de seus heróis-jogadores após sua morte ou aposentadoria — jogadores que veem seus heróis morrer ou deixar o jogo ativo sem um herdeiro pronto devem criar um novo herói-jogador, sem parentesco, usando as regras habituais.
+
+O herdeiro de um herói-jogador pode ser qualquer pessoa: uma irmã ou um irmão, um filho ou filha, ou um primo próximo ou distante criado para seguir os passos do parente aventureiro; não precisa ser um membro da família de forma alguma — heróis que não tenham parentes para designar podem escolher outra pessoa qualquer.
+
+> Para designar um herdeiro, os jogadores devem escolher o Empreendimento Criar um Herdeiro durante qualquer Fase de Companhia de Yule (ver capítulo 7). Então, devem gastar até 5 pontos de Tesouro e um número igual de pontos de Aventura para formar a reserva de Experiência Prévia do herdeiro: para cada ponto de Aventura gasto, aumente a reserva em 1.
+
+Na primeira vez em que o Empreendimento Criar um Herdeiro é escolhido, os jogadores escolhem um nome para o herdeiro de seu aventureiro, anotando o nome em sua ficha de personagem. Uma vez que o herdeiro tenha sido nomeado, os jogadores são livres para escolher novamente o Empreendimento Criar um Herdeiro a fim de gastar até 5 pontos adicionais de Tesouro e de Aventura e aumentar a reserva de seu herdeiro.
+
+O herdeiro de um herói-jogador está pronto para continuar o legado do herói-jogador ao alcançar 10 pontos de Experiência Prévia. Heróis-jogadores que preferirem não se aposentar ainda (e que não morrerem!) podem continuar a escolher o Empreendimento Criar um Herdeiro, acrescentando pontos à reserva de Experiência Prévia, até um máximo de 20 pontos.
+
+#### Quadro: Duração da Sessão e Ritmo de Progressão
+
+A duração média de uma sessão de jogo é considerada como sendo de aproximadamente três horas.
+
+> Se se desejar um ritmo mais granular de ganho de pontos de Experiência, pode-se considerar que os heróis-jogadores ganham 1 ponto de Perícia e 1 ponto de Aventura por cada hora de jogo.
+
+Esse ritmo de progressão é, naturalmente, uma estimativa aproximada, e pode ser ajustado para se adequar ao estilo de jogo de um grupo em particular. Se um grupo considera que consegue concentrar mais ação em uma hora de jogo do que o usual — por exemplo, completa em uma noite uma aventura apresentada como exigindo duas ou mais sessões — o ritmo de progressão pode ser elevado, dando 1,5 ponto por hora de jogo, ou até mais.
+
+### Criando o Herdeiro
+
+Quando chegar a hora de o herói-jogador se aposentar, é hora de criar o herdeiro, usando as regras habituais de criação de personagem, com as seguintes exceções:
+
+- Os jogadores designam uma das Perícias Favorecidas de seu herói como sua herança familiar. O herdeiro recebe essa habilidade de herança como uma Perícia Favorecida gratuita e adicional.
+- O Padrão de Vida inicial do herdeiro é igual àquele do herói-jogador que se aposenta (em vez daquele da cultura).
+- Em vez de receber 10 pontos para elevar as Perícias e Proficiências de Combate iniciais de um herói, os jogadores podem gastar a quantidade de pontos acumulados em sua reserva de Experiência Prévia, usando as tabelas de custos de Perícia e Proficiência de Combate apresentadas anteriormente neste capítulo (as Perícias não podem ser elevadas acima do quarto nível, e as Proficiências de Combate não podem passar do terceiro nível).
+
+Por fim, se a reserva de Experiência Prévia do herdeiro designado for igual a 15+, um único item em posse do herói-jogador original é transmitido ao herdeiro escolhido como uma Herança de Família. Se a reserva de Experiência Prévia for igual a 20, uma segunda Herança de Família pode ser transmitida.
+
+> Uma Herança de Família é um item que foi aprimorado com uma ou mais Recompensas, ou um Artefato Prodigioso, ou uma Arma ou Armadura Famosa.
+
+Armas ou Armaduras Famosas têm sua primeira qualidade automaticamente ativada quando são tomadas por um herdeiro. Outras qualidades podem ser 'despertadas' da maneira descrita no capítulo 5, à medida que o novo Herói ganha níveis de VALOR. No caso de um Artefato Prodigioso, suas Bênçãos são reveladas ao passar o item ao herdeiro.
+
+---
+
+*(Fim do capítulo 3 para o intervalo solicitado — a p.58 é uma ilustração de página inteira que encerra a cobertura do capítulo sobre o material de Companhia/Experiência, imediatamente antes do capítulo 4: Perícias.)*
