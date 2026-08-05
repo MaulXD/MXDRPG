@@ -51,6 +51,14 @@ export type TorAttackParams = {
   defenderIllFavoured?: boolean;
   /** Só kind:"hero" — já tem 1 Ferida marcada (a próxima é fatal, sem rolar severidade). */
   defenderAlreadyWounded?: boolean;
+  /**
+   * Só kind:"adversary" — Vigor: "o Vigor indica o número de Ferimentos
+   * necessários para abater um inimigo de vez" (08-mestre-e-adversarios.md).
+   * Ausente é tratado como 1.
+   */
+  defenderMight?: number;
+  /** Só kind:"adversary" — Ferimentos que ele já tinha antes deste ataque. */
+  defenderWounds?: number;
 
   /* ── Posturas (D17) ──────────────────────────────────────────────────
      Adversários não escolhem postura (regra do livro: a mecânica retrata só o
@@ -248,6 +256,12 @@ export function resolveTorAttack(params: TorAttackParams): TorAttackResolution {
   }
 
   if (params.defenderKind === "adversary") {
+    // Vigor = quantos Ferimentos são necessários pra abater. Antes qualquer
+    // Ferimento eliminava, o que matava os 8 adversários de Vigor 2 com metade do
+    // necessário — o Grande Troll das Cavernas (Resistência 80, Proteção 3d) saía
+    // do combate num único Golpe Perfurante que furasse a Proteção.
+    const might = Math.max(1, params.defenderMight ?? 1);
+    const woundsAfter = Math.max(0, params.defenderWounds ?? 0) + 1;
     return {
       attackRoll,
       hit: true,
@@ -257,7 +271,9 @@ export function resolveTorAttack(params: TorAttackParams): TorAttackResolution {
       protectionRoll,
       protectionFailed: true,
       wound: true,
-      dying: true, // adversários são eliminados quando sofrem uma Ferida
+      // Só este Ferimento abate se ele fechar o Vigor. Antes disso o adversário
+      // segue lutando, e a Resistência continua caindo pelo dano normal.
+      dying: woundsAfter >= might,
     };
   }
 

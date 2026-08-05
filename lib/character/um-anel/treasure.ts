@@ -245,7 +245,7 @@ export const TOR_CURSED_ITEMS: TorCursedItemEffect[] = [
   {
     id: "maldicao-da-fraqueza",
     name: "Maldição da Fraqueza",
-    description: "O herói amaldiçoado exibe a pior Falha ligada ao seu próprio Caminho da Sombra (Covarde/Vagueação-louca, Amedrontado/Caminho do Desespero, Assassino/Maldição da Vingança, Ladrão/Mal do Dragão, Tirânico/Fascínio pelo Poder, Traiçoeiro/Fascínio pelos Segredos). Considerada temporária — não conta pra Sucumbir à Sombra.",
+    description: "O herói amaldiçoado exibe a pior Falha ligada ao seu próprio Caminho da Sombra (Covarde/Loucura Errante, Medroso/Caminho do Desespero, Assassino/Maldição da Vingança, Ladrão/Mal do Dragão, Tirânico/Fascínio pelo Poder, Traiçoeiro/Fascínio pelos Segredos). Considerada temporária — não conta pra Sucumbir à Sombra.",
   },
   {
     id: "escurecer",

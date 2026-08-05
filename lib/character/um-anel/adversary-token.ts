@@ -41,6 +41,12 @@ export function createTorAdversaryToken(
       attributeLevel: stats.attributeLevel,
       actions: stats.actions,
       wounded: false,
+      // Vigor precisa chegar ao combate: é o número de Ferimentos pra abater o
+      // adversário. Sem copiar aqui, o motor eliminava qualquer adversário no
+      // primeiro Ferimento, e os 8 blocos de Vigor 2 morriam com metade — o
+      // Grande Troll das Cavernas (Resistência 80) caía num único golpe.
+      might: Math.max(1, stats.might),
+      wounds: 0,
       eliminated: false,
     },
     ...defaultMovementFields({ walk: TOR_TOKEN_WALK, run: TOR_TOKEN_RUN }),

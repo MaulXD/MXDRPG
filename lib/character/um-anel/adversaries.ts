@@ -204,7 +204,7 @@ const TOR_ADVERSARIES_RAW: TorAdversaryStats[] = [
       { id: "lanca-de-ponta-larga", label: "Lança de Ponta Larga", rating: 3, damage: 5, injury: 16, specialDamage: ["Perfurar"] },
     ],
     fellAbilities: [
-      { name: "Resistência Hedionda", text: "Quando um ataque causaria dano que reduziria a criatura a 0 de Resistência, causa um Golpe Perfurante em vez disso. Se a criatura ainda estiver viva, retorna à Resistência máxima." },
+      { name: "Rijeza Hedionda", text: "Quando um ataque causaria dano que reduziria a criatura a 0 de Resistência, causa um Golpe Perfurante em vez disso. Se a criatura ainda estiver viva, retorna à Resistência máxima." },
       { name: "Odeia a Luz do Sol", text: "Perde 1 Ódio no início de cada rodada exposto à luz plena do sol." },
     ],
   },
@@ -252,7 +252,7 @@ const TOR_ADVERSARIES_RAW: TorAdversaryStats[] = [
     ],
   },
 
-  // ——— Trolls (todos: Resistência Hedionda + Obtuso) ———
+  // ——— Trolls (todos: Rijeza Hedionda + Cabeça-dura, livro l.899-903) ———
   {
     id: "grande-troll-das-cavernas",
     name: "Grande Troll das Cavernas",
@@ -272,17 +272,17 @@ const TOR_ADVERSARIES_RAW: TorAdversaryStats[] = [
     ],
     fellAbilities: [
       {
-        name: "Resistência Hedionda",
+        name: "Rijeza Hedionda",
         text: "Quando um ataque causaria dano que reduziria a criatura a 0 de Resistência, causa um Golpe Perfurante em vez disso. Se a criatura ainda estiver viva, retorna à Resistência máxima.",
       },
       {
-        name: "Golpe de Pavor",
-        text: "Gaste 1 Ódio pra fazer todos os heróis à vista ganharem 2 pontos de Sombra (Pavor). Quem falhar no Teste de Sombra fica atordoado e não pode gastar Esperança pelo resto da luta.",
+        name: "Infundir Medo",
+        text: "Gaste 1 Ódio pra fazer todos os heróis à vista ganharem 2 pontos de Sombra (Pavor). Quem falhar no Teste de Sombra fica intimidado e não pode gastar Esperança pelo resto da luta.",
       },
       { name: "Pele Grossa", text: "Gaste 1 ponto de Ódio pra ganhar (2d) numa rolagem de Proteção." },
       {
-        name: "Obtuso",
-        text: "Heróis em postura Avançado podem tentar uma Tarefa de Combate especial: rolagem de ENIGMA — sucesso reduz o Ódio do Troll em 1 (+1 por ícone de sucesso).",
+        name: "Cabeça-dura",
+        text: "Heróis em postura Avançada podem tentar uma Tarefa de Combate especial: rolagem de ENIGMA — sucesso reduz o Ódio do Troll em 1 (+1 por ícone de sucesso).",
       },
     ],
   },
@@ -309,6 +309,8 @@ const TOR_ADVERSARIES_RAW: TorAdversaryStats[] = [
       { name: "Morador das Trevas", text: "Todas as rolagens de ataque são Favorecidas na escuridão." },
       { name: "Medo do Fogo", text: "Perde 1 Ódio no início de cada rodada engajado em combate corpo a corpo com um adversário empunhando tocha ou item em chamas." },
       { name: "Pele Grossa", text: "Gaste 1 ponto de Ódio pra ganhar (2d) numa rolagem de Proteção." },
+      { name: "Rijeza Hedionda", text: "Quando um ataque causaria dano que reduziria a criatura a 0 de Resistência, causa um Golpe Perfurante em vez disso. Se a criatura ainda estiver viva, retorna à Resistência máxima." },
+      { name: "Cabeça-dura", text: "Heróis em postura Avançada podem tentar uma Tarefa de Combate especial: rolagem de ENIGMA como ação principal — sucesso reduz o Ódio do Troll em 1, mais 1 por ícone de Sucesso." },
     ],
   },
   {
@@ -331,6 +333,8 @@ const TOR_ADVERSARIES_RAW: TorAdversaryStats[] = [
     fellAbilities: [
       { name: "Ódio (Anões)", text: "Ao lutar contra Anões, todas as rolagens da criatura são Favorecidas." },
       { name: "Força Terrível", text: "Se a criatura causou um Golpe Perfurante, gaste 1 Ódio pra tornar a rolagem de Proteção do alvo Desfavorecida." },
+      { name: "Rijeza Hedionda", text: "Quando um ataque causaria dano que reduziria a criatura a 0 de Resistência, causa um Golpe Perfurante em vez disso. Se a criatura ainda estiver viva, retorna à Resistência máxima." },
+      { name: "Cabeça-dura", text: "Heróis em postura Avançada podem tentar uma Tarefa de Combate especial: rolagem de ENIGMA como ação principal — sucesso reduz o Ódio do Troll em 1, mais 1 por ícone de Sucesso." },
     ],
   },
   {
@@ -354,10 +358,12 @@ const TOR_ADVERSARIES_RAW: TorAdversaryStats[] = [
       { name: "Ódio (Anões)", text: "Ao lutar contra Anões, todas as rolagens da criatura são Favorecidas." },
       { name: "Força Terrível", text: "Se a criatura causou um Golpe Perfurante, gaste 1 Ódio pra tornar a rolagem de Proteção do alvo Desfavorecida." },
       { name: "Grito de Triunfo", text: "Gaste 1 Ódio pra restaurar 1 Ódio a todos os outros Trolls na luta." },
+      { name: "Rijeza Hedionda", text: "Quando um ataque causaria dano que reduziria a criatura a 0 de Resistência, causa um Golpe Perfurante em vez disso. Se a criatura ainda estiver viva, retorna à Resistência máxima." },
+      { name: "Cabeça-dura", text: "Heróis em postura Avançada podem tentar uma Tarefa de Combate especial: rolagem de ENIGMA como ação principal — sucesso reduz o Ódio do Troll em 1, mais 1 por ícone de Sucesso." },
     ],
   },
 
-  // ——— Mortos-Vivos (todos: Sem Morte + Sem Coração + Golpe de Pavor) ———
+  // ——— Mortos-Vivos (todos: Sem Morte + Sem Coração + Infundir Medo, livro l.1002-1004) ———
   {
     id: "barrow-wight",
     // Nome de exibição em PT-BR (convenção do projeto). O `id` fica em inglês
@@ -383,6 +389,7 @@ const TOR_ADVERSARIES_RAW: TorAdversaryStats[] = [
       { name: "Odeia a Luz do Sol", text: "Perde 1 Ódio no início de cada rodada exposto à luz plena do sol." },
       { name: "Sem Morte", text: "Gaste 1 Ódio pra cancelar uma Ferida. Quando um ataque causaria dano que reduziria a criatura a 0 de Resistência, gaste 1 Ódio pra retornar à Resistência máxima. Ineficaz contra armas mágicas encantadas pra Perdição dos Mortos-Vivos." },
       { name: "Sem Coração", text: "A criatura não é afetada pela Tarefa de Combate Intimidar Inimigo, a menos que se obtenha um sucesso Mágico." },
+      { name: "Infundir Medo", text: "Gaste 1 Ódio pra fazer todos os heróis à vista ganharem 3 pontos de Sombra (Pavor). Quem falhar no Teste de Sombra fica intimidado e não pode gastar Esperança pelo resto da luta." },
     ],
   },
   {
@@ -407,6 +414,7 @@ const TOR_ADVERSARIES_RAW: TorAdversaryStats[] = [
       { name: "Medo do Fogo", text: "Perde 1 Ódio no início de cada rodada engajado em combate corpo a corpo com um adversário empunhando tocha ou item em chamas." },
       { name: "Sem Morte", text: "Gaste 1 Ódio pra cancelar uma Ferida. Quando um ataque causaria dano que reduziria a criatura a 0 de Resistência, gaste 1 Ódio pra retornar à Resistência máxima." },
       { name: "Sem Coração", text: "A criatura não é afetada pela Tarefa de Combate Intimidar Inimigo, a menos que se obtenha um sucesso Mágico." },
+      { name: "Infundir Medo", text: "Gaste 1 Ódio pra fazer todos os heróis à vista ganharem 3 pontos de Sombra (Pavor). Quem falhar no Teste de Sombra fica intimidado e não pode gastar Esperança pelo resto da luta." },
     ],
   },
   {
@@ -431,6 +439,7 @@ const TOR_ADVERSARIES_RAW: TorAdversaryStats[] = [
       { name: "Odeia a Luz do Sol", text: "Perde 1 Ódio no início de cada rodada exposto à luz plena do sol." },
       { name: "Sem Morte", text: "Gaste 1 Ódio pra cancelar uma Ferida. Quando um ataque causaria dano que reduziria a criatura a 0 de Resistência, gaste 1 Ódio pra retornar à Resistência máxima." },
       { name: "Sem Coração", text: "A criatura não é afetada pela Tarefa de Combate Intimidar Inimigo, a menos que se obtenha um sucesso Mágico." },
+      { name: "Infundir Medo", text: "Gaste 1 Ódio pra fazer todos os heróis à vista ganharem 3 pontos de Sombra (Pavor). Quem falhar no Teste de Sombra fica intimidado e não pode gastar Esperança pelo resto da luta." },
     ],
   },
 
@@ -504,13 +513,14 @@ const TOR_ADVERSARIES_RAW: TorAdversaryStats[] = [
     fellAbilities: [
       { name: "Ferida Mortal", text: "Alvos feridos fazem a rolagem de Dado de Proeza pra determinar a severidade da Ferida Desfavorecida." },
       {
-        name: "Resistência Hedionda",
+        name: "Rijeza Hedionda",
         text: "Quando um ataque causaria dano que reduziria a criatura a 0 de Resistência, causa um Golpe Perfurante em vez disso. Se a criatura ainda estiver viva, retorna à Resistência máxima.",
       },
       {
-        name: "Golpe de Pavor",
-        text: "Gaste 1 Ódio pra fazer todos os heróis à vista ganharem 3 pontos de Sombra (Pavor). Quem falhar no Teste de Sombra fica atordoado e não pode gastar Esperança pelo resto da luta.",
+        name: "Infundir Medo",
+        text: "Gaste 1 Ódio pra fazer todos os heróis à vista ganharem 3 pontos de Sombra (Pavor). Quem falhar no Teste de Sombra fica intimidado e não pode gastar Esperança pelo resto da luta.",
       },
+      { name: "Grande Salto", text: "Gaste 1 Ódio pra atacar qualquer herói, em qualquer postura de combate, inclusive Retaguarda." },
     ],
   },
 
@@ -540,7 +550,7 @@ const TOR_ADVERSARIES_RAW: TorAdversaryStats[] = [
         text: "Gaste 1 Ódio pra cancelar uma Ferida, ou dano que a levaria a 0 de Resistência. Imune à Tarefa de Combate Intimidar Inimigo, a menos que se obtenha um sucesso Mágico.",
       },
       {
-        name: "Golpe de Pavor",
+        name: "Infundir Medo",
         text: "Gaste 1 Ódio pra fazer todos os heróis à vista ganharem 3 pontos de Sombra (Pavor). Quem falhar no Teste de Sombra se perde na névoa e não pode se reunir ao grupo até a rodada seguinte.",
       },
     ],

@@ -129,7 +129,7 @@ export function TorCharacterCreationWizard({
         return null;
       case "Atributos":
         if (draft.attributeOptionIndex === null) return "Escolha um conjunto de Atributos";
-        if (draft.culture === "rangers" && !draft.rangerAttributeBonus) {
+        if (culture?.blessingAttributeBonus && !draft.rangerAttributeBonus) {
           return "Escolha o Atributo que recebe o bônus de Rangers";
         }
         return null;
@@ -391,7 +391,7 @@ export function TorCharacterCreationWizard({
                 ) : (
                   <p className="char-wizard-meta">Escolha uma Cultura primeiro.</p>
                 )}
-                {culture?.id === "rangers" ? (
+                {culture?.blessingAttributeBonus ? (
                   <div className="char-wizard-field">
                     <label>Reis dos Homens — +1 num Atributo à sua escolha</label>
                     <div className="char-wizard-pick-grid">

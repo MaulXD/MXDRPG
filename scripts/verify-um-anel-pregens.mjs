@@ -459,5 +459,92 @@ ok(
   !/Reanimar Companheiros/.test(stripComments(VIRT))
 );
 
+/* ── Criação de personagem: 4 achados da auditoria do capítulo 3 ──────── */
+
+const WIZ = readFileSync(root("lib", "character", "um-anel", "build-from-wizard.ts"), "utf8");
+const RULES_TS = readFileSync(root("lib", "character", "um-anel", "rules.ts"), "utf8");
+const CAP3 = readFileSync(root("livros", "um-anel", "03-aventureiros.md"), "utf8");
+
+/* 1. A Cultura COPIA graduações de Proficiência (2 numa do par, 1 numa à
+      escolha) — não incrementa. Com `+= 1`, escolher a MESMA Proficiência nas
+      duas dava graduação 3 de graça: o mesmo degrau que custaria 6 dos 10 pontos
+      de Experiência Prévia. */
+ok(
+  "Proficiência da escolha B usa Math.max, não +=",
+  /combatProficiencies\[draft\.combatProficiencyChoiceB!\] = Math\.max\(/.test(WIZ)
+);
+ok(
+  "escolha B NÃO incrementa",
+  !/combatProficiencies\[draft\.combatProficiencyChoiceB!\] \+= 1/.test(WIZ)
+);
+
+/* 2. Traço da Vocação entra UMA vez. O Campeão gravava o genérico E o
+      especializado, terminando com 4 Traços Distintivos em vez de 3. */
+ok(
+  "traço da Vocação entra uma vez (especializado OU genérico)",
+  /especializado \?\? calling\.traitId/.test(WIZ)
+);
+ok(
+  "não empilha mais o genérico junto do especializado",
+  !/distinctiveFeatures\.push\(`\$\{calling\.traitId\}:/.test(WIZ)
+);
+
+/* 3. Bênção que dá +1 num Atributo é reconhecida por FLAG, não pelo id
+      "rangers" — os Altos-Elfos de Valfenda têm a mesma mecânica e perdiam o
+      ponto (e com ele 1 de NA e 1 na derivada correspondente). */
+ok("tipo de Cultura tem a flag do +1 de Atributo", /blessingAttributeBonus\?: boolean;/.test(DATA_TS));
+ok(
+  "Rangers e Altos-Elfos têm a flag",
+  (DATA_TS.match(/blessingAttributeBonus: true/g) || []).length >= 2
+);
+ok(
+  "criação aplica o +1 pela flag, não pelo id",
+  /culture\.blessingAttributeBonus && draft\.rangerAttributeBonus/.test(WIZ) &&
+    !/culture\.id === "rangers"/.test(WIZ)
+);
+// O texto das duas Bênçãos tem de continuar prometendo o ponto.
+ok(
+  "livro: Bênção dos Rangers dá +1 num Atributo",
+  /Adicione 1 ponto a um Atributo à sua escolha/.test(CAP3)
+);
+
+/* 4. Virtude inicial de valor fixo soma nas derivadas — o livro manda anotar a
+      derivada JÁ com o efeito ("já contado no total" nas fichas do Starter Set).
+      Antes a Virtude era só um id numa lista e nada somava: herói com Confiança
+      ficava com Esperança máxima 2 abaixo, e o limiar de Desfavorecido (que usa
+      hopeMax) saía errado junto. */
+const virtueBonusBody = RULES_TS.slice(
+  RULES_TS.indexOf("export function torVirtueDerivedBonus"),
+  RULES_TS.indexOf("export function computeDerivedStats")
+);
+ok("torVirtueDerivedBonus existe", virtueBonusBody.length > 100);
+ok('Robustez soma 2 na Resistência máxima', /has\("robustez"\) \? 2 : 0/.test(virtueBonusBody));
+ok('Confiança soma 2 na Esperança máxima', /has\("confianca"\) \? 2 : 0/.test(virtueBonusBody));
+ok('Agilidade soma 1 no Bloqueio', /has\("agilidade-de-aparar"\) \? 1 : 0/.test(virtueBonusBody));
+ok(
+  "criação soma o bônus da Virtude nas três derivadas",
+  /enduranceMax: base\.enduranceMax \+ virtueBonus\.enduranceMax/.test(WIZ) &&
+    /hopeMax: base\.hopeMax \+ virtueBonus\.hopeMax/.test(WIZ) &&
+    /parry: base\.parry \+ virtueBonus\.parry/.test(WIZ)
+);
+// Os valores têm de bater com as descrições que o app exibe.
+for (const [id, texto] of [
+  ["robustez", "Aumente em 2 pontos seu valor máximo de Resistência"],
+  ["confianca", "Aumente em 2 pontos seu valor máximo de Esperança"],
+  ["agilidade-de-aparar", "Aumente seu valor de Bloqueio em 1"],
+]) {
+  ok(
+    `descrição de "${id}" bate com o bônus aplicado`,
+    new RegExp(`id: "${id}"[^}]*?${texto.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}`).test(DATA_TS)
+  );
+}
+
+/* 5. Nome do traço cultural dos Hobbits — o app mostrava "Meios-Homens", string
+      que não existe em livros/um-anel/. Mesmo modo de falha de "Reanimar
+      Companheiros": o Mestre procura no livro pelo nome do app e não acha. */
+ok('traço dos Hobbits é "Pequenos"', /extraTraitName: "Pequenos"/.test(DATA_TS));
+ok('"Meios-Homens" não voltou', !/Meios-Homens/.test(DATA_TS));
+ok("livro tem a seção Pequenos", /^### Pequenos$/m.test(CAP3));
+
 console.log(`\nverify-um-anel-pregens: ${pass} passaram, ${fail} falharam`);
 if (fail > 0) process.exit(1);
