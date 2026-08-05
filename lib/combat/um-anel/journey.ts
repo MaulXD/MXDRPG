@@ -91,15 +91,28 @@ export const TOR_REGION_META: Record<TorRegionType, TorRegionMeta> = {
 export const TOR_TERRAIN_TYPES = ["estrada", "normal", "dificil"] as const;
 export type TorTerrainType = (typeof TOR_TERRAIN_TYPES)[number];
 
-/** Modificador na rolagem de quem enfrenta o evento (JOR-M01). */
-export function terrainRollModifier(terrain: TorTerrainType): {
-  favoured: boolean;
-  illFavoured: boolean;
-} {
-  return {
-    favoured: terrain === "estrada",
-    illFavoured: terrain === "dificil",
-  };
+/**
+ * Modificador de terreno na rolagem de quem enfrenta o evento (JOR-M01).
+ *
+ * O livro dá **Dados de Sucesso**, não Favorecida/Desfavorecida:
+ *
+ * > "se o evento ocorre em um hexágono que sugira terreno difícil, o
+ * > herói-jogador *perde (1d)*. Inversamente, se o evento acontece ao longo de
+ * > uma estrada, o herói-jogador *ganha (1d)*." (06-fases-de-aventura-combate.md)
+ *
+ * E o capítulo 2 separa as duas mecânicas de propósito: "ganha (1d)" soma um
+ * Dado de Sucesso, enquanto Favorecida/Desfavorecida rola dois Dados de Proeza.
+ *
+ * Antes isto devolvia favoured/illFavoured, o que trocava a mecânica e criava um
+ * segundo problema: a REGIÃO (Terras Fronteiriças/Selvagens/Sombrias) é que mexe
+ * no Dado de Proeza, e Favorecida + Desfavorecida se **cancelam** — então uma
+ * estrada em Terras Sombrias anulava a penalidade da Região, algo que o livro
+ * nunca diz.
+ */
+export function terrainRollModifier(terrain: TorTerrainType): { rankDelta: number } {
+  if (terrain === "estrada") return { rankDelta: 1 };
+  if (terrain === "dificil") return { rankDelta: -1 };
+  return { rankDelta: 0 };
 }
 
 /* ══════════════════════════════════════════════════════════════════════

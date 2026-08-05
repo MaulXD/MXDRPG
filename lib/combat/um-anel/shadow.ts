@@ -78,7 +78,15 @@ export type TorSpiritState = {
 export type TorSpiritFlags = {
   /** Sombra ≥ Esperança atual — Olho de Sauron passa a ser falha automática. */
   miserable: boolean;
-  /** Fadiga ≥ Resistência atual — Dados de Sucesso com 1–3 são zerados. */
+  /**
+   * Resistência atual ≤ Carga TOTAL (equipamento + Fadiga) — Dados de Sucesso
+   * com 1–3 são zerados.
+   *
+   * A doc dizia "Fadiga ≥ Resistência atual", que é o bug já corrigido escrito ao
+   * contrário: omitia a Carga do equipamento. O código em deriveTorSpiritFlags
+   * sempre esteve certo (usa totalTorLoad), mas um comentário errado a 30 linhas
+   * de distância convida alguem a "consertar" o código pra bater com ele.
+   */
   weary: boolean;
   /** Sombra alcançou a Esperança máxima — Desfavorecido em tudo. */
   illFavouredByShadow: boolean;

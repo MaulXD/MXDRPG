@@ -1,4 +1,4 @@
-import { computeDerivedStats, computeLoad } from "./rules";
+import { computeDerivedStats, computeLoad, shieldParryBonus } from "./rules";
 import type { TorCharacterSheet } from "./types";
 
 /** Preenche defaults em fichas legadas/parciais — mesmo padrão de lib/character/normalize.ts. */
@@ -35,7 +35,12 @@ export function normalizeTorCharacter(raw: TorCharacterSheet): TorCharacterSheet
     shadowScars,
     fatigue,
     parry: raw.parry ?? derived.parry,
-    shieldParryBonus: raw.shieldParryBonus ?? 0,
+    // DERIVADO do escudo equipado, não persistido. A Carga já é recalculada
+    // acima a partir de `armour`; deixar o bônus de escudo como valor guardado
+    // criava duas fontes de verdade que divergem no momento em que o herói troca
+    // de escudo: só a criação escrevia este campo, então o Bloqueio ficava com o
+    // bônus do escudo ANTIGO. Livro: Broquel +1, Escudo +2, Grande Escudo +3.
+    shieldParryBonus: shieldParryBonus(armour.shieldId),
     conditions: {
       // Exausto/Arrasado são derivados das regras — não ficam a cargo de um
       // toggle manual. Ferido continua manual (evento de jogo).

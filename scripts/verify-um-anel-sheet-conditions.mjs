@@ -138,5 +138,69 @@ ok(
   /totalShadow\s*=\s*state\.shadow\s*\+\s*state\.shadowScars/.test(SHADOW)
 );
 
+/* ── Bônus de escudo é DERIVADO, não persistido ────────────────────────
+   A Carga já era recalculada em normalizeTorCharacter a partir de `armour`, mas o
+   bônus de Bloqueio do escudo ficava como valor guardado — e só a criação de
+   personagem o escrevia. Trocar de escudo depois deixava o Bloqueio com o bônus
+   do escudo ANTIGO: duas fontes de verdade que divergem no primeiro uso.
+   Livro: Broquel +1, Escudo +2, Grande Escudo +3. */
+
+ok(
+  "shieldParryBonus é derivado do escudo equipado",
+  /shieldParryBonus: shieldParryBonus\(armour\.shieldId\)/.test(normCode)
+);
+ok(
+  "não guarda mais o bônus de escudo persistido",
+  !/shieldParryBonus: raw\.shieldParryBonus/.test(normCode)
+);
+
+const DATA_EQUIP = readFileSync(
+  join(__dirname, "..", "lib", "character", "um-anel", "data.ts"),
+  "utf8"
+);
+for (const [label, mod] of [
+  ["Broquel", 1],
+  ["Escudo", 2],
+  ["Grande Escudo", 3],
+]) {
+  ok(
+    `escudo "${label}" dá +${mod} de Bloqueio`,
+    new RegExp(`label: "${label}", parryModifier: ${mod}`).test(DATA_EQUIP)
+  );
+}
+
+/* ── Documentação que descrevia a regra errada ─────────────────────────
+   O doc do flag `weary` dizia "Fadiga ≥ Resistência atual" — o bug já corrigido
+   escrito ao contrário, omitindo a Carga do equipamento. O código sempre esteve
+   certo, mas um comentário errado a 30 linhas de distância convida alguém a
+   "consertar" o código pra bater com ele. */
+
+const SHADOW_TS = readFileSync(
+  join(__dirname, "..", "lib", "combat", "um-anel", "shadow.ts"),
+  "utf8"
+);
+ok(
+  "doc do flag weary fala de Carga TOTAL",
+  /Resistência atual ≤ Carga TOTAL \(equipamento \+ Fadiga\)/.test(SHADOW_TS)
+);
+ok(
+  'doc do flag weary NÃO diz mais "Fadiga ≥ Resistência atual"',
+  !/\*\*?\s*Fadiga ≥ Resistência atual/.test(SHADOW_TS)
+);
+
+// `injury` de adversário é o NA do Teste de Proteção, não o limiar do golpe.
+const ADV_TYPES = readFileSync(
+  join(__dirname, "..", "lib", "character", "um-anel", "adversary-types.ts"),
+  "utf8"
+);
+ok(
+  "doc de injury diz que é o NA do Teste de Proteção",
+  /NA do Teste de Proteção/.test(ADV_TYPES)
+);
+ok(
+  "doc de injury NÃO chama o valor de limiar do Golpe Perfurante",
+  !/Golpe Perfurante dispara em Proeza ≥ este valor/.test(ADV_TYPES)
+);
+
 console.log(`\nverify-um-anel-sheet-conditions: ${pass} passaram, ${fail} falharam`);
 if (fail > 0) process.exit(1);

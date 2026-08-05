@@ -116,8 +116,12 @@ ok("Sombrias: Desfavorecido", /sombria:\s*\{[^}]*featRoll:\s*"illFavoured"/.test
 
 /* ── Terreno (JOR-M01) ────────────────────────────────────────────── */
 
-ok("Estrada dá vantagem", /favoured:\s*terrain\s*===\s*"estrada"/.test(SRC));
-ok("Terreno difícil dá desvantagem", /illFavoured:\s*terrain\s*===\s*"dificil"/.test(SRC));
+// Estas duas asserções trancavam a REGRA ERRADA: exigiam que o terreno virasse
+// Favorecida/Desfavorecida, quando o livro dá Dado de Sucesso. Um teste que fixa
+// a regra errada é pior que nenhum — ele defende o bug. A verificação correta
+// está no bloco "Terreno mexe em Dados de SUCESSO" no fim deste arquivo.
+ok("Estrada dá +1 Dado de Sucesso", /"estrada"\) return \{ rankDelta: 1 \}/.test(SRC));
+ok("Terreno difícil dá -1 Dado de Sucesso", /"dificil"\) return \{ rankDelta: -1 \}/.test(SRC));
 
 /* ── Tabela de Eventos (JOR-E0x) ──────────────────────────────────── */
 
@@ -231,6 +235,58 @@ const codeOnly = SRC
   .replace(/\/\/.*$/gm, "");
 ok("Sem 'hex' no código, só em comentário (D22)", !/hex/i.test(codeOnly));
 ok("O comentário explica a adaptação trecho↔hex", /1 trecho = 1 hex|o livro usa "hex"/.test(SRC));
+
+/* ── Terreno mexe em Dados de SUCESSO, não no Dado de Proeza ───────────
+   O livro (06-fases-de-aventura-combate.md, §"ESTRADAS E TERRENO DIFÍCIL"):
+   terreno difícil faz o herói *perder (1d)*, estrada faz *ganhar (1d)*. O
+   capítulo 2 separa as duas mecânicas de propósito — "(1d)" é Dado de Sucesso,
+   Favorecida/Desfavorecida é rolar dois Dados de Proeza.
+
+   O código devolvia favoured/illFavoured, o que trocava a mecânica E criava um
+   segundo problema: a REGIÃO é que mexe no Dado de Proeza, e Favorecida +
+   Desfavorecida se CANCELAM — então uma estrada em Terras Sombrias apagava a
+   penalidade da Região, algo que o livro nunca diz. */
+
+const BOOK_COMBATE = readFileSync(
+  join(__dirname, "..", "livros", "um-anel", "06-fases-de-aventura-combate.md"),
+  "utf8"
+);
+ok(
+  "livro: terreno difícil perde (1d), estrada ganha (1d)",
+  /terreno difícil,[\s\S]{0,80}?\*perde \(1d\)\*[\s\S]{0,160}?estrada,[\s\S]{0,40}?\*ganha \(1d\)\*/i.test(
+    BOOK_COMBATE.replace(/\n/g, " ")
+  )
+);
+
+const terrainBody = fnBody(SRC, "terrainRollModifier");
+ok("terrainRollModifier isolado", terrainBody.length > 30);
+ok("estrada dá +1 Dado de Sucesso", /"estrada"\) return \{ rankDelta: 1 \}/.test(terrainBody));
+ok("terreno difícil dá -1 Dado de Sucesso", /"dificil"\) return \{ rankDelta: -1 \}/.test(terrainBody));
+ok("terreno normal é neutro", /return \{ rankDelta: 0 \}/.test(terrainBody));
+// A REGRESSÃO: não pode voltar a devolver Favorecida/Desfavorecida.
+ok(
+  "terreno NÃO devolve favoured/illFavoured",
+  !/favoured/i.test(terrainBody)
+);
+
+// E o painel tem de aplicar no `rank`, clampado em 0 (penalidade desce até zero).
+const PANEL_J = readFileSync(
+  join(__dirname, "..", "components", "vtt", "TorJourneyPanel.tsx"),
+  "utf8"
+);
+ok(
+  "painel aplica o terreno no rank, clampado em 0",
+  /rank: Math\.max\(0, targetRank \+ mod\.rankDelta\)/.test(PANEL_J)
+);
+ok(
+  "painel NÃO passa mais favoured/illFavoured de terreno",
+  !/favoured: mod\./.test(PANEL_J) && !/illFavoured: mod\./.test(PANEL_J)
+);
+// A Região continua sendo quem mexe no Dado de Proeza — não pode ter sido perdida.
+ok(
+  "Região segue definindo Favorecida/Desfavorecida",
+  /featRoll: "favoured"/.test(SRC) && /featRoll: "illFavoured"/.test(SRC)
+);
 
 console.log(`\nverify-um-anel-journey: ${pass} passaram, ${fail} falharam`);
 if (fail > 0) process.exit(1);

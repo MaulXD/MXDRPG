@@ -64,6 +64,7 @@ export async function executeRoomTorAttack(
   let attackerStrength: number | undefined;
   let attackerWeary = false;
   let attackerMiserable = false;
+  let attackerIllFavoured = false;
   let weaponDamage: number;
   let weaponInjury: number | null;
   let weaponLabel: string;
@@ -86,6 +87,16 @@ export async function executeRoomTorAttack(
     attackerStrength = sheet.attributes.forca;
     attackerWeary = sheet.conditions.weary;
     attackerMiserable = sheet.conditions.miserable;
+    // Desfavorecido vale em TODAS as rolagens do herói, inclusive o próprio
+    // ataque. Este era o TERCEIRO sítio da mesma confusão Arrasado ×
+    // Desfavorecido: o campo já existia em TorAttackParams e era usado na
+    // rolagem, mas o handler só o preenchia para o DEFENSOR — então o mesmo
+    // herói ficava Desfavorecido ao se defender e não ao atacar.
+    attackerIllFavoured = isTorIllFavouredByShadow({
+      shadow: sheet.shadow,
+      shadowScars: sheet.shadowScars,
+      hopeMax: sheet.hope.max,
+    });
     weaponDamage = weapon.damage;
     weaponInjury = resolveWeaponInjury(weapon, gearItem.twoHanded);
     weaponLabel = weapon.label;
@@ -127,6 +138,7 @@ export async function executeRoomTorAttack(
     attackerStrength,
     attackerWeary,
     attackerMiserable,
+    attackerIllFavoured,
     defenderParry: defCombat.parry,
     weaponDamage,
     weaponInjury: weaponInjury ?? 999,

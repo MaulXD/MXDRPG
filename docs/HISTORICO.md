@@ -104,6 +104,69 @@ npm run sync:data:check       # após editar livros/
 
 ---
 
+### 2026-08-04 — Auditoria dos capítulos 4 e 6: 12 divergências, 12 correções
+
+**Pedido:** listar as melhores alternativas e já executar a melhor. Escolhida a **opção A** — fechar a
+auditoria de regra dos 4 capítulos densos, que nunca foram confrontados com o código.
+
+**Verificação adversarial: 13 candidatas → 12 confirmadas, 1 refutada.** Taxa muito acima da rodada 6
+(onde 5 de 9 caíram), e por um motivo concreto: `04` e `06` são os dois capítulos mais densos em regra
+e **nunca tinham sido auditados**. A rodada 6 cobria capítulos cujas regras já haviam passado por
+revisão indireta via o capítulo 9 (o resumo condensado do Starter Set).
+
+**Bugs de motor (5):**
+
+1. **`attackerIllFavoured` nunca era preenchido** (`tor-combat-attack.ts`) — **TERCEIRO sítio** da
+   confusão Arrasado × Desfavorecido, que eu já havia declarado resolvida duas vezes. O campo existia
+   em `TorAttackParams` e já era usado na rolagem, mas o handler só preenchia o do DEFENSOR: o mesmo
+   herói ficava Desfavorecido ao se defender e **não ao atacar**. Confirmado por leitura própria, antes
+   dos agentes. O teste agora tranca os **três** sítios juntos.
+2. **Terreno de jornada virava Favorecida/Desfavorecida** (`journey.ts`) em vez de ±1 Dado de Sucesso.
+   O livro dá *perde (1d)* / *ganha (1d)*, e o capítulo 2 separa as duas mecânicas de propósito. Havia
+   um segundo dano: quem mexe no Dado de Proeza é a **Região**, e Favorecida + Desfavorecida se
+   **cancelam** — então uma estrada em Terras Sombrias apagava a penalidade da Região.
+   **Duas asserções antigas trancavam a regra errada** e foram substituídas: um teste que fixa o
+   comportamento errado é pior que nenhum, porque defende o bug.
+3. **Desastre do conselho sem o gatilho de zero sucessos** (`council.ts`). O livro dá dois gatilhos
+   independentes; só o segundo estava implementado. Companhia que abre bem o conselho e depois falha em
+   TODAS as tentativas recebia "fracasso" onde o livro manda Desastre.
+4. **`shieldParryBonus` persistido em vez de derivado** (`normalize.ts`). A Carga já era recalculada de
+   `armour`, mas o bônus de escudo ficava guardado e só a criação o escrevia — trocar de escudo deixava
+   o Bloqueio com o bônus do escudo **antigo**.
+5. **Nomes de arma e armadura divergindo entre capítulos.** O capítulo 6 chamava de "Porrete" a arma de
+   Dano 3, enquanto o capítulo 3 e o código usam esse nome para a de Dano 4. **Mesmo nome, arma
+   diferente** — um Mestre cruzando os capítulos aplicaria o dano errado. Sete itens alinhados no
+   capítulo 6 (Cacete/Porrete, Cota de Malha/Sobretudo de Malha, Camisa e Couraça de Couro, Grande
+   Lança/Machado/Arco). A causa raiz é estrutural: **capítulos traduzidos por agentes diferentes
+   escolhem palavras diferentes para o mesmo termo.**
+
+**Bugs de texto (5)** — o app *dizia* a regra errada: o PDF rotulava o Número-Alvo como "ND"
+(vocabulário do outro sistema do repo) e imprimia o Bloqueio **sem** o modificador do escudo, então o
+bônus não aparecia em nenhum número da ficha que o jogador leva pra mesa; o compêndio chamava a
+Proficiência das armas de briga de "Desarmado", falso para Adaga/Cacete/Porrete e escondendo a regra
+que importa; a doc do flag `weary` descrevia "Fadiga ≥ Resistência atual" — o bug já corrigido escrito
+ao contrário, a 30 linhas do código certo, convidando alguém a "consertar" o código pra bater com o
+comentário; e a doc de `injury` de adversário chamava o valor de limiar do Golpe Perfurante, quando é o
+NA do Teste de Proteção.
+
+**Guarda nova contra a causa raiz: `scripts/verify-um-anel-equipamento.mjs`** (121 asserções). Cruza as
+tabelas de arma e armadura do livro com `data.ts` em três direções: números iguais para o mesmo nome;
+nenhum nome significando duas coisas entre capítulos; e — o furo que eu tapei depois de ver que o teste
+passava em branco no couro — **item com os mesmos números sob nome diferente**, detectado pelos números
+em vez do rótulo.
+
+**Refutada (1):** o nome da tarefa de combate da Retaguarda ("Preparar Disparo" vs "Preparar Tiro"),
+derrubada 3/3.
+
+**Validação:** `npx tsc --noEmit` limpo · `npm run test` verde (**694 asserções**) · `npm run build`
+compila. **7 testes negativos**: reintroduzir cada bug faz o teste correspondente acusar, nenhum passa
+em branco.
+
+**Falta:** auditar `03-aventureiros` e `08-mestre-e-adversarios` (traduzidos, sem auditoria) e a Fase J
+inteira.
+
+---
+
 ### 2026-08-04 — Fase B CONCLUÍDA: 13/13 capítulos do Um Anel em PT-BR
 
 **Pedido:** continuar o loop e subir o que estiver feito.

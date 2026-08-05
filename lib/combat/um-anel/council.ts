@@ -158,6 +158,18 @@ export function resolveTorInteraction(
 export function torCouncilOutcome(state: TorCouncilState): TorCouncilOutcome {
   if (state.successes >= state.resistance) return "success";
   if (state.attemptsUsed >= state.timeLimit) {
+    // O livro dá DOIS gatilhos independentes pro Desastre:
+    //
+    // > "DESASTRE: os heróis-jogadores fracassam em todas as rolagens
+    // > disponíveis, OU obtêm um número de rolagens bem-sucedidas mas não
+    // > conseguem igualar a Resistência após uma Introdução malfeita"
+    // > (06-fases-de-aventura-combate.md)
+    //
+    // Só o segundo estava implementado. Uma Companhia que abre BEM o conselho
+    // (Introdução com sucesso, logo `disasterOnFailure` falso) e depois falha em
+    // TODAS as tentativas caía em "failure" — o livro manda Desastre, porque
+    // zero sucesso é o pior desfecho possível, independente da Introdução.
+    if (state.successes === 0) return "disaster";
     return state.disasterOnFailure ? "disaster" : "failure";
   }
   return "ongoing";

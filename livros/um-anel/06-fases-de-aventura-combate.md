@@ -494,20 +494,20 @@ possível.
 |---|---|---|---|---|---|
 | Desarmado | 1 | — | 0 | Briga* | Inclui arremessar pedras. Não pode causar um Golpe Perfurante |
 | Adaga | 2 | 14 | 0 | Briga* | — |
-| Porrete | 3 | 12 | 0 | Briga* | — |
-| Clava | 4 | 14 | 1 | Briga* | — |
+| Cacete | 3 | 12 | 0 | Briga* | — |
+| Porrete | 4 | 14 | 1 | Briga* | — |
 | Espada Curta | 3 | 16 | 1 | Espadas | — |
 | Espada | 4 | 16 | 2 | Espadas | — |
 | Espada Longa | 5 | 16 (1m)/18 (2m) | 3 | Espadas | Pode ser usada com 1 ou 2 mãos |
 | Lança Curta | 3 | 14 | 2 | Lanças | Pode ser arremessada |
 | Lança | 4 | 14 (1m)/16 (2m) | 3 | Lanças | Pode ser usada com 1 ou 2 mãos. Pode ser arremessada |
-| Lança Grande | 5 | 16 | 4 | Lanças | 2 mãos |
+| Grande Lança | 5 | 16 | 4 | Lanças | 2 mãos |
 | Machado | 5 | 18 | 2 | Machados | — |
 | Machado de Cabo Longo | 6 | 18 (1m)/20 (2m) | 3 | Machados | Pode ser usado com 1 ou 2 mãos |
-| Machado Grande | 7 | 20 | 4 | Machados | 2 mãos |
+| Grande Machado | 7 | 20 | 4 | Machados | 2 mãos |
 | Picareta | 7 | 18 | 3 | Machados | 2 mãos |
 | Arco | 3 | 14 | 2 | Arcos | Arma à distância |
-| Arco Grande | 4 | 16 | 4 | Arcos | Arma à distância |
+| Grande Arco | 4 | 16 | 4 | Arcos | Arma à distância |
 
 \* Armas usadas para fazer Ataques de Briga (ver *Ataques de Briga* nas Regras Básicas).
 
@@ -515,10 +515,10 @@ possível.
 
 | Armadura | Proteção | Carga | Tipo | Padrão de Vida Mínimo |
 |---|---|---|---|---|
-| Túnica de Couro | 1d | 3 | Armadura de couro | — |
-| Corselete de Couro | 2d | 6 | Armadura de couro | — |
-| Camisa de Malha | 3d | 9 | Armadura de malha | Comum |
-| Cota de Malha | 4d | 12 | Armadura de malha | Próspero |
+| Camisa de Couro | 1d | 3 | Armadura de couro | — |
+| Couraça de Couro | 2d | 6 | Armadura de couro | — |
+| Cota de Malha | 3d | 9 | Armadura de malha | Comum |
+| Sobretudo de Malha | 4d | 12 | Armadura de malha | Próspero |
 | Elmo* | +1d | 4 | Proteção de cabeça | — |
 
 \* Pode ser removido em combate para reduzir a Carga.

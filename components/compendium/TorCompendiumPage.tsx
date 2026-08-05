@@ -299,7 +299,10 @@ function EquipamentoSection() {
                   Dano {w.damage} · Ferimento {w.injury ?? "—"} · Carga {w.load}
                 </p>
                 <p className="tor-compendium__meta">
-                  {w.proficiency === "brawling" ? "Desarmado" : COMBAT_PROFICIENCY_LABEL[w.proficiency]}
+                  {/* "Briga", não "Desarmado": Adaga, Cacete e Porrete NÃO são ataques
+                      desarmados, e o rótulo errado escondia a regra que importa —
+                      briga usa a Proficiência mais alta do herói perdendo (1d). */}
+                  {w.proficiency === "brawling" ? "Briga" : COMBAT_PROFICIENCY_LABEL[w.proficiency]}
                   {flair ? ` · ${flair}` : ""}
                 </p>
               </article>

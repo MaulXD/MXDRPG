@@ -21,7 +21,7 @@ import "./tor-sheet-pdf.css";
  * lib/character/export-sheet-pdf.ts (html2canvas → jsPDF).
  *
  * Segue os agrupamentos da ficha oficial (`the one ring/ficha-editavel-o-um-anel.pdf`):
- * identidade, Atributos com ND, Perícias por grupo, Proficiências de Combate,
+ * identidade, Atributos com NA, Perícias por grupo, Proficiências de Combate,
  * recursos (Resistência/Esperança/Sombra/Fadiga), Equipamento de Guerra,
  * armadura, Recompensas e Virtudes.
  *
@@ -104,7 +104,7 @@ export function TorSheetPdfDocument({ character }: Props) {
             <div key={a} className="tor-pdf__attr">
               <span className="tor-pdf__attr-label">{ATTR_LABEL[a]}</span>
               <span className="tor-pdf__attr-value">{character.attributes[a]}</span>
-              <span className="tor-pdf__attr-tn">ND {attributeTN(character.attributes[a])}</span>
+              <span className="tor-pdf__attr-tn">NA {attributeTN(character.attributes[a])}</span>
             </div>
           ))}
         </div>
@@ -120,7 +120,10 @@ export function TorSheetPdfDocument({ character }: Props) {
           <Box label="Cicatrizes" value={character.shadowScars} />
           <Box label="Fadiga" value={character.fatigue} />
           <Box label="Carga total" value={totalLoad} />
-          <Box label="Bloqueio" value={character.parry} />
+          {/* Com o modificador do escudo, igual à ficha na tela e ao token de
+              combate. O PDF imprimia `parry` puro, então o bônus do escudo não
+              aparecia em nenhum número da ficha exportada. */}
+          <Box label="Bloqueio" value={character.parry + character.shieldParryBonus} />
           <Box label="Proteção" value={protectionDice} />
         </div>
         <p className="tor-pdf__note">

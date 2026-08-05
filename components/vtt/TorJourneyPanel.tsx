@@ -235,12 +235,16 @@ export function TorJourneyPanel({ roomId, canManage, progress, onUpdate }: Props
           return;
         }
 
+        // Terreno soma/subtrai Dado de SUCESSO (o livro dá "ganha (1d)" na
+        // estrada e "perde (1d)" em terreno difícil). Quem mexe no Dado de
+        // Proeza é a Região, e por isso o terreno não pode virar
+        // Favorecida/Desfavorecida: as duas se cancelam, e uma estrada em Terras
+        // Sombrias apagaria a penalidade da Região.
         const mod = terrainRollModifier(p.terrain);
         const roll = rollTorCheck({
-          rank: targetRank,
+          // Penalidade desce até no mínimo zero Dados de Sucesso (capítulo 2).
+          rank: Math.max(0, targetRank + mod.rankDelta),
           tn: DEFAULT_TN,
-          favoured: mod.favoured,
-          illFavoured: mod.illFavoured,
         });
 
         const outcome = resolveTorJourneyEvent({
