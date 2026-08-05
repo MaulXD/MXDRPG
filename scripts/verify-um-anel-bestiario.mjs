@@ -133,7 +133,7 @@ const FAMILIAS = [
     nome: "Mortos-vivos",
     livro: /todas as criaturas Mortas-vivas[\s\S]{0,900}?INFUNDIR MEDO/i,
     ids: ["barrow-wight", "espectro-funesto", "habitantes-do-pantano"],
-    exigidas: ["Sem Morte", "Sem Coração", "Infundir Medo"],
+    exigidas: ["Imorredouro", "Sem Coração", "Infundir Medo"],
   },
   {
     nome: "Lobos das Terras Selvagens",
@@ -200,7 +200,7 @@ const NOMEADOS = [
     parry: 0,
     armour: 4,
     // Mortos-vivos: as três de família, além das quatro do próprio bloco.
-    familia: ["Sem Morte", "Sem Coração", "Infundir Medo"],
+    familia: ["Imorredouro", "Sem Coração", "Infundir Medo"],
   },
   {
     id: "burzgul",
@@ -284,6 +284,146 @@ ok(
   /Overbear\*? no original[\s\S]{0,400}?sem\s*\n?>?\s*definição na fonte/i.test(
     ERIADOR.replace(/\n>\s*/g, " ")
   )
+);
+
+/* ── Política de nomenclatura: nome exibido = nome do livro ────────────────
+   A auditoria campo a campo dos 21 blocos achou 37 divergências, quase todas de
+   NOME: Habilidade Sinistra, nome de exibição do adversário e Traço. O efeito
+   mecânico estava certo em praticamente todas — o problema é o Mestre procurar no
+   livro pelo nome que o app mostra e não encontrar. Mesmo modo de falha já
+   corrigido em "Reanimar Companheiros" e em Rijeza Hedionda / Cabeça-dura.
+
+   Regra decidida, e é ela que este bloco tranca:
+   - Habilidade Sinistra e nome de exibição: vence o LIVRO.
+   - Traço: vence o rótulo canônico de `data.ts` quando ele existe; senão, o livro.
+     "Precavido" e "Sombrio" não existiam em data.ts (o canônico é Cauteloso e
+     Severo, que é o que o livro usa) — o código era o outlier. Já "Veloz" e
+     "Cruel" SÃO canônicos e o livro difere ("Rápido", "Vicioso"): ali o código
+     fica, e a divergência é do livro. */
+
+const DATA_TS = readFileSync(root("lib", "character", "um-anel", "data.ts"), "utf8");
+
+/** Nomes trocados nesta rodada: [antigo no código, novo (do livro)]. */
+const RENOMEADOS = [
+  ["Morador das Trevas", "Habitante das Trevas"],
+  ["Moradora das Trevas", "Habitante das Trevas"],
+  ["Sem Morte", "Imorredouro"],
+  ["Força Terrível", "Força Horrenda"],
+  ["Pele Grossa", "Couro Grosso"],
+  ["Ódio (Anões)", "Ódio Mortal (Anões)"],
+  ["Povo Feroz", "Gente Feroz"],
+  ["Veneno Orc", "Veneno de Orc"],
+];
+
+for (const [antigo, novo] of RENOMEADOS) {
+  // O capítulo 8 grafa nomes de habilidade de FAMÍLIA em caixa alta
+  // (IMORREDOURO, RIJEZA HEDIONDA); os de bloco vêm em caixa normal. Comparação
+  // insensível a caixa cobre os dois.
+  ok(
+    `Habilidade "${novo}" existe no livro`,
+    BOOK.toLowerCase().includes(novo.toLowerCase())
+  );
+  ok(`nome antigo "${antigo}" não voltou`, !ADV.includes(`"${antigo}"`));
+}
+
+/** Nome de exibição de adversário: tem de ser o do livro. */
+const NOMES_DO_LIVRO = [
+  ["invasor-do-sul", "Saqueador Sulista"],
+  ["campeao-do-sul", "Campeão Sulista"],
+  ["batedor-de-bolsos", "Salteador"],
+  ["chefe-arruaceiro", "Chefe dos Rufiões"],
+  ["assaltante-de-estrada", "Ladrão de Estrada"],
+  ["sabujo-de-sauron", "Cão de Sauron"],
+  ["chefe-de-alcateia", "Chefe dos Lobos"],
+];
+
+for (const [id, nome] of NOMES_DO_LIVRO) {
+  const bloco = blocoDe(id);
+  ok(`${id}: nome de exibição "${nome}"`, bloco !== null && bloco.includes(`name: "${nome}"`));
+  ok(`${id}: nome está no livro`, BOOK.includes(nome));
+  // O id fica em inglês/estável — renomear quebraria salas salvas.
+  ok(`${id}: id preservado`, ADV.includes(`id: "${id}"`));
+}
+
+/** Traço: canônico de data.ts quando existe, senão o do livro. */
+const TRACOS = [
+  // Código era o outlier: o livro e data.ts concordam.
+  ["Cauteloso", true, "Precavido"],
+  ["Severo", true, "Sombrio"],
+  ["Brutamontes", false, "Brutal"],
+  ["Irritável", false, "Irritadiço"],
+];
+
+for (const [novo, canonico, antigo] of TRACOS) {
+  ok(`traço "${novo}" está no livro`, BOOK.includes(novo));
+  if (canonico) {
+    ok(`traço "${novo}" é rótulo canônico de data.ts`, DATA_TS.includes(`label: "${novo}"`));
+  }
+  ok(`traço antigo "${antigo}" não voltou`, !ADV.includes(antigo));
+}
+
+// Onde o CÓDIGO é o canônico e o livro difere, o código fica. Se alguém
+// "corrigir" pro livro, isto acusa e força a discussão em vez do churn.
+for (const canon of ["Veloz", "Cruel"]) {
+  ok(`"${canon}" é canônico em data.ts`, DATA_TS.includes(`label: "${canon}"`));
+  ok(`"${canon}" preservado no bestiário`, ADV.includes(canon));
+}
+
+/* ── Cláusula de família dos Mortos-vivos ──────────────────────────────────
+   Imorredouro é ineficaz contra arma mágica encantada pra Perdição dos
+   Mortos-Vivos — a única contrapartida dos jogadores contra a ressurreição.
+   Faltava em 2 dos 3 blocos da família. */
+
+for (const id of ["barrow-wight", "espectro-funesto", "habitantes-do-pantano", "barrow-king"]) {
+  const bloco = blocoDe(id) || "";
+  const texto = bloco.match(/name: "Imorredouro",[\s\S]{0,80}?text:\s*"([^"]+)"/);
+  ok(`${id}: Imorredouro presente`, Boolean(texto));
+  ok(
+    `${id}: Imorredouro cita a exceção da arma mágica`,
+    Boolean(texto) && /[Ii]neficaz contra/.test(texto[1]),
+    texto?.[1]?.slice(0, 60)
+  );
+}
+ok(
+  "livro: Imorredouro é ineficaz contra arma mágica dos Mortos-vivos",
+  /IMORREDOURO[\s\S]{0,500}?ineficaz contra heróis-jogadores que empunhem uma arma mágica/i.test(BOOK)
+);
+
+// Elwen combina Imorredouro com a imunidade a Intimidar Inimigo no mesmo texto
+// (não tem "Sem Coração" separado). Um patch em massa já apagou essa cláusula
+// dela uma vez — esta asserção existe pra não acontecer de novo.
+const elwen = blocoDe("elwen-a-espectra-funesta") || "";
+ok(
+  "Elwen mantém a imunidade a Intimidar Inimigo no Imorredouro",
+  /name: "Imorredouro",[\s\S]{0,80}?text:\s*"[^"]*Intimidar Inimigo/.test(elwen)
+);
+
+/* ── Textos corrigidos que mudam o que acontece na mesa ───────────────── */
+
+ok(
+  "Cabeça-dura cobra a ação principal da rodada",
+  /Cabeça-dura[\s\S]{0,200}?como ação principal da rodada/.test(ADV)
+);
+ok(
+  "Ferida Mortal desfavorece a ROLAGEM, não a Ferida",
+  /Alvos Feridos fazem uma rolagem Desfavorecida de Dado de Proeza/.test(ADV)
+);
+ok(
+  "Espectro Funesto usa Lâmina Corroída (nome do livro)",
+  (blocoDe("espectro-funesto") || "").includes('label: "Lâmina Corroída"')
+);
+ok(
+  "Grito de Triunfo do Chefe dos Rufiões cita a família certa",
+  /a todos os outros Rufiões na luta/.test(ADV) && !/outros Arruaceiros na luta/.test(ADV)
+);
+// Checa só o campo `description`: "Cave-troll" ainda aparece num COMENTÁRIO que
+// documenta o estado antigo, e comentário não é texto exibido ao Mestre.
+const descFurtivo = (blocoDe("cave-troll-furtivo") || "").match(/description:\s*"([^"]+)"/);
+ok("descrição do Troll das Cavernas Furtivo existe", Boolean(descFurtivo));
+ok(
+  "descrição do Troll das Cavernas Furtivo sem inglês residual",
+  Boolean(descFurtivo) && !/Cave-troll/.test(descFurtivo[1]),
+  descFurtivo?.[1]?.slice(0, 60)
 );
 
 console.log(`\nverify-um-anel-bestiario: ${pass} passaram, ${fail} falharam`);
