@@ -101,29 +101,63 @@ ok(
 /* ── 2. Bases culturais: livro × data.ts ────────────────────────────────
    Todas as 6 culturas do capítulo 3, não só as duas dos pré-gerados. */
 
-const BOOK_TO_ID = {
-  "Bardings": "bardos",
-  "Dwarves of Durin's Folk": "anoes",
-  "Elves of Lindon": "elfos",
-  "Hobbits of the Shire": "hobbits",
-  "Men of Bree": "homens-de-bri",
-  "Rangers of the North": "rangers",
+/**
+ * Nome de cada Cultura no livro, por id, LIDO DE data.ts.
+ *
+ * Antes era um mapa fixo com os nomes em inglês, e quebrou inteiro quando o
+ * capítulo 3 foi traduzido. Derivar do `name` de data.ts resolve duas coisas de
+ * uma vez: acompanha a tradução sozinho, e passa a exigir que o heading do livro
+ * e o rótulo exibido no app sejam a MESMA string — se alguém renomear a Cultura
+ * só num lado, isto acusa.
+ *
+ * Os nomes em inglês ficam como alternativa porque o capítulo pode ser
+ * re-extraído do PDF antes de ser traduzido de novo.
+ */
+const NOME_EN_POR_ID = {
+  bardos: "Bardings",
+  anoes: "Dwarves of Durin's Folk",
+  elfos: "Elves of Lindon",
+  hobbits: "Hobbits of the Shire",
+  "homens-de-bri": "Men of Bree",
+  rangers: "Rangers of the North",
 };
 
-/** Bases derivadas de uma cultura, lidas da tabela "Derived Stats" do livro. */
-function bookDerived(cultureHeading) {
-  const start = BOOK.indexOf(`\n## ${cultureHeading}\n`);
+/** Lê `name` do bloco daquela Cultura em data.ts. */
+function dataCultureName(id) {
+  const start = DATA.indexOf(`id: "${id}",`);
   if (start < 0) return null;
-  const nextSection = BOOK.indexOf("\n## ", start + 4);
-  const body = BOOK.slice(start, nextSection < 0 ? BOOK.length : nextSection);
-  const grab = (stat, attr) => {
-    const m = body.match(new RegExp(`\\|\\s*${stat}\\s*\\|\\s*${attr}\\s*\\+\\s*(\\d+)\\s*\\|`));
+  const m = DATA.slice(start, start + 400).match(/name:\s*"([^"]+)"/);
+  return m ? m[1] : null;
+}
+
+/** Encontra o corpo da seção `## <Cultura>` no livro, em PT-BR ou inglês. */
+function bookCultureBody(id) {
+  for (const nome of [dataCultureName(id), NOME_EN_POR_ID[id]]) {
+    if (!nome) continue;
+    const start = BOOK.indexOf(`\n## ${nome}\n`);
+    if (start < 0) continue;
+    const next = BOOK.indexOf("\n## ", start + 4);
+    return { nome, body: BOOK.slice(start, next < 0 ? BOOK.length : next) };
+  }
+  return null;
+}
+
+/** Bases derivadas de uma Cultura, lidas da tabela de Estatísticas Derivadas. */
+function bookDerived(id) {
+  const secao = bookCultureBody(id);
+  if (!secao) return null;
+  // Rótulos bilíngues: a tabela é `| Resistência | FORÇA + 18 |` em PT-BR e
+  // `| Endurance | STRENGTH + 18 |` em inglês.
+  const grab = (stats, attrs) => {
+    const m = secao.body.match(
+      new RegExp(`\\|\\s*(?:${stats})\\s*\\|\\s*(?:${attrs})\\s*\\+\\s*(\\d+)\\s*\\|`, "i")
+    );
     return m ? Number(m[1]) : null;
   };
   return {
-    endurance: grab("Endurance", "STRENGTH"),
-    hope: grab("Hope", "HEART"),
-    parry: grab("Parry", "WITS"),
+    endurance: grab("Endurance|Resistência", "STRENGTH|FORÇA"),
+    hope: grab("Hope|Esperança", "HEART|CORAÇÃO"),
+    parry: grab("Parry|Bloqueio", "WITS|ASTÚCIA"),
   };
 }
 
@@ -145,11 +179,14 @@ function dataDerived(id) {
   };
 }
 
-for (const [heading, id] of Object.entries(BOOK_TO_ID)) {
-  const book = bookDerived(heading);
+for (const id of Object.keys(NOME_EN_POR_ID)) {
+  const nome = dataCultureName(id) ?? id;
+  const secao = bookCultureBody(id);
+  ok(`${nome}: seção achada no livro`, Boolean(secao), `id=${id}`);
+  const book = bookDerived(id);
   const code = dataDerived(id);
-  ok(`${heading}: tabela lida do livro`, book && book.endurance !== null, JSON.stringify(book));
-  ok(`${heading}: bases derivadas batem com data.ts`,
+  ok(`${nome}: tabela lida do livro`, book && book.endurance !== null, JSON.stringify(book));
+  ok(`${nome}: bases derivadas batem com data.ts`,
     book && code &&
       book.endurance === code.endurance &&
       book.hope === code.hope &&
@@ -162,19 +199,21 @@ for (const [heading, id] of Object.entries(BOOK_TO_ID)) {
    É a prova de que a coluna de "Valor" das fichas está certa e a de NA é
    que está errada: as 7 fichas Hobbit caem todas dentro desta tabela. */
 
-function bookAttributeSets(cultureHeading) {
-  const start = BOOK.indexOf(`\n## ${cultureHeading}\n`);
-  const nextSection = BOOK.indexOf("\n## ", start + 4);
-  const body = BOOK.slice(start, nextSection < 0 ? BOOK.length : nextSection);
-  const attrStart = body.indexOf("### Attributes");
-  const attrEnd = body.indexOf("### Derived Stats");
-  const table = body.slice(attrStart, attrEnd);
+function bookAttributeSets(id) {
+  const secao = bookCultureBody(id);
+  if (!secao) return [];
+  // Recorta ENTRE os dois headings pra não capturar a tabela de Perícias, que
+  // vem depois e também tem 4 colunas numéricas.
+  const inicio = secao.body.search(/^### (Attributes|Atributos)\s*$/m);
+  const fim = secao.body.search(/^### (Derived Stats|Estatísticas Derivadas)\s*$/m);
+  if (inicio < 0 || fim < 0 || fim <= inicio) return [];
+  const table = secao.body.slice(inicio, fim);
   return [...table.matchAll(/^\|\s*[1-6]\s*\|\s*(\d+)\s*\|\s*(\d+)\s*\|\s*(\d+)\s*\|/gm)].map(
     (m) => ({ forca: Number(m[1]), coracao: Number(m[2]), argucia: Number(m[3]) })
   );
 }
 
-const HOBBIT_SETS = bookAttributeSets("Hobbits of the Shire");
+const HOBBIT_SETS = bookAttributeSets("hobbits");
 ok("livro: 6 conjuntos de Atributos pros Hobbits", HOBBIT_SETS.length === 6, `achou ${HOBBIT_SETS.length}`);
 
 /* ── 4. Os 8 pré-gerados ────────────────────────────────────────────────── */
