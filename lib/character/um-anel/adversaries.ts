@@ -11,7 +11,7 @@ const TOR_ADVERSARIES_RAW: TorAdversaryStats[] = [
   // ——— Homens Maus ———
   {
     id: "invasor-do-sul",
-    name: "Invasor do Sul",
+    name: "Saqueador Sulista",
     traits: "Astuto, Endurecido",
     tier: "mob",
     attributeLevel: 4,
@@ -27,12 +27,12 @@ const TOR_ADVERSARIES_RAW: TorAdversaryStats[] = [
       { id: "lanca-curta", label: "Lança Curta", rating: 2, damage: 3, injury: 14, specialDamage: ["Perfurar"] },
     ],
     fellAbilities: [
-      { name: "Povo Feroz", text: "Gaste 1 Resolução pra ganhar (1d) e tornar a rolagem de ataque Favorecida." },
+      { name: "Gente Feroz", text: "Gaste 1 Resolução pra ganhar (1d) e tornar a rolagem de ataque Favorecida." },
     ],
   },
   {
     id: "campeao-do-sul",
-    name: "Campeão do Sul",
+    name: "Campeão Sulista",
     traits: "Cruel, Resistente",
     tier: "elite",
     attributeLevel: 5,
@@ -48,13 +48,13 @@ const TOR_ADVERSARIES_RAW: TorAdversaryStats[] = [
       { id: "machado-longo", label: "Machado de Cabo Longo", rating: 3, damage: 6, injury: 18, specialDamage: ["Quebrar Escudo"] },
     ],
     fellAbilities: [
-      { name: "Povo Feroz", text: "Gaste 1 Resolução pra ganhar (1d) num ataque e tornar a rolagem Favorecida." },
+      { name: "Gente Feroz", text: "Gaste 1 Resolução pra ganhar (1d) num ataque e tornar a rolagem Favorecida." },
     ],
   },
   {
     id: "batedor-de-bolsos",
-    name: "Batedor de Bolsos",
-    traits: "Ágil, Precavido",
+    name: "Salteador",
+    traits: "Ágil, Cauteloso",
     tier: "mob",
     attributeLevel: 2,
     endurance: 8,
@@ -74,7 +74,7 @@ const TOR_ADVERSARIES_RAW: TorAdversaryStats[] = [
   },
   {
     id: "chefe-arruaceiro",
-    name: "Chefe Arruaceiro",
+    name: "Chefe dos Rufiões",
     traits: "Implacável, Reservado",
     tier: "mob",
     attributeLevel: 3,
@@ -90,12 +90,12 @@ const TOR_ADVERSARIES_RAW: TorAdversaryStats[] = [
       { id: "arco", label: "Arco", rating: 2, damage: 3, injury: 14, specialDamage: ["Perfurar"] },
     ],
     fellAbilities: [
-      { name: "Grito de Triunfo", text: "Gaste 1 Resolução pra restaurar 1 Resolução a todos os outros Arruaceiros na luta." },
+      { name: "Grito de Triunfo", text: "Gaste 1 Resolução pra restaurar 1 Resolução a todos os outros Rufiões na luta." },
     ],
   },
   {
     id: "assaltante-de-estrada",
-    name: "Assaltante de Estrada",
+    name: "Ladrão de Estrada",
     traits: "Veloz, Vingativo",
     tier: "mob",
     attributeLevel: 4,
@@ -180,7 +180,7 @@ const TOR_ADVERSARIES_RAW: TorAdversaryStats[] = [
       { id: "lanca-de-ponta-larga", label: "Lança de Ponta Larga", rating: 3, damage: 5, injury: 16, specialDamage: ["Perfurar"] },
     ],
     fellAbilities: [
-      { name: "Força Terrível", text: "Se a criatura causou um Golpe Perfurante com ataque corpo a corpo, gaste 1 Ódio pra tornar a rolagem de Proteção do alvo Desfavorecida." },
+      { name: "Força Horrenda", text: "Se a criatura causou um Golpe Perfurante com ataque corpo a corpo, gaste 1 Ódio pra tornar a rolagem de Proteção do alvo Desfavorecida." },
       { name: "Velocidade de Serpente", text: "Quando alvo de um ataque, gaste 1 Ódio pra tornar a rolagem de ataque Desfavorecida." },
       { name: "Grito de Triunfo", text: "Gaste 1 Ódio pra restaurar 1 Ódio a todos os outros Orcs na luta." },
       { name: "Odeia a Luz do Sol", text: "Perde 1 Ódio no início de cada rodada exposto à luz plena do sol." },
@@ -189,7 +189,7 @@ const TOR_ADVERSARIES_RAW: TorAdversaryStats[] = [
   {
     id: "guarda-costas-grande-orc",
     name: "Guarda-costas Grande Orc",
-    traits: "Feroz, Precavido",
+    traits: "Feroz, Cauteloso",
     tier: "elite",
     attributeLevel: 6,
     endurance: 24,
@@ -227,7 +227,7 @@ const TOR_ADVERSARIES_RAW: TorAdversaryStats[] = [
     ],
     fellAbilities: [
       { name: "Covarde", text: "Quando afetado pela Tarefa de Combate Intimidar Inimigo, a criatura também perde 1 Ódio." },
-      { name: "Veneno Orc", text: "Se um ataque resultar em Ferida, o alvo também é envenenado." },
+      { name: "Veneno de Orc", text: "Se um ataque resultar em Ferida, o alvo também é envenenado." },
     ],
   },
   {
@@ -256,7 +256,7 @@ const TOR_ADVERSARIES_RAW: TorAdversaryStats[] = [
   {
     id: "grande-troll-das-cavernas",
     name: "Grande Troll das Cavernas",
-    traits: "Brutal, Perverso",
+    traits: "Brutamontes, Perverso",
     tier: "boss",
     attributeLevel: 10,
     endurance: 80,
@@ -279,10 +279,10 @@ const TOR_ADVERSARIES_RAW: TorAdversaryStats[] = [
         name: "Infundir Medo",
         text: "Gaste 1 Ódio pra fazer todos os heróis à vista ganharem 2 pontos de Sombra (Pavor). Quem falhar no Teste de Sombra fica intimidado e não pode gastar Esperança pelo resto da luta.",
       },
-      { name: "Pele Grossa", text: "Gaste 1 ponto de Ódio pra ganhar (2d) numa rolagem de Proteção." },
+      { name: "Couro Grosso", text: "Gaste 1 ponto de Ódio pra ganhar (2d) numa rolagem de Proteção." },
       {
         name: "Cabeça-dura",
-        text: "Heróis em postura Avançada podem tentar uma Tarefa de Combate especial: rolagem de ENIGMA — sucesso reduz o Ódio do Troll em 1 (+1 por ícone de sucesso).",
+        text: "Heróis em postura Avançada podem tentar uma Tarefa de Combate especial: rolagem de ENIGMA como ação principal da rodada — sucesso reduz o Ódio do Troll em 1, mais 1 por ícone de Sucesso.",
       },
     ],
   },
@@ -291,7 +291,7 @@ const TOR_ADVERSARIES_RAW: TorAdversaryStats[] = [
     // Estava meio em inglês ("Cave-troll"); o vizinho já usava a forma PT-BR
     // "Grande Troll das Cavernas", então segue a mesma.
     name: "Troll das Cavernas Furtivo",
-    traits: "Furtivo, Precavido",
+    traits: "Furtivo, Cauteloso",
     tier: "elite",
     attributeLevel: 6,
     endurance: 50,
@@ -300,15 +300,15 @@ const TOR_ADVERSARIES_RAW: TorAdversaryStats[] = [
     hateKind: "hate",
     parry: 0,
     armour: 3,
-    description: "Essa estirpe de Cave-troll é menor que muitos de seus parentes, mas ainda maior que a maioria dos Orcs. Acostumado a viver nas profundezas da terra, um Cave-troll Furtivo costuma caçar sozinho e no escuro, contando com seu olfato aguçado.",
+    description: "Essa estirpe de Troll das Cavernas é menor que muitos de seus parentes, mas ainda maior que a maioria dos Orcs. Acostumado a viver nas profundezas da terra, um Troll das Cavernas Furtivo costuma caçar sozinho e no escuro, contando com seu olfato aguçado.",
     actions: [
       { id: "clava", label: "Clava", rating: 3, damage: 6, injury: 16, specialDamage: ["Quebrar Escudo"] },
       { id: "mordida", label: "Mordida", rating: 2, damage: 6, injury: 14, specialDamage: ["Perfurar"] },
     ],
     fellAbilities: [
-      { name: "Morador das Trevas", text: "Todas as rolagens de ataque são Favorecidas na escuridão." },
+      { name: "Habitante das Trevas", text: "Todas as rolagens de ataque são Favorecidas na escuridão." },
       { name: "Medo do Fogo", text: "Perde 1 Ódio no início de cada rodada engajado em combate corpo a corpo com um adversário empunhando tocha ou item em chamas." },
-      { name: "Pele Grossa", text: "Gaste 1 ponto de Ódio pra ganhar (2d) numa rolagem de Proteção." },
+      { name: "Couro Grosso", text: "Gaste 1 ponto de Ódio pra ganhar (2d) numa rolagem de Proteção." },
       { name: "Rijeza Hedionda", text: "Quando um ataque causaria dano que reduziria a criatura a 0 de Resistência, causa um Golpe Perfurante em vez disso. Se a criatura ainda estiver viva, retorna à Resistência máxima." },
       { name: "Cabeça-dura", text: "Heróis em postura Avançada podem tentar uma Tarefa de Combate especial: rolagem de ENIGMA como ação principal — sucesso reduz o Ódio do Troll em 1, mais 1 por ícone de Sucesso." },
     ],
@@ -316,7 +316,7 @@ const TOR_ADVERSARIES_RAW: TorAdversaryStats[] = [
   {
     id: "ladrao-troll-de-pedra",
     name: "Ladrão Troll de Pedra",
-    traits: "Faminto, Irritadiço",
+    traits: "Faminto, Irritável",
     tier: "elite",
     attributeLevel: 8,
     endurance: 60,
@@ -331,8 +331,8 @@ const TOR_ADVERSARIES_RAW: TorAdversaryStats[] = [
       { id: "esmagar", label: "Esmagar", rating: 2, damage: 6, injury: 12, specialDamage: ["Agarrar"] },
     ],
     fellAbilities: [
-      { name: "Ódio (Anões)", text: "Ao lutar contra Anões, todas as rolagens da criatura são Favorecidas." },
-      { name: "Força Terrível", text: "Se a criatura causou um Golpe Perfurante, gaste 1 Ódio pra tornar a rolagem de Proteção do alvo Desfavorecida." },
+      { name: "Ódio Mortal (Anões)", text: "Ao lutar contra Anões, todas as rolagens da criatura são Favorecidas." },
+      { name: "Força Horrenda", text: "Se a criatura causou um Golpe Perfurante, gaste 1 Ódio pra tornar a rolagem de Proteção do alvo Desfavorecida." },
       { name: "Rijeza Hedionda", text: "Quando um ataque causaria dano que reduziria a criatura a 0 de Resistência, causa um Golpe Perfurante em vez disso. Se a criatura ainda estiver viva, retorna à Resistência máxima." },
       { name: "Cabeça-dura", text: "Heróis em postura Avançada podem tentar uma Tarefa de Combate especial: rolagem de ENIGMA como ação principal — sucesso reduz o Ódio do Troll em 1, mais 1 por ícone de Sucesso." },
     ],
@@ -355,8 +355,8 @@ const TOR_ADVERSARIES_RAW: TorAdversaryStats[] = [
       { id: "esmagar", label: "Esmagar", rating: 2, damage: 6, injury: 12, specialDamage: ["Agarrar"] },
     ],
     fellAbilities: [
-      { name: "Ódio (Anões)", text: "Ao lutar contra Anões, todas as rolagens da criatura são Favorecidas." },
-      { name: "Força Terrível", text: "Se a criatura causou um Golpe Perfurante, gaste 1 Ódio pra tornar a rolagem de Proteção do alvo Desfavorecida." },
+      { name: "Ódio Mortal (Anões)", text: "Ao lutar contra Anões, todas as rolagens da criatura são Favorecidas." },
+      { name: "Força Horrenda", text: "Se a criatura causou um Golpe Perfurante, gaste 1 Ódio pra tornar a rolagem de Proteção do alvo Desfavorecida." },
       { name: "Grito de Triunfo", text: "Gaste 1 Ódio pra restaurar 1 Ódio a todos os outros Trolls na luta." },
       { name: "Rijeza Hedionda", text: "Quando um ataque causaria dano que reduziria a criatura a 0 de Resistência, causa um Golpe Perfurante em vez disso. Se a criatura ainda estiver viva, retorna à Resistência máxima." },
       { name: "Cabeça-dura", text: "Heróis em postura Avançada podem tentar uma Tarefa de Combate especial: rolagem de ENIGMA como ação principal — sucesso reduz o Ódio do Troll em 1, mais 1 por ícone de Sucesso." },
@@ -384,10 +384,10 @@ const TOR_ADVERSARIES_RAW: TorAdversaryStats[] = [
       { id: "toque-gelido", label: "Toque Gélido", rating: 2, damage: 6, injury: 12, specialDamage: ["Agarrar"] },
     ],
     fellAbilities: [
-      { name: "Morador das Trevas", text: "Todas as rolagens de ataque são Favorecidas na escuridão." },
+      { name: "Habitante das Trevas", text: "Todas as rolagens de ataque são Favorecidas na escuridão." },
       { name: "Feitiços Terríveis", text: "Gaste 1 Ódio pra fazer um herói ganhar 3 pontos de Sombra (Feitiçaria). Quem falhar no Teste de Sombra ou estiver Arrasado cai inconsciente e só acorda com uma rolagem de MÚSICA, ou depois de uma hora." },
       { name: "Odeia a Luz do Sol", text: "Perde 1 Ódio no início de cada rodada exposto à luz plena do sol." },
-      { name: "Sem Morte", text: "Gaste 1 Ódio pra cancelar uma Ferida. Quando um ataque causaria dano que reduziria a criatura a 0 de Resistência, gaste 1 Ódio pra retornar à Resistência máxima. Ineficaz contra armas mágicas encantadas pra Perdição dos Mortos-Vivos." },
+      { name: "Imorredouro", text: "Gaste 1 Ódio pra cancelar uma Ferida. Quando um ataque causaria dano que reduziria a criatura a 0 de Resistência, gaste 1 Ódio pra retornar à Resistência máxima. Ineficaz contra armas mágicas encantadas pra Perdição dos Mortos-Vivos." },
       { name: "Sem Coração", text: "A criatura não é afetada pela Tarefa de Combate Intimidar Inimigo, a menos que se obtenha um sucesso Mágico." },
       { name: "Infundir Medo", text: "Gaste 1 Ódio pra fazer todos os heróis à vista ganharem 3 pontos de Sombra (Pavor). Quem falhar no Teste de Sombra fica intimidado e não pode gastar Esperança pelo resto da luta." },
     ],
@@ -395,7 +395,7 @@ const TOR_ADVERSARIES_RAW: TorAdversaryStats[] = [
   {
     id: "espectro-funesto",
     name: "Espectro Funesto",
-    traits: "Veloz, Precavido",
+    traits: "Veloz, Cauteloso",
     tier: "mob",
     attributeLevel: 4,
     endurance: 16,
@@ -406,13 +406,13 @@ const TOR_ADVERSARIES_RAW: TorAdversaryStats[] = [
     armour: 2,
     description: "Espectros Funestos aparecem como andarilhos encurvados, vagando entre ruínas antigas, envoltos em capas que escondem seus traços espectrais. Sua carne é quase transparente, e seus olhos parecem brasas.",
     actions: [
-      { id: "lamina-cravejada", label: "Lâmina Cravejada", rating: 3, damage: 4, injury: 16 },
+      { id: "lamina-cravejada", label: "Lâmina Corroída", rating: 3, damage: 4, injury: 16 },
       { id: "lanca-cruel", label: "Lança Cruel", rating: 2, damage: 4, injury: 14, specialDamage: ["Perfurar"] },
     ],
     fellAbilities: [
-      { name: "Morador das Trevas", text: "Todas as rolagens de ataque são Favorecidas na escuridão." },
+      { name: "Habitante das Trevas", text: "Todas as rolagens de ataque são Favorecidas na escuridão." },
       { name: "Medo do Fogo", text: "Perde 1 Ódio no início de cada rodada engajado em combate corpo a corpo com um adversário empunhando tocha ou item em chamas." },
-      { name: "Sem Morte", text: "Gaste 1 Ódio pra cancelar uma Ferida. Quando um ataque causaria dano que reduziria a criatura a 0 de Resistência, gaste 1 Ódio pra retornar à Resistência máxima." },
+      { name: "Imorredouro", text: "Gaste 1 Ódio pra cancelar uma Ferida. Quando um ataque causaria dano que reduziria a criatura a 0 de Resistência, gaste 1 Ódio pra retornar à Resistência máxima. Ineficaz contra armas mágicas encantadas pra Perdição dos Mortos-Vivos." },
       { name: "Sem Coração", text: "A criatura não é afetada pela Tarefa de Combate Intimidar Inimigo, a menos que se obtenha um sucesso Mágico." },
       { name: "Infundir Medo", text: "Gaste 1 Ódio pra fazer todos os heróis à vista ganharem 3 pontos de Sombra (Pavor). Quem falhar no Teste de Sombra fica intimidado e não pode gastar Esperança pelo resto da luta." },
     ],
@@ -437,7 +437,7 @@ const TOR_ADVERSARIES_RAW: TorAdversaryStats[] = [
     fellAbilities: [
       { name: "Medo do Fogo", text: "Perde 1 Ódio no início de cada rodada engajado em combate corpo a corpo com um adversário empunhando tocha ou item em chamas." },
       { name: "Odeia a Luz do Sol", text: "Perde 1 Ódio no início de cada rodada exposto à luz plena do sol." },
-      { name: "Sem Morte", text: "Gaste 1 Ódio pra cancelar uma Ferida. Quando um ataque causaria dano que reduziria a criatura a 0 de Resistência, gaste 1 Ódio pra retornar à Resistência máxima." },
+      { name: "Imorredouro", text: "Gaste 1 Ódio pra cancelar uma Ferida. Quando um ataque causaria dano que reduziria a criatura a 0 de Resistência, gaste 1 Ódio pra retornar à Resistência máxima. Ineficaz contra armas mágicas encantadas pra Perdição dos Mortos-Vivos." },
       { name: "Sem Coração", text: "A criatura não é afetada pela Tarefa de Combate Intimidar Inimigo, a menos que se obtenha um sucesso Mágico." },
       { name: "Infundir Medo", text: "Gaste 1 Ódio pra fazer todos os heróis à vista ganharem 3 pontos de Sombra (Pavor). Quem falhar no Teste de Sombra fica intimidado e não pode gastar Esperança pelo resto da luta." },
     ],
@@ -447,7 +447,7 @@ const TOR_ADVERSARIES_RAW: TorAdversaryStats[] = [
   {
     id: "warg",
     name: "Warg",
-    traits: "Olhos Aguçados, Sombrio",
+    traits: "Olhos Aguçados, Severo",
     tier: "mob",
     attributeLevel: 3,
     endurance: 12,
@@ -469,7 +469,7 @@ const TOR_ADVERSARIES_RAW: TorAdversaryStats[] = [
   },
   {
     id: "chefe-de-alcateia",
-    name: "Chefe de Alcateia",
+    name: "Chefe dos Lobos",
     traits: "Rápido, Cruel",
     tier: "elite",
     attributeLevel: 4,
@@ -495,7 +495,7 @@ const TOR_ADVERSARIES_RAW: TorAdversaryStats[] = [
   // ——— Lobisomens ———
   {
     id: "sabujo-de-sauron",
-    name: "Sabujo de Sauron",
+    name: "Cão de Sauron",
     traits: "Astuto, Feroz",
     tier: "boss",
     attributeLevel: 5,
@@ -511,7 +511,7 @@ const TOR_ADVERSARIES_RAW: TorAdversaryStats[] = [
       { id: "garras", label: "Garras", rating: 3, damage: 5, injury: 14, specialDamage: ["Agarrar"] },
     ],
     fellAbilities: [
-      { name: "Ferida Mortal", text: "Alvos feridos fazem a rolagem de Dado de Proeza pra determinar a severidade da Ferida Desfavorecida." },
+      { name: "Ferida Mortal", text: "Alvos Feridos fazem uma rolagem Desfavorecida de Dado de Proeza para determinar a severidade do ferimento." },
       {
         name: "Rijeza Hedionda",
         text: "Quando um ataque causaria dano que reduziria a criatura a 0 de Resistência, causa um Golpe Perfurante em vez disso. Se a criatura ainda estiver viva, retorna à Resistência máxima.",
@@ -543,11 +543,11 @@ const TOR_ADVERSARIES_RAW: TorAdversaryStats[] = [
       { id: "lanca", label: "Lança", rating: 2, damage: 4, injury: 14, specialDamage: ["Perfurar"] },
     ],
     fellAbilities: [
-      { name: "Moradora das Trevas", text: "Rolagens de ataque são Favorecidas na escuridão." },
+      { name: "Habitante das Trevas", text: "Rolagens de ataque são Favorecidas na escuridão." },
       { name: "Medo do Fogo", text: "Perde 1 Ódio no início de cada rodada engajada em combate corpo a corpo com um adversário empunhando tocha ou item em chamas." },
       {
-        name: "Sem Morte",
-        text: "Gaste 1 Ódio pra cancelar uma Ferida, ou dano que a levaria a 0 de Resistência. Imune à Tarefa de Combate Intimidar Inimigo, a menos que se obtenha um sucesso Mágico.",
+        name: "Imorredouro",
+        text: "Gaste 1 Ódio pra cancelar uma Ferida; quando um dano a levaria a 0 de Resistência, gaste 1 Ódio pra retornar à Resistência máxima. Ineficaz contra armas mágicas encantadas pra Perdição dos Mortos-Vivos. Imune à Tarefa de Combate Intimidar Inimigo, a menos que se obtenha um sucesso Mágico.",
       },
       {
         name: "Infundir Medo",
@@ -581,7 +581,7 @@ const TOR_ADVERSARIES_RAW: TorAdversaryStats[] = [
         name: "Mais Escuro que a Escuridão",
         text: "Gaste 1 Ódio pra invocar escuridão sobrenatural: heróis em combate corpo a corpo perdem (2d) no primeiro ataque contra a criatura, e ataques à distância perdem (2d) durante toda a luta.",
       },
-      { name: "Morador das Trevas", text: "Todas as rolagens de ataque são Favorecidas enquanto estiver no escuro." },
+      { name: "Habitante das Trevas", text: "Todas as rolagens de ataque são Favorecidas enquanto estiver no escuro." },
       {
         name: "Feitiços Terríveis",
         text: "Gaste 1 Ódio pra fazer um herói ganhar 3 pontos de Sombra (Feitiçaria). Alvos que falham no Teste de Sombra ou que estão Arrasados caem inconscientes, despertados apenas com uma rolagem de Canto; senão acordam depois de uma hora.",
@@ -589,7 +589,7 @@ const TOR_ADVERSARIES_RAW: TorAdversaryStats[] = [
       { name: "Odeia a Luz do Sol", text: "Perde 1 Ódio no início de cada rodada exposto à luz plena do sol." },
       // Mortos-vivos: as três de família (livro l.1002-1004).
       {
-        name: "Sem Morte",
+        name: "Imorredouro",
         text: "Gaste 1 Ódio pra cancelar uma Ferida, ou dano que a levaria a 0 de Resistência. Ineficaz contra heróis empunhando arma mágica encantada para a Ruína dos Mortos-vivos.",
       },
       {

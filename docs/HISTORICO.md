@@ -104,6 +104,63 @@ npm run sync:data:check       # após editar livros/
 
 ---
 
+### 2026-08-04 — Auditoria campo a campo do bestiário (D20): 21 blocos, 37 divergências
+
+**Pedido:** mini loop — um workflow, um commit, parar.
+
+**Workflow de 152 agentes** (5 auditores de família + 147 refutadores) conferiu **os 21 blocos do Livro
+Básico campo a campo**: traços, Nível de Atributo, Resistência, Vigor, Ódio/Resolução, Bloqueio,
+Armadura, as duas Proficiências de Combate (graduação, Dano, Ferimento, Dano Especial) e as Habilidades
+Sinistras. **49 candidatas → 37 confirmadas, 12 refutadas.**
+
+**Todos os números batem.** Nenhum Dano, Ferimento, Resistência, Vigor, Ódio, Bloqueio ou Armadura
+divergiu em nenhum dos 21 blocos, nem nenhuma graduação de Proficiência. O mapeamento Bloqueio "–" para
+`parry: 0` está correto em todos os casos, e `hateKind` acerta os 21 (Resolução para Homens Maus,
+Ódio para o resto). As 37 divergências são de **nome e de texto**, não de mecânica.
+
+**Textos que mudavam o que acontece na mesa (4):**
+1. **Imorredouro sem a cláusula de família** em 2 dos 3 Mortos-vivos: "ineficaz contra arma mágica
+   encantada pra Perdição dos Mortos-Vivos" é a **única contrapartida dos jogadores** contra a
+   ressurreição. `barrow-wight` já tinha o texto completo — inconsistência interna.
+2. **Cabeça-dura omitia "como ação principal da rodada"**, que é o único custo da tarefa: o Mestre podia
+   deixar o herói rolar ENIGMA de graça. Os outros 3 Trolls tinham o texto certo.
+3. **Ferida Mortal com "Desfavorecida" no substantivo errado** — no livro é a *rolagem* do Dado de
+   Proeza que é Desfavorecida; o código lia como se existisse "Ferida Desfavorecida".
+4. **Espectro Funesto com "Lâmina Cravejada"** onde o livro diz "Lâmina Corroída" — e o próprio arquivo
+   já usava "Lâmina Corroída" com estatísticas idênticas no bloco da Elwen.
+
+**Política de nomenclatura decidida e travada em teste.** 33 das 37 eram nome. Regra:
+- **Habilidade Sinistra e nome de exibição: vence o LIVRO** (precedente já aceito em Rijeza Hedionda,
+  Cabeça-dura, Infundir Medo, Tumulário). Renomeados: Habitante das Trevas, Imorredouro, Força Horrenda,
+  Couro Grosso, Ódio Mortal (Anões), Gente Feroz, Veneno de Orc; e Saqueador Sulista, Campeão Sulista,
+  Salteador, Chefe dos Rufiões, Ladrão de Estrada, Cão de Sauron, Chefe dos Lobos. Os `id` ficam
+  inalterados — são chave estável.
+- **Traço: vence o rótulo canônico de `data.ts` quando existe; senão, o livro.** "Precavido" e "Sombrio"
+  não existem em `data.ts` (o canônico é Cauteloso e Severo, que é o que o livro usa) — o código era o
+  outlier. Já **"Veloz" e "Cruel" SÃO canônicos e o livro é que difere** ("Rápido", "Vicioso"): ali o
+  código fica, e o teste trava isso pra que ninguém "corrija" pro livro sem discutir.
+
+**Rejeitada explicitamente:** "Ferozes, Furtivos" (plural) nos Habitantes do Pântano — o plural concorda
+com o nome plural da criatura, e `traits` é texto de sabor.
+
+**Dois erros meus nesta rodada, ambos consertados:**
+1. Um patch em massa casou o bloco errado e **apagou a imunidade a Intimidar Inimigo da Elwen** — ela
+   combina Imorredouro e imunidade no mesmo texto, sem "Sem Coração" separado. Restaurada, e agora há
+   asserção específica pra isso não repetir.
+2. **O harness de teste negativo destruiu `adversaries.ts`**, inflando de 33 KB para 2,5 MB: usei string
+   vazia como valor "ruim", e `split("")` quebra em caracteres, reinserindo o texto entre cada um.
+   Restaurado do commit e reaplicado. O harness agora **proíbe string vazia** e aborta se o arquivo
+   passar de 200 KB — simular remoção usa marcador, não `""`.
+
+**Validação:** `npx tsc --noEmit` limpo · `npm run test` verde (**895 asserções**, zero falhas) ·
+`npm run build` compila. **8 testes negativos**, todos acusando.
+
+**D20 fechado:** os 21 blocos do Livro Básico estão conferidos campo a campo, mais os 3 de Eriador e a
+Elwen. Falta na Fase J: dados 3D com faces do Um Anel (D19) e aventuras (D31 — 1ª edição, converter não
+copiar).
+
+---
+
 ### 2026-08-04 — Pendência do filtro de Cultura + Fase J começa (3 adversários de Eriador)
 
 **Pedido:** loop contínuo. Rodada sem workflow, de propósito: a fase que precisava de leque
