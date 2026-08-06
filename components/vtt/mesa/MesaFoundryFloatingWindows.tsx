@@ -351,7 +351,7 @@ export function MesaFoundryFloatingWindows(props: MesaFoundryFloatingWindowsProp
           onClose={() => onCloseWindow("dice")}
         >
           {canChat ? (
-            <DiceRoller roomId={roomId} onUpdate={onRefresh} />
+            <DiceRoller roomId={roomId} onUpdate={onRefresh} rpgSystemId={rpgSystemId} />
           ) : (
             <p className="vtt-combat-hint" style={{ padding: "1rem" }}>
               Visitantes não rolam dados no chat.

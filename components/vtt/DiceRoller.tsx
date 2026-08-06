@@ -4,16 +4,31 @@ import { useState } from "react";
 import { postRoomChat } from "@/hooks/useRoomSync";
 import { DiceBoxMini } from "@/components/vtt/DiceBoxMini";
 import { diceRollSpecFromFormula } from "@/lib/vtt/combat-dice-model";
+import type { RpgSystemId } from "@/lib/rpg/systems";
 
-const QUICK = ["1d20", "1d12", "1d10", "1d8", "1d6", "1d4", "2d6"];
+const QUICK_ELDARIN = ["1d20", "1d12", "1d10", "1d8", "1d6", "1d4", "2d6"];
+
+/**
+ * O Um Anel usa exatamente DOIS dados: o Dado de Proeza (d12) e os Dados de
+ * Sucesso (d6, rolados em quantidade igual à graduação da habilidade). d20, d10,
+ * d8 e d4 não existem no sistema — oferecê-los na mesa do Um Anel só convida a
+ * rolar um dado que nenhuma regra do livro usa.
+ *
+ * Fonte: 02-resolucao-de-acoes.md, "Os Dados de O Um Anel" — seis d6 e dois d12.
+ */
+const QUICK_UM_ANEL = ["1d12", "1d6", "2d6", "3d6", "4d6", "5d6", "6d6"];
 
 type Props = {
   roomId: string;
   onUpdate: () => void;
+  /** Sistema da sala — define quais dados aparecem nos atalhos. */
+  rpgSystemId?: RpgSystemId;
 };
 
-export function DiceRoller({ roomId, onUpdate }: Props) {
-  const [formula, setFormula] = useState("1d20");
+export function DiceRoller({ roomId, onUpdate, rpgSystemId = "eldarin" }: Props) {
+  const isUmAnel = rpgSystemId === "um-anel";
+  const QUICK = isUmAnel ? QUICK_UM_ANEL : QUICK_ELDARIN;
+  const [formula, setFormula] = useState(isUmAnel ? "1d12" : "1d20");
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState<string | null>(null);
   const [rolling, setRolling] = useState(false);
@@ -86,7 +101,7 @@ export function DiceRoller({ roomId, onUpdate }: Props) {
           type="text"
           value={formula}
           onChange={(e) => setFormula(e.target.value)}
-          placeholder="1d20"
+          placeholder={isUmAnel ? "1d12" : "1d20"}
           spellCheck={false}
         />
         <button type="submit" className="btn" disabled={busy}>

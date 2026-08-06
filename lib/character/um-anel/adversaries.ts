@@ -661,6 +661,84 @@ const TOR_ADVERSARIES_RAW: TorAdversaryStats[] = [
       { name: "Grande Salto", text: "Gaste 1 Ódio pra atacar qualquer herói, em qualquer postura de combate, inclusive Retaguarda." },
     ],
   },
+
+  // ——— Adversários das aventuras do Starter Set (14-aventuras-starter-set.md) ———
+  //
+  // Os blocos das aventuras são SIMPLIFICADOS: o livro não lista Vigor,
+  // Ódio/Resolução nem Traços, campos que o formato completo do capítulo 8 exige.
+  // Vigor ausente = 1 (é o que o motor assume por padrão, ver `might` em
+  // lib/vtt/types.ts) e o Ódio foi derivado do Nível de Atributo, que é a
+  // convenção do próprio livro nos blocos completos. Nada foi inventado além
+  // disso — os campos que a aventura dá estão exatos.
+  {
+    id: "jack-the-stone-troll",
+    name: "Jack, o Troll de Pedra",
+    traits: "Brutamontes, Faminto",
+    tier: "boss",
+    attributeLevel: 8,
+    endurance: 34,
+    might: 1,
+    hate: 8,
+    hateKind: "hate",
+    parry: 1,
+    armour: 3,
+    description:
+      "O Troll de Pedra que ronda as ruínas antigas nas Charnecas do Norte, em *Caçadores de Tesouro Experientes*. Grande e poderoso, mas bastante estúpido: foge ao ficar Ferido ou perder metade da Resistência, e pode ser enganado até o amanhecer o transformar em pedra.",
+    actions: [{ id: "esmagar", label: "Esmagar", rating: 2, damage: 6, injury: 12, specialDamage: ["Agarrar"] }],
+    fellAbilities: [
+      // Trolls: as duas de família (livro l.899-903).
+      {
+        name: "Rijeza Hedionda",
+        text: "Quando um ataque causaria dano que reduziria a criatura a 0 de Resistência, causa um Golpe Perfurante em vez disso. Se a criatura ainda estiver viva, retorna à Resistência máxima.",
+      },
+      {
+        name: "Cabeça-dura",
+        text: "Heróis em postura Avançada podem tentar uma Tarefa de Combate especial: rolagem de ENIGMA como ação principal da rodada — sucesso reduz o Ódio do Troll em 1, mais 1 por ícone de Sucesso.",
+      },
+    ],
+  },
+  {
+    id: "orc-veteran",
+    name: "Veterano Orc",
+    traits: "Cruel, Endurecido",
+    tier: "elite",
+    attributeLevel: 4,
+    endurance: 16,
+    might: 1,
+    hate: 4,
+    hateKind: "hate",
+    parry: 2,
+    armour: 3,
+    description:
+      "Orc decrépito perdido há muito nas cavernas sob as Colinas de Scary, em *Fogos de Artifício Mais Excelentes*. Luta até ficar Ferido ou reduzido a metade ou menos da Resistência, e então foge para as passagens escuras da mina.",
+    actions: [
+      { id: "lanca-recortada", label: "Lança Recortada", rating: 3, damage: 3, injury: 14, specialDamage: ["Perfurar"] },
+    ],
+    fellAbilities: [
+      // Orcs: habilidade de família (livro l.769-770).
+      { name: "Odeia a Luz do Sol", text: "Perde 1 Ódio no início de cada rodada exposto à luz plena do sol." },
+    ],
+  },
+  {
+    id: "burnt-beast",
+    name: "Fera Queimada",
+    traits: "Feroz, Furtivo",
+    tier: "elite",
+    attributeLevel: 5,
+    endurance: 20,
+    might: 1,
+    hate: 5,
+    hateKind: "hate",
+    parry: 2,
+    armour: 3,
+    description:
+      "Cão de caça que outrora pertenceu a um senhor de Homens nas Colinas dos Túmulos, voltou como reflexo escuro do que foi. Em *Para Acalmar uma Fera Selvagem* aparecem em PAR. Não são inteiramente malignas e raramente tentam matar — morrer por arma comum não as detém de vez, mas receber um nome próprio de novo pode libertá-las.",
+    actions: [{ id: "presas", label: "Presas", rating: 4, damage: 5, injury: 14, specialDamage: ["Perfurar"] }],
+    fellAbilities: [
+      { name: "Grande Salto", text: "Pode atacar qualquer herói, em qualquer postura de combate, inclusive Retaguarda." },
+      { name: "Habitante das Trevas", text: "Todas as rolagens de ataque são Favorecidas enquanto estiver na escuridão." },
+    ],
+  },
 ];
 
 const TIER_DIFFICULTY_RANK: Record<TorAdversaryStats["tier"], number> = {
