@@ -10,6 +10,8 @@ export type ChatMessage = {
     formula: string;
     rolls: number[];
     total: number;
+    /** Sistema da sala — decide se as faces do dado levam glyph do Um Anel. */
+    system?: string;
   };
   combat?: {
     attackerTokenId: string;

@@ -57,6 +57,9 @@ export async function POST(req: Request, { params }: Params) {
           formula: result.formula,
           rolls: result.rolls,
           total: result.total,
+          // Marca o sistema pra que o dado 3D desenhe as faces especiais do Um
+          // Anel (Olho de Sauron no 11, tengwa no 6) em vez do número.
+          system: room.rpgSystemId,
         },
       });
       if (!snapshot) {
@@ -86,7 +89,7 @@ export async function POST(req: Request, { params }: Params) {
     kind: "chat",
     text,
     ...(featDieValue != null
-      ? { roll: { formula: "1d12", rolls: [featDieValue], total: featDieValue } }
+      ? { roll: { formula: "1d12", rolls: [featDieValue], total: featDieValue, system: room.rpgSystemId } }
       : {}),
   });
 

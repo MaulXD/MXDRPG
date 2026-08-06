@@ -104,6 +104,47 @@ npm run sync:data:check       # após editar livros/
 
 ---
 
+### 2026-08-04 — D19: Olho de Sauron e tengwa nas faces do dado 3D
+
+**Pedido:** prosseguir.
+
+**O bloqueio de arte era parcial, e a parte destravada foi feita.** Na rodada anterior registrei que os
+glyphs do mini-dado **não exigem arquivo de arte**, porque `DiceWebGL` desenha as faces com `fillText`
+num canvas — é tipografia. Agora está implementado: **Olho de Sauron (⊘) na face 11** do Dado de Proeza
+e **tengwa élfico (ᛥ) na face 6** do Dado de Sucesso, os caracteres que o próprio livro traduzido usa.
+"11" e "6" não significam nada no Um Anel.
+
+**A runa de Gandalf (face 12) segue mostrando o número, de propósito.** O material extraído **não
+especifica caractere** para ela — o livro dá ⊘ para o Olho e ᛥ para o tengwa, e nada para a runa.
+Escolher um glyph seria inventar notação, e o Mestre não teria como saber que foi invenção. **Há teste
+negativo específico** que falha se alguém acrescentar a entrada 12 sem a fonte passar a especificá-la.
+
+**Dois pontos de desenho que valem registrar:**
+
+1. **Passei um mapa de glyphs, não um nome de sistema.** `DiceWebGL` recebe
+   `faceGlyphs?: Record<number, string>` e só sabe "nesta face, desenhe este caractere" — segue
+   agnóstico de sistema de RPG. Quem decide é `torFaceGlyphs(sides)`, que devolve `undefined` para
+   qualquer dado que não seja d12 ou d6, de modo que **um d20 do Eldarin nunca ganha Olho de Sauron**.
+2. **A marcação do sistema ficou na ROTA, não no cliente.** A rota já tem a sala, então marca
+   `system: room.rpgSystemId` em qualquer rolagem — cobre o Dado de Proeza anexado a mensagem de chat E
+   as rolagens diretas de d6 do rolador, sem plumbing nenhum do lado do cliente.
+
+**Dois detalhes que quebrariam silenciosamente e foram cobertos:** `faceGlyphs` entrou nas
+**dependências dos dois efeitos** de `DiceWebGL` (sem isso, trocar de sistema não redesenha a textura e
+o dado apareceria com número), e o **sublinhado de 6/9** — convenção de dado numérico para distinguir os
+dois — deixou de ser desenhado quando a face leva glyph.
+
+**Validação:** `npx tsc --noEmit` limpo · `npm run test` verde (**942 asserções**, zero falhas) ·
+`npm run build` compila. **5 testes negativos**, todos acusando: glyph inventado para a runa, glyph
+vazando para d20 do Eldarin, `makeFaceTex` ignorando o glyph, `faceGlyphs` fora das deps, e a rota
+deixando de marcar o sistema.
+
+**D19 fechado até onde a fonte permite.** Falta apenas o glyph da runa de Gandalf, que depende de a arte
+real chegar ou de a fonte especificar um caractere. As texturas do dice-box grande (combate do Eldarin)
+seguem numéricas e não são usadas pelo Um Anel.
+
+---
+
 ### 2026-08-04 — Fase J: aventuras do Starter Set (D31) + dados por sistema (D19 parcial)
 
 **Pedido:** fazer a Fase J.
