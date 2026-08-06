@@ -14,6 +14,8 @@ type Props = {
   size?: "sm" | "md" | "lg";
   variant?: DiceWebGLProps["variant"];
   reducedMotion?: boolean;
+  /** Glyph por face, quando o sistema usa símbolo em vez de número. */
+  faceGlyphs?: Record<number, string>;
 };
 
 const SIZE_PX: Record<NonNullable<Props["size"]>, number> = {
@@ -43,6 +45,7 @@ export function DiceMiniature({
   size = "md",
   variant = "attack",
   reducedMotion = false,
+  faceGlyphs,
 }: Props) {
   const sides = parsePrimaryDie(formula) as DiceWebGLProps["sides"];
   // Lazy init sincroniza no cliente (evita re-render em navegação CSR);
@@ -99,6 +102,7 @@ export function DiceMiniature({
           sizePx={px}
           variant={resolvedVariant}
           reducedMotion={reducedMotion}
+          faceGlyphs={faceGlyphs}
         />
       </div>
     );

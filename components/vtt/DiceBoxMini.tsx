@@ -103,6 +103,7 @@ export function DiceBoxMini({
       <DiceMiniature
         formula={fallbackFormula}
         value={spec.value ?? null}
+        faceGlyphs={spec.faceGlyphs}
         rolling={rolling}
         size={size === "lg" ? "lg" : size === "sm" ? "sm" : "md"}
         reducedMotion={reducedMotion}

@@ -129,7 +129,12 @@ function ChatEvent({
       <article className="room-chat-event room-chat-event--roll">
         <div className="room-chat-event-head">
           <DiceBoxMini
-            spec={diceRollSpecFromFormula(message.roll.formula, natural)}
+            spec={diceRollSpecFromFormula(
+              message.roll.formula,
+              natural,
+              undefined,
+              message.roll.system
+            )}
             formula={message.roll.formula}
             size="sm"
           />

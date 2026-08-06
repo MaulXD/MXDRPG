@@ -142,7 +142,9 @@ ok(
 // o dado 3D não apareceria em nenhuma rolagem do Um Anel.
 ok(
   "rota converte o Dado de Proeza em roll 1d12",
-  /roll: \{ formula: "1d12", rolls: \[featDieValue\], total: featDieValue \}/.test(ROUTE)
+  /roll: \{ formula: "1d12", rolls: \[featDieValue\], total: featDieValue, system: room\.rpgSystemId \}/.test(
+    ROUTE
+  )
 );
 ok(
   "rota recorta o valor do Dado de Proeza em 1..12",
@@ -152,6 +154,77 @@ ok(
 ok(
   "rota não re-rola o Dado de Proeza",
   /o servidor só repassa, não re-rola/.test(ROUTE)
+);
+
+/* ── Glyphs nas faces especiais ────────────────────────────────────────
+   "11" e "6" não significam nada no Um Anel: o livro põe o Olho de Sauron na
+   face 11 do Dado de Proeza e o tengwa élfico na face 6 do Dado de Sucesso. O
+   mini-dado do chat desenha faces com `fillText` num canvas, então isso é
+   TIPOGRAFIA e não exige arquivo de arte.
+
+   A **runa de Gandalf (face 12) NÃO tem caractere em nenhum ponto do material
+   extraído** — o livro dá ⊘ pro Olho e ᛥ pro tengwa, e nada pra runa. A face 12
+   segue mostrando o número, e o teste abaixo garante que ninguém acrescente um
+   glyph inventado sem que a fonte passe a especificar um. */
+
+const MODEL = readFileSync(root("lib", "vtt", "combat-dice-model.ts"), "utf8");
+const CHAT_TYPE = readFileSync(root("lib", "room", "chat.ts"), "utf8");
+const ROOM_CHAT = readFileSync(root("components", "vtt", "RoomChat.tsx"), "utf8");
+const MINI = readFileSync(root("components", "vtt", "DiceBoxMini.tsx"), "utf8");
+const MINIATURE = readFileSync(root("components", "vtt", "DiceMiniature.tsx"), "utf8");
+const WEBGL = readFileSync(root("components", "vtt", "DiceWebGL.tsx"), "utf8");
+
+// Os caracteres vêm do livro, não de escolha nossa.
+ok("livro usa ⊘ para o Olho de Sauron", BOOK.includes("⊘") || /Olho de Sauron/.test(BOOK));
+ok("Olho de Sauron é o glyph da face 11", /TOR_FACE_GLYPHS[\s\S]{0,120}?11: "⊘"/.test(MODEL));
+ok("tengwa é o glyph da face 6 do Dado de Sucesso", /TOR_SUCCESS_DIE_GLYPHS[\s\S]{0,120}?6: "ᛥ"/.test(MODEL));
+// A REGRESSÃO a evitar: inventar um caractere pra runa de Gandalf.
+ok(
+  "face 12 NÃO tem glyph inventado (a fonte não especifica a runa)",
+  !/TOR_FACE_GLYPHS[\s\S]{0,200}?12: "/.test(MODEL)
+);
+ok(
+  "o código registra por que a face 12 não tem glyph",
+  /runa\s*\n?\s*\*? ?de Gandalf não tem caractere em nenhum ponto do material extraído/.test(
+    MODEL.replace(/\s+/g, " ")
+  ) || /não tem caractere em nenhum ponto do material extraído/.test(MODEL)
+);
+
+// Só d12 e d6 recebem glyph — um d20 do Eldarin não pode ganhar Olho de Sauron.
+ok("torFaceGlyphs cobre d12 e d6", /sides === 12\) return TOR_FACE_GLYPHS/.test(MODEL) && /sides === 6\) return TOR_SUCCESS_DIE_GLYPHS/.test(MODEL));
+ok("torFaceGlyphs devolve undefined pro resto", /return undefined;/.test(MODEL));
+// E o glyph só entra em sala do Um Anel.
+ok(
+  "glyph só é aplicado quando o sistema é um-anel",
+  /system === "um-anel" \? torFaceGlyphs\(sides\) : undefined/.test(MODEL)
+);
+
+/* A cadeia inteira: rota marca o sistema, e o mapa desce até o canvas. */
+ok("tipo do roll no chat carrega o sistema", /system\?: string;/.test(CHAT_TYPE));
+ok("rota marca o sistema na rolagem comum", /system: room\.rpgSystemId,/.test(ROUTE));
+ok("RoomChat passa o sistema da mensagem", /message\.roll\.system/.test(ROOM_CHAT));
+ok("DiceRollSpec carrega o mapa de glyphs", /faceGlyphs\?: Record<number, string>;/.test(MODEL));
+ok("DiceBoxMini repassa faceGlyphs", /faceGlyphs=\{spec\.faceGlyphs\}/.test(MINI));
+ok("DiceMiniature aceita e repassa faceGlyphs", /faceGlyphs,/.test(MINIATURE) && /faceGlyphs=\{faceGlyphs\}/.test(MINIATURE));
+ok("DiceWebGL aceita faceGlyphs", /faceGlyphs\?: Record<number, string>;/.test(WEBGL));
+ok(
+  "makeFaceTex desenha o glyph em vez do número",
+  /const s = glyph \?\? String\(num\);/.test(WEBGL)
+);
+// O sublinhado de 6/9 é convenção de dado numérico — não vale sobre um glyph.
+ok(
+  "sublinhado de 6/9 não é desenhado sobre glyph",
+  /if \(!glyph && \(num === 6 \|\| num === 9\)\)/.test(WEBGL)
+);
+// Sem faceGlyphs nas deps, trocar de sistema não redesenharia a textura.
+ok(
+  "faceGlyphs está nas dependências dos efeitos",
+  (WEBGL.match(/\}, \[[^\]]*faceGlyphs\]\);/g) || []).length >= 2
+);
+// As três chamadas de makeFaceTex têm de passar o glyph da face certa.
+ok(
+  "as três chamadas de makeFaceTex passam o glyph da face",
+  (WEBGL.match(/makeFaceTex\([^)]*faceGlyphs\?\.\[/g) || []).length === 3
 );
 
 console.log(`\nverify-um-anel-dados: ${pass} passaram, ${fail} falharam`);

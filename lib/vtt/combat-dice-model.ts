@@ -16,7 +16,41 @@ export type DiceRollSpec = {
   sides: DiceSides;
   value?: number;
   themeColor: string;
+  /**
+   * Glyph a desenhar em vez do número, por face. Mapa e não nome de sistema de
+   * propósito: o renderizador do dado continua agnóstico — ele só sabe "nesta
+   * face, desenhe este caractere".
+   */
+  faceGlyphs?: Record<number, string>;
 };
+
+/**
+ * Faces especiais do Um Anel, na grafia do próprio livro.
+ *
+ * `02-resolucao-de-acoes.md`: "nos Dados de Proeza de 12 faces, o 11 é o símbolo
+ * do Olho de Sauron e o 12 é uma runa de Gandalf. Nos Dados de Sucesso de 6
+ * faces, o 6 tem um símbolo élfico (tengwa)".
+ *
+ * O Olho (⊘) e o tengwa (ᛥ) são os caracteres que o livro traduzido usa. **A runa
+ * de Gandalf não tem caractere em nenhum ponto do material extraído**, então a
+ * face 12 segue mostrando o número — escolher um glyph aqui seria inventar
+ * notação e o Mestre não teria como saber que foi invenção. Quando a arte real
+ * chegar, é só acrescentar a entrada 12.
+ */
+export const TOR_FACE_GLYPHS: Record<number, string> = {
+  11: "⊘",
+};
+
+export const TOR_SUCCESS_DIE_GLYPHS: Record<number, string> = {
+  6: "ᛥ",
+};
+
+/** Glyphs do Um Anel para um dado de N faces — vazio para dados que o sistema não usa. */
+export function torFaceGlyphs(sides: DiceSides): Record<number, string> | undefined {
+  if (sides === 12) return TOR_FACE_GLYPHS;
+  if (sides === 6) return TOR_SUCCESS_DIE_GLYPHS;
+  return undefined;
+}
 
 export type ActorTierVisual = {
   label: string;
@@ -267,15 +301,19 @@ export function buildDamageRollSpec(
 export function diceRollSpecFromFormula(
   formula: string,
   total: number | null,
-  themeColor = DICE_ROLLER_COLOR
+  themeColor = DICE_ROLLER_COLOR,
+  /** Sistema da sala — decide se as faces levam glyph em vez de número. */
+  system?: string
 ): DiceRollSpec {
   const sides = formulaToDiceSides(formula, 20);
   const face = total != null ? dieFaceValue(total, sides) : undefined;
+  const faceGlyphs = system === "um-anel" ? torFaceGlyphs(sides) : undefined;
   return {
     qty: 1,
     sides,
     ...(face != null ? { value: face } : {}),
     themeColor,
+    ...(faceGlyphs ? { faceGlyphs } : {}),
   };
 }
 

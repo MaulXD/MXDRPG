@@ -16,6 +16,12 @@ export interface DiceWebGLProps {
   /** Pouso em ms — alinhado ao ritmo do combate */
   landingMs?: number;
   reducedMotion?: boolean;
+  /**
+   * Glyph a desenhar em vez do número, por face. O Um Anel usa o Olho de Sauron
+   * no 11 do Dado de Proeza e o tengwa no 6 do Dado de Sucesso — "11" e "6" não
+   * significam nada nesse sistema.
+   */
+  faceGlyphs?: Record<number, string>;
 }
 
 const VARIANT_COLORS = {
@@ -36,7 +42,9 @@ function easeOutBack(t: number): number {
 
 function makeFaceTex(
   num: number,
-  variant: keyof typeof VARIANT_COLORS
+  variant: keyof typeof VARIANT_COLORS,
+  /** Glyph a desenhar em vez do número nesta face, quando o sistema define um. */
+  glyph?: string
 ): THREE.CanvasTexture {
   const S = 256;
   const c = document.createElement("canvas");
@@ -60,8 +68,12 @@ function makeFaceTex(
   ctx.closePath();
   ctx.stroke();
 
-  const s = String(num);
-  ctx.font = `900 ${s.length > 1 ? 90 : 110}px Georgia, serif`;
+  const s = glyph ?? String(num);
+  // Glyph recebe corpo maior: ⊘ e ᛥ têm traço mais fino que dígito e ficariam
+  // pequenos com a mesma medida usada pros números.
+  ctx.font = glyph
+    ? `700 140px "Segoe UI Symbol", "Noto Sans Symbols 2", Georgia, serif`
+    : `900 ${s.length > 1 ? 90 : 110}px Georgia, serif`;
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";
   ctx.shadowColor = "rgba(0,0,0,0.9)";
@@ -70,7 +82,7 @@ function makeFaceTex(
   ctx.fillText(s, S / 2, S / 2 + 8);
   ctx.shadowBlur = 0;
 
-  if (num === 6 || num === 9) {
+  if (!glyph && (num === 6 || num === 9)) {
     ctx.strokeStyle = col.text;
     ctx.lineWidth = 4;
     ctx.beginPath();
@@ -141,6 +153,7 @@ export function DiceWebGL({
   variant = "attack",
   landingMs: landingMsProp,
   reducedMotion = false,
+  faceGlyphs,
 }: DiceWebGLProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const landingMs =
@@ -191,7 +204,7 @@ export function DiceWebGL({
     const { geom, faceCount, landingQuats } = buildGeometry(sides);
     const materials = Array.from({ length: faceCount }, (_, i) =>
       new THREE.MeshStandardMaterial({
-        map: makeFaceTex(i + 1, variant),
+        map: makeFaceTex(i + 1, variant, faceGlyphs?.[i + 1]),
         roughness: 0.38,
         metalness: 0.18,
       })
@@ -271,7 +284,7 @@ export function DiceWebGL({
       renderer.dispose();
     };
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [sides, sizePx]);
+  }, [sides, sizePx, faceGlyphs]);
 
   useEffect(() => {
     const s = stateRef.current;
@@ -283,7 +296,7 @@ export function DiceWebGL({
       s.currentVariant = variant;
       s.materials.forEach((mat, i) => {
         mat.map?.dispose();
-        mat.map = makeFaceTex(i + 1, variant);
+        mat.map = makeFaceTex(i + 1, variant, faceGlyphs?.[i + 1]);
         mat.needsUpdate = true;
       });
     }
@@ -301,13 +314,13 @@ export function DiceWebGL({
       if (value !== faceIdx + 1) {
         const mat = s.materials[faceIdx];
         mat.map?.dispose();
-        mat.map = makeFaceTex(value, variant);
+        mat.map = makeFaceTex(value, variant, faceGlyphs?.[value]);
         mat.needsUpdate = true;
       }
     } else if (s.mode !== "settled") {
       s.mode = "idle";
     }
-  }, [rolling, value, variant, landingMs]);
+  }, [rolling, value, variant, landingMs, faceGlyphs]);
 
   return (
     <canvas
