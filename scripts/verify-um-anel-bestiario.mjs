@@ -426,5 +426,126 @@ ok(
   descFurtivo?.[1]?.slice(0, 60)
 );
 
+/* ── Fase J: aventuras do Starter Set (D31) ────────────────────────────────
+   `TOR_Starter_Set_The_Adventures.pdf` é 2ª EDIÇÃO — compatível direto com o
+   motor, sem conversão. As outras duas aventuras do acervo (*Tales from
+   Wilderland* e *The Darkening of Mirkwood*) são de 1ª edição e exigiriam
+   converter estatísticas, NAs e Sombra; por isso esta veio primeiro.
+
+   Três blocos de adversário novos saíram daqui. Os blocos das aventuras são
+   SIMPLIFICADOS: não trazem Vigor, Ódio/Resolução nem Traços. Vigor ausente = 1
+   (o padrão do motor) e o Ódio foi derivado do Nível de Atributo, que é a
+   convenção do livro nos blocos completos. */
+
+const AVENTURAS = readFileSync(root("livros", "um-anel", "14-aventuras-starter-set.md"), "utf8");
+
+ok(
+  "capítulo das aventuras existe e está em PT-BR",
+  AVENTURAS.length > 20000 &&
+    (AVENTURAS.match(/\b(de|que|para|com|não|uma)\b/gi) || []).length > 400
+);
+ok(
+  "registra que é 2ª edição, compatível direto",
+  /2ª EDIÇÃO — compatível direto com o motor/.test(AVENTURAS)
+);
+ok(
+  "registra por que não veio de 1ª edição",
+  /1ª edição[\s\S]{0,200}?convers[ãa]o de estat[íi]sticas/i.test(AVENTURAS)
+);
+
+// As cinco aventuras, com a ordem encadeada que a introdução define.
+const CINCO = [
+  "Uma Conspiração das Mais Rachadas",
+  "Caçadores de Tesouro Experientes",
+  "Fogos de Artifício Mais Excelentes",
+  "Carteiros Involuntários",
+  "Para Acalmar uma Fera Selvagem",
+];
+for (const t of CINCO) {
+  ok(`aventura "${t}" presente`, AVENTURAS.includes(t));
+}
+ok(
+  "ordem encadeada registrada (Conspiração primeiro, Fera Selvagem final)",
+  /Uma Conspiração das Mais Rachadas\*? primeiro[\s\S]{0,200}?Para Acalmar uma Fera Selvagem\*? como final/.test(
+    AVENTURAS
+  )
+);
+
+// A divergência da fonte: o livro de aventuras diz NOVE pré-gerados, o livreto
+// de fichas traz OITO. Registrada, não corrigida por chute.
+ok(
+  "divergência dos 9 vs 8 pré-gerados registrada",
+  /diz \*\*nove\*\* pré-gerados[\s\S]{0,300}?\*\*oito\*\* blocos/.test(AVENTURAS)
+);
+
+/* ── Os 3 adversários das aventuras ────────────────────────────────────── */
+
+const DAS_AVENTURAS = [
+  {
+    id: "jack-the-stone-troll",
+    name: "Jack, o Troll de Pedra",
+    attributeLevel: 8,
+    endurance: 34,
+    parry: 1,
+    armour: 3,
+    // Trolls: as duas de família.
+    familia: ["Rijeza Hedionda", "Cabeça-dura"],
+  },
+  {
+    id: "orc-veteran",
+    name: "Veterano Orc",
+    attributeLevel: 4,
+    endurance: 16,
+    parry: 2,
+    armour: 3,
+    familia: ["Odeia a Luz do Sol"],
+  },
+  {
+    id: "burnt-beast",
+    name: "Fera Queimada",
+    attributeLevel: 5,
+    endurance: 20,
+    parry: 2,
+    armour: 3,
+    familia: ["Grande Salto", "Habitante das Trevas"],
+  },
+];
+
+for (const a of DAS_AVENTURAS) {
+  const bloco = blocoDe(a.id);
+  ok(`${a.id}: bloco existe`, Boolean(bloco));
+  if (!bloco) continue;
+  ok(`${a.id}: nome em PT-BR ("${a.name}")`, bloco.includes(`name: "${a.name}"`));
+  for (const [campo, valor] of [
+    ["attributeLevel", a.attributeLevel],
+    ["endurance", a.endurance],
+    ["parry", a.parry],
+    ["armour", a.armour],
+  ]) {
+    ok(`${a.id}: ${campo} = ${valor}`, new RegExp(`${campo}: ${valor},`).test(bloco));
+  }
+  // Vigor ausente na fonte vira 1 — não pode virar 2 por chute.
+  ok(`${a.id}: Vigor 1 (ausente na fonte simplificada)`, /might: 1,/.test(bloco));
+  const habs = [...bloco.matchAll(/name: "([^"]+)",\s*\n?\s*text:/g)].map((m) => m[1]);
+  const faltam = a.familia.filter((h) => !habs.includes(h));
+  ok(`${a.id}: habilidades de família (${a.familia.join(" + ")})`, faltam.length === 0, faltam.join(", "));
+  // Os números têm de vir do capítulo, não de invenção.
+  ok(
+    `${a.id}: Resistência ${a.endurance} confere com o capítulo`,
+    new RegExp(`\\| Resistência \\| ${a.endurance} \\|`).test(AVENTURAS)
+  );
+}
+
+// A Fera Queimada aparece em PAR — o Mestre precisa saber que usa o mesmo bloco duas vezes.
+ok(
+  "capítulo avisa que a Fera Queimada aparece em par",
+  /aparecem em PAR|par\*\* e não uma criatura única/.test(AVENTURAS)
+);
+// E que arma comum não a mata de vez.
+ok(
+  "capítulo registra que morte por arma comum não é permanente",
+  /sua morte não é permanente[\s\S]{0,200}?Oesternesse/.test(AVENTURAS)
+);
+
 console.log(`\nverify-um-anel-bestiario: ${pass} passaram, ${fail} falharam`);
 if (fail > 0) process.exit(1);

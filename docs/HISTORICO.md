@@ -104,6 +104,67 @@ npm run sync:data:check       # após editar livros/
 
 ---
 
+### 2026-08-04 — Fase J: aventuras do Starter Set (D31) + dados por sistema (D19 parcial)
+
+**Pedido:** fazer a Fase J.
+
+**D19 está bloqueado por ARTE, e isso foi apurado antes de codificar.** A cadeia do Dado de Proeza já
+funciona ponta a ponta: `dice.ts` codifica Olho como face física 11 e Runa como 12, a rota do chat
+converte `torFeatDie` em `roll: 1d12`, e o chat desenha o dado 3D. **O que falta é só a textura** — os
+números estão assados nos PNGs do tema. Fazer Olho de Sauron e runa de Gandalf exige autorar imagem, e
+há regra registrada do usuário: "Sem SVG temporário p/ ícones novos — esperar ícones reais do Midjourney".
+
+Cheguei a criar um tema `um-anel` de dice-box para receber a arte, **e o removi**: descobri que as
+rolagens do Um Anel vão para o mini-dado do chat (`DiceWebGL`, canvas `three`), e o dice-box grande só
+serve ao combate do Eldarin. O tema não teria consumidor — seria config morta apresentada como progresso.
+
+**O que fechou de D19, sem arte:** o rolador da mesa passou a respeitar o sistema. Em sala do Um Anel os
+atalhos são **Dado de Proeza (1d12) e Dados de Sucesso (1d6 a 6d6)**; d20, d10, d8 e d4 **não existem no
+sistema** e ofereciam ao Mestre um dado que nenhuma regra do livro usa. `verify-um-anel-dados.mjs` (28
+asserções) proíbe o retorno deles e trava o mapeamento valor-de-jogo × face-física (Olho vale 0 e mostra
+face 11; Runa vale 10 e mostra face 12).
+
+**Caminho restante de D19, documentado no teste:** o mini-dado desenha faces com `fillText`, então os
+glyphs **não exigem arquivo de arte** — exigem (a) um marcador de sistema do chat até `makeFaceTex`, que
+hoje não existe, e (b) decidir o caractere da runa de Gandalf, que **o material extraído não
+especifica** (o livro dá ⊘ para o Olho e ᛥ para o tengwa, e nada para a runa). Não escolhi um por chute.
+
+**D31 mudou de plano com base na fonte.** O plano dizia converter *Tales from Wilderland* e *The
+Darkening of Mirkwood*, ambas 1ª edição. Mas o acervo tem `TOR_Starter_Set_The_Adventures.pdf`, que é
+**2ª edição — compatível direto, zero risco de conversão**. Extraí essa primeiro.
+
+**`livros/um-anel/14-aventuras-starter-set.md`** (novo): as **cinco aventuras** completas em PT-BR, com
+todas as cenas, todas as rolagens nomeadas, as tabelas e os epílogos — *Uma Conspiração das Mais
+Rachadas*, *Caçadores de Tesouro Experientes*, *Fogos de Artifício Mais Excelentes*, *Carteiros
+Involuntários* e *Para Acalmar uma Fera Selvagem* — mais a ordem encadeada que a introdução define.
+
+**Três adversários novos** saíram das aventuras: **Jack, o Troll de Pedra** (Nível 8, Resistência 34),
+**Veterano Orc** (Nível 4, Resistência 16) e **Fera Queimada** (Nível 5, Resistência 20, aparece em
+**par**). Entraram com as habilidades de família das respectivas famílias — Trolls com Rijeza Hedionda e
+Cabeça-dura, Orc com Odeia a Luz do Sol — evitando na entrada a lacuna que a rodada anterior corrigiu em
+7 blocos.
+
+**Formato simplificado, registrado em vez de preenchido por chute:** os blocos das aventuras **não
+trazem Vigor, Ódio/Resolução nem Traços**. Vigor ausente virou **1** (o padrão do motor) e o Ódio foi
+derivado do Nível de Atributo, que é a convenção do próprio livro nos blocos completos. O teste trava
+`might: 1` para os três, justamente para ninguém subir por intuição.
+
+**Divergência da fonte registrada:** o livro de aventuras diz **nove** pré-gerados; o livreto de fichas
+traz **oito**, e `pregens.ts` implementa oito. Os seis Hobbits iniciais + Balin + Bilbo dão oito — o
+nono não aparece em nenhum dos dois materiais extraídos.
+
+**Validação:** `npx tsc --noEmit` limpo · `npm run test` verde (**923 asserções**, zero falhas) ·
+`npm run build` compila. **5 testes negativos**, todos acusando. O harness de negativos agora proíbe
+string vazia e aborta acima de 200 KB — a proteção que entrou depois de eu ter destruído
+`adversaries.ts` na rodada anterior.
+
+**Falta:** os glyphs do mini-dado (precisa do marcador de sistema + decidir o caractere da runa);
+converter *Tales from Wilderland* e *The Darkening of Mirkwood* de 1ª edição; e as lacunas funcionais
+já registradas (Virtudes fora das rolagens, variante de NA 18, Elmo removível, Habilidades Sinistras não
+mecanizadas).
+
+---
+
 ### 2026-08-04 — Auditoria campo a campo do bestiário (D20): 21 blocos, 37 divergências
 
 **Pedido:** mini loop — um workflow, um commit, parar.
