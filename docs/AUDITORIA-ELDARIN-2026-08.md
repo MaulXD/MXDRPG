@@ -66,16 +66,62 @@ O que fazer, **e o limite**: o loop autônomo constrói a *infra* — rota `app/
 
 ---
 
-### 4. monstros.json (451 KB, admin-only) está no bundle JS público — crítico/médio
+### 4. monstros.json (451 KB, admin-only) viaja para o navegador de todo jogador — crítico/GRANDE
 
-O que fazer: quebrar a cadeia estática que arrasta o bestiário inteiro para o cliente.
-- `lib/compendium/registry.ts:2-7` importa os 6 JSON em top-level (monstros na linha 5) e `lib/vtt/monsters.ts:1` idem — **nenhum dos dois tem `import "server-only"`** (conferi: `grep -rn "server-only" lib/compendium/ lib/vtt/monsters.ts` → zero).
-- `components/compendium/MonsterCompendiumSheet.tsx:1` é `"use client"` e importa `getEntry` (linha 7) e `getMonsterTemplate` (linha 11) desses módulos — é a ponte.
-- Correções em ordem: (a) `import "server-only"` em `lib/compendium/registry.ts` e `lib/vtt/monsters.ts` (isso faz o build **falhar** se alguém religar a ponte — é a trava permanente); (b) `MonsterCompendiumSheet` passa a receber a ficha já resolvida por prop/rota de API em vez de importar o registry; (c) `CompendiumBrowser.tsx:12` importa `MonsterSheetDialog` via `next/dynamic` em vez de estaticamente.
+> **CORRIGIDO EM 2026-08-08, ao começar a implementar.** A receita original deste alvo estava
+> errada e teria quebrado o build. O que segue é a versão medida. O diagnóstico do problema se
+> confirmou; a prescrição, não.
 
-**Pronto quando** `scripts/verify-compendium-bundle.mjs` assertar, **sobre o build**: nenhum arquivo em `.next/static/chunks/` contém as strings `Necroarca`, `Zumbi de Masmorra` ou o regex `MON-\d{3}`. Complementar com asserção de código: `lib/compendium/registry.ts` e `lib/vtt/monsters.ts` contêm `server-only`, e nenhum arquivo com `"use client"` em `components/` importa `@/lib/compendium/registry` ou `@/lib/vtt/monsters`.
+**O que foi medido (números, não estimativa):**
 
-Conferido por mim: `grep -rl "Necroarca" .next/static/chunks/` devolve `.next/static/chunks/7918-f5160c188496b372.js`. O vazamento é real no build presente.
+| Medida | Valor |
+|---|---|
+| `data/compendiums/monstros.json` | 451.068 bytes |
+| chunk `7918-*.js` que o carrega | 659.134 bytes |
+| fatia do chunk que é dado de monstro | **~295 KB, 45% do chunk** |
+| rotas que carregam esse chunk | **9 de 156** |
+
+As 9 rotas incluem `/personagem/[id]`, `/personagem/novo`, `/personagem/[id]/editar` e
+`/mesa/[roomId]` — ou seja, **um jogador comum baixa ~295 KB de bestiário admin-only só para abrir
+a própria ficha**. O problema é real e é dos piores da lista.
+
+**Onde a receita original errava.** Ela mandava pôr `import "server-only"` em
+`lib/compendium/registry.ts` e `lib/vtt/monsters.ts` como "trava permanente". Isso **quebraria o
+build**: conferido, **dez componentes cliente** importam esses dois módulos —
+
+- de `registry`: `CharacterSheet.tsx`, `SheetPdfCapture.tsx`, `SheetPdfDocument.tsx`,
+  `SheetPopupLoadoutBar.tsx`, `wizard/WizardEquipmentStep.tsx`, `MonsterCompendiumSheet.tsx`;
+- de `vtt/monsters`: `MonsterCompendiumSheet.tsx`, `MonsterSheetPopup.tsx`, `GmCreationsPanel.tsx`,
+  `MonsterSpawnPanel.tsx`.
+
+E, dos dez, **quatro precisam legitimamente do dado no cliente**: os painéis de Mestre invocam e
+editam monstro no navegador. `server-only` não é "trava barata" aqui — é uma proibição do que o
+produto faz.
+
+**Qual é o defeito de verdade.** O acesso ao dado JÁ é gated por papel em tempo de execução
+(`canViewPack` em `registry.ts:106` exige admin ou Mestre da sala). O que não é gated é o
+**empacotamento**: o `import monstrosData` no topo de `registry.ts:5` entra no grafo estático, então
+qualquer chunk que importe `registry` — inclusive o da ficha de personagem, que só quer armas e
+equipamento — carrega o bestiário junto. É gating de dado sem gating de bundle.
+
+**Correção certa: separação de chunk, não `server-only`.** Tirar `monstros` do `PACK_DATA`
+estático de `registry.ts` e pô-lo num módulo próprio, carregado dinamicamente (`await import()`)
+só por quem abre painel de monstro. Isso mantém os painéis de Mestre funcionando e tira os ~295 KB
+das rotas de ficha.
+
+**Por que é GRANDE e não médio:** `entriesForPack` é **síncrona** e usada em todo o registry;
+torná-la assíncrona propaga por `getEntry`, `getPackEntries` e pelos call sites nos dez componentes.
+A alternativa (módulo separado com acessor próprio) exige reescrever cada chamada que hoje pede
+`getEntry("monstros", …)`. Qualquer um dos dois caminhos é refactor de verdade, com risco de
+regressão nos painéis de invocação — e esses painéis **não têm teste**.
+
+**Pronto quando** `scripts/verify-compendium-bundle.mjs` assertar, **sobre o build**: nenhum chunk
+carregado pelas rotas `/personagem/**` contém `MON-\d{3}`; e os painéis de Mestre continuam
+achando o bestiário (asserção de que o módulo dinâmico existe e é importado por eles). A asserção
+tem de conferir os DOIS lados — tirar o dado de todo mundo é fácil e quebra o produto.
+
+**Pré-requisito recomendado:** cobrir `MonsterSpawnPanel` e `GmCreationsPanel` com asserção antes
+de mexer. Refatorar caminho sem teste é o que esta lista inteira existe para evitar.
 
 ---
 
