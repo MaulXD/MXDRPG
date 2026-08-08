@@ -104,6 +104,75 @@ npm run sync:data:check       # após editar livros/
 
 ---
 
+### 2026-08-08 — Elmo removível: a fotografia do token que envelhecia
+
+**Pedido:** continuar o loop.
+
+**Passo a passo:**
+
+1. **A jogada que faltava.** O livro trata tirar o Elmo como tática: "às vezes,
+   durante o combate, um herói pode recorrer a descartá-lo para reduzir a Carga
+   carregada e evitar ficar Exausto muito cedo". `removable: true` estava em
+   `data.ts` desde o começo, com **um único consumidor**: uma dica de tooltip no
+   compêndio.
+
+2. **O achado maior veio junto — e era pior.**
+   `token.torCombat.protectionDice` é uma **fotografia** tirada quando o herói
+   entra em cena, e o Teste de Proteção lia essa foto. Exausto, ao contrário, é
+   derivado e lido da ficha a cada ataque. Resultado: tirar o Elmo pela ficha
+   aliviava a Carga **e mantinha o dado de Proteção** — os dois benefícios de
+   graça. Trocar de armadura no meio da luta tinha o mesmo efeito.
+
+   Corrigido lendo `computeProtectionDice(defSheet.armour)` para heróis; o
+   adversário, que não tem ficha, continua com o valor do token. Tem asserção
+   **negativa** impedindo que alguém "otimize" isso de volta para o token, e
+   asserção de **ordem** garantindo que a ficha é lida antes de montar os
+   parâmetros do motor.
+
+   É a mesma família do bônus de escudo, que já foi valor guardado e já divergiu.
+
+3. **As duas metades custam ações diferentes** (capítulo 6): tirar é **ação
+   secundária**, recuperar é **ação principal**. Tratar as duas igual apagaria o
+   custo da volta, que é o que equilibra a jogada — sair do Exausto é barato,
+   voltar ao Elmo é caro. O botão diz qual ação cada metade custa. O app **não
+   policia** a economia de ações: a mesa conta principal e secundária, o app diz
+   o preço.
+
+4. **Uma verdade só.** O handler grava em `armour` na **ficha** — Carga, Exausto
+   e Proteção saem todos dali. E inverte o estado atual em vez de receber o alvo
+   do cliente: receber o alvo deixaria duas telas discordarem sobre o estado. O
+   token recebe um **espelho de exibição** (`helm`, `protectionDice`) só para o
+   botão saber o que dizer, e o comentário no tipo diz isso em voz alta.
+
+5. **A Carga que decide Exausto é a TOTAL** — equipamento + Fadiga. Tem asserção
+   com um caso em que os 2 pontos de Fadiga são a diferença entre estar Exausto e
+   não estar; comparar só com o equipamento erraria exatamente esse caso.
+
+6. **Validação.** `npx tsc --noEmit` limpo · `npm run build` compila ·
+   `npm run test` verde com **2090 asserções** (52 novas). Oito asserções foram
+   quebradas de propósito e falharam como deviam.
+
+**Arquivos tocados:**
+- `lib/combat/um-anel/gear-in-combat.ts` — **novo**: a troca e o custo em ação
+- `lib/room/handlers/tor-helm.ts` — **novo**
+- `lib/room/handlers/tor-combat-attack.ts` — Proteção do herói sai da ficha
+- `app/api/room/[roomId]/tor-helm/route.ts` — **novo**
+- `lib/vtt/types.ts` + `lib/vtt/tor-player-token.ts` — espelho `helm` no token
+- `components/vtt/TorHelmControl.tsx` — **novo**
+- `components/vtt/TokenStatusBody.tsx` — o controle entra no token do herói
+- `hooks/useRoomSync.ts` — `postRoomTorHelm`
+- `scripts/verify-um-anel-elmo.mjs` — **novo**, 52 asserções
+
+**Como testar:** com um herói de Cota de Malha + Elmo perto do limite de Carga,
+abrir o token e clicar em "Tirar o Elmo" — o chat mostra a Carga nova, a Proteção
+nova e, se for o caso, "deixa de estar EXAUSTO". O próximo Golpe Perfurante contra
+ele rola com **um dado a menos**, que antes não acontecia.
+
+**Falta:** gancho automático do Olho rolado; campanhas de 1ª edição; glyph da
+runa de Gandalf.
+
+---
+
 ### 2026-08-08 — Olho de Mordor: Atenção do Olho, limiar da Caçada e Revelação
 
 **Pedido:** continuar o loop.

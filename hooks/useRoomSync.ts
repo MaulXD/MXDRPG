@@ -911,6 +911,25 @@ export async function postRoomTorEye(
   return res.json() as Promise<RoomApiPayload>;
 }
 
+/**
+ * Um Anel — tirar ou recuperar o Elmo no meio do combate. Tirar alivia a Carga
+ * (e pode sair do Exausto) ao custo de um dado de Proteção; recuperar custa a
+ * ação principal.
+ */
+export async function postRoomTorHelm(roomId: string, tokenId: string) {
+  const res = await roomFetch(
+    `/api/room/${roomId}/tor-helm`,
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "same-origin",
+      body: JSON.stringify({ tokenId }),
+    },
+    "Falha ao trocar o Elmo"
+  );
+  return res.json() as Promise<RoomApiPayload>;
+}
+
 /** Um Anel — o herói aceita ser empurrado e amortece metade do último golpe. */
 export async function postRoomTorPush(roomId: string, tokenId: string) {
   const res = await roomFetch(

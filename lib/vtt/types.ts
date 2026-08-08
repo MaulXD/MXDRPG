@@ -200,6 +200,15 @@ export type TorCombatTokenFields = {
   /** Qual dos dois nomes usar na tela — muda o texto, não a mecânica. */
   hateKind?: "hate" | "resolve";
   /**
+   * Só herói — está de Elmo? **Espelho de exibição**, não fonte da verdade.
+   *
+   * Existe só para o botão de tirar/recuperar saber o que dizer. Quem manda no
+   * Teste de Proteção é `computeProtectionDice(sheet.armour)`, lido da ficha a
+   * cada ataque — ver tor-combat-attack.ts, e a asserção que impede alguém de
+   * "otimizar" isso para ler o token de novo.
+   */
+  helm?: boolean;
+  /**
    * Só herói — nível do veneno que corre no corpo, ou ausente se não envenenado.
    *
    * Guardado porque o veneno **persiste entre cenas**: "um herói-jogador

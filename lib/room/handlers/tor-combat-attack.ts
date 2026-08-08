@@ -1,5 +1,6 @@
 import { WEAPON_BY_ID } from "@/lib/character/um-anel/data";
 import {
+  computeProtectionDice,
   isTorIllFavouredByShadow,
   resolveWeaponInjury,
   torBrawlingRank,
@@ -369,6 +370,13 @@ export async function executeRoomTorAttack(
   let defenderWoundSeverityFavoured = false;
   let defenderHeroSheetId: string | null = null;
   let defenderShieldIsRewarded = false;
+  /* Dados de Proteção. O token guarda uma FOTOGRAFIA tirada quando o herói
+     entrou em cena, e ela envelhece: tirar o Elmo no meio do combate para fugir
+     do Exausto (03-aventureiros.md diz que a jogada existe) aliviava a Carga e
+     **mantinha o dado de Proteção** — o herói ficava com os dois benefícios.
+     Trocar de armadura tinha o mesmo problema. Para o herói, quem manda é a
+     ficha; para o adversário não há ficha, então continua o valor do token. */
+  let defenderProtectionDice = defCombat.protectionDice;
   if (defCombat.kind === "hero" && defCombat.torCharacterId) {
     const defSheet = await resolveTorCharacter(defCombat.torCharacterId);
     if (defSheet) {
@@ -396,6 +404,7 @@ export async function executeRoomTorAttack(
       // escudo é "Reforçado"; a ficha guarda Recompensas soltas, sem amarrar a
       // um item, então é o melhor vínculo disponível.
       defenderShieldIsRewarded = defSheet.rewards.includes("reforcado");
+      defenderProtectionDice = computeProtectionDice(defSheet.armour);
     }
   } else if (defCombat.kind === "adversary") {
     // Adversário Exausto também rola Proteção pior — a condição não é privilégio
@@ -457,7 +466,7 @@ export async function executeRoomTorAttack(
     weaponInjury: weaponInjury ?? 999,
     weaponCanPierce: weaponInjury != null,
     defenderKind: defCombat.kind,
-    defenderProtectionDice: defCombat.protectionDice,
+    defenderProtectionDice,
     defenderWeary,
     defenderMiserable,
     defenderIllFavoured,
