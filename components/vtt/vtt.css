@@ -4310,6 +4310,22 @@
   accent-color: var(--accent);
 }
 
+/* Dois campos numéricos lado a lado (Golpe Pesado / Perfurar). */
+.vtt-special-damage {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+  gap: 0.5rem;
+}
+
+.vtt-special-damage label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  font-weight: 400;
+  font-size: 0.72rem;
+  min-width: 0;
+}
+
 /* Habilidades Sinistras do adversário — texto de consulta do Mestre. */
 .vtt-fell-abilities {
   margin: 0.2rem 0 0;

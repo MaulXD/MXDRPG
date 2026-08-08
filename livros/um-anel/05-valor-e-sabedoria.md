@@ -123,6 +123,15 @@ Seus golpes se tornaram mais poderosos e sua mira mais firme, permitindo que voc
 
 - Ao infligir Dano Especial em combate, some +1 ao seu valor de FORÇA em um Golpe Pesado, e +1 ao resultado numérico do Dado de Proeza em um Golpe Perfurante.
 
+> **Nota de leitura (implementação):** a frase fala de **Dano Especial**, e o Dano
+> Especial que soma no Dado de Proeza é **Perfurar** — "Golpe Perfurante" aqui é o
+> resultado que Perfurar procura provocar, não uma quinta opção de gasto. É a
+> única leitura em que o +1 muda alguma coisa: uma vez disparado o Golpe
+> Perfurante, o valor do Dado de Proeza não é mais consultado (o que decide dali
+> em diante é o Teste de Proteção contra o Ferimento da arma). Por isso o app
+> aplica o +1 ao gastar um ícone em **Perfurar**, onde ele pode levar um 9 a 10 e
+> disparar o Golpe.
+
 **ROBUSTEZ**
 
 Sua determinação e seu vigor melhoraram através de privações e labor.

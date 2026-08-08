@@ -23,7 +23,20 @@ type Body = {
   torActionId?: string;
   /** O Um Anel — Mestre gasta 1 de Ódio/Resolução pro adversário ganhar (1d). */
   torSpendHate?: boolean;
+  /** O Um Anel — ícones de Sucesso declarados pra Dano Especial. */
+  torSpecialDamage?: { heavyBlow?: number; pierce?: number };
 };
+
+/** Recorta o plano de Dano Especial: o corpo da requisição não é confiável. */
+function sanitizeSpecialDamage(raw: Body["torSpecialDamage"]) {
+  if (!raw || typeof raw !== "object") return undefined;
+  const clamp = (v: unknown) =>
+    typeof v === "number" && Number.isFinite(v) ? Math.min(6, Math.max(0, Math.floor(v))) : 0;
+  const heavyBlow = clamp(raw.heavyBlow);
+  const pierce = clamp(raw.pierce);
+  if (heavyBlow === 0 && pierce === 0) return undefined;
+  return { heavyBlow, pierce };
+}
 
 function authorFromSession(
   session: Awaited<ReturnType<typeof getSession>>,
@@ -98,6 +111,7 @@ export async function POST(req: Request, { params }: Params) {
             // aqui: hoje é um stub que devolve false sempre, e o gasto nunca
             // funcionaria.
             spendHate: body.torSpendHate === true && canManageRoom(room, session?.user ?? null),
+            specialDamage: sanitizeSpecialDamage(body.torSpecialDamage),
             room,
           })
         : await executeRoomAttack(

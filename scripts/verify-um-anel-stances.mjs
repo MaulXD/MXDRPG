@@ -225,9 +225,19 @@ ok(
     readFileSync(join(__dirname, "..", "livros", "um-anel", "06-fases-de-aventura-combate.md"), "utf8")
   )
 );
+/* O limiar continua 10 — a Runa já é codificada como numeric 10 e o Olho como 0,
+   então um único `>= 10` cobre os dois casos do livro.
+   Era `=== 10` até o Dano Especial existir: Perfurar soma no Dado de Proeza, e
+   com igualdade estrita um 9 + 2 de Perfurar daria 11 e NÃO dispararia o Golpe —
+   exatamente o efeito que Perfurar existe para produzir. */
 ok(
-  "Golpe Perfurante testa numeric === 10 (cobre 10 e Runa)",
-  /attackRoll\.featDie\.numeric === 10/.test(attackCode)
+  "Golpe Perfurante dispara de 10 pra cima (cobre 10, Runa e Perfurar)",
+  /featDieForPierce >= 10/.test(attackCode),
+  "com === 10 o bônus de Perfurar passaria do alvo e anularia o próprio efeito"
+);
+ok(
+  "o valor testado é o do Dado de Proeza já com Perfurar",
+  /const featDieForPierce =/.test(attackCode)
 );
 
 

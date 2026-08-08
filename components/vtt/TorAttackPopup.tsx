@@ -6,6 +6,7 @@ import { WEAPON_BY_ID } from "@/lib/character/um-anel/data";
 import type { TorCharacterSheet } from "@/lib/character/um-anel/types";
 import type { BattleToken } from "@/lib/vtt/types";
 import { postRoomAttack, postRoomTorStance, type RoomApiPayload } from "@/hooks/useRoomSync";
+import { ADVERSARY_PIERCE_BONUS, heroPierceBonus } from "@/lib/combat/um-anel/special-damage";
 import {
   TOR_DEFAULT_STANCE,
   TOR_STANCES,
@@ -33,6 +34,8 @@ export function TorAttackPopup({ token, allTokens, roomId, onClose, onRoomSync }
   const [choiceId, setChoiceId] = useState<string>("");
   const [busy, setBusy] = useState(false);
   const [spendHate, setSpendHate] = useState(false);
+  const [heavyBlow, setHeavyBlow] = useState(0);
+  const [pierce, setPierce] = useState(0);
   const [err, setErr] = useState<string | null>(null);
   const [lastMessage, setLastMessage] = useState<string | null>(null);
 
@@ -103,6 +106,17 @@ export function TorAttackPopup({ token, allTokens, roomId, onClose, onRoomSync }
      errado do capítulo 8. */
   const hateName = combat?.hateKind === "resolve" ? "Resolução" : "Ódio";
 
+  /* Perfurar só existe para Arcos, Lanças e Espadas — mostrar o campo ativo para
+     um Machado faria o jogador gastar ícone em nada. */
+  const pierceBonus = useMemo(() => {
+    if (!isHero) {
+      const action = combat?.actions?.find((a) => a.id === choiceId);
+      return action?.specialDamage?.includes("Perfurar") ? ADVERSARY_PIERCE_BONUS : 0;
+    }
+    const weapon = WEAPON_BY_ID[choiceId];
+    return weapon ? heroPierceBonus(weapon.proficiency) : 0;
+  }, [isHero, choiceId, combat?.actions]);
+
   async function changeStance(next: string) {
     if (busy || next === stance) return;
     setBusy(true);
@@ -127,6 +141,8 @@ export function TorAttackPopup({ token, allTokens, roomId, onClose, onRoomSync }
         torWeaponId: isHero ? choiceId : undefined,
         torActionId: isHero ? undefined : choiceId,
         torSpendHate: !isHero && spendHate,
+        torSpecialDamage:
+          heavyBlow > 0 || pierce > 0 ? { heavyBlow, pierce } : undefined,
       });
       // O ponto só some se o ataque aconteceu — deixar marcado gastaria de novo
       // no próximo clique sem o Mestre pedir.
@@ -201,6 +217,42 @@ export function TorAttackPopup({ token, allTokens, roomId, onClose, onRoomSync }
             ))}
           </select>
         </label>
+
+        {/* Dano Especial é declarado ANTES da rolagem: o ataque é uma requisição
+            só, então o jogador diz quanto quer gastar e o motor gasta o que os
+            ícones realmente derem. Perfurar é atendido primeiro — pode levar um
+            9 a 10 e disparar o Golpe Perfurante. */}
+        <div className="vtt-field">
+          <span>Dano Especial (ícones de Sucesso)</span>
+          <div className="vtt-special-damage">
+            <label>
+              Golpe Pesado
+              <input
+                type="number"
+                min={0}
+                max={6}
+                value={heavyBlow}
+                disabled={busy}
+                onChange={(e) => setHeavyBlow(Math.max(0, Math.min(6, Number(e.target.value) || 0)))}
+              />
+            </label>
+            <label>
+              Perfurar{pierceBonus > 0 ? ` (+${pierceBonus})` : " (arma não perfura)"}
+              <input
+                type="number"
+                min={0}
+                max={6}
+                value={pierce}
+                disabled={busy || pierceBonus === 0}
+                onChange={(e) => setPierce(Math.max(0, Math.min(6, Number(e.target.value) || 0)))}
+              />
+            </label>
+          </div>
+          <span className="vtt-field__hint">
+            Aparar, Investida de Escudo, Quebrar Escudo e Agarrar duram a rodada inteira e ainda não
+            têm onde ser guardados — continuam sendo combinados na mesa.
+          </span>
+        </div>
 
         {!isHero && combat.hate != null ? (
           <div className="vtt-field">

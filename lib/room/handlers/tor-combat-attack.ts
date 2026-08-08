@@ -5,6 +5,7 @@ import {
   torBrawlingRank,
 } from "@/lib/character/um-anel/rules";
 import { torVirtueRollEffect } from "@/lib/character/um-anel/virtues";
+import { ADVERSARY_PIERCE_BONUS, heroPierceBonus } from "@/lib/combat/um-anel/special-damage";
 import { resolveTorCharacter, patchTorCharacterResources } from "@/lib/character/um-anel/characters";
 import { resolveTorAttack, formatTorAttackMessage } from "@/lib/combat/um-anel/resolve-attack";
 import { featDieRollPayload } from "@/lib/character/um-anel/dice";
@@ -35,6 +36,12 @@ export type TorAttackExecuteOpts = {
    * mais adiante na luta, e essa escolha é do Mestre.
    */
   spendHate?: boolean;
+  /**
+   * Ícones de Sucesso que o atacante quer gastar em Dano Especial. Declarado
+   * antes da rolagem porque o ataque é uma requisição só; o motor gasta o que os
+   * dados realmente derem.
+   */
+  specialDamage?: { heavyBlow?: number; pierce?: number };
   room?: RoomState;
 };
 
@@ -116,6 +123,12 @@ export async function executeRoomTorAttack(
   let attackIsRanged = false;
   /** O Mestre gastou 1 de Ódio/Resolução neste ataque — desconta ao persistir. */
   let hateSpent = false;
+  /** Golpe Pesado: FORÇA (herói) ou Nível de Atributo (adversário). */
+  let heavyBlowValue = 0;
+  /** Perfurar: bônus por uso, 0 quando a arma não perfura. */
+  let pierceValue = 0;
+  let attackTwoHanded = false;
+  let attackerSteadyHand = false;
   let weaponDamage: number;
   let weaponInjury: number | null;
   let weaponLabel: string;
@@ -161,6 +174,14 @@ export async function executeRoomTorAttack(
     weaponDamage = weapon.damage;
     weaponInjury = resolveWeaponInjury(weapon, gearItem.twoHanded);
     weaponLabel = weapon.label;
+    // Golpe Pesado do herói soma a FORÇA; Perfurar depende da Proficiência
+    // (Espadas +1, Arcos +2, Lanças +3 — Machados e Briga não perfuram).
+    heavyBlowValue = sheet.attributes.forca;
+    pierceValue = heroPierceBonus(weapon.proficiency);
+    attackTwoHanded = Boolean(gearItem.twoHanded ?? weapon.twoHanded);
+    // Mão Firme finalmente faz alguma coisa: existia em STARTING_VIRTUES desde
+    // sempre e nenhuma rolagem a consultava.
+    attackerSteadyHand = sheet.virtues.includes("mao-firme");
   } else {
     const action = atkCombat.actions?.find((a) => a.id === opts.actionId) ?? atkCombat.actions?.[0];
     if (!action) return { ok: false, error: "Adversário sem ação de ataque" };
@@ -171,6 +192,12 @@ export async function executeRoomTorAttack(
     weaponDamage = action.damage;
     weaponInjury = action.injury;
     weaponLabel = action.label;
+    // "Todos os adversários podem sempre escolher acionar um resultado de dano
+    // especial de Golpe Pesado" (08-mestre-e-adversarios.md) — por isso não
+    // depende de `action.specialDamage`, que lista só as opções EXTRAS do bloco.
+    heavyBlowValue = atkCombat.attributeLevel ?? 0;
+    // Perfurar é +2 fixo pro adversário, e só se o bloco listar a opção.
+    pierceValue = action.specialDamage?.includes("Perfurar") ? ADVERSARY_PIERCE_BONUS : 0;
 
     // "O Mestre pode reduzir o Ódio ou a Resolução de um adversário para fazê-lo
     // ganhar (1d) em uma rolagem durante o combate." O gasto é (1d) de Dado de
@@ -259,6 +286,11 @@ export async function executeRoomTorAttack(
     attackerStance: atkCombat.kind === "hero" ? torTokenStance(attackerToken) : undefined,
     defenderStance: defCombat.kind === "hero" ? torTokenStance(defenderToken) : undefined,
     attackIsRanged,
+    specialDamagePlan: opts.specialDamage,
+    heavyBlowValue,
+    pierceValue,
+    attackTwoHanded,
+    attackerSteadyHand,
     attackerEngagedByCount:
       atkCombat.kind === "hero" ? countEngagingFoes(room.scene.tokens, attackerToken) : 0,
   });

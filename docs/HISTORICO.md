@@ -104,6 +104,91 @@ npm run sync:data:check       # após editar livros/
 
 ---
 
+### 2026-08-08 — Dano Especial: Golpe Pesado e Perfurar (e a Mão Firme deixa de ser inerte)
+
+**Pedido:** continuar o loop.
+
+**Passo a passo:**
+
+1. **Diagnóstico.** `specialDamage` era `string[]` decorativo no bloco do
+   adversário, e o herói não tinha como gastar ícone de Sucesso nenhum. Junto
+   disso, a Virtude **Mão Firme** existia em `STARTING_VIRTUES` desde sempre e
+   **não fazia absolutamente nada**.
+
+2. **Achado de leitura — são duas listas, não uma.** O capítulo 6 dá as opções do
+   **herói** (Golpe Pesado, Aparar, Perfurar, Investida de Escudo) e o capítulo 8
+   as do **adversário** (Quebrar Escudo, Golpe Pesado, Perfurar, Agarrar). Elas
+   dividem dois nomes e diferem nos outros dois — tratar como lista única daria
+   ao herói um "Agarrar" que ele não tem e ao adversário um "Aparar" que não
+   existe. E há um par ainda mais traiçoeiro: **Perfurar** (Dano Especial, soma no
+   Dado de Proeza) × **Golpe Perfurante** (resultado 10/Runa que obriga o Teste de
+   Proteção).
+
+3. **Mão Firme era um no-op por causa desse par.** O texto diz "+1 ao resultado
+   numérico do Dado de Proeza **em um Golpe Perfurante**". Só que, uma vez
+   disparado o Golpe Perfurante, o valor do Dado de Proeza não é mais consultado —
+   o que decide dali em diante é o Teste de Proteção contra o Ferimento da arma.
+   Lido ao pé da letra, o +1 não muda **nada**. A frase abre com "Ao infligir
+   **Dano Especial**", e o Dano Especial que soma no Dado de Proeza é Perfurar —
+   única leitura em que a metade da Virtude tem efeito, e onde ela é forte, porque
+   pode levar um 9 a 10 e disparar o Golpe. Registrei a interpretação como **nota
+   de leitura no capítulo** (sem apagar a frase original) e ajustei a descrição em
+   `data.ts`, que repetia o texto inerte.
+
+4. **Implementação.** Motor novo e puro em `special-damage.ts` com as duas opções
+   que se resolvem inteiras dentro do ataque. Três decisões que o teste tranca:
+
+   - **Dano Especial é resolvido ANTES do Golpe Perfurante.** Calcular depois
+     tornaria Perfurar inútil justamente onde ele mais importa.
+   - **Perfurar é atendido antes do Golpe Pesado** quando há menos ícones que o
+     pedido: Perfurar decide o Golpe Perfurante, o Golpe Pesado só soma
+     Resistência.
+   - **Arma que não perfura não consome ícone** — gastar em nada é pior que não
+     oferecer. Machados e Briga ficam fora porque o livro nomeia só Arcos, Lanças
+     e Espadas (+2/+3/+1).
+
+   O plano é declarado **antes** da rolagem, porque o ataque é uma requisição só;
+   o motor gasta o que os dados realmente derem.
+
+5. **Regra que quase se perdeu:** "todos os adversários podem sempre escolher
+   acionar Golpe Pesado" — o bloco lista só os **extras**. Condicionar a
+   `action.specialDamage` (o reflexo natural, e o que Perfurar de fato exige)
+   tiraria uma opção que é universal. O teste trava os dois lados.
+
+6. **Validação.** `npx tsc --noEmit` limpo · `npm run build` compila ·
+   `npm run test` verde com **1316 asserções**. As quatro asserções críticas
+   foram conferidas quebrando de propósito.
+
+**Duas asserções antigas tiveram de mudar, e por bom motivo:** `verify-um-anel-stances`
+exigia `featDie.numeric === 10` para o Golpe Perfurante. Com Perfurar somando no
+Dado de Proeza, a igualdade estrita faria um 9 + 2 dar 11 e **não** disparar o
+Golpe — exatamente o efeito que Perfurar existe para produzir. Virou `>= 10`,
+com o comentário explicando por quê. E `verify-um-anel-pregens` exigia a frase
+inerte da Mão Firme; agora exige a segunda metade com o nome certo do gasto.
+
+**Arquivos tocados:**
+- `lib/combat/um-anel/special-damage.ts` — **novo**: motor puro do gasto de ícones
+- `lib/combat/um-anel/resolve-attack.ts` — plano de gasto, ordem correta, Olho/Runa fora do bônus
+- `lib/room/handlers/tor-combat-attack.ts` — FORÇA/Nível de Atributo, Proficiência, 2 mãos, Mão Firme
+- `app/api/room/[roomId]/combat/attack/route.ts` — recorte do plano recebido
+- `hooks/useRoomSync.ts` · `components/vtt/TorAttackPopup.tsx` · `components/vtt/vtt.css` — UI do gasto
+- `livros/um-anel/05-valor-e-sabedoria.md` — nota de leitura da Mão Firme
+- `lib/character/um-anel/data.ts` — descrição da Mão Firme sem o no-op
+- `scripts/verify-um-anel-dano-especial.mjs` — **novo**, 48 asserções
+- `scripts/verify-um-anel-stances.mjs` · `verify-um-anel-pregens.mjs` — asserções atualizadas
+- `package.json` — novo teste na suíte
+
+**Como testar:** herói com Espada (Perfurar +1) atacando e pedindo 1 ícone em
+Perfurar — se o Dado de Proeza sair 9, tem de virar Golpe Perfurante. O mesmo
+herói com Mão Firme faz o 8 já bastar. Com Machado, o campo Perfurar aparece
+desabilitado.
+
+**Falta:** Aparar, Investida de Escudo, Quebrar Escudo e Agarrar (duram a rodada
+— precisam de estado que ainda não existe); tarefas de combate; variante de NA
+18; Elmo removível; campanhas de 1ª edição; glyph da runa de Gandalf.
+
+---
+
 ### 2026-08-08 — Ódio/Resolução e Habilidades Sinistras chegam à mesa
 
 **Pedido:** continuar o loop.
