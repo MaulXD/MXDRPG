@@ -175,16 +175,16 @@ Calcule os seguintes valores com base nos valores de Atributo escolhidos:
 
 ### Perícias
 
-Copie os níveis de Perícia listados para a ficha de personagem; então escolha uma Perícia entre as duas sublinhadas e marque-a como Favorecida (sublinhadas abaixo: **Encorajar**, **Atletismo**).
+Copie os níveis de Perícia listados para a ficha de personagem; então escolha uma Perícia entre as duas sublinhadas e marque-a como Favorecida (sublinhadas abaixo: **Indução**, **Atletismo**).
 
 | Perícia | Nível | Perícia | Nível | Perícia | Nível |
 |---|---|---|---|---|---|
-| Imponência | 1 | *Encorajar* (sublinhada) | 2 | Persuasão | 3 |
-| *Atletismo* (sublinhada) | 1 | Viajar | 1 | Furtividade | 0 |
-| Percepção | 0 | Perspicácia | 2 | Vasculhar | 1 |
-| Caça | 2 | Cura | 0 | Explorar | 1 |
-| Canto | 1 | Cortesia | 2 | Enigma | 0 |
-| Ofício | 1 | Batalha | 2 | Saber | 1 |
+| Fascínio | 1 | *Indução* (sublinhada) | 2 | Persuasão | 3 |
+| *Atletismo* (sublinhada) | 1 | Viagem | 1 | Furtividade | 0 |
+| Vigilância | 0 | Discernimento | 2 | Busca | 1 |
+| Caçada | 2 | Cura | 0 | Exploração | 1 |
+| Música | 1 | Cortesia | 2 | Enigma | 0 |
+| Ofício | 1 | Batalha | 2 | História | 1 |
 
 ### Proficiências de Combate
 
@@ -266,16 +266,16 @@ Calcule os seguintes valores com base nos valores de Atributo escolhidos:
 
 ### Perícias
 
-Copie os níveis de Perícia listados para a ficha de personagem; então escolha uma Perícia entre as duas sublinhadas e marque-a como Favorecida (sublinhadas abaixo: **Viajar**, **Ofício**).
+Copie os níveis de Perícia listados para a ficha de personagem; então escolha uma Perícia entre as duas sublinhadas e marque-a como Favorecida (sublinhadas abaixo: **Viagem**, **Ofício**).
 
 | Perícia | Nível | Perícia | Nível | Perícia | Nível |
 |---|---|---|---|---|---|
-| Imponência | 2 | Encorajar | 0 | Persuasão | 0 |
-| Atletismo | 1 | *Viajar* (sublinhada) | 3 | Furtividade | 0 |
-| Percepção | 0 | Perspicácia | 0 | Vasculhar | 3 |
-| Caça | 0 | Cura | 0 | Explorar | 2 |
-| Canto | 1 | Cortesia | 1 | Enigma | 2 |
-| *Ofício* (sublinhada) | 2 | Batalha | 1 | Saber | 1 |
+| Fascínio | 2 | Indução | 0 | Persuasão | 0 |
+| Atletismo | 1 | *Viagem* (sublinhada) | 3 | Furtividade | 0 |
+| Vigilância | 0 | Discernimento | 0 | Busca | 3 |
+| Caçada | 0 | Cura | 0 | Exploração | 2 |
+| Música | 1 | Cortesia | 1 | Enigma | 2 |
+| *Ofício* (sublinhada) | 2 | Batalha | 1 | História | 1 |
 
 ### Proficiências de Combate
 
@@ -357,16 +357,16 @@ Calcule os seguintes valores com base nos valores de Atributo escolhidos:
 
 ### Perícias
 
-Copie os níveis de Perícia listados para a ficha de personagem; então escolha uma Perícia entre as duas sublinhadas e marque-a como Favorecida (sublinhadas abaixo: **Canto**, **Saber**).
+Copie os níveis de Perícia listados para a ficha de personagem; então escolha uma Perícia entre as duas sublinhadas e marque-a como Favorecida (sublinhadas abaixo: **Música**, **História**).
 
 | Perícia | Nível | Perícia | Nível | Perícia | Nível |
 |---|---|---|---|---|---|
-| Imponência | 2 | Encorajar | 1 | Persuasão | 0 |
-| Atletismo | 2 | Viajar | 0 | Furtividade | 3 |
-| Percepção | 2 | Perspicácia | 0 | Vasculhar | 0 |
-| Caça | 0 | Cura | 1 | Explorar | 0 |
-| *Canto* (sublinhada) | 2 | Cortesia | 0 | Enigma | 0 |
-| Ofício | 2 | Batalha | 0 | *Saber* (sublinhada) | 3 |
+| Fascínio | 2 | Indução | 1 | Persuasão | 0 |
+| Atletismo | 2 | Viagem | 0 | Furtividade | 3 |
+| Vigilância | 2 | Discernimento | 0 | Busca | 0 |
+| Caçada | 0 | Cura | 1 | Exploração | 0 |
+| *Música* (sublinhada) | 2 | Cortesia | 0 | Enigma | 0 |
+| Ofício | 2 | Batalha | 0 | *História* (sublinhada) | 3 |
 
 ### Proficiências de Combate
 
@@ -452,12 +452,12 @@ Copie os níveis de Perícia listados para a ficha de personagem; então escolha
 
 | Perícia | Nível | Perícia | Nível | Perícia | Nível |
 |---|---|---|---|---|---|
-| Imponência | 0 | Encorajar | 0 | Persuasão | 2 |
-| Atletismo | 0 | Viajar | 0 | *Furtividade* (sublinhada) | 3 |
-| Percepção | 2 | Perspicácia | 2 | Vasculhar | 0 |
-| Caça | 0 | Cura | 1 | Explorar | 0 |
-| Canto | 2 | *Cortesia* (sublinhada) | 2 | Enigma | 3 |
-| Ofício | 1 | Batalha | 0 | Saber | 0 |
+| Fascínio | 0 | Indução | 0 | Persuasão | 2 |
+| Atletismo | 0 | Viagem | 0 | *Furtividade* (sublinhada) | 3 |
+| Vigilância | 2 | Discernimento | 2 | Busca | 0 |
+| Caçada | 0 | Cura | 1 | Exploração | 0 |
+| Música | 2 | *Cortesia* (sublinhada) | 2 | Enigma | 3 |
+| Ofício | 1 | Batalha | 0 | História | 0 |
 
 ### Proficiências de Combate
 
@@ -535,16 +535,16 @@ Calcule os seguintes valores com base nos valores de Atributo escolhidos:
 
 ### Perícias
 
-Copie os níveis de Perícia listados para a ficha de personagem; então escolha uma Perícia entre as duas sublinhadas e marque-a como Favorecida (sublinhadas abaixo: **Perspicácia**, **Enigma**).
+Copie os níveis de Perícia listados para a ficha de personagem; então escolha uma Perícia entre as duas sublinhadas e marque-a como Favorecida (sublinhadas abaixo: **Discernimento**, **Enigma**).
 
 | Perícia | Nível | Perícia | Nível | Perícia | Nível |
 |---|---|---|---|---|---|
-| Imponência | 0 | Encorajar | 2 | Persuasão | 2 |
-| Atletismo | 1 | Viajar | 1 | Furtividade | 1 |
-| Percepção | 1 | *Perspicácia* (sublinhada) | 2 | Vasculhar | 1 |
-| Caça | 1 | Cura | 0 | Explorar | 1 |
-| Canto | 1 | Cortesia | 3 | *Enigma* (sublinhada) | 2 |
-| Ofício | 2 | Batalha | 0 | Saber | 0 |
+| Fascínio | 0 | Indução | 2 | Persuasão | 2 |
+| Atletismo | 1 | Viagem | 1 | Furtividade | 1 |
+| Vigilância | 1 | *Discernimento* (sublinhada) | 2 | Busca | 1 |
+| Caçada | 1 | Cura | 0 | Exploração | 1 |
+| Música | 1 | Cortesia | 3 | *Enigma* (sublinhada) | 2 |
+| Ofício | 2 | Batalha | 0 | História | 0 |
 
 ### Proficiências de Combate
 
@@ -628,16 +628,16 @@ Calcule os seguintes valores com base nos valores de Atributo escolhidos:
 
 ### Perícias
 
-Copie os níveis de Perícia listados para a ficha de personagem; então escolha uma Perícia entre as duas sublinhadas e marque-a como Favorecida (sublinhadas abaixo: **Caça**, **Saber**).
+Copie os níveis de Perícia listados para a ficha de personagem; então escolha uma Perícia entre as duas sublinhadas e marque-a como Favorecida (sublinhadas abaixo: **Caçada**, **História**).
 
 | Perícia | Nível | Perícia | Nível | Perícia | Nível |
 |---|---|---|---|---|---|
-| Imponência | 1 | Encorajar | 0 | Persuasão | 0 |
-| Atletismo | 2 | Viajar | 2 | Furtividade | 2 |
-| Percepção | 2 | Perspicácia | 0 | Vasculhar | 1 |
-| *Caça* (sublinhada) | 2 | Cura | 2 | Explorar | 2 |
-| Canto | 0 | Cortesia | 0 | Enigma | 0 |
-| Ofício | 0 | Batalha | 2 | *Saber* (sublinhada) | 2 |
+| Fascínio | 1 | Indução | 0 | Persuasão | 0 |
+| Atletismo | 2 | Viagem | 2 | Furtividade | 2 |
+| Vigilância | 2 | Discernimento | 0 | Busca | 1 |
+| *Caçada* (sublinhada) | 2 | Cura | 2 | Exploração | 2 |
+| Música | 0 | Cortesia | 0 | Enigma | 0 |
+| Ofício | 0 | Batalha | 2 | *História* (sublinhada) | 2 |
 
 ### Proficiências de Combate
 
@@ -695,7 +695,7 @@ As Vocações seguem uma apresentação padrão:
 
 Quando o mundo está à beira da ruína, é dever de todos os indivíduos de valor erguer-se e assumir a liderança, qualquer que seja o risco. Você escolheu pôr seu julgamento a serviço dos outros, para guiá-los nesta hora escura. Mas você não quer que os outros obedeçam a suas ordens por medo ou obediência — você quer que o sigam porque confiam em você.
 
-**PERÍCIAS FAVORECIDAS:** Escolha duas Perícias entre BATALHA, ENCORAJAR e PERSUASÃO e marque-as como Favorecidas.
+**PERÍCIAS FAVORECIDAS:** Escolha duas Perícias entre BATALHA, INDUÇÃO e PERSUASÃO e marque-as como Favorecidas.
 
 **CARACTERÍSTICA DISTINTIVA ADICIONAL: LIDERANÇA.** Você possui a capacidade de dirigir outros à ação. Sob pressão, as pessoas naturalmente recorrem a você em busca de orientação.
 
@@ -707,7 +707,7 @@ Quando o mundo está à beira da ruína, é dever de todos os indivíduos de val
 
 Você julga que há apenas um modo de se opor ao retorno da Sombra, e é conquistá-la pela força das armas. Você é reconhecido como um guerreiro entre seu povo, um lutador valente, sempre adiante na batalha. Para você, a estrada da aventura leva direto a onde quer que seus inimigos rondem ou se escondam.
 
-**PERÍCIAS FAVORECIDAS:** Escolha duas Perícias entre ATLETISMO, IMPONÊNCIA e CAÇA e marque-as como Favorecidas.
+**PERÍCIAS FAVORECIDAS:** Escolha duas Perícias entre ATLETISMO, FASCÍNIO e CAÇADA e marque-as como Favorecidas.
 
 **CARACTERÍSTICA DISTINTIVA ADICIONAL: CONHECIMENTO DO INIMIGO.** Conhecimento do Inimigo não é uma única Característica Distintiva; você deve selecionar o tipo de inimigos a que se aplica, escolhendo entre Homens Maus, Orcs, Aranhas, Trolls, Wargs e Mortos-Vivos. Esta Característica Distintiva lhe dá conhecimento das características, hábitos, forças e fraquezas do inimigo escolhido.
 
@@ -719,9 +719,9 @@ Você julga que há apenas um modo de se opor ao retorno da Sombra, e é conquis
 
 Os Sábios sustentam que dias maus se aproximam, e que, para manter a esperança, todos os que lutam contra o Inimigo devem ser como um só. Ainda assim, muitas milhas e séculos de isolamento separam os Povos Livres, e o estranhamento gera desconfiança. Você decidiu que é seu dever viajar a terras distantes, levando novas e advertindo as pessoas do perigo que se aproxima.
 
-**PERÍCIAS FAVORECIDAS:** Escolha duas Perícias entre CORTESIA, CANTO e VIAJAR e marque-as como Favorecidas.
+**PERÍCIAS FAVORECIDAS:** Escolha duas Perícias entre CORTESIA, MÚSICA e VIAGEM e marque-as como Favorecidas.
 
-**CARACTERÍSTICA DISTINTIVA ADICIONAL: SABER POPULAR.** Você possui algum conhecimento dos muitos costumes, crenças e histórias tradicionais das várias comunidades que compõem os Povos Livres. Provavelmente resultado de suas andanças, essa informação pode ajudá-lo ao lidar com estranhos, permitindo que você apresente alguns fatos úteis sobre o povo deles ou algumas noções da língua apropriada.
+**CARACTERÍSTICA DISTINTIVA ADICIONAL: HISTÓRIA POPULAR.** Você possui algum conhecimento dos muitos costumes, crenças e histórias tradicionais das várias comunidades que compõem os Povos Livres. Provavelmente resultado de suas andanças, essa informação pode ajudá-lo ao lidar com estranhos, permitindo que você apresente alguns fatos úteis sobre o povo deles ou algumas noções da língua apropriada.
 
 **CAMINHO DA SOMBRA: LOUCURA ERRANTE.** Viajar para longe pode ser o dever escolhido por um mensageiro, mas carrega o risco de nunca encontrar um lugar pelo qual lutar. A Estrada segue sempre adiante, é verdade, mas para onde, então?
 
@@ -731,7 +731,7 @@ Os Sábios sustentam que dias maus se aproximam, e que, para manter a esperança
 
 Para você, o conhecimento torna o mundo selvagem um lugar menos ameaçador. Mapas amarelados em livros perdidos substituem o medo do desconhecido, e canções compostas em eras passadas fortalecem os mais fatigados dos corações. O amor pelo aprendizado guia cada um de seus passos e ilumina o caminho para você e para os que escutam seu conselho.
 
-**PERÍCIAS FAVORECIDAS:** Escolha duas Perícias entre OFÍCIO, SABER e ENIGMA e marque-as como Favorecidas.
+**PERÍCIAS FAVORECIDAS:** Escolha duas Perícias entre OFÍCIO, HISTÓRIA e ENIGMA e marque-as como Favorecidas.
 
 **CARACTERÍSTICA DISTINTIVA ADICIONAL: VERSOS DE SABER.** Versos de Saber são pequenos versos criados por muitas Culturas para ajudá-las a lembrar fatos significativos da história antiga que de outro modo poderiam se perder. Os eruditos da Terra-média atribuem a tais versos grande parte de seu conhecimento antigo.
 
@@ -743,7 +743,7 @@ Para você, o conhecimento torna o mundo selvagem um lugar menos ameaçador. Map
 
 O mundo viu passar a glória de muitos reis Anões e senhores Elfos, e sua herança está agora enterrada em masmorras infestadas de Orcs. Tesouros de ouro e joias roubadas, guardados por bestas cruéis, atraem todos os que ousam encontrá-los. Você busca recuperar o que está perdido, mesmo quando isso significa enfrentar perigos indizíveis.
 
-**PERÍCIAS FAVORECIDAS:** Escolha duas Perícias entre EXPLORAR, VASCULHAR e FURTIVIDADE e marque-as como Favorecidas.
+**PERÍCIAS FAVORECIDAS:** Escolha duas Perícias entre EXPLORAÇÃO, BUSCA e FURTIVIDADE e marque-as como Favorecidas.
 
 **CARACTERÍSTICA DISTINTIVA ADICIONAL: ARTE DO ROUBO.** Esse talento venerável inclui bater carteiras, arrombar fechaduras e, em geral, qualquer forma discreta de obter as posses alheias ou acessar áreas protegidas.
 
@@ -755,7 +755,7 @@ O mundo viu passar a glória de muitos reis Anões e senhores Elfos, e sua heran
 
 Nesta era do mundo, quando as sombras se aprofundam a cada ano que passa, você jurou defender todos os que não podem se defender. Muitas vezes, sua escolha o força a abandonar as áreas civilizadas, para melhor guardar seus habitantes daquilo que ronda logo além de suas cercas. Isso o tornou um estranho aos olhos do povo comum, uma figura ameaçadora como aquelas de que você os protege.
 
-**PERÍCIAS FAVORECIDAS:** Escolha duas Perícias entre PERCEPÇÃO, CURA e PERSPICÁCIA e marque-as como Favorecidas.
+**PERÍCIAS FAVORECIDAS:** Escolha duas Perícias entre VIGILÂNCIA, CURA e DISCERNIMENTO e marque-as como Favorecidas.
 
 **CARACTERÍSTICA DISTINTIVA ADICIONAL: CONHECIMENTO DA SOMBRA.** Você reconheceu que existe um fio oculto que unifica a maior parte do que é malicioso, sombrio e terrível na Terra-média, e que esse fio se adensa ano após ano. Qualidade compartilhada pelos sábios da terra, a verdade por trás desse conhecimento vai se tornando mais clara com o passar do tempo.
 
@@ -773,7 +773,7 @@ Os níveis de habilidade de todos os heróis-jogadores recém-criados podem agor
 
 Os jogadores são livres para elevar suas habilidades como julgarem melhor, desde que tenham pontos suficientes para comprar o nível desejado. Os jogadores também podem comprar níveis em Perícias ou Proficiências de Combate que seus heróis-jogadores não possuíam de forma alguma, ou comprar múltiplos níveis na mesma habilidade, desde que paguem o custo de cada nível individualmente.
 
-**EXEMPLO:** *Um jogador que queira ir de SABER 1 para SABER 4 gastaria um total de 10 pontos (2 para elevar a Perícia de 1 para 2, 3 para ir de 2 para 3 e 5 para ir de 3 para 4).*
+**EXEMPLO:** *Um jogador que queira ir de HISTÓRIA 1 para HISTÓRIA 4 gastaria um total de 10 pontos (2 para elevar a Perícia de 1 para 2, 3 para ir de 2 para 3 e 5 para ir de 3 para 4).*
 
 ### Custos de Perícia
 
@@ -896,16 +896,16 @@ Todos os heróis-jogadores começam o jogo com um número de itens úteis basead
 
 #### Exemplos de Itens Úteis (quadro)
 
-- Uma faca para esfolar coelhos, uma caixinha de sal para cozinhar (CAÇA),
+- Uma faca para esfolar coelhos, uma caixinha de sal para cozinhar (CAÇADA),
 - Um rolo de corda com gancho de escalada (ATLETISMO),
-- Uma lanterna à prova de vento (VASCULHAR),
-- Um instrumento musical exótico (CANTO),
+- Uma lanterna à prova de vento (BUSCA),
+- Um instrumento musical exótico (MÚSICA),
 - Um bálsamo para aliviar a dor (CURA),
-- Um traje de roupas caras, brincos de pérola (IMPONÊNCIA ou CORTESIA),
-- Um licor para infundir força (ENCORAJAR),
-- Uma pedra-do-sol para navegar em mau tempo (VIAJAR),
-- Um belo cachimbo para encontrar consolo (PERSPICÁCIA),
-- Um conjunto detalhado de mapas (EXPLORAR),
+- Um traje de roupas caras, brincos de pérola (FASCÍNIO ou CORTESIA),
+- Um licor para infundir força (INDUÇÃO),
+- Uma pedra-do-sol para navegar em mau tempo (VIAGEM),
+- Um belo cachimbo para encontrar consolo (DISCERNIMENTO),
+- Um conjunto detalhado de mapas (EXPLORAÇÃO),
 - Um conjunto de instrumentos para entalhar pedra (OFÍCIO).
 
 ### Carga

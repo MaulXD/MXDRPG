@@ -4,8 +4,8 @@
 > Bri, Valfenda, Montanhas Nevoentas, Colinas dos Túmulos); nomes em Sindarin/Quenya e nomes
 > próprios ficam no original (Imladris, Annúminas, Nenuial, Búrzgul).
 >
-> Nomes de perícia usam os ids reais de `lib/character/um-anel/data.ts` — SCAN é **VASCULHAR**,
-> AWARENESS é **PERCEPÇÃO**.
+> Nomes de perícia usam os ids reais de `lib/character/um-anel/data.ts` — SCAN é **BUSCA**,
+> AWARENESS é **VIGILÂNCIA**.
 >
 > Fonte: `the one ring/The_One_Ring_Core_Rules.pdf`
 
@@ -76,10 +76,10 @@ inexploradas e tesouro esquecido.
 - **A Aldeia Esquecida — Eskerdale (caixa de texto, p.179):** Um povoado isolado de Homens num vale
   profundo das Colinas do Crepúsculo, fundado gerações atrás; cada vez mais retraído sob o governo
   do chefe Oswin; recentemente os moradores parecem amaldiçoados ou quebrados de espírito.
-  - **Mecânica:** Encontrar Eskerdale é um Empenho de Perícia, Resistência 6, usando Explorar, Caça,
-    Enigmas ou Vasculhar. Quem encontra precisa mostrar que não é ameaça (por exemplo, uma rolagem de
+  - **Mecânica:** Encontrar Eskerdale é um Empenho de Perícia, Resistência 6, usando Explorar, Caçada,
+    Enigmas ou Busca. Quem encontra precisa mostrar que não é ameaça (por exemplo, uma rolagem de
     Cortesia) — Rangers *perdem (1d)* nessa rolagem. Consultar o povo de Eskerdale permite ao herói
-    *ganhar (1d)* na próxima rolagem de Explorar, Caça ou Saber relacionada à região do Crepúsculo.
+    *ganhar (1d)* na próxima rolagem de Exploração, Caça ou Saber relacionada à região do Crepúsculo.
 - **PNJs — Beinion e Arin do Crepúsculo (ficha, p.180):** Guardiões Rangers autonomeados de
   Annúminas e do lago. **NOME:** Beinion e Arin do Crepúsculo. **OCUPAÇÃO:** Rangers. **TRAÇOS:**
   Audaz, Fiel, Bem-falante (Arin), Coração Sincero (Beinion). Beinion está preocupado com a
@@ -116,7 +116,7 @@ Antigos, na Grande Estrada do Leste. O povo de Bri é insular, mas acolhedor com
     | 4 | Refugiados do Caminho Verde | Colonos cuja fazenda foi saqueada na noite anterior buscam refúgio. |
     | 5 | Fitch Talltree | O Guarda-florestal de Archet busca guerreiros para uma caçada na Mata de Chet. |
     | 6 | Briga iminente | John Ferny discute alto com outros fregueses; uma briga se aproxima. |
-    | 7 | Balada animada | Os fregueses cantam baladas; uma rolagem de Canção bem-sucedida recupera 1 Esperança. |
+    | 7 | Balada animada | Os fregueses cantam baladas; uma rolagem de Música bem-sucedida recupera 1 Esperança. |
     | 8 | Mostrando moedas | Um mercador rico paga uma rodada; alguns fregueses olham para sua bolsa. |
     | 9 | Pôneis soltos no Pônei! | O cavalariço grita que os cavalos escaparam — acidente ou roubo? |
     | 10 | Caçadores de tesouro se vangloriando | Ladrões de tumbas se vangloriam de pilhagem das Colinas dos Túmulos com escrita estranha. |
@@ -174,7 +174,7 @@ Antigos, na Grande Estrada do Leste. O povo de Bri é insular, mas acolhedor com
     Perícia de Caça, Resistência 6, duas rolagens por dia, três dias para voltar com um cervo que
     valha 10 pontos ou mais). Alternativamente, ganhar uma Recompensa enquanto estiver em Archet
     durante a Fase de Companhia pode conceder o arco em vez de uma Recompensa normal. **Efeito:** com
-    um Arco de Caça de Archet, ataques à distância e rolagens de Caça somam **+3 ou o Valor do
+    um Arco de Caça de Archet, ataques à distância e rolagens de Caçada somam **+3 ou o Valor do
     portador, o que for maior**.
 
 ### A Mata de Chet (p.188-190)
@@ -189,7 +189,7 @@ misteriosa em seu coração; a copa espessa bloqueia a luz do sol.
   | Runa de Gandalf | Fitch Talltree | Encontro com o próprio Guarda-florestal; pode ajudar ou guiar. |
   | 1-2 | Confundidos com Orcs | Um caçador da Mata de Chet dispara uma flecha, tendo confundido o grupo com Orcs. |
   | 3-4 | Herdade abandonada | Uma cabana saqueada, com sinais de luta sangrenta. |
-  | 5-6 | Caçados por lobos | Rastreados por lobos; uma rolagem de Caça bem-sucedida os desorienta. |
+  | 5-6 | Caçados por lobos | Rastreados por lobos; uma rolagem de Caçada bem-sucedida os desorienta. |
   | 7-8 | Atoleiro | Os personagens afundam na lama; rolagem de Atletismo para escapar; ganham 3 de Fadiga e perdem um dia de viagem. |
   | 9-10 | Batedores Goblins | Goblins das Colinas do Tempo avistam o grupo e tentam uma emboscada. |
   | Olho de Sauron | Troll das Colinas do Tempo | Um Troll avista o grupo e ataca abertamente. |
@@ -216,9 +216,9 @@ morte de Smaug e a restauração de Valle e Erebor.
   |---|---|---|
   | Runa de Gandalf | Rangers | Perseguidores se revelam Rangers que guiam o grupo por um trecho; *ganha (1d)* na próxima rolagem de Viagem na Estrada do Leste. |
   | 1 | Pedras Pesarosas | Um vento frio e melancólico entre pedras arruinadas. |
-  | 2 | Rei Caído | Uma estátua de um Rei antigo, coberta de athelas (uma rolagem de Caça a identifica; colhida, concede *ganha (1d)* numa rolagem de Cura, e é consumida no processo). |
+  | 2 | Rei Caído | Uma estátua de um Rei antigo, coberta de athelas (uma rolagem de Caçada a identifica; colhida, concede *ganha (1d)* numa rolagem de Cura, e é consumida no processo). |
   | 3 | Olhos de Carniça | Corvos mal-humorados observam o grupo antes de voar para o norte — possivelmente espiões. |
-  | 4 | Predadores à luz da fogueira | Lobos selvagens rondam o acampamento; uma rolagem de Imponência os afasta. |
+  | 4 | Predadores à luz da fogueira | Lobos selvagens rondam o acampamento; uma rolagem de Fascínio os afasta. |
   | 5 | Sol Sobre a Pedra | A luz do sol revela por um instante a antiga grandeza de uma torre arruinada. |
   | 6 | Mercador Perdido | Um mercador Anão ferido recompensa a ajuda com 1 de Tesouro (prata). |
   | 7 | Assaltantes de Estrada | Um Assaltante disfarçado atrai o grupo para uma emboscada. |
@@ -238,16 +238,16 @@ e isoladas de colonos (descendentes de refugiados de Tharbad) também perdurem a
   | Dado de Proeza | Resultado | Descrição |
   |---|---|---|
   | Runa de Gandalf | Hospitalidade Antiga | Um velho senhor hospitaleiro num pequeno castelo (rolagem de Cortesia); ao amanhecer, a Sombra reduz em 1, mas o castelo e o senhor parecem nunca ter existido. |
-  | 1 | Estábulo Abandonado | Um corcel selvagem pode ser acalmado (Caça/Encorajar) e treinado ao longo de uma semana (3 testes, cada um exigindo ao menos um ícone de Sucesso). |
+  | 1 | Estábulo Abandonado | Um corcel selvagem pode ser acalmado (Caçada/Indução) e treinado ao longo de uma semana (3 testes, cada um exigindo ao menos um ícone de Sucesso). |
   | 2 | A Vigília Termina | Um soldado fantasma de guarda no topo de uma torre, em noite de lua crescente. |
   | 3 | Anel de Pétalas e Pedra | Um círculo de pedra com flores silvestres que predador nenhum atravessa. |
   | 4 | Menestrel Élfica | Uma Elfa viajante; ter paciência com ela rende uma noite de canção e recupera 1 Esperança; grosseria perde o benefício. |
   | 5 | Emboscada Sulista | Um Sulista disfarçado atrai o grupo para uma emboscada. |
-  | 6 | Orcs Desgarrados | Orcs escondidos sob um muro; Percepção os detecta; senão podem emboscar um grupo pequeno. |
-  | 7 | Túmulo Desmoronado | Uma rolagem de Vasculhar revela um túmulo aberto à força — hoje covil de um Tumulário. |
-  | 8 | Herdade Queimada | Uma rolagem de Vasculhar revela que os moradores morreram de flechas Orc antes do incêndio. |
+  | 6 | Orcs Desgarrados | Orcs escondidos sob um muro; Vigilância os detecta; senão podem emboscar um grupo pequeno. |
+  | 7 | Túmulo Desmoronado | Uma rolagem de Busca revela um túmulo aberto à força — hoje covil de um Tumulário. |
+  | 8 | Herdade Queimada | Uma rolagem de Busca revela que os moradores morreram de flechas Orc antes do incêndio. |
   | 9 | Sulista Desalojado | Um Sulista exausto compartilha histórias em troca de comida e fogo. |
-  | 10 | Andarilho Morto | O cadáver de um Ranger; uma rolagem de Saber o identifica; seu broche, se devolvido, pode render um favor. |
+  | 10 | Andarilho Morto | O cadáver de um Ranger; uma rolagem de História o identifica; seu broche, se devolvido, pode render um favor. |
   | Olho de Sauron | Tumba Corrompida | Uma tumba hoje habitada por Espectros Funestos da antiga Angmar, que perseguem e atrasam o grupo. |
 
 ## As Colinas dos Túmulos (p.194-195)
@@ -275,7 +275,7 @@ viajantes que se perdem e falham em resistir ao seu chamado ficam aprisionados.
       - *Morador do Escuro* — Todas as rolagens de ataque são Favorecidas enquanto estiver no escuro.
       - *Feitiços Terríveis* — Gasta 1 de Ódio para fazer um herói ganhar 3 pontos de Sombra
         (Feitiçaria). Alvos que falham no Teste de Sombra ou que estão Arrasados caem inconscientes,
-        despertados apenas com uma rolagem de Canção; senão acordam depois de uma hora.
+        despertados apenas com uma rolagem de Música; senão acordam depois de uma hora.
       - *Odeia a Luz do Sol* — A criatura perde 1 de Ódio no início de cada rodada exposta à luz plena
         do sol.
     - Fala a Língua Comum e a Língua Negra de Mordor.
@@ -290,15 +290,15 @@ fizeram covis em torres meio-arruinadas.
 
   | Dado de Proeza | Resultado | Descrição |
   |---|---|---|
-  | Runa de Gandalf | Um Tesouro Secreto | Uma rolagem de Vasculhar revela uma laje de mármore escondendo tesouro (quantidade a critério do Mestre). |
-  | 1 | Palavras Esquecidas | Uma inscrição em Adûnaico; uma rolagem de Saber a traduz, aludindo à Cúpula da Visão, à Sala do Trono de Arvedui, ou aos Registros do Último Rei. |
-  | 2 | Uma Sombra Persistente | Uma rolagem de Percepção revela um espião seguindo o grupo, que desaparece se for chamado. |
+  | Runa de Gandalf | Um Tesouro Secreto | Uma rolagem de Busca revela uma laje de mármore escondendo tesouro (quantidade a critério do Mestre). |
+  | 1 | Palavras Esquecidas | Uma inscrição em Adûnaico; uma rolagem de História a traduz, aludindo à Cúpula da Visão, à Sala do Trono de Arvedui, ou aos Registros do Último Rei. |
+  | 2 | Uma Sombra Persistente | Uma rolagem de Vigilância revela um espião seguindo o grupo, que desaparece se for chamado. |
   | 3 | Lar Levado à Ruína | Uma casa nobre arruinada de Arthedain, marcada também pela ruína de Angmar. |
   | 4 | Saqueadores | Três Assaltantes de Estrada pilhando uma tumba (1-2 de Tesouro). |
   | 5 | Vozes do Passado | Sons de uma batalha antiga, que se dissipam sem aviso. |
   | 6-8 | Fundações Instáveis | O chão cede, dando para a câmara de um edifício desmoronado. |
   | 9 | Equipamento de Guerra Castigado | Um elmo reparável com o brasão dos Reis de Arnor. |
-  | 10 | Alma Inquieta | Um sonho compartilhado pede sepultamento adequado; uma rolagem de Vasculhar encontra uma torre de vigia desmoronada e o esqueleto de um guarda tombado. |
+  | 10 | Alma Inquieta | Um sonho compartilhado pede sepultamento adequado; uma rolagem de Busca encontra uma torre de vigia desmoronada e o esqueleto de um guarda tombado. |
   | Olho de Sauron | Espíritos de Angmar | Espectros Funestos (em número igual ao do grupo) se erguem de uma ruína queimada. |
 
 - **Fornost Erain:** Cidade arruinada no sopé sul, chamada "Vala dos Mortos" pelo povo de Bri;
@@ -335,7 +335,7 @@ e ao norte da Estrada do Leste.
     - **Habilidades Sinistras:**
       - *Veneno de Orc* — Se um ataque produzir ao menos 1 ícone de Sucesso, o alvo é envenenado (ver
         p.134).
-      - *Velocidade de Serpente* — Ao ser alvo de um ataque, gasta 1 de Ódio para tornar a rolagem de
+      - *Velocidade Serpentina* — Ao ser alvo de um ataque, gasta 1 de Ódio para tornar a rolagem de
         ataque Desfavorecida.
       - *Grito de Triunfo* — Gasta 1 de Ódio para restaurar 1 de Ódio a todos os outros Orcs da luta.
   - **Ash (o Warg companheiro de Búrzgul) — bloco de adversário (p.199):**
@@ -390,7 +390,7 @@ se escondem em suas matas.
 
   | Dado de Proeza | Resultado | Descrição |
   |---|---|---|
-  | Runa de Gandalf | Abandonada | Um Troll transformado em pedra pelo sol; uma rolagem de Vasculhar encontra 1-2 de Tesouro entre seu espólio. |
+  | Runa de Gandalf | Abandonada | Um Troll transformado em pedra pelo sol; uma rolagem de Busca encontra 1-2 de Tesouro entre seu espólio. |
   | 1-2 | Ninho de Raízes | Um buraco escorregadio e lamacento sob uma árvore rachada. |
   | 3-4 | Torre em Ruínas | Um covil de Troll instável numa torre desmoronada. |
   | 5-6 | Caverna Rasa | Uma caverna pequena perto da Estrada do Leste, fácil de evitar. |
@@ -463,7 +463,7 @@ Marcos, p.221), ou um cenário genérico basta.
 - **Explorar a Terra-média:** Levar a Companhia a lugares dos livros de Tolkien (por exemplo, o Salão
   do Fogo de Valfenda, a Torre Branca de Elostirion) pode tornar memorável uma Fase de Aventura comum.
   O Mestre pode desafiar Perícias com testes simples ligados a esses lugares (por exemplo, uma rolagem
-  de Vasculhar ao cruzar as Matas dos Trolls pode localizar a clareira dos três Trolls de Pedra de *O
+  de Busca ao cruzar as Matas dos Trolls pode localizar a clareira dos três Trolls de Pedra de *O
   Hobbit*).
 
 ### O quê? (p.207-209)

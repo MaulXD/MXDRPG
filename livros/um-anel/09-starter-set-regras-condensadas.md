@@ -34,9 +34,9 @@
 
 ### Exemplo de Jogo (páginas 4–5)
 Um exemplo trabalhado mostrando o Mestre (LM) conduzindo uma cena com dois heróis-jogadores (Lobelia e um personagem interpretando "Paladin"), apanhados pela chuva e pela escuridão perto da Região das Colinas Verdes, ouvindo o uivo de um lobo, buscando abrigo numa construção de pedra de pastores e sendo surpreendidos por uma estranha encapuzada (Amantadine), que corta uma corda com a espada antes de se apresentar. O exemplo demonstra:
-- Rolagem de VASCULHAR (Lobelia, NA de ASTÚCIA 14, nível 2, gastando 1 ponto de Esperança para somar 1d) — sucesso.
+- Rolagem de BUSCA (Lobelia, NA de ASTÚCIA 14, nível 2, gastando 1 ponto de Esperança para somar 1d) — sucesso.
 - Rolagem de OFÍCIO (Paladin, NA de FORÇA 17, nível 3) para soltar um nó — falha (resultado 13).
-- Rolagem de PERCEPÇÃO para os dois notarem a estranha se aproximando — ambos falharam (Lobelia, NA de FORÇA 18, tirou o Olho de Sauron; Paladin, NA de FORÇA 17, tirou 5-3-3-4) — surpresos, sem ação permitida naquela rodada.
+- Rolagem de VIGILÂNCIA para os dois notarem a estranha se aproximando — ambos falharam (Lobelia, NA de FORÇA 18, tirou o Olho de Sauron; Paladin, NA de FORÇA 17, tirou 5-3-3-4) — surpresos, sem ação permitida naquela rodada.
 
 **Texto de ambientação:** Corre o ano 2960 da Terceira Era. Vinte anos antes, uma aliança de Elfos, Homens e Anões derrotou uma horda de Orcs e Lobos Selvagens sob um céu escurecido por Morcegos Gigantes, inaugurando uma nova era de prosperidade para os Povos Livres. Mas as sombras voltam a se alongar. Rumores de coisas estranhas se espalham; as pessoas comuns chamam de aventureiros os indivíduos que os investigam e, se eles prevalecem, são aclamados como heróis.
 
@@ -110,7 +110,7 @@ Todas as habilidades têm um Número-Alvo associado.
 - A maioria das rolagens é feita contra três **Números-Alvo de Atributo** (NAs de Atributo): FORÇA, CORAÇÃO, ASTÚCIA.
 - Cada NA de Atributo = 20 menos a pontuação do Atributo correspondente.
 
-**Exemplo (quadro):** Paladin Took tem PERCEPÇÃO no nível 2 (uma Perícia de FORÇA); NA de FORÇA 13. Rola um Dado de Proeza (8) mais dois Dados de Sucesso (4, 5) — o total supera 13 com folga, sucesso.
+**Exemplo (quadro):** Paladin Took tem VIGILÂNCIA no nível 2 (uma Perícia de FORÇA); NA de FORÇA 13. Rola um Dado de Proeza (8) mais dois Dados de Sucesso (4, 5) — o total supera 13 com folga, sucesso.
 
 ### Repetindo uma Rolagem
 Normalmente só uma tentativa por ação. Se o Mestre permitir, uma ação falhada pode ser tentada de novo pelo mesmo herói usando uma habilidade *diferente* (representando uma abordagem diferente) — mas as consequências da primeira falha permanecem.
@@ -194,9 +194,9 @@ Traços que descrevem a constituição, o temperamento, a personalidade ou as pe
 **Perícias Favorecidas:** marcadas com uma caixa marcada à esquerda do nome; todas as rolagens com uma Perícia Favorecida são rolagens Favorecidas.
 
 **Categorias de Perícia** (organizadas na ficha em três colunas, sob cada caixa de Atributo):
-- **Perícias de FORÇA:** IMPONÊNCIA, CANTO, ATLETISMO, PERCEPÇÃO, CAÇA, OFÍCIO.
-- **Perícias de CORAÇÃO:** ENCORAJAR, BATALHA, VIAJAR, CORTESIA, PERSPICÁCIA, CURA.
-- **Perícias de ASTÚCIA:** PERSUASÃO, FURTIVIDADE, VASCULHAR, EXPLORAR, ENIGMA, SABER.
+- **Perícias de FORÇA:** FASCÍNIO, MÚSICA, ATLETISMO, VIGILÂNCIA, CAÇADA, OFÍCIO.
+- **Perícias de CORAÇÃO:** INDUÇÃO, BATALHA, VIAGEM, CORTESIA, DISCERNIMENTO, CURA.
+- **Perícias de ASTÚCIA:** PERSUASÃO, FURTIVIDADE, BUSCA, EXPLORAÇÃO, ENIGMA, HISTÓRIA.
 
 (Nota: o texto agrupa as perícias de exemplo por Atributo de modo descritivo, e não como uma lista única e estrita — ver a lista completa de Perícias abaixo para as 18 canônicas.)
 
@@ -213,23 +213,23 @@ Expressam quão bem os heróis-jogadores lutam. Resolvidas como rolagens de Per�
 ## PERÍCIAS — lista completa com descrições (na ordem alfabética do original) (páginas 14–15)
 
 - **ATLETISMO** (ATHLETICS) — Perícia ampla que cobre atividades físicas: correr, saltar, escalar, nadar.
-- **PERCEPÇÃO** (AWARENESS) — prontidão para reagir/notar algo inesperado, fora do comum ou difícil de detectar; reflete sentidos aguçados/experiência sobre o que se vê ou se ouve.
-- **IMPONÊNCIA** (AWE) — capacidade de evocar respeito nos presentes; a impressão que os heróis-jogadores causam ao conhecer alguém. Pode inspirar assombro, admiração ou medo. Nasce do carisma natural ou de uma entrada dramática/traje impressionante.
+- **VIGILÂNCIA** (AWARENESS) — prontidão para reagir/notar algo inesperado, fora do comum ou difícil de detectar; reflete sentidos aguçados/experiência sobre o que se vê ou se ouve.
+- **FASCÍNIO** (AWE) — capacidade de evocar respeito nos presentes; a impressão que os heróis-jogadores causam ao conhecer alguém. Pode inspirar assombro, admiração ou medo. Nasce do carisma natural ou de uma entrada dramática/traje impressionante.
 - **BATALHA** (BATTLE) — domínio das regras da batalha e capacidade de manobrar adequadamente num confronto violento; pode conceder vantagem ao lutar contra um grupo de inimigos.
 - **CORTESIA** (COURTESY) — reconhecer as normas comuns de decência e as antigas convenções de comportamento entre os Povos Livres; estabelece uma relação amistosa até com estranhos.
 - **OFÍCIO** (CRAFT) — talento para fazer ou consertar coisas com as mãos (não toda a gama de ferreiros/artesãos, mas reparos/construções em geral) — por exemplo, consertar a roda de uma carroça, construir uma jangada, acender uma fogueira.
-- **ENCORAJAR** (ENHEARTEN) — inspirar sentimentos positivos nos outros pelo exemplo, pelo carisma e pela convicção pessoal (em vez de palavras, que é PERSUASÃO); eficaz com indivíduos, mas especialmente com multidões.
-- **EXPLORAR** (EXPLORE) — mover-se por áreas Selvagens desconhecidas; usada durante uma jornada para descobrir para onde a Companhia está indo, retomar o rumo depois de um desvio, lidar com perigos naturais, abrir caminhos pela natureza selvagem ou escolher um local de acampamento.
+- **INDUÇÃO** (ENHEARTEN) — inspirar sentimentos positivos nos outros pelo exemplo, pelo carisma e pela convicção pessoal (em vez de palavras, que é PERSUASÃO); eficaz com indivíduos, mas especialmente com multidões.
+- **EXPLORAÇÃO** (EXPLORE) — mover-se por áreas Selvagens desconhecidas; usada durante uma jornada para descobrir para onde a Companhia está indo, retomar o rumo depois de um desvio, lidar com perigos naturais, abrir caminhos pela natureza selvagem ou escolher um local de acampamento.
 - **CURA** (HEALING) — conhecimento para aliviar a dor e aplicar remédios; os tratamentos diferem entre culturas, mas todas concordam em tratar ferimentos graves imediatamente; inclui imobilizar ossos e usar ervas/unguentos.
-- **CAÇA** (HUNTING) — perseguir uma criatura por áreas selvagens, seguir rastros, identificar a presa pelas pistas; cobre também preparar armadilhas e treinar/usar cães ou aves de caça.
-- **PERSPICÁCIA** (INSIGHT) — ver além das aparências para reconhecer pensamentos/crenças ocultos; não revela mentiras diretamente, mas fornece informações para tirar conclusões sobre motivações.
-- **SABER** (LORE) — o amor pelo aprendizado: fascínio por terras distantes ou pela genealogia familiar; necessária para ações que envolvam conhecimento. Presume-se que os heróis-jogadores conheçam as tradições do próprio povo (o Mestre raramente deve exigir uma rolagem para isso).
+- **CAÇADA** (HUNTING) — perseguir uma criatura por áreas selvagens, seguir rastros, identificar a presa pelas pistas; cobre também preparar armadilhas e treinar/usar cães ou aves de caça.
+- **DISCERNIMENTO** (INSIGHT) — ver além das aparências para reconhecer pensamentos/crenças ocultos; não revela mentiras diretamente, mas fornece informações para tirar conclusões sobre motivações.
+- **HISTÓRIA** (LORE) — o amor pelo aprendizado: fascínio por terras distantes ou pela genealogia familiar; necessária para ações que envolvam conhecimento. Presume-se que os heróis-jogadores conheçam as tradições do próprio povo (o Mestre raramente deve exigir uma rolagem para isso).
 - **PERSUASÃO** (PERSUADE) — aplicar o raciocínio para convencer outros de uma ideia/linha de ação; pode influenciar pequenos grupos em contextos apropriados (por exemplo, um salão comunitário); exige mais tempo do que as outras Perícias de Personalidade, mas tem impacto mais duradouro.
 - **ENIGMA** (RIDDLE) — tirar conclusões a partir de fragmentos de informação aparentemente desconexos, por dedução, raciocínio e intuição; usada quando os aventureiros conversam sobre um assunto mas ocultam parte do que sabem (por exemplo, sem revelar a identidade). Falar por enigmas é a maneira costumeira de estranhos conversarem com reservas; também é usada para extrair o sentido de um enigma falado ou escrito.
-- **VASCULHAR** (SCAN) — examinar algo de perto/com atenção: folhear um livro em busca de informação relevante, procurar portas dissimuladas/inscrições ocultas, reconhecer um rosto familiar numa multidão, localizar rastros. Rolagens de VASCULHAR geralmente são iniciadas pelos jogadores; PERCEPÇÃO (não VASCULHAR) é usada para ver se um herói nota algo passivamente. Uma rolagem por inspeção de uma área pequena (por exemplo, um aposento).
-- **CANTO** (SONG) — recitar poemas, cantar canções, tocar instrumentos adequados à Cultura do personagem; também usada para aprender obras novas ou criar composições originais. Todos os povos da Terra-média (até Gobelins e Orcs) celebram por meio da música/canto.
+- **BUSCA** (SCAN) — examinar algo de perto/com atenção: folhear um livro em busca de informação relevante, procurar portas dissimuladas/inscrições ocultas, reconhecer um rosto familiar numa multidão, localizar rastros. Rolagens de BUSCA geralmente são iniciadas pelos jogadores; VIGILÂNCIA (não BUSCA) é usada para ver se um herói nota algo passivamente. Uma rolagem por inspeção de uma área pequena (por exemplo, um aposento).
+- **MÚSICA** (SONG) — recitar poemas, cantar canções, tocar instrumentos adequados à Cultura do personagem; também usada para aprender obras novas ou criar composições originais. Todos os povos da Terra-média (até Gobelins e Orcs) celebram por meio da música/canto.
 - **FURTIVIDADE** (STEALTH) — agir de modo furtivo/secreto: esconder-se, mover-se em silêncio, seguir alguém sem ser visto; depende de rapidez e precisão, combinando cautela treinada com a capacidade de julgar o momento certo de agir.
-- **VIAJAR** (TRAVEL) — na Terceira Era, os povoados são separados por léguas de áreas selvagens/desertas; uma rolagem de VIAJAR pode estimar a duração de uma jornada, ler um mapa ou avaliar se um estranho na estrada pode ser abordado com segurança.
+- **VIAGEM** (TRAVEL) — na Terceira Era, os povoados são separados por léguas de áreas selvagens/desertas; uma rolagem de VIAGEM pode estimar a duração de uma jornada, ler um mapa ou avaliar se um estranho na estrada pode ser abordado com segurança.
 
 ---
 
@@ -378,7 +378,7 @@ Os jogadores podem propor ações que não sejam ataques (sinal de envolvimento,
 Este livreto do Starter Set é uma versão explicitamente *condensada* das regras completas de *O Um Anel* 2ª ed., destinada a jogadores novos/mais jovens e limitada a aventuras no Condado. Diferenças/simplificações observadas:
 
 - **Nenhum sistema detalhado de Posturas:** as regras básicas completas têm um sistema mais rico de posturas/papéis para combate e viagem (posturas Avançada/Aberta/Defensiva/Retaguarda mais papéis de jornada); este livreto apenas menciona brevemente as Cartas de Postura como um acréscimo opcional ligado ao livro básico, sem detalhar os efeitos mecânicos de cada postura além de rotular duas categorias, Combate Corpo a Corpo e Combate à Distância.
-- **Nenhum detalhamento do minijogo de Jornada/Viagem:** a viagem é tratada de modo simples, via as Perícias VIAJAR e EXPLORAR; a estrutura mais completa de papéis de jornada/eventos de jornada das regras básicas não é reproduzida aqui.
+- **Nenhum detalhamento do minijogo de Jornada/Viagem:** a viagem é tratada de modo simples, via as Perícias VIAGEM e EXPLORAÇÃO; a estrutura mais completa de papéis de jornada/eventos de jornada das regras básicas não é reproduzida aqui.
 - **Ferimento/morte atenuados:** afirma explicitamente que o tom deste Starter Set "nunca é uma ameaça à vida", com um quadro reconhecendo que isso é um abrandamento deliberado em comparação com a premissa presumivelmente mais dura do jogo completo.
 - **A criação de personagens não está incluída** neste livreto — ele usa apenas Heróis Pré-Gerados prontos; presume-se que as regras completas de criação de personagem (Cultura, Vocação, distribuição de Atributos etc.) estejam nas Regras Básicas e não são reproduzidas aqui.
 - **Proficiências de Combate simplificadas em 4 categorias** (Machados, Arcos, Lanças, Espadas) — apresentação consistente com as quatro Proficiências das regras básicas, mas explicada aqui de forma breve, em lista de armas, e não com o detalhamento completo em tabela de armas (nenhuma tabela de estatísticas de armas é reproduzida — essas vivem nas fichas de personagem/Cartas de Item).

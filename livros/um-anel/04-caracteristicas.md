@@ -12,7 +12,7 @@ Os heróis se revelam por meio de suas ações, à medida que suas forças e fra
 
 > "Há comida nas terras selvagens", disse Passolargo; "frutinhas, raízes e ervas; e eu tenho alguma habilidade como caçador, quando é preciso."
 
-Em *O Um Anel*, quase toda ação que os heróis podem tentar é resolvida com uma Perícia: seja um herói-jogador atravessando as terras tentando voltar para casa (VIAJAR), fugindo de uma ameaça (ATLETISMO) ou escutando com atenção o discurso de um orador para pesar suas palavras (PERSPICÁCIA).
+Em *O Um Anel*, quase toda ação que os heróis podem tentar é resolvida com uma Perícia: seja um herói-jogador atravessando as terras tentando voltar para casa (VIAGEM), fugindo de uma ameaça (ATLETISMO) ou escutando com atenção o discurso de um orador para pesar suas palavras (DISCERNIMENTO).
 
 Em termos de jogo, as Perícias e seus valores representam o que os heróis-jogadores são capazes de fazer e quão bons são nisso.
 
@@ -30,19 +30,19 @@ Cada Perícia pertence a uma de três categorias, com base em qual NA de Atribut
 
 **PERÍCIAS DE FORÇA**
 
-Todas as Perícias dessa categoria dependem em grande parte da aptidão física do herói-jogador. Um aventureiro com valor alto de FORÇA tem mais chance de ser imponente (IMPONÊNCIA), de ter uma voz clara ao cantar (CANTO), de ser em forma e ágil (ATLETISMO), de ter boa visão e audição (PERCEPÇÃO, CAÇA) e de possuir mãos habilidosas (OFÍCIO).
+Todas as Perícias dessa categoria dependem em grande parte da aptidão física do herói-jogador. Um aventureiro com valor alto de FORÇA tem mais chance de ser imponente (FASCÍNIO), de ter uma voz clara ao cantar (MÚSICA), de ser em forma e ágil (ATLETISMO), de ter boa visão e audição (VIGILÂNCIA, CAÇADA) e de possuir mãos habilidosas (OFÍCIO).
 
 > As rolagens de Perícias de FORÇA são resolvidas usando o Número-Alvo de FORÇA do herói-jogador.
 
 **PERÍCIAS DE CORAÇÃO**
 
-As Perícias dessa categoria dependem, mais do que de qualquer outra coisa, da força de espírito do herói-jogador. Um aventureiro com valor alto de CORAÇÃO pode ser um líder carismático (ENCORAJAR, BATALHA), um guia energético (VIAJAR), um cavalheiro gracioso (CORTESIA), capaz de ler o coração dos outros (PERSPICÁCIA) ou de compreender seu sofrimento e como curá-lo (CURA).
+As Perícias dessa categoria dependem, mais do que de qualquer outra coisa, da força de espírito do herói-jogador. Um aventureiro com valor alto de CORAÇÃO pode ser um líder carismático (INDUÇÃO, BATALHA), um guia energético (VIAGEM), um cavalheiro gracioso (CORTESIA), capaz de ler o coração dos outros (DISCERNIMENTO) ou de compreender seu sofrimento e como curá-lo (CURA).
 
 > As rolagens de Perícias de CORAÇÃO são resolvidas usando o Número-Alvo de CORAÇÃO do herói-jogador.
 
 **PERÍCIAS DE ASTÚCIA**
 
-A aptidão mental de um herói-jogador afeta as Perícias que dependem de raciocínio rápido e criatividade. Um herói com valor alto de ASTÚCIA aprende rapidamente a oratória espirituosa (PERSUASÃO), as artes do ladrão (FURTIVIDADE), demonstra atenção (VASCULHAR, EXPLORAR) e é esperto e estudioso (ENIGMA, SABER).
+A aptidão mental de um herói-jogador afeta as Perícias que dependem de raciocínio rápido e criatividade. Um herói com valor alto de ASTÚCIA aprende rapidamente a oratória espirituosa (PERSUASÃO), as artes do ladrão (FURTIVIDADE), demonstra atenção (BUSCA, EXPLORAÇÃO) e é esperto e estudioso (ENIGMA, HISTÓRIA).
 
 > As rolagens de Perícias de ASTÚCIA são resolvidas usando o Número-Alvo de ASTÚCIA do herói-jogador.
 
@@ -56,23 +56,23 @@ A lista a seguir apresenta as Perícias em ordem alfabética. Uma breve descriç
 
 | Força | Coração | Astúcia | Grupo de Perícias |
 |---|---|---|---|
-| IMPONÊNCIA | ENCORAJAR | PERSUASÃO | Personalidade |
-| ATLETISMO | VIAJAR | FURTIVIDADE | Movimento |
-| PERCEPÇÃO | PERSPICÁCIA | VASCULHAR | Percepção |
-| CAÇA | CURA | EXPLORAR | Sobrevivência |
-| CANTO | CORTESIA | ENIGMA | Costume |
-| OFÍCIO | BATALHA | SABER | Vocação |
+| FASCÍNIO | INDUÇÃO | PERSUASÃO | Personalidade |
+| ATLETISMO | VIAGEM | FURTIVIDADE | Movimento |
+| VIGILÂNCIA | DISCERNIMENTO | BUSCA | Vigilância |
+| CAÇADA | CURA | EXPLORAÇÃO | Sobrevivência |
+| MÚSICA | CORTESIA | ENIGMA | Costume |
+| OFÍCIO | BATALHA | HISTÓRIA | Vocação |
 
 ### Grupos de Perícias
 
 As 18 Perícias também podem ser consideradas agrupadas por afinidade em seis "grupos de Perícias" de 3 Perícias cada, sendo cada grupo associado a um tipo diferente de atividade. Os jogadores podem achar essa categorização útil ao identificar a habilidade certa para uma tarefa.
 
-- **Perícias de Personalidade** (IMPONÊNCIA, ENCORAJAR, PERSUASÃO). A personalidade de um herói se manifesta em sua capacidade de impressionar, encorajar e influenciar os outros. Um bom nível de proficiência nas três Perícias desse grupo é a marca de um líder.
-- **Perícias de Movimento** (ATLETISMO, VIAJAR, FURTIVIDADE). Superar obstáculos, suportar longas jornadas e mover-se em segredo são a matéria de que os aventureiros são feitos.
-- **Perícias de Percepção** (PERCEPÇÃO, PERSPICÁCIA, VASCULHAR). A capacidade de captar detalhes ocultos muitas vezes compensa, seja ao notar um ruído estranho que denuncia quem prepara uma emboscada, captar o brilho nos olhos de um mentiroso ou identificar a fenda na parede que revela uma porta secreta.
-- **Perícias de Sobrevivência** (CAÇA, CURA, EXPLORAR). As três Perícias desse grupo, essenciais para um aventureiro errante, fazem de alguém um membro valiosíssimo de uma companhia.
-- **Perícias de Costume** (CANTO, CORTESIA, ENIGMA). Embora os heróis muitas vezes sejam tidos por brutos incivilizados pelo povo comum, suas vidas podem às vezes depender de conhecer as palavras adequadas, a canção mais sábia ou a resposta mais esperta. Destacar-se nessas Perícias é considerado uma conquista nobre.
-- **Perícias de Vocação** (OFÍCIO, BATALHA, SABER). Antes que sua determinação endurecesse e os empurrasse para a estrada da aventura, os aventureiros provavelmente levavam uma vida muito parecida com a de pessoas comuns: aprendendo um ofício, defendendo seu povo e absorvendo a sabedoria acumulada dele.
+- **Perícias de Personalidade** (FASCÍNIO, INDUÇÃO, PERSUASÃO). A personalidade de um herói se manifesta em sua capacidade de impressionar, encorajar e influenciar os outros. Um bom nível de proficiência nas três Perícias desse grupo é a marca de um líder.
+- **Perícias de Movimento** (ATLETISMO, VIAGEM, FURTIVIDADE). Superar obstáculos, suportar longas jornadas e mover-se em segredo são a matéria de que os aventureiros são feitos.
+- **Perícias de Percepção** (VIGILÂNCIA, DISCERNIMENTO, BUSCA). A capacidade de captar detalhes ocultos muitas vezes compensa, seja ao notar um ruído estranho que denuncia quem prepara uma emboscada, captar o brilho nos olhos de um mentiroso ou identificar a fenda na parede que revela uma porta secreta.
+- **Perícias de Sobrevivência** (CAÇADA, CURA, EXPLORAÇÃO). As três Perícias desse grupo, essenciais para um aventureiro errante, fazem de alguém um membro valiosíssimo de uma companhia.
+- **Perícias de Costume** (MÚSICA, CORTESIA, ENIGMA). Embora os heróis muitas vezes sejam tidos por brutos incivilizados pelo povo comum, suas vidas podem às vezes depender de conhecer as palavras adequadas, a canção mais sábia ou a resposta mais esperta. Destacar-se nessas Perícias é considerado uma conquista nobre.
+- **Perícias de Vocação** (OFÍCIO, BATALHA, HISTÓRIA). Antes que sua determinação endurecesse e os empurrasse para a estrada da aventura, os aventureiros provavelmente levavam uma vida muito parecida com a de pessoas comuns: aprendendo um ofício, defendendo seu povo e absorvendo a sabedoria acumulada dele.
 
 ### Descrições das Perícias (em ordem alfabética do original)
 
@@ -84,17 +84,17 @@ Uma rolagem bem-sucedida de ATLETISMO produz um resultado satisfatório na ativi
 
 > *O pobre Sr. Bolseiro nunca tinha tido muita prática em subir em árvores, mas eles o içaram até os ramos mais baixos de um carvalho enorme que crescia justamente sobre a trilha, e ele teve de subir o melhor que pudesse.*
 
-**PERCEPÇÃO**
+**VIGILÂNCIA**
 
-A Perícia PERCEPÇÃO representa a prontidão de um herói para reagir e a capacidade de notar algo inesperado, fora do comum ou difícil de detectar. Um valor alto reflete tanto sentidos aguçados quanto a experiência de compreender o que se vê ou ouve — um alto nível de vigilância é extremamente útil se um herói-jogador serve de vigia para a Companhia.
+A Perícia VIGILÂNCIA representa a prontidão de um herói para reagir e a capacidade de notar algo inesperado, fora do comum ou difícil de detectar. Um valor alto reflete tanto sentidos aguçados quanto a experiência de compreender o que se vê ou ouve — um alto nível de vigilância é extremamente útil se um herói-jogador serve de vigia para a Companhia.
 
 > *Enquanto Frodo observava, viu algo escuro passar pelo espaço mais claro entre duas árvores e então parar.*
 
-**IMPONÊNCIA**
+**FASCÍNIO**
 
-Esta Perícia mede a capacidade de evocar respeito em quem observa, e determina a impressão que os heróis-jogadores causam em alguém que encontram pela primeira vez. Dependendo das circunstâncias e das intenções do jogador, pode ser usada para instilar assombro, admiração ou até medo. IMPONÊNCIA nasce do carisma natural de um herói, mas também pode ser construída com uma entrada dramática ou trajes impressionantes.
+Esta Perícia mede a capacidade de evocar respeito em quem observa, e determina a impressão que os heróis-jogadores causam em alguém que encontram pela primeira vez. Dependendo das circunstâncias e das intenções do jogador, pode ser usada para instilar assombro, admiração ou até medo. FASCÍNIO nasce do carisma natural de um herói, mas também pode ser construída com uma entrada dramática ou trajes impressionantes.
 
-O uso bem-sucedido da Perícia IMPONÊNCIA evoca o efeito escolhido, enquanto o fracasso pode levar ao resultado oposto. Obter um sucesso superior significa que o herói conquistou o coração dos presentes ou os intimidou até a submissão silenciosa.
+O uso bem-sucedido da Perícia FASCÍNIO evoca o efeito escolhido, enquanto o fracasso pode levar ao resultado oposto. Obter um sucesso superior significa que o herói conquistou o coração dos presentes ou os intimidou até a submissão silenciosa.
 
 > *Por um momento pareceu aos olhos de Legolas que uma chama branca tremulava na fronte de Aragorn como uma coroa brilhante.*
 
@@ -120,17 +120,17 @@ Um valor alto em OFÍCIO pode indicar que o herói-jogador era um artesão antes
 
 > *... o único ofício pouco praticado entre eles era a fabricação de sapatos; mas tinham dedos longos e habilidosos e sabiam fazer muitas outras coisas úteis e belas.*
 
-**ENCORAJAR**
+**INDUÇÃO**
 
-Os heróis-jogadores podem usar a Perícia ENCORAJAR para instilar sentimentos positivos nos outros, instigando-os a agir sobre a questão em pauta. Conseguem isso principalmente pelo exemplo, pelo carisma e pela convicção pessoal, e não pelo uso eficaz das palavras (que cai sob PERSUASÃO). Esta Perícia pode ser usada em indivíduos, mas é particularmente eficaz para influenciar multidões. Heróis-jogadores com valores altos em ENCORAJAR podem ser oradores enérgicos, agitadores passionais e líderes muito estimados.
+Os heróis-jogadores podem usar a Perícia INDUÇÃO para instilar sentimentos positivos nos outros, instigando-os a agir sobre a questão em pauta. Conseguem isso principalmente pelo exemplo, pelo carisma e pela convicção pessoal, e não pelo uso eficaz das palavras (que cai sob PERSUASÃO). Esta Perícia pode ser usada em indivíduos, mas é particularmente eficaz para influenciar multidões. Heróis-jogadores com valores altos em INDUÇÃO podem ser oradores enérgicos, agitadores passionais e líderes muito estimados.
 
-Uma rolagem bem-sucedida de ENCORAJAR desperta um sentimento escolhido no alvo, desde que não se oponha ao humor atual dele. Um sucesso superior é suficiente para influenciar indivíduos totalmente desinteressados, ou para transformar rivais em apoiadores.
+Uma rolagem bem-sucedida de INDUÇÃO desperta um sentimento escolhido no alvo, desde que não se oponha ao humor atual dele. Um sucesso superior é suficiente para influenciar indivíduos totalmente desinteressados, ou para transformar rivais em apoiadores.
 
 > *... ele retornou às muralhas, e percorreu todo o seu circuito, encorajando os homens...*
 
-**EXPLORAR**
+**EXPLORAÇÃO**
 
-Os heróis-jogadores recorrem à Perícia EXPLORAR quando se movem por uma área desconhecida das terras selvagens. Uma rolagem de EXPLORAR pode ser exigida durante uma jornada para descobrir para onde a Companhia está se dirigindo, ou para voltar ao caminho certo depois de um desvio; para lidar com condições climáticas adversas ou outros perigos naturais; para criar trilhas na natureza selvagem adequadas para que outros as sigam; ou para escolher um lugar apropriado para armar acampamento. Um valor alto em EXPLORAR é um recurso valiosíssimo se um herói-jogador atua como batedor da Companhia.
+Os heróis-jogadores recorrem à Perícia EXPLORAÇÃO quando se movem por uma área desconhecida das terras selvagens. Uma rolagem de EXPLORAÇÃO pode ser exigida durante uma jornada para descobrir para onde a Companhia está se dirigindo, ou para voltar ao caminho certo depois de um desvio; para lidar com condições climáticas adversas ou outros perigos naturais; para criar trilhas na natureza selvagem adequadas para que outros as sigam; ou para escolher um lugar apropriado para armar acampamento. Um valor alto em EXPLORAÇÃO é um recurso valiosíssimo se um herói-jogador atua como batedor da Companhia.
 
 > *"Encontramos uma caverna seca", disseram eles, "não muito longe da próxima curva; e os pôneis e tudo o mais podem entrar nela."*
 
@@ -142,27 +142,27 @@ A Perícia CURA inclui reduzir fraturas e o uso de ervas ou unguentos, mas o res
 
 > *De fato, Gandalf, que muitas vezes estivera nas montanhas, uma vez prestara um serviço às águias e curara seu senhor de um ferimento de flecha.*
 
-**CAÇA**
+**CAÇADA**
 
-Saber caçar é uma habilidade fundamental, compartilhada pela maioria das culturas da Terra-média. Uma rolagem de CAÇA pode ser exigida ao perseguir uma criatura por áreas selvagens, ou para seguir rastros e identificar uma presa por seus sinais. A Perícia CAÇA também cobre a preparação de armadilhas e o treinamento e uso de cães ou aves de caça.
+Saber caçar é uma habilidade fundamental, compartilhada pela maioria das culturas da Terra-média. Uma rolagem de CAÇADA pode ser exigida ao perseguir uma criatura por áreas selvagens, ou para seguir rastros e identificar uma presa por seus sinais. A Perícia CAÇADA também cobre a preparação de armadilhas e o treinamento e uso de cães ou aves de caça.
 
 Em áreas mais selvagens, os caçadores aprendem a aplicar seu ofício a presas mais perigosas — como Orcs, Aranhas ou Wargs — ou então correm o risco de se tornarem a presa.
 
 > *Habitavam com mais frequência nas orlas das florestas, de onde podiam escapar por vezes para caçar, ou para cavalgar ou correr pelas terras abertas ao luar ou à luz das estrelas...*
 
-**PERSPICÁCIA**
+**DISCERNIMENTO**
 
-PERSPICÁCIA representa a capacidade de ver além das aparências e reconhecer os pensamentos e as crenças ocultas das pessoas. PERSPICÁCIA não revela se alguém está mentindo, mas a informação que ela fornece pode ser usada para tirar conclusões úteis sobre os motivos das pessoas. Heróis com valor alto em PERSPICÁCIA muitas vezes são reconhecidos como indivíduos sensatos e perceptivos, e muitos podem buscar seu conselho.
+DISCERNIMENTO representa a capacidade de ver além das aparências e reconhecer os pensamentos e as crenças ocultas das pessoas. DISCERNIMENTO não revela se alguém está mentindo, mas a informação que ela fornece pode ser usada para tirar conclusões úteis sobre os motivos das pessoas. Heróis com valor alto em DISCERNIMENTO muitas vezes são reconhecidos como indivíduos sensatos e perceptivos, e muitos podem buscar seu conselho.
 
-Uma rolagem bem-sucedida de PERSPICÁCIA fornece aos heróis-jogadores um retrato confiável, mas parcial, da pessoa que estão observando. Um sucesso superior permite que eles adivinhem corretamente detalhes adicionais sobre o estado de espírito de um indivíduo. Testes de PERSPICÁCIA podem ser rolados em oposição a um adversário que tenta demover ou convencer um herói-jogador de algo.
+Uma rolagem bem-sucedida de DISCERNIMENTO fornece aos heróis-jogadores um retrato confiável, mas parcial, da pessoa que estão observando. Um sucesso superior permite que eles adivinhem corretamente detalhes adicionais sobre o estado de espírito de um indivíduo. Testes de DISCERNIMENTO podem ser rolados em oposição a um adversário que tenta demover ou convencer um herói-jogador de algo.
 
 > *"Há portas trancadas e janelas fechadas em sua mente, e salas escuras atrás delas", disse Faramir. "Mas nisto eu julgo que você fala a verdade."*
 
-**SABER**
+**HISTÓRIA**
 
-SABER expressa um amor pelo aprendizado: seja um fascínio por descrições de terras distantes ou um interesse em genealogia familiar. Sempre que uma ação envolve conhecimento de algum tipo, um teste de SABER é exigido.
+HISTÓRIA expressa um amor pelo aprendizado: seja um fascínio por descrições de terras distantes ou um interesse em genealogia familiar. Sempre que uma ação envolve conhecimento de algum tipo, um teste de HISTÓRIA é exigido.
 
-Os heróis-jogadores são considerados conhecedores das tradições de seu próprio povo, e por isso o Mestre raramente deveria exigir de um jogador uma rolagem de SABER para informações relativas à Cultura, ao Passado ou à região de origem de seu próprio personagem.
+Os heróis-jogadores são considerados conhecedores das tradições de seu próprio povo, e por isso o Mestre raramente deveria exigir de um jogador uma rolagem de HISTÓRIA para informações relativas à Cultura, ao Passado ou à região de origem de seu próprio personagem.
 
 > *Ele conhecia muitas histórias e lendas de tempos remotos, de Elfos e Homens e dos feitos bons e maus dos Dias Antigos.*
 
@@ -182,19 +182,19 @@ Como costume aceito entre muitas culturas, falar por enigmas é geralmente permi
 
 > *"Um Hobbit entrou na água e voltou; mas não sei dizer há quanto tempo." "E como você lê este enigma?" perguntou Gimli.*
 
-**VASCULHAR**
+**BUSCA**
 
-Os heróis-jogadores podem usar a Perícia VASCULHAR ao examinar algo de perto ou com atenção. Esta Perícia permite a um herói-jogador folhear um livro para localizar uma informação relevante, procurar portas escondidas ou inscrições ocultas, reconhecer um rosto familiar em uma multidão ou localizar um conjunto de rastros no chão. As rolagens de VASCULHAR geralmente são iniciadas pelos jogadores, e não pelo Mestre. Uma rolagem é exigida para cada inspeção de uma área pequena, como um aposento. PERCEPÇÃO, e não VASCULHAR, é usada para ver se um herói nota algo passivamente.
+Os heróis-jogadores podem usar a Perícia BUSCA ao examinar algo de perto ou com atenção. Esta Perícia permite a um herói-jogador folhear um livro para localizar uma informação relevante, procurar portas escondidas ou inscrições ocultas, reconhecer um rosto familiar em uma multidão ou localizar um conjunto de rastros no chão. As rolagens de BUSCA geralmente são iniciadas pelos jogadores, e não pelo Mestre. Uma rolagem é exigida para cada inspeção de uma área pequena, como um aposento. VIGILÂNCIA, e não BUSCA, é usada para ver se um herói nota algo passivamente.
 
-Uma rolagem bem-sucedida de VASCULHAR geralmente permite que os heróis-jogadores encontrem o que procuram — se isso puder ser encontrado. Um resultado superior normalmente significa que o objeto é encontrado mais rapidamente.
+Uma rolagem bem-sucedida de BUSCA geralmente permite que os heróis-jogadores encontrem o que procuram — se isso puder ser encontrado. Um resultado superior normalmente significa que o objeto é encontrado mais rapidamente.
 
 > *"Menos acolhedor o Senhor Denethor se mostrou comigo então que outrora, e a contragosto permitiu-me buscar entre seus pergaminhos e livros guardados."*
 
-**CANTO**
+**MÚSICA**
 
 Hobbits e Homens, Elfos e Anões, até Goblins e talvez Orcs: todas as criaturas da Terra-média celebram tocando música e cantando canções. Grandes feitos e desgraças terríveis são lembrados em verso, e histórias agradáveis ou cômicas são contadas para aliviar os ânimos e encontrar consolo.
 
-A Perícia CANTO é usada para recitar poemas, cantar canções ou tocar instrumentos apropriados à Cultura de um personagem. Também pode ser usada para aprender obras novas ou criar composições originais.
+A Perícia MÚSICA é usada para recitar poemas, cantar canções ou tocar instrumentos apropriados à Cultura de um personagem. Também pode ser usada para aprender obras novas ou criar composições originais.
 
 > *Enquanto cantavam, o Hobbit sentiu passar por si o amor por coisas belas feitas por mãos e por engenho e por magia, um amor feroz e ciumento, o desejo do coração dos Anões.*
 
@@ -206,11 +206,11 @@ Uma rolagem bem-sucedida de FURTIVIDADE indica que o herói passou desapercebido
 
 > *Tão silencioso foi seu andar que fumaça em uma brisa leve dificilmente o teria superado, e ele se sentia um pouco orgulhoso de si mesmo ao se aproximar da porta inferior.*
 
-**VIAJAR**
+**VIAGEM**
 
 Na Terceira Era, as cidades, vilas e povoados da Terra-média muitas vezes estão separados por muitas léguas de áreas selvagens ou desertas. Estradas que antes levavam com segurança a reinos distantes agora terminam em trilhas quebradas que não vão a lugar algum. Por qualquer caminho que a Companhia escolha ir, será uma estrada longa e cansativa antes de chegarem lá.
 
-Uma rolagem bem-sucedida de VIAJAR pode permitir a um herói-jogador estimar a duração de uma jornada, ler um mapa e até avaliar se um grupo de estranhos na estrada pode ser abordado com segurança ou se deve ser deixado em paz. Uma boa Perícia VIAJAR é um recurso valiosíssimo para o Guia da Companhia durante uma jornada (ver capítulo 7).
+Uma rolagem bem-sucedida de VIAGEM pode permitir a um herói-jogador estimar a duração de uma jornada, ler um mapa e até avaliar se um grupo de estranhos na estrada pode ser abordado com segurança ou se deve ser deixado em paz. Uma boa Perícia VIAGEM é um recurso valiosíssimo para o Guia da Companhia durante uma jornada (ver capítulo 7).
 
 > *A região era muito mais acidentada e estéril que no vale verde do Grande Rio nas Terras Selvagens do outro lado da cadeia, e o avanço deles seria lento...*
 
@@ -291,7 +291,7 @@ Os jogadores são convidados a levar em conta as Características Distintivas de
 
 Um traço só pode ser invocado em uma rolagem se, com base em sua descrição, for razoavelmente plausível que alguém com aquela qualidade se saia melhor que um indivíduo sem ela.
 
-> **EXEMPLO:** Uma noite na taverna, Folco, o Hobbit, convida seus companheiros a dançar o Salta-anel, uma dança bastante vigorosa, enquanto ele canta uma canção da Quarta Ocidental. Folco é um sujeito Jovial, e escolhe tornar sua rolagem de CANTO Inspirada — se gastar um ponto de Esperança, ele ganha (2d) em vez de (1d).
+> **EXEMPLO:** Uma noite na taverna, Folco, o Hobbit, convida seus companheiros a dançar o Salta-anel, uma dança bastante vigorosa, enquanto ele canta uma canção da Quarta Ocidental. Folco é um sujeito Jovial, e escolhe tornar sua rolagem de MÚSICA Inspirada — se gastar um ponto de Esperança, ele ganha (2d) em vez de (1d).
 
 Uma descrição completa de cada traço é fornecida abaixo.
 

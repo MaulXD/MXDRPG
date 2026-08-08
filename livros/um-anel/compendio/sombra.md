@@ -285,7 +285,7 @@ uma perícia pode ser plausivelmente afetada pela Falha, a rolagem é **Desfavor
 - **Falhas:** Indolente, Esquecido, Indiferente, Covarde
 - **Ordem:** 6
 
-> Descrição: Viajar para longe pode ser o dever escolhido por um mensageiro, mas carrega o risco
+> Descrição: Viagem para longe pode ser o dever escolhido por um mensageiro, mas carrega o risco
 > de nunca encontrar um lugar pelo qual lutar.
 
 ---

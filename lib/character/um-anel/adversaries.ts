@@ -111,7 +111,7 @@ const TOR_ADVERSARIES_RAW: TorAdversaryStats[] = [
       { id: "arco", label: "Arco", rating: 2, damage: 3, injury: 14, specialDamage: ["Perfurar"], ranged: true },
     ],
     fellAbilities: [
-      { name: "Velocidade de Serpente", text: "Quando alvo de um ataque, gaste 1 Resolução pra tornar a rolagem de ataque Desfavorecida." },
+      { name: "Velocidade Serpentina", text: "Quando alvo de um ataque, gaste 1 Resolução pra tornar a rolagem de ataque Desfavorecida." },
     ],
   },
 
@@ -157,7 +157,7 @@ const TOR_ADVERSARIES_RAW: TorAdversaryStats[] = [
     ],
     fellAbilities: [
       { name: "Grande Salto", text: "Gaste 1 Ódio pra atacar qualquer herói, em qualquer postura, incluindo Retaguarda." },
-      { name: "Velocidade de Serpente", text: "Quando alvo de um ataque, gaste 1 Ódio pra tornar a rolagem de ataque Desfavorecida." },
+      { name: "Velocidade Serpentina", text: "Quando alvo de um ataque, gaste 1 Ódio pra tornar a rolagem de ataque Desfavorecida." },
       { name: "Grito de Triunfo", text: "Gaste 1 Ódio pra restaurar 1 Ódio a todos os outros Orcs na luta." },
       { name: "Odeia a Luz do Sol", text: "Perde 1 Ódio no início de cada rodada exposto à luz plena do sol." },
     ],
@@ -181,7 +181,7 @@ const TOR_ADVERSARIES_RAW: TorAdversaryStats[] = [
     ],
     fellAbilities: [
       { name: "Força Horrenda", text: "Se a criatura causou um Golpe Perfurante com ataque corpo a corpo, gaste 1 Ódio pra tornar a rolagem de Proteção do alvo Desfavorecida." },
-      { name: "Velocidade de Serpente", text: "Quando alvo de um ataque, gaste 1 Ódio pra tornar a rolagem de ataque Desfavorecida." },
+      { name: "Velocidade Serpentina", text: "Quando alvo de um ataque, gaste 1 Ódio pra tornar a rolagem de ataque Desfavorecida." },
       { name: "Grito de Triunfo", text: "Gaste 1 Ódio pra restaurar 1 Ódio a todos os outros Orcs na luta." },
       { name: "Odeia a Luz do Sol", text: "Perde 1 Ódio no início de cada rodada exposto à luz plena do sol." },
     ],
@@ -464,7 +464,7 @@ const TOR_ADVERSARIES_RAW: TorAdversaryStats[] = [
         name: "Medo do Fogo",
         text: "Perde 1 Ódio no início de cada rodada engajado em combate corpo a corpo com um adversário empunhando tocha ou item em chamas.",
       },
-      { name: "Velocidade de Serpente", text: "Quando alvo de um ataque, gaste 1 Ódio pra tornar a rolagem de ataque Desfavorecida." },
+      { name: "Velocidade Serpentina", text: "Quando alvo de um ataque, gaste 1 Ódio pra tornar a rolagem de ataque Desfavorecida." },
     ],
   },
   {
@@ -487,7 +487,7 @@ const TOR_ADVERSARIES_RAW: TorAdversaryStats[] = [
     fellAbilities: [
       { name: "Grande Salto", text: "Gaste 1 Ódio pra atacar qualquer herói, em qualquer postura, incluindo Retaguarda." },
       { name: "Medo do Fogo", text: "Perde 1 Ódio no início de cada rodada engajado em combate corpo a corpo com um adversário empunhando tocha ou item em chamas." },
-      { name: "Velocidade de Serpente", text: "Quando alvo de um ataque, gaste 1 Ódio pra tornar a rolagem de ataque Desfavorecida." },
+      { name: "Velocidade Serpentina", text: "Quando alvo de um ataque, gaste 1 Ódio pra tornar a rolagem de ataque Desfavorecida." },
       { name: "Uivo de Triunfo", text: "Gaste 1 Ódio pra restaurar 1 Ódio a todos os outros Wargs na luta." },
     ],
   },
@@ -626,7 +626,7 @@ const TOR_ADVERSARIES_RAW: TorAdversaryStats[] = [
     ],
     fellAbilities: [
       { name: "Veneno de Orc", text: "Se um ataque produzir ao menos 1 ícone de Sucesso, o alvo é envenenado." },
-      { name: "Velocidade de Serpente", text: "Ao ser alvo de um ataque, gaste 1 Ódio pra tornar a rolagem de ataque Desfavorecida." },
+      { name: "Velocidade Serpentina", text: "Ao ser alvo de um ataque, gaste 1 Ódio pra tornar a rolagem de ataque Desfavorecida." },
       { name: "Grito de Triunfo", text: "Gaste 1 Ódio pra restaurar 1 Ódio a todos os outros Orcs da luta." },
       { name: "Odeia a Luz do Sol", text: "Perde 1 Ódio no início de cada rodada exposto à luz plena do sol." },
     ],

@@ -57,7 +57,7 @@ a Companhia tenta obter algo de quem encontrou.
 ## CON-S02 — 2. Introdução
 
 - **Quem:** Porta-voz eleito pela Companhia
-- **Perícias úteis:** Imponência, Cortesia, Enigmas
+- **Perícias úteis:** Fascínio, Cortesia, Enigmas
 - **Sucesso:** Limite de tempo = Resistência + 1 por cada ícone de Sucesso rolado
 - **Falha:** Limite de tempo = Resistência, e se o conselho terminar em falha, termina em Desastre
 
@@ -72,7 +72,7 @@ a Companhia tenta obter algo de quem encontrou.
 ## CON-S03 — 3. Interação
 
 - **Quem:** Toda a Companhia
-- **Perícias úteis:** Encorajar, Perspicácia, Persuasão, Enigmas, Canção
+- **Perícias úteis:** Indução, Discernimento, Persuasão, Enigmas, Canção
 - **Objetivo:** Acumular sucessos até igualar ou passar a Resistência
 - **Limite:** O limite de tempo definido na Introdução
 
@@ -84,11 +84,11 @@ a Companhia tenta obter algo de quem encontrou.
 
 # Perícias do Conselho
 
-## CON-P01 — Imponência (Introdução)
+## CON-P01 — Fascínio (Introdução)
 
 - **Etapa:** Introdução
 
-> Descrição: Uma rolagem de Imponência passa uma mensagem poderosa com poucas palavras. Serve
+> Descrição: Uma rolagem de Fascínio passa uma mensagem poderosa com poucas palavras. Serve
 > para impressionar alguém e virar uma reação inicial negativa, ou para fixar rapidamente os
 > termos da discussão que vem. Tem um custo: o porta-voz menciona voluntariamente a linhagem,
 > os feitos e outras informações pessoais dos membros da Companhia para obter efeito pleno.
@@ -116,7 +116,7 @@ a Companhia tenta obter algo de quem encontrou.
 
 ---
 
-## CON-P04 — Encorajar (Interação)
+## CON-P04 — Indução (Interação)
 
 - **Etapa:** Interação
 
@@ -124,7 +124,7 @@ a Companhia tenta obter algo de quem encontrou.
 
 ---
 
-## CON-P05 — Perspicácia (Interação)
+## CON-P05 — Discernimento (Interação)
 
 - **Etapa:** Interação
 

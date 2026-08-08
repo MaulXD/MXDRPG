@@ -117,7 +117,7 @@ Durante a criação de personagem, os jogadores geram três Números-Alvo, um pa
 
 > Cada NA de Atributo é igual a **20 menos** o valor do Atributo correspondente.
 
-**EXEMPLO:** *Explorando à frente pela Companhia, Hanar, o Anão, tem a chance de notar um grupo de Goblins preparando uma emboscada. Ele tem Percepção 2, então rola um Dado de Proeza mais dois Dados de Sucesso, somando os resultados de todos os dados. Como Percepção é uma Perícia de Força, o resultado é comparado ao NA de Força de Hanar, que é 13. Com os Dados de Sucesso mostrando 4 e 5, e o Dado de Proeza um 8, o jogador de Hanar nem precisa fazer conta para saber que o Anão teve sucesso.*
+**EXEMPLO:** *Explorando à frente pela Companhia, Hanar, o Anão, tem a chance de notar um grupo de Goblins preparando uma emboscada. Ele tem Vigilância 2, então rola um Dado de Proeza mais dois Dados de Sucesso, somando os resultados de todos os dados. Como Vigilância é uma Perícia de Força, o resultado é comparado ao NA de Força de Hanar, que é 13. Com os Dados de Sucesso mostrando 4 e 5, e o Dado de Proeza um 8, o jogador de Hanar nem precisa fazer conta para saber que o Anão teve sucesso.*
 
 #### Ajustando os Números-Alvo (box)
 
@@ -152,7 +152,7 @@ Note que 'gastar' um ícone de Sucesso **não** reduz o resultado numérico da r
 | Obter uma revelação | Você obtém informação adicional, não necessariamente relacionada à tarefa em questão. Por exemplo, ao cuidar de um doente com uma rolagem de Cura, você descobre traços de veneno. Ou avista um sentinela ao se esgueirar numa ruína com uma rolagem de Furtividade. |
 | Agir em silêncio | Você alcança seu objetivo sem ruído ou sem atrair atenção de outra forma. |
 | Ganhar tempo | Você completa a tarefa em menos tempo (cerca da metade do esperado). |
-| Ampliar a influência | Você pode influenciar mais que o número específico de alvos originalmente visado pela ação. Como regra geral, cada ícone de Sucesso gasto corresponde a um alvo ou grupo de alvos adicional. Por exemplo, após uma rolagem de Perspicácia, você identifica uma segunda pessoa agindo de forma suspeita numa estalagem; uma rolagem de Encorajar voltada a meia dúzia de indivíduos permite influenciar uma dúzia inteira. |
+| Ampliar a influência | Você pode influenciar mais que o número específico de alvos originalmente visado pela ação. Como regra geral, cada ícone de Sucesso gasto corresponde a um alvo ou grupo de alvos adicional. Por exemplo, após uma rolagem de Discernimento, você identifica uma segunda pessoa agindo de forma suspeita numa estalagem; uma rolagem de Indução voltada a meia dúzia de indivíduos permite influenciar uma dúzia inteira. |
 
 ---
 
@@ -240,7 +240,7 @@ Em termos de jogo, a rolagem é feita rolando apenas o número necessário de Da
 
 Narrativamente, um sucesso Mágico é um resultado que dificilmente pode ser confundido com um sucesso comum — em outras palavras, o herói-jogador alcançou algo tão incomum que não poderia ser realizado sem auxílio sobrenatural.
 
-Por exemplo, um herói-jogador que tenta intimidar guardas com uma rolagem de Imponência parece crescer em estatura, enquanto a luz diminui e as sombras se alongam ao redor. Ou ainda, um herói-jogador rolando Canto faz os ouvintes experimentarem visões daquilo de que a música fala.
+Por exemplo, um herói-jogador que tenta intimidar guardas com uma rolagem de Fascínio parece crescer em estatura, enquanto a luz diminui e as sombras se alongam ao redor. Ou ainda, um herói-jogador rolando Canto faz os ouvintes experimentarem visões daquilo de que a música fala.
 
 Heróis-jogadores que têm a chance de alcançar um sucesso mágico também podem tentar ações que seriam impossíveis sem auxílio mágico — por exemplo, escalar uma parede de rocha vertical sem ferramentas, saltar um abismo de seis metros ou mais em equipamento completo, ou correr sobre neve fresca como se fosse areia firme.
 

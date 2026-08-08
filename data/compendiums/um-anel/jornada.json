@@ -17,7 +17,7 @@
     "type": "efeito",
     "system": {
       "grupo": "Papéis da Jornada",
-      "pericia": "Explorar",
+      "pericia": "Exploração",
       "unico": "não",
       "ordem": 2,
       "descricao": "Responsável por armar o acampamento e abrir novas trilhas."
@@ -29,7 +29,7 @@
     "type": "efeito",
     "system": {
       "grupo": "Papéis da Jornada",
-      "pericia": "Percepção",
+      "pericia": "Vigilância",
       "unico": "não",
       "ordem": 3,
       "descricao": "Responsável por manter a vigilância."
@@ -41,7 +41,7 @@
     "type": "efeito",
     "system": {
       "grupo": "Papéis da Jornada",
-      "pericia": "Caça",
+      "pericia": "Caçada",
       "unico": "não",
       "ordem": 4,
       "descricao": "Responsável por encontrar comida na natureza."
@@ -86,7 +86,7 @@
     "system": {
       "grupo": "Eventos",
       "rolagem_dado_de_sucesso": "1–2",
-      "pericia_testada": "Explorar",
+      "pericia_testada": "Exploração",
       "descricao": "O Mestre rola um Dado de Sucesso para escolher quem enfrenta o evento, entre os heróis que cobrem os papéis de Batedor, Olheiro e Caçador."
     }
   },
@@ -97,7 +97,7 @@
     "system": {
       "grupo": "Eventos",
       "rolagem_dado_de_sucesso": "3–4",
-      "pericia_testada": "Percepção"
+      "pericia_testada": "Vigilância"
     }
   },
   {
@@ -107,7 +107,7 @@
     "system": {
       "grupo": "Eventos",
       "rolagem_dado_de_sucesso": "5–6",
-      "pericia_testada": "Caça"
+      "pericia_testada": "Caçada"
     }
   },
   {

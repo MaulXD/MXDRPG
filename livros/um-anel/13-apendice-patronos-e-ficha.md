@@ -1,8 +1,8 @@
 # Apêndice A: Patronos, Marcos, Coisas Sem Nome e Ficha de Personagem — O Um Anel 2ª ed. (fonte: Regras Básicas, p.211-240)
 
 > Traduzido para PT-BR. Nomes de perícia e atributo usam os ids reais de
-> `lib/character/um-anel/data.ts` — SCAN é **VASCULHAR**, AWARENESS é **PERCEPÇÃO**, INSIGHT é
-> **PERSPICÁCIA**.
+> `lib/character/um-anel/data.ts` — SCAN é **BUSCA**, AWARENESS é **VIGILÂNCIA**, INSIGHT é
+> **DISCERNIMENTO**.
 >
 > Fonte: `the one ring/The_One_Ring_Core_Rules.pdf`
 
@@ -565,13 +565,13 @@ A ficha de personagem impressa oficial (frente), lida na ordem do layout:
 **Três colunas de atributo, cada uma com losango de Valor/ND, um losango de estatística derivada
 secundária, e uma lista de Perícias com trilhas de marcas e caixas de marcar:**
 
-- Coluna **FORÇA**: Valor (losango) / ND (centro) / **Resistência** (losango). Perícias: Imponência,
-  Atletismo, Percepção, Caça, Canção, Ofício (cada uma com caixa de marcar e uma fileira de marcas de
+- Coluna **FORÇA**: Valor (losango) / ND (centro) / **Resistência** (losango). Perícias: Fascínio,
+  Atletismo, Vigilância, Caçada, Música, Ofício (cada uma com caixa de marcar e uma fileira de marcas de
   graduação).
-- Coluna **CORAÇÃO**: Valor (losango) / ND (centro) / **Esperança** (losango). Perícias: Encorajar,
-  Viagem, Perspicácia, Cura, Cortesia, Batalha. Abaixo: **Recompensas** — **Valor** (losango).
+- Coluna **CORAÇÃO**: Valor (losango) / ND (centro) / **Esperança** (losango). Perícias: Indução,
+  Viagem, Discernimento, Cura, Cortesia, Batalha. Abaixo: **Recompensas** — **Valor** (losango).
 - Coluna **ASTÚCIA**: Valor (losango) / ND (centro) / **Bloqueio** (losango). Perícias: Persuasão,
-  Furtividade, Vasculhar, Explorar, Enigmas, Saber. Abaixo: **Virtudes** — **Sabedoria** (losango).
+  Furtividade, Busca, Exploração, Enigmas, Saber. Abaixo: **Virtudes** — **Sabedoria** (losango).
 
 **Bloco de combate e equipamento (rodapé):**
 
