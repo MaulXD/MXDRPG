@@ -6,7 +6,13 @@ import { executeRoomTorRecovery, type TorRecoveryAction } from "@/lib/room/handl
 
 type Params = { params: Promise<{ roomId: string }> };
 
-const ACTIONS: TorRecoveryAction[] = ["spiritual", "rest", "madness", "heal-scar"];
+const ACTIONS: TorRecoveryAction[] = [
+  "spiritual",
+  "rest",
+  "madness",
+  "heal-scar",
+  "journey-end",
+];
 
 /**
  * Recuperação espiritual, Descanso Prolongado, Acesso de Loucura e curar
@@ -18,9 +24,14 @@ export async function POST(req: Request, { params }: Params) {
   const session = await getSession();
   if (!session) return NextResponse.json({ error: "Sem permissão" }, { status: 401 });
 
-  let body: { characterId?: string; action?: string };
+  let body: {
+    characterId?: string;
+    action?: string;
+    mountVigour?: number;
+    travelRoll?: { passed?: boolean; successIcons?: number };
+  };
   try {
-    body = (await req.json()) as { characterId?: string; action?: string };
+    body = (await req.json()) as typeof body;
   } catch {
     return NextResponse.json({ error: "Corpo inválido" }, { status: 400 });
   }
@@ -44,7 +55,18 @@ export async function POST(req: Request, { params }: Params) {
       authorName: session.user.nickname?.trim() || "Jogador",
       authorRole: chatRoleForUser(room, session.user),
     },
-    { room }
+    {
+      room,
+      // Recortados: o corpo da requisição não é confiável. Vigor de montaria
+      // acima de 6 não existe em bloco nenhum do livro.
+      mountVigour: Math.max(0, Math.min(6, Math.floor(Number(body.mountVigour ?? 0)))),
+      travelRoll: body.travelRoll
+        ? {
+            passed: body.travelRoll.passed === true,
+            successIcons: Math.max(0, Math.min(6, Math.floor(Number(body.travelRoll.successIcons ?? 0)))),
+          }
+        : undefined,
+    }
   );
 
   if (!result.ok) return NextResponse.json({ error: result.error }, { status: 400 });

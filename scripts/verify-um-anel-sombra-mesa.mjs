@@ -169,7 +169,10 @@ ok(
  * que segue sem consumidor está listado aqui de propósito: quando alguém ligar,
  * a asserção falha e obriga a mexer nesta lista — que é o registro de dívida.
  */
-const AINDA_SEM_CONSUMIDOR = ["applyTorJourneyEndRecovery"];
+/* Vazia: as quatro funções de recuperação da Sombra foram todas ligadas. Fica
+   como estrutura porque o mecanismo é o que impede a dívida futura de virar
+   código morto silencioso. */
+const AINDA_SEM_CONSUMIDOR = [];
 
 /**
  * A varredura tem de ser AMPLA. A primeira versão desta checagem olhava uma
@@ -195,7 +198,12 @@ const CONSUMIDORES = consumidoresDoProjeto();
 
 /* O lado positivo: as que foram ligadas precisam TER consumidor. Sem isto, a
    lista poderia esvaziar por engano e ninguém notaria. */
-for (const fn of ["applyTorBoutOfMadness", "applyTorProlongedRest", "healTorShadowScar"]) {
+for (const fn of [
+  "applyTorBoutOfMadness",
+  "applyTorProlongedRest",
+  "healTorShadowScar",
+  "applyTorJourneyEndRecovery",
+]) {
   ok(
     `${fn} tem consumidor real`,
     CONSUMIDORES.some((src) => new RegExp(`\\b${fn}\\(`).test(src)),

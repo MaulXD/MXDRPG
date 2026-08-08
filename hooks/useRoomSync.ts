@@ -808,7 +808,9 @@ export async function postRoomTorAdvance(
 export async function postRoomTorRecovery(
   roomId: string,
   characterId: string,
-  action: "spiritual" | "rest" | "madness" | "heal-scar"
+  action: "spiritual" | "rest" | "madness" | "heal-scar" | "journey-end",
+  /** Só `journey-end` — Vigor da montaria e a rolagem de Viagem do fim da viagem. */
+  opts: { mountVigour?: number; travelRoll?: { passed: boolean; successIcons: number } } = {}
 ) {
   const res = await roomFetch(
     `/api/room/${roomId}/tor-recovery`,
@@ -816,7 +818,7 @@ export async function postRoomTorRecovery(
       method: "POST",
       headers: { "Content-Type": "application/json" },
       credentials: "same-origin",
-      body: JSON.stringify({ characterId, action }),
+      body: JSON.stringify({ characterId, action, ...opts }),
     },
     "Falha na recuperação"
   );

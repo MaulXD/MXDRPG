@@ -104,6 +104,60 @@ npm run sync:data:check       # após editar livros/
 
 ---
 
+### 2026-08-08 — Áreas Perigosas e recuperação de fim de jornada: a dívida da Sombra zera
+
+**Pedido:** continuar o loop.
+
+**Passo a passo:**
+
+1. **Áreas Perigosas (JOR-M05).** "A Companhia para na Área Perigosa tão logo
+   entre nela. Antes que os heróis possam deixar a área, devem enfrentar um
+   número de Eventos igual ao seu índice de Perigo." A regra tem **duas metades**,
+   e uma sem a outra não vale nada: o Teste de Marcha fica **barrado** enquanto
+   houver Evento pendente, e cada Evento resolvido **desconta um** do Perigo. Sem
+   a primeira, a Companhia atravessa a área sem pagar; sem a segunda, nunca sai.
+   As duas têm asserção própria.
+
+   Quem informa o Perigo é o Mestre: Áreas Perigosas não estão no mapa
+   hexagonado, então não há como o app deduzir que a Companhia entrou numa.
+
+2. **Recuperação de fim de jornada (JOR-M02).** Tira Fadiga pelo Vigor da
+   montaria e depois pela rolagem de Viagem (1 no sucesso + 1 por ícone). Os dois
+   números vêm da mesa — o painel do token não sabe se a Companhia viajou montada
+   nem o que o Guia rolou —, e chegam recortados na rota.
+
+3. **A dívida da Sombra zerou.** As quatro funções que estavam na lista foram
+   todas ligadas, e a asserção inverteu: agora cada uma precisa **ter** consumidor
+   real. A lista ficou vazia mas o mecanismo permanece — é o que impede a próxima
+   dívida de virar código morto silencioso.
+
+4. **Auditoria de vazamento de id.** Depois do `roleMeta.skillId` da rodada
+   anterior, varri o restante à procura de outros ids impressos em vez de
+   rótulos, tanto na UI quanto nas mensagens de chat montadas nos motores.
+   Nenhum outro — os poucos usos de id em `.tsx` são chaves de lista e props de
+   componente. Sétimo falso alarme evitado por conferir antes de mexer.
+
+5. **Validação.** `npx tsc --noEmit` limpo · `npm run build` compila ·
+   `npm run test` verde com **1765 asserções**. A asserção do bloqueio da Marcha
+   foi conferida trocando o `throw` por `console.warn` — falhou como devia.
+
+**Arquivos tocados:**
+- `lib/combat/um-anel/session-state.ts` — `perilousRemaining` na jornada
+- `components/vtt/TorJourneyPanel.tsx` — entrada na área, bloqueio da Marcha, desconto por Evento
+- `lib/room/handlers/tor-recovery.ts` · `app/api/room/[roomId]/tor-recovery/route.ts` — ação `journey-end`
+- `components/vtt/TorShadowPanel.tsx` · `hooks/useRoomSync.ts`
+- `scripts/verify-um-anel-journey.mjs` · `verify-um-anel-sombra-mesa.mjs` — asserções invertidas
+
+**Como testar:** com uma jornada em andamento, clicar "Entrar em Área Perigosa"
+com Perigo 2 — o Teste de Marcha some e o painel passa a cobrar os dois Eventos.
+Resolver os dois e a Marcha volta. No painel do token, informar Vigor da montaria
+e a rolagem de Viagem e clicar "Recuperação de fim de jornada".
+
+**Falta:** crônica da Companhia e `torFellowshipLevel`; Elmo removível; campanhas
+de 1ª edição; glyph da runa de Gandalf.
+
+---
+
 ### 2026-08-08 — Papéis da Jornada + o id da Perícia vazando pro chat
 
 **Pedido:** continuar o loop.

@@ -5,6 +5,7 @@ import { resolveTorCharacter, saveTorCharacter } from "@/lib/character/um-anel/c
 import { computeLoad } from "@/lib/character/um-anel/rules";
 import {
   applyTorBoutOfMadness,
+  applyTorJourneyEndRecovery,
   applyTorProlongedRest,
   healTorShadowScar,
   TOR_HEAL_SCAR_COST,
@@ -24,7 +25,7 @@ import type { TorCharacterSheet } from "@/lib/character/um-anel/types";
 
 export type TorRecoveryResult = { ok: true; snapshot: RoomSnapshot } | { ok: false; error: string };
 
-export type TorRecoveryAction = "spiritual" | "rest" | "madness" | "heal-scar";
+export type TorRecoveryAction = "spiritual" | "rest" | "madness" | "heal-scar" | "journey-end";
 
 function spiritStateFromSheet(sheet: TorCharacterSheet): TorSpiritState {
   return {
@@ -58,7 +59,12 @@ export async function executeRoomTorRecovery(
   action: TorRecoveryAction,
   user: SessionUser | null,
   author: Pick<ChatMessage, "authorId" | "authorName" | "authorRole">,
-  opts: { room?: RoomState } = {}
+  opts: {
+    room?: RoomState;
+    /** Só `journey-end` — Vigor da montaria e resultado da rolagem de Viagem. */
+    mountVigour?: number;
+    travelRoll?: { passed: boolean; successIcons: number };
+  } = {}
 ): Promise<TorRecoveryResult> {
   if (!user) return { ok: false, error: "Sem permissão" };
 
@@ -83,7 +89,18 @@ export async function executeRoomTorRecovery(
   let next: TorCharacterSheet;
   let text: string;
 
-  if (action === "rest") {
+  if (action === "journey-end") {
+    // JOR-M02: tira Fadiga pelo Vigor da montaria e depois pela rolagem de
+    // Viagem (1 no sucesso + 1 por ícone). O estado da jornada guarda se a
+    // Companhia viajou montada; a rolagem de Viagem vem do painel.
+    const r = applyTorJourneyEndRecovery(state, {
+      mountVigour: opts.mountVigour,
+      travelRoll: opts.travelRoll,
+    });
+    if (r.removed === 0) return { ok: false, error: `${sheet.name} não tem Fadiga para tirar` };
+    next = { ...sheet, fatigue: r.state.fatigue };
+    text = `${sheet.name} chega ao fim da jornada — perde ${r.removed} de Fadiga (agora ${r.state.fatigue})`;
+  } else if (action === "rest") {
     const r = applyTorProlongedRest(state);
     if (r.fatigueRemoved === 0) return { ok: false, error: `${sheet.name} não tem Fadiga` };
     next = { ...sheet, fatigue: r.state.fatigue };

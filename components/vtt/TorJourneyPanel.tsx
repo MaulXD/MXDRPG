@@ -25,6 +25,7 @@ import {
   terrainRollModifier,
   torEventTargetFromRoll,
   torJourneyEventFromFeatDie,
+  torPerilousAreaEventCount,
   type TorRegionType,
   type TorSeason,
   type TorTerrainType,
@@ -189,6 +190,14 @@ export function TorJourneyPanel({ roomId, canManage, progress, onUpdate }: Props
     (guideRank: number) =>
       guard(async () => {
         if (!progress) return;
+        // JOR-M05: a Companhia não retoma as rolagens de Marcha enquanto não
+        // enfrentar todos os Eventos da Área Perigosa. Barrar aqui é o que
+        // impede simplesmente atravessar a área.
+        if ((progress.perilousRemaining ?? 0) > 0) {
+          throw new Error(
+            `Área Perigosa: faltam ${progress.perilousRemaining} Evento(s) antes de a Companhia poder seguir`
+          );
+        }
         const roll = rollTorCheck({ rank: guideRank, tn: DEFAULT_TN });
         const step = resolveTorMarchingTest({
           passed: roll.success,
@@ -274,10 +283,39 @@ export function TorJourneyPanel({ roomId, canManage, progress, onUpdate }: Props
           passed: roll.success,
         });
 
+        // Cada Evento resolvido desconta um da Área Perigosa — é assim que a
+        // Companhia paga o índice de Perigo para poder sair.
+        const perilousRemaining = Math.max(0, (progress.perilousRemaining ?? 0) - 1);
         await commit(
-          formatTorJourneyEventMessage(TOR_JOURNEY_ROLE_META[p.role].label, outcome),
+          formatTorJourneyEventMessage(TOR_JOURNEY_ROLE_META[p.role].label, outcome) +
+            ((progress.perilousRemaining ?? 0) > 0
+              ? perilousRemaining > 0
+                ? ` · Área Perigosa: faltam ${perilousRemaining} Evento(s)`
+                : " · Área Perigosa vencida — a Companhia pode seguir"
+              : ""),
           featDieRollPayload(roll.featDie).value,
-          { ...progress, dayDelta: progress.dayDelta + outcome.dayDelta, pending: null }
+          {
+            ...progress,
+            dayDelta: progress.dayDelta + outcome.dayDelta,
+            pending: null,
+            perilousRemaining,
+          }
+        );
+      }),
+    [guard, commit, progress]
+  );
+
+  /** O Mestre marca a entrada numa Área Perigosa e o índice de Perigo dela. */
+  const enterPerilousArea = useCallback(
+    (perilRating: number) =>
+      guard(async () => {
+        if (!progress) return;
+        const eventos = torPerilousAreaEventCount(perilRating);
+        if (eventos <= 0) throw new Error("Informe o índice de Perigo da área");
+        await commit(
+          `A Companhia entra numa Área Perigosa (Perigo ${eventos}) — precisa enfrentar ${eventos} Evento(s) antes de seguir.`,
+          undefined,
+          { ...progress, perilousRemaining: eventos }
         );
       }),
     [guard, commit, progress]
@@ -524,7 +562,9 @@ export function TorJourneyPanel({ roomId, canManage, progress, onUpdate }: Props
             ) : progress.remaining !== 0 ? (
               <div className="tor-journey__ranks">
                 <p className="tor-journey__pending-hint">
-                  Teste de Marcha — graduação de Viagem do Guia
+                  {(progress.perilousRemaining ?? 0) > 0
+                    ? `Área Perigosa — faltam ${progress.perilousRemaining} Evento(s) antes de seguir`
+                    : "Teste de Marcha — graduação de Viagem do Guia"}
                 </p>
                 {RANKS.map((r) => (
                   <button
@@ -535,6 +575,25 @@ export function TorJourneyPanel({ roomId, canManage, progress, onUpdate }: Props
                     onClick={() => void marchingTest(r)}
                   >
                     {r}d
+                  </button>
+                ))}
+              </div>
+            ) : null}
+
+            {/* Áreas Perigosas não estão no mapa hexagonado: quem sabe que a
+                Companhia entrou numa é o Mestre, então ele informa o Perigo. */}
+            {(progress.perilousRemaining ?? 0) === 0 ? (
+              <div className="tor-journey__ranks">
+                <p className="tor-journey__pending-hint">Entrar em Área Perigosa (índice de Perigo)</p>
+                {[1, 2, 3, 4].map((p) => (
+                  <button
+                    key={p}
+                    type="button"
+                    className="btn-ghost"
+                    disabled={busy}
+                    onClick={() => void enterPerilousArea(p)}
+                  >
+                    {p}
                   </button>
                 ))}
               </div>
