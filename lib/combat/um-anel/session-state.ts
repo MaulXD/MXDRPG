@@ -30,6 +30,7 @@ import {
 } from "@/lib/combat/um-anel/journey";
 import {
   TOR_PHASE_OUTCOMES,
+  type TorChronicleEntry,
   type TorPhaseOutcome,
   type TorPhasePurchases,
 } from "@/lib/combat/um-anel/progression";
@@ -121,6 +122,26 @@ export type TorFellowshipProgress = {
    * novo a partir do calendário avançado.
    */
   purchases?: Record<string, TorPhasePurchases>;
+  /**
+   * Reserva de pontos de Companhia. "O valor inicial é igual ao número de
+   * heróis-jogadores; pode ser aumentado por Virtudes ou Bênçãos Culturais e por
+   * um bônus do Patrono" (03-aventureiros.md §Nível de Companhia).
+   *
+   * `spent` é o que já saiu da reserva; o máximo é derivado, nunca guardado —
+   * guardar o total daria duas fontes de verdade que divergem assim que um herói
+   * entra ou sai da Companhia.
+   */
+  fellowshipSpent?: number;
+  /** Bônus do Patrono da Companhia. */
+  patronBonus?: number;
+  /**
+   * Bônus de Virtudes e Bênçãos Culturais (ex.: cada Homem de Bri soma 1, e a
+   * Virtude Três é Companhia soma 1). Campo do Mestre porque depende de quem
+   * está na mesa, e a ficha não guarda esse total.
+   */
+  culturalFellowshipBonus?: number;
+  /** Crônica da Companhia — uma linha por Fase encerrada. */
+  chronicle?: TorChronicleEntry[];
 };
 
 export type TorSessionState = {
@@ -268,7 +289,32 @@ function normalizeFellowship(raw: unknown): TorFellowshipProgress | null {
     outcome: oneOf(r.outcome, TOR_PHASE_OUTCOMES, "marginal"),
     picks: strList(r.picks, 12),
     ...(normalizePurchases(r.purchases) ? { purchases: normalizePurchases(r.purchases)! } : {}),
+    fellowshipSpent: int(r.fellowshipSpent, 0, 0, 40),
+    patronBonus: int(r.patronBonus, 0, 0, 6),
+    culturalFellowshipBonus: int(r.culturalFellowshipBonus, 0, 0, 12),
+    chronicle: normalizeChronicle(r.chronicle),
   };
+}
+
+/** Crônica recortada — o estado da sala vem de JSONB e não é confiável. */
+function normalizeChronicle(raw: unknown): TorChronicleEntry[] {
+  if (!Array.isArray(raw)) return [];
+  return raw.slice(0, 60).flatMap((v) => {
+    if (!v || typeof v !== "object") return [];
+    const e = v as Record<string, unknown>;
+    return [
+      {
+        year: int(e.year, 2965, 1, 9999),
+        phase: int(e.phase, 0, 0, 3),
+        isYule: bool(e.isYule),
+        undertakings: strList(e.undertakings, 12),
+        outcome: oneOf(e.outcome, TOR_PHASE_OUTCOMES, "marginal"),
+        ...(typeof e.note === "string" && e.note.trim()
+          ? { note: e.note.slice(0, 300) }
+          : {}),
+      },
+    ];
+  });
 }
 
 /** Compras da Fase, recortadas: o estado da sala vem de JSONB e não é confiável. */
