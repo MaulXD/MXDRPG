@@ -95,7 +95,7 @@ const AVENTURAS = [
       "CVR-020": "a Tolerância que vira Conselho",
       "CVR-024": "o teste de corrupção que vira Teste de Sombra",
       "CVR-028": "as Fontes de Dano, lidas ao contrário",
-      "CVR-030": "a lacuna do bloco de Aranha",
+      "CVR-035": "o bloco de Aranha, agora que a lacuna fechou",
     },
     /* Rótulo lido pelo Mestre → id do bloco no bestiário. */
     adversarios: {
@@ -838,9 +838,22 @@ for (const av of AVENTURAS) {
 
   /* 4. Lacunas e blocos inventados -------------------------------------- */
   ok("  tem seção de lacunas registradas", /## Lacunas registradas/.test(AV));
-  /* A lacuna da Aranha só cabe a quem tem aranhas em cena. */
+  /* A aventura que tem aranhas em cena precisa MANDAR USAR o bloco, agora que
+     ele existe — e não pode continuar dizendo que o bestiário não traz nenhum.
+     Ficar em silêncio sobre as duas coisas passaria nos dois testes anteriores. */
   if (av.aranhas) {
-    ok("  a lacuna do bloco de Aranha continua declarada", /bloco de Aranha/i.test(AV));
+    ok(
+      "  aponta as aranhas para o bloco do bestiário",
+      /bloco de Aranha/i.test(AV) &&
+        /`aranha-cacadora`/.test(AV) &&
+        /lacuna FECHADA/.test(AV)
+    );
+    ok(
+      "  e não afirma mais que o bestiário não traz bloco de Aranha",
+      !/não tra[zg]\w*\s+bloco de Aranha/i.test(AV) ||
+        /registrava (uma|a mesma) lacuna|Esta seção registrava/.test(AV),
+      "se voltar a afirmar a ausência sem dizer que era o estado ANTERIOR, é claim errado"
+    );
   }
   const blocos = [...AV.matchAll(/\| Nível de Atributo \| \d+ \|/g)];
   ok(
@@ -854,19 +867,40 @@ for (const av of AVENTURAS) {
 }
 
 /* ══════════════════════════════════════════════════════════════════════
-   A lacuna das Aranhas ainda é lacuna
+   A lacuna das Aranhas FOI FECHADA — e os três lados têm de concordar
    ══════════════════════════════════════════════════════════════════════ */
+
+/* Estas três asserções eram negativas ("continua sem bloco") e falharam de
+   propósito no dia em que o apêndice de *The Darkening of Mirkwood* apareceu.
+   Agora vigiam o outro lado: o bloco existe, a régua parou de listar a lacuna,
+   e o texto da regra aponta pra entrada nova. Silenciar qualquer um dos três
+   deixaria as aventuras mandando o Mestre buscar bloco fora do corpus. */
 
 console.log("\n── lacunas ──");
 ok(
-  "o bestiário traduzido continua sem bloco de Aranha",
-  !/id: "aranha/i.test(ADVERSARIES) && !/name: "Aranha/i.test(ADVERSARIES),
-  "se um bloco aparecer, as seções de lacuna das aventuras precisam mudar"
+  "o bestiário traduzido AGORA tem bloco de Aranha",
+  /id: "aranha-cacadora"/.test(ADVERSARIES) && /name: "Aranha Caçadora"/.test(ADVERSARIES),
+  "as seções das aventuras 1 e 2 mandam usar `aranha-cacadora`"
 );
 ok(
-  "e a régua continua registrando a lacuna",
-  /Aranha/.test(entradaTabela("CVR-030"))
+  "e a régua parou de listar Aranha como lacuna em CVR-030",
+  !/bloco de Aranha\*\* —/.test(entradaTabela("CVR-030")) &&
+    /FOI FECHADA/.test(entradaTabela("CVR-030"))
 );
+ok(
+  "e CVR-035 registra onde a fonte apareceu",
+  /apêndice/.test(entradaTabela("CVR-035")) &&
+    /Darkening of Mirkwood/.test(entradaTabela("CVR-035")) &&
+    /`aranha-cacadora`/.test(entradaTabela("CVR-035"))
+);
+/* As outras QUATRO lacunas de CVR-030 continuam de pé. Fechar uma não pode
+   arrastar as outras junto. */
+for (const restante of ["Vigor", "NA fixo", "Tolerância", "Prestígio"]) {
+  ok(
+    `  CVR-030 continua registrando a lacuna: ${restante}`,
+    new RegExp(restante).test(entradaTabela("CVR-030"))
+  );
+}
 
 console.log(`\nverify-um-anel-aventuras-wilderland: ${pass} ok, ${fail} falhas`);
 if (fail > 0) process.exit(1);

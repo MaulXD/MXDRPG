@@ -474,15 +474,17 @@ ok(
 
 /* Estas são as asserções que impedem uma rodada futura de inventar. Cada uma
    falha no dia em que a fonte APARECER — e nesse dia a tabela deve mudar. */
+/* A lacuna do bloco de Aranha FECHOU (CVR-035): a fonte apareceu no apêndice de
+   *The Darkening of Mirkwood*. Estas duas asserções eram negativas e falharam de
+   propósito quando o bloco entrou. Agora vigiam o lado oposto — que o bloco
+   está lá E que a régua deixou de chamar aquilo de lacuna. */
 ok(
-  "lacuna real: o bestiário traduzido não tem bloco de Aranha",
-  !/id: "aranha/i.test(ADVERSARIES) && !/name: "Aranha/i.test(ADVERSARIES),
-  "se um bloco aparecer, CVR-030 precisa deixar de listar Aranhas"
+  "lacuna FECHADA: o bestiário tem bloco de Aranha",
+  /id: "aranha-cacadora"/.test(ADVERSARIES) && /name: "Aranha Caçadora"/.test(ADVERSARIES)
 );
 ok(
-  "lacuna real: nenhum capítulo traz bloco de estatísticas de Aranha",
-  !/Aranha[s]?\s*\n*\|\s*Nível de Atributo/i.test(CORPUS),
-  "Aranhas são citadas como tipo de inimigo, mas sem bloco"
+  "CVR-030 não lista mais Aranha entre as lacunas abertas",
+  /FOI FECHADA/.test(entrada("CVR-030")) && /CVR-035/.test(entrada("CVR-030"))
 );
 ok(
   "lacuna real: 'Prestígio' não existe no corpus da 2ª edição",
@@ -494,12 +496,106 @@ ok(
   "a Tolerância é conceito só de 1ª edição — a 2ª substituiu pelo Conselho"
 );
 ok(
-  "a tabela registra as quatro lacunas",
+  "a tabela registra as quatro lacunas que continuam abertas",
   /Vigor/.test(entrada("CVR-030")) &&
     /NA fixo/.test(entrada("CVR-030")) &&
     /Tolerância/.test(entrada("CVR-030")) &&
-    /Prestígio/.test(entrada("CVR-030")) &&
-    /Aranha/.test(entrada("CVR-030"))
+    /Prestígio/.test(entrada("CVR-030"))
+);
+
+/* ── 4b. O bloco de Aranha, campo a campo ──────────────────────────────── */
+
+/* Bloco de 1ª edição convertido: cada número tem de vir do apêndice, não de
+   estimativa. A asserção lê o RECORTE do adversário — buscar no arquivo inteiro
+   deixaria um número de outro bloco satisfazer a checagem. */
+function bloco(id) {
+  const i = ADVERSARIES.indexOf(`id: "${id}"`);
+  if (i < 0) return "";
+  const rest = ADVERSARIES.slice(i);
+  const j = rest.indexOf('\n  {\n    id: "');
+  return j < 0 ? rest : rest.slice(0, j);
+}
+
+for (const [id, campos] of [
+  // Apêndice, página 133: NA 4, Resistência 25, Ódio 3, Aparar 6, Armadura 3d.
+  ["aranha-cacadora", { attributeLevel: 4, endurance: 25, hate: 3, parry: 6, armour: 3 }],
+  // Página 135: NA 7, Resistência 60, Ódio 8, Aparar 8, Armadura 3d.
+  ["tauler-o-cacador", { attributeLevel: 7, endurance: 60, hate: 8, parry: 8, armour: 3 }],
+]) {
+  const B = bloco(id);
+  ok(`bloco ${id}: existe e é recortável`, B.length > 0);
+  for (const [campo, valor] of Object.entries(campos)) {
+    ok(
+      `  ${id}: ${campo} = ${valor}`,
+      new RegExp(`${campo}: ${valor},`).test(B),
+      "número do apêndice de The Darkening of Mirkwood"
+    );
+  }
+  /* Vigor continua lacuna (CVR-030): os blocos de 1ª edição não têm o campo.
+     Fica em 1, que é o padrão do motor — se virar outro número, é invenção. */
+  ok(`  ${id}: Vigor continua no padrão do motor, sem estimativa`, /might: 1,/.test(B));
+  /* Ódio, não Resolução: aranha é servo do Inimigo, nunca negocia (CVR-021). */
+  ok(`  ${id}: usa Ódio, não Resolução`, /hateKind: "hate",/.test(B));
+}
+
+/* O Gume da 1ª edição é DESCARTADO (CVR-008) — na 2ª o limiar é fixo em 10 ou ⊘.
+   Se ele reaparecer como campo, existem dois limiares no mesmo jogo. */
+ok(
+  "o Gume da 1ª edição não virou campo em nenhum bloco novo",
+  !/edge:/.test(ADVERSARIES) && !/gume:/i.test(ADVERSARIES)
+);
+
+/* "Envenena" NÃO pode ter virado Dano Especial: a 2ª edição só tem quatro
+   (Quebrar Escudo, Golpe Pesado, Perfurar, Agarrar). Virou Habilidade Sinistra
+   apontando pra Fonte de Dano Veneno (CVR-036). */
+ok(
+  "Envenena não virou Dano Especial",
+  !/specialDamage: \[[^\]]*Envenen/i.test(ADVERSARIES)
+);
+ok(
+  "o veneno da aranha aponta para a Fonte de Dano Veneno, nível Gravíssimo",
+  /name: "Veneno de Aranha"/.test(ADVERSARIES) &&
+    /Fonte de Dano Veneno, nível Gravíssimo/.test(bloco("aranha-cacadora"))
+);
+/* E o nome não é escolha minha: é o exemplo que a própria 2ª edição dá para o
+   nível Gravíssimo da linha Veneno. Confere os DOIS lados. */
+ok(
+  "…e 'Veneno de Aranha' é mesmo o exemplo Gravíssimo do motor de Fontes de Dano",
+  /gravissimo: "Veneno de Aranha"/.test(
+    readFileSync(root("lib", "combat", "um-anel", "hazards.ts"), "utf8")
+  )
+);
+
+/* "Derruba" virou Sobrepujar porque a Tabela 7 da 2ª edição dá, para Esmagar,
+   Dano = Nível de Atributo e Ferimento 14 — os dois números do Pisotear. */
+ok(
+  "Pisotear usa Sobrepujar, com Dano = Nível de Atributo e Ferimento 14",
+  /label: "Pisotear", rating: 3, damage: 7, injury: 14, specialDamage: \["Sobrepujar"\]/.test(
+    bloco("tauler-o-cacador")
+  ),
+  "Tauler tem Nível de Atributo 7, então Dano = 7"
+);
+ok(
+  "…e a Tabela 7 do corpus é mesmo quem dá esses números",
+  /Esmagar \(cascos, patas\) \| Nível de Atributo \| 14 \| Sobrepujar/.test(CORPUS)
+);
+
+/* Tamanho: só Tauler é grande. O apêndice dá "Grande Tamanho" a ele e NÃO à
+   Aranha Caçadora — marcar as duas mudaria os limites de engajamento (POS-R03). */
+ok("Tauler é criatura grande", /large: true,/.test(bloco("tauler-o-cacador")));
+ok("a Aranha Caçadora NÃO é criatura grande", !/large: true,/.test(bloco("aranha-cacadora")));
+
+/* Sarqin e Tyulqin continuam FORA, e por motivo declarado. */
+ok(
+  "Sarqin e Tyulqin continuam pendentes",
+  !/id: "sarqin/i.test(ADVERSARIES) && !/id: "tyulqin/i.test(ADVERSARIES),
+  "as Habilidades Sinistras delas são lacunas de fonte ainda abertas"
+);
+ok(
+  "…e CVR-035 diz por que elas ficaram de fora",
+  /Sarqin e Tyulqin continuam pendentes/.test(entrada("CVR-035")) &&
+    /Odor Nauseabundo/.test(entrada("CVR-035")) &&
+    /Encarnação do Horror/.test(entrada("CVR-035"))
 );
 /* NEGATIVA: a tabela não pode oferecer fórmula para o que registrou como lacuna.
    "Some 2 ao Vigor", "NA 16 vira perde (1d)" — nada disso pode aparecer. */

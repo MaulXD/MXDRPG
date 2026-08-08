@@ -805,10 +805,12 @@ aventura não resolve a lacuna**. O que ele diz é que a luta termina quando o *
 e a criatura foge. O campo fica em branco no bloco: o Mestre que precisar dele o define na mesa.
 Nada foi estimado.
 
-**Bloco de Aranha (CVR-030).** A Caverna da Aranha da Parte IV pede "uma aranha por herói", e o
-original manda usar as Aranhocas da Floresta das Trevas com a habilidade Grande Salto no lugar de
-Habitante das Trevas. **O bestiário traduzido da 2ª edição não traz bloco de Aranha** — a mesma
-lacuna da aventura 1. A cena foi convertida narrativamente e o bloco fica pendente.
+**Bloco de Aranha (CVR-035) — lacuna FECHADA.** A Caverna da Aranha da Parte IV pede "uma aranha
+por herói", e o original manda usar as Aranhocas da Floresta das Trevas com a habilidade Grande
+Salto no lugar de Habitante das Trevas. Esta seção registrava a mesma lacuna da aventura 1: o
+bestiário traduzido da 2ª edição não trazia bloco de Aranha. A fonte apareceu no apêndice de
+*The Darkening of Mirkwood* — use **Aranha Caçadora** (`aranha-cacadora`), que já vem **com Grande
+Salto**, exatamente como o original pede.
 
 **Prestígio (CVR-030).** As cartas de apresentação de Bilbo davam "um ou dois pontos de Prestígio
 temporário" além do bônus nas rolagens. **Prestígio não existe no corpus traduzido da 2ª edição**,

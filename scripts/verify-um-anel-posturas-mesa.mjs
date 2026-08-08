@@ -276,19 +276,58 @@ ok(
   "quem engaja quem é decisão do Mestre"
 );
 
-/* `large` só onde o livro diz. O texto dá "criaturas grandes (como Trolls)" como
-   o único critério explícito; Vigor 2 NÃO serve de atalho, porque mede
-   Ferimentos para abater e não tamanho. */
+/* `large` só onde o livro diz. O texto dá "criaturas grandes (**como Trolls**)",
+   e Trolls são EXEMPLO, não a lista inteira: um bloco de fonte que diga "Grande
+   Tamanho" também qualifica. Vigor 2 NÃO serve de atalho, porque mede
+   Ferimentos para abater e não tamanho.
+
+   Esta checagem já foi por lista fixa de contagem ("são 5 Trolls") e por regex
+   de JANELA FIXA DE LINHAS (`id:` + 1 linha + `large:`). As duas quebraram
+   quando Tauler entrou: a contagem virou 6, e a janela de linhas simplesmente
+   NÃO VIU o `large: true` de Tauler porque havia duas linhas de comentário no
+   meio — a asserção passou dizendo "só Trolls" com um não-Troll marcado.
+   Agora o recorte é por BLOCO, não por deslocamento de linhas. */
 ok("bloco de adversário tem o campo `large`", /large\?: boolean/.test(ADV_TYPES));
-const marcados = [...ADV_LIST.matchAll(/^ {4}large: true,$/gm)].length;
-ok("os 5 blocos de Troll estão marcados como grandes", marcados === 5, `achou ${marcados}`);
-const naoTroll = [...ADV_LIST.matchAll(/id: "([a-z0-9-]+)",\n[^\n]*\n {4}large: true,/g)]
-  .map((m) => m[1])
-  .filter((id) => !id.includes("troll"));
+
+/** Cada bloco de adversário, do `id:` até o `id:` seguinte. */
+const BLOCOS = ADV_LIST.split(/\n {2}\{\n/)
+  .map((b) => {
+    const m = b.match(/^ {4}id: "([a-z0-9-]+)",/m);
+    return m ? { id: m[1], corpo: b } : null;
+  })
+  .filter(Boolean);
+
+const grandes = BLOCOS.filter((b) => /^ {4}large: true,$/m.test(b.corpo)).map((b) => b.id);
+
+/* Os que NÃO são Troll precisam trazer, no próprio bloco, a citação da fonte que
+   os qualifica. "Grande Tamanho" é o rótulo do bloco de 1ª edição. */
+const semJustificativa = grandes.filter((id) => {
+  if (id.includes("troll")) return false;
+  const bloco = BLOCOS.find((b) => b.id === id);
+  return !/Grande Tamanho/.test(bloco.corpo);
+});
 ok(
-  "só Trolls estão marcados como grandes",
-  naoTroll.length === 0,
-  `marcados sem base no livro: ${naoTroll.join(", ")}`
+  "todo bloco grande que não é Troll cita a fonte que o qualifica",
+  semJustificativa.length === 0,
+  `marcados sem base no livro: ${semJustificativa.join(", ")}`
+);
+
+/* E a lista é fechada: um bloco novo marcado como grande sem passar por aqui
+   quebra o teste, mesmo trazendo a citação certa. */
+const GRANDES_ESPERADOS = [
+  "grande-troll-das-cavernas",
+  "cave-troll-furtivo",
+  "ladrao-troll-de-pedra",
+  "chefe-troll-de-pedra",
+  "jack-the-stone-troll",
+  // Cria de Shelob, "Grande Tamanho" no apêndice de The Darkening of Mirkwood.
+  "tauler-o-cacador",
+];
+ok(
+  `os blocos grandes são exatamente ${GRANDES_ESPERADOS.length}`,
+  grandes.length === GRANDES_ESPERADOS.length &&
+    GRANDES_ESPERADOS.every((id) => grandes.includes(id)),
+  `esperado [${GRANDES_ESPERADOS.join(", ")}], achei [${grandes.join(", ")}]`
 );
 ok("token carrega o tamanho", /large: stats\.large/.test(readFileSync(root("lib", "character", "um-anel", "adversary-token.ts"), "utf8")));
 
