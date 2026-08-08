@@ -72,19 +72,33 @@ export function torBrawlingRank(proficiencies: TorCombatProficiencyRatings): num
  * 2 abaixo do livro, e o limiar de Desfavorecido (que usa hopeMax) saía errado
  * junto.
  *
- * Só as três de valor fixo entram aqui. Proeza reduz o NA de um Atributo,
- * Maestria dá Perícias Favorecidas e Mão Firme age no Dano Especial — nenhuma é
- * estatística derivada.
+ * Das Virtudes iniciais, só as três de valor fixo entram aqui. Proeza reduz o NA
+ * de um Atributo, Maestria dá Perícias Favorecidas e Mão Firme age no Dano
+ * Especial — nenhuma é estatística derivada.
+ *
+ * As Virtudes **Culturais** que dizem literalmente "Aumente em 1 ponto seu valor
+ * máximo de Esperança" entram pelo mesmo motivo (05-valor-e-sabedoria.md). Alto
+ * Destino também dá +2 de Esperança máxima, mas só *depois* de a Virtude salvar
+ * o herói de uma Ferida mortal — é condicional e por isso fica de fora; somá-la
+ * na criação daria o bônus antes do gatilho.
  */
+const CULTURAL_HOPE_MAX_PLUS_1 = [
+  "beleza-das-estrelas",
+  "elbereth-gilthoniel",
+  "espirito-indomavel",
+  "poney-de-bri",
+];
+
 export function torVirtueDerivedBonus(virtueIds: readonly string[]): {
   enduranceMax: number;
   hopeMax: number;
   parry: number;
 } {
   const has = (id: string) => virtueIds.includes(id);
+  const culturalHope = CULTURAL_HOPE_MAX_PLUS_1.filter(has).length;
   return {
     enduranceMax: has("robustez") ? 2 : 0,
-    hopeMax: has("confianca") ? 2 : 0,
+    hopeMax: (has("confianca") ? 2 : 0) + culturalHope,
     parry: has("agilidade-de-aparar") ? 1 : 0,
   };
 }

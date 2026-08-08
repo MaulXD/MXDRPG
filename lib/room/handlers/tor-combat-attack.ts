@@ -4,6 +4,7 @@ import {
   resolveWeaponInjury,
   torBrawlingRank,
 } from "@/lib/character/um-anel/rules";
+import { torVirtueRollEffect } from "@/lib/character/um-anel/virtues";
 import { resolveTorCharacter, patchTorCharacterResources } from "@/lib/character/um-anel/characters";
 import { resolveTorAttack, formatTorAttackMessage } from "@/lib/combat/um-anel/resolve-attack";
 import { featDieRollPayload } from "@/lib/character/um-anel/dice";
@@ -65,6 +66,9 @@ export async function executeRoomTorAttack(
   let attackerWeary = false;
   let attackerMiserable = false;
   let attackerIllFavoured = false;
+  let attackerFavoured = false;
+  /** Virtudes que favoreceram o ataque — vão pra mensagem, pro Mestre conferir. */
+  let attackerFavouredBy: string[] = [];
   let weaponDamage: number;
   let weaponInjury: number | null;
   let weaponLabel: string;
@@ -97,6 +101,19 @@ export async function executeRoomTorAttack(
       shadowScars: sheet.shadowScars,
       hopeMax: sheet.hope.max,
     });
+    // Virtudes que tornam ESTE ataque Favorecido. Só aqui dá pra decidir: o
+    // motor não conhece ficha, e a rolagem avulsa da ficha não conhece o alvo.
+    // Nota: passamos `ranged` só pra Virtude, não como `attackIsRanged` do
+    // motor — esse último também alimenta a checagem de postura, que ainda não
+    // é escolhida em lugar nenhum; ligá-lo agora barraria todo ataque de arco
+    // com "exige a postura de Retaguarda" (ver stances.ts::canAttackFromStance).
+    const virtue = torVirtueRollEffect(sheet.virtues, {
+      kind: "attack",
+      ranged: Boolean(weapon.ranged),
+      targetMight: defCombat.kind === "adversary" ? defCombat.might : undefined,
+    });
+    attackerFavoured = virtue.favoured;
+    attackerFavouredBy = virtue.sources;
     weaponDamage = weapon.damage;
     weaponInjury = resolveWeaponInjury(weapon, gearItem.twoHanded);
     weaponLabel = weapon.label;
@@ -115,6 +132,8 @@ export async function executeRoomTorAttack(
   // e a ficha não guarda essa flag — deriva aqui, do mesmo lugar que o motor de
   // Sombra usa. Ver lib/combat/um-anel/shadow.ts::deriveTorSpiritFlags.
   let defenderIllFavoured = false;
+  let defenderProtectionFavoured = false;
+  let defenderWoundSeverityFavoured = false;
   let defenderHeroSheetId: string | null = null;
   if (defCombat.kind === "hero" && defCombat.torCharacterId) {
     const defSheet = await resolveTorCharacter(defCombat.torCharacterId);
@@ -128,6 +147,15 @@ export async function executeRoomTorAttack(
         shadowScars: defSheet.shadowScars,
         hopeMax: defSheet.hope.max,
       });
+      // Duro como Pedra cai quando o herói está Arrasado — por isso lê
+      // `defenderMiserable`, e não a flag de Desfavorecido.
+      defenderProtectionFavoured = torVirtueRollEffect(defSheet.virtues, {
+        kind: "protection",
+        miserable: defenderMiserable,
+      }).favoured;
+      defenderWoundSeverityFavoured = torVirtueRollEffect(defSheet.virtues, {
+        kind: "wound-severity",
+      }).favoured;
       defenderHeroSheetId = defSheet.id;
     }
   }
@@ -139,6 +167,7 @@ export async function executeRoomTorAttack(
     attackerWeary,
     attackerMiserable,
     attackerIllFavoured,
+    attackerFavoured,
     defenderParry: defCombat.parry,
     weaponDamage,
     weaponInjury: weaponInjury ?? 999,
@@ -148,6 +177,8 @@ export async function executeRoomTorAttack(
     defenderWeary,
     defenderMiserable,
     defenderIllFavoured,
+    defenderProtectionFavoured,
+    defenderWoundSeverityFavoured,
     defenderAlreadyWounded: defCombat.wounded,
     // Vigor e Ferimentos acumulados do adversário — sem isto o motor não sabe
     // quantos Ferimentos faltam pra abatê-lo e eliminaria no primeiro.
@@ -181,7 +212,11 @@ export async function executeRoomTorAttack(
 
   syncCombatOrderWithTokens(room);
 
-  const message = formatTorAttackMessage(attackerToken.name, defenderToken.name, weaponLabel, result);
+  // Sem nomear a Virtude, a mensagem diz "(Favorecida)" e ninguém na mesa sabe
+  // por quê — some no meio de Exausto/Arrasado/postura.
+  const weaponTxt =
+    attackerFavouredBy.length > 0 ? `${weaponLabel}, ${attackerFavouredBy.join(", ")}` : weaponLabel;
+  const message = formatTorAttackMessage(attackerToken.name, defenderToken.name, weaponTxt, result);
   const { sides, value } = featDieRollPayload(result.attackRoll.featDie);
   appendRoomChatMessage(room, {
     ...author,

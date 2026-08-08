@@ -81,13 +81,13 @@
 | Inglês | PT-BR |
 |---|---|
 | Combat Stance | Postura de Combate |
-| Forward | Avançado |
-| Open | Aberto |
-| Defensive | Defensivo |
+| Forward | Avançada |
+| Open | Aberta |
+| Defensive | Defensiva |
 | Rearward | Retaguarda |
 | Combat Task | Tarefa de Combate |
 | Intimidate Foe | Intimidar Inimigo |
-| Rally Comrades | Reanimar Companheiros |
+| Rally Comrades | Reunir Companheiros |
 | Protect Companion | Proteger Companheiro |
 | Prepare Shot | Preparar Tiro |
 | Special Damage | Dano Especial |
@@ -99,7 +99,7 @@
 |---|---|
 | Adversary | Adversário |
 | Attribute Level | Nível de Atributo |
-| Might | Poder |
+| Might | Vigor |
 | Hate | Ódio |
 | Fell Ability | Habilidade Sinistra |
 

@@ -193,7 +193,9 @@ export const TOR_CULTURAL_VIRTUES: TorCulturalVirtue[] = [
   },
   {
     id: "estranho-como-noticia-de-bri",
-    name: "Estranho como Notícia de Bri",
+    // O nome vem do dito citado no próprio capítulo ("'Estranho como Notícias de
+    // Bri' ainda era um dito no Quadrante Leste") — no plural, como na fonte.
+    name: "Estranho como Notícias de Bri",
     cultureId: "homens-de-bri",
     description: "Durante qualquer Fase de Companhia, pode rolar Discernimento ou Enigma — com sucesso, recebe um boato do Mestre.",
   },
@@ -267,7 +269,11 @@ export const TOR_CULTURAL_VIRTUES: TorCulturalVirtue[] = [
   },
   {
     id: "habilidade-dos-eldar",
-    name: "Habilidade dos Eldar",
+    // "Perícia dos Eldar" (10-rivendell.md), não "Habilidade": Skill = Perícia no
+    // glossário, e "Habilidade" já é Habilidade Sinistra (Fell Ability) — dois
+    // conceitos distintos não podem dividir a palavra. O `id` fica como está:
+    // é chave estável e renomear quebraria ficha salva.
+    name: "Perícia dos Eldar",
     cultureId: "altos-elfos-de-valfenda",
     description: "Ao rolar um ícone de sucesso no Dado de Proeza, o resultado conta como sucesso Mágico sem precisar gastar Esperança. (A fonte também descreve, na mesma seção, uma habilidade adicional de Conselho: como porta-voz, você aumenta o limite de tempo do Conselho em 1, ou faz com que os Mortais presentes retenham só uma lembrança vaga do que foi dito — conta como efeito mágico menor pra Consciência do Olho.)",
   },

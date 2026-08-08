@@ -125,8 +125,8 @@ Antigos, na Grande Estrada do Leste. O povo de Bri é insular, mas acolhedor com
 - **Caixa de texto — Os Grandes e os Pequenos (p.181):** Regras para criar um herói Hobbit de Bri:
   use as regras dos Homens de Bri (p.40) com exceções — Hobbits de Bri calculam Resistência,
   Esperança e Bloqueio pelas tabelas dos Hobbits; limitados a armas de Hobbit; devem escolher
-  Virtudes Culturais entre: Pônei de Bri, Coragem Desesperada, Gente Pequena, Estranho como Notícias
-  de Bri, A Arte de Fumar, Duro como Raiz de Árvore Velha. Sobrenomes comuns: Banks, Brockhouse,
+  Virtudes Culturais entre: Pônei de Bri, Coragem Desesperada, Pequeno Povo, Estranho como Notícias
+  de Bri, A Arte de Fumar, Duro como Raiz Velha. Sobrenomes comuns: Banks, Brockhouse,
   Longhole, Sandheaver, Tunnelly, Underhill.
 - **Fileira Leste:** O distrito mais novo; colonizado por refugiados de Tharbad gerações atrás; mais
   insular que os outros bairros. **PNJ — John Ferny (ficha, p.184):** negociante de cavalos e

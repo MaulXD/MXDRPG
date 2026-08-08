@@ -16,12 +16,12 @@ import {
   SKILLS,
   STANDARDS_OF_LIVING,
   STARTING_REWARDS,
-  STARTING_VIRTUES,
   WEAPON_BY_ID,
   WEAPONS,
   shieldsForCulture,
   weaponsForCulture,
 } from "@/lib/character/um-anel/data";
+import { torVirtueInfo } from "@/lib/character/um-anel/virtues";
 import {
   featDieRollPayload,
   rollTorCombatProficiencyCheck,
@@ -183,7 +183,11 @@ export function TorCharacterSheetView({
   }
 
   const rewards = character.rewards.map((id) => STARTING_REWARDS.find((r) => r.id === id)).filter(Boolean);
-  const virtues = character.virtues.map((id) => STARTING_VIRTUES.find((v) => v.id === id)).filter(Boolean);
+  // Resolve contra as Virtudes iniciais E as Culturais — antes só olhava
+  // STARTING_VIRTUES e o `filter(Boolean)` fazia uma Virtude Cultural sumir da
+  // ficha em silêncio. `torVirtueInfo` devolve o próprio id como rótulo quando
+  // não conhece, então nada mais desaparece.
+  const virtues = character.virtues.map((id) => torVirtueInfo(id));
   const features = character.distinctiveFeatures
     .map((id) => DISTINCTIVE_FEATURE_BY_ID[id.split(":")[0]!])
     .filter(Boolean);
@@ -396,8 +400,8 @@ export function TorCharacterSheetView({
               </li>
             ))}
             {virtues.map((v, i) => (
-              <li key={`v-${i}`} title={v?.description}>
-                {v?.label} (Sabedoria {character.wisdom})
+              <li key={`v-${i}`} title={v.description}>
+                {v.label} (Sabedoria {character.wisdom})
               </li>
             ))}
           </ul>
