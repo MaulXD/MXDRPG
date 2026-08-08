@@ -114,6 +114,7 @@ const BLOCOS = [
     },
     /* Um bloco de estatística: o Servo da Colina do Tirano. Um a mais seria
        estatística inventada — a fonte não traz mais nenhum neste bloco. */
+    minCVR: 8,
     blocosEsperados: 1,
     /* Cita Propriedades porque a Fase de Companhia de 2947 mexe no teste da
        Propriedade, e essa tabela é lida ao CONTRÁRIO da de Fontes de Dano. */
@@ -253,6 +254,146 @@ const BLOCOS = [
       );
     },
   },
+  {
+    titulo: "Bloco 2 — O Retorno da Sombra (2951–2960) · PARCIAL",
+    arquivo: "23-mirkwood-02-o-retorno-da-sombra.md",
+    /* Fatia convertida até agora. Ao acrescentar anos, esta lista cresce junto —
+       é ela que impede o arquivo de PARECER inteiro. */
+    anos: [2951, 2952, 2953],
+    /* Os dez anos do bloco, para o teste saber o que ainda falta e DIZER. */
+    anosDoBlocoInteiro: [2951, 2952, 2953, 2954, 2955, 2956, 2957, 2958, 2959, 2960],
+    fasesDeAventura: ["O Elmo da Paz", "O Cajado do Guardião da Estrada", "A Besta da Floresta"],
+    cvrObrigatorias: {
+      "CVR-017": "o NA fixo e o bônus fixo que viram Complicação/Vantagem",
+      "CVR-024": "o teste de medo que vira Teste de Sombra",
+      "CVR-027": "os testes de fadiga que viram Eventos de Jornada",
+      "CVR-030": "as lacunas — Prestígio e o Vigor",
+      "CVR-035": "os blocos que continuam pendentes",
+    },
+    adversarios: {
+      "Espírito da Floresta": "espirito-da-floresta",
+      "Selvagem Tauler": "tauler-o-cacador",
+    },
+    /* Nenhum bloco de estatística no markdown: o único adversário novo desta
+       fatia (Espírito da Floresta) foi para o BESTIÁRIO, que é onde o Mestre
+       procura. Um bloco aparecendo aqui seria estatística duplicada. */
+    minCVR: 7,
+    blocosEsperados: 0,
+    propriedades: true,
+    extra(AV) {
+      /* ── O aviso de conversão parcial ─────────────────────────────────── */
+      /* Sem isto, um leitor abre o arquivo e acha que o bloco está completo. */
+      ok(
+        "  o arquivo avisa que a conversão é PARCIAL",
+        /CONVERSÃO PARCIAL/.test(AV) && /Faltam:/.test(liso(AV))
+      );
+      /* E o aviso tem de bater com a lista `anos` — se eu converter um ano e
+         esquecer de anunciar, ou anunciar sem converter, isto quebra. */
+      const bl = BLOCOS.find((b) => b.arquivo === "23-mirkwood-02-o-retorno-da-sombra.md");
+      const faltando = bl.anosDoBlocoInteiro.filter((a) => !bl.anos.includes(a));
+      const anunciados = [...liso(AV).matchAll(/Faltam: ([^.]*)\./g)].map((m) => m[1]);
+      ok(
+        `  o aviso lista os ${faltando.length} anos que faltam`,
+        anunciados.length === 1 && faltando.every((a) => anunciados[0].includes(String(a))),
+        `faltam ${faltando.join(", ")} · anunciado: ${anunciados[0] ?? "(nada)"}`
+      );
+      const convertidos = [...liso(AV).matchAll(/Convertidos até aqui: ([^.]*)\./g)].map(
+        (m) => m[1]
+      );
+      ok(
+        "  …e lista os anos já convertidos",
+        convertidos.length === 1 && bl.anos.every((a) => convertidos[0].includes(String(a))),
+        `convertidos ${bl.anos.join(", ")} · anunciado: ${convertidos[0] ?? "(nada)"}`
+      );
+      /* NEGATIVA: um ano que ainda NÃO foi convertido não pode ter seção. Se
+         tiver, o aviso está mentindo por omissão. */
+      const adiantados = faltando.filter((a) => AV.includes(`# Ano ${a}`));
+      ok(
+        "  nenhum ano ainda não anunciado tem seção no arquivo",
+        adiantados.length === 0,
+        `com seção mas fora da lista: ${adiantados.join(", ")}`
+      );
+
+      /* ── A escala invertida das Propriedades, nos DOIS sentidos ────────── */
+      /* Este bloco tem três linhas que mexem no Valor de Propriedade, e duas
+         delas são fáceis de ler ao contrário. O arquivo tem de dizer, em cada
+         uma, o que a mudança significa de verdade. */
+      ok(
+        "  a feira de 2952 é dita como MELHORA (Valor cai)",
+        /reduzir o Valor é MELHORAR/i.test(liso(AV)) && /é um \*\*presente\*\*/.test(liso(AV))
+      );
+      ok(
+        "  o inverno de 2952 é dito como PIORA (Valor sobe)",
+        /aumentar o Valor é piorar/i.test(liso(AV))
+      );
+      ok(
+        "  a Propriedade da Velha Estrada melhora de 8 para 5",
+        /Propriedade de Valor 8/.test(liso(AV)) &&
+          /melhora 1 por ano/.test(liso(AV)) &&
+          /Valor mínimo de 5/.test(liso(AV))
+      );
+
+      /* ── Lobisomem: lacuna, e a aventura inteira depende dela ──────────── */
+      ok(
+        "  o bloco do Lobisomem está declarado como lacuna",
+        /bloco do Lobisomem/.test(liso(AV)) &&
+          /não traz bloco de\s*Lobisomem/.test(liso(AV)) &&
+          /nada foi estimado/i.test(liso(AV))
+      );
+      /* E a lacuna precisa dizer o que a fonte DÁ, senão o Mestre acha que não
+         tem nada aproveitável. */
+      ok(
+        "  …e diz o que a fonte dá mesmo assim (o comportamento)",
+        /foge se Ferido ou a 0 de Resistência/.test(liso(AV))
+      );
+
+      /* ── "Natural da Escuridão" resolvido pelo texto, não inventado ────── */
+      ok(
+        "  'Natural da Escuridão' é apontada para Habitante das Trevas",
+        /Natural da Escuridão/.test(AV) && /Habitante das Trevas/.test(AV)
+      );
+      /* Lado OPOSTO: a habilidade tem de existir MESMO no bestiário, com o nome
+         da 2ª edição — citar um nome que não existe manda o Mestre procurar o
+         que não há. */
+      ok(
+        "  …e Habitante das Trevas existe mesmo no bestiário",
+        /name: "Habitante das Trevas"/.test(ADVERSARIES)
+      );
+
+      /* ── O Espírito da Floresta entrou INTEIRO ─────────────────────────── */
+      const esp = ADVERSARIES.slice(ADVERSARIES.indexOf('id: "espirito-da-floresta"'));
+      const bloco = esp.slice(0, esp.indexOf("\n  {\n") < 0 ? esp.length : esp.indexOf("\n  {\n"));
+      ok("  o bloco do Espírito da Floresta é recortável", bloco.length > 0);
+      /* Números da página impressa 137 do apêndice. */
+      for (const [campo, valor] of [
+        ["attributeLevel", 5],
+        ["endurance", 54],
+        ["hate", 8],
+        ["parry", 7],
+        ["armour", 4],
+      ]) {
+        ok(`  Espírito da Floresta: ${campo} = ${valor}`, new RegExp(`${campo}: ${valor},`).test(bloco));
+      }
+      ok("  Espírito da Floresta: Vigor continua no padrão do motor", /might: 1,/.test(bloco));
+      /* As CINCO habilidades do original têm de estar TODAS lá — foi o critério
+         que fez este bloco entrar e os de Sarqin e Tyulqin ficarem de fora. */
+      for (const hab of [
+        "Habitante das Trevas",
+        "Covarde",
+        "Infundir Medo",
+        "Medo do Fogo",
+        "Horror da Floresta",
+      ]) {
+        ok(`  Espírito da Floresta: tem "${hab}"`, bloco.includes(`name: "${hab}"`));
+      }
+      /* Horror da Floresta: +5 de NA cai EXATO entre as âncoras da régua
+         (+4 = 1d, +6 = 2d) e a conversão SOBE, pela mesma regra da Empreitada. */
+      ok(
+        "  Horror da Floresta virou Complicação de 2d, e a subida está justificada",
+        /perde \(2d\)/.test(bloco) && /a conversão sobe/.test(bloco)
+      );
+    },
+  },
 ];
 
 /* ══════════════════════════════════════════════════════════════════════
@@ -312,9 +453,13 @@ for (const bl of BLOCOS) {
 
   /* 2. Citações da régua ------------------------------------------------- */
   const citados = [...new Set([...AV.matchAll(/\bCVR-\d{3}\b/g)].map((m) => m[0]))].sort();
+  /* O piso é DECLARADO por bloco, não um número mágico global: uma fatia de três
+     anos toca legitimamente menos regras que um bloco inteiro com um Debate
+     dentro. Declarar o piso obriga a afirmar quanto aquele bloco converte — um
+     mínimo global obrigaria a inflar citação para bater a conta. */
   ok(
-    `  cita a régua de conversão (${citados.length} entradas)`,
-    citados.length >= 8,
+    `  cita a régua de conversão (${citados.length} entradas, piso ${bl.minCVR})`,
+    citados.length >= bl.minCVR,
     "conversão sem referência é conversão sem régua"
   );
   for (const id of citados) {
@@ -413,13 +558,26 @@ ok(
   `na pasta: [${NA_PASTA.join(", ")}] · na lista: [${NA_LISTA.join(", ")}]`
 );
 
-/* A campanha tem CINCO blocos no plano. Enquanto faltarem, o teste diz quantos —
-   um número calado vira "acho que já convertemos tudo". */
-const TOTAL_PLANEJADO = 5;
+/* A campanha tem CINCO blocos e TRINTA anos. Contar só blocos mente quando um
+   bloco está parcial: "2/5" soa como 40% quando na verdade são 7 anos de 30.
+   O contador de ANOS é o honesto, e é ele que manda. */
+const TOTAL_BLOCOS = 5;
+const TOTAL_ANOS = 30;
+const anosFeitos = BLOCOS.reduce((n, b) => n + b.anos.length, 0);
+const blocosInteiros = BLOCOS.filter(
+  (b) => !b.anosDoBlocoInteiro || b.anos.length === b.anosDoBlocoInteiro.length
+).length;
+const parciais = BLOCOS.length - blocosInteiros;
+
+console.log("\n── progresso da campanha ──");
+ok(
+  "o contador de anos bate com a soma das listas",
+  anosFeitos === BLOCOS.flatMap((b) => b.anos).length && anosFeitos <= TOTAL_ANOS
+);
 console.log(
-  `\nblocos convertidos: ${BLOCOS.length}/${TOTAL_PLANEJADO} — faltam ${
-    TOTAL_PLANEJADO - BLOCOS.length
-  }`
+  `\nanos convertidos: ${anosFeitos}/${TOTAL_ANOS} — faltam ${TOTAL_ANOS - anosFeitos}` +
+    `\nblocos inteiros: ${blocosInteiros}/${TOTAL_BLOCOS}` +
+    (parciais > 0 ? ` (+${parciais} parcial)` : "")
 );
 
 console.log(`\nverify-um-anel-campanha-mirkwood: ${pass} ok, ${fail} falhas`);

@@ -104,6 +104,118 @@ npm run sync:data:check       # após editar livros/
 
 ---
 
+### 2026-08-08 — Mirkwood 2951–2953, o Espírito da Floresta no bestiário, e o contador que mentia
+
+**Pedido:** continuar o loop — atacar o bloco 2 da campanha em fatias. Ao final da
+rodada o usuário pediu para **encerrar o loop** e subir tudo.
+
+**Passo a passo:**
+
+1. **`livros/um-anel/23-mirkwood-02-o-retorno-da-sombra.md`** — **novo, e declaradamente
+   PARCIAL**. O bloco 2 tem **dez anos e mais de quarenta páginas** de fonte, mais que
+   qualquer aventura de *Tales from Wilderland*. Não cabe num turno, então vai em
+   fatias. Esta rodada entregou **2951, 2952 e 2953**:
+
+   | Ano | Fase de aventura |
+   |---|---|
+   | 2951 | O Elmo da Paz |
+   | 2952 | O Cajado do Guardião da Estrada |
+   | 2953 | A Besta da Floresta |
+
+   **Faltam 2954 a 2960.** O arquivo abre com um aviso de conversão parcial listando os
+   dois conjuntos, e **três asserções novas** garantem que ele não minta: o aviso tem de
+   listar exatamente os anos que faltam, exatamente os já convertidos, e **nenhum ano
+   fora da lista pode ter seção no arquivo**. Um ano convertido sem ser anunciado quebra
+   o teste.
+
+2. **`espirito-da-floresta` entrou no bestiário — inteiro.** Foi o critério que já tinha
+   deixado Sarqin e Tyulqin de fora: **todas** as cinco Habilidades Especiais do bloco de
+   1ª edição precisam converter. Aqui convertem — quatro já existiam na 2ª edição
+   ("Natural da Escuridão" = **Habitante das Trevas**, "Poltrão" = **Covarde**,
+   "Amedrontar" = **Infundir Medo**, "Medo de Fogo" = **Medo do Fogo**) e a quinta,
+   **Horror da Floresta**, é descrita pelo próprio original.
+
+   A conversão de Horror da Floresta exigiu aritmética declarada: o original **soma +5 ao
+   NA**, e as âncoras da régua são **+4 = perde (1d)** e **+6 = perde (2d)**. O +5 cai
+   exato no meio, e a conversão **sobe** — a mesma regra que já vale para a Empreitada,
+   porque arredondar para baixo facilita a cena em silêncio.
+
+3. **Lacuna nova registrada: o bloco do Lobisomem da Floresta das Trevas.** *A Besta da
+   Floresta* é uma aventura inteira construída em torno dele, e o original remete à
+   "página 83 do Livro do Mestre" da **1ª edição**. O bestiário traduzido da 2ª **não
+   traz Lobisomem**, e nenhum capítulo do corpus traz. Registrado, **não estimado** — mas
+   o que a fonte **dá** está convertido: ele foge se Ferido ou a 0 de Resistência, e se
+   morto abandona o corpo de lobo para possuir outro.
+
+4. **Os três Espectros do Anel chegam em 2951 e continuam pendentes.** O apêndice tem
+   estatísticas para os três, mas cada um depende de ao menos uma Habilidade Sinistra que
+   é lacuna: **"Investida Selvagem"**, **"Desnortear"**, **"Encarnação do Horror"**. Mesmo
+   critério de Sarqin e Tyulqin.
+
+5. **AUDITORIA — padrão 8 (texto livre usado como contador): o contador de progresso do
+   teste estava mentindo.** Ele imprimia `blocos convertidos: 2/5`, o que soa como 40% da
+   campanha. Mas o bloco 2 tem **três de dez anos** convertidos — o número real era
+   **7 anos de 30**, ou 23%. Trocado por um contador de **anos**, que é a unidade honesta,
+   com o de blocos separando **inteiros** de **parciais**:
+
+   ```
+   anos convertidos: 7/30 — faltam 23
+   blocos inteiros: 1/5 (+1 parcial)
+   ```
+
+6. **A escala invertida das Propriedades apareceu TRÊS vezes em 2952, e duas delas se leem
+   ao contrário.** A feira de negócios "reduz a classificação em 2" — o que na escala
+   invertida é **melhorar**, um presente. O inverno "aumenta a classificação em 1" — o que
+   é **piorar**. E a Propriedade da Velha Estrada começa em **Valor 8** e "cai 1 por ano"
+   até 5 — de novo, **melhorar**. As três estão escritas dizendo o que significam de
+   verdade, e cada uma tem asserção própria.
+
+7. **Piso de citação da régua virou declaração por bloco.** A checagem exigia ≥8 entradas
+   CVR de todo arquivo. Uma fatia de três anos toca legitimamente menos regras que um
+   bloco inteiro com um Debate dentro, e um mínimo global obrigaria a **inflar citação
+   para bater a conta**. Agora cada bloco declara seu próprio piso (`minCVR`), o que é uma
+   afirmação explícita sobre quanto aquele bloco converte.
+
+**Validação:** as asserções novas foram quebradas de propósito e confirmadas disparando —
+o aviso de anos faltantes (removi 2954 e ele acusou), `armour` errado e `might` fora do
+padrão no bloco do Espírito — depois revertidas com Edit, nunca `git checkout`. Duas
+falhas legítimas apareceram no caminho e foram corrigidas no **texto**, não afrouxando o
+teste: uma frase minha explicando os testes de fadiga não dizia no que eles viraram, e o
+arquivo citava poucas entradas da régua. `npx tsc --noEmit` limpo · `npm run build`
+compila · `npm run test` verde com **3007 asserções**
+(`verify-um-anel-campanha-mirkwood: 146 ok`).
+
+**Arquivos tocados:**
+- `livros/um-anel/23-mirkwood-02-o-retorno-da-sombra.md` — **novo**, 2951–2953
+- `lib/character/um-anel/adversaries.ts` — bloco `espirito-da-floresta`
+- `scripts/verify-um-anel-campanha-mirkwood.mjs` — bloco 2 na lista, contador de anos,
+  piso de CVR por bloco
+
+**Commits / deploy:** ver commit desta rodada na branch `fix/login-google-e-responsivo-um-anel`.
+
+**Como testar:** `node scripts/verify-um-anel-campanha-mirkwood.mjs` — ele imprime
+`anos convertidos: 7/30`.
+
+---
+
+### Estado ao encerrar o loop (2026-08-08)
+
+O loop autônomo do Um Anel foi encerrado a pedido do usuário nesta rodada. Estado para
+quem retomar:
+
+- **Sistema:** combate, Sombra, progressão, Jornada, Fase de Companhia, Esperança,
+  Malfeitoria, engajamento, descansos, Conselho, Fadiga, Fontes de Dano, Veneno, Olho de
+  Mordor e Elmo removível — **todos ligados**.
+- **Livros:** *Tales from Wilderland* **inteira** (7/7). *The Darkening of Mirkwood*
+  **7 anos de 30**: bloco 1 completo, bloco 2 nos três primeiros anos.
+- **Régua CVR:** 37 entradas. **Packs:** 7, 148 entradas.
+- **Testes:** 3007 asserções verdes, tsc limpo, build compila.
+- **Próximo passo natural:** fatia 2954–2956 do bloco 2, no mesmo arquivo, estendendo o
+  campo `anos` da entrada do bloco 2 em `verify-um-anel-campanha-mirkwood.mjs`.
+- **Nada foi testado em dispositivo real nem em mesa.** Toda a validação é estática.
+
+---
+
 ### 2026-08-08 — Bloco 1 de Mirkwood convertido (2947–2950), e duas varreduras acharam erro meu
 
 **Pedido:** continuar o loop — converter o primeiro bloco da campanha de trinta anos e
