@@ -104,6 +104,58 @@ npm run sync:data:check       # após editar livros/
 
 ---
 
+### 2026-08-08 — Reserva de Companhia e crônica: a dívida zera (e um bug meu aparece)
+
+**Pedido:** continuar o loop.
+
+**Passo a passo:**
+
+1. **Reserva de Companhia.** "O valor inicial é igual ao número de
+   heróis-jogadores; pode ser aumentado por Virtudes ou Bênçãos Culturais e por
+   um bônus do Patrono. Os pontos são plenamente renovados ao fim de cada sessão"
+   (cap. 3). O **máximo é derivado, nunca guardado** — guardar o total daria duas
+   fontes de verdade que divergem assim que um herói entra ou sai da Companhia.
+   O estado guarda só o **gasto**.
+
+2. **Crônica.** Uma linha por Fase encerrada: ano, Fase, Yule, resultado e
+   Empreitadas. Um detalhe que quase saiu errado: a linha descreve a Fase que
+   **acabou**, então usa o ano/Fase de **antes** de avançar o calendário —
+   escrever com o calendário já avançado datava tudo um passo à frente.
+
+3. **Um bug meu, da rodada 10, apareceu aqui.** Ao ligar a crônica vi que
+   `closePhase` espalha `...state` e carregava as **compras da Fase** adiante.
+   Ou seja: o limite de "um grau por Perícia por Fase" **nunca zerava** — um herói
+   que subisse Vigilância na primeira Fase não poderia subi-la de novo na
+   campanha inteira.
+
+   E o pior: na rodada 10 eu escrevi que "fechar a Fase constrói um estado novo,
+   então o limite zera sozinho". **Estava errado** — o painel espalha o estado
+   anterior. A afirmação agora está corrigida no histórico daquela rodada, com o
+   `purchases: {}` no lugar e uma asserção que falha se sumir.
+
+4. **A dívida zerou.** As duas listas — Sombra e progressão — estão vazias, e
+   todas as funções que estavam nelas têm asserção exigindo consumidor real. A
+   estrutura fica: é o que impede a próxima dívida de virar código morto
+   silencioso.
+
+5. **Validação.** `npx tsc --noEmit` limpo · `npm run build` compila ·
+   `npm run test` verde com **1773 asserções**. A asserção do `purchases: {}` foi
+   conferida removendo a linha — falhou como devia.
+
+**Arquivos tocados:**
+- `lib/combat/um-anel/session-state.ts` — reserva, bônus, crônica, todos recortados
+- `components/vtt/TorFellowshipPanel.tsx` — reserva, crônica, e o zeramento das compras
+- `scripts/verify-um-anel-avanco.mjs` — asserções invertidas + reserva e crônica
+
+**Como testar:** com a Fase aberta, gastar pontos de Companhia e conferir que o
+disponível cai; "Renovar" volta ao máximo. Fechar a Fase: aparece uma linha na
+Crônica com o ano e as Empreitadas daquela Fase. Subir a mesma Perícia na Fase
+seguinte tem de ser **permitido** — era o bug.
+
+**Falta:** Elmo removível; campanhas de 1ª edição; glyph da runa de Gandalf.
+
+---
+
 ### 2026-08-08 — Áreas Perigosas e recuperação de fim de jornada: a dívida da Sombra zera
 
 **Pedido:** continuar o loop.
@@ -296,12 +348,17 @@ o herói sucumbiu. No Yule, "Curar Cicatriz" cobra 5 Pontos de Aventura.
      um grau em cada Perícia e em cada Proficiência por Fase, e Valor e Sabedoria
      competem entre si — só um dos dois.
 
-3. **Onde guardar o que já foi comprado.** No estado da **Fase**, não na ficha.
-   Fechar a Fase constrói um estado novo a partir do calendário avançado, então o
-   limite zera sozinho; na ficha, alguém teria de lembrar de zerar — e esquecer
-   trancaria o herói para sempre. O recorte na leitura limita a 1 grau por
-   Perícia já na normalização, senão um estado adulterado deixaria o limite
-   passar na próxima leitura.
+3. **Onde guardar o que já foi comprado.** No estado da **Fase**, não na ficha:
+   o limite do livro é por Fase, e na ficha alguém teria de lembrar de zerar. O
+   recorte na leitura limita a 1 grau por Perícia já na normalização, senão um
+   estado adulterado deixaria o limite passar na próxima leitura.
+
+   > **Correção, escrita na rodada seguinte:** aqui eu afirmei que "fechar a Fase
+   > constrói um estado novo, então o limite zera sozinho". **Estava errado.** O
+   > painel espalha o estado anterior (`...state`) e carregava as compras adiante
+   > — o limite nunca zerava, e um herói que subisse Vigilância na primeira Fase
+   > não poderia subi-la de novo na campanha inteira. Corrigido com
+   > `purchases: {}` ao fechar a Fase, com asserção própria.
 
 4. **O prêmio do novo grau.** Valor concede uma Recompensa; Sabedoria, uma
    Virtude — e a Cultural só a partir de Sabedoria 2. A escolha em si é do

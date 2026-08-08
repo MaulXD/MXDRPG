@@ -10,7 +10,9 @@ import {
   TOR_SHADOW_RELIEF,
   TOR_XP_COST_BY_LEVEL,
   advanceTorCalendar,
+  appendTorChronicle,
   formatTorCalendarMessage,
+  torFellowshipLevel,
   torUndertakingBudget,
   validateTorUndertakings,
   type TorPhaseOutcome,
@@ -86,6 +88,25 @@ export function TorFellowshipPanel({
 
   /** Enquanto a sala não tem calendário, opera sobre o inicial. */
   const state = fellowship ?? INITIAL;
+
+  /* Máximo derivado: número de heróis + bônus Cultural/Virtudes + Patrono. */
+  const fellowshipMax = torFellowshipLevel({
+    baseLevel: state.heroes.length + (state.culturalFellowshipBonus ?? 0),
+    patronBonus: state.patronBonus,
+  });
+
+  async function patchFellowship(patch: Partial<TorFellowshipProgress>) {
+    setBusy(true);
+    setErr(null);
+    try {
+      await patchTorSession(roomId, { fellowship: { ...state, ...patch } });
+      onUpdate();
+    } catch (e) {
+      setErr(e instanceof Error ? e.message : "Falha ao salvar a Companhia");
+    } finally {
+      setBusy(false);
+    }
+  }
 
   async function setTnBase(usar18: boolean) {
     setBusy(true);
@@ -187,13 +208,24 @@ export function TorFellowshipPanel({
         ];
 
         await postRoomChat(roomId, { kind: "chat", text: lines.join(" · ") });
-        // O calendário avança e as escolhas zeram para a Fase seguinte.
+        // O calendário avança, as escolhas zeram para a Fase seguinte, e a Fase
+        // que terminou entra na crônica — é o registro que sobrevive à mesa.
+        // Guarda o ano/Fase ANTES de avançar: a linha da crônica descreve a Fase
+        // que acabou, não a que começa.
         await patchTorSession(roomId, {
           fellowship: {
             ...state,
             year: advanced.calendar.year,
             phasesThisYear: advanced.calendar.phasesThisYear,
             picks: [],
+            purchases: {},
+            chronicle: appendTorChronicle(state.chronicle ?? [], {
+              year: state.year,
+              phase: state.phasesThisYear,
+              isYule: advanced.isYule,
+              undertakings: state.picks,
+              outcome: state.outcome,
+            }),
           },
         });
         onUpdate();
@@ -246,6 +278,85 @@ export function TorFellowshipPanel({
       {/* O avanço é a razão de existir da Fase de Companhia — fica aqui, não na
           ficha, porque o limite é POR FASE e é este painel que fecha a Fase. */}
       <TorAdvancePanel roomId={roomId} characterIds={characterIds} onUpdate={onUpdate} />
+
+      {/* Reserva de Companhia: "valor inicial igual ao número de heróis, podendo
+          ser aumentado por Virtudes/Bênçãos Culturais e pelo bônus do Patrono".
+          O MÁXIMO é derivado, nunca guardado — guardá-lo daria duas fontes de
+          verdade que divergem assim que um herói entra ou sai. */}
+      <section className="tor-journey__section">
+        <p className="eyebrow">Companhia</p>
+        <p className="tor-journey__remaining">
+          {Math.max(0, fellowshipMax - (state.fellowshipSpent ?? 0))} de {fellowshipMax} pontos
+          disponíveis
+        </p>
+        <div className="vtt-special-damage">
+          <label>
+            Bônus do Patrono
+            <input
+              type="number"
+              min={0}
+              max={6}
+              value={state.patronBonus ?? 0}
+              disabled={busy || !canManage}
+              onChange={(e) => void patchFellowship({ patronBonus: Number(e.target.value) || 0 })}
+            />
+          </label>
+          <label>
+            Bônus Cultural / Virtudes
+            <input
+              type="number"
+              min={0}
+              max={12}
+              value={state.culturalFellowshipBonus ?? 0}
+              disabled={busy || !canManage}
+              onChange={(e) =>
+                void patchFellowship({ culturalFellowshipBonus: Number(e.target.value) || 0 })
+              }
+            />
+          </label>
+        </div>
+        <div className="vtt-special-damage">
+          <button
+            type="button"
+            className="btn btn-ghost"
+            disabled={busy || (state.fellowshipSpent ?? 0) >= fellowshipMax}
+            onClick={() => void patchFellowship({ fellowshipSpent: (state.fellowshipSpent ?? 0) + 1 })}
+          >
+            Gastar 1 ponto
+          </button>
+          <button
+            type="button"
+            className="btn btn-ghost"
+            disabled={busy || (state.fellowshipSpent ?? 0) === 0}
+            onClick={() => void patchFellowship({ fellowshipSpent: 0 })}
+          >
+            Renovar (fim de sessão)
+          </button>
+        </div>
+        <p className="tor-journey__pending-hint">
+          Gasta-se para recuperar Esperança ao descansar e para acionar efeitos do Patrono. Os pontos
+          são plenamente renovados ao fim de cada sessão de jogo.
+        </p>
+      </section>
+
+      {(state.chronicle ?? []).length > 0 ? (
+        <section className="tor-journey__section">
+          <p className="eyebrow">Crônica</p>
+          <ul className="tor-journey__log">
+            {(state.chronicle ?? []).map((c, i) => (
+              <li key={i}>
+                {c.year}, Fase {c.phase + 1}
+                {c.isYule ? " (Yule)" : ""} — {OUTCOME_LABEL[c.outcome]}
+                {c.undertakings.length > 0
+                  ? ` · ${c.undertakings
+                      .map((id) => undertakings.find((u) => u.id === id)?.name ?? id)
+                      .join(", ")}`
+                  : ""}
+              </li>
+            ))}
+          </ul>
+        </section>
+      ) : null}
 
       <section className="tor-journey__section">
         <p className="eyebrow">Regras da campanha</p>

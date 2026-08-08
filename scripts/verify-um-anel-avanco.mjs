@@ -202,7 +202,9 @@ ok(
 
 /* O que ainda não tem consumidor, listado para a asserção falhar quando alguém
    ligar — e obrigar a atualizar esta lista. */
-const AINDA_SEM_CONSUMIDOR = ["appendTorChronicle", "torFellowshipLevel"];
+/* Lista vazia: a dívida da progressão foi paga. A estrutura fica porque é o que
+   impede a próxima dívida de virar código morto silencioso. */
+const AINDA_SEM_CONSUMIDOR = [];
 
 /**
  * Varredura AMPLA, pelo mesmo motivo do teste da Sombra: a primeira versão
@@ -225,10 +227,50 @@ function consumidoresDoProjeto() {
 }
 const CONSUMIDORES = consumidoresDoProjeto();
 
+for (const fn of ["applyTorSpiritualRecovery", "appendTorChronicle", "torFellowshipLevel"]) {
+  ok(
+    `${fn} tem consumidor real`,
+    CONSUMIDORES.some((src) => new RegExp(`\\b${fn}\\(`).test(src)),
+    "saiu da lista de dívida mas ninguém chama"
+  );
+}
+
+/* ── Reserva de Companhia e crônica ────────────────────────────────────── */
+
 ok(
-  "applyTorSpiritualRecovery tem consumidor real",
-  CONSUMIDORES.some((src) => /\bapplyTorSpiritualRecovery\(/.test(src)),
-  "saiu da lista de dívida mas ninguém chama"
+  "livro: a reserva começa igual ao número de heróis",
+  /O valor inicial de Companhia da Companhia é igual ao número de heróis-jogadores no grupo/.test(
+    readFileSync(root("livros", "um-anel", "03-aventureiros.md"), "utf8")
+  )
+);
+ok(
+  "livro: os pontos renovam ao fim de cada sessão",
+  /Os pontos de Companhia são plenamente renovados ao fim de cada sessão de jogo/.test(
+    readFileSync(root("livros", "um-anel", "03-aventureiros.md"), "utf8")
+  )
+);
+/* O MÁXIMO é derivado, nunca guardado: guardá-lo criaria duas fontes de verdade
+   que divergem assim que um herói entra ou sai da Companhia. */
+ok(
+  "o máximo da Companhia é derivado do número de heróis",
+  /baseLevel: state\.heroes\.length \+ \(state\.culturalFellowshipBonus \?\? 0\)/.test(FELLOW),
+  "guardar o total daria duas fontes de verdade"
+);
+ok(
+  "o estado guarda só o GASTO, não o total",
+  /fellowshipSpent\?: number/.test(SESSION) && !/fellowshipMax\?: number/.test(SESSION)
+);
+ok("renovar zera o gasto", /fellowshipSpent: 0/.test(FELLOW));
+ok(
+  "a crônica registra a Fase que ACABOU, não a que começa",
+  /year: state\.year,\s*\n?\s*phase: state\.phasesThisYear/.test(FELLOW),
+  "usar o calendário já avançado datava a linha um passo à frente"
+);
+ok("crônica é recortada na leitura", /function normalizeChronicle/.test(SESSION));
+ok(
+  "fechar a Fase zera as compras",
+  /purchases: \{\}/.test(FELLOW),
+  "sem zerar, o limite de 1 grau por Fase valeria para a campanha inteira"
 );
 for (const fn of AINDA_SEM_CONSUMIDOR) {
   ok(
