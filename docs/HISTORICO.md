@@ -104,6 +104,84 @@ npm run sync:data:check       # após editar livros/
 
 ---
 
+### 2026-08-08 — Tabela de conversão da 1ª edição: a régua antes das aventuras
+
+**Pedido:** continuar o loop — converter *Tales from Wilderland* e *The Darkening
+of Mirkwood*.
+
+**Passo a passo:**
+
+1. **A régua vem primeiro.** As duas campanhas são de 1ª edição e vão ser
+   convertidas aventura por aventura. Sem uma tabela única, **cada aventura
+   inventaria a própria conversão**, e a segunda discordaria da primeira sem que
+   ninguém notasse. A tabela virou pack do compêndio
+   (`livros/um-anel/compendio/conversao-primeira-edicao.md`, 30 entradas), então
+   fica a um clique da ficha para quem estiver mestrando.
+
+2. **O que muda de verdade.** Não é tradução, é conversão de camada de regras:
+   - **Fio da lâmina (`Edge`) some** — na 2ª edição o Golpe Perfurante sai em
+     "10 ou [Rune]" para toda arma. Manter o Edge criaria um segundo limiar.
+   - **Tiro Certeiro vira Dano Especial**, e as listas de herói (cap. 6) e de
+     adversário (cap. 8) são **diferentes**.
+   - **Ódio vira Ódio ou Resolução**, e a escolha tem consequência: matar quem tem
+     Resolução pode ser Malfeitoria.
+   - **NA fixo some.** A 2ª edição rola contra o NA do Atributo do herói; a
+     dificuldade passa a ser Complicação/Vantagem em Dados de Sucesso.
+   - **Tolerância vira Conselho** (Resistência 3/6/9 + atitude da audiência).
+   - Seis perícias mudaram de nome: Assombro→Fascínio, Atenção→Vigilância,
+     Cantigas→Música, Intuição→Discernimento, Investigação→Busca,
+     Conhecimento→História — mais Enigmas→Enigma e Caça→Caçada.
+
+3. **Cinco lacunas registradas, nenhuma preenchida.** A 2ª edição não dá regra de
+   conversão para **Vigor** de bloco de 1ª edição, para **NA fixo**, para
+   **Tolerância**, e **Prestígio** não existe no corpus traduzido. Pior: o
+   **bestiário traduzido não tem bloco de Aranha** — Aranhas aparecem como *tipo
+   de inimigo* (Conhecimento do Inimigo, armas de Perdição, "Veneno de Aranha"),
+   mas sem estatísticas. Isso bloqueia a Parte IV da primeira aventura de
+   Wilderland, que se passa num castelo de aranhas. Fica registrado, não estimado.
+
+4. **A asserção derrubou uma afirmação minha.** Escrevi que "no bestiário, os
+   chefes têm Vigor 2" e pus uma asserção conferindo isso contra
+   `adversaries.ts`. Ela falhou: **Jack, o Troll de Pedra, é chefe com Vigor 1**.
+   A frase estava errada e foi corrigida antes de existir por cinco minutos — o
+   Vigor mede Ferimentos para abater, não porte nem importância na cena.
+
+5. **Uma asserção que NÃO disparou, e o que se aprendeu.** Ao testar, troquei
+   "Bloqueio" por "Parada" **na prosa** de uma entrada e nada falhou: a asserção
+   olhava só o campo `- **2ª edição:**`. Campo certo com prosa errada é pior que
+   erro visível. Banir a palavra do arquivo inteiro também não servia — a entrada
+   precisa citar "Parada" para dizer que **não** existe. A asserção final fixa as
+   duas coisas: aparece uma vez só, e essa vez é o aviso.
+
+6. **A guarda de nomes antigos precisou de recorte cirúrgico.**
+   `verify-um-anel-glossario.mjs` proíbe "Caça", "Percepção" etc. em qualquer
+   arquivo do compêndio — e a entrada de equivalência precisa escrever exatamente
+   esses nomes. Em vez de isentar o arquivo inteiro (que deixaria a tabela
+   derivar), o teste recorta **só a entrada CVR-013**, com asserção provando que o
+   recorte aconteceu. E o teste novo fecha o outro lado: nome antigo no sentido de
+   Perícia fora de CVR-013 falha.
+
+7. **Validação.** `npx tsc --noEmit` limpo · `npm run build` compila ·
+   `npm run test` verde com **2190 asserções** (79 novas + 11). O JSON do
+   compêndio foi regerado por `node scripts/gen-um-anel.mjs`, e há asserção
+   conferindo que markdown e JSON têm os mesmos ids na mesma ordem.
+
+**Arquivos tocados:**
+- `livros/um-anel/compendio/conversao-primeira-edicao.md` — **novo**, 30 entradas
+- `data/compendiums/um-anel/{conversao-primeira-edicao,index}.json` — gerados
+- `scripts/gen-um-anel.mjs` — o pack novo
+- `scripts/verify-um-anel-conversao.mjs` — **novo**, 79 asserções
+- `scripts/verify-um-anel-glossario.mjs` — recorte de CVR-013
+
+**Como testar:** abrir o compêndio do Um Anel na mesa — o pack "Conversão da 1ª
+edição" aparece com as 30 entradas, cada uma citando o trecho da 2ª edição que a
+sustenta.
+
+**Falta:** converter as aventuras (bloqueada a Parte IV de Wilderland pela lacuna
+das Aranhas); glyph da runa de Gandalf.
+
+---
+
 ### 2026-08-08 — O ⊘ rolado sobe o Olho sozinho: o gancho estava a uma rota de distância
 
 **Pedido:** continuar o loop.
