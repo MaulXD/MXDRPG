@@ -334,6 +334,13 @@ export function MesaFoundryFloatingWindows(props: MesaFoundryFloatingWindowsProp
             canManage={Boolean(effectiveIsGm)}
             fellowship={torSession?.fellowship ?? null}
             attributeTnBase={torSession?.attributeTnBase}
+            characterIds={Array.from(
+              new Set(
+                (mapSnapshot?.scene.tokens ?? [])
+                  .filter((t) => t.torCombat?.kind === "hero" && t.torCombat.torCharacterId)
+                  .map((t) => t.torCombat!.torCharacterId!)
+              )
+            )}
             onUpdate={() => void onRefresh()}
           />
         </FoundryWindow>

@@ -26,7 +26,11 @@ import {
   type TorRegionType,
   type TorSeason,
 } from "@/lib/combat/um-anel/journey";
-import { TOR_PHASE_OUTCOMES, type TorPhaseOutcome } from "@/lib/combat/um-anel/progression";
+import {
+  TOR_PHASE_OUTCOMES,
+  type TorPhaseOutcome,
+  type TorPhasePurchases,
+} from "@/lib/combat/um-anel/progression";
 
 /** Evento aguardando a rolagem do herói alvo. */
 export type TorPendingEvent = {
@@ -83,6 +87,16 @@ export type TorFellowshipProgress = {
   outcome: TorPhaseOutcome;
   /** Empreitadas escolhidas nesta Fase. */
   picks: string[];
+  /**
+   * O que cada herói já comprou NESTA Fase, por id de ficha.
+   *
+   * Mora aqui, e não na ficha, porque o limite do livro é por **Fase de
+   * Companhia** — "durante uma única Fase de Companhia, os jogadores podem
+   * comprar no máximo um grau em cada Perícia". Guardar na ficha exigiria saber
+   * quando zerar; aqui zera sozinho, porque fechar a Fase constrói um estado
+   * novo a partir do calendário avançado.
+   */
+  purchases?: Record<string, TorPhasePurchases>;
 };
 
 export type TorSessionState = {
@@ -213,7 +227,36 @@ function normalizeFellowship(raw: unknown): TorFellowshipProgress | null {
     heroes: normalizeHeroes(r),
     outcome: oneOf(r.outcome, TOR_PHASE_OUTCOMES, "marginal"),
     picks: strList(r.picks, 12),
+    ...(normalizePurchases(r.purchases) ? { purchases: normalizePurchases(r.purchases)! } : {}),
   };
+}
+
+/** Compras da Fase, recortadas: o estado da sala vem de JSONB e não é confiável. */
+function normalizePurchases(raw: unknown): Record<string, TorPhasePurchases> | null {
+  if (!raw || typeof raw !== "object") return null;
+  const out: Record<string, TorPhasePurchases> = {};
+  for (const [id, v] of Object.entries(raw as Record<string, unknown>).slice(0, TOR_MAX_COMPANY)) {
+    if (!v || typeof v !== "object") continue;
+    const p = v as Record<string, unknown>;
+    const ranks = (x: unknown) => {
+      const o: Record<string, number> = {};
+      if (x && typeof x === "object") {
+        for (const [k, n] of Object.entries(x as Record<string, unknown>).slice(0, 24)) {
+          // 1 grau por Perícia/Proficiência é o teto do livro; guardar mais
+          // deixaria o limite passar na próxima leitura.
+          if (typeof n === "number" && n > 0) o[k.slice(0, 40)] = Math.min(1, Math.floor(n));
+        }
+      }
+      return o;
+    };
+    out[id.slice(0, 80)] = {
+      skillRanks: ranks(p.skillRanks),
+      proficiencyRanks: ranks(p.proficiencyRanks),
+      boughtValour: p.boughtValour === true,
+      boughtWisdom: p.boughtWisdom === true,
+    };
+  }
+  return Object.keys(out).length > 0 ? out : null;
 }
 
 /** Devolve `undefined` quando não há nada guardado, para não inflar o JSON da sala. */
