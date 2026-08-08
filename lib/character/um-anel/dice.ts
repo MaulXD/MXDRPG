@@ -77,6 +77,19 @@ export function rollTorCheck(opts: {
    * só pode ser 0, 1 ou 2.
    */
   hopeBonusDice?: number;
+  /**
+   * Dados de Sucesso de outras fontes, somados.
+   *
+   * Hoje o único emissor é o **Apoio** — "o personagem que apoia gasta 1 ponto de
+   * Esperança para que o herói ativo *ganhe (1d)*" —, mas o campo é genérico
+   * porque o livro diz que bônus e penalidades são **cumulativos**: "se um herói
+   * ganha (1d) de um companheiro que apoia, ganha (2d) gastando Esperança
+   * enquanto Inspirado, e perde (1d) de uma penalidade, a rolagem ganha (2d)".
+   *
+   * Somam-se — ao contrário de Favorecida/Desfavorecida, que se cancelam. Aceita
+   * negativo, que é como a penalidade entra.
+   */
+  bonusDice?: number;
 }): TorRollOutcome {
   // Favorecida + Desfavorecida ao mesmo tempo se cancelam (livro, "Die Roll Modifiers").
   const favoured = Boolean(opts.favoured) && !opts.illFavoured;
@@ -90,7 +103,9 @@ export function rollTorCheck(opts: {
 
   // Teto 2: Inspirado dobra o bônus de UM ponto; não há como gastar dois pontos.
   const hopeDice = Math.min(2, Math.max(0, Math.floor(opts.hopeBonusDice ?? 0)));
-  const totalRank = Math.max(0, opts.rank) + hopeDice;
+  // Cumulativos, e o piso é zero: "penalidades descem até um mínimo de zero
+  // Dados de Sucesso" (capítulo 2).
+  const totalRank = Math.max(0, Math.max(0, opts.rank) + hopeDice + Math.floor(opts.bonusDice ?? 0));
 
   const successDice: TorSuccessDie[] = Array.from({ length: totalRank }, () => {
     const value = 1 + Math.floor(Math.random() * 6);
@@ -182,6 +197,12 @@ export type TorRollOptions = {
    * Inspirado **dobra o benefício**, não dá dado nenhum sozinho.
    */
   inspired?: boolean;
+  /**
+   * Apoio de um companheiro: ele gasta 1 de Esperança e o herói ativo *ganha
+   * (1d)*. "Apenas um herói-jogador pode gastar Esperança para apoiar o herói
+   * ativo" — por isso é booleano, não contador.
+   */
+  supported?: boolean;
 };
 
 /**
@@ -221,10 +242,14 @@ export function rollTorSkillCheck(
     weary: character.conditions.weary,
     miserable: character.conditions.miserable,
     hopeBonusDice,
+    // Apoio soma com o Bônus de Esperança — o livro diz que Dados de Sucesso
+    // de fontes diferentes são cumulativos.
+    bonusDice: opts.supported ? 1 : 0,
   });
   const label =
     `${character.name} — ${SKILL_LABEL[skillId]} (${ATTRIBUTE_LABEL[group]} ${rank})` +
-    torHopeLabel(hopeBonusDice);
+    torHopeLabel(hopeBonusDice) +
+    (opts.supported ? " [Apoio +1d]" : "");
   return { outcome, message: formatTorRollMessage(label, outcome) };
 }
 
@@ -253,12 +278,16 @@ export function rollTorCombatProficiencyCheck(
     weary: character.conditions.weary,
     miserable: character.conditions.miserable,
     hopeBonusDice,
+    // Apoio soma com o Bônus de Esperança — o livro diz que Dados de Sucesso
+    // de fontes diferentes são cumulativos.
+    bonusDice: opts.supported ? 1 : 0,
   });
   // A Virtude aparece no rótulo: sem isso o jogador vê "(Favorecida)" e não tem
   // como saber de onde veio — nem o Mestre, pra conferir contra a ficha.
   const virtueTxt = virtue.sources.length > 0 ? ` [${virtue.sources.join(", ")}]` : "";
   const label =
     `${character.name} — ${COMBAT_PROFICIENCY_LABEL[profId]} (Força ${rank})${virtueTxt}` +
-    torHopeLabel(hopeBonusDice);
+    torHopeLabel(hopeBonusDice) +
+    (opts.supported ? " [Apoio +1d]" : "");
   return { outcome, message: formatTorRollMessage(label, outcome) };
 }

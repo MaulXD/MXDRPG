@@ -133,6 +133,7 @@ export function TorCharacterSheetView({
      estado do painel, marcados antes de clicar, e desmarcam depois de gastos. */
   const [spendHope, setSpendHope] = useState(false);
   const [inspired, setInspired] = useState(false);
+  const [supported, setSupported] = useState(false);
   const [portraitOverride, setPortraitOverride] = useState<PortraitOverride | null>(null);
 
   const portraitUrl = portraitOverride ? portraitOverride.portraitUrl : character.portraitUrl ?? null;
@@ -208,14 +209,20 @@ export function TorCharacterSheetView({
    */
   function rollOptions() {
     const canSpend = spendHope && character.hope.value > 0;
-    return { opts: { spendHope: canSpend, inspired }, spent: canSpend };
+    // O ponto do Apoio sai da Esperança de QUEM APOIA, não deste herói — por
+    // isso `supported` não desconta nada aqui; quem apoiou desconta na própria
+    // ficha. Marcar aqui só reconhece o (1d) que já foi pago do outro lado.
+    return { opts: { spendHope: canSpend, inspired, supported }, spent: canSpend };
   }
 
   function afterRoll(spent: boolean) {
-    if (!spent) return;
-    onResourceChange?.({ hopeValue: Math.max(0, character.hope.value - 1) });
+    // As marcas desmarcam SEMPRE — valem para uma rolagem só. Sair cedo quando
+    // não houve gasto deixaria o Apoio marcado para a rolagem seguinte, dando um
+    // (1d) que ninguém pagou.
+    if (spent) onResourceChange?.({ hopeValue: Math.max(0, character.hope.value - 1) });
     setSpendHope(false);
     setInspired(false);
+    setSupported(false);
   }
 
   function rollSkill(skillId: TorSkillId) {
@@ -379,9 +386,18 @@ export function TorCharacterSheetView({
             <input type="checkbox" checked={inspired} onChange={(e) => setInspired(e.target.checked)} />
             Inspirado — dobra o bônus (+2d)
           </label>
+          <label>
+            <input
+              type="checkbox"
+              checked={supported}
+              onChange={(e) => setSupported(e.target.checked)}
+            />
+            Apoiado por um companheiro (+1d)
+          </label>
           <span className="tor-sheet__hope-hint">
             Inspiração vem de invocar uma Característica Distintiva ou de uma Virtude Cultural.
-            Sozinha não dá dado: é o benefício do ponto de Esperança que dobra.
+            Sozinha não dá dado: é o benefício do ponto de Esperança que dobra. No Apoio, o ponto sai
+            da Esperança de quem apoia — e só um companheiro pode apoiar cada rolagem.
           </span>
         </div>
       ) : null}

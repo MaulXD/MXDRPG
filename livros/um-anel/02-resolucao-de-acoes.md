@@ -212,7 +212,7 @@ Heróis que apelam à Esperança com frequência excessiva devem se precaver, po
 
 Um herói-jogador só pode apoiar outro se as circunstâncias permitirem, e apenas se o herói que apoia possuir ao menos um grau em uma Perícia apropriada. Se uma Perícia é apropriada à ação de apoio é decisão do Mestre. **Apenas um herói-jogador pode gastar Esperança para apoiar o herói-jogador ativo.**
 
-**EXEMPLO:** *Uma ladra Hobbit está tentando abrir uma porta anã usando seu Ofício (2). Seu companheiro Bardo gasta 1 ponto de Esperança e dá conselhos sobre mecanismos anões com sua Perícia de Saber — o Mestre aprova e a Hobbit ganha (1d) em sua rolagem.*
+**EXEMPLO:** *Uma ladra Hobbit está tentando abrir uma porta anã usando seu Ofício (2). Seu companheiro Bardo gasta 1 ponto de Esperança e dá conselhos sobre mecanismos anões com sua Perícia de História — o Mestre aprova e a Hobbit ganha (1d) em sua rolagem.*
 
 #### Box: Bônus × Penalidades
 

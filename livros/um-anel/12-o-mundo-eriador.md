@@ -171,7 +171,7 @@ Antigos, na Grande Estrada do Leste. O povo de Bri é insular, mas acolhedor com
     vingança contra o Troll que matou seu pai; pode recrutar heróis para a caçada.
   - **Caixa de texto — Arcos de Caça de Archet (mecânica, p.188):** Para ganhar um arco, o herói
     precisa prestar um serviço a Archet e depois completar uma caçada solitária de 3 dias (Empenho de
-    Perícia de Caça, Resistência 6, duas rolagens por dia, três dias para voltar com um cervo que
+    Perícia de Caçada, Resistência 6, duas rolagens por dia, três dias para voltar com um cervo que
     valha 10 pontos ou mais). Alternativamente, ganhar uma Recompensa enquanto estiver em Archet
     durante a Fase de Companhia pode conceder o arco em vez de uma Recompensa normal. **Efeito:** com
     um Arco de Caça de Archet, ataques à distância e rolagens de Caçada somam **+3 ou o Valor do

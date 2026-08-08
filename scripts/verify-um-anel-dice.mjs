@@ -416,10 +416,54 @@ ok(
 );
 
 ok("rollTorCheck aceita o bônus de Esperança", /hopeBonusDice\?: number/.test(DICE_RAW));
+/* A soma ganhou o `bonusDice` (Apoio) quando o Apoio entrou — a garantia é a
+   mesma: o bônus é Dado de SUCESSO, somado ao rank, e o piso é zero. */
 ok(
   "o bônus é Dado de SUCESSO, somado ao rank",
-  /const totalRank = Math\.max\(0, opts\.rank\) \+ hopeDice/.test(DICE_RAW),
+  /const totalRank = Math\.max\(0, Math\.max\(0, opts\.rank\) \+ hopeDice \+ Math\.floor\(opts\.bonusDice \?\? 0\)\)/.test(
+    DICE_RAW
+  ),
   "somar em favoured daria Dado de Proeza, que é outra coisa"
+);
+
+/* ── Apoio ─────────────────────────────────────────────────────────────── */
+
+ok(
+  "livro: quem apoia gasta 1 de Esperança e o herói ativo ganha (1d)",
+  /o personagem que apoia pode gastar 1 ponto de Esperança para que o herói-jogador ativo \*ganhe \(1d\)\*/.test(
+    BOOK
+  )
+);
+ok(
+  "livro: só um companheiro pode apoiar",
+  /Apenas um herói-jogador pode gastar Esperança para apoiar o herói-jogador ativo/.test(BOOK)
+);
+ok(
+  "livro: Dados de Sucesso de fontes diferentes são cumulativos",
+  /Bônus e penalidades são \*\*cumulativos\*\*/.test(BOOK)
+);
+ok(
+  "Apoio é booleano, não contador",
+  /supported\?: boolean/.test(DICE_RAW),
+  "contador deixaria dois companheiros apoiarem a mesma rolagem"
+);
+ok("Apoio vale (1d)", /bonusDice: opts\.supported \? 1 : 0/.test(DICE_RAW));
+ok(
+  "penalidade nunca leva o rank abaixo de zero",
+  /Math\.max\(0, Math\.max\(0, opts\.rank\)/.test(DICE_RAW),
+  "o livro fecha em 'até um mínimo de zero Dados de Sucesso'"
+);
+/* O ponto do Apoio sai de QUEM APOIA — a ficha do herói ativo não pode
+   descontar nada por ter sido apoiada. */
+ok(
+  "ser apoiado não desconta Esperança do herói ativo",
+  !/supported[^\n]*hopeValue/.test(SHEET_VIEW),
+  "o ponto sai da ficha de quem apoia"
+);
+ok(
+  "as marcas desmarcam mesmo sem gasto",
+  /if \(spent\) onResourceChange/.test(SHEET_VIEW),
+  "sair cedo deixaria o Apoio marcado e daria (1d) que ninguém pagou"
 );
 ok(
   "o bônus é limitado a 2",
