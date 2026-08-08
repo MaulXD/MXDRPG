@@ -17,7 +17,7 @@
  */
 
 import type { TorCouncilState } from "@/lib/combat/um-anel/council";
-import { isTorCouncilResistance } from "@/lib/combat/um-anel/council";
+import { isTorCouncilAttitude, isTorCouncilResistance } from "@/lib/combat/um-anel/council";
 import {
   TOR_REGION_TYPES,
   TOR_JOURNEY_ROLES,
@@ -240,6 +240,8 @@ function normalizeCouncil(raw: unknown): TorCouncilState | null {
   if (!isTorCouncilResistance(resistance)) return null;
   return {
     resistance,
+    // Atitude inválida cai em Aberta, que é a padrão do livro e não modifica nada.
+    attitude: isTorCouncilAttitude(r.attitude) ? r.attitude : "aberta",
     timeLimit: int(r.timeLimit, resistance, 0, 40),
     disasterOnFailure: bool(r.disasterOnFailure),
     successes: int(r.successes, 0, 0, 99),
