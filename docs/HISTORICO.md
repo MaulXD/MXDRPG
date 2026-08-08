@@ -104,6 +104,79 @@ npm run sync:data:check       # após editar livros/
 
 ---
 
+### 2026-08-08 — "Sobre Ervas e Hobbits Cozidos", e o teste que virou genérico
+
+**Pedido:** continuar o loop — converter as campanhas de 1ª edição.
+
+**Passo a passo:**
+
+1. **Aventura 2 de *Tales from Wilderland* convertida por inteiro** — cinco partes
+   e o epílogo, das páginas 17–35 do PDF, em
+   `livros/um-anel/16-wilderland-02-sobre-ervas-e-hobbits-cozidos.md`.
+
+2. **Aqui os inimigos são de ÓDIO — o oposto da aventura 1.** Orcs e Goblins são
+   lacaios do Inimigo, e matá-los **não** levanta Malfeitoria (CVR-004). O que
+   levanta é matar os caçadores Homens da Floresta da Parte II, e ali o original
+   já dizia "delito de pelo menos três pontos de sombra" — que na 2ª edição é
+   **Malfeito**, a única fonte que o Teste de Sombra não reduz.
+
+3. **O veneno fechou um ciclo.** A flecha que feriu Iwgar estava envenenada, e a
+   regra de **Veneno** entrou no motor há duas rodadas: o envenenado não pode
+   descansar, rola perda de Resistência ao fim de cada dia, uma Runa cura, e a
+   rolagem de **Cura** cura perdendo (1d) ou (2d) conforme o nível. O original só
+   dizia "a não ser que a Companhia disponha de um herói capaz de preparar um
+   antídoto". E o **Arqueiro Goblin** do bestiário já tem a Habilidade Sinistra
+   **Veneno de Orc**, que é de onde a flecha veio.
+
+4. **A lacuna do Vigor apareceu de novo — e desta vez o texto NÃO resolveu.** Na
+   aventura 1, a Coisa do Fosso ganhou Vigor 2 porque o texto dizia "se for Ferida
+   duas vezes". O **Fantasma da Noite** não tem nada equivalente: o texto diz que
+   a luta acaba quando o **Ódio** chega a zero e ele foge. O campo ficou
+   **declarado como lacuna** no bloco, e há asserção exigindo que ele **não** seja
+   um número. Quebrei de propósito pondo "Vigor 2" e a asserção pegou.
+
+5. **Uma diferença de regra escrita em voz alta.** O "Medo do Fogo" de 1ª edição
+   tirava Ódio **uma vez**, ao fim da primeira rodada; a habilidade de mesmo nome
+   no bestiário da 2ª edição tira **1 por rodada**. A régua manda reaproveitar a
+   habilidade equivalente (CVR-012), e foi o que se fez — mas isso muda o ritmo da
+   luta, então a diferença está avisada no arquivo, com asserção conferindo que o
+   aviso continua lá.
+
+6. **O teste virou genérico.** Em vez de um script por aventura — sete cópias que
+   divergiriam na primeira melhoria —, `verify-um-anel-aventuras-wilderland.mjs`
+   roda as checagens comuns sobre uma lista de aventuras, cada uma com as suas em
+   `extra`. O script da aventura 1 foi removido e a entrada do `package.json`
+   trocada por substituição contada.
+
+7. **Três erros de asserção, todos do mesmo feitio: a regex era mais estrita que
+   a regra.**
+   - `blocoAdversario` cortava 800 caracteres fixos, e a segunda Habilidade
+     Sinistra do Arqueiro Goblin caía fora — a asserção acusava ausência de algo
+     que estava lá. Passou a cortar no início do bloco seguinte.
+   - "Fase em Sociedade" e "Called Shot" estavam na lista de proibidos absolutos,
+     mas a aventura 2 precisa citá-los para dizer no que viraram. Foram para a
+     lista condicional.
+   - A frase era delimitada por quebra de linha, e o markdown quebra no meio:
+     "O `Called Shot`" ficava separado da explicação da linha seguinte. Passou a
+     ser delimitada por **ponto**.
+
+8. **Validação.** `npx tsc --noEmit` limpo · `npm run build` compila ·
+   `npm run test` verde com **2350 asserções**. A guarda de nomes antigos do
+   glossário passou na aventura sem exceção nenhuma.
+
+**Arquivos tocados:**
+- `livros/um-anel/16-wilderland-02-sobre-ervas-e-hobbits-cozidos.md` — **novo**
+- `scripts/verify-um-anel-aventuras-wilderland.mjs` — **novo**, genérico
+- `scripts/verify-um-anel-aventura-wilderland-01.mjs` — **removido**, absorvido
+
+**Como testar:** ler o arquivo da aventura. O bloco do Fantasma da Noite está
+pronto para a mesa exceto pelo Vigor, que está marcado como lacuna de propósito.
+
+**Falta:** aventuras 3 a 7 de Wilderland; *The Darkening of Mirkwood*; bloco de
+Aranha e Vigor do Fantasma (lacunas de fonte); glyph da runa de Gandalf.
+
+---
+
 ### 2026-08-08 — "Não Desvie da Trilha": a primeira aventura convertida
 
 **Pedido:** continuar o loop — converter as campanhas de 1ª edição.
