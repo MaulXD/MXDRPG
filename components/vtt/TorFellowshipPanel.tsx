@@ -31,6 +31,12 @@ type Props = {
    * desalinharia a progressão de toda a Companhia.
    */
   fellowship: TorFellowshipProgress | null;
+  /**
+   * Base do NA em uso na mesa. Mora aqui, e não na ficha, porque é decisão de
+   * campanha — o mesmo herói pode jogar uma one-shot com 18 e uma campanha longa
+   * com 20. Este painel já é o de escopo de campanha (calendário, Yule).
+   */
+  attributeTnBase?: number;
   onUpdate: () => void;
 };
 
@@ -64,12 +70,33 @@ const INITIAL: TorFellowshipProgress = {
   picks: [],
 };
 
-export function TorFellowshipPanel({ roomId, canManage, fellowship, onUpdate }: Props) {
+export function TorFellowshipPanel({
+  roomId,
+  canManage,
+  fellowship,
+  attributeTnBase,
+  onUpdate,
+}: Props) {
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState<string | null>(null);
 
   /** Enquanto a sala não tem calendário, opera sobre o inicial. */
   const state = fellowship ?? INITIAL;
+
+  async function setTnBase(usar18: boolean) {
+    setBusy(true);
+    setErr(null);
+    try {
+      // `null` apaga a opção e volta ao padrão do livro — gravar 20 deixaria a
+      // mesa que desligou indistinguível da que nunca mexeu.
+      await patchTorSession(roomId, { attributeTnBase: usar18 ? 18 : null });
+      onUpdate();
+    } catch (e) {
+      setErr(e instanceof Error ? e.message : "Falha ao salvar a regra de campanha");
+    } finally {
+      setBusy(false);
+    }
+  }
 
   /** A próxima Fase é Yule? Deriva do calendário — nunca de um botão manual. */
   const nextIsYule = state.phasesThisYear + 1 >= TOR_PHASES_PER_YEAR;
@@ -211,6 +238,23 @@ export function TorFellowshipPanel({ roomId, canManage, fellowship, onUpdate }: 
   return (
     <div className="tor-journey">
       {err ? <p className="dice-err">{err}</p> : null}
+
+      <section className="tor-journey__section">
+        <p className="eyebrow">Regras da campanha</p>
+        <label className="vtt-inline-check">
+          <input
+            type="checkbox"
+            checked={attributeTnBase === 18}
+            disabled={busy || !canManage}
+            onChange={(e) => void setTnBase(e.target.checked)}
+          />
+          Números-Alvo derivados de 18 (campanha curta ou jogo de uma sessão)
+        </label>
+        <p className="tor-journey__pending-hint">
+          Regra opcional do livro: em vez de NA = 20 − Atributo, use 18 − Atributo. É o que explica
+          o NA impresso nas fichas do Starter Set. Vale para todas as rolagens feitas nesta mesa.
+        </p>
+      </section>
 
       <section className="tor-journey__section">
         <p className="eyebrow">Calendário</p>

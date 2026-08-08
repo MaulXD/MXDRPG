@@ -147,6 +147,17 @@ export type TorCombatTokenFields = {
    * ícone de Sucesso numa rolagem de ataque bem-sucedida.
    */
   grappled?: boolean;
+  /**
+   * Só herói — Empurrão em aberto: a última perda de Resistência que ainda pode
+   * ser reduzida à metade "escolhendo ser empurrado" (06-fases-de-aventura-combate.md).
+   *
+   * Fica guardado porque a escolha é do jogador **depois** de ver o dano, e o
+   * ataque é uma requisição só, feita por outra pessoa (quem ataca). Sem a
+   * oferta gravada, o defensor não teria sobre o que decidir.
+   */
+  pushOffer?: { loss: number; round: number };
+  /** Rodada em que o herói já foi empurrado — "uma vez por rodada". */
+  pushedRound?: number;
   /** Nº de Dados de Proteção da armadura vestida (teste de Golpe Perfurante). */
   protectionDice: number;
   /** Só herói — TN de ataque = 20 - força + Bloqueio do alvo. */

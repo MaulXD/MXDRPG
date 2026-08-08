@@ -104,6 +104,85 @@ npm run sync:data:check       # após editar livros/
 
 ---
 
+### 2026-08-08 — Empurrão e a variante de NA 18: o combate fecha
+
+**Pedido:** continuar o loop.
+
+**Passo a passo:**
+
+1. **Empurrão — por que não cabia no fluxo normal.** A escolha é de quem **levou**
+   o golpe, mas o ataque é uma requisição só, mandada por quem **atacou**. Não dá
+   para pedir a decisão no meio. Solução: o ataque grava uma **oferta** no token
+   do herói (a perda e a rodada), e uma rota própria a aceita. Sem a oferta
+   gravada, o defensor não teria sobre o que decidir.
+
+2. **O arredondamento é do que fica, não do que volta.** "Reduzir à metade,
+   arredondando frações para cima": perder 7 deixa **4** de perda e devolve 3.
+   Arredondar o valor devolvido daria 4 — meio ponto de vantagem em toda perda
+   ímpar, sempre a favor do herói. O teste confere a aritmética de verdade,
+   importando a função e checando 0, 1, 3, 7 e 8.
+
+3. **Um detalhe que passaria batido:** se o golpe zerou a Resistência, amortecer
+   devolve o herói ao combate — a marca de derrotado precisa sair junto, senão
+   ele fica de pé com Resistência positiva **e** marcado como fora.
+
+4. **O custo que o app não cobra.** O livro cobra a próxima ação principal, e a
+   VTT não modela ação principal no Um Anel. Em vez de fingir, a mensagem do chat
+   diz o custo para a mesa cobrar — e o teste exige que a frase continue lá.
+
+5. **NA 18 — opção de mesa, não da ficha.** O mesmo herói pode jogar uma one-shot
+   e uma campanha longa, então a variante mora no `torSession` da sala, com
+   controle no painel de campanha (que já é o de escopo de campanha: calendário e
+   Yule) e só para o Mestre. Desligar **apaga** em vez de gravar 20 — gravar 20
+   deixaria "nunca mexeu" e "desligou" indistinguíveis.
+
+6. **Bug real que a mudança expôs:** `resolve-attack.ts` tinha a fórmula do NA
+   **duplicada** (`return 20 - strength`). Com a base virando opção, as duas
+   cópias divergiriam na primeira mesa que ligasse 18 — o ataque continuaria em
+   20 enquanto todo o resto ia para 18. Passou a importar de `rules.ts`, com
+   asserção proibindo a duplicata voltar.
+
+7. **Validação.** `npx tsc --noEmit` limpo · `npm run build` compila, com
+   `/api/room/[roomId]/tor-push` registrada · `npm run test` verde com **1681
+   asserções**.
+
+**Duas asserções antigas passaram a trancar a regra errada** — a que exigia
+`return 20 - score;` literal em `attributeTN` (o 20 virou o padrão do parâmetro,
+o que preserva exatamente a mesma garantia) e a da sessão vazia, que precisava
+passar a contar `attributeTnBase`: uma mesa que só ligou a regra opcional, sem
+jornada nem conselho, **precisa** gravar estado, senão a opção se perderia no
+próximo save. Quinta vez que este padrão aparece.
+
+**Cuidado com o teste, não com o código:** o teste importa `push.ts` para conferir
+a conta, e o `catch` do import poderia apagar as cinco checagens em silêncio.
+Acrescentei uma asserção que falha se o import não vier — teste que some sozinho
+é pior que teste que não existe.
+
+**Limite conhecido:** a ficha aberta **fora** de uma sala não conhece a mesa e
+cai no NA 20. O parâmetro existe para quem conhece passar (ataque e Tarefa de
+Combate já passam); a ficha avulsa não tem como saber.
+
+**Arquivos tocados:**
+- `lib/combat/um-anel/push.ts` — **novo**: a conta do Empurrão e seus limites
+- `lib/room/handlers/tor-push.ts` · `app/api/room/[roomId]/tor-push/route.ts` — **novos**
+- `lib/room/handlers/tor-combat-attack.ts` — grava a oferta e usa a base de NA da mesa
+- `lib/combat/um-anel/session-state.ts` — `attributeTnBase` no estado da mesa
+- `lib/character/um-anel/rules.ts` · `dice.ts` · `lib/combat/um-anel/resolve-attack.ts` — base do NA
+- `app/api/room/[roomId]/tor-session/route.ts` · `hooks/useRoomSync.ts`
+- `components/vtt/TorFellowshipPanel.tsx` · `TorAttackPopup.tsx` · `mesa/MesaFoundryFloatingWindows.tsx`
+- `scripts/verify-um-anel-empurrao-na18.mjs` — **novo**, 38 asserções
+- `scripts/verify-um-anel-pregens.mjs` · `verify-um-anel-session-state.mjs` — asserções atualizadas
+
+**Como testar:** bater num herói e conferir que aparece "Ser empurrado (+N)" no
+popup dele, com N = metade da perda arredondada para baixo. Aceitar, e a
+Resistência sobe. Tentar de novo na mesma rodada: recusa. No painel de campanha,
+marcar "Números-Alvo derivados de 18" e conferir que o NA de ataque cai 2.
+
+**Falta:** Elmo removível em combate; converter as campanhas de 1ª edição; glyph
+da runa de Gandalf (bloqueado na fonte).
+
+---
+
 ### 2026-08-08 — Os quatro Danos Especiais que faltavam (Aparar, Investida de Escudo, Quebrar Escudo, Agarrar)
 
 **Pedido:** continuar o loop.

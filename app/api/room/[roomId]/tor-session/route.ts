@@ -35,6 +35,11 @@ export async function PATCH(req: Request, { params }: Params) {
   if ("journey" in body) patch.journey = body.journey as TorSessionPatch["journey"];
   if ("council" in body) patch.council = body.council as TorSessionPatch["council"];
   if ("fellowship" in body) patch.fellowship = body.fellowship as TorSessionPatch["fellowship"];
+  // Regra opcional de NA (18 em vez de 20) — decisão de mesa, por isso entra
+  // aqui, na rota que só o Mestre alcança.
+  if ("attributeTnBase" in body) {
+    patch.attributeTnBase = body.attributeTnBase as TorSessionPatch["attributeTnBase"];
+  }
 
   if (Object.keys(patch).length === 0) {
     return NextResponse.json({ error: "Nada para salvar" }, { status: 400 });

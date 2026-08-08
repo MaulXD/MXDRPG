@@ -9,8 +9,10 @@ import {
   postRoomAttack,
   postRoomTorStance,
   postRoomTorTask,
+  postRoomTorPush,
   type RoomApiPayload,
 } from "@/hooks/useRoomSync";
+import { torPushRecovery } from "@/lib/combat/um-anel/push";
 import { TOR_COMBAT_TASK_BY_ID } from "@/lib/combat/um-anel/combat-tasks";
 import { ADVERSARY_PIERCE_BONUS, heroPierceBonus } from "@/lib/combat/um-anel/special-damage";
 import {
@@ -194,6 +196,27 @@ export function TorAttackPopup({ token, allTokens, roomId, onClose, onRoomSync }
     [isHero, stance]
   );
 
+  /* A rodada não vem no popup; a oferta gravada no token já carrega a rodada em
+     que o golpe caiu, e o servidor é quem confere se ainda vale. Aqui só se
+     calcula quanto seria recuperado, para o botão dizer o número. */
+  const pushRecovery =
+    isHero && combat?.pushOffer && combat.pushedRound !== combat.pushOffer.round
+      ? torPushRecovery(combat.pushOffer.loss)
+      : 0;
+
+  async function push() {
+    if (busy) return;
+    setBusy(true);
+    setErr(null);
+    try {
+      onRoomSync(await postRoomTorPush(roomId, token.id));
+    } catch (e) {
+      setErr(e instanceof Error ? e.message : "Falha ao amortecer o golpe");
+    } finally {
+      setBusy(false);
+    }
+  }
+
   async function runTask() {
     if (!task || busy) return;
     setBusy(true);
@@ -309,6 +332,21 @@ export function TorAttackPopup({ token, allTokens, roomId, onClose, onRoomSync }
             ))}
           </select>
         </label>
+
+        {/* A oferta aparece pra quem LEVOU o golpe, não pra quem bateu — por
+            isso mora no popup do próprio herói e some ao ser aceita. */}
+        {pushRecovery > 0 ? (
+          <div className="vtt-field">
+            <span>Empurrão</span>
+            <span className="vtt-field__hint">
+              Rolar com o golpe recupera {pushRecovery} de Resistência e gasta sua próxima ação
+              principal recuperando a posição. Uma vez por rodada.
+            </span>
+            <button type="button" className="btn btn-ghost" disabled={busy} onClick={() => void push()}>
+              {busy ? "Cedendo terreno…" : `Ser empurrado (+${pushRecovery})`}
+            </button>
+          </div>
+        ) : null}
 
         {task ? (
           <div className="vtt-field">

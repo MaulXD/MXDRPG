@@ -153,12 +153,18 @@ function torSheetIllFavoured(character: TorCharacterSheet): boolean {
   });
 }
 
+/**
+ * `attributeTnBase` cobre a regra opcional de campanha curta (NA 18). Quem
+ * conhece a mesa passa; a ficha aberta fora de uma sala não tem como saber e
+ * cai no padrão do livro, que é 20.
+ */
 export function rollTorSkillCheck(
   character: TorCharacterSheet,
-  skillId: TorSkillId
+  skillId: TorSkillId,
+  attributeTnBase?: number
 ): { outcome: TorRollOutcome; message: string } {
   const group = skillGroup(skillId);
-  const tn = attributeTN(character.attributes[group]);
+  const tn = attributeTN(character.attributes[group], attributeTnBase);
   const rank = character.skills[skillId] ?? 0;
   const favoured = character.favouredSkills.includes(skillId);
   const outcome = rollTorCheck({
@@ -177,9 +183,10 @@ export function rollTorSkillCheck(
 
 export function rollTorCombatProficiencyCheck(
   character: TorCharacterSheet,
-  profId: TorCombatProficiencyId
+  profId: TorCombatProficiencyId,
+  attributeTnBase?: number
 ): { outcome: TorRollOutcome; message: string } {
-  const tn = attributeTN(character.attributes.forca);
+  const tn = attributeTN(character.attributes.forca, attributeTnBase);
   const rank = character.combatProficiencies[profId] ?? 0;
   // Proficiências de Combate nunca são Favorecidas por serem Proficiências (não
   // existe "Proficiência Favorecida" como as Perícias) — só uma Virtude pode

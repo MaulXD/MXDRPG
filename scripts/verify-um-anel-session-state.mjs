@@ -91,9 +91,12 @@ ok(
   "Resistência do Conselho validada por isTorCouncilResistance",
   /isTorCouncilResistance\(resistance\)/.test(STATE)
 );
+/* A guarda ganhou `attributeTnBase` quando a variante de NA virou opção de mesa:
+   uma sala que só ligou a regra opcional, sem jornada/conselho/companhia, PRECISA
+   gravar estado — senão a opção se perderia no próximo save. */
 ok(
   "Sessão vazia devolve undefined (não infla o JSON da sala)",
-  /if \(!journey && !council && !fellowship\) return undefined;/.test(STATE)
+  /if \(!journey && !council && !fellowship && !attributeTnBase\) return undefined;/.test(STATE)
 );
 
 /* ── Patch: null apaga, ausente mantém ───────────────────────────── */

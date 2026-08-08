@@ -752,6 +752,21 @@ export async function postRoomTorStance(
   return res.json() as Promise<RoomApiPayload>;
 }
 
+/** Um Anel — o herói aceita ser empurrado e amortece metade do último golpe. */
+export async function postRoomTorPush(roomId: string, tokenId: string) {
+  const res = await roomFetch(
+    `/api/room/${roomId}/tor-push`,
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "same-origin",
+      body: JSON.stringify({ tokenId }),
+    },
+    "Falha ao amortecer o golpe"
+  );
+  return res.json() as Promise<RoomApiPayload>;
+}
+
 /** Um Anel — executa a Tarefa de Combate ligada à postura do herói. */
 export async function postRoomTorTask(
   roomId: string,
@@ -1140,6 +1155,8 @@ export async function patchTorSession(
     journey?: unknown | null;
     council?: unknown | null;
     fellowship?: unknown | null;
+    /** Regra opcional: 18 em campanhas curtas; `null` volta ao padrão 20. */
+    attributeTnBase?: 18 | 20 | null;
   }
 ) {
   const res = await roomFetch(

@@ -24,6 +24,7 @@ import {
   type TorRoundEffect,
 } from "@/lib/combat/um-anel/round-effects";
 import { axialDistance } from "@/lib/vtt/grid-math";
+import { torAttributeTnBase } from "@/lib/combat/um-anel/session-state";
 import { syncCombatOrderWithTokens } from "../combat-order";
 import { getRoom, persistRoom, toSnapshot } from "../internal/registry";
 import type { ChatMessage } from "../chat";
@@ -415,6 +416,9 @@ export async function executeRoomTorAttack(
     canBreakShield,
     canSeize,
     canEscape,
+    // Regra opcional de campanha curta (NA 18) — vem do estado da mesa, não da
+    // ficha: o mesmo herói pode jogar uma one-shot e uma campanha longa.
+    attributeTnBase: torAttributeTnBase(room.torSession),
     attackerEngagedByCount:
       atkCombat.kind === "hero" ? countEngagingFoes(room.scene.tokens, attackerToken) : 0,
   });
@@ -433,6 +437,17 @@ export async function executeRoomTorAttack(
     tokens[atkIdx] = {
       ...tokens[atkIdx]!,
       torCombat: { ...tokens[atkIdx]!.torCombat!, roundEffects: attackerRoundEffects },
+    };
+  }
+
+  /* Empurrão fica em OFERTA, nunca aplicado sozinho: a escolha é do jogador que
+     levou o golpe, e quem manda esta requisição é quem atacou. Adversário não
+     recebe oferta — o livro proíbe. */
+  if (result.hit && result.enduranceLoss > 0 && defCombat.kind === "hero") {
+    const atual = tokens[defIdx]!.torCombat!;
+    tokens[defIdx] = {
+      ...tokens[defIdx]!,
+      torCombat: { ...atual, pushOffer: { loss: result.enduranceLoss, round } },
     };
   }
 

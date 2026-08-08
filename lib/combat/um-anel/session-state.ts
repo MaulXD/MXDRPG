@@ -89,6 +89,16 @@ export type TorSessionState = {
   journey?: TorJourneyProgress | null;
   council?: TorCouncilState | null;
   fellowship?: TorFellowshipProgress | null;
+  /**
+   * Base do Número-Alvo dos Atributos. Padrão 20; **18** é a regra opcional do
+   * quadro "Ajustando os Números-Alvo" (02-resolucao-de-acoes.md), para campanhas
+   * curtas ou jogo de uma sessão.
+   *
+   * É opção de mesa, e não da ficha: o mesmo herói pode ser levado a uma
+   * campanha longa e a uma one-shot. É também o que explica o NA impresso nas
+   * fichas pré-geradas do Starter Set (ver 11-personagens-exemplo.md).
+   */
+  attributeTnBase?: 18 | 20;
 };
 
 /* ══════════════════════════════════════════════════════════════════════
@@ -215,12 +225,22 @@ export function normalizeTorSession(raw: unknown): TorSessionState | undefined {
   const council = normalizeCouncil(r.council);
   const fellowship = normalizeFellowship(r.fellowship);
 
-  if (!journey && !council && !fellowship) return undefined;
+  // 18 só entra se estiver escrito exatamente assim — qualquer outro valor cai
+  // no padrão do livro, que é 20.
+  const attributeTnBase = r.attributeTnBase === 18 ? (18 as const) : undefined;
+
+  if (!journey && !council && !fellowship && !attributeTnBase) return undefined;
   return {
     ...(journey ? { journey } : {}),
     ...(council ? { council } : {}),
     ...(fellowship ? { fellowship } : {}),
+    ...(attributeTnBase ? { attributeTnBase } : {}),
   };
+}
+
+/** Base do NA em uso na mesa — 20 quando a opção não foi ligada. */
+export function torAttributeTnBase(session: TorSessionState | undefined): number {
+  return session?.attributeTnBase === 18 ? 18 : 20;
 }
 
 /**
@@ -232,6 +252,8 @@ export type TorSessionPatch = {
   journey?: TorJourneyProgress | null;
   council?: TorCouncilState | null;
   fellowship?: TorFellowshipProgress | null;
+  /** `null` volta ao padrão do livro (20). */
+  attributeTnBase?: 18 | 20 | null;
 };
 
 export function applyTorSessionPatch(
@@ -251,6 +273,12 @@ export function applyTorSessionPatch(
   if ("fellowship" in patch) {
     if (patch.fellowship === null) delete next.fellowship;
     else next.fellowship = normalizeFellowship(patch.fellowship) ?? undefined;
+  }
+  if ("attributeTnBase" in patch) {
+    // Só 18 é gravado; 20 é o padrão e some do estado, para uma mesa que nunca
+    // mexeu na opção ficar indistinguível de uma que a desligou.
+    if (patch.attributeTnBase === 18) next.attributeTnBase = 18;
+    else delete next.attributeTnBase;
   }
 
   if (!next.journey && !next.council && !next.fellowship) return undefined;
