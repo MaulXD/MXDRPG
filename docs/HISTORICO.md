@@ -104,6 +104,63 @@ npm run sync:data:check       # após editar livros/
 
 ---
 
+### 2026-08-08 — "A Torre de Urzal Seco": Wilderland fechada, sete de sete
+
+**Pedido:** continuar o loop — converter as campanhas de 1ª edição.
+
+**Passo a passo:**
+
+1. **Aventura 7 convertida, e com ela *Tales from Wilderland* está inteira** — seis
+   partes e epílogo, das páginas 132–151, em
+   `livros/um-anel/21-wilderland-07-a-torre-de-urzal-seco.md`. **Sete aventuras,
+   sete arquivos, 459 asserções só sobre a campanha.**
+
+2. **Um Conselho em que a audiência é um adversário.** A negociação com **Raenar,
+   o Grande Dragão de Gelo**, é o encontro social mais estranho da campanha: a
+   Companhia tenta convencer um dragão vivo a não matá-los e, se possível, a
+   ajudá-los. Converte para Conselho sem forçar nada — atitude **Relutante**, e
+   escolher um anão ou elfo como porta-voz faz Raenar **tentar matar o porta-voz na
+   hora** (CVR-020).
+
+3. **A Armadura com dois valores.** O bloco de Raenar traz `6d/1d*` — 6 dados
+   normalmente, **1 no ponto fraco**. A 2ª edição escreve Armadura como número de
+   dados, e os dois cabem: quem decide qual usar é a habilidade **Ponto Fraco**. Há
+   asserção exigindo que a linha guarde os **dois** valores — reduzi-la a um número
+   só apagaria a regra que torna o dragão derrotável.
+
+4. **"Agarrar Vítima" não é habilidade na 2ª edição.** O Troll da Neve tem a
+   habilidade no bloco de 1ª edição, mas na 2ª isso é a opção de **Dano Especial
+   Agarrar**, gasta com um ícone de Sucesso (CVR-010). Três das quatro habilidades
+   dele já existiam no bestiário com nome próprio: **Força Horrenda**, **Infundir
+   Medo**, e **Criatura grande**.
+
+5. **Quatro aventuras dependem agora das mesmas duas descrições ausentes.**
+   "Investida Selvagem" e "Encarnação do Horror" aparecem nas aventuras 3, 5, 6 e 7
+   — sempre apenas **nomeadas**, nunca descritas. É a lacuna mais repetida da
+   conversão.
+
+6. **Uma observação que só aparece no fim.** Esta é a **única das sete aventuras**
+   em que a lacuna de **Prestígio** não precisou ser contornada — nas outras seis,
+   ela aparece de uma a cinco vezes cada.
+
+7. **Validação.** `npx tsc --noEmit` limpo · `npm run build` compila ·
+   `npm run test` verde com **2759 asserções**. Uma asserção foi quebrada de
+   propósito — a Armadura de dois valores virando um número só — e falhou como devia.
+
+**Arquivos tocados:**
+- `livros/um-anel/21-wilderland-07-a-torre-de-urzal-seco.md` — **novo**
+- `scripts/verify-um-anel-aventuras-wilderland.mjs` — a aventura 7 na lista
+
+**Como testar:** ler o arquivo. A Parte VI traz a torre inteira, o Uivo da Montanha
+(uma armadilha que a própria Companhia pode armar) e as duas formas de derrotar um
+espírito que não pode ser atacado.
+
+**Falta:** *The Darkening of Mirkwood* — campanha de 30 anos, estrutura ano a ano,
+que pede planejamento antes da conversão. Dez Vigores, bloco de Aranha e de Troll da
+Colina (lacunas de fonte); glyph da runa de Gandalf.
+
+---
+
 ### 2026-08-08 — "A Travessia do Celduin": torneios, veneno e o Rei Enforcado
 
 **Pedido:** continuar o loop — converter as campanhas de 1ª edição.
