@@ -40,6 +40,10 @@ export async function PATCH(req: Request, { params }: Params) {
   if ("attributeTnBase" in body) {
     patch.attributeTnBase = body.attributeTnBase as TorSessionPatch["attributeTnBase"];
   }
+  // Olho de Mordor — outra regra OPCIONAL: ligar/desligar, região e
+  // modificadores do limiar. O aumento e o episódio de Revelação vão pela rota
+  // própria, porque precisam narrar no chat.
+  if ("eye" in body) patch.eye = body.eye as TorSessionPatch["eye"];
 
   if (Object.keys(patch).length === 0) {
     return NextResponse.json({ error: "Nada para salvar" }, { status: 400 });

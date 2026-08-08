@@ -308,6 +308,7 @@ export function MesaFoundryDockRail({
               roomId={roomId}
               canManage={Boolean(effectiveIsGm)}
               progress={torSession?.journey ?? null}
+              eye={torSession?.eye ?? null}
               onUpdate={() => void onRefresh()}
             />
           </div>

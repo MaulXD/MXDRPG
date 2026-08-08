@@ -11,6 +11,7 @@ import {
   type TorShadowSource,
   type TorSpiritState,
 } from "@/lib/combat/um-anel/shadow";
+import { applyTorEyeShadowGain } from "./tor-eye";
 import { appendRoomChatMessage } from "./chat";
 import { getRoom, persistRoom, toSnapshot } from "../internal/registry";
 import type { ChatMessage } from "../chat";
@@ -111,6 +112,13 @@ export async function executeRoomTorShadow(
     shadow = result.state.shadow;
     shadowScars = result.state.shadowScars;
     text = formatTorShadowGainMessage(token.name, input, result);
+    /* "Sempre que um herói-jogador ganha 1 ou mais pontos de Sombra fora do
+       combate, aumente o nível de Atenção do Olho em quantidade igual"
+       (08-mestre-e-adversarios.md). Deixar isso a cargo de o Mestre lembrar de
+       clicar num segundo painel é o mesmo que não implementar. Devolve `null`
+       quando a mesa não ligou a regra opcional, ou quando há combate em curso. */
+    const olho = applyTorEyeShadowGain(room, result.state.shadow - state.shadow);
+    if (olho) text += ` · ${olho}`;
   }
 
   // Grava ANTES de anunciar: se a ficha recusar, a mesa não pode ter lido no
