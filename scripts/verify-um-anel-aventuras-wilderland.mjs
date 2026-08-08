@@ -440,6 +440,100 @@ const AVENTURAS = [
       );
     },
   },
+  {
+    arquivo: "19-wilderland-05-a-escuridao-nos-pantanos.md",
+    titulo: "A Escuridão nos Pântanos",
+    cvrObrigatorias: {
+      "CVR-004": "Orcs e Wargs são de Ódio; Magric é Homem Mau, de Resolução",
+      "CVR-006": "a Armadura de Ghor, lida na tabela da 2ª edição",
+      "CVR-012": "as Habilidades Sinistras reaproveitadas, e a que virou lacuna",
+      "CVR-013": "as perícias renomeadas",
+      "CVR-016": "o NA fixo que some",
+      "CVR-017": "a dificuldade que vira Complicação/Vantagem",
+      "CVR-018": "os graus de sucesso na Caçada",
+      "CVR-019": "as ações prolongadas que viram Empreitada de Perícia",
+      "CVR-020": "as Tolerâncias que viram Conselho",
+      "CVR-021": "os Eventos de Jornada e a marcha forçada",
+      "CVR-024": "os pontos de Sombra com fonte declarada",
+      "CVR-028": "a tabela de queda, lida ao contrário",
+      "CVR-030": "as lacunas — Vigor e Prestígio",
+    },
+    adversarios: {
+      "Soldado Orc": "soldado-orc",
+      "Arqueiro Goblin": "arqueiro-goblin",
+      "Guarda-costas Grande Orc": "guarda-costas-grande-orc",
+      "Chefe Grande Orc": "chefe-grande-orc",
+      Warg: "warg",
+    },
+    /* Só Ghor ganha bloco próprio. */
+    blocosEsperados: 1,
+    extra(AV) {
+      for (const [campo, valor] of [
+        ["Nível de Atributo", "6"],
+        ["Resistência", "35"],
+        ["Ódio", "6"],
+        ["Bloqueio", "5"],
+        ["Armadura", "4"],
+      ]) {
+        ok(`  Ghor: ${campo} = ${valor}`, new RegExp(`\\| ${campo} \\| ${valor} \\|`).test(AV));
+      }
+      ok(
+        "  o Vigor de Ghor fica declarado como lacuna",
+        /\| Vigor \| \*\*lacuna/.test(AV) && !/\| Vigor \| \d+ \|/.test(AV),
+        "Ghor sobrevive para a sequência — o texto não diz quantas Feridas o abatem"
+      );
+
+      /* A Armadura 4 sai da MESMA derivação usada com Valter na aventura 3. Se a
+         tabela de armaduras mudar, as duas contas escritas falham juntas. */
+      const DATA = readFileSync(root("lib", "character", "um-anel", "data.ts"), "utf8");
+      ok(
+        "  Armadura 4 = Cota de Malha (3d) + Elmo (+1d), como manda a tabela",
+        /label: "Cota de Malha", protection: "3d"/.test(DATA) &&
+          /label: "Elmo",\s*\n\s*protection: "\+1d"/.test(DATA) &&
+          /\*\*Armadura 4\*\* = \*\*Cota de Malha \(3d\) \+ Elmo \(\+1d\)\*\*/.test(AV)
+      );
+
+      /* As três Habilidades Sinistras vêm do bestiário; a quarta é lacuna. */
+      for (const hab of ["Grito de Triunfo", "Rijeza Hedionda", "Força Horrenda"]) {
+        ok(
+          `  "${hab}" existe no bestiário e é usada por Ghor`,
+          new RegExp(`name: "${hab}"`).test(ADVERSARIES) && AV.includes(hab)
+        );
+      }
+      ok(
+        '  "Investida Selvagem" continua lacuna, e não virou habilidade nova',
+        /Investida Selvagem/.test(AV) && !/name: "Investida Selvagem"/.test(ADVERSARIES),
+        "o original só a NOMEIA — inventar o efeito seria criar regra"
+      );
+
+      /* O veneno da cobra amarra à regra do capítulo 8, que entrou no motor. */
+      ok(
+        "  o veneno da cobra usa a regra de Veneno da 2ª edição",
+        /não pode descansar/.test(AV) && /Runa de Gandalf/.test(AV) && /Gravíssimo/.test(AV)
+      );
+
+      /* "Exausto" NÃO pode ser atribuído — o efeito descrito é o de Arrasado. */
+      ok(
+        "  o medo no templo virou Teste de Sombra, não Exausto atribuído",
+        /Teste de Sombra \(Pavor, resistido com VALOR\)/.test(AV) &&
+          /Exausto na 2ª\s*[\s>]*edição é derivado de Carga\+Fadiga e não se atribui/.test(AV),
+        "o original dizia 'considerados Exaustos', e Exausto não se atribui"
+      );
+
+      /* A tabela de queda desta aventura é lida no mesmo sentido da de Fontes de
+         Dano: a Runa salva e o Olho mata. */
+      ok(
+        "  a tabela de queda é lida com a Runa salvando e o Olho matando",
+        /\*\*Runa salva\*\* e o \*\*Olho é o pior resultado\*\*/.test(AV)
+      );
+
+      /* Magric é o eixo social: Homem Mau, de Resolução, e precisa sobreviver. */
+      ok(
+        "  Magric é declarado Homem Mau com Resolução",
+        /Magric é um Homem Mau, e tem Resolução/.test(AV)
+      );
+    },
+  },
 ];
 
 /* ══════════════════════════════════════════════════════════════════════

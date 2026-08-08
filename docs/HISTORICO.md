@@ -104,6 +104,75 @@ npm run sync:data:check       # após editar livros/
 
 ---
 
+### 2026-08-08 — "A Escuridão nos Pântanos": as bênçãos do mago e a Caçada
+
+**Pedido:** continuar o loop — converter as campanhas de 1ª edição.
+
+**Passo a passo:**
+
+1. **Aventura 5 de *Tales from Wilderland* convertida por inteiro** — oito partes e
+   epílogo, das páginas 79–102, em
+   `livros/um-anel/19-wilderland-05-a-escuridao-nos-pantanos.md`. É a mais longa da
+   conversão até agora.
+
+2. **As bênçãos de Radagast precisaram da mesma tradução mecânica da aventura 3.**
+   O original dá "um bônus de Atributo livre" em cada uma. A 2ª edição não tem bônus
+   de Atributo gasto em rolagens — o que existe é o bônus de **Esperança**. A
+   conversão fiel é **dar o dado sem cobrar o ponto**: *ganha (1d)* de graça na
+   perícia que a bênção protege.
+
+3. **O veneno da cobra fechou outro ciclo.** O original só diz "o personagem é
+   envenenado, ver as regras de veneno" e improvisa um limite de tentativas de Cura.
+   A 2ª edição tem a regra inteira, e ela entrou no motor há cinco rodadas: não pode
+   descansar, rola perda de Resistência ao fim de cada dia, uma Runa cura, e a
+   rolagem de Cura cura perdendo (1d) ou (2d) conforme o nível.
+
+4. **A Caçada da Parte VII é um subsistema próprio da aventura, e sobreviveu
+   inteiro.** A Vantagem começa igual ao maior Viagem da Companhia, cai a cada teste
+   de jornada falhado, e sobe com Caçada e Exploração. Só os NAs viraram degraus de
+   Complicação (CVR-016, CVR-017) — a estrutura é da aventura e não conflita com
+   nada da 2ª edição.
+
+5. **Três das quatro Habilidades Sinistras de Ghor já existiam com nome da 2ª
+   edição.** "Voz Imperiosa" é **Grito de Triunfo**, "Resiliência Terrível" é
+   **Rijeza Hedionda**, "Força Aterradora" é **Força Horrenda** — todas no bestiário.
+   A quarta, "Investida Selvagem", é a **mesma lacuna já registrada com Oderic** na
+   aventura 3: o original só a nomeia, sem descrever efeito.
+
+6. **A Armadura de Ghor sai da mesma derivação de Valter.** Cota de Malha (3d) +
+   Elmo (+1d) = **4**, lido na tabela da 2ª edição. A asserção confere **tabela e
+   texto ao mesmo tempo** — se o Elmo mudar de valor, as contas escritas nas duas
+   aventuras falham juntas.
+
+7. **"Considerados Exaustos" outra vez, e outra vez não era Exausto.** No templo, o
+   original diz que os companheiros ficam "assustados e são considerados Exaustos".
+   Na 2ª edição Exausto é derivado de Carga+Fadiga e **não se atribui**; o efeito
+   descrito — medo que tolhe — é o de **Arrasado**, que vem de Sombra. Virou Teste de
+   Sombra (Pavor/VALOR).
+
+8. **A guarda de "Tolerância" pegou o mesmo tropeço da aventura 3.** O parágrafo da
+   lacuna de Prestígio citava "na Tolerância de Radagast, na de Hartfast" sem dizer
+   no que a Tolerância virou. Reescrito — e vale notar que a guarda pegou o mesmo
+   erro em duas aventuras seguidas, o que é exatamente o que ela existe para fazer.
+
+9. **Validação.** `npx tsc --noEmit` limpo · `npm run build` compila ·
+   `npm run test` verde com **2589 asserções**. Uma asserção foi quebrada de
+   propósito — o Vigor de Ghor virando número — e falhou como devia.
+
+**Arquivos tocados:**
+- `livros/um-anel/19-wilderland-05-a-escuridao-nos-pantanos.md` — **novo**
+- `scripts/verify-um-anel-aventuras-wilderland.mjs` — a aventura 5 na lista
+
+**Como testar:** ler o arquivo. A Parte VI (o assalto furtivo ao Chifre da
+Feitiçaria) é a mais mecânica, e a Caçada da Parte VII roda sozinha com a régua de
+Vantagem.
+
+**Falta:** aventuras 6 e 7 de Wilderland; *The Darkening of Mirkwood*; cinco
+Vigores, bloco de Aranha e de Troll da Colina (lacunas de fonte); glyph da runa de
+Gandalf.
+
+---
+
 ### 2026-08-08 — "Aqueles Que Não Permanecem Mais": o Conselho que é por herói, e o sonho
 
 **Pedido:** continuar o loop — converter as campanhas de 1ª edição.
