@@ -290,3 +290,75 @@ ok(
 
 console.log(`\nverify-um-anel-journey: ${pass} passaram, ${fail} falharam`);
 if (fail > 0) process.exit(1);
+
+/* ══════════════════════════════════════════════════════════════════════
+   Papéis da Jornada chegam à mesa
+   ══════════════════════════════════════════════════════════════════════
+
+   O motor sempre soube que o evento cai sobre um PAPEL, e o painel já dizia "o
+   Caçador rola Caçada" — mas `validateTorRoleAssignment` não tinha consumidor e
+   NINGUÉM era atribuído a papel nenhum. A mesa tinha de lembrar de cabeça quem
+   era o Caçador, e sair com um papel descoberto só aparecia no primeiro evento
+   daquele papel, no meio da viagem.
+
+   E o painel imprimia o ID da Perícia ("caca", "percepcao") em vez do rótulo da
+   ficha ("Caçada", "Vigilância") — a mesma divergência id × rótulo que já tinha
+   sido unificada nos capítulos, vazando por outro caminho. */
+
+const PANEL_JOURNEY = readFileSync(
+  join(__dirname, "..", "components", "vtt", "TorJourneyPanel.tsx"),
+  "utf8"
+);
+const SESSION_TS = readFileSync(
+  join(__dirname, "..", "lib", "combat", "um-anel", "session-state.ts"),
+  "utf8"
+);
+
+ok(
+  "painel valida os papéis antes de partir",
+  /validateTorRoleAssignment\(draftRoles\)/.test(PANEL_JOURNEY),
+  "sair com o Caçador vago só apareceria no meio da viagem"
+);
+ok(
+  "a validação barra a partida",
+  /if \(!check\.ok\) throw new Error\(check\.reason\)/.test(PANEL_JOURNEY),
+  "validar sem barrar seria decorativo"
+);
+ok("papéis são guardados na jornada", /roles\?: TorRoleAssignment/.test(SESSION_TS));
+ok("papéis são recortados na leitura", /function normalizeRoles/.test(SESSION_TS));
+ok(
+  "painel oferece os quatro papéis",
+  /TOR_JOURNEY_ROLES\.map\(\(role\) =>/.test(PANEL_JOURNEY)
+);
+ok(
+  "o evento diz QUEM cobre o papel",
+  /progress\.roles\?\.\[progress\.pending\.role\]/.test(PANEL_JOURNEY)
+);
+
+/* O id da Perícia não pode mais aparecer cru na tela nem no chat. */
+ok(
+  "painel imprime o rótulo da Perícia, não o id",
+  /SKILL_LABEL\[roleMeta\.skillId as TorSkillId\]/.test(PANEL_JOURNEY) &&
+    /SKILL_LABEL\[progress\.pending\.skillId as TorSkillId\]/.test(PANEL_JOURNEY),
+  "a ficha diz 'Caçada'; imprimir 'caca' manda o jogador procurar o que não existe"
+);
+ok(
+  "nenhum id de Perícia é impresso cru",
+  !/\{roleMeta\.skillId\}/.test(PANEL_JOURNEY) && !/\{progress\.pending\.skillId\}/.test(PANEL_JOURNEY)
+);
+
+/* Regra do livro: um Guia só, e nenhum papel descoberto. */
+ok("só pode haver um Guia", /Só pode haver um Guia/.test(SRC));
+ok("a Companhia precisa cobrir os quatro papéis", /Papéis sem ninguém/.test(SRC));
+
+/* Dívida que continua: Áreas Perigosas (JOR-M05) — a Companhia para ao entrar e
+   enfrenta um evento por ponto de Perigo. O motor existe e segue sem chamador. */
+const CONSUMIDORES_JORNADA = [PANEL_JOURNEY, SESSION_TS];
+ok(
+  "torPerilousAreaEventCount segue sem consumidor (dívida registrada)",
+  !CONSUMIDORES_JORNADA.some((s) => /torPerilousAreaEventCount\(/.test(s)),
+  "ligou? então atualize esta asserção"
+);
+
+console.log(`\nverify-um-anel-journey (papéis): ${pass} passaram, ${fail} falharam`);
+if (fail > 0) process.exit(1);

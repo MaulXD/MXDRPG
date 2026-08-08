@@ -234,3 +234,24 @@
     min-height: 2.5rem;
   }
 }
+
+/* Papéis da Jornada, no formulário de partida. Grade de duas colunas para os
+   quatro papéis caberem sem esticar o painel. */
+.tor-journey__roles {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+  gap: 0.5rem;
+  margin: 0.5rem 0;
+}
+
+.tor-journey__roles input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0.4rem 0.55rem;
+  border-radius: 6px;
+  border: 1px solid var(--glass-border);
+  background: var(--surface-inset);
+  color: var(--text);
+  font-size: 0.82rem;
+  font-family: inherit;
+}

@@ -3,9 +3,17 @@
 import { useCallback, useMemo, useState } from "react";
 import { patchTorSession, postRoomChat } from "@/hooks/useRoomSync";
 import { rollTorCheck, featDieRollPayload } from "@/lib/character/um-anel/dice";
+/* O papel guarda o ID da Perícia ("caca", "percepcao"); a mesa lê o RÓTULO da
+   ficha ("Caçada", "Vigilância"). O painel imprimia o id cru — o Mestre lia
+   "Caçador rola caca" e o jogador procurava "caca" numa ficha que diz "Caçada". */
+import { SKILL_LABEL } from "@/lib/character/um-anel/data";
+import type { TorSkillId } from "@/lib/character/um-anel/types";
 import {
   TOR_JOURNEY_EVENT_META,
+  TOR_JOURNEY_ROLES,
   TOR_JOURNEY_ROLE_META,
+  validateTorRoleAssignment,
+  type TorRoleAssignment,
   TOR_REGION_META,
   TOR_REGION_TYPES,
   TOR_SEASONS,
@@ -67,6 +75,9 @@ export function TorJourneyPanel({ roomId, canManage, progress, onUpdate }: Props
   const [draftRegion, setDraftRegion] = useState<TorRegionType>("selvagem");
   const [draftMounted, setDraftMounted] = useState(false);
   const [draftForced, setDraftForced] = useState(false);
+  /* Papéis da Jornada. Nome digitado, não id de ficha: o Guia pode ser um PNJ,
+     e o que a mesa lê é o apelido. */
+  const [draftRoles, setDraftRoles] = useState<TorRoleAssignment>({});
 
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState<string | null>(null);
@@ -142,11 +153,20 @@ export function TorJourneyPanel({ roomId, canManage, progress, onUpdate }: Props
           remaining: draftTrechos,
           dayDelta: 0,
           pending: null,
+          roles: draftRoles,
           log: [],
         };
+        // A regra do livro é checada ANTES de partir: um Guia só, e nenhum papel
+        // descoberto. Sair com o Caçador vago só apareceria no primeiro evento
+        // de Caçada, no meio da viagem.
+        const check = validateTorRoleAssignment(draftRoles);
+        if (!check.ok) throw new Error(check.reason);
         await commit(
           `Jornada iniciada — ${draftTrechos} trechos por ${TOR_REGION_META[draftRegion].label}, ` +
-            `${SEASON_LABEL[draftSeason]}. Previsão: ${length.days} dia${length.days === 1 ? "" : "s"}.`,
+            `${SEASON_LABEL[draftSeason]}. Previsão: ${length.days} dia${length.days === 1 ? "" : "s"}. ` +
+            TOR_JOURNEY_ROLES.map(
+              (r) => `${TOR_JOURNEY_ROLE_META[r].label}: ${(draftRoles[r] ?? []).join(", ")}`
+            ).join(" · "),
           undefined,
           next
         );
@@ -160,6 +180,7 @@ export function TorJourneyPanel({ roomId, canManage, progress, onUpdate }: Props
       draftRegion,
       draftMounted,
       draftForced,
+      draftRoles,
       length.days,
     ]
   );
@@ -205,7 +226,7 @@ export function TorJourneyPanel({ roomId, canManage, progress, onUpdate }: Props
         await commit(
           `Teste de Marcha: avança ${step.distance} trecho${step.distance === 1 ? "" : "s"}. ` +
             `Evento em ${regionMeta.label}: ${event.label} — ${roleMeta.label} rola ` +
-            `${roleMeta.skillId}. ${event.consequence}`,
+            `${SKILL_LABEL[roleMeta.skillId as TorSkillId] ?? roleMeta.skillId}. ${event.consequence}`,
           featDieRollPayload(eventRoll.featDie).value,
           {
             ...progress,
@@ -332,7 +353,10 @@ export function TorJourneyPanel({ roomId, canManage, progress, onUpdate }: Props
               </p>
               <p className="tor-journey__pending-hint">
                 {TOR_JOURNEY_ROLE_META[progress.pending.role].label} deve rolar{" "}
-                {progress.pending.skillId}
+                {SKILL_LABEL[progress.pending.skillId as TorSkillId] ?? progress.pending.skillId}
+                {(progress.roles?.[progress.pending.role] ?? []).length > 0
+                  ? ` — ${(progress.roles![progress.pending.role] ?? []).join(", ")}`
+                  : ""}
               </p>
             </div>
           ) : null}
@@ -418,6 +442,30 @@ export function TorJourneyPanel({ roomId, canManage, progress, onUpdate }: Props
             </label>
           </div>
 
+          {/* Sem isto, o painel dizia "o Caçador rola Caçada" e a mesa tinha de
+              lembrar de cabeça quem era o Caçador. */}
+          <div className="tor-journey__roles">
+            {TOR_JOURNEY_ROLES.map((role) => (
+              <label key={role} className="vtt-field">
+                {TOR_JOURNEY_ROLE_META[role].label} ({SKILL_LABEL[TOR_JOURNEY_ROLE_META[role].skillId as TorSkillId]})
+                <input
+                  type="text"
+                  placeholder={TOR_JOURNEY_ROLE_META[role].unique ? "um herói só" : "um ou mais, separados por vírgula"}
+                  value={(draftRoles[role] ?? []).join(", ")}
+                  onChange={(e) =>
+                    setDraftRoles((s) => ({
+                      ...s,
+                      [role]: e.target.value
+                        .split(",")
+                        .map((n) => n.trim())
+                        .filter(Boolean),
+                    }))
+                  }
+                />
+              </label>
+            ))}
+          </div>
+
           <p className="tor-journey__estimate">
             {length.days} dia{length.days === 1 ? "" : "s"}
             {length.forcedMarchFatigue > 0
@@ -442,7 +490,7 @@ export function TorJourneyPanel({ roomId, canManage, progress, onUpdate }: Props
                 </p>
                 <p className="tor-journey__pending-hint">
                   {TOR_JOURNEY_ROLE_META[progress.pending.role].label} rola{" "}
-                  {progress.pending.skillId}
+                  {SKILL_LABEL[progress.pending.skillId as TorSkillId] ?? progress.pending.skillId}
                 </p>
                 <label>
                   Terreno do evento

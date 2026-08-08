@@ -104,6 +104,62 @@ npm run sync:data:check       # após editar livros/
 
 ---
 
+### 2026-08-08 — Papéis da Jornada + o id da Perícia vazando pro chat
+
+**Pedido:** continuar o loop.
+
+**Passo a passo:**
+
+1. **A varredura, agora por função em todo o Um Anel.** Dezesseis funções sem
+   consumidor externo — mas a leitura crua engana: a varredura exclui o arquivo
+   que **define** a função, então uso no próprio módulo aparece como zero.
+   Conferindo um a um, `featDiePhysicalFace`, `torRoundEffectIsConsumed` e
+   `isColdSeason` são usados dentro do próprio arquivo e estão certos. Sobraram
+   dois achados de verdade em `journey.ts`.
+
+2. **Os papéis da Jornada não existiam na mesa.** O motor sempre soube que o
+   evento cai sobre um **papel**, e o painel já dizia "o Caçador rola Caçada" —
+   mas **ninguém era atribuído a papel nenhum**, e `validateTorRoleAssignment`,
+   que exige um Guia só e nenhum papel descoberto, não tinha consumidor. A mesa
+   guardava de cabeça quem era o Caçador, e partir com um papel vago só aparecia
+   no primeiro evento daquele papel, no meio da viagem.
+
+   Agora os quatro papéis são preenchidos ao montar a rota, a validação **barra**
+   a partida (validar sem barrar seria decorativo, e o teste exige o `throw`), e
+   o evento pendente mostra **quem** deve rolar.
+
+3. **Bug encontrado de quebra: o id da Perícia ia cru pro chat.** O painel
+   imprimia `roleMeta.skillId` — o Mestre lia *"Caçador rola caca"* e o jogador
+   procurava "caca" numa ficha que diz **Caçada**. Mesma divergência id × rótulo
+   que já tinha sido unificada nos capítulos, vazando por um caminho que a
+   varredura de texto dos capítulos não alcançava. Três pontos corrigidos, com
+   asserção proibindo o id cru voltar.
+
+4. **Validação.** `npx tsc --noEmit` limpo · `npm run build` compila ·
+   `npm run test` verde com **1762 asserções**. A asserção do bloqueio foi
+   conferida trocando o `throw` por um `console.warn` — falhou como devia.
+
+**Dívida registrada:** `torPerilousAreaEventCount` (Áreas Perigosas, JOR-M05 — a
+Companhia para ao entrar e enfrenta um evento por ponto de Perigo) segue sem
+chamador, com asserção que acusa quando for ligado. Junto com
+`applyTorJourneyEndRecovery`, `appendTorChronicle` e `torFellowshipLevel`.
+
+**Arquivos tocados:**
+- `lib/combat/um-anel/session-state.ts` — papéis na jornada, recortados na leitura
+- `components/vtt/TorJourneyPanel.tsx` — atribuição, validação bloqueante, rótulo da Perícia
+- `components/vtt/tor-journey.css`
+- `scripts/verify-um-anel-journey.mjs` — 11 asserções novas
+
+**Como testar:** montar uma rota deixando o Caçador em branco — a partida tem de
+ser recusada dizendo qual papel está descoberto. Pôr dois nomes em Guia: recusa
+também. Com tudo preenchido, o evento pendente passa a dizer "Caçador rola
+Caçada — Fulano".
+
+**Falta:** Áreas Perigosas; recuperação de fim de jornada; crônica; Elmo
+removível; campanhas de 1ª edição; glyph da runa de Gandalf.
+
+---
+
 ### 2026-08-08 — Acesso de Loucura, descansos e recuperação: a Sombra ganha saída
 
 **Pedido:** continuar o loop.
