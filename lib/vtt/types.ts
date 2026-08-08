@@ -129,6 +129,24 @@ export type TorCombatTokenFields = {
   torCharacterId?: string;
   /** Bloqueio — vira TN de quem ataca este token. */
   parry: number;
+  /**
+   * Quanto do Bloqueio vem do escudo — precisa ser separável porque Quebrar
+   * Escudo tira exatamente essa parcela. Sem guardar, o motor não teria como
+   * saber quanto subtrair de um `parry` já somado.
+   */
+  shieldParryBonus?: number;
+  /**
+   * Escudo destroçado por Quebrar Escudo. NÃO é efeito de rodada: o livro não dá
+   * prazo, o escudo fica quebrado até ser substituído ou consertado — o que
+   * acontece de graça no próximo assentamento (cap. 5 §Itens de Valor Superior).
+   */
+  shieldBroken?: boolean;
+  /**
+   * Agarrado por um adversário: "a vítima só pode lutar em postura Avançada
+   * fazendo ataques de Briga". Também dura além da rodada — sai gastando um
+   * ícone de Sucesso numa rolagem de ataque bem-sucedida.
+   */
+  grappled?: boolean;
   /** Nº de Dados de Proteção da armadura vestida (teste de Golpe Perfurante). */
   protectionDice: number;
   /** Só herói — TN de ataque = 20 - força + Bloqueio do alvo. */

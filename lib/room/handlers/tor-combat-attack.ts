@@ -5,14 +5,24 @@ import {
   torBrawlingRank,
 } from "@/lib/character/um-anel/rules";
 import { torVirtueRollEffect } from "@/lib/character/um-anel/virtues";
-import { ADVERSARY_PIERCE_BONUS, heroPierceBonus } from "@/lib/combat/um-anel/special-damage";
+import {
+  ADVERSARY_PIERCE_BONUS,
+  heroParryBonus,
+  heroPierceBonus,
+  type TorSpecialDamagePlan,
+} from "@/lib/combat/um-anel/special-damage";
 import { resolveTorCharacter, patchTorCharacterResources } from "@/lib/character/um-anel/characters";
 import { resolveTorAttack, formatTorAttackMessage } from "@/lib/combat/um-anel/resolve-attack";
 import { featDieRollPayload } from "@/lib/character/um-anel/dice";
 import { applyTorAttackResultToDefender } from "@/lib/combat/um-anel/vitals";
 import { appendRoomChatMessage } from "./chat";
 import { torTokenStance } from "./tor-stance";
-import { consumeTorRoundEffect, type TorRoundEffect } from "@/lib/combat/um-anel/round-effects";
+import {
+  addTorRoundEffect,
+  consumeTorRoundEffect,
+  findTorRoundEffect,
+  type TorRoundEffect,
+} from "@/lib/combat/um-anel/round-effects";
 import { axialDistance } from "@/lib/vtt/grid-math";
 import { syncCombatOrderWithTokens } from "../combat-order";
 import { getRoom, persistRoom, toSnapshot } from "../internal/registry";
@@ -42,7 +52,7 @@ export type TorAttackExecuteOpts = {
    * antes da rolagem porque o ataque é uma requisição só; o motor gasta o que os
    * dados realmente derem.
    */
-  specialDamage?: { heavyBlow?: number; pierce?: number };
+  specialDamage?: TorSpecialDamagePlan;
   room?: RoomState;
 };
 
@@ -130,6 +140,13 @@ export async function executeRoomTorAttack(
   let pierceValue = 0;
   let attackTwoHanded = false;
   let attackerSteadyHand = false;
+  let parryValue = 0;
+  let canShieldThrust = false;
+  let canBreakShield = false;
+  let canSeize = false;
+  let canEscape = false;
+  /** Só adversário — opções de Dano Especial listadas na ação escolhida. */
+  let attackerSpecialOptions: string[] = [];
   /** Efeitos de rodada já gastos — gravados no token depois de resolver. */
   let attackerRoundEffects: TorRoundEffect[] | undefined;
   let defenderRoundEffects: TorRoundEffect[] | undefined;
@@ -188,6 +205,24 @@ export async function executeRoomTorAttack(
     // Mão Firme finalmente faz alguma coisa: existia em STARTING_VIRTUES desde
     // sempre e nenhuma rolagem a consultava.
     attackerSteadyHand = sheet.virtues.includes("mao-firme");
+    // Aparar vale para qualquer arma de corpo a corpo; Arcos ficam de fora.
+    parryValue = weapon.ranged ? 0 : heroParryBonus(weapon.proficiency);
+    // Investida de Escudo exige escudo E "se sua FORÇA for maior que o Nível de
+    // Atributo do alvo" — sem a comparação o empurrão sairia de graça.
+    canShieldThrust =
+      Boolean(sheet.armour.shieldId) &&
+      sheet.attributes.forca > (defCombat.attributeLevel ?? 0);
+    // Escapar de Agarrar: só faz sentido se o herói estiver preso.
+    canEscape = Boolean(atkCombat.grappled);
+
+    // Agarrado só luta em postura Avançada com ataques de Briga — a restrição
+    // vale ANTES de rolar, senão o herói preso atacaria normalmente de espada.
+    if (atkCombat.grappled && weapon.proficiency !== "brawling") {
+      return {
+        ok: false,
+        error: `${attackerToken.name} está Agarrado — só pode atacar com armas de Briga (desarmado, adaga, cacete ou porrete)`,
+      };
+    }
 
     // Reunir Companheiros dura a rodada inteira ("nas rolagens de ataque na
     // rodada seguinte") — não é consumido pelo primeiro ataque.
@@ -223,6 +258,9 @@ export async function executeRoomTorAttack(
     heavyBlowValue = atkCombat.attributeLevel ?? 0;
     // Perfurar é +2 fixo pro adversário, e só se o bloco listar a opção.
     pierceValue = action.specialDamage?.includes("Perfurar") ? ADVERSARY_PIERCE_BONUS : 0;
+    // Guardado para decidir depois: Quebrar Escudo precisa saber se o escudo do
+    // defensor tem Recompensa, e a ficha dele só é lida mais abaixo.
+    attackerSpecialOptions = action.specialDamage ?? [];
 
     // "O Mestre pode reduzir o Ódio ou a Resolução de um adversário para fazê-lo
     // ganhar (1d) em uma rolagem durante o combate." O gasto é (1d) de Dado de
@@ -262,6 +300,7 @@ export async function executeRoomTorAttack(
   let defenderProtectionFavoured = false;
   let defenderWoundSeverityFavoured = false;
   let defenderHeroSheetId: string | null = null;
+  let defenderShieldIsRewarded = false;
   if (defCombat.kind === "hero" && defCombat.torCharacterId) {
     const defSheet = await resolveTorCharacter(defCombat.torCharacterId);
     if (defSheet) {
@@ -284,11 +323,46 @@ export async function executeRoomTorAttack(
         kind: "wound-severity",
       }).favoured;
       defenderHeroSheetId = defSheet.id;
+      // "Um escudo aprimorado por Recompensas ou qualidades mágicas não pode ser
+      // quebrado" (08-mestre-e-adversarios.md §Quebrar Escudo). A Recompensa de
+      // escudo é "Reforçado"; a ficha guarda Recompensas soltas, sem amarrar a
+      // um item, então é o melhor vínculo disponível.
+      defenderShieldIsRewarded = defSheet.rewards.includes("reforcado");
     }
   } else if (defCombat.kind === "adversary") {
     // Adversário Exausto também rola Proteção pior — a condição não é privilégio
     // do herói. Sem isto, zerar o Ódio de um Troll não mudava nada na defesa dele.
     defenderWeary = Boolean(defCombat.weary);
+  }
+
+  if (atkCombat.kind === "adversary") {
+    canSeize = attackerSpecialOptions.includes("Agarrar") && !defCombat.grappled;
+    canBreakShield =
+      attackerSpecialOptions.includes("Quebrar Escudo") &&
+      defCombat.kind === "hero" &&
+      !defCombat.shieldBroken &&
+      (defCombat.shieldParryBonus ?? 0) > 0 &&
+      !defenderShieldIsRewarded;
+  }
+
+  // Aparar somou ao Bloqueio nesta rodada; Quebrar Escudo tirou a parcela do
+  // escudo. O TN de quem ataca sai daqui, então as duas coisas entram juntas.
+  const bloqueio = findTorRoundEffect(defCombat.roundEffects, "bloqueio", round);
+  const defenderParry = Math.max(
+    0,
+    defCombat.parry +
+      (bloqueio?.dice ?? 0) -
+      (defCombat.shieldBroken ? (defCombat.shieldParryBonus ?? 0) : 0)
+  );
+  if (bloqueio) notasEfeito.push(`${defenderToken.name} aparou (+${bloqueio.dice} de Bloqueio)`);
+  if (defCombat.shieldBroken) notasEfeito.push(`${defenderToken.name} está sem escudo`);
+
+  // Investida de Escudo: o alvo *perde (1d)* pela rodada — cai no rank de quem
+  // foi empurrado, não no de quem empurrou.
+  const empurrado = findTorRoundEffect(atkCombat.roundEffects, "empurrado", round);
+  if (empurrado) {
+    attackerRank = Math.max(0, attackerRank - empurrado.dice);
+    notasEfeito.push(`${attackerToken.name} foi empurrado (−${empurrado.dice}d)`);
   }
 
   // Proteger Companheiro: "o PRÓXIMO ataque dirigido ao herói protegido perde
@@ -310,7 +384,7 @@ export async function executeRoomTorAttack(
     attackerMiserable,
     attackerIllFavoured,
     attackerFavoured,
-    defenderParry: defCombat.parry,
+    defenderParry,
     weaponDamage,
     weaponInjury: weaponInjury ?? 999,
     weaponCanPierce: weaponInjury != null,
@@ -336,6 +410,11 @@ export async function executeRoomTorAttack(
     pierceValue,
     attackTwoHanded,
     attackerSteadyHand,
+    parryValue,
+    canShieldThrust,
+    canBreakShield,
+    canSeize,
+    canEscape,
     attackerEngagedByCount:
       atkCombat.kind === "hero" ? countEngagingFoes(room.scene.tokens, attackerToken) : 0,
   });
@@ -355,6 +434,54 @@ export async function executeRoomTorAttack(
       ...tokens[atkIdx]!,
       torCombat: { ...tokens[atkIdx]!.torCombat!, roundEffects: attackerRoundEffects },
     };
+  }
+
+  /* Dano Especial que muda estado. Sempre a partir de `tokens[i]`, nunca das
+     cópias originais: o defensor já foi reescrito acima com o dano, e o
+     atacante pode ter perdido um efeito de rodada. */
+  const sd = result.specialDamage;
+  if (sd) {
+    if (sd.parryUses > 0 || sd.escapeUses > 0) {
+      const atual = tokens[atkIdx]!.torCombat!;
+      tokens[atkIdx] = {
+        ...tokens[atkIdx]!,
+        torCombat: {
+          ...atual,
+          ...(sd.escapeUses > 0 ? { grappled: false } : {}),
+          ...(sd.parryUses > 0
+            ? {
+                roundEffects: addTorRoundEffect(atual.roundEffects, {
+                  kind: "bloqueio",
+                  dice: sd.parryBonus,
+                  untilRound: round,
+                  source: attackerToken.name,
+                }),
+              }
+            : {}),
+        },
+      };
+    }
+    if (sd.shieldThrustUses > 0 || sd.seizeUses > 0 || sd.breakShieldUses > 0) {
+      const atual = tokens[defIdx]!.torCombat!;
+      tokens[defIdx] = {
+        ...tokens[defIdx]!,
+        torCombat: {
+          ...atual,
+          ...(sd.seizeUses > 0 ? { grappled: true } : {}),
+          ...(sd.breakShieldUses > 0 ? { shieldBroken: true } : {}),
+          ...(sd.shieldThrustUses > 0
+            ? {
+                roundEffects: addTorRoundEffect(atual.roundEffects, {
+                  kind: "empurrado",
+                  dice: 1,
+                  untilRound: round,
+                  source: attackerToken.name,
+                }),
+              }
+            : {}),
+        },
+      };
+    }
   }
   // Desconta o ponto DEPOIS de resolver, e a partir do array já copiado: o
   // atacante pode ser o mesmo índice de nada mais, mas escrever antes faria a

@@ -43,6 +43,8 @@ export function TorAttackPopup({ token, allTokens, roomId, onClose, onRoomSync }
   const [allyId, setAllyId] = useState<string>("");
   const [heavyBlow, setHeavyBlow] = useState(0);
   const [pierce, setPierce] = useState(0);
+  /** Danos Especiais de 1 ícone — marcados por caixa, não por contador. */
+  const [extras, setExtras] = useState<Record<string, number>>({});
   const [err, setErr] = useState<string | null>(null);
   const [lastMessage, setLastMessage] = useState<string | null>(null);
 
@@ -153,6 +155,38 @@ export function TorAttackPopup({ token, allTokens, roomId, onClose, onRoomSync }
     }
   }
 
+  /* As opções de 1 ícone aparecem só quando cabem. Mostrar "Quebrar Escudo"
+     contra quem não tem escudo, ou "Agarrar" num bloco que não lista a opção,
+     faria o jogador gastar ícone em nada. */
+  const extraOptions = useMemo(() => {
+    const alvo = allTokens.find((t) => t.id === targetId)?.torCombat;
+    const ops: { id: string; label: string }[] = [];
+    if (isHero) {
+      const weapon = WEAPON_BY_ID[choiceId];
+      if (combat?.grappled) ops.push({ id: "escape", label: "Escapar do Agarrão (1 ícone)" });
+      if (weapon && !weapon.ranged) {
+        ops.push({ id: "parry", label: "Aparar — soma ao Bloqueio nesta rodada" });
+      }
+      if ((combat?.shieldParryBonus ?? 0) > 0) {
+        ops.push({ id: "shieldThrust", label: "Investida de Escudo — alvo perde (1d) nesta rodada" });
+      }
+    } else {
+      const action = combat?.actions?.find((a) => a.id === choiceId);
+      if (action?.specialDamage?.includes("Agarrar") && !alvo?.grappled) {
+        ops.push({ id: "seize", label: "Agarrar — prende o alvo" });
+      }
+      if (
+        action?.specialDamage?.includes("Quebrar Escudo") &&
+        alvo?.kind === "hero" &&
+        (alvo.shieldParryBonus ?? 0) > 0 &&
+        !alvo.shieldBroken
+      ) {
+        ops.push({ id: "breakShield", label: "Quebrar Escudo — o alvo perde o bônus do escudo" });
+      }
+    }
+    return ops;
+  }, [isHero, choiceId, combat, allTokens, targetId]);
+
   /* A tarefa disponível é decidida pela postura — é assim que o livro amarra as
      duas coisas, e evita oferecer Preparar Tiro a quem está no corpo a corpo. */
   const task = useMemo(
@@ -189,9 +223,19 @@ export function TorAttackPopup({ token, allTokens, roomId, onClose, onRoomSync }
         torWeaponId: isHero ? choiceId : undefined,
         torActionId: isHero ? undefined : choiceId,
         torSpendHate: !isHero && spendHate,
-        torSpecialDamage:
-          heavyBlow > 0 || pierce > 0 ? { heavyBlow, pierce } : undefined,
+        torSpecialDamage: {
+          heavyBlow,
+          pierce,
+          parry: extras.parry,
+          shieldThrust: extras.shieldThrust,
+          breakShield: extras.breakShield,
+          seize: extras.seize,
+          escape: extras.escape,
+        },
       });
+      // As opções de 1 ícone desmarcam sozinhas: deixar marcadas gastaria de
+      // novo no ataque seguinte sem ninguém pedir — mesmo motivo do Ódio.
+      setExtras({});
       // O ponto só some se o ataque aconteceu — deixar marcado gastaria de novo
       // no próximo clique sem o Mestre pedir.
       setSpendHate(false);
@@ -325,9 +369,20 @@ export function TorAttackPopup({ token, allTokens, roomId, onClose, onRoomSync }
               />
             </label>
           </div>
+          {extraOptions.map((op) => (
+            <label key={op.id} className="vtt-inline-check">
+              <input
+                type="checkbox"
+                checked={Boolean(extras[op.id])}
+                disabled={busy}
+                onChange={(e) => setExtras((s) => ({ ...s, [op.id]: e.target.checked ? 1 : 0 }))}
+              />
+              {op.label}
+            </label>
+          ))}
           <span className="vtt-field__hint">
-            Aparar, Investida de Escudo, Quebrar Escudo e Agarrar duram a rodada inteira e ainda não
-            têm onde ser guardados — continuam sendo combinados na mesa.
+            Cada opção custa 1 ícone. Quando os ícones não dão para tudo, valem primeiro as que
+            mudam o estado além desta rodada — escapar, Perfurar, Agarrar e Quebrar Escudo.
           </span>
         </div>
 

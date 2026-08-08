@@ -123,9 +123,12 @@ ok(
 ok("código: Espadas +1", /espadas: 1,/.test(SD));
 ok("código: Arcos +2", /arcos: 2,/.test(SD));
 ok("código: Lanças +3", /lancas: 3,/.test(SD));
+/* Escopado à tabela de Perfurar: `machados` existe na tabela de APARAR (+1), que
+   é outra coisa. Sem escopar, a asserção passaria a acusar a tabela errada. */
+const tabelaPierce = SD.match(/PIERCE_BY_PROFICIENCY[\s\S]*?\};/)?.[0] ?? "";
 ok(
   "Machados e Briga não perfuram",
-  /if \(proficiency === "brawling"\) return 0;/.test(SD) && !/machados:/.test(SD),
+  /if \(proficiency === "brawling"\) return 0;/.test(SD) && !/machados:/.test(tabelaPierce),
   "o livro nomeia só Arcos, Lanças e Espadas"
 );
 ok("livro: Perfurar do adversário é +2", /modificando o resultado do Dado de Proeza da rolagem de ataque em \+2/.test(CAP8));
@@ -143,10 +146,23 @@ ok(
   resolveCode.indexOf("resolveTorSpecialDamage(") < resolveCode.indexOf("const piercingBlow"),
   "calcular depois tornaria Perfurar inútil justamente onde ele mais importa"
 );
+const sdCode = stripComments(SD);
 ok(
   "Perfurar é atendido antes do Golpe Pesado",
-  /const pierceUses[\s\S]{0,200}const heavyBlowUses/.test(stripComments(SD)),
+  sdCode.indexOf("const pierceUses") < sdCode.indexOf("const heavyBlowUses"),
   "Perfurar decide o Golpe Perfurante; não pode ficar sem ícone"
+);
+/* Escapar vem antes de tudo: estar Agarrado tranca o herói em Briga e postura
+   Avançada, e é a única opção que o devolve ao jogo. */
+ok(
+  "Escapar do Agarrão é atendido primeiro",
+  sdCode.indexOf("const escapeUses") < sdCode.indexOf("const pierceUses")
+);
+/* E o que muda o estado ALÉM da rodada vem antes do que vale só a rodada. */
+ok(
+  "Agarrar e Quebrar Escudo vêm antes de Aparar",
+  sdCode.indexOf("const seizeUses") < sdCode.indexOf("const parryUses") &&
+    sdCode.indexOf("const breakShieldUses") < sdCode.indexOf("const parryUses")
 );
 ok(
   "Olho e Runa não recebem o bônus de Perfurar",
@@ -158,9 +174,13 @@ ok(
   /os resultados \[Eye\] e \[Rune\] não são afetados por esse modificador/.test(CAP6)
 );
 ok(
-  "arma que não perfura não consome ícone",
-  /params\.pierceValue > 0 \? Math\.min\(wantPierce, available\) : 0/.test(SD),
+  "opção indisponível não consome ícone",
+  /if \(!disponivel\) return 0;/.test(sdCode),
   "gastar ícone em nada seria pior que não oferecer"
+);
+ok(
+  "Perfurar só consome se a arma perfura",
+  /gastar\(querer\(params\.plan\?\.pierce\), \(params\.pierceValue \?\? 0\) > 0\)/.test(sdCode)
 );
 
 /* ── 4. Mão Firme finalmente faz alguma coisa ──────────────────────────── */
@@ -205,23 +225,108 @@ ok(
 );
 ok("mensagem nomeia o gasto", /Dano Especial: \$\{usos\.join/.test(RESOLVE));
 
-/* ── 6. O que NÃO foi mecanizado continua fora ─────────────────────────── */
+/* ── 6. As quatro opções que dependiam de estado ───────────────────────── */
 
-/* Aparar, Investida de Escudo, Quebrar Escudo e Agarrar duram a rodada ou mexem
-   na ficha — sem lugar pra guardar, e mecanizar pela metade seria pior que não
-   ter. O teste garante que ninguém as ligue sem o estado que elas exigem. */
-for (const nome of ["Aparar", "Investida de Escudo", "Quebrar Escudo", "Agarrar"]) {
-  ok(
-    `"${nome}" não é aplicado pelo motor`,
-    !new RegExp(`\\b${nome}\\b`).test(stripComments(SD)) &&
-      !new RegExp(`\\b${nome}\\b`).test(resolveCode),
-    "precisa de estado que dura a rodada"
-  );
-}
+/* Ficavam de fora por não haver onde guardar. Com `round-effects.ts` e os campos
+   `grappled`/`shieldBroken`/`shieldParryBonus` no token, entraram. Cada uma com
+   a condição que o livro exige — é aí que o erro mora. */
+
 ok(
-  "popup avisa que os outros quatro seguem na mesa",
-  /continuam sendo combinados na mesa/.test(POPUP)
+  "livro: Aparar é +1 Machados/Briga, +2 Espadas, +3 Lanças",
+  /\*\*\+1\*\* usando Machados e todas as armas de Briga, \*\*\+2\*\* usando\s*\n?\s*Espadas, \*\*\+3\*\* usando Lanças/.test(
+    CAP6
+  )
 );
+const tabelaParry = SD.match(/PARRY_BY_PROFICIENCY[\s\S]*?\};/)?.[0] ?? "";
+ok("Aparar: Machados +1", /machados: 1,/.test(tabelaParry));
+ok("Aparar: Briga +1", /brawling: 1,/.test(tabelaParry));
+ok("Aparar: Espadas +2", /espadas: 2,/.test(tabelaParry));
+ok("Aparar: Lanças +3", /lancas: 3,/.test(tabelaParry));
+ok(
+  "Aparar não vale com Arco",
+  /arcos: 0,/.test(tabelaParry) && /weapon\.ranged \? 0 : heroParryBonus/.test(handlerCode),
+  "o livro diz 'qualquer arma de combate corpo a corpo'"
+);
+ok(
+  "Aparar soma ao Bloqueio pela rodada, não ao ataque",
+  /kind: "bloqueio"/.test(handlerCode) && /defCombat\.parry \+\s*\n?\s*\(bloqueio\?\.dice \?\? 0\)/.test(handlerCode)
+);
+
+ok(
+  "livro: Investida de Escudo exige FORÇA maior que o Nível de Atributo do alvo",
+  /Se sua \*\*FORÇA\*\* for maior que o Nível de Atributo do alvo/.test(CAP6)
+);
+ok(
+  "Investida de Escudo confere escudo e FORÇA",
+  /Boolean\(sheet\.armour\.shieldId\) &&\s*\n?\s*sheet\.attributes\.forca > \(defCombat\.attributeLevel \?\? 0\)/.test(
+    handlerCode
+  ),
+  "sem a comparação o empurrão sairia de graça"
+);
+
+ok(
+  "livro: escudo com Recompensa não pode ser quebrado",
+  /um escudo aprimorado por Recompensas ou qualidades mágicas não pode ser quebrado/.test(CAP8)
+);
+ok(
+  "Quebrar Escudo respeita a imunidade da Recompensa",
+  /defenderShieldIsRewarded = defSheet\.rewards\.includes\("reforcado"\)/.test(handlerCode) &&
+    /!defenderShieldIsRewarded/.test(handlerCode)
+);
+ok(
+  "Quebrar Escudo não é efeito de rodada",
+  /shieldBroken\?: boolean/.test(readFileSync(root("lib", "vtt", "types.ts"), "utf8")),
+  "o livro não dá prazo — dura até consertar"
+);
+ok(
+  "o Bloqueio perdido é exatamente o do escudo",
+  /defCombat\.shieldBroken \? \(defCombat\.shieldParryBonus \?\? 0\) : 0/.test(handlerCode),
+  "sem guardar a parcela do escudo não há como subtrair do Bloqueio já somado"
+);
+
+ok(
+  "livro: agarrado só luta em Avançada com ataques de Briga",
+  /a vítima só pode lutar em postura Avançada fazendo ataques de Briga/.test(CAP8)
+);
+/* Ancorado no `if (` de propósito: sem isso, um `false &&` na frente da condição
+   desligaria a regra e a asserção continuaria passando — a expressão seguiria
+   no arquivo, só que morta. */
+ok(
+  "handler barra o agarrado que tenta usar outra arma",
+  /if \(atkCombat\.grappled && weapon\.proficiency !== "brawling"\)/.test(handlerCode),
+  "a restrição vale ANTES de rolar"
+);
+ok(
+  "livro: escapa gastando 1 ícone de ataque bem-sucedido",
+  /Heróis agarrados podem libertar-se gastando um ícone .{0,20} de uma rolagem de ataque bem-sucedida/.test(
+    CAP8
+  )
+);
+ok("escapar limpa o Agarrado", /sd\.escapeUses > 0 \? \{ grappled: false \}/.test(handlerCode));
+
+/* Agarrar e Quebrar Escudo SÓ existem se o bloco listar — ao contrário do Golpe
+   Pesado, que é sempre disponível. */
+ok(
+  "Agarrar depende do bloco listar",
+  /attackerSpecialOptions\.includes\("Agarrar"\)/.test(handlerCode)
+);
+ok(
+  "Quebrar Escudo depende do bloco listar",
+  /attackerSpecialOptions\.includes\("Quebrar Escudo"\)/.test(handlerCode)
+);
+
+/* A UI não pode oferecer o que não cabe. */
+ok(
+  "popup esconde Quebrar Escudo contra quem não tem escudo",
+  /\(alvo\.shieldParryBonus \?\? 0\) > 0 &&\s*\n?\s*!alvo\.shieldBroken/.test(POPUP)
+);
+ok("popup só oferece Escapar a quem está agarrado", /combat\?\.grappled\) ops\.push/.test(POPUP));
+ok(
+  "opções de 1 ícone desmarcam depois do ataque",
+  /setExtras\(\{\}\)/.test(POPUP),
+  "deixar marcadas gastaria de novo no ataque seguinte"
+);
+ok("status do token mostra Agarrado", /Agarrado/.test(readFileSync(root("components", "vtt", "TokenStatusBody.tsx"), "utf8")));
 
 console.log(`\n  ${pass} ok, ${fail} falhas`);
 if (fail > 0) process.exit(1);

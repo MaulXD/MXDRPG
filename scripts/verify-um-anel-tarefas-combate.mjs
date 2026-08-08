@@ -292,18 +292,16 @@ ok(
   "convenção do projeto: ícones só em SVG"
 );
 
-/* ── 8. O que segue fora ───────────────────────────────────────────────── */
+/* ── 8. O substrato serve aos Danos Especiais que duram a rodada ───────── */
 
-/* Aparar, Investida de Escudo, Quebrar Escudo e Agarrar agora TÊM onde ser
-   guardados, mas continuam fora: cada uma mexe em coisa diferente (Bloqueio da
-   rodada, penalidade no alvo, escudo da ficha, restrição de postura) e entrar
-   pela metade seria pior. O teste marca a fronteira. */
-for (const nome of ["Aparar", "Investida de Escudo", "Quebrar Escudo", "Agarrar"]) {
-  ok(
-    `"${nome}" ainda não é aplicado pelo motor`,
-    !new RegExp(`\\b${nome}\\b`).test(effCode) && !new RegExp(`\\b${nome}\\b`).test(attackCode)
-  );
-}
+/* Aparar e Investida de Escudo entraram usando exatamente este substrato — e
+   são de DURAÇÃO, não de uso único: o Bloqueio aparado vale contra todos os
+   ataques da rodada, e quem foi empurrado perde (1d) na rodada toda.
+   Ver scripts/verify-um-anel-dano-especial.mjs para as regras de cada uma. */
+ok("Aparar usa o substrato de efeito de rodada", /"bloqueio"/.test(effCode));
+ok("Investida de Escudo usa o substrato", /"empurrado"/.test(effCode));
+ok("bloqueio dura a rodada, não é gasto", /bloqueio: false/.test(effCode));
+ok("empurrado dura a rodada, não é gasto", /empurrado: false/.test(effCode));
 
 console.log(`\n  ${pass} ok, ${fail} falhas`);
 if (fail > 0) process.exit(1);

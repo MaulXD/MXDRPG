@@ -96,6 +96,16 @@ export type TorAttackParams = {
   attackTwoHanded?: boolean;
   /** Virtude Mão Firme do atacante. */
   attackerSteadyHand?: boolean;
+  /** Aparar: bônus de Bloqueio por uso, conforme a arma (0 quando não apara). */
+  parryValue?: number;
+  /** Investida de Escudo liberada (herói com escudo e FORÇA maior que o alvo). */
+  canShieldThrust?: boolean;
+  /** Quebrar Escudo liberado (bloco lista a opção e o alvo tem escudo quebrável). */
+  canBreakShield?: boolean;
+  /** Agarrar liberado (bloco lista a opção e o alvo ainda não está agarrado). */
+  canSeize?: boolean;
+  /** O atacante está agarrado e pode gastar 1 ícone para se libertar. */
+  canEscape?: boolean;
 };
 
 export type TorWoundSeverity =
@@ -253,6 +263,11 @@ export function resolveTorAttack(params: TorAttackParams): TorAttackResolution {
     twoHanded: params.attackTwoHanded,
     pierceValue: params.pierceValue ?? 0,
     steadyHand: params.attackerSteadyHand,
+    parryValue: params.parryValue,
+    canShieldThrust: params.canShieldThrust,
+    canBreakShield: params.canBreakShield,
+    canSeize: params.canSeize,
+    canEscape: params.canEscape,
   });
 
   const enduranceLoss = params.weaponDamage + special.extraEnduranceLoss;
@@ -403,6 +418,15 @@ export function formatTorAttackMessage(
     }
     if (sd.pierceUses > 0) usos.push(`Perfurar ×${sd.pierceUses} (+${sd.featDieBonus} no Dado de Proeza)`);
     parts.push(`Dano Especial: ${usos.join(" e ")}`);
+  }
+  if (sd) {
+    const outros: string[] = [];
+    if (sd.escapeUses > 0) outros.push(`${attackerName} se liberta`);
+    if (sd.parryUses > 0) outros.push(`Aparar (+${sd.parryBonus} de Bloqueio nesta rodada)`);
+    if (sd.shieldThrustUses > 0) outros.push(`Investida de Escudo — ${defenderName} perde (1d) nesta rodada`);
+    if (sd.breakShieldUses > 0) outros.push(`Quebrar Escudo — o escudo de ${defenderName} se parte`);
+    if (sd.seizeUses > 0) outros.push(`Agarrar — ${defenderName} está preso`);
+    if (outros.length > 0) parts.push(outros.join(" · "));
   }
   if (result.piercingBlow) {
     parts.push("GOLPE PERFURANTE!");
