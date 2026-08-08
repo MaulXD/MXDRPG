@@ -90,7 +90,16 @@ export async function executeRoomTorRecovery(
   }
 
   const state = spiritStateFromSheet(sheet);
-  const fellowship = normalizeTorSession(room.torSession)?.fellowship;
+  const torSession = normalizeTorSession(room.torSession);
+  const fellowship = torSession?.fellowship;
+  /* "Os pontos de Fadiga são registrados na folha de registro de jornada, e não
+     podem ser removidos enquanto a jornada durar" — e o Descanso Prolongado que
+     tira Fadiga é o feito "em um refúgio abrigado e seguro (isto é, não 'na
+     estrada')". Com a Companhia ainda na estrada, o descanso devolve
+     Resistência mas não tira Fadiga. Depois de chegar (`remaining === 0`) a
+     jornada acabou, e aí a recuperação de fim de jornada é justamente o que
+     deve rodar. */
+  const journeyInProgress = (torSession?.journey?.remaining ?? 0) > 0;
   // Yule é a terceira Fase do ano — a mesma contagem que fecha o calendário.
   const isYule = (fellowship?.phasesThisYear ?? 0) >= 2;
 
@@ -121,7 +130,9 @@ export async function executeRoomTorRecovery(
       enduranceMax: sheet.endurance.max,
     });
     // Só o Prolongado tira Fadiga (JOR-M02); o Descanso Curto não menciona Fadiga.
-    const fadiga = prolongado ? applyTorProlongedRest(state).state.fatigue : sheet.fatigue;
+    // E nem o Prolongado tira enquanto a Companhia está na estrada.
+    const fadiga =
+      prolongado && !journeyInProgress ? applyTorProlongedRest(state).state.fatigue : sheet.fatigue;
     const fatigueRemoved = sheet.fatigue - fadiga;
 
     if (recovered === 0 && fatigueRemoved === 0) {
@@ -136,6 +147,9 @@ export async function executeRoomTorRecovery(
       `${sheet.name} faz um Descanso ${prolongado ? "Prolongado" : "Curto"} — ` +
       `+${recovered} de Resistência (agora ${next.endurance.value}/${sheet.endurance.max})` +
       (fatigueRemoved > 0 ? `, −${fatigueRemoved} de Fadiga` : "") +
+      (prolongado && journeyInProgress
+        ? " · na estrada: a Fadiga só sai num refúgio abrigado, depois da jornada"
+        : "") +
       (sheet.conditions.wounded ? " · Ferido limita a recuperação" : "");
   } else if (action === "spiritual") {
     if (!fellowship) {
