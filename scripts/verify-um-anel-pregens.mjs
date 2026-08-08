@@ -371,9 +371,15 @@ ok(
   "data.ts: Mão Firme cobre o Golpe Pesado",
   maoFirmeData && /Golpe Pesado/.test(maoFirmeData[1])
 );
+/* A segunda metade continua exigida, agora com o nome certo do gasto.
+   O capítulo diz "em um Golpe Perfurante", mas Golpe Perfurante não é opção de
+   Dano Especial — e depois de disparado o valor do Dado de Proeza não é mais
+   consultado, o que tornaria o +1 inerte. O Dano Especial que soma no Dado de
+   Proeza é PERFURAR. Ver a nota de leitura no capítulo 5 e
+   scripts/verify-um-anel-dano-especial.mjs. */
 ok(
-  "data.ts: Mão Firme cobre o Golpe Perfurante (a metade que faltava)",
-  maoFirmeData && /Dado de Proeza em um Golpe Perfurante/.test(maoFirmeData[1]),
+  "data.ts: Mão Firme cobre a segunda metade (o +1 ao Perfurar)",
+  maoFirmeData && /Dado de Proeza ao Perfurar/.test(maoFirmeData[1]),
   maoFirmeData?.[1]
 );
 

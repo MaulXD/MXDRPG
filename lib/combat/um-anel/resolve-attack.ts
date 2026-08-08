@@ -8,6 +8,11 @@ import {
   torStanceLabel,
   type TorStanceId,
 } from "@/lib/combat/um-anel/stances";
+import {
+  resolveTorSpecialDamage,
+  type TorSpecialDamagePlan,
+  type TorSpecialDamageResolved,
+} from "@/lib/combat/um-anel/special-damage";
 
 /**
  * Resolução de ataque tático do Um Anel (livros/um-anel/06-fases-de-aventura-combate.md,
@@ -79,6 +84,18 @@ export type TorAttackParams = {
   attackIsRanged?: boolean;
   /** Quantos oponentes engajam o atacante (Defensiva perde 1d por cada). */
   attackerEngagedByCount?: number;
+
+  /* ── Dano Especial ───────────────────────────────────────────────────── */
+  /** Plano de gasto de ícones de Sucesso, declarado antes da rolagem. */
+  specialDamagePlan?: TorSpecialDamagePlan;
+  /** Golpe Pesado: FORÇA do herói ou Nível de Atributo do adversário. */
+  heavyBlowValue?: number;
+  /** Perfurar: +1/+2/+3 conforme a Proficiência do herói, +2 fixo pro adversário. */
+  pierceValue?: number;
+  /** Arma empunhada com as duas mãos — +1 por uso de Golpe Pesado. */
+  attackTwoHanded?: boolean;
+  /** Virtude Mão Firme do atacante. */
+  attackerSteadyHand?: boolean;
 };
 
 export type TorWoundSeverity =
@@ -99,6 +116,8 @@ export type TorAttackResolution = {
     finalRank: number;
   };
   enduranceLoss: number;
+  /** Dano Especial efetivamente gasto neste ataque. */
+  specialDamage?: TorSpecialDamageResolved;
   piercingBlow: boolean;
   protectionRoll?: TorRollOutcome;
   protectionFailed?: boolean;
@@ -224,9 +243,27 @@ export function resolveTorAttack(params: TorAttackParams): TorAttackResolution {
     };
   }
 
-  const enduranceLoss = params.weaponDamage;
+  // Dano Especial ANTES de decidir o Golpe Perfurante: Perfurar soma no Dado de
+  // Proeza justamente para poder levar um 9 a 10 e disparar o Golpe. Calcular
+  // depois tornaria Perfurar inútil no único ponto em que ele mais importa.
+  const special = resolveTorSpecialDamage({
+    successIcons: attackRoll.successIcons,
+    plan: params.specialDamagePlan,
+    heavyBlowValue: params.heavyBlowValue ?? 0,
+    twoHanded: params.attackTwoHanded,
+    pierceValue: params.pierceValue ?? 0,
+    steadyHand: params.attackerSteadyHand,
+  });
+
+  const enduranceLoss = params.weaponDamage + special.extraEnduranceLoss;
   // Runa de Gandalf já é codificada como numeric:10 em rollOneFeatDie — cobre os dois casos.
-  const piercingBlow = params.weaponCanPierce !== false && attackRoll.featDie.numeric === 10;
+  // "Os resultados [Olho] e [Runa] não são afetados por esse modificador" (§Perfurar):
+  // o Olho vale 0 e a Runa já é 10, então Perfurar só soma sobre face numérica.
+  const featDieForPierce =
+    attackRoll.featDie.kind === "number"
+      ? attackRoll.featDie.numeric + special.featDieBonus
+      : attackRoll.featDie.numeric;
+  const piercingBlow = params.weaponCanPierce !== false && featDieForPierce >= 10;
 
   if (!piercingBlow) {
     return {
@@ -234,6 +271,7 @@ export function resolveTorAttack(params: TorAttackParams): TorAttackResolution {
       hit: true,
       stanceEffect,
       enduranceLoss,
+      specialDamage: special,
       piercingBlow: false,
       wound: false,
       dying: false,
@@ -260,6 +298,7 @@ export function resolveTorAttack(params: TorAttackParams): TorAttackResolution {
       hit: true,
       stanceEffect,
       enduranceLoss,
+      specialDamage: special,
       piercingBlow: true,
       protectionRoll,
       protectionFailed: false,
@@ -280,6 +319,7 @@ export function resolveTorAttack(params: TorAttackParams): TorAttackResolution {
       hit: true,
       stanceEffect,
       enduranceLoss,
+      specialDamage: special,
       piercingBlow: true,
       protectionRoll,
       protectionFailed: true,
@@ -296,6 +336,7 @@ export function resolveTorAttack(params: TorAttackParams): TorAttackResolution {
       hit: true,
       stanceEffect,
       enduranceLoss,
+      specialDamage: special,
       piercingBlow: true,
       protectionRoll,
       protectionFailed: true,
@@ -310,6 +351,7 @@ export function resolveTorAttack(params: TorAttackParams): TorAttackResolution {
     hit: true,
     stanceEffect,
     enduranceLoss,
+    specialDamage: special,
     piercingBlow: true,
     protectionRoll,
     protectionFailed: true,
@@ -351,6 +393,17 @@ export function formatTorAttackMessage(
   if (!result.hit) return rollTxt;
 
   const parts = [rollTxt, `${defenderName} perde ${result.enduranceLoss} de Resistência`];
+  // Nomeia o gasto: sem isso o jogador vê a Resistência cair mais do que o dano
+  // da arma e não tem como conferir de onde veio.
+  const sd = result.specialDamage;
+  if (sd && (sd.heavyBlowUses > 0 || sd.pierceUses > 0)) {
+    const usos: string[] = [];
+    if (sd.heavyBlowUses > 0) {
+      usos.push(`Golpe Pesado ×${sd.heavyBlowUses} (+${sd.extraEnduranceLoss} de Resistência)`);
+    }
+    if (sd.pierceUses > 0) usos.push(`Perfurar ×${sd.pierceUses} (+${sd.featDieBonus} no Dado de Proeza)`);
+    parts.push(`Dano Especial: ${usos.join(" e ")}`);
+  }
   if (result.piercingBlow) {
     parts.push("GOLPE PERFURANTE!");
     if (result.protectionRoll) {

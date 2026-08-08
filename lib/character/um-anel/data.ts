@@ -247,7 +247,11 @@ export const STARTING_VIRTUES: TorRewardDef[] = [
   // Texto completo do capítulo 5. O resumo do capítulo 3 ("+1 ao dano de um Golpe
   // Pesado") apaga a segunda metade, que é a que mais pesa em combate: o +1 no
   // Dado de Proeza pode levar um 9 a 10 e disparar o Golpe Perfurante.
-  { id: "mao-firme", label: "Mão Firme", description: "Ao infligir Dano Especial em combate, some +1 ao seu valor de FORÇA em um Golpe Pesado, e +1 ao resultado numérico do Dado de Proeza em um Golpe Perfurante." },
+  // O "+1 no Dado de Proeza" vale ao gastar um ícone em PERFURAR — é o único
+  // ponto em que muda alguma coisa. Depois de o Golpe Perfurante disparar, o
+  // valor do Dado de Proeza não é mais consultado. Ver a nota de leitura em
+  // livros/um-anel/05-valor-e-sabedoria.md §MÃO FIRME.
+  { id: "mao-firme", label: "Mão Firme", description: "Ao infligir Dano Especial em combate, some +1 ao seu valor de FORÇA em um Golpe Pesado, e +1 ao resultado numérico do Dado de Proeza ao Perfurar (o que pode levar um 9 a 10 e disparar o Golpe Perfurante)." },
   { id: "robustez", label: "Robustez", description: "Aumente em 2 pontos seu valor máximo de Resistência." },
   { id: "maestria", label: "Maestria", description: "Escolha duas Perícias e torne-as Favorecidas." },
   { id: "agilidade-de-aparar", label: "Agilidade", description: "Aumente seu valor de Bloqueio em 1." },
