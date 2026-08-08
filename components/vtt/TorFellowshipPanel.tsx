@@ -3,6 +3,7 @@
 import { useCallback, useMemo, useState } from "react";
 import { patchTorSession, postRoomChat } from "@/hooks/useRoomSync";
 import { TOR_UNDERTAKINGS } from "@/lib/character/um-anel/undertakings";
+import { TorAdvancePanel } from "@/components/vtt/TorAdvancePanel";
 import {
   TOR_PHASES_PER_YEAR,
   TOR_PHASE_OUTCOMES,
@@ -37,6 +38,8 @@ type Props = {
    * com 20. Este painel já é o de escopo de campanha (calendário, Yule).
    */
   attributeTnBase?: number;
+  /** Fichas do Um Anel no mapa — quem pode gastar pontos nesta Fase. */
+  characterIds?: string[];
   onUpdate: () => void;
 };
 
@@ -75,6 +78,7 @@ export function TorFellowshipPanel({
   canManage,
   fellowship,
   attributeTnBase,
+  characterIds = [],
   onUpdate,
 }: Props) {
   const [busy, setBusy] = useState(false);
@@ -238,6 +242,10 @@ export function TorFellowshipPanel({
   return (
     <div className="tor-journey">
       {err ? <p className="dice-err">{err}</p> : null}
+
+      {/* O avanço é a razão de existir da Fase de Companhia — fica aqui, não na
+          ficha, porque o limite é POR FASE e é este painel que fecha a Fase. */}
+      <TorAdvancePanel roomId={roomId} characterIds={characterIds} onUpdate={onUpdate} />
 
       <section className="tor-journey__section">
         <p className="eyebrow">Regras da campanha</p>

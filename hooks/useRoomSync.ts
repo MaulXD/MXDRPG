@@ -774,6 +774,33 @@ export async function postRoomTorShadow(
   return res.json() as Promise<RoomApiPayload>;
 }
 
+/**
+ * Um Anel — gasta Pontos de Perícia/Aventura para subir um grau.
+ * Perícia usa Pontos de Perícia; Proficiência, Valor e Sabedoria usam Pontos de
+ * Aventura — quem confere a moeda certa é o servidor.
+ */
+export async function postRoomTorAdvance(
+  roomId: string,
+  characterId: string,
+  buy:
+    | { kind: "skill"; skillId: string }
+    | { kind: "proficiency"; proficiencyId: string }
+    | { kind: "valour" }
+    | { kind: "wisdom" }
+) {
+  const res = await roomFetch(
+    `/api/room/${roomId}/tor-advance`,
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "same-origin",
+      body: JSON.stringify({ characterId, ...buy }),
+    },
+    "Falha ao avançar"
+  );
+  return res.json() as Promise<RoomApiPayload>;
+}
+
 /** Um Anel — o herói aceita ser empurrado e amortece metade do último golpe. */
 export async function postRoomTorPush(roomId: string, tokenId: string) {
   const res = await roomFetch(

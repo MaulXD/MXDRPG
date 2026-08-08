@@ -104,6 +104,66 @@ npm run sync:data:check       # após editar livros/
 
 ---
 
+### 2026-08-08 — Progressão: o herói acumulava pontos e não tinha como gastar
+
+**Pedido:** continuar o loop.
+
+**Passo a passo:**
+
+1. **Diagnóstico.** Segunda metade do achado da auditoria anterior:
+   `progression.ts` tinha **11 das 16 funções sem consumidor**. Todo o preço de
+   avanço — Perícia, Proficiência de Combate, Valor, Sabedoria — estava pronto,
+   testado e desligado. O herói acumulava Pontos de Perícia e de Aventura e a
+   única forma de subir um grau era editar a ficha na mão.
+
+2. **Dois erros fáceis, os dois travados por teste.**
+
+   - **Duas moedas.** Perícia custa Pontos de **Perícia**; Proficiência de
+     Combate, Valor e Sabedoria custam Pontos de **Aventura**. Trocar as duas
+     passaria despercebido até alguém ficar sem pontos do lado errado — conferi
+     quebrando de propósito e a asserção pegou.
+   - **O limite é por Fase de Companhia**, não por sessão nem por personagem:
+     um grau em cada Perícia e em cada Proficiência por Fase, e Valor e Sabedoria
+     competem entre si — só um dos dois.
+
+3. **Onde guardar o que já foi comprado.** No estado da **Fase**, não na ficha.
+   Fechar a Fase constrói um estado novo a partir do calendário avançado, então o
+   limite zera sozinho; na ficha, alguém teria de lembrar de zerar — e esquecer
+   trancaria o herói para sempre. O recorte na leitura limita a 1 grau por
+   Perícia já na normalização, senão um estado adulterado deixaria o limite
+   passar na próxima leitura.
+
+4. **O prêmio do novo grau.** Valor concede uma Recompensa; Sabedoria, uma
+   Virtude — e a Cultural só a partir de Sabedoria 2. A escolha em si é do
+   jogador, na ficha; o app anuncia no chat que há uma escolha pendente, em vez
+   de escolher por ele.
+
+5. **Validação.** `npx tsc --noEmit` limpo · `npm run build` compila, com
+   `/api/room/[roomId]/tor-advance` registrada · `npm run test` verde com **1751
+   asserções**.
+
+**A dívida segue registrada dentro do teste:** `applyTorSpiritualRecovery`,
+`appendTorChronicle` e `torFellowshipLevel` continuam sem consumidor, numa lista
+com asserção que falha quando alguém ligar alguma — do mesmo jeito que as quatro
+funções de Sombra que sobraram da rodada anterior.
+
+**Arquivos tocados:**
+- `lib/room/handlers/tor-advance.ts` · `app/api/room/[roomId]/tor-advance/route.ts` — **novos**
+- `components/vtt/TorAdvancePanel.tsx` — **novo**, dentro da Fase de Companhia
+- `lib/combat/um-anel/session-state.ts` — compras da Fase, normalizadas
+- `components/vtt/TorFellowshipPanel.tsx` · `mesa/MesaFoundryFloatingWindows.tsx` · `hooks/useRoomSync.ts`
+- `scripts/verify-um-anel-avanco.mjs` — **novo**, 41 asserções
+
+**Como testar:** abrir a Fase de Companhia com heróis no mapa. O painel lista
+cada herói com as duas moedas separadas e o custo do próximo grau ao lado de cada
+Perícia. Comprar a mesma Perícia duas vezes na mesma Fase tem de recusar; comprar
+Valor e depois Sabedoria na mesma Fase também.
+
+**Falta:** recuperação espiritual e crônica da Fase; Acesso de Loucura e
+descansos; Elmo removível; campanhas de 1ª edição; glyph da runa de Gandalf.
+
+---
+
 ### 2026-08-08 — Auditoria de cobertura: o motor de Sombra estava desligado
 
 **Pedido:** continuar o loop.
