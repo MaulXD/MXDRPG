@@ -3,6 +3,8 @@
 import { useState } from "react";
 import { postRoomTorRecovery, postRoomTorShadow } from "@/hooks/useRoomSync";
 import {
+  TOR_DREAD_TABLE,
+  TOR_MISDEED_TABLE,
   TOR_SHADOW_SOURCES,
   TOR_SHADOW_SOURCE_META,
   type TorShadowSource,
@@ -41,6 +43,11 @@ export function TorShadowPanel({ roomId, token, canManage, onUpdate }: Props) {
 
   const combat = token.torCombat;
   const characterId = combat?.torCharacterId;
+
+  /* Pavor e Malfeito têm tabela no livro; Ganância e Feitiçaria dependem do
+     item e da magia, então não há tabela fixa para mostrar. */
+  const tabela: readonly { points: number; label: string; scars?: number }[] =
+    source === "pavor" ? TOR_DREAD_TABLE : source === "malfeito" ? TOR_MISDEED_TABLE : [];
 
   async function recover(
     action: "spiritual" | "rest" | "madness" | "heal-scar" | "journey-end",
@@ -106,6 +113,21 @@ export function TorShadowPanel({ roomId, token, canManage, onUpdate }: Props) {
                 : "Malfeito não pode ser reduzido nem cancelado por Teste de Sombra."}
             </span>
           </label>
+
+          {/* As tabelas do livro ao lado do campo: sem elas o Mestre teria de
+              lembrar de cabeça quanto vale cada Pavor e cada Malfeito, e o
+              contador viraria chute. */}
+          {tabela.length > 0 ? (
+            <ul className="vtt-fell-abilities">
+              {tabela.map((linha, i) => (
+                <li key={i}>
+                  <strong>{linha.points}</strong>
+                  {(linha.scars ?? 0) > 0 ? ` +${linha.scars} Cicatriz` : ""} —{" "}
+                  {linha.label}
+                </li>
+              ))}
+            </ul>
+          ) : null}
 
           <div className="vtt-special-damage">
             <label>

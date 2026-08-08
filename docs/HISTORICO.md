@@ -104,6 +104,51 @@ npm run sync:data:check       # após editar livros/
 
 ---
 
+### 2026-08-08 — Malfeitoria: o aviso que o livro manda dar
+
+**Pedido:** continuar o loop.
+
+**Passo a passo:**
+
+1. **O achado.** "O ato de atacar ou matar um adversário com **Resolução**
+   deveria sempre ser avaliado pelo Mestre como possível Malfeitoria." O motor de
+   Sombra já tinha a fonte `malfeito`, o token do adversário já sabia
+   `hateKind: "resolve"` — e **nada ligava as duas pontas**. No chat, um Rufião
+   morto era indistinguível de um Orc morto, e a regra simplesmente não
+   acontecia na mesa.
+
+2. **O que o app faz, e o que não faz.** Não atribui Sombra sozinho: quem julga é
+   o Mestre, e o próprio livro manda **advertir os jogadores antes**. O ataque
+   passa a avisar quando o alvo tem Resolução, distinguindo **atacar** de
+   **matar** — porque pesam diferente na tabela de Malfeitos —, e o Mestre decide
+   no painel de Sombra. O teste garante as duas metades: que o aviso existe e que
+   o ataque **não** chama `applyTorShadowGain`.
+
+3. **Duas tabelas do livro estavam sem consumidor.** `TOR_DREAD_TABLE` e
+   `TOR_MISDEED_TABLE` — as escalas que dizem quanto vale cada Pavor e cada
+   Malfeito — existiam e não apareciam em lugar nenhum. O Mestre teria de lembrar
+   de cabeça, e o contador de pontos viraria chute. Agora aparecem no painel,
+   trocando conforme a fonte escolhida; Ganância e Feitiçaria não têm tabela fixa
+   no livro e não mostram nada.
+
+4. **Validação.** `npx tsc --noEmit` limpo · `npm run build` compila ·
+   `npm run test` verde com **1802 asserções**. A asserção do "só com Resolução"
+   foi conferida removendo a condição — falhou como devia.
+
+**Arquivos tocados:**
+- `lib/room/handlers/tor-combat-attack.ts` — aviso de possível Malfeitoria
+- `components/vtt/TorShadowPanel.tsx` — tabelas de Pavor e Malfeitos
+- `scripts/verify-um-anel-sombra-mesa.mjs` — 9 asserções novas
+
+**Como testar:** atacar um Rufião (Resolução) com um herói — a mensagem traz o
+aviso de possível Malfeitoria; matá-lo troca "atacar" por "matar". Atacar um Orc
+(Ódio) não avisa nada. No painel de Sombra, escolher "Malfeito" mostra a tabela
+com os cinco degraus e a Cicatriz do mais grave.
+
+**Falta:** Elmo removível; campanhas de 1ª edição; glyph da runa de Gandalf.
+
+---
+
 ### 2026-08-08 — Apoio: o companheiro que gasta a própria Esperança
 
 **Pedido:** continuar o loop.

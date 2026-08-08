@@ -219,5 +219,67 @@ for (const fn of AINDA_SEM_CONSUMIDOR) {
   );
 }
 
+/* ── 8. Malfeitoria: o aviso que faltava ───────────────────────────────── */
+
+/**
+ * "O ato de atacar ou matar um adversário com Resolução deveria sempre ser
+ * avaliado pelo Mestre como possível Malfeitoria."
+ *
+ * O app **não** atribui a Sombra sozinho — quem julga é o Mestre, e o livro
+ * manda advertir antes. Mas sem o aviso a regra fica invisível: no chat, um
+ * Rufião morto é indistinguível de um Orc morto. Então o ataque avisa, e as duas
+ * tabelas do livro aparecem no painel para o Mestre decidir o valor.
+ */
+const CAP8_SOMBRA = readFileSync(root("livros", "um-anel", "08-mestre-e-adversarios.md"), "utf8");
+const ATTACK_SOMBRA = stripComments(
+  readFileSync(root("lib", "room", "handlers", "tor-combat-attack.ts"), "utf8")
+);
+
+ok(
+  "livro: atacar ou matar adversário com Resolução pode ser Malfeitoria",
+  /o ato de atacar ou matar um adversário com Resolução deveria sempre ser avaliado pelo Mestre como possível Malfeitoria/.test(
+    CAP8_SOMBRA
+  )
+);
+ok(
+  "livro: Malfeitoria não pode ser reduzida por Teste de Sombra",
+  /Uma Malfeitoria é um caso especial de ganho de Sombra, pois não pode ser reduzida ou cancelada por Teste de Sombra/.test(
+    CAP8_SOMBRA
+  )
+);
+ok(
+  "o ataque avisa quando o alvo tem Resolução",
+  /defCombat\.hateKind === "resolve"/.test(ATTACK_SOMBRA),
+  "sem o aviso, um Rufião morto é indistinguível de um Orc morto no chat"
+);
+ok(
+  "o aviso distingue atacar de matar",
+  /result\.dying\s*\n?\s*\? `matar/.test(ATTACK_SOMBRA),
+  "matar pesa mais que atacar na tabela de Malfeitos"
+);
+/* E não pode atribuir Sombra sozinho: o julgamento é do Mestre. */
+ok(
+  "o ataque NÃO aplica Sombra por conta própria",
+  !/applyTorShadowGain/.test(ATTACK_SOMBRA),
+  "quem julga a Malfeitoria é o Mestre"
+);
+
+/* As duas tabelas do livro estavam sem consumidor — o Mestre teria de lembrar de
+   cabeça quanto vale cada Pavor e cada Malfeito. */
+ok("painel mostra a tabela de Pavor", /TOR_DREAD_TABLE/.test(PANEL));
+ok("painel mostra a tabela de Malfeitos", /TOR_MISDEED_TABLE/.test(PANEL));
+ok(
+  "a tabela mostrada segue a fonte escolhida",
+  /source === "pavor" \? TOR_DREAD_TABLE : source === "malfeito" \? TOR_MISDEED_TABLE : \[\]/.test(
+    PANEL
+  ),
+  "Ganância e Feitiçaria não têm tabela fixa no livro"
+);
+ok(
+  "a Cicatriz do último Malfeito aparece",
+  /\(linha\.scars \?\? 0\) > 0/.test(PANEL),
+  "o Malfeito mais grave traz 1 Cicatriz junto"
+);
+
 console.log(`\n  ${pass} ok, ${fail} falhas`);
 if (fail > 0) process.exit(1);
