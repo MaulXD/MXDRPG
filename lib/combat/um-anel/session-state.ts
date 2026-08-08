@@ -20,7 +20,9 @@ import type { TorCouncilState } from "@/lib/combat/um-anel/council";
 import { isTorCouncilResistance } from "@/lib/combat/um-anel/council";
 import {
   TOR_REGION_TYPES,
+  TOR_JOURNEY_ROLES,
   TOR_SEASONS,
+  type TorRoleAssignment,
   type TorJourneyEventId,
   type TorJourneyRole,
   type TorRegionType,
@@ -53,6 +55,19 @@ export type TorJourneyProgress = {
   /** Dias somados/reduzidos por eventos. */
   dayDelta: number;
   pending: TorPendingEvent | null;
+  /**
+   * Quem cobre cada papel da Jornada (Guia, Batedor, Olheiro, Caçador).
+   *
+   * O motor sempre soube que o evento cai sobre um PAPEL, e o painel já dizia
+   * "o Caçador rola Caçada" — mas ninguém era atribuído a papel nenhum, então a
+   * mesa tinha de lembrar de cabeça quem era o Caçador. Guardar aqui é o que
+   * torna `validateTorRoleAssignment` utilizável: um Guia só, e nenhum papel
+   * descoberto.
+   *
+   * Nomes, não ids de ficha: o Mestre pode pôr um PNJ como Guia, e o apelido é
+   * o que a mesa lê.
+   */
+  roles?: TorRoleAssignment;
   /** Diário da viagem — linhas curtas, na ordem em que aconteceram. */
   log: string[];
 };
@@ -168,8 +183,21 @@ function normalizeJourney(raw: unknown): TorJourneyProgress | null {
     remaining: int(r.remaining, trechos, 0, trechos),
     dayDelta: int(r.dayDelta, 0, -60, 60),
     pending: normalizePending(r.pending),
+    ...(normalizeRoles(r.roles) ? { roles: normalizeRoles(r.roles)! } : {}),
     log: strList(r.log, 60),
   };
+}
+
+/** Papéis da Jornada, recortados — só os quatro do livro, nomes curtos. */
+function normalizeRoles(raw: unknown): TorRoleAssignment | null {
+  if (!raw || typeof raw !== "object") return null;
+  const r = raw as Record<string, unknown>;
+  const out: TorRoleAssignment = {};
+  for (const role of TOR_JOURNEY_ROLES) {
+    const nomes = strList(r[role], TOR_MAX_COMPANY).map((n) => n.slice(0, 60));
+    if (nomes.length > 0) out[role] = nomes;
+  }
+  return Object.keys(out).length > 0 ? out : null;
 }
 
 function normalizeCouncil(raw: unknown): TorCouncilState | null {
