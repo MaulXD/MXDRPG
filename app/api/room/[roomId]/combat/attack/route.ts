@@ -25,6 +25,9 @@ type Body = {
   torSpendHate?: boolean;
   /** O Um Anel — ícones de Sucesso declarados pra Dano Especial. */
   torSpecialDamage?: Record<string, unknown>;
+  /** O Um Anel — gasta 1 de Esperança na rolagem; Inspirado dobra. */
+  torSpendHope?: boolean;
+  torInspired?: boolean;
 };
 
 /** Campos aceitos no plano — o resto do corpo é ignorado. */
@@ -129,6 +132,8 @@ export async function POST(req: Request, { params }: Params) {
             // funcionaria.
             spendHate: body.torSpendHate === true && canManageRoom(room, session?.user ?? null),
             specialDamage: sanitizeSpecialDamage(body.torSpecialDamage),
+            spendHope: body.torSpendHope === true,
+            inspired: body.torInspired === true,
             room,
           })
         : await executeRoomAttack(

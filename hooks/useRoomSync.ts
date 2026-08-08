@@ -707,6 +707,9 @@ export async function postRoomAttack(
       seize?: number;
       escape?: number;
     };
+    /** O Um Anel — gasta 1 de Esperança na rolagem; Inspirado dobra o benefício. */
+    torSpendHope?: boolean;
+    torInspired?: boolean;
   } = {}
 ) {
   const res = await roomFetch(

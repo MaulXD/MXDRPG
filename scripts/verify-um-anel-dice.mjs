@@ -374,3 +374,83 @@ ok(
 
 console.log(`\nverify-um-anel-dice: ${pass} passaram, ${fail} falharam`);
 if (fail > 0) process.exit(1);
+
+/* ══════════════════════════════════════════════════════════════════════
+   Bônus de Esperança e Inspiração
+   ══════════════════════════════════════════════════════════════════════
+
+   A ação mais usada da mesa — "gaste 1 ponto de Esperança para ganhar (1d)" —
+   não existia no motor: `rollTorCheck` não tinha por onde receber o bônus, e
+   portanto a Inspiração, que só dobra esse bônus, também não. Uma auditoria por
+   função no capítulo 4 (Características Distintivas dão Inspirado) chegou nisso.
+
+   Dois erros fáceis, e os dois estão travados:
+    - é Dado de SUCESSO, não de Proeza: soma ao rank, nunca a `favoured`;
+    - INSPIRADO SEM GASTO VALE ZERO. "Inspirados dobram o benefício de gastar um
+      ponto" — sem o ponto, não há benefício para dobrar. */
+
+const SHEET_VIEW = readFileSync(
+  join(__dirname, "..", "components", "character", "sheet", "TorCharacterSheetView.tsx"),
+  "utf8"
+);
+const ATTACK_H = readFileSync(
+  join(__dirname, "..", "lib", "room", "handlers", "tor-combat-attack.ts"),
+  "utf8"
+);
+
+ok(
+  "livro: 1 ponto de Esperança dá (1d)",
+  /pode gastar 1 ponto de Esperança para \*ganhar \(1d\)\*/.test(BOOK)
+);
+ok(
+  "livro: não dá pra gastar vários pontos",
+  /Não é possível gastar múltiplos pontos de Esperança para ganhar múltiplos Dados de Sucesso bônus/.test(
+    BOOK
+  )
+);
+ok(
+  "livro: Inspirado dobra o benefício do ponto",
+  /Inspirado que gasta 1 ponto de Esperança para obter o bônus de Esperança \*ganha \(2d\)\*/.test(
+    BOOK
+  )
+);
+
+ok("rollTorCheck aceita o bônus de Esperança", /hopeBonusDice\?: number/.test(DICE_RAW));
+ok(
+  "o bônus é Dado de SUCESSO, somado ao rank",
+  /const totalRank = Math\.max\(0, opts\.rank\) \+ hopeDice/.test(DICE_RAW),
+  "somar em favoured daria Dado de Proeza, que é outra coisa"
+);
+ok(
+  "o bônus é limitado a 2",
+  /Math\.min\(2, Math\.max\(0, Math\.floor\(opts\.hopeBonusDice \?\? 0\)\)\)/.test(DICE_RAW),
+  "o livro fecha em um ponto por rolagem; 2 é o dobro do Inspirado"
+);
+ok(
+  "Inspirado SEM gasto vale zero",
+  /if \(!opts\.spendHope\) return 0;/.test(DICE_RAW),
+  "sem o ponto não há benefício para dobrar"
+);
+ok("com gasto, Inspirado dobra", /return opts\.inspired \? 2 : 1;/.test(DICE_RAW));
+
+/* O ponto tem de sair da ficha — senão a Esperança seria infinita. */
+ok(
+  "a ficha desconta o ponto gasto",
+  /onResourceChange\?\.\(\{ hopeValue: Math\.max\(0, character\.hope\.value - 1\) \}\)/.test(SHEET_VIEW)
+);
+ok(
+  "a ficha não desconta sem ter ponto",
+  /const canSpend = spendHope && character\.hope\.value > 0/.test(SHEET_VIEW),
+  "marcar a caixa sem Esperança viraria saldo negativo"
+);
+ok(
+  "o ataque em mesa também desconta",
+  /patchTorCharacterResources\(hopeSpentSheetId, \{ hopeValue: hopeAfter \}/.test(ATTACK_H)
+);
+ok(
+  "o ataque não desconta sem ter ponto",
+  /if \(opts\.spendHope && sheet\.hope\.value > 0\)/.test(ATTACK_H)
+);
+
+console.log(`\nverify-um-anel-dice (Esperança): ${pass} passaram, ${fail} falharam`);
+if (fail > 0) process.exit(1);

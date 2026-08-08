@@ -104,6 +104,62 @@ npm run sync:data:check       # após editar livros/
 
 ---
 
+### 2026-08-08 — Gastar Esperança por (1d): a ação mais usada do jogo não existia
+
+**Pedido:** continuar o loop.
+
+**Passo a passo:**
+
+1. **O achado.** Fui auditar o capítulo 4 — Características Distintivas dão
+   **Inspirado** — e o rastro terminou antes: **o Bônus de Esperança não existia
+   no motor**. `rollTorCheck` não tinha por onde receber o bônus, então "gaste 1
+   ponto de Esperança para *ganhar (1d)*" — a ação mais usada de qualquer mesa
+   de Um Anel — simplesmente não era possível. E como Inspirado só **dobra** esse
+   bônus, ele também não existia: as cinco Virtudes Culturais que concedem
+   Inspiração eram texto sem efeito, e invocar um Traço Distintivo não fazia nada.
+
+2. **Dois erros fáceis, os dois travados por teste.**
+
+   - **É Dado de Sucesso, não de Proeza.** Soma ao rank, nunca a `favoured` —
+     confundir daria dois Dados de Proeza a quem tem direito a um Dado de Sucesso
+     extra. Foi o mesmo erro que evitei quando decidi não mecanizar as Virtudes
+     de Inspiração, na rodada 1; agora está travado no motor.
+   - **Inspirado sem gasto vale zero.** "Inspirados dobram o benefício de gastar
+     um ponto" — sem o ponto, não há benefício para dobrar. A asserção foi
+     conferida fazendo Inspirado render 1d sozinho: falhou como devia.
+
+   E o teto é 2: o livro fecha em um ponto por rolagem ("não é possível gastar
+   múltiplos pontos para ganhar múltiplos Dados de Sucesso bônus").
+
+3. **O ponto sai da ficha.** Na ficha e no ataque em mesa, e só se houver ponto —
+   marcar a caixa com Esperança zerada não pode virar saldo negativo. O motor
+   continua puro: quem persiste é quem tem a ficha.
+
+4. **Validação.** `npx tsc --noEmit` limpo · `npm run build` compila ·
+   `npm run test` verde com **1785 asserções**.
+
+**Duas asserções antigas passaram a trancar a forma errada:** as que fixavam
+`attributeTnBase` como parâmetro **posicional** de `rollTorSkillCheck`. A
+assinatura virou objeto de opções para caber o Bônus de Esperança; a garantia
+que elas protegem é a mesma e foi reescrita na forma nova. Sétima vez que este
+padrão aparece — mudança de assinatura é o gatilho mais comum.
+
+**Arquivos tocados:**
+- `lib/character/um-anel/dice.ts` — `hopeBonusDice` no motor, `TorRollOptions`, `torHopeBonusDice`
+- `components/character/sheet/TorCharacterSheetView.tsx` · `tor-sheet.css` — caixas antes da rolagem
+- `lib/room/handlers/tor-combat-attack.ts` · `lib/combat/um-anel/resolve-attack.ts` — ataque em mesa
+- `app/api/room/[roomId]/combat/attack/route.ts` · `hooks/useRoomSync.ts` · `components/vtt/TorAttackPopup.tsx`
+- `scripts/verify-um-anel-dice.mjs` — 12 asserções novas · `verify-um-anel-empurrao-na18.mjs` atualizado
+
+**Como testar:** na ficha, marcar "Gastar 1 Esperança" e rolar uma Perícia — a
+mensagem traz "[Esperança +1d]", a rolagem leva um Dado de Sucesso a mais e a
+Esperança cai 1. Marcar também "Inspirado": vira "+2d" pelo mesmo ponto. Marcar
+só Inspirado, sem Esperança: não muda nada, que é o correto.
+
+**Falta:** Elmo removível; campanhas de 1ª edição; glyph da runa de Gandalf.
+
+---
+
 ### 2026-08-08 — Reserva de Companhia e crônica: a dívida zera (e um bug meu aparece)
 
 **Pedido:** continuar o loop.

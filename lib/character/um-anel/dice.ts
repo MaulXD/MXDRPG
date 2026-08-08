@@ -66,6 +66,17 @@ export function rollTorCheck(opts: {
   illFavoured?: boolean;
   weary?: boolean;
   miserable?: boolean;
+  /**
+   * Bônus de Esperança: "um herói-jogador a ponto de fazer uma rolagem pode
+   * gastar 1 ponto de Esperança para *ganhar (1d)*" — e **Inspirado dobra**,
+   * dando (2d) pelo mesmo ponto (02-resolucao-de-acoes.md).
+   *
+   * É Dado de SUCESSO, não de Proeza: some ao rank, nunca a favoured. E o livro
+   * fecha em UM ponto por rolagem — "não é possível gastar múltiplos pontos de
+   * Esperança para ganhar múltiplos Dados de Sucesso bônus" —, por isso o valor
+   * só pode ser 0, 1 ou 2.
+   */
+  hopeBonusDice?: number;
 }): TorRollOutcome {
   // Favorecida + Desfavorecida ao mesmo tempo se cancelam (livro, "Die Roll Modifiers").
   const favoured = Boolean(opts.favoured) && !opts.illFavoured;
@@ -77,7 +88,11 @@ export function rollTorCheck(opts: {
     ? featDiceRolled.reduce((a, b) => (featDieRank(b) < featDieRank(a) ? b : a))
     : featDiceRolled.reduce((a, b) => (featDieRank(b) > featDieRank(a) ? b : a));
 
-  const successDice: TorSuccessDie[] = Array.from({ length: Math.max(0, opts.rank) }, () => {
+  // Teto 2: Inspirado dobra o bônus de UM ponto; não há como gastar dois pontos.
+  const hopeDice = Math.min(2, Math.max(0, Math.floor(opts.hopeBonusDice ?? 0)));
+  const totalRank = Math.max(0, opts.rank) + hopeDice;
+
+  const successDice: TorSuccessDie[] = Array.from({ length: totalRank }, () => {
     const value = 1 + Math.floor(Math.random() * 6);
     const zeroedByWeary = Boolean(opts.weary) && value <= 3;
     return { value, icon: value === 6, zeroedByWeary };
@@ -153,18 +168,47 @@ function torSheetIllFavoured(character: TorCharacterSheet): boolean {
   });
 }
 
+export type TorRollOptions = {
+  /**
+   * Regra opcional de campanha curta (NA 18). Quem conhece a mesa passa; a ficha
+   * aberta fora de uma sala não tem como saber e cai no padrão do livro, 20.
+   */
+  attributeTnBase?: number;
+  /** O jogador gastou 1 ponto de Esperança nesta rolagem. */
+  spendHope?: boolean;
+  /**
+   * Herói Inspirado — invocou uma Característica Distintiva, ou tem uma Virtude
+   * Cultural que inspira. Só faz diferença junto com o gasto de Esperança:
+   * Inspirado **dobra o benefício**, não dá dado nenhum sozinho.
+   */
+  inspired?: boolean;
+};
+
 /**
- * `attributeTnBase` cobre a regra opcional de campanha curta (NA 18). Quem
- * conhece a mesa passa; a ficha aberta fora de uma sala não tem como saber e
- * cai no padrão do livro, que é 20.
+ * Dados de Sucesso vindos do Bônus de Esperança.
+ *
+ * Inspirado sem gasto de Esperança vale **zero** — é o erro mais fácil desta
+ * regra. "Heróis-jogadores Inspirados dobram o benefício de gastar um ponto de
+ * Esperança": sem o ponto, não há benefício para dobrar.
  */
+export function torHopeBonusDice(opts: { spendHope?: boolean; inspired?: boolean }): number {
+  if (!opts.spendHope) return 0;
+  return opts.inspired ? 2 : 1;
+}
+
+function torHopeLabel(hopeBonusDice: number): string {
+  if (hopeBonusDice <= 0) return "";
+  return hopeBonusDice >= 2 ? " [Esperança, Inspirado +2d]" : " [Esperança +1d]";
+}
+
 export function rollTorSkillCheck(
   character: TorCharacterSheet,
   skillId: TorSkillId,
-  attributeTnBase?: number
+  opts: TorRollOptions = {}
 ): { outcome: TorRollOutcome; message: string } {
   const group = skillGroup(skillId);
-  const tn = attributeTN(character.attributes[group], attributeTnBase);
+  const tn = attributeTN(character.attributes[group], opts.attributeTnBase);
+  const hopeBonusDice = torHopeBonusDice(opts);
   const rank = character.skills[skillId] ?? 0;
   const favoured = character.favouredSkills.includes(skillId);
   const outcome = rollTorCheck({
@@ -176,17 +220,21 @@ export function rollTorSkillCheck(
     illFavoured: torSheetIllFavoured(character),
     weary: character.conditions.weary,
     miserable: character.conditions.miserable,
+    hopeBonusDice,
   });
-  const label = `${character.name} — ${SKILL_LABEL[skillId]} (${ATTRIBUTE_LABEL[group]} ${rank})`;
+  const label =
+    `${character.name} — ${SKILL_LABEL[skillId]} (${ATTRIBUTE_LABEL[group]} ${rank})` +
+    torHopeLabel(hopeBonusDice);
   return { outcome, message: formatTorRollMessage(label, outcome) };
 }
 
 export function rollTorCombatProficiencyCheck(
   character: TorCharacterSheet,
   profId: TorCombatProficiencyId,
-  attributeTnBase?: number
+  opts: TorRollOptions = {}
 ): { outcome: TorRollOutcome; message: string } {
-  const tn = attributeTN(character.attributes.forca, attributeTnBase);
+  const tn = attributeTN(character.attributes.forca, opts.attributeTnBase);
+  const hopeBonusDice = torHopeBonusDice(opts);
   const rank = character.combatProficiencies[profId] ?? 0;
   // Proficiências de Combate nunca são Favorecidas por serem Proficiências (não
   // existe "Proficiência Favorecida" como as Perícias) — só uma Virtude pode
@@ -204,10 +252,13 @@ export function rollTorCombatProficiencyCheck(
     illFavoured: torSheetIllFavoured(character),
     weary: character.conditions.weary,
     miserable: character.conditions.miserable,
+    hopeBonusDice,
   });
   // A Virtude aparece no rótulo: sem isso o jogador vê "(Favorecida)" e não tem
   // como saber de onde veio — nem o Mestre, pra conferir contra a ficha.
   const virtueTxt = virtue.sources.length > 0 ? ` [${virtue.sources.join(", ")}]` : "";
-  const label = `${character.name} — ${COMBAT_PROFICIENCY_LABEL[profId]} (Força ${rank})${virtueTxt}`;
+  const label =
+    `${character.name} — ${COMBAT_PROFICIENCY_LABEL[profId]} (Força ${rank})${virtueTxt}` +
+    torHopeLabel(hopeBonusDice);
   return { outcome, message: formatTorRollMessage(label, outcome) };
 }

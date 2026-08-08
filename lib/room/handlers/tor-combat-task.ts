@@ -109,7 +109,9 @@ export async function executeRoomTorTask(
     }
   }
 
-  const { outcome, message } = rollTorSkillCheck(sheet, task.skill, torAttributeTnBase(room.torSession));
+  const { outcome, message } = rollTorSkillCheck(sheet, task.skill, {
+    attributeTnBase: torAttributeTnBase(room.torSession),
+  });
   const tokens = [...room.scene.tokens];
   const notas: string[] = [];
 

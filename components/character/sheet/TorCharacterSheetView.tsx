@@ -129,6 +129,10 @@ export function TorCharacterSheetView({
   const shadowPath = SHADOW_PATH_BY_ID[character.shadowPathId];
   const standard = STANDARDS_OF_LIVING.find((s) => s.id === character.standardOfLiving);
   const [lastRoll, setLastRoll] = useState<string | null>(null);
+  /* Bônus de Esperança e Inspiração valem PARA A PRÓXIMA rolagem — por isso são
+     estado do painel, marcados antes de clicar, e desmarcam depois de gastos. */
+  const [spendHope, setSpendHope] = useState(false);
+  const [inspired, setInspired] = useState(false);
   const [portraitOverride, setPortraitOverride] = useState<PortraitOverride | null>(null);
 
   const portraitUrl = portraitOverride ? portraitOverride.portraitUrl : character.portraitUrl ?? null;
@@ -192,15 +196,41 @@ export function TorCharacterSheetView({
     .map((id) => DISTINCTIVE_FEATURE_BY_ID[id.split(":")[0]!])
     .filter(Boolean);
 
+  /**
+   * Opções da rolagem e o desconto do ponto.
+   *
+   * A Esperança sai da ficha aqui, e não dentro de `rollTorCheck`: o motor é puro
+   * e não sabe persistir. Descontar só depois de rolar mantém a ficha coerente
+   * mesmo se a rolagem falhar por qualquer motivo.
+   *
+   * Inspirado **sem** gasto de Esperança não dá dado nenhum — é o benefício do
+   * ponto que dobra —, então a caixa de Inspirado sozinha não desconta nada.
+   */
+  function rollOptions() {
+    const canSpend = spendHope && character.hope.value > 0;
+    return { opts: { spendHope: canSpend, inspired }, spent: canSpend };
+  }
+
+  function afterRoll(spent: boolean) {
+    if (!spent) return;
+    onResourceChange?.({ hopeValue: Math.max(0, character.hope.value - 1) });
+    setSpendHope(false);
+    setInspired(false);
+  }
+
   function rollSkill(skillId: TorSkillId) {
-    const { message, outcome } = rollTorSkillCheck(character, skillId);
+    const { opts, spent } = rollOptions();
+    const { message, outcome } = rollTorSkillCheck(character, skillId, opts);
     setLastRoll(message);
     onRoll?.(message, featDieRollPayload(outcome.featDie));
+    afterRoll(spent);
   }
 
   function rollCombat(profId: TorCombatProficiencyId) {
-    const { message, outcome } = rollTorCombatProficiencyCheck(character, profId);
+    const { opts, spent } = rollOptions();
+    const { message, outcome } = rollTorCombatProficiencyCheck(character, profId, opts);
     setLastRoll(message);
+    afterRoll(spent);
     onRoll?.(message, featDieRollPayload(outcome.featDie));
   }
 
@@ -330,6 +360,31 @@ export function TorCharacterSheetView({
           </button>
         ) : null}
       </section>
+
+      {/* Marcado ANTES de rolar: o livro fala em "um herói-jogador a ponto de
+          fazer uma rolagem". Só um ponto por rolagem — o livro é explícito em
+          que não dá pra gastar vários. */}
+      {interactive ? (
+        <div className="tor-sheet__hope-bonus">
+          <label>
+            <input
+              type="checkbox"
+              checked={spendHope}
+              disabled={character.hope.value <= 0}
+              onChange={(e) => setSpendHope(e.target.checked)}
+            />
+            Gastar 1 Esperança na próxima rolagem (+1d)
+          </label>
+          <label>
+            <input type="checkbox" checked={inspired} onChange={(e) => setInspired(e.target.checked)} />
+            Inspirado — dobra o bônus (+2d)
+          </label>
+          <span className="tor-sheet__hope-hint">
+            Inspiração vem de invocar uma Característica Distintiva ou de uma Virtude Cultural.
+            Sozinha não dá dado: é o benefício do ponto de Esperança que dobra.
+          </span>
+        </div>
+      ) : null}
 
       {interactive && lastRoll ? <p className="tor-sheet__last-roll">{lastRoll}</p> : null}
 

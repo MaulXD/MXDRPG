@@ -199,9 +199,14 @@ ok(
   "gravar 20 deixaria 'nunca mexeu' e 'desligou' indistinguíveis"
 );
 ok("ataque usa a base da mesa", /attributeTnBase: torAttributeTnBase\(room\.torSession\)/.test(attackCode));
+/* A assinatura virou objeto de opções quando o Bônus de Esperança entrou —
+   `attributeTnBase` deixou de ser posicional. A garantia é a mesma: a Tarefa de
+   Combate rola Perícia, então tem de usar a base de NA da mesa. */
 ok(
   "Tarefa de Combate usa a base da mesa",
-  /rollTorSkillCheck\(sheet, task\.skill, torAttributeTnBase\(room\.torSession\)\)/.test(stripComments(TASK)),
+  /rollTorSkillCheck\(sheet, task\.skill, \{\s*\n?\s*attributeTnBase: torAttributeTnBase\(room\.torSession\),/.test(
+    stripComments(TASK)
+  ),
   "a tarefa rola Perícia — tem de seguir a mesma regra da mesa"
 );
 ok("painel de campanha oferece a opção", /Números-Alvo derivados de 18/.test(FELLOW));
@@ -215,9 +220,8 @@ ok(
    mesa e cai em 20. O parâmetro existe justamente para quem conhece passar. */
 ok(
   "rolagem de ficha aceita a base, mesmo caindo no padrão sozinha",
-  /rollTorSkillCheck\(\s*\n?\s*character: TorCharacterSheet,\s*\n?\s*skillId: TorSkillId,\s*\n?\s*attributeTnBase\?: number/.test(
-    readFileSync(root("lib", "character", "um-anel", "dice.ts"), "utf8")
-  )
+  /attributeTnBase\?: number;/.test(readFileSync(root("lib", "character", "um-anel", "dice.ts"), "utf8")) &&
+    /opts: TorRollOptions = \{\}/.test(readFileSync(root("lib", "character", "um-anel", "dice.ts"), "utf8"))
 );
 
 console.log(`\n  ${pass} ok, ${fail} falhas`);
