@@ -828,6 +828,36 @@ export async function postRoomTorRecovery(
   return res.json() as Promise<RoomApiPayload>;
 }
 
+/**
+ * Um Anel — Fadiga de Viagem SUBINDO. A Companhia inteira (Evento de Jornada,
+ * marcha forçada) ou um herói só. Quem resolve quem está na Companhia é o
+ * servidor, e o ganho é por ficha porque Cram e Resistência do Ranger dependem
+ * das Virtudes e do equipamento de cada herói.
+ */
+export async function postRoomTorFatigue(
+  roomId: string,
+  body:
+    | { scope: "company"; points: number; source: "evento" | "marcha-forcada" | "mestre" }
+    | {
+        scope: "token";
+        tokenId: string;
+        points: number;
+        source: "evento" | "marcha-forcada" | "mestre";
+      }
+) {
+  const res = await roomFetch(
+    `/api/room/${roomId}/tor-fatigue`,
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "same-origin",
+      body: JSON.stringify(body),
+    },
+    "Falha ao registrar a Fadiga"
+  );
+  return res.json() as Promise<RoomApiPayload>;
+}
+
 /** Um Anel — o herói aceita ser empurrado e amortece metade do último golpe. */
 export async function postRoomTorPush(roomId: string, tokenId: string) {
   const res = await roomFetch(

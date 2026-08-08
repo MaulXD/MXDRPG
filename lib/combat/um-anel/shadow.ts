@@ -277,6 +277,32 @@ export function applyTorBoutOfMadness(
    ══════════════════════════════════════════════════════════════════════ */
 
 /**
+ * Fadiga SUBINDO — a direção que faltava.
+ *
+ * Fica aqui, coladinha nas três funções que TIRAM Fadiga (Descanso Prolongado,
+ * Vigor da montaria, rolagem de VIAGEM), porque durante muito tempo só existiu
+ * esse lado: nada no motor somava Fadiga, e Exausto — que é derivado de
+ * `Resistência ≤ Carga + Fadiga` — nunca disparava sozinho.
+ *
+ * Quanto cada herói ganha (Cram, Resistência do Ranger) é conta de
+ * `torFatigueGain`, em fatigue.ts; aqui só entra o total já descontado.
+ *
+ * `becameWeary` é a razão de a função existir em vez de um `fatigue + n` solto: o
+ * momento em que a Carga total ultrapassa a Resistência é o que a mesa precisa
+ * ler no chat, e ele só é visível comparando o antes com o depois.
+ */
+export function applyTorFatigueGain(
+  state: TorSpiritState,
+  gained: number
+): { state: TorSpiritState; flags: TorSpiritFlags; becameWeary: boolean } {
+  const add = Math.max(0, Math.floor(gained));
+  const before = deriveTorSpiritFlags(state);
+  const next: TorSpiritState = { ...state, fatigue: Math.max(0, state.fatigue) + add };
+  const flags = deriveTorSpiritFlags(next);
+  return { state: next, flags, becameWeary: !before.weary && flags.weary };
+}
+
+/**
  * Descanso Prolongado em refúgio seguro: 1 ponto de Fadiga por descanso
  * (JOR-M02). Cicatrizes NÃO saem aqui — só na Empreitada Curar Cicatrizes
  * numa Fase de Yule (SOM-R06).

@@ -365,10 +365,17 @@ ok(
   /const falta = Math\.max\(0, params\.enduranceMax - params\.enduranceValue\)/.test(SHADOW_REST)
 );
 ok("o handler oferece os dois descansos", /action === "rest" \|\| action === "short-rest"/.test(REC_REST));
+/* A condição ganhou uma segunda metade quando a Fadiga passou a SUBIR: o livro
+   diz que os pontos "não podem ser removidos enquanto a jornada durar", e o
+   Descanso Prolongado que tira Fadiga é o feito "em um refúgio abrigado e seguro
+   (isto é, não 'na estrada')". Ver verify-um-anel-fadiga.mjs. A asserção antiga
+   casava só com `prolongado ?` e teria trancado a regra errada. */
 ok(
-  "só o Prolongado tira Fadiga",
-  /prolongado \? applyTorProlongedRest\(state\)\.state\.fatigue : sheet\.fatigue/.test(REC_REST),
-  "o Descanso Curto não menciona Fadiga no livro"
+  "só o Prolongado tira Fadiga, e só fora da estrada",
+  /prolongado && !journeyInProgress\s*\?\s*applyTorProlongedRest\(state\)\.state\.fatigue\s*:\s*sheet\.fatigue/.test(
+    REC_REST
+  ),
+  "o Descanso Curto não menciona Fadiga no livro, e na estrada nem o Prolongado tira"
 );
 /* Duro como Raiz Velha: "dobre seu valor de FORÇA ao calcular a Resistência
    recuperada em descanso". */

@@ -104,6 +104,96 @@ npm run sync:data:check       # após editar livros/
 
 ---
 
+### 2026-08-08 — Fadiga: existia quem tira, não existia quem põe
+
+**Pedido:** continuar o loop.
+
+**Passo a passo:**
+
+1. **O achado — regra implementada numa direção só.** O motor tinha **três**
+   formas de TIRAR Fadiga (Descanso Prolongado, Vigor da montaria, rolagem de
+   VIAGEM no fim da jornada) e **nenhuma de pôr**. `resolveTorJourneyEvent` já
+   calculava `fatigueAll` e `fatigueTarget`; `computeTorJourneyLength` já
+   calculava `forcedMarchFatigue` — e os três só viravam **texto no chat**. O
+   único jeito de a Fadiga subir era alguém digitar o número no contador da
+   ficha.
+
+   O efeito era silencioso e grave: **Exausto** é derivado de
+   `Resistência ≤ Carga + Fadiga`, então a condição que a Fadiga existe para
+   produzir **nunca disparava sozinha**.
+
+2. **Duas Virtudes Culturais viviam só como descrição.** É por isso que o ganho
+   é **por herói** e não um número só para a Companhia:
+
+   - **Cram** (Bardos): "Cada vez que você ganha Fadiga por um Evento de Jornada,
+     você ganha 1 ponto menos" — **só** Evento de Jornada; marcha forçada não é
+     evento, e a asserção prova a diferença;
+   - **Resistência do Ranger** (Rangers do Norte): "armadura de Couro ou nenhuma
+     armadura, e não carregar escudo" → **nunca ganha Fadiga**. O Elmo não entra:
+     o livro nomeia armadura e escudo, e nada mais. Armadura que a tabela não
+     conhece conta como **pesada** — errar para o lado de conceder daria de graça
+     o que a Virtude cobra um grau de SABEDORIA para ter.
+
+3. **A soma mora ao lado de quem tira.** `applyTorFatigueGain` foi para
+   `shadow.ts`, colada em `applyTorProlongedRest` e `applyTorJourneyEndRecovery`
+   — as duas direções da mesma regra juntas, que é o que faltava enxergar. Ela
+   compara Exausto **antes e depois** para a mesa ler no chat o momento exato da
+   virada. `fatigue.ts` ficou sem import de runtime de propósito, para o teste
+   poder importar o arquivo e conferir a aritmética com números de verdade.
+
+4. **Quem aplica.** `POST /tor-fatigue` é do **Mestre** — a Fadiga vem do Evento
+   que ele resolveu, da marcha que ele contou, ou da cena que ele narrou. A
+   Companhia é resolvida **no servidor**, a partir dos tokens da cena, porque o
+   ganho depende da ficha de cada herói. O painel de Jornada dispara sozinho nos
+   dois casos automáticos do livro (todo Evento; a marcha forçada na chegada,
+   antes da recuperação de fim de jornada). A Fadiga **extra do alvo** de um
+   Contratempo fica **de fora de propósito**: o alvo é um *papel* preenchido com
+   nomes digitados, não um token — o app não sabe qual herói rolou, e chutar
+   cobraria do herói errado. Vai pelo painel do token, com asserção **negativa**
+   garantindo que o app não age sozinho ali.
+
+5. **Auditoria da mesma rodada — a Fadiga não sai na estrada.** O livro:
+   os pontos "não podem ser removidos enquanto a jornada durar", e o Descanso
+   Prolongado que tira Fadiga é o feito "em um refúgio abrigado e seguro (isto é,
+   não 'na estrada')". O handler tirava 1 de Fadiga em qualquer Descanso
+   Prolongado, inclusive no meio da viagem. Corrigido: com a Companhia ainda
+   viajando (`journey.remaining > 0`), o descanso devolve **Resistência** mas não
+   tira Fadiga. O livro trava só a Fadiga — travar a Resistência junto seria
+   inventar, e tem asserção para isso.
+
+6. **Asserção antiga trancando a regra errada (9ª vez).**
+   `verify-um-anel-sombra-mesa.mjs` casava com `prolongado ?` exatamente como
+   estava; a condição ganhou uma segunda metade e a asserção precisou ser
+   corrigida junto, com o porquê escrito ao lado.
+
+7. **Validação.** `npx tsc --noEmit` limpo · `npm run build` compila ·
+   `npm run test` verde com **1903 asserções** (62 novas). Cinco asserções foram
+   quebradas de propósito e voltaram a falhar como deviam — incluindo a negativa
+   do alvo e a de "gravar o TOTAL, não o ganho".
+
+**Arquivos tocados:**
+- `lib/combat/um-anel/fatigue.ts` — **novo**: fontes, Cram, Resistência do Ranger
+- `lib/combat/um-anel/shadow.ts` — `applyTorFatigueGain` ao lado de quem tira
+- `lib/room/handlers/tor-fatigue.ts` — **novo**: Companhia ou herói só
+- `app/api/room/[roomId]/tor-fatigue/route.ts` — **novo**
+- `lib/room/handlers/tor-recovery.ts` — Fadiga não sai na estrada
+- `components/vtt/TorJourneyPanel.tsx` — Evento e marcha forçada aplicam sozinhos
+- `components/vtt/TorShadowPanel.tsx` — Fadiga de um herói só
+- `hooks/useRoomSync.ts` — `postRoomTorFatigue`
+- `scripts/verify-um-anel-fadiga.mjs` — **novo**, 62 asserções
+- `scripts/verify-um-anel-sombra-mesa.mjs` — asserção do descanso corrigida
+
+**Como testar:** iniciar uma jornada com marcha forçada, resolver um Evento — a
+Fadiga de todos na cena sobe na hora, e quem passar da Carga total é anunciado
+como EXAUSTO no chat. Um Ranger de couro sem escudo aparece com "não ganha
+Fadiga". Um Descanso Prolongado no meio da viagem devolve Resistência e avisa que
+a Fadiga só sai num refúgio.
+
+**Falta:** Veneno (cap. 8); Consciência do Olho; Elmo removível; campanhas de 1ª
+edição; glyph da runa de Gandalf.
+
+---
+
 ### 2026-08-08 — Atitude da audiência: a penalidade que faltava
 
 **Pedido:** continuar o loop.

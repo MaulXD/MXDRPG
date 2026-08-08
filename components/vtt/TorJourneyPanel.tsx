@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useMemo, useState } from "react";
-import { patchTorSession, postRoomChat } from "@/hooks/useRoomSync";
+import { patchTorSession, postRoomChat, postRoomTorFatigue } from "@/hooks/useRoomSync";
 import { rollTorCheck, featDieRollPayload } from "@/lib/character/um-anel/dice";
 /* O papel guarda o ID da Perícia ("caca", "percepcao"); a mesa lê o RÓTULO da
    ficha ("Caçada", "Vigilância"). O painel imprimia o id cru — o Mestre lia
@@ -218,6 +218,18 @@ export function TorJourneyPanel({ roomId, canManage, progress, onUpdate }: Props
               log: [...progress.log, `Chegou ao destino — ${length.days} dias.`],
             }
           );
+          /* Marcha forçada cobra na chegada: "cada herói-jogador acumula 1 ponto
+             adicional de Fadiga por cada dia de marcha forçada". Vem ANTES da
+             recuperação de fim de jornada (montaria + rolagem de Viagem), que é
+             o que o painel de recuperação faz depois. */
+          if (progress.forcedMarch && length.forcedMarchFatigue > 0) {
+            await postRoomTorFatigue(roomId, {
+              scope: "company",
+              points: length.forcedMarchFatigue,
+              source: "marcha-forcada",
+            });
+            onUpdate();
+          }
           return;
         }
 
@@ -251,7 +263,7 @@ export function TorJourneyPanel({ roomId, canManage, progress, onUpdate }: Props
           }
         );
       }),
-    [guard, commit, progress, length.days]
+    [guard, commit, progress, length.days, length.forcedMarchFatigue, roomId, onUpdate]
   );
 
   const resolveEvent = useCallback(
@@ -301,8 +313,27 @@ export function TorJourneyPanel({ roomId, canManage, progress, onUpdate }: Props
             perilousRemaining,
           }
         );
+
+        /* "Todos os eventos adicionalmente fazem com que todos na Companhia
+           ganhem uma quantidade de pontos de Fadiga" — a coluna mais à direita
+           da Tabela de Eventos. Não é julgamento do Mestre: é automático, então
+           o app aplica. Cada ficha desconta as próprias Virtudes (Cram,
+           Resistência do Ranger) no servidor.
+
+           A Fadiga EXTRA do alvo (Contratempo) fica de fora daqui de propósito:
+           o alvo do evento é um PAPEL preenchido com nomes digitados, não um
+           token, então quem sabe qual herói rolou é o Mestre — ele aplica pelo
+           painel do token. */
+        if (outcome.fatigueAll > 0) {
+          await postRoomTorFatigue(roomId, {
+            scope: "company",
+            points: outcome.fatigueAll,
+            source: "evento",
+          });
+          onUpdate();
+        }
       }),
-    [guard, commit, progress]
+    [guard, commit, progress, roomId, onUpdate]
   );
 
   /** O Mestre marca a entrada numa Área Perigosa e o índice de Perigo dela. */

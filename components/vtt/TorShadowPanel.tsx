@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { postRoomTorRecovery, postRoomTorShadow } from "@/hooks/useRoomSync";
+import { postRoomTorFatigue, postRoomTorRecovery, postRoomTorShadow } from "@/hooks/useRoomSync";
 import {
   TOR_DREAD_TABLE,
   TOR_MISDEED_TABLE,
@@ -40,6 +40,7 @@ export function TorShadowPanel({ roomId, token, canManage, onUpdate }: Props) {
   const [mountVigour, setMountVigour] = useState(0);
   const [travelPassed, setTravelPassed] = useState(false);
   const [travelIcons, setTravelIcons] = useState(0);
+  const [fatigue, setFatigue] = useState(1);
 
   const combat = token.torCombat;
   const characterId = combat?.torCharacterId;
@@ -69,6 +70,31 @@ export function TorShadowPanel({ roomId, token, canManage, onUpdate }: Props) {
   }
 
   if (combat?.kind !== "hero") return null;
+
+  /**
+   * Fadiga SUBINDO para um herói só. A Companhia inteira é atendida pelo painel
+   * de Jornada; aqui é o caso individual — a Fadiga extra do alvo de um
+   * Contratempo, ou a que o Mestre narrou na cena (dormir de barriga vazia, um
+   * dia especialmente duro).
+   */
+  async function addFatigue() {
+    if (busy) return;
+    setBusy(true);
+    setErr(null);
+    try {
+      await postRoomTorFatigue(roomId, {
+        scope: "token",
+        tokenId: token.id,
+        points: fatigue,
+        source: "mestre",
+      });
+      onUpdate();
+    } catch (e) {
+      setErr(e instanceof Error ? e.message : "Falha ao registrar a Fadiga");
+    } finally {
+      setBusy(false);
+    }
+  }
 
   async function run(body: Parameters<typeof postRoomTorShadow>[2]) {
     if (busy) return;
@@ -161,6 +187,34 @@ export function TorShadowPanel({ roomId, token, canManage, onUpdate }: Props) {
             onClick={() => void run({ action: "gain", source, points, scars })}
           >
             {busy ? "Registrando…" : "Atribuir Sombra"}
+          </button>
+
+          {/* O outro lado da Fadiga. Os botões de descanso abaixo só TIRAM; sem
+              isto, a única forma de a Fadiga subir era digitar na ficha — e
+              Exausto (Resistência ≤ Carga + Fadiga) nunca disparava sozinho. */}
+          <p className="vtt-eyebrow">Fadiga de Viagem</p>
+          <label className="vtt-field">
+            Pontos
+            <input
+              type="number"
+              min={1}
+              max={10}
+              value={fatigue}
+              disabled={busy}
+              onChange={(e) => setFatigue(Math.max(1, Math.min(10, Number(e.target.value) || 1)))}
+            />
+            <span className="vtt-field__hint">
+              A Fadiga da Companhia sai do painel de Jornada. Aqui vai a de um herói só — a extra do
+              alvo de um Contratempo, ou a que a cena cobrou.
+            </span>
+          </label>
+          <button
+            type="button"
+            className="btn btn-ghost"
+            disabled={busy}
+            onClick={() => void addFatigue()}
+          >
+            Atribuir Fadiga
           </button>
         </>
       ) : null}
