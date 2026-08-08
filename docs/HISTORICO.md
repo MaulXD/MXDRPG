@@ -104,6 +104,80 @@ npm run sync:data:check       # após editar livros/
 
 ---
 
+### 2026-08-08 — "Aqueles Que Não Permanecem Mais": o Conselho que é por herói, e o sonho
+
+**Pedido:** continuar o loop — converter as campanhas de 1ª edição.
+
+**Passo a passo:**
+
+1. **Aventura 4 de *Tales from Wilderland* convertida por inteiro** — sete partes,
+   das páginas 59–77, em
+   `livros/um-anel/18-wilderland-04-aqueles-que-nao-permanecem-mais.md`.
+
+2. **O Conselho que é avaliado POR HERÓI.** O encontro com a Senhora Irimë é o
+   único da conversão em que o placar não é da Companhia: o original manda o
+   Mestre registrar quantos sucessos **cada companheiro** alcança, porque o
+   resultado decide a relação de cada um com ela, não se a missão é aceita. A 2ª
+   edição comporta isso sem alteração — o Conselho já soma sucessos por rolagem, e
+   aqui eles ficam separados por quem rolou.
+
+3. **O "teste de Medo" não tinha equivalente, e o que faltava era ler o efeito.**
+   A 2ª edição não tem teste de medo. Mas o efeito que o original descreve —
+   falhar impede invocar bônus pelo resto da luta — é **exatamente** o que
+   **Arrasado** produz na 2ª edição, e Arrasado vem de **Sombra**. Então o teste
+   virou **Teste de Sombra (Pavor, resistido com VALOR)**, e a conversão está
+   escrita no arquivo com asserção conferindo que continua lá.
+
+4. **A regra de fronteira do sonho.** A Parte VI inteira se passa num sonho, e o
+   original define o que atravessa o despertar: Esperança gasta e Sombra ganha
+   **ficam**; Resistência, Fadiga e Feridas **somem**. Virou tabela no arquivo, com
+   asserção nos dois lados — se alguém trocar um "Sim" por "Não", o teste pega.
+
+5. **As duas Habilidades Sinistras do original já existiam com nome da 2ª
+   edição.** *Strike Fear* e *Vitalidade Sobrenatural* dos guerreiros mortos-vivos
+   são **Infundir Medo** e **Imorredouro**, ambas no bloco do **Tumulário**. A
+   conversão as reaproveita (CVR-012), com asserção lendo o bloco do bestiário —
+   se o Tumulário perder qualquer uma, a aventura fica sem base.
+
+6. **"Torná-lo Exausto" precisou de tradução mecânica.** O original diz que quem
+   morre no sonho desperta "com perda de Resistência suficiente para torná-lo
+   Exausto". Na 2ª edição Exausto é **derivado** e não pode ser atribuído: a forma
+   fiel é reduzir a Resistência **até a Carga total do herói**, o que produz a
+   condição pelas regras normais.
+
+7. **Duas lacunas próprias, além das já conhecidas.** O **Troll da Colina** da
+   arena não tem bloco no bestiário traduzido (que tem Trolls das Cavernas e de
+   Pedra) e o original só o nomeia. E o **"Foco de Companhia" como fonte de
+   esperança**, que o resultado 0–3 do Conselho com Irimë bloqueia, não é descrito
+   no corpus da 2ª edição — o efeito ficou escrito como o original diz, sem ser
+   mecanizado.
+
+8. **Três asserções falharam, e uma delas era boa demais.** O rótulo estava no
+   plural ("Arqueiros Goblins") e o teste procura o rótulo exato do bestiário —
+   erro meu no texto, corrigido. O regex do "teste de medo" esperava o negrito em
+   volta de menos palavras do que eu escrevi. **E a guarda de "comitiva" pegou dois
+   usos legítimos da palavra em português comum** — o séquito do vereador e um
+   grupo de viajantes. Como a guarda não distingue o termo de regra do
+   substantivo, reescrevi as duas frases: manter a guarda cega e forte vale mais
+   que ganhar duas palavras.
+
+9. **Validação.** `npx tsc --noEmit` limpo · `npm run build` compila ·
+   `npm run test` verde com **2507 asserções**. Uma asserção foi quebrada de
+   propósito — a tabela de fronteira do sonho — e falhou como devia.
+
+**Arquivos tocados:**
+- `livros/um-anel/18-wilderland-04-aqueles-que-nao-permanecem-mais.md` — **novo**
+- `scripts/verify-um-anel-aventuras-wilderland.mjs` — a aventura 4 na lista
+
+**Como testar:** ler o arquivo. A Parte VI é a mais longa e a mais mecânica da
+conversão até agora — a escada de Sombra é o que sustenta a cena inteira.
+
+**Falta:** aventuras 5 a 7 de Wilderland; *The Darkening of Mirkwood*; quatro
+Vigores, bloco de Aranha e bloco de Troll da Colina (lacunas de fonte); glyph da
+runa de Gandalf.
+
+---
+
 ### 2026-08-08 — "Assassinato e Mau Agouro": nove partes, e Resolução vira o assunto
 
 **Pedido:** continuar o loop — converter as campanhas de 1ª edição.
