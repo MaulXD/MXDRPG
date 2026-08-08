@@ -254,7 +254,7 @@ para atacar seus inimigos de longe.
 
 - Você pode atacar seus adversários usando apenas armas à distância, e só pode ser alvo de
   atacantes usando armas similares (à distância).
-- Tarefa de combate: **Preparar Disparo**.
+- Tarefa de combate: **Preparar Tiro**.
 
 Heróis-jogadores só podem assumir a postura de Retaguarda se o número total de inimigos não
 for maior que o dobro do número de aventureiros na Companhia. Além disso, para cada
@@ -665,7 +665,7 @@ pode escolher proteger outro herói lutando em uma postura de combate corpo a co
 Com uma rolagem bem-sucedida, o próximo ataque dirigido ao herói-jogador protegido *perde
 (1d)*, mais outro (1d) por cada Ícone de Sucesso rolado.
 
-**PREPARAR DISPARO — Postura de Retaguarda:** heróis-jogadores lutando em postura de Retaguarda
+**PREPARAR TIRO — Postura de Retaguarda:** heróis-jogadores lutando em postura de Retaguarda
 podem tomar tempo para mirar com cuidado e conseguir um disparo mais limpo em seus alvos com
 suas armas à distância.
 

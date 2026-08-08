@@ -104,6 +104,15 @@ for (const task of combatTasks) {
    app — quem lesse o glossário procuraria uma tarefa que não está lá. */
 ok("glossário não ressuscita 'Reanimar Companheiros'", !GLOSS.includes("Reanimar Companheiros"));
 
+/* E o capítulo que DESCREVE as tarefas tem de usar os mesmos nomes. O capítulo 6
+   chamava a da Retaguarda de "Preparar Disparo" enquanto o glossário, o
+   compêndio, stances.ts e a Virtude Arco Mortal diziam "Preparar Tiro" — quem
+   lesse a Virtude não achava a tarefa no capítulo. */
+const CAP6 = readFileSync(root("livros", "um-anel", "06-fases-de-aventura-combate.md"), "utf8");
+for (const task of combatTasks) {
+  ok(`capítulo 6 chama a tarefa de "${task}"`, CAP6.includes(task), "nome divergente do código");
+}
+
 /* ── Vigor (Might) ─────────────────────────────────────────────────────── */
 
 ok("Might = Vigor no glossário", termo.get("Might") === "Vigor", `glossário diz "${termo.get("Might")}"`);

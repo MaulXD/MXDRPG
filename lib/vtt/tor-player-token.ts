@@ -3,6 +3,7 @@ import { defaultMovementFields } from "@/lib/vtt/movement";
 import { playerColorForActor } from "@/lib/vtt/token-colors";
 import { resolveActorTokenImageUrl, resolveLinkedTokenImageFocus } from "@/lib/room/portrait-sync";
 import { computeProtectionDice } from "@/lib/character/um-anel/rules";
+import { TOR_DEFAULT_STANCE } from "@/lib/combat/um-anel/stances";
 import type { TorCharacterSheet } from "@/lib/character/um-anel/types";
 import type { BattleToken } from "@/lib/vtt/types";
 
@@ -50,6 +51,7 @@ export function createTorPlayerTokenFromCharacter(
       strength: sheet.attributes.forca,
       wounded: sheet.conditions.wounded,
       eliminated: false,
+      stance: TOR_DEFAULT_STANCE,
     },
     ...defaultMovementFields({ walk: TOR_TOKEN_WALK, run: TOR_TOKEN_RUN }),
   };

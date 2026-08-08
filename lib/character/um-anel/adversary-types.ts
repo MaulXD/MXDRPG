@@ -19,6 +19,16 @@ export type TorAdversaryAction = {
   injury: number;
   /** Opções de Dano Especial disponíveis (texto — não mecanizadas no v1). */
   specialDamage?: string[];
+  /**
+   * Ação feita com arma à distância (Arco, Arco de Chifre).
+   *
+   * Decide alcance contra a postura do herói: "Você pode atacar seus adversários
+   * usando apenas armas à distância, e só pode ser alvo de atacantes usando armas
+   * similares" (06-fases-de-aventura-combate.md §Postura de Retaguarda). Sem esta
+   * marca todo adversário conta como corpo a corpo, e o Arqueiro Goblin não
+   * conseguia acertar quem estivesse na Retaguarda — que é justamente o alvo dele.
+   */
+  ranged?: boolean;
 };
 
 export type TorAdversaryFellAbility = {

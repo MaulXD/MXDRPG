@@ -186,16 +186,24 @@ ok(
   /\battackerFavoured,/.test(stripComments(HANDLER_TS))
 );
 
-/* ── 5. `attackIsRanged` continua desligado enquanto não houver postura ── */
+/* ── 5. `attackIsRanged` só vale acompanhado das posturas ──────────────── */
 
-/* Passar `attackIsRanged` hoje barraria TODO ataque de arco: a postura nunca é
-   escolhida em lugar nenhum, cai sempre em Aberta, e `canAttackFromStance`
-   responde "ataques à distância exigem a postura de Retaguarda". A Virtude usa
-   o mesmo dado (`weapon.ranged`) sem passar pelo portão de postura. */
+/* Os dois andam juntos e a ordem importa: `attackIsRanged` sem postura
+   escolhida barraria TODO ataque de arco (cai em Aberta, e
+   `canAttackFromStance` responde "exige a postura de Retaguarda"). Enquanto as
+   posturas não chegaram à mesa, este teste exigia o campo DESLIGADO; agora que
+   chegaram, exige os dois ligados — desligar a postura sozinha reabriria o bug
+   pelo outro lado. */
+const handlerCode = stripComments(HANDLER_TS);
+ok("handler passa attackIsRanged ao motor", /\battackIsRanged,/.test(handlerCode));
 ok(
-  "handler NÃO liga attackIsRanged antes das posturas",
-  !/attackIsRanged:/.test(stripComments(HANDLER_TS)),
-  "ligar sem escolher postura bloqueia todo ataque à distância"
+  "handler passa a postura do atacante",
+  /attackerStance:.*torTokenStance\(attackerToken\)/.test(handlerCode),
+  "sem postura, attackIsRanged bloqueia todo ataque à distância"
+);
+ok(
+  "handler passa a postura do defensor",
+  /defenderStance:.*torTokenStance\(defenderToken\)/.test(handlerCode)
 );
 
 /* ── 6. Virtude nenhuma some da ficha nem sai como id no PDF ───────────── */

@@ -5,7 +5,14 @@ import { createPortal } from "react-dom";
 import { WEAPON_BY_ID } from "@/lib/character/um-anel/data";
 import type { TorCharacterSheet } from "@/lib/character/um-anel/types";
 import type { BattleToken } from "@/lib/vtt/types";
-import { postRoomAttack, type RoomApiPayload } from "@/hooks/useRoomSync";
+import { postRoomAttack, postRoomTorStance, type RoomApiPayload } from "@/hooks/useRoomSync";
+import {
+  TOR_DEFAULT_STANCE,
+  TOR_STANCES,
+  TOR_STANCE_META,
+  isTorStance,
+  type TorStanceId,
+} from "@/lib/combat/um-anel/stances";
 
 type Props = {
   x: number;
@@ -87,6 +94,25 @@ export function TorAttackPopup({ token, allTokens, roomId, onClose, onRoomSync }
     }
   }, [targets, targetId]);
 
+  /* A postura vem do token, não de estado local: outro cliente (ou o Mestre)
+     pode trocá-la, e o snapshot é a fonte da verdade. */
+  const stance: TorStanceId = isTorStance(combat?.stance) ? combat.stance : TOR_DEFAULT_STANCE;
+
+  async function changeStance(next: string) {
+    if (busy || next === stance) return;
+    setBusy(true);
+    setErr(null);
+    try {
+      onRoomSync(await postRoomTorStance(roomId, token.id, next));
+    } catch (e) {
+      // O erro mais comum é o requisito da Retaguarda ("faltam 2 aventureiros
+      // em corpo a corpo") — precisa aparecer, não pode falhar em silêncio.
+      setErr(e instanceof Error ? e.message : "Falha ao trocar a postura");
+    } finally {
+      setBusy(false);
+    }
+  }
+
   async function attack() {
     if (!targetId || !choiceId || busy) return;
     setBusy(true);
@@ -123,6 +149,25 @@ export function TorAttackPopup({ token, allTokens, roomId, onClose, onRoomSync }
           {combat.kind === "adversary" ? "Adversário" : "Aventureiro"} · Resistência {token.vida ?? 0}/
           {token.vidaMax ?? 0} · Bloqueio {combat.parry}
         </p>
+
+        {isHero ? (
+          <label className="vtt-field">
+            Postura de Combate
+            <select value={stance} onChange={(e) => void changeStance(e.target.value)} disabled={busy}>
+              {TOR_STANCES.map((id) => (
+                <option key={id} value={id}>
+                  {TOR_STANCE_META[id].label}
+                </option>
+              ))}
+            </select>
+            <span className="vtt-field__hint">
+              Tarefa de combate: {TOR_STANCE_META[stance].combatTask}
+              {stance === "retaguarda" ? " · só ataca e só é atingido à distância" : ""}
+              {stance === "avancada" ? " · +1d no ataque, mais fácil de acertar você" : ""}
+              {stance === "defensiva" ? " · −1d pra quem te ataca, −1d por inimigo adjacente" : ""}
+            </span>
+          </label>
+        ) : null}
 
         <label className="vtt-field">
           Arma / Ataque
