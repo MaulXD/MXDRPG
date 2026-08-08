@@ -313,3 +313,70 @@ ok(
 
 console.log(`\n  ${pass} ok, ${fail} falhas`);
 if (fail > 0) process.exit(1);
+
+/* ══════════════════════════════════════════════════════════════════════
+   Descanso: a Resistência que ninguém devolvia
+   ══════════════════════════════════════════════════════════════════════
+
+   O capítulo 4 diz como o herói recupera Resistência, e a regra não tinha
+   chegado ao motor: `applyTorProlongedRest` só tirava 1 de Fadiga (JOR-M02, a
+   regra da JORNADA) e nada devolvia Resistência em lugar nenhum da mesa.
+
+   FERIDO INVERTE O SENTIDO das duas formas, e é aí que o erro mora:
+    - Descanso Curto: recupera FORÇA, mas "heróis Feridos não recuperam ponto
+      algum" — Ferido ZERA;
+    - Descanso Prolongado: recupera TUDO, "ou um número igual à FORÇA se a caixa
+      Ferido estiver assinalada" — Ferido LIMITA.
+   Tratar as duas do mesmo jeito erra uma delas, e a que erra a favor do herói é
+   a mais fácil de não notar. */
+
+const CAP4_REST = readFileSync(root("livros", "um-anel", "04-caracteristicas.md"), "utf8");
+const SHADOW_REST = readFileSync(root("lib", "combat", "um-anel", "shadow.ts"), "utf8");
+const REC_REST = stripComments(
+  readFileSync(root("lib", "room", "handlers", "tor-recovery.ts"), "utf8")
+);
+
+ok(
+  "livro: descanso curto recupera FORÇA, e Ferido não recupera nada",
+  /recuperam um número de pontos de Resistência perdidos igual ao seu valor de FORÇA \(heróis Feridos não recuperam ponto algum\)/.test(
+    CAP4_REST
+  )
+);
+ok(
+  "livro: descanso prolongado recupera tudo, ou FORÇA se Ferido",
+  /recuperam todos os pontos de Resistência perdidos, ou um número de pontos de Resistência igual ao seu valor de FORÇA se sua caixa Ferido estiver assinalada/.test(
+    CAP4_REST
+  )
+);
+ok(
+  "Ferido ZERA o descanso curto",
+  /if \(params\.kind === "curto"\) return params\.wounded \? 0 : Math\.min\(falta, forca\);/.test(
+    SHADOW_REST
+  ),
+  "no curto o Ferido não recupera ponto algum"
+);
+ok(
+  "Ferido LIMITA o prolongado, não zera",
+  /return params\.wounded \? Math\.min\(falta, forca\) : falta;/.test(SHADOW_REST),
+  "no prolongado o Ferido ainda recupera a FORÇA"
+);
+ok(
+  "a recuperação nunca passa do máximo",
+  /const falta = Math\.max\(0, params\.enduranceMax - params\.enduranceValue\)/.test(SHADOW_REST)
+);
+ok("o handler oferece os dois descansos", /action === "rest" \|\| action === "short-rest"/.test(REC_REST));
+ok(
+  "só o Prolongado tira Fadiga",
+  /prolongado \? applyTorProlongedRest\(state\)\.state\.fatigue : sheet\.fatigue/.test(REC_REST),
+  "o Descanso Curto não menciona Fadiga no livro"
+);
+/* Duro como Raiz Velha: "dobre seu valor de FORÇA ao calcular a Resistência
+   recuperada em descanso". */
+ok(
+  "Duro como Raiz Velha dobra a FORÇA no descanso",
+  /sheet\.virtues\.includes\("duro-como-raiz-velha"\) \? 2 : 1/.test(REC_REST)
+);
+ok("painel oferece o Descanso Curto", /Descanso Curto/.test(PANEL));
+
+console.log(`\nverify-um-anel-sombra-mesa (descanso): ${pass} ok, ${fail} falhas`);
+if (fail > 0) process.exit(1);

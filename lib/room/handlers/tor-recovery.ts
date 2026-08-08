@@ -8,6 +8,7 @@ import {
   applyTorBoutOfMadness,
   applyTorJourneyEndRecovery,
   applyTorProlongedRest,
+  torRestEnduranceRecovery,
   healTorShadowScar,
   TOR_HEAL_SCAR_COST,
   type TorSpiritState,
@@ -26,7 +27,13 @@ import type { TorCharacterSheet } from "@/lib/character/um-anel/types";
 
 export type TorRecoveryResult = { ok: true; snapshot: RoomSnapshot } | { ok: false; error: string };
 
-export type TorRecoveryAction = "spiritual" | "rest" | "madness" | "heal-scar" | "journey-end";
+export type TorRecoveryAction =
+  | "spiritual"
+  | "rest"
+  | "short-rest"
+  | "madness"
+  | "heal-scar"
+  | "journey-end";
 
 function spiritStateFromSheet(sheet: TorCharacterSheet): TorSpiritState {
   return {
@@ -101,11 +108,35 @@ export async function executeRoomTorRecovery(
     if (r.removed === 0) return { ok: false, error: `${sheet.name} não tem Fadiga para tirar` };
     next = { ...sheet, fatigue: r.state.fatigue };
     text = `${sheet.name} chega ao fim da jornada — perde ${r.removed} de Fadiga (agora ${r.state.fatigue})`;
-  } else if (action === "rest") {
-    const r = applyTorProlongedRest(state);
-    if (r.fatigueRemoved === 0) return { ok: false, error: `${sheet.name} não tem Fadiga` };
-    next = { ...sheet, fatigue: r.state.fatigue };
-    text = `${sheet.name} faz um Descanso Prolongado — perde 1 de Fadiga (agora ${r.state.fatigue})`;
+  } else if (action === "rest" || action === "short-rest") {
+    const prolongado = action === "rest";
+    // Duro como Raiz Velha dobra a FORÇA nesta conta — a Virtude é resolvida
+    // aqui, onde a ficha é conhecida, e o motor recebe o valor pronto.
+    const strength = sheet.attributes.forca * (sheet.virtues.includes("duro-como-raiz-velha") ? 2 : 1);
+    const recovered = torRestEnduranceRecovery({
+      kind: prolongado ? "prolongado" : "curto",
+      strength,
+      wounded: sheet.conditions.wounded,
+      enduranceValue: sheet.endurance.value,
+      enduranceMax: sheet.endurance.max,
+    });
+    // Só o Prolongado tira Fadiga (JOR-M02); o Descanso Curto não menciona Fadiga.
+    const fadiga = prolongado ? applyTorProlongedRest(state).state.fatigue : sheet.fatigue;
+    const fatigueRemoved = sheet.fatigue - fadiga;
+
+    if (recovered === 0 && fatigueRemoved === 0) {
+      return { ok: false, error: `${sheet.name} não tem o que recuperar neste descanso` };
+    }
+    next = {
+      ...sheet,
+      endurance: { ...sheet.endurance, value: sheet.endurance.value + recovered },
+      fatigue: fadiga,
+    };
+    text =
+      `${sheet.name} faz um Descanso ${prolongado ? "Prolongado" : "Curto"} — ` +
+      `+${recovered} de Resistência (agora ${next.endurance.value}/${sheet.endurance.max})` +
+      (fatigueRemoved > 0 ? `, −${fatigueRemoved} de Fadiga` : "") +
+      (sheet.conditions.wounded ? " · Ferido limita a recuperação" : "");
   } else if (action === "spiritual") {
     if (!fellowship) {
       return { ok: false, error: "Recuperação espiritual acontece na Fase de Companhia" };

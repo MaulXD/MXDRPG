@@ -50,7 +50,7 @@ export function TorShadowPanel({ roomId, token, canManage, onUpdate }: Props) {
     source === "pavor" ? TOR_DREAD_TABLE : source === "malfeito" ? TOR_MISDEED_TABLE : [];
 
   async function recover(
-    action: "spiritual" | "rest" | "madness" | "heal-scar" | "journey-end",
+    action: "spiritual" | "rest" | "short-rest" | "madness" | "heal-scar" | "journey-end",
     extra: { mountVigour?: number; travelRoll?: { passed: boolean; successIcons: number } } = {}
   ) {
     if (busy || !characterId) return;
@@ -190,13 +190,23 @@ export function TorShadowPanel({ roomId, token, canManage, onUpdate }: Props) {
           >
             Acesso de Loucura
           </button>
+          {/* Os dois descansos do capítulo 4. Ferido inverte o sentido: no curto
+              zera a recuperação, no prolongado limita à FORÇA. */}
+          <button
+            type="button"
+            className="btn btn-ghost"
+            disabled={busy}
+            onClick={() => void recover("short-rest")}
+          >
+            Descanso Curto (+FORÇA de Resistência)
+          </button>
           <button
             type="button"
             className="btn btn-ghost"
             disabled={busy}
             onClick={() => void recover("rest")}
           >
-            Descanso Prolongado (−1 Fadiga)
+            Descanso Prolongado (Resistência cheia, −1 Fadiga)
           </button>
           {/* Fim de jornada tira Fadiga pelo Vigor da montaria e pela rolagem de
               Viagem. Os dois números vêm da mesa — o painel do token não sabe se

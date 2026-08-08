@@ -104,6 +104,57 @@ npm run sync:data:check       # após editar livros/
 
 ---
 
+### 2026-08-08 — Descanso: a Resistência que ninguém devolvia
+
+**Pedido:** continuar o loop.
+
+**Passo a passo:**
+
+1. **O achado.** O capítulo 4 diz como o herói recupera Resistência — e a regra
+   **não tinha chegado ao motor**. `applyTorProlongedRest` só tirava 1 de Fadiga,
+   que é a regra da **jornada** (JOR-M02), e nada em lugar nenhum devolvia
+   Resistência. Na prática, um herói machucado nunca se curava pelo app.
+
+2. **Ferido inverte o sentido das duas formas — e é aí que o erro mora.**
+
+   - **Descanso Curto:** recupera pontos iguais à FORÇA, mas "heróis Feridos não
+     recuperam ponto algum" — Ferido **zera**;
+   - **Descanso Prolongado:** recupera **tudo**, "ou um número igual à FORÇA se a
+     caixa Ferido estiver assinalada" — Ferido **limita**.
+
+   Tratar as duas do mesmo jeito erra uma delas, e a que erra **a favor** do
+   herói é a mais fácil de não notar numa mesa. Cada uma tem asserção própria.
+
+3. **Uma Virtude que faltava entrar na conta.** Duro como Raiz Velha diz "dobre
+   seu valor de FORÇA ao calcular a Resistência recuperada em descanso" — a
+   segunda metade da Virtude, que até agora só valia na Severidade da Ferida.
+   Resolvida no handler, onde a ficha é conhecida; o motor recebe o número pronto.
+
+4. **Validação.** `npx tsc --noEmit` limpo · `npm run build` compila ·
+   `npm run test` verde com **1827 asserções**. A asserção do Ferido no Descanso
+   Curto foi conferida removendo a condição — falhou como devia.
+
+**Registrado como lacuna de fonte, não implementado:** o capítulo 3 diz que
+"durante a Fase de Aventura, os heróis podem gastar pontos de Companhia para
+recuperar pontos de Esperança ao descansar (ver capítulo 4)" — e o capítulo 4
+**não traz a taxa de conversão**. Sem o número na fonte, inventar seria pior que
+deixar a mesa combinar. A reserva de Companhia já existe e é gastável à mão.
+
+**Arquivos tocados:**
+- `lib/combat/um-anel/shadow.ts` — `torRestEnduranceRecovery`
+- `lib/room/handlers/tor-recovery.ts` · `app/api/room/[roomId]/tor-recovery/route.ts` — ação `short-rest`
+- `components/vtt/TorShadowPanel.tsx` · `hooks/useRoomSync.ts`
+- `scripts/verify-um-anel-sombra-mesa.mjs` — 9 asserções novas
+
+**Como testar:** ferir um herói até metade da Resistência e usar "Descanso Curto"
+— sobe pela FORÇA. Marcar Ferido na ficha e repetir: não sobe nada. "Descanso
+Prolongado" enche a Resistência, e com Ferido sobe só a FORÇA.
+
+**Falta:** Empenho de Perícia; penalidades em Dados de Sucesso; Elmo removível;
+campanhas de 1ª edição; glyph da runa de Gandalf.
+
+---
+
 ### 2026-08-08 — Limites de engajamento: os quatro tetos que ninguém conferia
 
 **Pedido:** continuar o loop.

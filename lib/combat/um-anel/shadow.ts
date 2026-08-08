@@ -292,6 +292,35 @@ export function applyTorProlongedRest(state: TorSpiritState): {
 }
 
 /**
+ * Resistência recuperada ao descansar (04-caracteristicas.md §Descanso).
+ *
+ * - **Curto:** recupera pontos iguais à FORÇA — "heróis Feridos não recuperam
+ *   ponto algum";
+ * - **Prolongado:** recupera **tudo**, ou só a FORÇA se a caixa Ferido estiver
+ *   assinalada.
+ *
+ * Ferido inverte o sentido das duas: no curto ele zera a recuperação, no
+ * prolongado ele a limita. Tratar as duas do mesmo jeito erraria uma das duas —
+ * e a que erra a favor do herói é a mais fácil de não notar.
+ *
+ * A Virtude Duro como Raiz Velha dobra a FORÇA nesta conta ("dobre seu valor de
+ * FORÇA ao calcular a Resistência recuperada em descanso"), por isso `strength`
+ * chega pronto do chamador em vez de ser lido aqui.
+ */
+export function torRestEnduranceRecovery(params: {
+  kind: "curto" | "prolongado";
+  strength: number;
+  wounded: boolean;
+  enduranceValue: number;
+  enduranceMax: number;
+}): number {
+  const falta = Math.max(0, params.enduranceMax - params.enduranceValue);
+  const forca = Math.max(0, Math.floor(params.strength));
+  if (params.kind === "curto") return params.wounded ? 0 : Math.min(falta, forca);
+  return params.wounded ? Math.min(falta, forca) : falta;
+}
+
+/**
  * Fim de jornada (JOR-M02): reduz Fadiga pelo Vigor da montaria, depois pela
  * rolagem de Viagem (1 no sucesso + 1 por ícone).
  */
