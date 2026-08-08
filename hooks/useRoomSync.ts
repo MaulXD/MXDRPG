@@ -695,6 +695,8 @@ export async function postRoomAttack(
     /** O Um Anel — arma equipada (herói) ou ação do adversário. */
     torWeaponId?: string;
     torActionId?: string;
+    /** O Um Anel — Mestre gasta 1 de Ódio/Resolução: o adversário ganha (1d). */
+    torSpendHate?: boolean;
   } = {}
 ) {
   const res = await roomFetch(

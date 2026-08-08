@@ -53,6 +53,12 @@ export function TokenStatusBody({
           {/* A postura muda quem pode atacar quem (Retaguarda) e quantos Dados
               de Sucesso a rolagem leva — a mesa inteira precisa enxergar, não
               só quem abriu o popup de ataque daquele herói. */}
+          {token.torCombat?.kind === "adversary" && token.torCombat.hate != null ? (
+            <span className="vtt-status-modal-stat">
+              {token.torCombat.hateKind === "resolve" ? "Resolução" : "Ódio"} {token.torCombat.hate}/
+              {token.torCombat.hateMax ?? token.torCombat.hate}
+            </span>
+          ) : null}
           {token.torCombat?.kind === "hero" ? (
             <span className="vtt-status-modal-stat">
               Postura {torStanceLabel(isTorStance(token.torCombat.stance) ? token.torCombat.stance : TOR_DEFAULT_STANCE)}

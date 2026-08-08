@@ -104,6 +104,85 @@ npm run sync:data:check       # após editar livros/
 
 ---
 
+### 2026-08-08 — Ódio/Resolução e Habilidades Sinistras chegam à mesa
+
+**Pedido:** continuar o loop.
+
+**Passo a passo:**
+
+1. **Diagnóstico.** `hate`, `hateKind` e `fellAbilities` estavam em
+   `adversaries.ts` e **não apareciam em mais lugar nenhum do app**. O token não
+   carregava, nenhuma tela mostrava, nada consumia — metade do bloco do
+   adversário era decorativa, e o Mestre não tinha onde ver nem como gastar. É o
+   mesmo padrão das posturas: dado pronto e desligado, passando nos testes porque
+   ninguém testava o **caminho**.
+
+2. **Decisão — o que mecanizar.** Lendo o capítulo 8, quase toda Habilidade
+   Sinistra é gasto **opcional** ("gaste 1 de Ódio para tornar a rolagem
+   Desfavorecida"): Gente Feroz, Velocidade Serpentina, Força Horrenda, Grito de
+   Triunfo. Mesmo critério das Virtudes — o que é opcional não dispara sozinho, e
+   o app põe o texto e o contador na frente de quem decide. O teste garante que
+   nenhum desses nomes apareça no handler.
+
+   Só duas coisas o servidor faz sozinho, e as duas estão no livro em texto
+   fechado: o gasto de 1 ponto para *ganhar (1d)* (oferecido como opção do
+   ataque) e a **Exaustão sem pontos**.
+
+3. **A sutileza da Exaustão.** "Se uma criatura começa uma rodada sem pontos de
+   Ódio ou Resolução, ela é considerada Exausta." A tentação é derivar de
+   `hate <= 0` na hora da rolagem — e estaria errado: o livro garante ao Mestre
+   "o direito de fazer uso de uma Habilidade Sinistra mesmo quando ela exige o
+   gasto do último ponto". Derivar na hora puniria exatamente esse gasto, na
+   mesma rodada em que ele foi feito. Então a flag é gravada no token na **virada
+   de rodada**, e o ataque só lê. O teste trava as duas metades: exige a leitura
+   da flag *e* proíbe recalcular pelo Ódio.
+
+   A Exaustão vale também para a **Proteção** do adversário — a condição não é
+   privilégio do herói, e sem isso zerar o Ódio de um Troll não mudava nada na
+   defesa dele.
+
+4. **Bug de porteiro evitado.** O gasto de Ódio é ato do Mestre. O reflexo era
+   usar `canBypassCombatTurn`, que é o guarda usado ao lado no mesmo arquivo —
+   mas ele hoje é um **stub que devolve `false` sempre**, e o gasto simplesmente
+   nunca funcionaria, em silêncio. Trocado por `canManageRoom`, com asserção
+   nomeando o stub para ninguém voltar atrás.
+
+5. **Validação.** `npx tsc --noEmit` limpo · `npm run build` compila ·
+   `npm run test` verde com **1267 asserções**. As três asserções críticas foram
+   conferidas quebrando de propósito: derivar Exausto na hora, usar o stub como
+   porteiro, e o gasto sem permissão de Mestre — as três falharam como deviam.
+
+**Falso alarme conferido:** o capítulo 8 traz "RESULTADOS DO DADO DE PROEZA PARA
+ADVERSÁRIOS", que inverte os dois ícones especiais (Olho vira sucesso automático,
+runa vira 0) e diz que o adversário causa Golpe Perfurante com "10 ou ⊘". Parecia
+divergir do motor, que exige numeric 10. Mas o texto abre com "pode ser
+considerado mais apropriado ao tema" — é variante opcional, não a regra padrão.
+Nada a corrigir.
+
+**Arquivos tocados:**
+- `lib/vtt/types.ts` — `hate`, `hateMax`, `hateKind`, `fellAbilities`, `weary` no token
+- `lib/character/um-anel/adversary-token.ts` — spawn copia o bloco inteiro
+- `lib/room/handlers/tor-combat-attack.ts` — gasto opcional de Ódio (+1d), Exausto no ataque e na Proteção
+- `lib/room/handlers/combat-turn.ts` — Exaustão marcada na virada de rodada, guardada por `rpgSystemId`
+- `app/api/room/[roomId]/combat/attack/route.ts` — `torSpendHate` só pra quem gerencia a mesa
+- `hooks/useRoomSync.ts` — `torSpendHate` no cliente
+- `components/vtt/TorAttackPopup.tsx` — contador, caixa de gasto e lista das Habilidades Sinistras
+- `components/vtt/TokenStatusBody.tsx` — contador no status do token
+- `components/vtt/vtt.css` — `.vtt-inline-check` e `.vtt-fell-abilities`
+- `scripts/verify-um-anel-odio.mjs` — **novo**, 40 asserções
+- `package.json` — novo teste na suíte
+
+**Como testar:** invocar um Rufião (Resolução 3) e atacar um herói marcando
+"Gastar 1 de Resolução" — a mensagem tem de dizer o gasto e o contador cair pra
+2. Zerar a Resolução e passar a rodada: na rodada seguinte ele fica Exausto e os
+Dados de Sucesso de 1 a 3 passam a valer zero, tanto no ataque quanto na Proteção.
+
+**Falta:** variante de NA 18; Elmo removível; Dano Especial (Quebrar Escudo,
+Golpe Pesado, Perfurar, Agarrar); tarefas de combate (Intimidar Inimigo etc.);
+converter as campanhas de 1ª edição; glyph da runa de Gandalf.
+
+---
+
 ### 2026-08-08 — Posturas de Combate chegam à mesa (D17 sai do papel)
 
 **Pedido:** continuar o loop.

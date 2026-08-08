@@ -4293,6 +4293,35 @@
   letter-spacing: 0.02em;
 }
 
+/* Caixa de marcar na mesma linha do texto (ex.: gastar Ódio num ataque).
+   Precisa desfazer o `flex-direction: column` do .vtt-field, senão a caixa fica
+   numa linha e o rótulo na de baixo. */
+.vtt-field .vtt-inline-check {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-weight: 400;
+  cursor: pointer;
+}
+
+.vtt-field .vtt-inline-check input {
+  width: auto;
+  margin: 0;
+  accent-color: var(--accent);
+}
+
+/* Habilidades Sinistras do adversário — texto de consulta do Mestre. */
+.vtt-fell-abilities {
+  margin: 0.2rem 0 0;
+  padding-left: 1.1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  font-size: 0.74rem;
+  line-height: 1.4;
+  color: var(--text-dim);
+}
+
 /* Linha de apoio abaixo do controle (ex.: o que a Postura de Combate faz).
    Precisa vencer o `.vtt-field > span` acima, que deixa todo span em negrito e
    faria a explicação parecer um segundo rótulo. */

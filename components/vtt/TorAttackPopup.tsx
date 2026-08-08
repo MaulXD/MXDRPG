@@ -32,6 +32,7 @@ export function TorAttackPopup({ token, allTokens, roomId, onClose, onRoomSync }
   const [targetId, setTargetId] = useState<string>("");
   const [choiceId, setChoiceId] = useState<string>("");
   const [busy, setBusy] = useState(false);
+  const [spendHate, setSpendHate] = useState(false);
   const [err, setErr] = useState<string | null>(null);
   const [lastMessage, setLastMessage] = useState<string | null>(null);
 
@@ -97,6 +98,10 @@ export function TorAttackPopup({ token, allTokens, roomId, onClose, onRoomSync }
   /* A postura vem do token, não de estado local: outro cliente (ou o Mestre)
      pode trocá-la, e o snapshot é a fonte da verdade. */
   const stance: TorStanceId = isTorStance(combat?.stance) ? combat.stance : TOR_DEFAULT_STANCE;
+  /* Ódio (lacaios do Inimigo) × Resolução (Homens Maus) — muda o nome na tela,
+     não a mecânica. Chamar tudo de "Ódio" faria o Mestre procurar no bloco
+     errado do capítulo 8. */
+  const hateName = combat?.hateKind === "resolve" ? "Resolução" : "Ódio";
 
   async function changeStance(next: string) {
     if (busy || next === stance) return;
@@ -121,7 +126,11 @@ export function TorAttackPopup({ token, allTokens, roomId, onClose, onRoomSync }
       const payload = await postRoomAttack(roomId, token.id, targetId, {
         torWeaponId: isHero ? choiceId : undefined,
         torActionId: isHero ? undefined : choiceId,
+        torSpendHate: !isHero && spendHate,
       });
+      // O ponto só some se o ataque aconteceu — deixar marcado gastaria de novo
+      // no próximo clique sem o Mestre pedir.
+      setSpendHate(false);
       const messages = "chat" in payload ? payload.chat : (payload.chatAppend ?? []);
       const last = messages[messages.length - 1];
       setLastMessage(last?.text ?? null);
@@ -192,6 +201,36 @@ export function TorAttackPopup({ token, allTokens, roomId, onClose, onRoomSync }
             ))}
           </select>
         </label>
+
+        {!isHero && combat.hate != null ? (
+          <div className="vtt-field">
+            <span>
+              {hateName} {combat.hate}/{combat.hateMax ?? combat.hate}
+            </span>
+            <label className="vtt-inline-check">
+              <input
+                type="checkbox"
+                checked={spendHate}
+                disabled={busy || combat.hate <= 0}
+                onChange={(e) => setSpendHate(e.target.checked)}
+              />
+              Gastar 1 de {hateName} neste ataque — ganha (1d)
+            </label>
+            {combat.fellAbilities?.length ? (
+              <ul className="vtt-fell-abilities">
+                {combat.fellAbilities.map((fa, i) => (
+                  <li key={i}>
+                    <strong>{fa.name}.</strong> {fa.text}
+                  </li>
+                ))}
+              </ul>
+            ) : null}
+            <span className="vtt-field__hint">
+              As Habilidades Sinistras são gasto opcional do Mestre — o app mostra o texto e o
+              contador, mas não dispara nenhuma sozinho.
+            </span>
+          </div>
+        ) : null}
 
         {err ? <p className="dice-err">{err}</p> : null}
         {lastMessage ? <p className="vtt-gm-hp-modal__lead">{lastMessage}</p> : null}
