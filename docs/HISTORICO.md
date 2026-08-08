@@ -104,6 +104,80 @@ npm run sync:data:check       # após editar livros/
 
 ---
 
+### 2026-08-08 — "Assassinato e Mau Agouro": nove partes, e Resolução vira o assunto
+
+**Pedido:** continuar o loop — converter as campanhas de 1ª edição.
+
+**Passo a passo:**
+
+1. **Aventura 3 de *Tales from Wilderland* convertida por inteiro** — **nove
+   partes**, das páginas 36–58 do PDF, em
+   `livros/um-anel/17-wilderland-03-assassinato-e-mau-agouro.md`. É a maior das
+   três até agora.
+
+2. **Aqui a distinção Ódio × Resolução deixa de ser detalhe de bloco e vira o
+   tema.** A aventura termina com Beorn julgando se um homem merece morrer, e
+   **todo inimigo humano dela tem Resolução** — bandidos, Faron, Valter e o
+   próprio Oderic. O livro manda avaliar como **Malfeitoria** atacar ou matar
+   quem tem Resolução, então uma Companhia que mate Oderic a caminho da Carrocha
+   fez exatamente aquilo que o julgamento existia para evitar. Os únicos inimigos
+   de Ódio são os Orcs que já estão mortos quando a aventura começa.
+
+3. **Seis Tolerâncias viraram seis Conselhos**, e o julgamento final é o mais
+   interessante: os argumentos a favor de Oderic somam sucessos, e **companheiros
+   que falam contra ele subtraem**. É o único Conselho da conversão em que a
+   Companhia pode jogar contra si mesma — e o veredito sai direto do placar.
+
+4. **Dois números derivados, e a asserção lê os dois lados.** O bloco de Valter
+   diz "Parry 5 + 3 (Great Shield)" e "Armour 3d+4 (Mail shirt and Helm)". Na 2ª
+   edição o Bloqueio do adversário é **um número só**, então virou **8** (5 + os
+   3 do Grande Escudo, valor da tabela de escudos), e a Armadura virou **4**
+   (Cota de Malha 3d + Elmo +1d, lidos na tabela de armaduras). Nenhum dos dois
+   foi estimado — os dois saem de tabelas da 2ª edição, e há asserção conferindo
+   **a tabela e o texto ao mesmo tempo**: se o Grande Escudo mudar de valor, a
+   conta escrita na aventura falha.
+
+5. **Duas lacunas de Vigor, e uma família de habilidades sem equivalente.**
+   Nem Valter nem Oderic têm Vigor no bloco original, e o texto não resolve —
+   para Oderic ele dá **três** condições de derrota, mas nenhuma diz quantos
+   Ferimentos o abatem. Os dois campos ficam declarados como lacuna, com asserção
+   contando os `| Vigor |` e exigindo que **nenhum** vire número. E "Sem Trégua"
+   e "Investida Selvagem" são apenas **nomeadas** no original, sem efeito
+   descrito: por CVR-012 viram lacuna, não habilidade nova — com asserção negativa
+   garantindo que ninguém as inventou no bestiário.
+
+6. **"Arquearia Mortal" já existia com outro nome.** A habilidade dos Arqueiros
+   Foragidos — gastar Ódio para somar o Nível de Atributo ao dano — é exatamente
+   o Dano Especial **Golpe Pesado** da 2ª edição, que **todo** adversário já pode
+   acionar. Não virou habilidade: virou nota.
+
+7. **Quatro asserções minhas falharam, e três eram cedo demais generalizadas.**
+   O teste genérico exigia de **toda** aventura um Teste de Sombra e a declaração
+   da lacuna da Aranha — e a aventura 3 não tem nem corrupção nem aranhas. As duas
+   viraram condicionais (`CVR-024` em `cvrObrigatorias`, e uma marca `aranhas`).
+   A quarta foi a **mesma lição da rodada passada, repetida**: a busca por NA fixo
+   delimitava a frase por quebra de linha, e "(CVR-017; o\noriginal subia o NA de
+   12 para 16)" ficava sem a palavra que a inocenta. Delimitar por **ponto**
+   resolveu — de novo.
+
+8. **Validação.** `npx tsc --noEmit` limpo · `npm run build` compila ·
+   `npm run test` verde com **2436 asserções**. Três asserções foram quebradas de
+   propósito — Vigor virando número, Bloqueio derivado errado, e o NA fixo — e
+   falharam como deviam.
+
+**Arquivos tocados:**
+- `livros/um-anel/17-wilderland-03-assassinato-e-mau-agouro.md` — **novo**
+- `scripts/verify-um-anel-aventuras-wilderland.mjs` — a aventura 3 na lista, e as
+  três checagens que viraram condicionais
+
+**Como testar:** ler o arquivo. Os blocos de Valter e Oderic estão prontos para a
+mesa exceto pelo Vigor, marcado como lacuna de propósito.
+
+**Falta:** aventuras 4 a 7 de Wilderland; *The Darkening of Mirkwood*; Vigor de
+três blocos e bloco de Aranha (lacunas de fonte); glyph da runa de Gandalf.
+
+---
+
 ### 2026-08-08 — "Sobre Ervas e Hobbits Cozidos", e o teste que virou genérico
 
 **Pedido:** continuar o loop — converter as campanhas de 1ª edição.

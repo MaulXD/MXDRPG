@@ -105,6 +105,8 @@ const AVENTURAS = [
     },
     /* Quantos blocos de estatística em tabela a aventura pode ter. */
     blocosEsperados: 1,
+    /* Tem aranhas em cena — a lacuna do bloco precisa estar declarada. */
+    aranhas: true,
     extra(AV) {
       for (const [campo, valor] of [
         ["Nível de Atributo", "4"],
@@ -171,6 +173,8 @@ const AVENTURAS = [
       "Troll das Cavernas Furtivo": "cave-troll-furtivo",
     },
     blocosEsperados: 1,
+    /* Tem aranhas em cena — a lacuna do bloco precisa estar declarada. */
+    aranhas: true,
     extra(AV) {
       for (const [campo, valor] of [
         ["Nível de Atributo", "4"],
@@ -226,6 +230,119 @@ const AVENTURAS = [
           "a aventura diz que matá-los NÃO levanta Malfeitoria — isso só vale para Ódio"
         );
       }
+    },
+  },
+  {
+    arquivo: "17-wilderland-03-assassinato-e-mau-agouro.md",
+    titulo: "Assassinato e Mau Agouro",
+    cvrObrigatorias: {
+      "CVR-004": "Ódio × Resolução — é o EIXO desta aventura, que termina num tribunal",
+      "CVR-005": "o Bloqueio de Valter, somando o Grande Escudo",
+      "CVR-006": "a Armadura de Valter, lida na tabela da 2ª edição",
+      "CVR-012": "as Habilidades Sinistras reaproveitadas, e as que viraram lacuna",
+      "CVR-013": "as perícias renomeadas",
+      "CVR-016": "o NA fixo que some",
+      "CVR-017": "a dificuldade que vira Complicação/Vantagem",
+      "CVR-020": "as seis Tolerâncias que viram Conselho",
+      "CVR-021": "a marcha forçada e os Eventos de Jornada",
+      "CVR-030": "as lacunas — Vigor e Prestígio",
+      "CVR-031": "comitiva → Companhia",
+      "CVR-032": "Fase em Sociedade → Fase de Companhia",
+    },
+    adversarios: {
+      "Campeão Sulista": "campeao-do-sul",
+      Salteador: "batedor-de-bolsos",
+      "Saqueador Sulista": "invasor-do-sul",
+      Warg: "warg",
+    },
+    /* Valter e Oderic — os dois únicos blocos próprios. */
+    blocosEsperados: 2,
+    extra(AV) {
+      for (const [quem, campo, valor] of [
+        ["Valter", "Nível de Atributo", "5"],
+        ["Valter", "Resistência", "19"],
+        ["Valter", "Resolução", "4"],
+        ["Valter", "Bloqueio", "8"],
+        ["Valter", "Armadura", "4"],
+        ["Oderic", "Nível de Atributo", "4"],
+        ["Oderic", "Resistência", "18"],
+        ["Oderic", "Resolução", "3"],
+        ["Oderic", "Bloqueio", "5"],
+        ["Oderic", "Armadura", "1"],
+      ]) {
+        ok(
+          `  ${quem}: ${campo} = ${valor}`,
+          new RegExp(`\\| ${campo} \\| ${valor} \\|`).test(AV),
+          "valor do bloco não bate"
+        );
+      }
+
+      /* Os dois números derivados. Se as tabelas de equipamento mudarem, as
+         contas escritas na aventura viram mentira — então a asserção lê os DOIS
+         lados, tabela e texto. */
+      const DATA = readFileSync(root("lib", "character", "um-anel", "data.ts"), "utf8");
+      ok(
+        "  Bloqueio 8 = 5 + Grande Escudo (+3), e o escudo vale 3 na tabela",
+        /id: "grande-escudo", label: "Grande Escudo", parryModifier: 3/.test(DATA) &&
+          /\*\*Bloqueio 8\*\* = os 5 do bloco mais \*\*\+3 do Grande Escudo\*\*/.test(AV),
+        "se o Grande Escudo mudar de valor, a conta escrita na aventura precisa mudar junto"
+      );
+      ok(
+        "  Armadura 4 = Cota de Malha (3d) + Elmo (+1d), como manda a tabela",
+        /label: "Cota de Malha", protection: "3d"/.test(DATA) &&
+          /label: "Elmo",\s*\n\s*protection: "\+1d"/.test(DATA) &&
+          /\*\*Armadura 4\*\* = \*\*Cota de Malha \(3d\) \+ Elmo \(\+1d\)\*\*/.test(AV)
+      );
+
+      /* NENHUM dos dois blocos pode ganhar Vigor: o texto não resolve, ao
+         contrário da Coisa do Fosso da aventura 1. */
+      const vigores = [...AV.matchAll(/\| Vigor \| ([^|]+) \|/g)].map((m) => m[1].trim());
+      ok(
+        "  os dois blocos declaram o Vigor como lacuna, e nenhum vira número",
+        vigores.length === 2 && vigores.every((v) => v.startsWith("**lacuna")),
+        `achei ${JSON.stringify(vigores)} — o texto desta aventura não diz quantas Feridas abatem`
+      );
+      ok(
+        "  e a lacuna do Vigor está explicada no fim",
+        /Vigor de Valter e de Oderic/.test(AV)
+      );
+
+      /* O eixo da aventura: TODO inimigo humano é de Resolução. */
+      for (const id of ["campeao-do-sul", "batedor-de-bolsos", "invasor-do-sul"]) {
+        ok(
+          `  "${id}" tem Resolução, como a aventura afirma`,
+          /hateKind: "resolve"/.test(blocoAdversario(id)),
+          "numa aventura sobre julgamento, Resolução é o que põe Malfeitoria em jogo"
+        );
+      }
+      ok(
+        "  a aventura declara que todo inimigo humano é de Resolução",
+        /Todo inimigo humano desta aventura tem RESOLUÇÃO, não Ódio/.test(AV)
+      );
+      ok(
+        "  e amarra isso a Malfeitoria",
+        /Malfeitoria/.test(AV) && /Oderic/.test(AV)
+      );
+
+      /* Grito de Triunfo substitui a "Voz de Comando" do original — mesma
+         mecânica, nome do bestiário. */
+      ok(
+        "  Grito de Triunfo existe no bestiário e é usado por Valter",
+        /name: "Grito de Triunfo"/.test(ADVERSARIES) && /Grito de Triunfo/.test(AV)
+      );
+      ok(
+        "  Velocidade Serpentina existe no bestiário e cobre a habilidade de Faron",
+        /name: "Velocidade Serpentina"/.test(ADVERSARIES) && /Velocidade Serpentina/.test(AV)
+      );
+      /* NEGATIVA: habilidades sem equivalente NÃO podem ter virado habilidade
+         nova — CVR-012 manda registrar como lacuna. */
+      ok(
+        '  "Sem Trégua" e "Investida Selvagem" ficaram como lacuna, não viraram habilidade',
+        /"Sem Trégua" e "Investida Selvagem"/.test(AV) &&
+          !/name: "Sem Trégua"/.test(ADVERSARIES) &&
+          !/name: "Investida Selvagem"/.test(ADVERSARIES),
+        "o original só NOMEIA as duas, sem descrever efeito — inventar seria criar regra"
+      );
     },
   },
 ];
@@ -308,24 +425,34 @@ for (const av of AVENTURAS) {
       soltas.map((f) => f.replace(/\s+/g, " ").trim().slice(0, 90)).join(" | ")
     );
   }
-  ok("  o Teste de Sombra aparece no lugar da corrupção", /Teste de Sombra/.test(AV));
+  /* Teste de Sombra só é exigido de quem converte teste de corrupção — a
+     aventura 3 não tem nenhum, e cobrar dela seria inventar uma regra que a
+     fonte não pede. Quem tem, declara CVR-024 em `cvrObrigatorias`. */
+  if (av.cvrObrigatorias["CVR-024"]) {
+    ok("  o Teste de Sombra aparece no lugar da corrupção", /Teste de Sombra/.test(AV));
+  }
 
   /* NA fixo: pode ser MENCIONADO ao explicar o original, nunca como instrução.
      Dois dígitos de propósito — "a 2ª edição rola contra o NA do Atributo" é a
-     forma CERTA e não pode ser acusada por causa do "2ª". */
-  const mencoesNA = [...AV.matchAll(/[^.\n]*\bNA\b(?: de)? \d{2}[^.\n]*/g)].map((m) => m[0]);
+     forma CERTA e não pode ser acusada por causa do "2ª".
+
+     Delimitado por PONTO e não por quebra de linha: o markdown quebra no meio da
+     frase, e "(CVR-017; o\noriginal subia o NA de 12 para 16)" ficava sem a
+     palavra que a inocenta. Mesma lição de SO_PARA_NEGAR. */
+  const mencoesNA = [...AV.matchAll(/[^.]*\bNA\b(?: de)? \d{2}[^.]*/g)].map((m) => m[0]);
   const semOriginal = mencoesNA.filter((f) => !/original/.test(f));
   ok(
     "  todo NA numérico só aparece explicando o ORIGINAL",
     semOriginal.length === 0,
-    semOriginal.map((f) => f.trim().slice(0, 90)).join(" | ")
+    semOriginal.map((f) => f.replace(/\s+/g, " ").trim().slice(0, 90)).join(" | ")
   );
 
   /* 4. Lacunas e blocos inventados -------------------------------------- */
-  ok(
-    "  a lacuna do bloco de Aranha continua declarada",
-    /## Lacunas registradas/.test(AV) && /bloco de Aranha/i.test(AV)
-  );
+  ok("  tem seção de lacunas registradas", /## Lacunas registradas/.test(AV));
+  /* A lacuna da Aranha só cabe a quem tem aranhas em cena. */
+  if (av.aranhas) {
+    ok("  a lacuna do bloco de Aranha continua declarada", /bloco de Aranha/i.test(AV));
+  }
   const blocos = [...AV.matchAll(/\| Nível de Atributo \| \d+ \|/g)];
   ok(
     `  só existem ${av.blocosEsperados} bloco(s) de estatística`,
