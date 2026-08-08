@@ -534,6 +534,117 @@ const AVENTURAS = [
       );
     },
   },
+  {
+    arquivo: "20-wilderland-06-a-travessia-do-celduin.md",
+    titulo: "A Travessia do Celduin",
+    cvrObrigatorias: {
+      "CVR-004": "os PNJs heroicos trocam Esperança por Resolução; o espírito fica com Ódio",
+      "CVR-005": "o Bloqueio de Elstan, somando o Grande Escudo",
+      "CVR-006": "a Armadura de Elstan, lida na tabela",
+      "CVR-010": "a Força Tremenda de Gerold, que já é o Golpe Pesado universal",
+      "CVR-012": "as Habilidades Sinistras reaproveitadas, e as duas que viraram lacuna",
+      "CVR-013": "as perícias renomeadas",
+      "CVR-016": "o NA fixo que some",
+      "CVR-017": "a dificuldade que vira Complicação/Vantagem",
+      "CVR-018": "os graus de sucesso nos torneios",
+      "CVR-019": "as ações prolongadas que viram Empreitada de Perícia",
+      "CVR-020": "as Tolerâncias que viram Conselho, e as vitórias de torneio que viram atitude",
+      "CVR-021": "os Eventos de Jornada",
+      "CVR-024": "os Testes de Sombra com fonte declarada",
+      "CVR-030": "as lacunas — Vigor e Prestígio",
+    },
+    adversarios: {
+      "Soldado Orc": "soldado-orc",
+      "Guarda Orc": "guarda-orc",
+      "Arqueiro Goblin": "arqueiro-goblin",
+      "Chefe Grande Orc": "chefe-grande-orc",
+      "Chefe dos Lobos": "chefe-de-alcateia",
+      Warg: "warg",
+    },
+    /* Gerold, Elstan e o Rei Enforcado. */
+    blocosEsperados: 3,
+    extra(AV) {
+      for (const [quem, campo, valor] of [
+        ["Gerold", "Nível de Atributo", "7"],
+        ["Gerold", "Resistência", "20"],
+        ["Gerold", "Resolução", "4"],
+        ["Elstan", "Nível de Atributo", "6"],
+        ["Elstan", "Resistência", "18"],
+        ["Elstan", "Bloqueio", "6"],
+        ["Elstan", "Armadura", "4"],
+        ["Rei Enforcado", "Nível de Atributo", "8"],
+        ["Rei Enforcado", "Resistência", "55"],
+        ["Rei Enforcado", "Ódio", "8"],
+      ]) {
+        ok(
+          `  ${quem}: ${campo} = ${valor}`,
+          new RegExp(`\\| ${campo} \\| ${valor} \\|`).test(AV)
+        );
+      }
+
+      /* Os TRÊS blocos declaram lacuna de Vigor. */
+      const vigores = [...AV.matchAll(/\| Vigor \| ([^|]+) \|/g)].map((m) => m[1].trim());
+      ok(
+        "  os três blocos declaram o Vigor como lacuna",
+        vigores.length === 3 && vigores.every((v) => v.startsWith("**lacuna")),
+        `achei ${JSON.stringify(vigores)}`
+      );
+
+      /* A troca de moeda: Esperança de PNJ heroico vira Resolução. */
+      ok(
+        "  a troca de Esperança por Resolução está explicada",
+        /A 2ª edição não dá\s*[\s>]*Esperança a adversário/.test(AV),
+        "é uma troca de moeda entre edições, não um detalhe de bloco"
+      );
+
+      /* A Força Tremenda de Gerold: o número do original BATE com o Nível de
+         Atributo, e é isso que prova que já é o Golpe Pesado universal. */
+      ok(
+        "  a Força Tremenda de Gerold é reconhecida como Golpe Pesado",
+        /Golpe Pesado/.test(AV) && /Nível de Atributo dele é \*\*7\*\*/.test(AV),
+        "o original soma 7 de dano e o Nível de Atributo é 7 — é a mesma regra"
+      );
+
+      /* As derivações de escudo e armadura, lidas nos DOIS lados. */
+      const DATA = readFileSync(root("lib", "character", "um-anel", "data.ts"), "utf8");
+      ok(
+        "  Bloqueio 6 = 3 + Grande Escudo (+3), e o escudo vale 3 na tabela",
+        /id: "grande-escudo", label: "Grande Escudo", parryModifier: 3/.test(DATA) &&
+          /\*\*Bloqueio 6\*\* = os 3 do bloco mais \*\*\+3 do Grande Escudo\*\*/.test(AV)
+      );
+      ok(
+        "  Armadura 4 = Cota de Malha (3d) + Elmo (+1d), como manda a tabela",
+        /label: "Cota de Malha", protection: "3d"/.test(DATA) &&
+          /\*\*Armadura 4\*\* = \*\*Cota de Malha \(3d\) \+ Elmo \(\+1d\)\*\*/.test(AV)
+      );
+
+      /* Grito de Triunfo vem do bestiário; as duas do Rei Enforcado, não. */
+      ok(
+        "  Grito de Triunfo existe no bestiário e é usado por Elstan",
+        /name: "Grito de Triunfo"/.test(ADVERSARIES) && /Grito de Triunfo/.test(AV)
+      );
+      ok(
+        '  "Desnortear" e "Encarnação do Horror" ficaram como lacuna',
+        /"Desnortear"\*\* e \*\*"Encarnação do Horror"/.test(AV) &&
+          !/name: "Desnortear"/.test(ADVERSARIES) &&
+          !/name: "Encarnação do Horror"/.test(ADVERSARIES),
+        "o original só as NOMEIA — inventar o efeito seria criar regra"
+      );
+
+      /* O veneno da festa amarra à regra do capítulo 8. */
+      ok(
+        "  o veneno da festa usa a regra de Veneno da 2ª edição",
+        /não pode descansar/.test(AV) && /Runa de Gandalf/.test(AV)
+      );
+
+      /* A lacuna do Troll da Colina é a MESMA da aventura 4 — se um bloco
+         aparecer, as duas seções precisam mudar juntas. */
+      ok(
+        "  a lacuna do Troll da Colina continua declarada",
+        /Troll da Colina/.test(AV) && !/id: "troll-da-colina"/.test(ADVERSARIES)
+      );
+    },
+  },
 ];
 
 /* ══════════════════════════════════════════════════════════════════════

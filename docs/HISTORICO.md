@@ -104,6 +104,74 @@ npm run sync:data:check       # após editar livros/
 
 ---
 
+### 2026-08-08 — "A Travessia do Celduin": torneios, veneno e o Rei Enforcado
+
+**Pedido:** continuar o loop — converter as campanhas de 1ª edição.
+
+**Passo a passo:**
+
+1. **Aventura 6 de *Tales from Wilderland* convertida por inteiro** — oito partes,
+   das páginas 103–130, em
+   `livros/um-anel/20-wilderland-06-a-travessia-do-celduin.md`. É a maior da
+   campanha, e a que fecha o arco do Rei Enforcado.
+
+2. **Duas moedas diferentes no mesmo bloco.** Os PNJs heroicos de 1ª edição —
+   Gerold, Elstan, os Seguidores — têm **Esperança** no bloco, como heróis. A 2ª
+   edição não dá Esperança a adversário: dá **Ódio ou Resolução**, e Homens
+   não-monstruosos ficam com **Resolução** (CVR-004). O valor passa direto; o nome
+   muda. O Rei Enforcado, que já tinha Ódio, fica com Ódio.
+
+3. **A "Força Tremenda" de Gerold já era o Golpe Pesado — e o número prova.** O
+   original diz "reduza um ponto de Esperança para aumentar seu dano em **7**
+   pontos", e o Nível de Atributo dele é **7**. O Golpe Pesado da 2ª edição
+   "inflige uma perda adicional de Resistência igual ao Nível de Atributo do
+   atacante" e **todo adversário já pode acioná-lo**. Não virou habilidade nova:
+   virou nota, com asserção exigindo que a coincidência dos números continue
+   escrita.
+
+4. **As vitórias de torneio viraram atitude.** O original dá "+1 de tolerância por
+   competição vencida" em Valle e Cidade do Lago até o ano seguinte. Como a
+   Tolerância virou Conselho, isso vira **um degrau de atitude da audiência por
+   competição vencida**, com teto em Amigável (CVR-020).
+
+5. **Três lacunas de Vigor de uma vez, e uma delas é conceitual.** Gerold, Elstan e
+   o Rei Enforcado não têm o campo. Para o espírito, o texto diz explicitamente que
+   **destruir o corpo não o destrói, apenas o bane** — que é o oposto de um número
+   de Ferimentos para abater. Asserção conta os três `| Vigor |` e exige que
+   **nenhum** vire número.
+
+6. **A lacuna do Troll da Colina reapareceu, e é a mesma da aventura 4.** O
+   segundo assalto pede um Troll das Colinas de Mordor, e o bestiário traduzido tem
+   Trolls das Cavernas e de Pedra, não da Colina. Duas aventuras agora dependem do
+   mesmo bloco ausente — se ele aparecer, as duas seções mudam juntas.
+
+7. **"Desnortear" e "Encarnação do Horror"** juntam-se a "Sem Trégua" e "Investida
+   Selvagem" na lista de habilidades que o original apenas **nomeia**, sem efeito
+   descrito. Por CVR-012, viram lacuna — e há asserção negativa garantindo que
+   ninguém as inventou no bestiário.
+
+8. **A Empreitada de Resistência 9 apareceu pela primeira vez.** Empurrar a
+   carruagem do Rei Enforcado para o rio pedia "8 jogadas" no original; a 2ª edição
+   só oferece 3, 6 e 9, e **9 é o degrau imediatamente acima**. Nas cinco aventuras
+   anteriores só tinham aparecido 3 e 6 — e numa delas o 6 bateu exato.
+
+9. **Validação.** `npx tsc --noEmit` limpo · `npm run build` compila ·
+   `npm run test` verde com **2674 asserções**. Uma asserção foi quebrada de
+   propósito — o Vigor do Rei Enforcado virando número — e falhou como devia.
+
+**Arquivos tocados:**
+- `livros/um-anel/20-wilderland-06-a-travessia-do-celduin.md` — **novo**
+- `scripts/verify-um-anel-aventuras-wilderland.mjs` — a aventura 6 na lista
+
+**Como testar:** ler o arquivo. A Parte II (os torneios) é a mais mecânica da
+campanha inteira, e a Parte VIII fecha o arco do Rei Enforcado com fogo ou água,
+como o corvo avisa.
+
+**Falta:** aventura 7 de Wilderland; *The Darkening of Mirkwood*; oito Vigores,
+bloco de Aranha e de Troll da Colina (lacunas de fonte); glyph da runa de Gandalf.
+
+---
+
 ### 2026-08-08 — "A Escuridão nos Pântanos": as bênçãos do mago e a Caçada
 
 **Pedido:** continuar o loop — converter as campanhas de 1ª edição.
