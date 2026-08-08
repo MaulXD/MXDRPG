@@ -345,6 +345,101 @@ const AVENTURAS = [
       );
     },
   },
+  {
+    arquivo: "18-wilderland-04-aqueles-que-nao-permanecem-mais.md",
+    titulo: "Aqueles Que Não Permanecem Mais",
+    cvrObrigatorias: {
+      "CVR-004": "mortos-vivos são de Ódio; Orientais são Homens Maus, de Resolução",
+      "CVR-012": "as Habilidades Sinistras do Tumulário reaproveitadas",
+      "CVR-013": "as perícias renomeadas",
+      "CVR-016": "o NA fixo que some",
+      "CVR-017": "a dificuldade que vira Complicação/Vantagem",
+      "CVR-018": "os graus de sucesso",
+      "CVR-019": "a série prolongada de Cura que vira Empreitada de Perícia",
+      "CVR-020": "as Tolerâncias que viram Conselho",
+      "CVR-021": "os Eventos de Jornada",
+      "CVR-024": "o teste de Medo e os testes de corrupção que viram Teste de Sombra",
+      "CVR-031": "comitiva → Companhia",
+    },
+    adversarios: {
+      "Guarda-costas Grande Orc": "guarda-costas-grande-orc",
+      "Soldado Orc": "soldado-orc",
+      "Arqueiro Goblin": "arqueiro-goblin",
+      Tumulário: "barrow-wight",
+      "Campeão Sulista": "campeao-do-sul",
+    },
+    /* Só os Guerreiros Mortos-Vivos ganham bloco próprio. */
+    blocosEsperados: 1,
+    extra(AV) {
+      for (const [campo, valor] of [
+        ["Nível de Atributo", "3"],
+        ["Resistência", "15"],
+        ["Ódio", "4"],
+        ["Bloqueio", "3"],
+        ["Armadura", "2"],
+      ]) {
+        ok(
+          `  Guerreiros Mortos-Vivos: ${campo} = ${valor}`,
+          new RegExp(`\\| ${campo} \\| ${valor} \\|`).test(AV)
+        );
+      }
+      ok(
+        "  o Vigor fica declarado como lacuna, e não vira número",
+        /\| Vigor \| \*\*lacuna/.test(AV) && !/\| Vigor \| \d+ \|/.test(AV),
+        "o texto diz que feri-los nem sempre basta — isso é Imorredouro, não Vigor"
+      );
+
+      /* As duas habilidades do original já existem no Tumulário, com nome da 2ª
+         edição. Se o bestiário perder qualquer uma, a conversão fica sem base. */
+      const tumulario = blocoAdversario("barrow-wight");
+      for (const hab of ["Infundir Medo", "Imorredouro"]) {
+        ok(
+          `  "${hab}" existe no bloco do Tumulário e é usada aqui`,
+          new RegExp(`name: "${hab}"`).test(tumulario) && AV.includes(hab),
+          "é de lá que a conversão tira a habilidade — CVR-012"
+        );
+      }
+
+      /* O teste de MEDO da 1ª edição não tem equivalente próprio: vira Teste de
+         Sombra (Pavor/VALOR), e o efeito descrito é o de estar Arrasado. */
+      ok(
+        "  o teste de Medo virou Teste de Sombra com VALOR, e o efeito é Arrasado",
+        /Teste de Sombra \(VALOR\)/.test(AV) && /Arrasado/.test(AV),
+        "a 2ª edição não tem teste de medo — tem Pavor resistido com VALOR"
+      );
+      ok(
+        "  e a conversão do teste de Medo está explicada",
+        /\*\*não tem teste de medo\*\*/.test(AV)
+      );
+
+      /* O sonho tem uma regra de fronteira: o que atravessa e o que não. */
+      ok(
+        "  a tabela do que sobrevive ao despertar existe",
+        /\| Esperança gasta \| \*\*Sim\*\* \|/.test(AV) &&
+          /\| Resistência perdida \| Não \|/.test(AV),
+        "Esperança e Sombra atravessam; Resistência, Fadiga e Feridas não"
+      );
+
+      /* Ódio × Resolução: os dois lados, no mesmo arquivo. */
+      ok(
+        '  o Tumulário tem Ódio e o Campeão Sulista tem Resolução',
+        /hateKind: "hate"/.test(tumulario) &&
+          /hateKind: "resolve"/.test(blocoAdversario("campeao-do-sul")),
+        "mortos-vivos são lacaios do Inimigo; Orientais são Homens Maus"
+      );
+
+      /* Duas lacunas próprias desta aventura. */
+      ok(
+        "  a lacuna do Troll da Colina está declarada",
+        /Troll da Colina/.test(AV) && !/id: "troll-da-colina"/.test(ADVERSARIES),
+        "o bestiário tem Trolls das Cavernas e de Pedra, não da Colina"
+      );
+      ok(
+        '  a lacuna de "Foco de Companhia" está declarada',
+        /Foco de Companhia/.test(AV)
+      );
+    },
+  },
 ];
 
 /* ══════════════════════════════════════════════════════════════════════
