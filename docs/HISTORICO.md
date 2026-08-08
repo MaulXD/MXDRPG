@@ -104,6 +104,59 @@ npm run sync:data:check       # após editar livros/
 
 ---
 
+### 2026-08-08 — Varredura de constantes: a Falha sem nome e a tabela de custo duplicada
+
+**Pedido:** continuar o loop.
+
+**Passo a passo:**
+
+1. **A varredura, agora por constante.** Contei consumidores de toda `export
+   const` do Um Anel — o mesmo método que achou as tabelas de Pavor e Malfeitos.
+   Catorze sem consumidor externo, e a maioria é falso positivo do método: união
+   de tipos consumida no próprio arquivo (`TOR_COMBAT_TASKS`, `TOR_ROUND_EFFECTS`,
+   `TOR_MAX_RATING`) ou mapa `*_BY_ID` de conveniência. **Dois eram reais.**
+
+2. **A Falha do Acesso de Loucura nunca era nomeada.**
+   `applyTorBoutOfMadness(state, shadowPathId, pathFlaws = {})` recebe o mapa de
+   Falhas num terceiro argumento **com valor padrão**. Chamei com dois argumentos
+   na rodada 11: compila, roda, e devolve `flawName: null` **sempre**. O anúncio
+   dizia "ganha a 1ª Falha" sem dizer qual — justamente o que o Caminho da Sombra
+   existe para dizer, e o motivo de `SHADOW_PATH_FLAWS` existir.
+
+   Parâmetro opcional com padrão silencioso é armadilha: não há erro de tipo, e o
+   comportamento degrada sem sinal nenhum.
+
+3. **Tabela de custo de avanço duplicada.** `TOR_EXPERIENCE_COSTS`
+   (undertakings.ts) repetia à mão os mesmos números de `TOR_XP_COST_BY_LEVEL`
+   (progression.ts). Duas fontes de verdade para o mesmo preço — e a cópia era
+   justamente a que ninguém consultava, então corrigir um degrau na tabela viva e
+   esquecer da morta passaria despercebido **porque a morta não quebra nada**.
+   Agora é derivada da única fonte.
+
+4. **Validação.** `npx tsc --noEmit` limpo · `npm run build` compila ·
+   `npm run test` verde com **1806 asserções**. As duas asserções novas foram
+   conferidas quebrando de propósito.
+
+**Registrado, não corrigido:** `TOR_ENGAGEMENT_LIMITS` (3 heróis por inimigo
+humano, 6 por inimigo grande, e os recíprocos) não tem consumidor **nenhum** — os
+limites de engajamento não são verificados em lugar algum. É posicional e depende
+de julgamento do Mestre sobre quem está engajando quem; fica anotado como o
+próximo alvo em vez de ser mecanizado às pressas.
+
+**Arquivos tocados:**
+- `lib/room/handlers/tor-recovery.ts` — passa `SHADOW_PATH_FLAWS` ao Acesso de Loucura
+- `lib/character/um-anel/undertakings.ts` — custo derivado, não redigitado
+- `scripts/verify-um-anel-sombra-mesa.mjs` · `verify-um-anel-avanco.mjs` — 4 asserções novas
+
+**Como testar:** levar a Sombra ao máximo e usar "Acesso de Loucura" — a mensagem
+agora nomeia a Falha do Caminho da Sombra do herói (ex.: "Rancoroso", da Maldição
+da Vingança).
+
+**Falta:** limites de engajamento; Elmo removível; campanhas de 1ª edição; glyph
+da runa de Gandalf.
+
+---
+
 ### 2026-08-08 — Malfeitoria: o aviso que o livro manda dar
 
 **Pedido:** continuar o loop.

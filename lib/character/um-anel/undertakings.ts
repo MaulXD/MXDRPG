@@ -1,3 +1,4 @@
+import { TOR_XP_COST_BY_LEVEL } from "@/lib/combat/um-anel/progression";
 import type { TorCallingId } from "./types";
 
 /**
@@ -78,11 +79,15 @@ export const TOR_UNDERTAKING_BY_ID: Record<string, TorUndertaking> = Object.from
 );
 
 /** Custo em Pontos de Perícia/Aventura por graduação — livro, "Experience Points Costs". */
-export const TOR_EXPERIENCE_COSTS: { rank: number; cost: number }[] = [
-  { rank: 1, cost: 4 },
-  { rank: 2, cost: 8 },
-  { rank: 3, cost: 12 },
-  { rank: 4, cost: 20 },
-  { rank: 5, cost: 26 },
-  { rank: 6, cost: 30 },
-];
+/**
+ * Custo em pontos para alcançar cada graduação.
+ *
+ * **Derivado**, não redigitado: esta tabela era uma segunda cópia dos mesmos
+ * números que `TOR_XP_COST_BY_LEVEL` (progression.ts) já guardava — duas fontes
+ * de verdade para o mesmo preço, e a que ninguém consultava era esta. Corrigir
+ * um degrau numa e esquecer da outra passaria despercebido justamente porque a
+ * cópia morta não quebra nada.
+ */
+export const TOR_EXPERIENCE_COSTS: { rank: number; cost: number }[] = Object.entries(
+  TOR_XP_COST_BY_LEVEL
+).map(([rank, cost]) => ({ rank: Number(rank), cost: Number(cost) }));
