@@ -1,0 +1,165 @@
+[
+  {
+    "id": "PRO-001",
+    "name": "Modesto",
+    "type": "efeito",
+    "system": {
+      "grupo": "Valor da Propriedade",
+      "valor": 9,
+      "pontuacao_minima": 1,
+      "exemplo": "Cabana de Caçador",
+      "descricao": "O Valor de uma Propriedade vai de 4 a 9, e **quanto MENOR o número, melhor a propriedade**. Uma fazenda pobre numa colina rochosa tem Valor 9; uma fazenda rica no fértil Vale do Anduin tem Valor 6."
+    }
+  },
+  {
+    "id": "PRO-002",
+    "name": "Adequado",
+    "type": "efeito",
+    "system": {
+      "grupo": "Valor da Propriedade",
+      "valor": 8,
+      "pontuacao_minima": 2,
+      "exemplo": "Fazenda, Casa de Campo",
+      "descricao": "Ver PRO-001 quanto à escala invertida do Valor."
+    }
+  },
+  {
+    "id": "PRO-003",
+    "name": "Respeitável",
+    "type": "efeito",
+    "system": {
+      "grupo": "Valor da Propriedade",
+      "valor": 7,
+      "pontuacao_minima": 3,
+      "exemplo": "Pequena Pousada, Mansão",
+      "descricao": "Ver PRO-001 quanto à escala invertida do Valor."
+    }
+  },
+  {
+    "id": "PRO-004",
+    "name": "Superior",
+    "type": "efeito",
+    "system": {
+      "grupo": "Valor da Propriedade",
+      "valor": 6,
+      "pontuacao_minima": 4,
+      "exemplo": "Rico terreno de caça, Grande Pousada",
+      "descricao": "Ver PRO-001 quanto à escala invertida do Valor."
+    }
+  },
+  {
+    "id": "PRO-005",
+    "name": "Próspero",
+    "type": "efeito",
+    "system": {
+      "grupo": "Valor da Propriedade",
+      "valor": 5,
+      "pontuacao_minima": 5,
+      "exemplo": "Mina de Ferro",
+      "descricao": "Ver PRO-001 quanto à escala invertida do Valor."
+    }
+  },
+  {
+    "id": "PRO-006",
+    "name": "Rico",
+    "type": "efeito",
+    "system": {
+      "grupo": "Valor da Propriedade",
+      "valor": 4,
+      "pontuacao_minima": 6,
+      "exemplo": "Mina de Ouro, Grande Fazenda",
+      "descricao": "A melhor Propriedade da tabela, e a que exige a maior Pontuação Mínima. Ver PRO-007 quanto a que pontuação é essa na 2ª edição."
+    }
+  },
+  {
+    "id": "PRO-007",
+    "name": "Pontuação Mínima",
+    "type": "efeito",
+    "system": {
+      "grupo": "Quem pode possuir",
+      "1_edicao": "limitada por **Prestígio** na terra natal, por **Valor** fora dela",
+      "2_edicao": "limitada por **VALOR**",
+      "muda": "metade da regra sobrevive",
+      "descricao": "Os heróis não podem possuir uma propriedade sem uma pontuação mínima numa característica apropriada. O original limita pelo **Prestígio** quando a propriedade fica dentro das fronteiras da terra natal do herói, e pelo **VALOR** quando fica em qualquer outro lugar — possuir propriedades além da terra natal é visto como incomum e bastante suspeito em quase qualquer lugar. **Prestígio não existe no corpus traduzido da 2ª edição** (CVR-030), então a metade da regra que depende dele **não converte**. Sobra o **VALOR**, que a 2ª edição tem, e que passa a valer nos dois casos. Nada foi inventado para substituir o Prestígio."
+    }
+  },
+  {
+    "id": "PRO-008",
+    "name": "Especialidades",
+    "type": "efeito",
+    "system": {
+      "grupo": "Quem pode possuir",
+      "regra": "o dono lucra com uma Especialidade correspondente",
+      "exemplo": "um estalajadeiro deve aprender Culinária; um Caçador, Conhecimento dos Animais",
+      "descricao": "Um personagem dono de uma propriedade pode lucrar com uma Especialidade que combine com ela. A regra passa direto: a 2ª edição tem Especialidades do mesmo jeito."
+    }
+  },
+  {
+    "id": "PRO-009",
+    "name": "O teste de fim de ano",
+    "type": "efeito",
+    "system": {
+      "grupo": "Manutenção da Propriedade",
+      "quando": "na última Fase de Companhia de cada ano",
+      "rolagem": "um Dado de Proeza",
+      "muda": "só o nome da Fase (CVR-032)",
+      "descricao": "No fim de cada ano, todo jogador cujo herói tenha uma propriedade rola **um Dado de Proeza** e compara com o Valor dela. **ATENÇÃO — esta tabela lê o Dado de Proeza no sentido NORMAL do jogo**: a Runa de Gandalf é o melhor resultado e o Olho de Sauron é o pior. É o **oposto** da tabela de Perda de Resistência das Fontes de Dano (CVR-028), onde a Runa é *Ileso* e o Olho **reduz a zero**. As duas tabelas convivem no mesmo corpus e são lidas em direções contrárias — conferir qual está em uso antes de rolar."
+    }
+  },
+  {
+    "id": "PRO-010",
+    "name": "Resultado igual ou inferior ao Valor",
+    "type": "efeito",
+    "system": {
+      "grupo": "Manutenção da Propriedade",
+      "resultado": "≤ Valor",
+      "efeito": "a propriedade se paga",
+      "descricao": "A propriedade produz riqueza suficiente para manter o personagem em seu **Padrão de Vida**. Se o Mestre considerar adequado às circunstâncias, um resultado de **1 ou 2** pode ser interpretado no sentido de que a participação do personagem **não** produz o suficiente para cobrir suas despesas, obrigando o herói a usar **Tesouro** armazenado para manter seu Padrão de Vida."
+    }
+  },
+  {
+    "id": "PRO-011",
+    "name": "Resultado maior que o Valor",
+    "type": "efeito",
+    "system": {
+      "grupo": "Manutenção da Propriedade",
+      "resultado": "> Valor",
+      "efeito": "Tesouro igual à diferença",
+      "descricao": "O personagem não apenas atingiu seu nível de vida adequado como, se a propriedade é capaz de produzir riqueza (uma pousada, extensões de terra), **ganha Tesouro igual à diferença entre o teste e o Valor**. Rolar 9 numa propriedade de Valor 6 rende **3 de Tesouro** naquele ano."
+    }
+  },
+  {
+    "id": "PRO-012",
+    "name": "Runa de Gandalf",
+    "type": "efeito",
+    "system": {
+      "grupo": "Manutenção da Propriedade",
+      "resultado": "Runa de Gandalf",
+      "efeito": "o Valor cai 1 permanentemente (mínimo 3)",
+      "descricao": "A boa sorte atinge o herói. Ele não ganha nenhum tesouro extra, mas **prospera de alguma outra forma**: uma criança doente se recupera, uma rixa antiga é resolvida, o clima é excepcionalmente agradável. O **Valor da Propriedade é permanentemente reduzido em 1**, até um mínimo de **3** — e como o Valor é invertido (PRO-001), reduzir é melhorar."
+    }
+  },
+  {
+    "id": "PRO-013",
+    "name": "Olho de Sauron",
+    "type": "efeito",
+    "system": {
+      "grupo": "Manutenção da Propriedade",
+      "resultado": "Olho de Sauron",
+      "efeito": "desastre — e o relógio começa a correr",
+      "descricao": "A propriedade sofre algum desastre ou infortúnio. **Se o herói não agir na próxima Fase de Companhia, a propriedade pode ser destruída, ou ter seu Valor aumentado** (ou seja, piorado). Uma fazenda pode ser danificada por inundações; uma pousada, atacada por invasores; uma mina de ouro, retomada por Goblins. É a única entrada da regra que **cria uma dívida com prazo**: o desastre não se resolve sozinho."
+    }
+  },
+  {
+    "id": "PRO-014",
+    "name": "Tratar das Terras",
+    "type": "efeito",
+    "system": {
+      "grupo": "Empreitada",
+      "1_edicao": "\"Novo Afazer: Tratar das Terras\"",
+      "2_edicao": "**Empreitada** da Fase de Companhia",
+      "recompensa": "rolagem **Favorecida** e, com Especialidade adequada, **1 ponto de Perícia**",
+      "descricao": "Um personagem pode gastar sua Fase de Companhia final do ano cuidando de sua terra. Se o fizer, **rola o Dado de Proeza duas vezes e escolhe o melhor resultado** ao determinar as condições de sua propriedade — o que na 2ª edição é exatamente uma rolagem **Favorecida**, e é assim que ela deve ser escrita na mesa. Se o herói possui uma Especialidade adequada, ganha adicionalmente **1 ponto de Perícia** (CVR-033; o original diz \"Ponto de Evolução\", e a moeda que compra Perícias na 2ª edição é o ponto de Perícia). \"Afazer\" da 1ª edição é a **Empreitada** da 2ª — o mesmo lugar na Fase de Companhia, e por isso Tratar das Terras **compete** com as outras Empreitadas do ano."
+    }
+  }
+]

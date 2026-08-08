@@ -52,6 +52,11 @@ const PACKS = {
     description:
       "Custos de Experiência, limites por Fase, Valor e Sabedoria, Yule, Empreitadas e Nível de Companhia.",
   },
+  propriedades: {
+    label: "Propriedades",
+    description:
+      "A regra de campanha de The Darkening of Mirkwood convertida: Valor, manutenção de fim de ano e a Empreitada Tratar das Terras.",
+  },
   "conversao-primeira-edicao": {
     label: "Conversão da 1ª edição",
     description:

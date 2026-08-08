@@ -9,7 +9,7 @@
     "id": "conversao-primeira-edicao",
     "label": "Conversão da 1ª edição",
     "description": "Equivalências de termos e regras entre a 1ª e a 2ª edição, para converter aventuras antigas sem inventar números.",
-    "count": 32
+    "count": 34
   },
   {
     "id": "jornada",
@@ -28,6 +28,12 @@
     "label": "Progressão e Companhia",
     "description": "Custos de Experiência, limites por Fase, Valor e Sabedoria, Yule, Empreitadas e Nível de Companhia.",
     "count": 23
+  },
+  {
+    "id": "propriedades",
+    "label": "Propriedades",
+    "description": "A regra de campanha de The Darkening of Mirkwood convertida: Valor, manutenção de fim de ano e a Empreitada Tratar das Terras.",
+    "count": 14
   },
   {
     "id": "sombra",

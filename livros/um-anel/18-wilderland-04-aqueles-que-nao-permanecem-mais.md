@@ -203,8 +203,8 @@ Intercale estas memórias com sinais de Orcs.
   muitos longos anos. Eles uma vez habitaram nestas partes, cavando seus buracos pequenos nas
   margens do Rio Grande. Ela não sabe o que aconteceu com eles.
 
-> **Cada companheiro que passa qualquer parte da viagem ouvindo Irimë recebe 1 ponto de experiência
-> extra**, pois visões do passado são agitadas dentro de suas mentes.
+> **Cada companheiro que passa qualquer parte da viagem ouvindo Irimë recebe 1 ponto de Aventura
+> extra** (CVR-034), pois visões do passado são agitadas dentro de suas mentes.
 
 > **Jogando com Irimë.** É uma das criaturas mais antigas que os companheiros são susceptíveis de
 > encontrar. Os longos anos pesam sobre ela. Fale em silêncio e tristeza. Olhe para longe, como se

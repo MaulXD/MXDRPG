@@ -444,6 +444,34 @@ quase inteiro; o que muda é a camada de regras.
 
 ---
 
+## CVR-033 — Ponto de Avanço
+
+- **1ª edição:** ponto de avanço (*Advancement Point*)
+- **2ª edição:** **ponto de Perícia**
+- **Muda?:** o nome, e a moeda passa a ter par
+
+> Descrição: A 2ª edição divide a experiência em duas moedas: "existem dois tipos de pontos de
+> Experiência: **pontos de Perícia**, que são gastos para adquirir novos níveis em qualquer Perícia, e
+> **pontos de Aventura**, que são usados para aprimorar Proficiências de Combate ou ganhar novos
+> níveis em VALOR ou SABEDORIA" (03-aventureiros.md). O ponto de avanço da 1ª edição comprava
+> Perícias Comuns — é o **ponto de Perícia**.
+
+---
+
+## CVR-034 — Ponto de Experiência
+
+- **1ª edição:** ponto de Experiência
+- **2ª edição:** **ponto de Aventura**
+- **Muda?:** sim — na 2ª edição "Experiência" virou o guarda-chuva das duas moedas
+
+> Descrição: Armadilha de nome (o mesmo termo com significados diferentes). Na 1ª edição,
+> "Experiência" é a moeda que compra **Perícias de Arma, VALOR e SABEDORIA**; na 2ª edição,
+> "pontos de Experiência" é o **nome do conjunto**, e a moeda que compra Proficiências de Combate,
+> VALOR e SABEDORIA chama-se **ponto de Aventura**. Deixar "ponto de Experiência" passar numa
+> conversão não parece erro — e é: o leitor da 2ª edição não sabe qual das duas moedas recebeu.
+
+---
+
 # Lacunas de fonte registradas
 
 ## CVR-030 — O que a fonte não converte
