@@ -128,6 +128,14 @@ export type TorCharacterSheet = BaseCharacterFields & {
 
   shadow: number;
   shadowScars: number;
+  /**
+   * Quantas Falhas do Caminho da Sombra o herói já adquiriu (0–4).
+   *
+   * Separado de `flaws`, que é o texto que o jogador escreve na ficha: o Acesso
+   * de Loucura precisa de um CONTADOR — na quarta Falha o herói sucumbe e sai de
+   * jogo. Contar palavras no texto livre erraria na primeira Falha com vírgula.
+   */
+  shadowFlaws: number;
   fatigue: number;
   conditions: { weary: boolean; miserable: boolean; wounded: boolean };
   injury: string;

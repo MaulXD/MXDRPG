@@ -801,6 +801,28 @@ export async function postRoomTorAdvance(
   return res.json() as Promise<RoomApiPayload>;
 }
 
+/**
+ * Um Anel — recuperação espiritual, Descanso Prolongado, Acesso de Loucura e
+ * curar Cicatriz de Sombra.
+ */
+export async function postRoomTorRecovery(
+  roomId: string,
+  characterId: string,
+  action: "spiritual" | "rest" | "madness" | "heal-scar"
+) {
+  const res = await roomFetch(
+    `/api/room/${roomId}/tor-recovery`,
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "same-origin",
+      body: JSON.stringify({ characterId, action }),
+    },
+    "Falha na recuperação"
+  );
+  return res.json() as Promise<RoomApiPayload>;
+}
+
 /** Um Anel — o herói aceita ser empurrado e amortece metade do último golpe. */
 export async function postRoomTorPush(roomId: string, tokenId: string) {
   const res = await roomFetch(

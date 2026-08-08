@@ -15,7 +15,7 @@
  *
  * Fonte: livros/um-anel/07-fases-de-companhia-jornada.md
  */
-import { readFileSync as rawReadFileSync, existsSync } from "fs";
+import { readFileSync as rawReadFileSync, existsSync, readdirSync } from "fs";
 
 /* Normaliza CRLF -> LF na leitura: âncoras de linha não devem depender de fim
    de linha (no Windows um clone novo entrega CRLF). */
@@ -202,8 +202,34 @@ ok(
 
 /* O que ainda não tem consumidor, listado para a asserção falhar quando alguém
    ligar — e obrigar a atualizar esta lista. */
-const AINDA_SEM_CONSUMIDOR = ["applyTorSpiritualRecovery", "appendTorChronicle", "torFellowshipLevel"];
-const CONSUMIDORES = [handlerCode, stripComments(PANEL), stripComments(FELLOW)];
+const AINDA_SEM_CONSUMIDOR = ["appendTorChronicle", "torFellowshipLevel"];
+
+/**
+ * Varredura AMPLA, pelo mesmo motivo do teste da Sombra: a primeira versão
+ * olhava uma lista fixa de arquivos e não acusou quando as funções foram
+ * ligadas num handler novo. Dívida "registrada" depois de paga é pior que
+ * dívida sem registro — dá a impressão de que ainda falta.
+ */
+function consumidoresDoProjeto() {
+  const dirs = [root("lib", "room", "handlers"), root("components", "vtt"), root("lib", "combat", "um-anel")];
+  const out = [];
+  for (const dir of dirs) {
+    for (const f of readdirSync(dir)) {
+      if (!/\.(ts|tsx)$/.test(f)) continue;
+      // progression.ts define as funções — não conta como consumidor.
+      if (f === "progression.ts") continue;
+      out.push(stripComments(readFileSync(join(dir, f), "utf8")));
+    }
+  }
+  return out;
+}
+const CONSUMIDORES = consumidoresDoProjeto();
+
+ok(
+  "applyTorSpiritualRecovery tem consumidor real",
+  CONSUMIDORES.some((src) => /\bapplyTorSpiritualRecovery\(/.test(src)),
+  "saiu da lista de dívida mas ninguém chama"
+);
 for (const fn of AINDA_SEM_CONSUMIDOR) {
   ok(
     `${fn} segue sem consumidor (dívida registrada)`,

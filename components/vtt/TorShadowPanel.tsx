@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { postRoomTorShadow } from "@/hooks/useRoomSync";
+import { postRoomTorRecovery, postRoomTorShadow } from "@/hooks/useRoomSync";
 import {
   TOR_SHADOW_SOURCES,
   TOR_SHADOW_SOURCE_META,
@@ -37,6 +37,24 @@ export function TorShadowPanel({ roomId, token, canManage, onUpdate }: Props) {
   const [err, setErr] = useState<string | null>(null);
 
   const combat = token.torCombat;
+  const characterId = combat?.torCharacterId;
+
+  async function recover(action: "spiritual" | "rest" | "madness" | "heal-scar") {
+    if (busy || !characterId) return;
+    setBusy(true);
+    setErr(null);
+    try {
+      await postRoomTorRecovery(roomId, characterId, action);
+      onUpdate();
+    } catch (e) {
+      // "Acesso de Loucura só ocorre quando a Sombra alcança a Esperança
+      // máxima", "só no Yule" e "faltam pontos" chegam por aqui.
+      setErr(e instanceof Error ? e.message : "Falha na recuperação");
+    } finally {
+      setBusy(false);
+    }
+  }
+
   if (combat?.kind !== "hero") return null;
 
   async function run(body: Parameters<typeof postRoomTorShadow>[2]) {
@@ -131,6 +149,37 @@ export function TorShadowPanel({ roomId, token, canManage, onUpdate }: Props) {
         Troca toda a Sombra atual por 1 Cicatriz. Só antes de a Sombra alcançar a Esperança máxima —
         depois disso, só um Acesso de Loucura resolve.
       </span>
+
+      {/* Sem o Acesso de Loucura, um herói com a Sombra no máximo ficava
+          Desfavorecido para sempre: é a única regra que zera a Sombra ali. */}
+      {characterId ? (
+        <>
+          <button
+            type="button"
+            className="btn btn-ghost"
+            disabled={busy}
+            onClick={() => void recover("madness")}
+          >
+            Acesso de Loucura
+          </button>
+          <button
+            type="button"
+            className="btn btn-ghost"
+            disabled={busy}
+            onClick={() => void recover("rest")}
+          >
+            Descanso Prolongado (−1 Fadiga)
+          </button>
+          <button
+            type="button"
+            className="btn btn-ghost"
+            disabled={busy}
+            onClick={() => void recover("heal-scar")}
+          >
+            Curar Cicatriz (5 Pontos de Aventura, só no Yule)
+          </button>
+        </>
+      ) : null}
 
       {err ? <p className="dice-err">{err}</p> : null}
     </div>
