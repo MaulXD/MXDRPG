@@ -53,6 +53,14 @@ export function TokenStatusBody({
           {/* A postura muda quem pode atacar quem (Retaguarda) e quantos Dados
               de Sucesso a rolagem leva — a mesa inteira precisa enxergar, não
               só quem abriu o popup de ataque daquele herói. */}
+          {/* Agarrado e escudo quebrado duram além da rodada e mudam o que o
+              herói pode fazer — precisam ficar visíveis fora do popup. */}
+          {token.torCombat?.grappled ? (
+            <span className="vtt-status-modal-stat">Agarrado</span>
+          ) : null}
+          {token.torCombat?.shieldBroken ? (
+            <span className="vtt-status-modal-stat">Escudo quebrado</span>
+          ) : null}
           {token.torCombat?.kind === "adversary" && token.torCombat.hate != null ? (
             <span className="vtt-status-modal-stat">
               {token.torCombat.hateKind === "resolve" ? "Resolução" : "Ódio"} {token.torCombat.hate}/

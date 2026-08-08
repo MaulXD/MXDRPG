@@ -30,6 +30,17 @@ export const TOR_ROUND_EFFECTS = [
   /** Preparar Tiro — ganha (Nd) no próximo ataque à distância. */
   "tiro-preparado",
   /**
+   * Aparar (Dano Especial) — soma N ao Bloqueio "pela rodada". Dura, não é
+   * gasto: o livro diz "modificar seu índice de Bloqueio **pela rodada**", e
+   * Bloqueio é o NA de todo mundo que atacar o herói naquela rodada.
+   */
+  "bloqueio",
+  /**
+   * Investida de Escudo (Dano Especial) — o alvo *perde (1d)* "pela duração da
+   * rodada". Também dura; some na virada.
+   */
+  "empurrado",
+  /**
    * Escrituração, não regra: marca quem já usou Reunir Companheiros nesta
    * rodada. "Apenas um herói-jogador pode escolher Reunir Companheiros em uma
    * dada rodada" — sem uma marca, a mesa inteira usaria a tarefa toda rodada.
@@ -55,6 +66,8 @@ const CONSUME_ON_USE: Record<TorRoundEffectKind, boolean> = {
   reunido: false,
   protegido: true,
   "tiro-preparado": true,
+  bloqueio: false,
+  empurrado: false,
   reuniu: false,
 };
 

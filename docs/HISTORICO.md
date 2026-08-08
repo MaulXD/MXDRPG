@@ -104,6 +104,79 @@ npm run sync:data:check       # após editar livros/
 
 ---
 
+### 2026-08-08 — Os quatro Danos Especiais que faltavam (Aparar, Investida de Escudo, Quebrar Escudo, Agarrar)
+
+**Pedido:** continuar o loop.
+
+**Passo a passo:**
+
+1. **Diagnóstico.** As quatro estavam de fora por falta de onde guardar estado. O
+   substrato da rodada anterior resolveu metade; a outra metade precisava de
+   campos que **duram além da rodada**.
+
+2. **Decisão — três durações, não duas.** Aparar e Investida de Escudo são
+   efeito de **rodada** (`bloqueio` e `empurrado`, ambos de duração e não de uso
+   único: o Bloqueio aparado vale contra todos os ataques daquela rodada). Já
+   Quebrar Escudo e Agarrar **não** são efeito de rodada — o livro não dá prazo
+   para nenhum dos dois. Viraram campos próprios no token (`shieldBroken`,
+   `grappled`), e Agarrar só sai gastando um ícone.
+
+3. **Uma peça que faltava para o Bloqueio.** O token guardava `parry` já somado
+   com o escudo, então não havia como Quebrar Escudo subtrair a parcela certa.
+   Passou a guardar `shieldParryBonus` à parte.
+
+4. **Ordem de gasto, quando os ícones não dão para tudo.** Fica explícita e
+   testada: escapar do Agarrão primeiro (é a única opção que devolve o herói ao
+   jogo — preso, ele só luta em Avançada com Briga), depois Perfurar (decide o
+   Golpe Perfurante), depois Agarrar e Quebrar Escudo (mudam o estado além da
+   rodada), depois Aparar e Investida de Escudo, e por último Golpe Pesado, que
+   só soma Resistência.
+
+5. **Condições que o livro exige e são fáceis de perder.** Investida de Escudo
+   pede escudo **e** FORÇA maior que o Nível de Atributo do alvo — sem a
+   comparação, o empurrão sairia de graça. Quebrar Escudo não funciona em escudo
+   com Recompensa ("um escudo aprimorado por Recompensas ou qualidades mágicas
+   não pode ser quebrado"): o vínculo possível hoje é a Recompensa *Reforçado* na
+   ficha. E Aparar vale para qualquer arma de corpo a corpo, mas **não** com
+   Arco.
+
+6. **Validação.** `npx tsc --noEmit` limpo · `npm run build` compila ·
+   `npm run test` verde com **1643 asserções**.
+
+**Uma asserção que não podia falhar.** Ao conferir se a restrição do Agarrado
+disparava, pus um `false &&` na frente da condição — e o teste **continuou
+passando**, porque a regex casava com a expressão, que seguia no arquivo, só que
+morta. Ancorei no `if (` e aí falhou como devia. É o mesmo defeito de fundo do
+comentário que casava com a asserção da rota: a asserção precisa provar que o
+código **age**, não que o texto existe.
+
+**Cinco asserções antigas passaram a trancar a regra errada** — as quatro que
+diziam "Aparar/Investida/Quebrar Escudo/Agarrar NÃO são aplicados pelo motor" e
+a que exigia `!/machados:/` em `special-damage.ts` (agora `machados` existe, na
+tabela de **Aparar**, que é outra coisa). Todas reescritas, a última escopada à
+tabela certa. Quarta vez que este padrão aparece.
+
+**Arquivos tocados:**
+- `lib/combat/um-anel/special-damage.ts` — as quatro opções, tabela de Aparar e a ordem de gasto
+- `lib/combat/um-anel/round-effects.ts` — `bloqueio` e `empurrado`
+- `lib/combat/um-anel/resolve-attack.ts` — disponibilidade de cada opção e o texto da mensagem
+- `lib/room/handlers/tor-combat-attack.ts` — condições do livro, Bloqueio efetivo e gravação do estado
+- `lib/vtt/types.ts` · `lib/vtt/tor-player-token.ts` — `shieldParryBonus`, `shieldBroken`, `grappled`
+- `app/api/room/[roomId]/combat/attack/route.ts` — recorte do plano com os campos novos
+- `hooks/useRoomSync.ts` · `components/vtt/TorAttackPopup.tsx` · `components/vtt/TokenStatusBody.tsx`
+- `scripts/verify-um-anel-dano-especial.mjs` — 69 asserções · `verify-um-anel-tarefas-combate.mjs` atualizado
+
+**Como testar:** herói com escudo e Espada contra um Rufião — marcar "Aparar" e
+conferir que o Bloqueio sobe naquela rodada e volta na seguinte. Adversário cujo
+bloco liste "Quebrar Escudo" atacando esse herói: o escudo se parte e o Bloqueio
+cai exatamente o valor do escudo. Herói Agarrado não consegue atacar de espada —
+só de Briga — e escapa marcando "Escapar do Agarrão".
+
+**Falta:** Empurrão; variante de NA 18; Elmo removível; campanhas de 1ª edição;
+glyph da runa de Gandalf.
+
+---
+
 ### 2026-08-08 — Tarefas de Combate executáveis + efeitos com duração de rodada
 
 **Pedido:** continuar o loop.

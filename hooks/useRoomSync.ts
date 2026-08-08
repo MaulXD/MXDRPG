@@ -698,7 +698,15 @@ export async function postRoomAttack(
     /** O Um Anel — Mestre gasta 1 de Ódio/Resolução: o adversário ganha (1d). */
     torSpendHate?: boolean;
     /** O Um Anel — ícones de Sucesso declarados pra Dano Especial. */
-    torSpecialDamage?: { heavyBlow?: number; pierce?: number };
+    torSpecialDamage?: {
+      heavyBlow?: number;
+      pierce?: number;
+      parry?: number;
+      shieldThrust?: number;
+      breakShield?: number;
+      seize?: number;
+      escape?: number;
+    };
   } = {}
 ) {
   const res = await roomFetch(

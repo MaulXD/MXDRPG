@@ -47,6 +47,8 @@ export function createTorPlayerTokenFromCharacter(
       kind: "hero",
       torCharacterId: sheet.id,
       parry: sheet.parry + sheet.shieldParryBonus,
+      // Guardado à parte: é exatamente a parcela que Quebrar Escudo remove.
+      shieldParryBonus: sheet.shieldParryBonus,
       protectionDice: computeProtectionDice(sheet.armour),
       strength: sheet.attributes.forca,
       wounded: sheet.conditions.wounded,
