@@ -56,5 +56,16 @@ export type TorAdversaryStats = {
   armour: number;
   actions: TorAdversaryAction[];
   fellAbilities?: TorAdversaryFellAbility[];
+  /**
+   * Criatura **maior que humana**, para os limites de engajamento (POS-R03): um
+   * herói é engajado por até 3 humanos **ou 2 grandes**, e até 6 heróis podem
+   * cercar um grande contra 3 num humano.
+   *
+   * Marcada só onde o livro diz: o texto dá "criaturas grandes (**como Trolls**)"
+   * como exemplo, e é o único critério explícito na fonte. Vigor 2 NÃO serve de
+   * atalho — mede Ferimentos para abater, não tamanho, e há adversários de Vigor
+   * 2 do tamanho de um homem.
+   */
+  large?: boolean;
   description?: string;
 };

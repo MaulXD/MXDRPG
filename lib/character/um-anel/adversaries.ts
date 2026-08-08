@@ -255,6 +255,8 @@ const TOR_ADVERSARIES_RAW: TorAdversaryStats[] = [
   // ——— Trolls (todos: Rijeza Hedionda + Cabeça-dura, livro l.899-903) ———
   {
     id: "grande-troll-das-cavernas",
+    // Troll: o livro usa Trolls como exemplo de criatura grande (POS-R03).
+    large: true,
     name: "Grande Troll das Cavernas",
     traits: "Brutamontes, Perverso",
     tier: "boss",
@@ -288,6 +290,8 @@ const TOR_ADVERSARIES_RAW: TorAdversaryStats[] = [
   },
   {
     id: "cave-troll-furtivo",
+    // Troll: o livro usa Trolls como exemplo de criatura grande (POS-R03).
+    large: true,
     // Estava meio em inglês ("Cave-troll"); o vizinho já usava a forma PT-BR
     // "Grande Troll das Cavernas", então segue a mesma.
     name: "Troll das Cavernas Furtivo",
@@ -315,6 +319,8 @@ const TOR_ADVERSARIES_RAW: TorAdversaryStats[] = [
   },
   {
     id: "ladrao-troll-de-pedra",
+    // Troll: o livro usa Trolls como exemplo de criatura grande (POS-R03).
+    large: true,
     name: "Ladrão Troll de Pedra",
     traits: "Faminto, Irritável",
     tier: "elite",
@@ -339,6 +345,8 @@ const TOR_ADVERSARIES_RAW: TorAdversaryStats[] = [
   },
   {
     id: "chefe-troll-de-pedra",
+    // Troll: o livro usa Trolls como exemplo de criatura grande (POS-R03).
+    large: true,
     name: "Chefe Troll de Pedra",
     traits: "Cruel, Desconfiado",
     tier: "boss",
@@ -672,6 +680,8 @@ const TOR_ADVERSARIES_RAW: TorAdversaryStats[] = [
   // disso — os campos que a aventura dá estão exatos.
   {
     id: "jack-the-stone-troll",
+    // Troll: o livro usa Trolls como exemplo de criatura grande (POS-R03).
+    large: true,
     name: "Jack, o Troll de Pedra",
     traits: "Brutamontes, Faminto",
     tier: "boss",

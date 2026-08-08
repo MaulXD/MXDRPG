@@ -224,6 +224,11 @@ export type TorCombatTokenFields = {
    * antiga simplesmente não tem nenhum, que é o mesmo que a lista vazia.
    */
   roundEffects?: import("@/lib/combat/um-anel/round-effects").TorRoundEffect[];
+  /**
+   * Só adversário — criatura maior que humana, para os limites de engajamento
+   * (POS-R03). Vem do bloco do bestiário; ausente é tamanho humano.
+   */
+  large?: boolean;
   /** Adversário eliminado (Ferimentos = Vigor, ou Resistência 0). */
   eliminated: boolean;
 };
