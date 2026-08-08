@@ -104,6 +104,130 @@ npm run sync:data:check       # após editar livros/
 
 ---
 
+### 2026-08-08 — Bloco 1 de Mirkwood convertido (2947–2950), e duas varreduras acharam erro meu
+
+**Pedido:** continuar o loop — converter o primeiro bloco da campanha de trinta anos e
+criar o teste próprio dela.
+
+**Passo a passo:**
+
+1. **`livros/um-anel/22-mirkwood-01-os-ultimos-bons-anos.md`** — os quatro anos
+   completos (páginas impressas 8–20), cada um com **Eventos**, **Fase de aventura** e
+   **Fase de Companhia**:
+
+   | Ano | Fase de aventura |
+   |---|---|
+   | 2947 | Homem do Mago |
+   | 2948 | O Debate-do-Povo em Rhosgobel |
+   | 2949 | Caçada ao Animal |
+   | 2950 | Segredos Enterrados |
+
+2. **`scripts/verify-um-anel-campanha-mirkwood.mjs`** — teste próprio, no mesmo formato
+   de lista do de Wilderland, **78 asserções**. Não estende o de Wilderland porque lá
+   cada arquivo é uma aventura solta e aqui é um **bloco de anos**: o teste cobra que
+   cada ano tenha as três partes, que os anos estejam em ordem crescente, e imprime
+   `blocos convertidos: 1/5 — faltam 4`, para o número nunca ficar calado.
+
+   Ele também **varre o diretório** procurando `/^\d\d-mirkwood-.*\.md$/` e exige que
+   todo arquivo encontrado esteja na lista `BLOCOS`. Lista fixa já deixou passar dívida
+   duas vezes neste repositório; aqui um bloco novo convertido sem entrar na lista
+   **quebra o teste** em vez de passar despercebido.
+
+3. **As conversões que exigiram decisão:**
+
+   - **O Debate-do-Povo virou um Conselho** (CVR-020): três propostas correndo no mesmo
+     encontro, cada uma com placar próprio, e a tabela de *Julgamento* do original
+     traduzida como o resultado de cada placar.
+   - **NA 14 e NA 18 sumiram** (CVR-017): falar sobre Ceawin ou Mogdred rola **normal**
+     (o NA 14 já era o nível padrão); incutir dúvida sobre Amaleoda é **Complicação —
+     *perde (1d)***, porque quase todos já a apoiam. E o NA 20 dos pântanos virou a
+     Complicação máxima, ***perde (2d)*** — o teto.
+   - **Prestígio aparece em três cenas do original e não converte em nenhuma**
+     (CVR-030): o anúncio de Ingomer, os heróis élficos enviados a Beorn, e a recompensa
+     pelo cervo branco. Em cada uma ficou só a metade que existe na 2ª edição — VALOR, a
+     relação com os Beornings, e o Tesouro.
+   - **A Empreitada de 5 sucessos não existe.** A exploração da Fortaleza Alta pedia
+     *cinco* testes de Investigação, e a 2ª edição só tem **3, 6 e 9**. A conversão
+     **sobe para 6** em vez de descer para 3 — descer tornaria a cena mais fácil do que
+     foi escrita, e arredondar para baixo em silêncio é exatamente o que a régua existe
+     para impedir. A decisão está escrita no arquivo, e o teste exige que esteja.
+   - **O ponto de Sombra do cervo escuro ganhou fonte** (CVR-024). O original dá o ponto
+     **sem teste nenhum**, e a 2ª edição não ganha Sombra do nada. Matar uma criatura
+     encantada que protegia a companheira e o filhote é **Malfeito** — e Sombra por
+     Malfeito **não se reduz**, que é justamente o peso que a cena quer ter.
+   - **O bônus de +2 na Propriedade** (2947) só faz sentido sabendo que **a tabela de
+     Propriedades é lida no sentido NORMAL** — resultado maior que o Valor rende Tesouro
+     (PRO-011). É o **oposto** da tabela de Fontes de Dano. O aviso está no arquivo e o
+     teste cobra que esteja.
+   - **O arco Penbregol perdeu o Gume 8** (CVR-008): na 2ª edição o limiar do Golpe
+     Perfurante é fixo em 10 ou [Runa], e manter um Gume próprio criaria um segundo
+     limiar. **Nenhuma qualidade foi inventada no lugar** — sobrevive a salva inicial
+     adicional, que é propriedade de arco da floresta e não depende de Gume.
+
+4. **Um bloco de estatística convertido: o Servo da Colina do Tirano**, com duas lacunas
+   declaradas dentro do próprio bloco. O **Vigor** não existe nos blocos de 1ª edição e
+   o texto da cena não resolve. E a **Armadura `2d+2`**: os `2d` convertem, o **`+2`
+   não** — ao contrário de `3d+4 (Mail shirt and Helm)`, onde o parêntese nomeia o
+   equipamento e permite decompor a soma, aqui **nada é nomeado**. O *Desarma* do
+   original também não converteu: a lista de Dano Especial da 2ª edição tem quatro itens
+   e Desarmar não é um deles — ficou **Quebrar Escudo**.
+
+   A habilidade **"Sem trégua"** ficou **pendente**: o original a lista e **não a
+   descreve em lugar nenhum**. Uma asserção exige que ela apareça como pendente e que
+   **não** exista um "Habilidade Sinistra — Sem trégua" com efeito inventado.
+
+5. **AUDITORIA — duas varreduras existentes acharam erro meu no arquivo novo, sem eu
+   procurar:**
+
+   - **O teste de Wilderland bane "Fase em Sociedade"** — é termo de 1ª edição, e a 2ª
+     chama de **Fase de Companhia** (CVR-032). Eu tinha copiado o nome do original em
+     **sete** lugares. Corrigido por script que conta as substituições
+     (`7 substituições, todas conferidas`).
+   - **O teste de glossário acusou `não usa "CAÇA" (a Perícia é "Caçada") — 3×`.** Eu
+     tinha escrito o nome da Perícia errado em três lugares. Corrigido por script que
+     conta, e que confere **os dois lados**: o termo errado sumiu **e** o certo apareceu
+     exatamente três vezes.
+
+   Nenhum dos dois foi achado por mim relendo — foram guardas antigas disparando num
+   arquivo que nem existia quando elas foram escritas. É o argumento inteiro a favor de
+   varrer diretório em vez de lista.
+
+6. **Regex mais estrita que a regra, décima segunda vez — e agora com cura geral.** Três
+   asserções novas falharam contra texto **correto**, todas pelo mesmo motivo: o regex
+   atravessava a quebra de linha do markdown, e dentro de citação em bloco a linha
+   seguinte ainda começa com `> `. `/sentido normal do jogo/` não casa com
+   `"sentido normal\n> do jogo"`.
+
+   Em vez de afrouxar cada regex, o teste ganhou um helper **`liso()`** que achata a
+   quebra de linha numa linha só, usado **só em checagem de prosa** — quem depende de
+   âncora de linha continua lendo o texto cru. É a cura da família inteira, não do caso.
+
+   A quarta falha foi diferente e mais interessante: a varredura de "Prestígio" corta
+   frases por **ponto**, e a seção de *Lacunas* explica a lacuna ao longo de vários
+   períodos — os fragmentos do meio ficavam sem a palavra que os inocenta. A correção
+   foi **escopo**: a varredura roda no corpo da conversão (onde um "Prestígio 3" solto
+   seria instrução), e a seção de lacunas ganhou **asserção própria** exigindo que
+   declare as três cenas, que Prestígio não existe na 2ª edição, e que nada foi
+   inventado. Nada deixou de ser vigiado — ficou mais vigiado que antes.
+
+**Validação:** as asserções novas foram quebradas de propósito e confirmadas disparando
+— `Resistência` errada, `Vigor` virando número, e a Empreitada fora da escala (`fora de
+escala: 5`) — depois revertidas com Edit, nunca `git checkout`. `npx tsc --noEmit` limpo
+· `npm run build` compila · `npm run test` verde com **2923 asserções**
+(`verify-um-anel-campanha-mirkwood: 78 ok`, `verify-um-anel-glossario: 421 ok`).
+
+**Arquivos tocados:**
+- `livros/um-anel/22-mirkwood-01-os-ultimos-bons-anos.md` — **novo**, os quatro anos
+- `scripts/verify-um-anel-campanha-mirkwood.mjs` — **novo**, 78 asserções
+- `package.json` — teste novo registrado em `test` e `test:um-anel`
+
+**Commits / deploy:** ver commit desta rodada na branch `fix/login-google-e-responsivo-um-anel`.
+
+**Como testar:** `node scripts/verify-um-anel-campanha-mirkwood.mjs` — ele imprime
+quantos blocos da campanha já foram convertidos e quantos faltam.
+
+---
+
 ### 2026-08-08 — A lacuna do bloco de Aranha FECHOU, e uma asserção antiga estava passando errado
 
 **Pedido:** continuar o loop — ler o apêndice de criaturas de *The Darkening of
