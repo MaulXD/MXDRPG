@@ -104,6 +104,105 @@ npm run sync:data:check       # após editar livros/
 
 ---
 
+### 2026-08-08 — A lacuna do bloco de Aranha FECHOU, e uma asserção antiga estava passando errado
+
+**Pedido:** continuar o loop — ler o apêndice de criaturas de *The Darkening of
+Mirkwood* **antes** do bloco 1, porque ele podia fechar as lacunas de Aranha e Troll da
+Colina.
+
+**Passo a passo:**
+
+1. **Apêndice lido (páginas impressas 126–137).** Traz os três Nazgûl de Dol Guldur
+   (Tenente, Fantasma da Floresta, Mensageiro de Mordor), cinco PNJs em formato de
+   Personagem do Mestre (Bofri, Geirbald, Halbrech, Mogdred, Valdis), Goblin da
+   Floresta, Espírito da Floresta e — o que interessava — **cinco blocos de Aranha**:
+   Aranhas Caçadoras e as três Crias de Shelob (Gorda Sarqin, Selvagem Tauler, Negra
+   Tyulqin).
+
+   - **Lacuna da Aranha: FECHADA.**
+   - **Lacuna do Troll da Colina: continua aberta** — não há bloco de Troll no
+     apêndice.
+
+2. **Dois blocos convertidos, dois deliberadamente não.** Entraram no bestiário
+   `aranha-cacadora` (**Aranha Caçadora**) e `tauler-o-cacador` (**Selvagem Tauler**),
+   porque **todas** as Habilidades Sinistras deles mapeiam para o corpus da 2ª edição.
+   **Sarqin e Tyulqin ficaram de fora**, e o motivo está escrito em CVR-035: as
+   habilidades delas ("Odor Nauseabundo", "Encarnação do Horror", e o efeito "Abatido"
+   dos Muitos Venenos) são **lacunas de fonte já registradas**. Converter os números sem
+   elas produziria um bloco que finge estar completo.
+
+   A Aranha Caçadora é exatamente o bloco que as aventuras 1 e 2 de Wilderland pediam —
+   a aventura 2 descreve a aranha da caverna como tendo **Grande Salto** no lugar de
+   Habitante das Trevas, e é o que o bloco tem.
+
+3. **Duas regras de conversão novas, ambas ancoradas no corpus da 2ª edição:**
+
+   - **CVR-036 — Envenena.** O Ataque Direcionado "Envenena" da 1ª edição **não pode**
+     virar Dano Especial: a 2ª edição só tem quatro (Quebrar Escudo, Golpe Pesado,
+     Perfurar, Agarrar). Virou Habilidade Sinistra acionando a **Fonte de Dano Veneno**,
+     cujo exemplo de nível **Gravíssimo** na própria tabela da 2ª edição é, literalmente,
+     **"Veneno de Aranha"** — e é assim que o motor já está escrito
+     (`lib/combat/um-anel/hazards.ts`). O gatilho reusa a frase do "Veneno de Orc" que já
+     existia no bestiário, em vez de inventar um.
+   - **CVR-037 — Derruba.** A **Tabela 7. Formas de Ataque** da 2ª edição dá, para
+     "Esmagar (cascos, patas)": Dano = **Nível de Atributo**, Ferimento **14**, Dano
+     Especial **Sobrepujar**. O Pisotear das Crias de Shelob tem Dano = **Atributo** e
+     Trauma **14** — os mesmos dois números. A equivalência não foi estimada.
+
+4. **AUDITORIA — padrão 18 (mesma guarda escrita duas vezes) + regex mais estrita que a
+   regra, a décima primeira vez.** Ao marcar Tauler como criatura grande, o teste de
+   engajamento acusou "os 5 blocos de Troll estão marcados como grandes — achou 6". Mas a
+   asserção seguinte, **"só Trolls estão marcados como grandes", PASSOU** — e não devia.
+   O regex dela era `id: "..."` + **exatamente uma linha** + `large: true`. O bloco de
+   Tauler tem **duas linhas de comentário** entre os dois, então a janela fixa de linhas
+   simplesmente não viu o marcador: a asserção afirmou "só Trolls" **com um não-Troll
+   marcado**. É a mesma família da janela fixa de caracteres, agora em linhas.
+
+   Reescrita: o recorte agora é **por bloco** (split no `id:`), não por deslocamento de
+   linhas. E a regra que ela guarda mudou junto — o livro diz "criaturas grandes (**como
+   Trolls**)", onde Trolls são **exemplo**, não a lista inteira. A checagem passou a ser
+   "todo bloco grande que não é Troll cita a fonte que o qualifica" (o rótulo **Grande
+   Tamanho** do bloco de 1ª edição), mais uma lista fechada de ids esperados.
+
+5. **Padrão 21 outra vez: um palpite meu virou asserção e caiu na hora.** Escrevi a lista
+   de ids de Troll de cabeça (`hill-troll`, `cave-troll`, `stone-troll`,
+   `troll-chieftain`) — **nenhum dos quatro existe**. Os reais são
+   `grande-troll-das-cavernas`, `cave-troll-furtivo`, `ladrao-troll-de-pedra`,
+   `chefe-troll-de-pedra`. A asserção imprimiu os dois lados e o erro morreu no mesmo
+   minuto.
+
+6. **Os três lados da lacuna foram virados juntos.** Fechar uma lacuna não é só adicionar
+   o bloco: as seções "Lacunas registradas" das aventuras 1 e 2 ainda mandavam o Mestre
+   buscar estatística fora do corpus. Agora apontam para `aranha-cacadora`, e uma asserção
+   nova impede que o texto volte a **afirmar a ausência** sem dizer que aquilo era o
+   estado anterior. As **outras quatro** lacunas de CVR-030 (Vigor, NA fixo, Tolerância,
+   Prestígio) ganharam asserção própria para não serem arrastadas junto.
+
+**Validação:** as asserções negativas de Aranha **falharam de propósito** quando o bloco
+entrou (era o projeto delas) e foram viradas para o outro lado. As novas foram quebradas
+de propósito e confirmadas disparando — `endurance` errado, `might` fora do padrão, e
+"Envenena" virando Dano Especial — depois revertidas com Edit, nunca `git checkout`. A
+guarda contra afirmação obsoleta também foi testada quebrando o texto da aventura 2.
+`npx tsc --noEmit` limpo · `npm run build` compila · `npm run test` verde com **2831
+asserções** (`verify-um-anel-conversao: 127 ok`,
+`verify-um-anel-aventuras-wilderland: 471 ok`) · `gen-um-anel: 7 packs, 148 entradas`.
+
+**Arquivos tocados:**
+- `lib/character/um-anel/adversaries.ts` — blocos `aranha-cacadora` e `tauler-o-cacador`
+- `livros/um-anel/compendio/conversao-primeira-edicao.md` — CVR-030 reescrita, CVR-035/036/037
+- `scripts/verify-um-anel-conversao.mjs` — +26 asserções, campo a campo nos dois blocos
+- `scripts/verify-um-anel-posturas-mesa.mjs` — recorte por bloco no lugar da janela de linhas
+- `scripts/verify-um-anel-aventuras-wilderland.mjs` — lacuna virada para o lado positivo
+- `livros/um-anel/15-…`, `16-…` — as seções de lacuna agora apontam para o bloco
+- `data/compendiums/um-anel/` — regerado (148 entradas)
+
+**Commits / deploy:** ver commit desta rodada na branch `fix/login-google-e-responsivo-um-anel`.
+
+**Como testar:** `node scripts/verify-um-anel-conversao.mjs` · **Aranha Caçadora** e
+**Selvagem Tauler** aparecem na lista de adversários do Mestre numa mesa do Um Anel.
+
+---
+
 ### 2026-08-08 — Abrindo *The Darkening of Mirkwood*: o PLANO, o pack de Propriedades e cinco vazamentos de moeda
 
 **Pedido:** continuar o loop — abrir a campanha de 30 anos, **decidir e escrever o plano

@@ -749,6 +749,105 @@ const TOR_ADVERSARIES_RAW: TorAdversaryStats[] = [
       { name: "Habitante das Trevas", text: "Todas as rolagens de ataque são Favorecidas enquanto estiver na escuridão." },
     ],
   },
+
+  // ── Aranhas ────────────────────────────────────────────────────────────
+  //
+  // FECHA A LACUNA DO BLOCO DE ARANHA (CVR-030). Até aqui o corpus traduzido da
+  // 2ª edição citava Aranhas como TIPO de inimigo (Característica Distintiva
+  // "Conhecimento do Inimigo", armas de Perdição, "Veneno de Aranha" na tabela de
+  // Fontes de Dano) sem nenhum bloco de estatísticas — e duas aventuras de
+  // *Tales from Wilderland* pediam um. A fonte apareceu no apêndice "Personagens
+  // e Criaturas" de *The Darkening of Mirkwood* (1ª edição, tradução de Mateus
+  // Soares, páginas 133–136), convertido aqui pela régua CVR.
+  //
+  // Vigor: os blocos de 1ª edição não têm o campo (CVR-030, lacuna 1). Fica em 1,
+  // que é o padrão do motor — NÃO é uma estimativa do valor real, e a asserção do
+  // teste existe justamente pra impedir que vire outro número sem fonte.
+  {
+    id: "aranha-cacadora",
+    name: "Aranha Caçadora",
+    traits: "Agressiva, Furtiva",
+    // Res 25 contra os 10 do Goblin da Floresta do mesmo apêndice: não é chusma.
+    tier: "elite",
+    attributeLevel: 4,
+    endurance: 25,
+    might: 1,
+    hate: 3,
+    hateKind: "hate",
+    // 1ª ed. `Parry` = Bloqueio da 2ª, só o nome muda (CVR-005).
+    parry: 6,
+    armour: 3,
+    description:
+      "As Aranhas Caçadoras são as sementes de Tauler, o Caçador, e sua irmã Sarqin: grandes, peludas, mais rápidas e mais agressivas que o resto da parentela. **Não tecem teias** — espreitam nas sombras e sob pilhas de folhas mortas até a presa se aproximar. É o bloco que *Não Desvie da Trilha* e *Sobre Ervas e Hobbits Cozidos* pediam, e a segunda aventura o descreve exatamente assim: a aranha da caverna tem **Grande Salto** no lugar de Habitante das Trevas.",
+    actions: [
+      // 1ª ed.: Bicar — Dano 6, Gume ⊘, Trauma 15, Ataque Direcionado "Envenena".
+      // O Gume é descartado (CVR-008: na 2ª edição o limiar é fixo em 10 ou ⊘).
+      // "Envenena" não vira Dano Especial — a 2ª edição só tem Quebrar Escudo,
+      // Golpe Pesado, Perfurar e Agarrar (cap. 8). O veneno virou Habilidade
+      // Sinistra, no mesmo molde do "Veneno de Orc" que já existe neste bestiário.
+      { id: "bicar", label: "Bicar", rating: 2, damage: 6, injury: 15 },
+    ],
+    fellAbilities: [
+      { name: "Grande Salto", text: "Gaste 1 Ódio pra atacar qualquer herói, em qualquer postura de combate, inclusive Retaguarda." },
+      {
+        name: "Força Horrenda",
+        text: "Se a criatura causou um Golpe Perfurante, gaste 1 Ódio pra tornar a rolagem de Proteção do alvo Desfavorecida.",
+      },
+      {
+        // O nome da Fonte de Dano vem da própria 2ª edição: "Veneno de Aranha" é
+        // o exemplo de nível GRAVÍSSIMO da linha Veneno (08-mestre-e-adversarios).
+        name: "Veneno de Aranha",
+        text: "Se um ataque produzir ao menos 1 ícone de Sucesso, o alvo é envenenado: Fonte de Dano Veneno, nível Gravíssimo, rolada ao fim de cada dia — a zero de Resistência o herói está Morrendo. Os efeitos passam depois de um dia inteiro.",
+      },
+    ],
+  },
+  {
+    id: "tauler-o-cacador",
+    // "Grande Tamanho" no bloco de 1ª edição — é o critério de criatura grande
+    // para os limites de engajamento (POS-R03).
+    large: true,
+    name: "Selvagem Tauler",
+    traits: "Paciente, Voraz",
+    tier: "boss",
+    attributeLevel: 7,
+    endurance: 60,
+    might: 1,
+    hate: 8,
+    hateKind: "hate",
+    parry: 8,
+    armour: 3,
+    description:
+      "Tauler, o Caçador, é uma das três Crias de Shelob — do tamanho de um elefante pequeno, mas ágil para o tamanho, e capaz de ficar emboscado por semanas esperando o momento. O bico é duro como aço e a pele suporta a ponta da mais dura das lâminas. **Não arrisca o couro:** se for ferido uma vez, ou se a Resistência cair a zero, interrompe a luta e foge.",
+    actions: [
+      // Tabela de armas das Crias de Shelob: Dano = Nível de Atributo nas duas.
+      // "Derruba" (Ataque Direcionado de 1ª ed.) vira SOBREPUJAR: a Tabela 7 de
+      // Formas de Ataque da 2ª edição dá, para "Esmagar (cascos, patas)",
+      // exatamente Dano = Nível de Atributo, Ferimento 14 e Dano Especial
+      // Sobrepujar — os mesmos números do Pisotear. Não é estimativa.
+      { id: "pisotear", label: "Pisotear", rating: 3, damage: 7, injury: 14, specialDamage: ["Sobrepujar"] },
+      { id: "bicar", label: "Bicar", rating: 5, damage: 7, injury: 18 },
+    ],
+    fellAbilities: [
+      {
+        name: "Força Horrenda",
+        text: "Se a criatura causou um Golpe Perfurante, gaste 1 Ódio pra tornar a rolagem de Proteção do alvo Desfavorecida.",
+      },
+      {
+        // 1ª ed. "Resiliência Terrível".
+        name: "Rijeza Hedionda",
+        text: "Quando um ataque causaria dano que reduziria a criatura a 0 de Resistência, causa um Golpe Perfurante em vez disso. Se a criatura ainda estiver viva, retorna à Resistência máxima.",
+      },
+      {
+        // 1ª ed. "Amedrontar (NA 16)" — o NA fixo some (CVR-030, lacuna 2).
+        name: "Infundir Medo",
+        text: "Gaste 1 Ódio pra fazer todos os heróis à vista ganharem 3 pontos de Sombra (Pavor). Quem falhar no Teste de Sombra fica intimidado e não pode gastar Esperança pelo resto da luta.",
+      },
+      {
+        name: "Veneno de Aranha",
+        text: "Se um ataque de Bicar produzir ao menos 1 ícone de Sucesso, o alvo é envenenado: Fonte de Dano Veneno, nível Gravíssimo, rolada ao fim de cada dia — a zero de Resistência o herói está Morrendo.",
+      },
+    ],
+  },
 ];
 
 const TIER_DIFFICULTY_RANK: Record<TorAdversaryStats["tier"], number> = {

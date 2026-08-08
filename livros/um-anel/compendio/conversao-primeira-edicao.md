@@ -483,10 +483,64 @@ quase inteiro; o que muda é a camada de regras.
 > Descrição: A 2ª edição não fornece regra de conversão para: (1) **Vigor** de adversários de 1ª
 > edição, que não têm o campo; (2) **NA fixo** de 1ª edição para Complicação/Vantagem da 2ª;
 > (3) **Tolerância** de 1ª edição para Resistência de Conselho da 2ª; (4) **Prestígio**, que não
-> aparece no corpus traduzido da 2ª edição. Além disso, o bestiário traduzido da 2ª edição **não
-> traz bloco de Aranha** — Aranhas são citadas como tipo de inimigo (Conhecimento do Inimigo,
-> armas de Perdição, "Veneno de Aranha" nas Fontes de Dano), mas nenhum bloco de estatísticas
-> existe no corpus. Aventuras com Aranhas ficam com o bloco pendente até a fonte aparecer; nada
-> disso é preenchido por estimativa.
+> aparece no corpus traduzido da 2ª edição. Nada disso é preenchido por estimativa.
+>
+> **A lacuna do bloco de Aranha FOI FECHADA** e por isso saiu desta lista. Ela dizia que o
+> bestiário traduzido da 2ª edição citava Aranhas como *tipo* de inimigo (Conhecimento do Inimigo,
+> armas de Perdição, "Veneno de Aranha" nas Fontes de Dano) sem nenhum bloco de estatísticas.
+> A fonte apareceu no apêndice "Personagens e Criaturas" de *The Darkening of Mirkwood*
+> (páginas 133–136) e o bloco foi convertido — ver CVR-035.
+
+---
+
+## CVR-035 — Bloco de Aranha (lacuna fechada)
+
+- **1ª edição:** apêndice de *The Darkening of Mirkwood*, páginas 133–136
+- **2ª edição:** `aranha-cacadora` e `tauler-o-cacador` no bestiário
+- **Muda?:** a lacuna deixou de existir
+
+> Descrição: A 1ª edição traz **cinco** blocos de aranha: as **Aranhas Caçadoras** e as três Crias
+> de Shelob — **Gorda Sarqin**, **Selvagem Tauler** e **Negra Tyulqin**. Dois converteram inteiros
+> e estão no bestiário: **Aranha Caçadora** (`aranha-cacadora`) e **Selvagem Tauler**
+> (`tauler-o-cacador`). A Aranha Caçadora é exatamente o bloco que *Não Desvie da Trilha* e
+> *Sobre Ervas e Hobbits Cozidos* pediam — a segunda aventura descreve a aranha da caverna como
+> tendo **Grande Salto** no lugar de Habitante das Trevas, que é o que o bloco tem.
+>
+> **Sarqin e Tyulqin continuam pendentes**, e por um motivo declarado: as Habilidades Sinistras
+> delas ("Odor Nauseabundo", "Encarnação do Horror", e o efeito "Abatido" dos Muitos Venenos de
+> Tyulqin) são **lacunas de fonte já registradas** — não existem no corpus traduzido da 2ª edição.
+> Converter os números sem elas produziria um bloco que finge estar completo.
+
+---
+
+## CVR-036 — Envenena
+
+- **1ª edição:** `Called Shot: Poison` — um Ataque Direcionado da arma
+- **2ª edição:** **Fonte de Dano Veneno**, nível Gravíssimo
+- **Muda?:** sim — troca de subsistema
+
+> Descrição: A 2ª edição tem exatamente **quatro** opções de Dano Especial para adversários —
+> Quebrar Escudo, Golpe Pesado, Perfurar e Agarrar (capítulo 8). **Veneno não é uma delas**, então
+> o Ataque Direcionado "Envenena" da 1ª edição não pode virar Dano Especial. Ele vira uma
+> **Habilidade Sinistra** que aciona a Fonte de Dano **Veneno**, cujo exemplo de nível
+> **Gravíssimo** na própria tabela da 2ª edição é, literalmente, **"Veneno de Aranha"**.
+>
+> O molde da habilidade já existia no bestiário: **"Veneno de Orc"** — *"Se um ataque produzir ao
+> menos 1 ícone de Sucesso, o alvo é envenenado."* A conversão reusa essa frase em vez de inventar
+> um gatilho.
+
+---
+
+## CVR-037 — Derruba
+
+- **1ª edição:** `Called Shot: Knock Back` — do ataque de pisoteio
+- **2ª edição:** Dano Especial **Sobrepujar**
+- **Muda?:** só o nome, e os números batem
+
+> Descrição: A **Tabela 7. Formas de Ataque** da 2ª edição (capítulo 13, criação de Coisas Sem
+> Nome) dá, para o ataque **"Esmagar (cascos, patas)"**: Dano = **Nível de Atributo**, Ferimento
+> **14**, Dano Especial **Sobrepujar**. O Pisotear das Crias de Shelob na 1ª edição tem Dano =
+> **Atributo** e Trauma **14** — os mesmos dois números. A equivalência não é estimada: é a linha
+> que a 2ª edição escreve para o mesmo tipo de ataque.
 
 ---

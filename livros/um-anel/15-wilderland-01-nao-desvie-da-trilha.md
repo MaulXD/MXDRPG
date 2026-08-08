@@ -650,12 +650,12 @@ proximidades como **Santuário**.
 
 ## Lacunas registradas
 
-**Bloco de Aranha (CVR-030).** As Partes III e IV pedem aranhas — "duas por herói" nas teias, e
-até seis no castelo. **O bestiário traduzido da 2ª edição não traz bloco de Aranha**: elas
-aparecem como *tipo de inimigo* (Característica Distintiva "Conhecimento do Inimigo", armas de
-Perdição, e "Veneno de Aranha" na tabela de Fontes de Dano), mas sem estatísticas. As cenas foram
-convertidas narrativamente e o bloco fica **pendente** — nada foi estimado. Enquanto a fonte não
-aparecer, o Mestre que quiser rodar as lutas precisa trazer o bloco de fora do corpus.
+**Bloco de Aranha (CVR-035) — lacuna FECHADA.** As Partes III e IV pedem aranhas — "duas por
+herói" nas teias, e até seis no castelo. Esta seção registrava uma lacuna: o bestiário traduzido
+da 2ª edição citava Aranhas só como *tipo de inimigo* (Característica Distintiva "Conhecimento do
+Inimigo", armas de Perdição, e "Veneno de Aranha" na tabela de Fontes de Dano), sem estatísticas.
+A fonte apareceu no apêndice de *The Darkening of Mirkwood* e o bloco está no bestiário: use
+**Aranha Caçadora** (`aranha-cacadora`). Nada foi estimado — os números são os do apêndice.
 
 **Rolagem de "Sabedoria" (Parte III, cobertor de borboletas).** O original pede um "teste de
 Sabedoria". Na 2ª edição, SABEDORIA é Atributo, não Perícia, e a 2ª edição não diz qual Perícia
