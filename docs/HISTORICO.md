@@ -104,6 +104,81 @@ npm run sync:data:check       # após editar livros/
 
 ---
 
+### 2026-08-08 — Tarefas de Combate executáveis + efeitos com duração de rodada
+
+**Pedido:** continuar o loop.
+
+**Passo a passo:**
+
+1. **Diagnóstico.** `TOR_STANCE_META.combatTask` guardava só o **nome** das
+   quatro tarefas — nenhuma era executável. E faltava a peça de que todas
+   dependem: um lugar para guardar efeito que dura uma rodada.
+
+2. **Decisão — substrato próprio, não o do Eldarin.** `lib/combat/timed-effects.ts`
+   fala em turnos, PA e condições que não existem aqui. Além do isolamento de
+   hub, a unidade é outra: no Um Anel a rodada é simultânea, então "dura uma
+   rodada" não é "até o meu próximo turno". Novo `round-effects.ts`, e a única
+   mudança em arquivo compartilhado (`combat-turn.ts`) entrou guardada por
+   `rpgSystemId`.
+
+3. **A distinção que o livro faz e é fácil perder.** Há **duas** durações:
+
+   - *até ser usado* — "ficam Exaustos em sua **próxima rolagem de ataque**", "o
+     **próximo ataque** dirigido ao protegido perde (1d)", "ganha (1d) em seu
+     **próximo ataque** à distância";
+   - *pela rodada* — "ganham (1d) em suas rolagens de ataque **na rodada
+     seguinte**".
+
+   Tratar tudo como uso único faria o bônus de Reunir Companheiros sumir no
+   primeiro ataque; tratar tudo como duração daria Tiro Preparado em **todos** os
+   ataques da rodada. O teste tranca cada tipo no seu comportamento.
+
+4. **Detalhes que o livro fecha e o código respeita.** Reunir Companheiros é uma
+   vez por rodada em toda a Companhia — a marca vence na própria rodada, porque
+   se durasse mais a tarefa ficaria travada para sempre. Reunir nunca alcança a
+   Retaguarda, que é a postura à distância e o livro fecha em "postura de Combate
+   Corpo a Corpo". Proteger Companheiro recusa alvo em Retaguarda e recusa o
+   próprio herói. E Tiro Preparado só é gasto num ataque **à distância** — um
+   golpe corpo a corpo não queima a mira.
+
+5. **Bug real encontrado ao ligar as peças.** O desconto de Ódio espalhava o
+   `atkCombat` **original** ao gravar o token. Um adversário Intimidado que
+   também gastasse Ódio teria o efeito **ressuscitado** no mesmo ataque em que
+   foi consumido — ficaria Exausto de novo na rodada seguinte, de graça. Passou a
+   partir do token já atualizado, com asserção nomeando o caso.
+
+6. **Validação.** `npx tsc --noEmit` limpo · `npm run build` compila, com
+   `/api/room/[roomId]/tor-task` registrada · `npm run test` verde com **1622
+   asserções**. As três asserções críticas conferidas quebrando de propósito.
+
+**Detalhe de teste que quase passou batido:** a asserção "a rota NÃO exige
+`requireRoomManage`" casava com o **comentário** da própria rota, que explica por
+que ela não usa. Sem `stripComments`, o teste passaria mesmo se o código
+passasse a exigir. Sexta vez que esse padrão aparece.
+
+**Arquivos tocados:**
+- `lib/combat/um-anel/round-effects.ts` — **novo**: substrato de efeitos de rodada, com as duas durações
+- `lib/combat/um-anel/combat-tasks.ts` — **novo**: as quatro tarefas, postura, Perícia e escalonamento por ícones
+- `lib/room/handlers/tor-combat-task.ts` — **novo**: execução, permissão, postura exigida, uma-vez-por-rodada
+- `app/api/room/[roomId]/tor-task/route.ts` — **novo**: rota (apelido como autor)
+- `lib/room/handlers/tor-combat-attack.ts` — os quatro efeitos entram e são gastos no ataque
+- `lib/room/handlers/combat-turn.ts` — efeitos vencidos limpos na virada de rodada
+- `lib/vtt/types.ts` · `hooks/useRoomSync.ts` · `components/vtt/TorAttackPopup.tsx`
+- `scripts/verify-um-anel-tarefas-combate.mjs` — **novo**, 72 asserções
+- `package.json` — novo teste na suíte
+
+**Como testar:** dois heróis e três Rufiões. Herói em Avançada → "Tentar
+Intimidar Inimigo": com sucesso, os Rufiões de Vigor 1 ficam Exaustos no próximo
+ataque deles. Outro herói em Aberta → "Reunir Companheiros": só um por rodada, e
+o bônus vale a rodada seguinte inteira, não só o primeiro ataque. Em Retaguarda,
+"Preparar Tiro" some ao usar o arco — e não some se o ataque for corpo a corpo.
+
+**Falta:** Aparar, Investida de Escudo, Quebrar Escudo e Agarrar (agora **têm**
+onde ser guardados, mas cada uma mexe em coisa diferente); Empurrão; variante de
+NA 18; Elmo removível; campanhas de 1ª edição; glyph da runa de Gandalf.
+
+---
+
 ### 2026-08-08 — 10 das 18 Perícias tinham nome diferente no livro e na ficha
 
 **Pedido:** continuar o loop.

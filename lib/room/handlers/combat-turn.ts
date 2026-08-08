@@ -22,6 +22,7 @@ import {
   type CombatTickContext,
 } from "@/lib/combat/timed-effects";
 import { tickDeathTrackOnRound } from "@/lib/combat/death-track";
+import { pruneTorRoundEffects } from "@/lib/combat/um-anel/round-effects";
 import { activeTokenId, nextTurn, rollInitiative } from "../combat";
 import { applyGmCombatOrder } from "../combat-gm";
 import {
@@ -75,14 +76,26 @@ function resetChiPoolsForCombat(room: RoomState): void {
  */
 function applyTorHateWearinessOnNewRound(room: RoomState): void {
   if (room.rpgSystemId !== "um-anel") return;
+  const round = room.combat.round;
   let changed = false;
   const tokens = room.scene.tokens.map((t) => {
     const c = t.torCombat;
-    if (c?.kind !== "adversary" || c.hate == null) return t;
+    if (!c) return t;
+
+    // Efeitos de Tarefa de Combate vencidos saem aqui — é o único ponto em que
+    // a rodada vira, e sem isso "Reunido" valeria para sempre.
+    const effects = pruneTorRoundEffects(c.roundEffects, round);
+    const effectsChanged = (c.roundEffects?.length ?? 0) !== effects.length;
+
+    if (c.kind !== "adversary" || c.hate == null) {
+      if (!effectsChanged) return t;
+      changed = true;
+      return { ...t, torCombat: { ...c, roundEffects: effects } };
+    }
     const weary = c.hate <= 0;
-    if (Boolean(c.weary) === weary) return t;
+    if (Boolean(c.weary) === weary && !effectsChanged) return t;
     changed = true;
-    return { ...t, torCombat: { ...c, weary } };
+    return { ...t, torCombat: { ...c, weary, roundEffects: effects } };
   });
   if (changed) room.scene = { ...room.scene, tokens };
 }

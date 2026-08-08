@@ -12,6 +12,7 @@ import { featDieRollPayload } from "@/lib/character/um-anel/dice";
 import { applyTorAttackResultToDefender } from "@/lib/combat/um-anel/vitals";
 import { appendRoomChatMessage } from "./chat";
 import { torTokenStance } from "./tor-stance";
+import { consumeTorRoundEffect, type TorRoundEffect } from "@/lib/combat/um-anel/round-effects";
 import { axialDistance } from "@/lib/vtt/grid-math";
 import { syncCombatOrderWithTokens } from "../combat-order";
 import { getRoom, persistRoom, toSnapshot } from "../internal/registry";
@@ -129,6 +130,11 @@ export async function executeRoomTorAttack(
   let pierceValue = 0;
   let attackTwoHanded = false;
   let attackerSteadyHand = false;
+  /** Efeitos de rodada já gastos — gravados no token depois de resolver. */
+  let attackerRoundEffects: TorRoundEffect[] | undefined;
+  let defenderRoundEffects: TorRoundEffect[] | undefined;
+  const notasEfeito: string[] = [];
+  const round = room.combat?.round ?? 1;
   let weaponDamage: number;
   let weaponInjury: number | null;
   let weaponLabel: string;
@@ -182,6 +188,25 @@ export async function executeRoomTorAttack(
     // Mão Firme finalmente faz alguma coisa: existia em STARTING_VIRTUES desde
     // sempre e nenhuma rolagem a consultava.
     attackerSteadyHand = sheet.virtues.includes("mao-firme");
+
+    // Reunir Companheiros dura a rodada inteira ("nas rolagens de ataque na
+    // rodada seguinte") — não é consumido pelo primeiro ataque.
+    const reunido = consumeTorRoundEffect(atkCombat.roundEffects, "reunido", round);
+    if (reunido.effect) {
+      attackerRank += reunido.effect.dice;
+      attackerRoundEffects = reunido.rest;
+      notasEfeito.push(`Reunido por ${reunido.effect.source ?? "um companheiro"} (+${reunido.effect.dice}d)`);
+    }
+    // Preparar Tiro vale só no PRÓXIMO ataque à distância — um ataque corpo a
+    // corpo não gasta a mira.
+    if (attackIsRanged) {
+      const tiro = consumeTorRoundEffect(attackerRoundEffects ?? atkCombat.roundEffects, "tiro-preparado", round);
+      if (tiro.effect) {
+        attackerRank += tiro.effect.dice;
+        attackerRoundEffects = tiro.rest;
+        notasEfeito.push(`Tiro Preparado (+${tiro.effect.dice}d)`);
+      }
+    }
   } else {
     const action = atkCombat.actions?.find((a) => a.id === opts.actionId) ?? atkCombat.actions?.[0];
     if (!action) return { ok: false, error: "Adversário sem ação de ataque" };
@@ -205,6 +230,15 @@ export async function executeRoomTorAttack(
     // Exausto zera Dados de Sucesso de 1 a 3 — vale pro adversário igual ao
     // herói. A flag é marcada na virada de rodada (combat-turn.ts), não aqui.
     attackerWeary = Boolean(atkCombat.weary);
+
+    // Intimidar Inimigo: "os oponentes ficam Exaustos em sua PRÓXIMA rolagem de
+    // ataque" — vale uma vez e some, mesmo que a rodada continue.
+    const intimidado = consumeTorRoundEffect(atkCombat.roundEffects, "intimidado", round);
+    if (intimidado.effect) {
+      attackerWeary = true;
+      attackerRoundEffects = intimidado.rest;
+      notasEfeito.push(`Intimidado por ${intimidado.effect.source ?? "um herói"} — Exausto neste ataque`);
+    }
 
     if (opts.spendHate) {
       const available = atkCombat.hate ?? 0;
@@ -257,6 +291,17 @@ export async function executeRoomTorAttack(
     defenderWeary = Boolean(defCombat.weary);
   }
 
+  // Proteger Companheiro: "o PRÓXIMO ataque dirigido ao herói protegido perde
+  // (1d)". Cai sobre o rank de quem ataca, e some depois de um ataque só.
+  const protegido = consumeTorRoundEffect(defCombat.roundEffects, "protegido", round);
+  if (protegido.effect) {
+    attackerRank = Math.max(0, attackerRank - protegido.effect.dice);
+    defenderRoundEffects = protegido.rest;
+    notasEfeito.push(
+      `${defenderToken.name} protegido por ${protegido.effect.source ?? "um companheiro"} (−${protegido.effect.dice}d)`
+    );
+  }
+
   const result = resolveTorAttack({
     attackerKind: atkCombat.kind,
     attackerRank,
@@ -297,14 +342,30 @@ export async function executeRoomTorAttack(
 
   const patchedDefenderToken = applyTorAttackResultToDefender(defenderToken, result);
   const tokens = [...room.scene.tokens];
-  tokens[defIdx] = patchedDefenderToken;
+  tokens[defIdx] = defenderRoundEffects
+    ? {
+        ...patchedDefenderToken,
+        torCombat: { ...patchedDefenderToken.torCombat!, roundEffects: defenderRoundEffects },
+      }
+    : patchedDefenderToken;
+  // Efeitos gastos pelo atacante saem do token — senão o mesmo "Tiro Preparado"
+  // valeria em todos os ataques da rodada.
+  if (attackerRoundEffects) {
+    tokens[atkIdx] = {
+      ...tokens[atkIdx]!,
+      torCombat: { ...tokens[atkIdx]!.torCombat!, roundEffects: attackerRoundEffects },
+    };
+  }
   // Desconta o ponto DEPOIS de resolver, e a partir do array já copiado: o
   // atacante pode ser o mesmo índice de nada mais, mas escrever antes faria a
   // cópia do defensor sobrescrever o desconto se os dois fossem tocados juntos.
   if (hateSpent && atkCombat.hate != null) {
+    // Parte de `tokens[atkIdx]`, não de `atkCombat`: um adversário Intimidado
+    // que também gasta Ódio já teve o efeito removido acima, e espalhar o
+    // `atkCombat` original ressuscitaria o efeito gasto.
     tokens[atkIdx] = {
       ...tokens[atkIdx]!,
-      torCombat: { ...atkCombat, hate: Math.max(0, atkCombat.hate - 1) },
+      torCombat: { ...tokens[atkIdx]!.torCombat!, hate: Math.max(0, atkCombat.hate - 1) },
     };
   }
   room.scene = { ...room.scene, tokens };
@@ -335,6 +396,7 @@ export async function executeRoomTorAttack(
   const notas = [
     ...attackerFavouredBy,
     ...(hateSpent ? [`gastou 1 de ${hateLabel(atkCombat.hateKind)} — ganha (1d)`] : []),
+    ...notasEfeito,
   ];
   const weaponTxt = notas.length > 0 ? `${weaponLabel}, ${notas.join(", ")}` : weaponLabel;
   const message = formatTorAttackMessage(attackerToken.name, defenderToken.name, weaponTxt, result);
