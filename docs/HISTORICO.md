@@ -104,6 +104,85 @@ npm run sync:data:check       # após editar livros/
 
 ---
 
+### 2026-08-08 — Auditoria de cobertura: o motor de Sombra estava desligado
+
+**Pedido:** continuar o loop.
+
+**Passo a passo:**
+
+1. **A auditoria.** Varri `lib/combat/um-anel/` e `lib/character/um-anel/`
+   contando consumidores reais de cada módulo e de cada função exportada — o
+   padrão que mais rendeu nas rodadas anteriores. Nenhum módulo é órfão, mas duas
+   coisas apareceram:
+
+   - **`shadow.ts`: 6 das 9 funções sem consumidor nenhum** — `hardenTorWill`,
+     `applyTorBoutOfMadness`, `applyTorProlongedRest`,
+     `applyTorJourneyEndRecovery`, `healTorShadowScar`,
+     `formatTorShadowGainMessage`. E `applyTorShadowGain` só era referenciada
+     dentro de `progression.ts`, que também não chega à mesa.
+   - **`progression.ts`: 11 das 16 sem consumidor** — todo o preço de avanço
+     (`priceTorSkillRank`, `canBuyTorSkillThisPhase`, `torRankGrant`), a
+     recuperação espiritual e a crônica.
+
+2. **Por que a Sombra é a mais grave.** O combate consulta **a cada rolagem**
+   duas condições que nascem dela: **Arrasado** (o Olho vira falha automática) e
+   **Desfavorecido** (dois Dados de Proeza, fica o pior). Sem caminho para
+   atribuir Sombra, essas condições só mudavam se alguém editasse a ficha na
+   mão — o motor mais central do jogo ficava de enfeite, e passando nos testes,
+   porque `verify-um-anel-shadow.mjs` testa o motor, não o caminho.
+
+3. **Implementação.** Handler + rota + painel no token do herói, que é onde o
+   Mestre já clica. Ganho por fonte (Pavor, Ganância, Malfeito, Feitiçaria) com
+   Cicatrizes, e **Endurecer a Vontade**.
+
+   As duas ações têm **donos diferentes**, e é isso que decide a arquitetura:
+   ganhar Sombra é do Mestre (é ele quem narra o Pavor e julga o Malfeito),
+   endurecer a vontade é de quem joga o herói. Por isso a rota não usa
+   `requireRoomManage` — quem separa é o handler, que conhece a ficha.
+
+   O painel **não rola o Teste de Sombra**: o teste é uma rolagem de Perícia
+   comum, feita pela ficha, e o Mestre informa aqui o que sobrou. Fingir que o
+   painel sabe o resultado seria pior que pedir o número.
+
+4. **Uma armadilha de unidade.** `TorSpiritState.load` é a Carga do
+   **equipamento**, sem a Fadiga — quem soma as duas é `totalTorLoad`, dentro do
+   motor. Passar a Carga já somada contaria a Fadiga duas vezes e deixaria heróis
+   Exaustos cedo demais. O teste trava a forma.
+
+5. **Validação.** `npx tsc --noEmit` limpo · `npm run build` compila, com
+   `/api/room/[roomId]/tor-shadow` registrada · `npm run test` verde com **1710
+   asserções**.
+
+**Outra asserção que não podia falhar.** A que exige "só anuncia no chat depois
+de gravar na ficha" comparava as posições de `patchTorCharacterResources` e
+`appendRoomChatMessage` — mas o primeiro nome também aparece na linha de
+`import`, no topo. Comparando com a importação, a asserção passaria **sempre**.
+Ancorei na chamada (`patchTorCharacterResources(sheet.id`) e aí falhou como
+devia quando inverti a ordem de propósito. Quarto caso desta família.
+
+**Dívida registrada no próprio teste:** as quatro funções de Sombra que seguem
+sem consumidor (Acesso de Loucura, Descanso Prolongado, recuperação de fim de
+jornada, curar Cicatriz) estão numa lista com asserção — quando alguém ligar
+alguma, o teste falha e obriga a atualizar a lista. É o registro de dívida ficar
+onde não dá para esquecer.
+
+**Arquivos tocados:**
+- `lib/room/handlers/tor-shadow.ts` · `app/api/room/[roomId]/tor-shadow/route.ts` — **novos**
+- `components/vtt/TorShadowPanel.tsx` — **novo**
+- `components/vtt/TokenStatusBody.tsx` · `components/vtt/vtt.css` · `hooks/useRoomSync.ts`
+- `scripts/verify-um-anel-sombra-mesa.mjs` — **novo**, 29 asserções
+
+**Como testar:** clicar num token de herói, escolher Pavor e 2 pontos, atribuir —
+o chat traz a linha da Sombra com o total, e a ficha guarda. Levar a Sombra até a
+Esperança atual e conferir que o Olho passa a falhar automaticamente nas
+rolagens. "Endurecer a Vontade" zera a Sombra e soma 1 Cicatriz.
+
+**Falta:** progressão (11 funções sem consumidor — preço de avanço, crônica);
+Acesso de Loucura e descansos; Elmo removível; campanhas de 1ª edição; glyph da
+runa de Gandalf.
+
+---
+
 ### 2026-08-08 — Empurrão e a variante de NA 18: o combate fecha
 
 **Pedido:** continuar o loop.

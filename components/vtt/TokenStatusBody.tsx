@@ -8,6 +8,7 @@ import { TokenDelegatePanel } from "@/components/vtt/TokenDelegatePanel";
 import { PaHudMeter } from "@/components/vtt/PaHudMeter";
 import { formatTokenHpLine, hpBarColor, hpRatio } from "@/lib/vtt/token-hp-display";
 import { TOR_DEFAULT_STANCE, isTorStance, torStanceLabel } from "@/lib/combat/um-anel/stances";
+import { TorShadowPanel } from "@/components/vtt/TorShadowPanel";
 
 type Props = {
   token: BattleToken;
@@ -95,6 +96,17 @@ export function TokenStatusBody({
           Condições são aplicadas pelo mestre. Aqui você consulta os efeitos ativos.
         </p>
       )}
+
+      {/* A Sombra alimenta Arrasado e Desfavorecido, que o combate consulta a
+          cada rolagem — precisa estar onde o Mestre já clica no herói. */}
+      {token.torCombat?.kind === "hero" ? (
+        <TorShadowPanel
+          roomId={roomId}
+          token={token}
+          canManage={canApplyConditions}
+          onUpdate={onUpdate}
+        />
+      ) : null}
 
       {canDelegate ? (
         <TokenDelegatePanel
