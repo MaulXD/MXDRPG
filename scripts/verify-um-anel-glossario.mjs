@@ -113,6 +113,85 @@ for (const task of combatTasks) {
   ok(`capítulo 6 chama a tarefa de "${task}"`, CAP6.includes(task), "nome divergente do código");
 }
 
+/* ── Nenhum capítulo pode chamar a Perícia por outro nome ──────────────── */
+
+/**
+ * A divergência maior que este teste pegou: **10 das 18 Perícias** tinham, nos
+ * capítulos, nome diferente do rótulo da ficha — VASCULHAR × Busca, IMPONÊNCIA ×
+ * Fascínio, ENCORAJAR × Indução, PERCEPÇÃO × Vigilância, SABER × História,
+ * CANTO × Música (e "Canção", numa terceira grafia), CAÇA × Caçada, VIAJAR ×
+ * Viagem, EXPLORAR × Exploração, PERSPICÁCIA × Discernimento. Eram 221 + 197
+ * ocorrências em 11 capítulos. O Mestre lia "role VASCULHAR" e a ficha do
+ * jogador dizia "Busca".
+ *
+ * Os nomes antigos coincidem com os `id` internos (`vasculhar`, `imponencia`…),
+ * que são chave estável e continuam em inglês/kebab — o que o teste proíbe é o
+ * id vazar como NOME no texto que vai para a mesa.
+ */
+const ANTIGOS = {
+  PERCEPÇÃO: "Vigilância",
+  IMPONÊNCIA: "Fascínio",
+  ENCORAJAR: "Indução",
+  EXPLORAR: "Exploração",
+  CAÇA: "Caçada",
+  PERSPICÁCIA: "Discernimento",
+  SABER: "História",
+  VASCULHAR: "Busca",
+  CANTO: "Música",
+  VIAJAR: "Viagem",
+};
+
+for (const f of readdirSync(root("livros", "um-anel")).filter((x) => x.endsWith(".md"))) {
+  const md = readFileSync(root("livros", "um-anel", f), "utf8");
+  for (const [antigo, atual] of Object.entries(ANTIGOS)) {
+    /* Caixa alta é como o livro chama a rolagem; com negrito ou sem.
+       "VERSOS DE SABER" é Característica Distintiva (`versos-de-saber` em
+       data.ts), não a Perícia — fica de fora. */
+    const caps = [...md.matchAll(new RegExp(`(?<!VERSOS DE )\\b${antigo}\\b`, "g"))];
+    ok(`${f}: não usa "${antigo}" (a Perícia é "${atual}")`, caps.length === 0, `${caps.length}×`);
+  }
+}
+
+/* O compêndio é o texto que o jogador abre DENTRO do app — divergir ali é pior
+   que no capítulo, porque está a um clique da ficha. */
+for (const f of readdirSync(root("livros", "um-anel", "compendio"))) {
+  const md = readFileSync(root("livros", "um-anel", "compendio", f), "utf8");
+  for (const [antigo, atual] of Object.entries(ANTIGOS)) {
+    const cap = antigo[0] + antigo.slice(1).toLowerCase();
+    const achados = [...md.matchAll(new RegExp(`\\b(${antigo}|${cap})\\b`, "g"))];
+    ok(`compendio/${f}: não usa "${cap}" (a Perícia é "${atual}")`, achados.length === 0);
+  }
+}
+
+/* "Canção" só pode aparecer como nome de Empreitada/item ("Compor uma Canção",
+   "Canção de Vitória"), nunca como a Perícia — para isso o nome é Música. */
+for (const f of readdirSync(root("livros", "um-anel")).filter((x) => x.endsWith(".md"))) {
+  const md = readFileSync(root("livros", "um-anel", f), "utf8");
+  const comoPericia = md.match(/rolagem de Canção|rolagens de Canção|Perícia Canção|\| Canção \|/);
+  ok(`${f}: "Canção" não é usada como Perícia`, !comoPericia, comoPericia?.[0] ?? "");
+}
+
+/* ── Habilidades Sinistras: um nome só ─────────────────────────────────── */
+
+/* "Velocidade de Serpente" (código, cap. 6 e cap. 12) × "Velocidade Serpentina"
+   (cap. 8, que é o capítulo dos adversários e a fonte dos blocos), e "Força
+   Horrível" × "Força Horrenda". Vale o do capítulo 8. */
+const ADV_TS = readFileSync(root("lib", "character", "um-anel", "adversaries.ts"), "utf8");
+for (const [errado, certo] of [
+  ["Velocidade de Serpente", "Velocidade Serpentina"],
+  ["Força Horrível", "Força Horrenda"],
+]) {
+  const fontes = [
+    ["adversaries.ts", ADV_TS],
+    ...readdirSync(root("livros", "um-anel"))
+      .filter((x) => x.endsWith(".md"))
+      .map((f) => [f, readFileSync(root("livros", "um-anel", f), "utf8")]),
+  ];
+  for (const [nome, txt] of fontes) {
+    ok(`${nome}: não usa "${errado}" (é "${certo}")`, !txt.includes(errado));
+  }
+}
+
 /* ── Vigor (Might) ─────────────────────────────────────────────────────── */
 
 ok("Might = Vigor no glossário", termo.get("Might") === "Vigor", `glossário diz "${termo.get("Might")}"`);

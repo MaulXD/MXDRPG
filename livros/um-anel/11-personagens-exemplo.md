@@ -25,7 +25,7 @@ Este livreto de 16 páginas contém **8 fichas de personagem pré-geradas comple
   - Um número pequeno de "Valor" (o Atributo bruto, canto superior direito da caixa).
   - Um número grande de "NA" (Número-Alvo, o valor exibido em destaque contra o qual se rola de fato).
   - Uma estatística derivada: **Resistência** (coluna de Força), **Esperança** (coluna de Coração), **Bloqueio** (coluna de Astúcia).
-- **Perícias:** 18 no total, dispostas em 3 colunas de 6 sob o Atributo que as governa (Força: Imponência, Atletismo, Percepção, Caça, Canto, Ofício — Coração: Encorajar, Viajar, Perspicácia, Cura, Cortesia, Batalha — Astúcia: Persuasão, Furtividade, Vasculhar, Explorar, Enigma, Saber). Cada uma tem uma caixa de marcação (Favorecida) e uma trilha de losangos de 0 a 6.
+- **Perícias:** 18 no total, dispostas em 3 colunas de 6 sob o Atributo que as governa (Força: Fascínio, Atletismo, Vigilância, Caçada, Música, Ofício — Coração: Indução, Viagem, Discernimento, Cura, Cortesia, Batalha — Astúcia: Persuasão, Furtividade, Busca, Exploração, Enigma, História). Cada uma tem uma caixa de marcação (Favorecida) e uma trilha de losangos de 0 a 6.
 - **Proficiências de Combate:** Machados, Arcos, Lanças, Espadas — cada uma uma trilha de losangos de 0 a 6 (ou mais, com equipamento).
 - **Recompensas:** campo de texto livre listando heranças especiais (em geral vazio nos pré-gerados de nível mais baixo).
 - **Valor** e **Sabedoria:** campos numéricos de losango único (ambos normalmente começam em 1, maiores em personagens veteranos).
@@ -78,9 +78,9 @@ Os valores de losango de Perícia/Proficiência foram lidos direto da arte rende
 | ASTÚCIA | 5 | 13 | Bloqueio 17 |
 
 **Perícias:**
-- Força: Imponência 0, Atletismo 0, **Percepção 2 (Favorecida)**, Caça 0, **Canto 2 (Favorecida)**, Ofício 1
-- Coração: Encorajar 0, **Viajar 1 (Favorecida)**, Perspicácia 1, Cura 2, **Cortesia 2 (Favorecida)**, Batalha 0
-- Astúcia: Persuasão 2, Furtividade 2, Vasculhar 0, Explorar 0, Enigma 2, Saber 1
+- Força: Fascínio 0, Atletismo 0, **Vigilância 2 (Favorecida)**, Caçada 0, **Música 2 (Favorecida)**, Ofício 1
+- Coração: Indução 0, **Viagem 1 (Favorecida)**, Discernimento 1, Cura 2, **Cortesia 2 (Favorecida)**, Batalha 0
+- Astúcia: Persuasão 2, Furtividade 2, Busca 0, Exploração 0, Enigma 2, História 1
 
 **Proficiências de Combate:** Machados 0, Arcos 2, Lanças 0, Espadas 1
 
@@ -90,7 +90,7 @@ Os valores de losango de Perícia/Proficiência foram lidos direto da arte rende
 
 **Equipamento de Guerra / Armadura / Escudo:** nada listado
 
-**Equipamento de Viagem:** Capa e Chapéu Finos (IMPONÊNCIA)
+**Equipamento de Viagem:** Capa e Chapéu Finos (FASCÍNIO)
 
 **Condições:** Exausto ☐ / Ferido ☐
 
@@ -111,9 +111,9 @@ Os valores de losango de Perícia/Proficiência foram lidos direto da arte rende
 | ASTÚCIA | 5 | 13 | Bloqueio 17 |
 
 **Perícias:**
-- Força: Imponência 1, Atletismo 1, Percepção 0, Caça 0, Canto 2, Ofício 1
-- Coração: **Encorajar 2 (Favorecida)**, Viajar 0, Perspicácia 0, Cura 1, **Cortesia 1 (Favorecida)**, Batalha 0
-- Astúcia: **Persuasão 1 (Favorecida)**, Furtividade 2, Vasculhar 0, Explorar 0, Enigma 2, Saber 0
+- Força: Fascínio 1, Atletismo 1, Vigilância 0, Caçada 0, Música 2, Ofício 1
+- Coração: **Indução 2 (Favorecida)**, Viagem 0, Discernimento 0, Cura 1, **Cortesia 1 (Favorecida)**, Batalha 0
+- Astúcia: **Persuasão 1 (Favorecida)**, Furtividade 2, Busca 0, Exploração 0, Enigma 2, História 0
 
 **Proficiências de Combate:** Machados 1, Arcos 2, Lanças 0, Espadas 0
 
@@ -123,7 +123,7 @@ Os valores de losango de Perícia/Proficiência foram lidos direto da arte rende
 
 **Equipamento de Guerra / Armadura / Escudo:** nada listado
 
-**Equipamento de Viagem:** Bengala dos Took (VIAJAR)
+**Equipamento de Viagem:** Bengala dos Took (VIAGEM)
 
 **Condições:** Exausto ☐ / Ferido ☐
 
@@ -144,9 +144,9 @@ Os valores de losango de Perícia/Proficiência foram lidos direto da arte rende
 | ASTÚCIA | 6 | 12 | Bloqueio 18 |
 
 **Perícias:**
-- Força: **Imponência 2 (Favorecida)**, Atletismo 0, Percepção 1, Caça 0, Canto 2, Ofício 1
-- Coração: Encorajar 0, Viajar 0, **Perspicácia 2 (Favorecida)**, Cura 1, **Cortesia 2 (Favorecida)**, Batalha 0
-- Astúcia: Persuasão 2, **Furtividade 2 (Favorecida)**, **Vasculhar 2 (Favorecida)**, Explorar 0, Enigma 2, Saber 1
+- Força: **Fascínio 2 (Favorecida)**, Atletismo 0, Vigilância 1, Caçada 0, Música 2, Ofício 1
+- Coração: Indução 0, Viagem 0, **Discernimento 2 (Favorecida)**, Cura 1, **Cortesia 2 (Favorecida)**, Batalha 0
+- Astúcia: Persuasão 2, **Furtividade 2 (Favorecida)**, **Busca 2 (Favorecida)**, Exploração 0, Enigma 2, História 1
 
 **Proficiências de Combate:** Machados 0, Arcos 1, Lanças 0, Espadas 2
 
@@ -177,9 +177,9 @@ Os valores de losango de Perícia/Proficiência foram lidos direto da arte rende
 | ASTÚCIA | 4 | 14 | Bloqueio 17 |
 
 **Perícias:**
-- Força: Imponência 0, **Atletismo 1 (Favorecida)**, Percepção 0, **Caça 1 (Favorecida)**, Canto 1, Ofício 1
-- Coração: Encorajar 0, Viajar 0, Perspicácia 1, Cura 1, Cortesia 1, Batalha 0
-- Astúcia: Persuasão 1, **Furtividade 2 (Favorecida)**, Vasculhar 0, **Explorar 1 (Favorecida)**, Enigma 1, Saber 0
+- Força: Fascínio 0, **Atletismo 1 (Favorecida)**, Vigilância 0, **Caçada 1 (Favorecida)**, Música 1, Ofício 1
+- Coração: Indução 0, Viagem 0, Discernimento 1, Cura 1, Cortesia 1, Batalha 0
+- Astúcia: Persuasão 1, **Furtividade 2 (Favorecida)**, Busca 0, **Exploração 1 (Favorecida)**, Enigma 1, História 0
 
 **Proficiências de Combate:** Machados 1, Arcos 0, Lanças 0, Espadas 2
 
@@ -189,7 +189,7 @@ Os valores de losango de Perícia/Proficiência foram lidos direto da arte rende
 
 **Equipamento de Guerra / Armadura / Escudo:** nada listado
 
-**Equipamento de Viagem:** Trouxa de Viajante dos Took (EXPLORAR)
+**Equipamento de Viagem:** Trouxa de Viajante dos Took (EXPLORAÇÃO)
 
 **Condições:** Exausto ☐ / Ferido ☐
 
@@ -210,9 +210,9 @@ Os valores de losango de Perícia/Proficiência foram lidos direto da arte rende
 | ASTÚCIA | 4 | 13 | Bloqueio 16 |
 
 **Perícias:**
-- Força: Imponência 0, Atletismo 0, Percepção 1, Caça 0, Canto 1, Ofício 0
-- Coração: Encorajar 0, Viajar 0, Perspicácia 1, Cura 1, **Cortesia 1 (Favorecida)**, Batalha 0
-- Astúcia: Persuasão 1, Furtividade 2, Vasculhar 0, Explorar 0, **Enigma 2 (Favorecida)**, Saber 1
+- Força: Fascínio 0, Atletismo 0, Vigilância 1, Caçada 0, Música 1, Ofício 0
+- Coração: Indução 0, Viagem 0, Discernimento 1, Cura 1, **Cortesia 1 (Favorecida)**, Batalha 0
+- Astúcia: Persuasão 1, Furtividade 2, Busca 0, Exploração 0, **Enigma 2 (Favorecida)**, História 1
 
 **Proficiências de Combate:** Machados 0, Arcos 2, Lanças 1, Espadas 0
 
@@ -243,9 +243,9 @@ Os valores de losango de Perícia/Proficiência foram lidos direto da arte rende
 | ASTÚCIA | 5 | 13 | Bloqueio 17 |
 
 **Perícias:**
-- Força: Imponência 0, Atletismo 0, **Percepção 1 (Favorecida)**, Caça 1, Canto 1, Ofício 1
-- Coração: Encorajar 0, Viajar 0, **Perspicácia 2 (Favorecida)**, Cura 1, Cortesia 1, Batalha 0
-- Astúcia: Persuasão 1, **Furtividade 2 (Favorecida)**, Vasculhar 0, Explorar 0, Enigma 1, Saber 0
+- Força: Fascínio 0, Atletismo 0, **Vigilância 1 (Favorecida)**, Caçada 1, Música 1, Ofício 1
+- Coração: Indução 0, Viagem 0, **Discernimento 2 (Favorecida)**, Cura 1, Cortesia 1, Batalha 0
+- Astúcia: Persuasão 1, **Furtividade 2 (Favorecida)**, Busca 0, Exploração 0, Enigma 1, História 0
 
 **Proficiências de Combate:** Machados 0, Arcos 0, Lanças 1, Espadas 2
 
@@ -255,7 +255,7 @@ Os valores de losango de Perícia/Proficiência foram lidos direto da arte rende
 
 **Equipamento de Guerra / Armadura / Escudo:** nada listado
 
-**Equipamento de Viagem:** Faca de Esfolar Coelhos (CAÇA)
+**Equipamento de Viagem:** Faca de Esfolar Coelhos (CAÇADA)
 
 **Condições:** Exausto ☐ / Ferido ☐
 
@@ -278,9 +278,9 @@ Os valores de losango de Perícia/Proficiência foram lidos direto da arte rende
 > As três derivadas de Balin fecham exatas com as bases do Povo de Durin (Resistência + 22, Esperança + 8, Bloqueio + 10). É o controle que isola o desvio de +2 na Resistência às fichas Hobbit.
 
 **Perícias:**
-- Força: Imponência 2, Atletismo 1, Percepção 0, Caça 0, Canto 2, Ofício 2
-- Coração: Encorajar 2, **Viajar 2 (Favorecida)**, Perspicácia 0, Cura 0, Cortesia 2, Batalha 2
-- Astúcia: Persuasão 2, Furtividade 0, **Vasculhar 2 (Favorecida)**, **Explorar 1 (Favorecida)**, Enigma 1, Saber 0
+- Força: Fascínio 2, Atletismo 1, Vigilância 0, Caçada 0, Música 2, Ofício 2
+- Coração: Indução 2, **Viagem 2 (Favorecida)**, Discernimento 0, Cura 0, Cortesia 2, Batalha 2
+- Astúcia: Persuasão 2, Furtividade 0, **Busca 2 (Favorecida)**, **Exploração 1 (Favorecida)**, Enigma 1, História 0
 
 **Proficiências de Combate:** Machados 2, Arcos 0, Lanças 1, Espadas 1
 
@@ -310,7 +310,7 @@ Os valores de losango de Perícia/Proficiência foram lidos direto da arte rende
 
 (Carga total anotada na ficha: 16 — consistente com 2 + 10 + 4 dos itens acima.)
 
-**Equipamento de Viagem:** Viola de Fabricação Anã (CANTO)
+**Equipamento de Viagem:** Viola de Fabricação Anã (MÚSICA)
 
 **Condições:** Exausto ☐ / Ferido ☐
 
@@ -331,9 +331,9 @@ Os valores de losango de Perícia/Proficiência foram lidos direto da arte rende
 | ASTÚCIA | 5 | 13 | Bloqueio 17 |
 
 **Perícias:**
-- Força: Imponência 0, Atletismo 0, Percepção 0, Caça 0, Canto 1, Ofício 1
-- Coração: Encorajar 0, Viajar 0, Perspicácia 2, Cura 1, **Cortesia 2 (Favorecida)**, Batalha 0
-- Astúcia: Persuasão 2, Furtividade 1, **Vasculhar 1 (Favorecida)**, **Explorar 1 (Favorecida)**, **Enigma 1 (Favorecida)**, **Saber 1 (Favorecida)**
+- Força: Fascínio 0, Atletismo 0, Vigilância 0, Caçada 0, Música 1, Ofício 1
+- Coração: Indução 0, Viagem 0, Discernimento 2, Cura 1, **Cortesia 2 (Favorecida)**, Batalha 0
+- Astúcia: Persuasão 2, Furtividade 1, **Busca 1 (Favorecida)**, **Exploração 1 (Favorecida)**, **Enigma 1 (Favorecida)**, **História 1 (Favorecida)**
 
 **Proficiências de Combate:** Machados 0, Arcos 2, Lanças 0, Espadas 2
 
@@ -354,7 +354,7 @@ Os valores de losango de Perícia/Proficiência foram lidos direto da arte rende
 
 **Armadura / Escudo:** nada listado
 
-**Equipamento de Viagem:** Anel Mágico de Bilbo (gaste 1 Esperança pra ficar invisível); Cachimbo Bem-Talhado (PERSPICÁCIA)
+**Equipamento de Viagem:** Anel Mágico de Bilbo (gaste 1 Esperança pra ficar invisível); Cachimbo Bem-Talhado (DISCERNIMENTO)
 
 **Condições:** Exausto ☐ / Ferido ☐
 

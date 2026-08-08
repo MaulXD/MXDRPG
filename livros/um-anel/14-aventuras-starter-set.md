@@ -74,7 +74,7 @@ O primeiro obstáculo: o Água ficou mais rápido com a chuva recente, e o vau r
 > atravessa com desenvoltura, ou pode ajudar outros que tenham mais dificuldade. Hobbits que falham
 > voltam à margem próxima, tossindo e completamente encharcados.
 
-> Se procurarem outro meio de travessia, uma rolagem de **VASCULHAR** bem-sucedida permite avistar um
+> Se procurarem outro meio de travessia, uma rolagem de **BUSCA** bem-sucedida permite avistar um
 > grande tronco oco do outro lado do Água, capaz de suportar o peso de um Hobbit.
 
 Para recuperar o tronco, é preciso inventividade — por exemplo, corda e gancho (**OFÍCIO**), ou atirar
@@ -98,8 +98,8 @@ mula de arado.
 
 > Os heróis podem se livrar da coruja se **informarem polidamente** a ela que não há mais ratos no
 > celeiro e que está incomodando Gertrude: rolagem de **CORTESIA**. Se passar, a coruja voa embora
-> quase como se tivesse entendido. Alternativamente, uma rolagem de **IMPONÊNCIA** serve como
-> intimidação, assim como **CAÇA**.
+> quase como se tivesse entendido. Alternativamente, uma rolagem de **FASCÍNIO** serve como
+> intimidação, assim como **CAÇADA**.
 
 Se a ave grande for **assustada** em vez de polidamente convencida, ela vai embora — mas primeiro
 aponta o bico para os heróis e pia para Gertrude, que responde com um breve zurro. A coruja está
@@ -161,12 +161,12 @@ Mas a visão mais preocupante é o **terrier cinza-e-marrom, o temível cão de 
 custodiante!** Se entraram sem fazer barulho, o cão está enrolado dormindo sob uma escrivaninha. Se
 fizeram barulho, o terrier — que se chama **Fogo de Artifício** — está bem acordado.
 
-> Se o cão está dormindo, podem procurar o mapa, mas em silêncio: exige **três rolagens de VASCULHAR
+> Se o cão está dormindo, podem procurar o mapa, mas em silêncio: exige **três rolagens de BUSCA
 > bem-sucedidas**. Falhar duas vezes o acorda. Alcançadas as três, localizam o mapa do Velho Tuk —
 > enterrado atrás de uma pilha de livros de receitas na prateleira de baixo de uma das estantes. Está
 > em condição surpreendentemente boa (um pouco amassado).
 
-> Se o cão está acordado, ou se o acordarem falhando duas rolagens de VASCULHAR, ele os encara antes
+> Se o cão está acordado, ou se o acordarem falhando duas rolagens de BUSCA, ele os encara antes
 > de soltar um latido inquisitivo. Não é feroz, mas amigável e energético — e expressa a alegria de ter
 > achado novos amigos latindo. Acalmá-lo exige uma rolagem de **CORTESIA**. Se passar, o cão volta a
 > dormir por toda a busca.
@@ -246,7 +246,7 @@ Oatbarton estão reunidos no centro do vilarejo para o almoço, em mesas longas 
 pavilhões e tendas.
 
 > Reunir informação sobre o Berrador e sobre Kingsworthy exige **3 rolagens de Perícia bem-sucedidas**,
-> usando **IMPONÊNCIA, CORTESIA, ENCORAJAR, PERSUASÃO** ou **ENIGMA**.
+> usando **FASCÍNIO, CORTESIA, INDUÇÃO, PERSUASÃO** ou **ENIGMA**.
 
 Os heróis podem formular as perguntas como quiserem, mas **qualquer herói que falhe numa rolagem não
 pode fazer mais rolagens** para inquirir. O Mestre pode espalhar a informação entre os heróis, de modo
@@ -264,13 +264,13 @@ Alcança-se Kingsworthy tomando um caminho ao norte de Oatbarton e caminhando um
 Charnecas do Norte.
 
 > Uma vez à vista, os heróis podem tentar identificar o propósito da grande casa de pedra e torre
-> redonda com uma rolagem de **SABER**. No sucesso, concluem que pode ter sido um pavilhão de caça na
+> redonda com uma rolagem de **HISTÓRIA**. No sucesso, concluem que pode ter sido um pavilhão de caça na
 > época dos Reis em Norbury.
 
 Numa inspeção mais próxima, o lugar está deserto. Há evidência de uso como abrigo por andarilhos, mas
 certamente não é habitado com regularidade.
 
-> Eles notam um conjunto mais recente de rastros. Uma rolagem bem-sucedida de **VASCULHAR** revela que
+> Eles notam um conjunto mais recente de rastros. Uma rolagem bem-sucedida de **BUSCA** revela que
 > pertencem claramente a um ou mais Hobbits.
 
 Mas o achado mais importante do dia é que **nenhum porrete pende do grande consolo da lareira de
@@ -296,7 +296,7 @@ Hobbit, antes que algum estranho o levasse. Achando este lugar "Kingsworthy" mui
 do que era, ela seguiu adiante, achou o porrete pendurado sobre o consolo, tomou seu prêmio e partiu de
 volta. Agora está vagando pelas Charnecas do Norte, com o pai à sua procura.
 
-> Os heróis podem alcançar o pai atormentado com **3 rolagens de CAÇA bem-sucedidas**. Quando o fazem,
+> Os heróis podem alcançar o pai atormentado com **3 rolagens de CAÇADA bem-sucedidas**. Quando o fazem,
 > avistam o Hobbit magro de cabelos castanhos seguindo desesperadamente os rastros da filha o mais
 > rápido que consegue achá-los.
 
@@ -315,28 +315,28 @@ desaparecida.
 
 > Os heróis estão avançando pelas primeiras horas da madrugada, sem oportunidade real de descansar ou
 > recuperar. Por isso, **todos ganham 3 pontos de Fadiga**. Podem reduzir o ganho com uma rolagem de
-> **VIAJAR** (um sucesso reduz a Fadiga total do herói em 1, mais 1 ponto por cada ícone de Sucesso).
+> **VIAGEM** (um sucesso reduz a Fadiga total do herói em 1, mais 1 ponto por cada ícone de Sucesso).
 
 **PELAS CHARNECAS DO NORTE**
 
 O Mestre deve perguntar como estão procurando e determinar qual Perícia é apropriada ao método.
 
-> Quem tentar identificar uma área onde ela possa ter buscado abrigo à noite pode rolar **EXPLORAR**.
+> Quem tentar identificar uma área onde ela possa ter buscado abrigo à noite pode rolar **EXPLORAÇÃO**.
 >
-> Quem procurar sinais de onde Myrtle possa ter vagado nessa paisagem ampla pode rolar **CAÇA**.
+> Quem procurar sinais de onde Myrtle possa ter vagado nessa paisagem ampla pode rolar **CAÇADA**.
 >
-> Quem procurar sinais de qualquer coisa fora do comum pode tentar **VASCULHAR**.
+> Quem procurar sinais de qualquer coisa fora do comum pode tentar **BUSCA**.
 
-**EXPLORAR.** Heróis espertos podem considerar que Myrtle deve ter buscado abrigo na natureza em vez de
+**EXPLORAÇÃO.** Heróis espertos podem considerar que Myrtle deve ter buscado abrigo na natureza em vez de
 vagar no escuro. Com sucesso, descobrem os restos de um acampamento — mas, com um ou mais ícones de
 Sucesso, notam que é montado com habilidade tal que **não pode ser obra de uma criança**. Tem até uma
 pequena fogueira, cavada à mão e cercada de pedras.
 
-**CAÇA.** Um sucesso permite notar que o rastro sinuoso de Myrtle não a leva de volta a Oatbarton — ela
+**CAÇADA.** Um sucesso permite notar que o rastro sinuoso de Myrtle não a leva de volta a Oatbarton — ela
 está definitivamente perdida. Um ou mais ícones de Sucesso permitem recuperar um pedacinho de um bonito
 vestido amarelo, que Mort confirma ser da cor que Myrtle vestia.
 
-**VASCULHAR.** Um sucesso revela que há **outro conjunto de rastros** seguindo os de Myrtle. Com um ou
+**BUSCA.** Um sucesso revela que há **outro conjunto de rastros** seguindo os de Myrtle. Com um ou
 mais ícones, os rastros são identificados como **pegadas grandes, de botas, que não pertencem a nenhum
 Hobbit**.
 
@@ -380,7 +380,7 @@ Se tentarem enganar o Troll com algum estratagema esperto, podem conseguir ganha
 deixar a luz do amanhecer surpreender a criatura.
 
 > Para enganar o Troll, os heróis precisam acumular pelo menos **três rolagens de Perícia
-> bem-sucedidas**, usando **CAÇA, ENIGMA** ou **CANTO**. O Troll hesita, confuso, e não ataca enquanto
+> bem-sucedidas**, usando **CAÇADA, ENIGMA** ou **MÚSICA**. O Troll hesita, confuso, e não ataca enquanto
 > os heróis tiverem sucesso. **Na primeira falha**, o Troll fica enfurecido e ataca o Hobbit mais
 > próximo com uma rolagem de ataque **Favorecida** (não são mais permitidas tentativas de
 > trapaça).
@@ -513,7 +513,7 @@ Perguntado sobre os fogos, Bruno é inicialmente inflexível: não tem ideia do 
 Desconfia de qualquer coisa ligada ao "Bolseiro Louco", e se Lobelia estiver presente, a reprime por se
 envolver em tal "bobagem aventureira".
 
-> Bruno pode ser coagido a revelar a verdade com uma rolagem de Perícia bem-sucedida (**IMPONÊNCIA**,
+> Bruno pode ser coagido a revelar a verdade com uma rolagem de Perícia bem-sucedida (**FASCÍNIO**,
 > **PERSUASÃO** ou **ENIGMA** são todas apropriadas).
 
 No sucesso, ele conta que passou os fogos a um dos Hobbits que trabalham para o pai dele, Blanco — um
@@ -527,7 +527,7 @@ alcançar Otho, precisam avançar por pelo menos algumas horas no escuro. Logo o
 uma chuva pesada.
 
 > Arrastar-se na chuva, mesmo num lugar tão gentil como o Condado, não é tarefa confortável. Cada
-> herói precisa fazer uma rolagem de **VIAJAR** para evitar o cansaço de uma noite molhada e sem
+> herói precisa fazer uma rolagem de **VIAGEM** para evitar o cansaço de uma noite molhada e sem
 > alegria; **a falha resulta em ganhar 2 pontos de Fadiga**.
 
 Com o passo reduzido e uma parada breve num prédio abandonado para esperar a chuva parar, os
@@ -589,9 +589,9 @@ mandados de volta ao vilarejo. **Entrar de dia é impossível; voltar depois do 
 Para achar onde o Hobbit tolo foi, os heróis devem explorar os túneis ramificados da "mina de tesouro".
 
 > Os conspiradores devem escolher **um herói como guia** nos túneis — o guia pode fazer uma rolagem de
-> **EXPLORAR uma vez por hora**.
+> **EXPLORAÇÃO uma vez por hora**.
 
-Para determinar se acham Otho, o Mestre rola **um Dado de Sucesso** por cada rolagem de EXPLORAR
+Para determinar se acham Otho, o Mestre rola **um Dado de Sucesso** por cada rolagem de EXPLORAÇÃO
 bem-sucedida, **somando 1 ao resultado por cada ícone de Sucesso** rolado pelo herói. Então o Mestre
 confere o resultado contra as entradas abaixo.
 
@@ -734,7 +734,7 @@ para usá-los; lembra-lhes que estão fazendo serviço comunitário e espera que
 > é acrescentado à lista de malfeitos dos conspiradores!**
 
 > Se os heróis saírem de Michel Delving montando os velocípedes, sempre que precisarem fazer uma
-> rolagem de **VIAJAR** eles **ganham (1d)**.
+> rolagem de **VIAGEM** eles **ganham (1d)**.
 
 ### Parte Dois: Volta e Volta
 
@@ -761,7 +761,7 @@ almoço, uma chuva forte se solta e os heróis se veem arrastando pelo terreno l
 Verdes.
 
 > Cada herói ganha **2 pontos adicionais de Fadiga** conforme o peso do dia duro pressiona corpo e
-> alma (uma rolagem de **VIAJAR** pode reduzir a quantidade ganha, como de hábito).
+> alma (uma rolagem de **VIAGEM** pode reduzir a quantidade ganha, como de hábito).
 
 A chuva cessa ao pôr do sol e logo o céu noturno limpa. Ainda assim, avançar no escuro em terreno
 acidentado não é sensato, e é melhor pernoitarem. Quando estão prestes a dormir, **um par de esquilos
@@ -789,9 +789,9 @@ pelos heróis assim (cada jogador tem **uma tentativa de rolagem de Perícia por
 
 - Heróis tentando entrar de fininho num vilarejo para roubar comida devem fazer uma rolagem de
   **FURTIVIDADE**, mas **perdem 1 Esperança** quando o fazem.
-- Quem procurar frutas silvestres na floresta pode fazer uma rolagem de **EXPLORAR**.
+- Quem procurar frutas silvestres na floresta pode fazer uma rolagem de **EXPLORAÇÃO**.
 - Quem procurar um campo de vegetais para colher um repolho ou dois pode fazer uma rolagem de
-  **VASCULHAR**, mas **perde (1d)**, pois precisa cobrir áreas grandes.
+  **BUSCA**, mas **perde (1d)**, pois precisa cobrir áreas grandes.
 
 O sucesso significa que acharam comida suficiente para si por um dia. **Cada ícone de Sucesso rende
 comida suficiente para um dia adicional — ou para alimentar a si e a outro Hobbit.**
@@ -829,7 +829,7 @@ bebida leve e dourada.
 
 Galdor é um hóspede gentil mas curioso, e questiona subtilmente os heróis.
 
-> Essa tentativa passa despercebida a menos que um herói passe numa rolagem de **PERSPICÁCIA**. Se
+> Essa tentativa passa despercebida a menos que um herói passe numa rolagem de **DISCERNIMENTO**. Se
 > falharem, ele extrai deles a verdade de suas aventuras — mas oferece riso, coração leve e uma canção
 > justa em troca dessa informação.
 
@@ -938,7 +938,7 @@ sobre eles, como se um coelho sentisse um predador próximo. É uma sensação d
 nos próprios ossos.
 
 > Conforme seguem, qualquer herói que declare estar olhando em volta em busca da fonte do pavor pode
-> tentar uma rolagem de **PERCEPÇÃO**. A falha significa que não conseguem localizar nada específico
+> tentar uma rolagem de **VIGILÂNCIA**. A falha significa que não conseguem localizar nada específico
 > causando o desconforto, mas quem tem sucesso **vê um par de olhos vermelhos** aqui e ali. Uma vez atrás
 > de uma cerca, outra obscurecido por uma fileira de sebes, e de novo escapulindo atrás de uma casinha.
 
@@ -968,7 +968,7 @@ fugir fica atrás e se torna alvo primordial da terrível fera negra.
 > desaparecendo na noite.
 
 Uma vez iniciada a travessia, olhando atentamente de volta para a margem oeste do Rio Brandevin e
-passando numa rolagem de **PERCEPÇÃO**, notam um par de olhos vermelhos observando da escuridão, antes
+passando numa rolagem de **VIGILÂNCIA**, notam um par de olhos vermelhos observando da escuridão, antes
 de a fera disparar ao norte pela margem do rio.
 
 ### Bloco de adversário — Fera Queimada
@@ -1052,7 +1052,7 @@ algumas milhas adiante, e não encontram dano à casa em si. Quem examinar a pro
 de perturbação — canteiros de flores pisoteados, casca arrancada de árvores, carcaças de alguns coelhos
 mortos e, o mais perturbador de tudo, **grandes arranhões na porta dos fundos** da casa de Rollo Boffin.
 
-> Quem passar numa rolagem de **VASCULHAR** avista uma pequena trilha levando à extremidade leste da
+> Quem passar numa rolagem de **BUSCA** avista uma pequena trilha levando à extremidade leste da
 > propriedade, que parece descer e correr até a própria **Sebe Alta**. Uma vez perto dela, os heróis têm
 > a sensação inquietante de que **estão sendo observados**.
 
@@ -1066,7 +1066,7 @@ brecha revestida de tijolo na Sebe, onde termina num conjunto de barras grossas 
 outrora formasse um portão robusto, ele parece ter sido **torcido e entortado por alguma criatura da
 Floresta Velha tentando entrar**.
 
-> Exame cuidadoso do portão via rolagem de **CAÇA** ou **VASCULHAR** revela alguns tufos de pelo negro
+> Exame cuidadoso do portão via rolagem de **CAÇADA** ou **BUSCA** revela alguns tufos de pelo negro
 > presos numa dobradiça. Fica claro que a fera negra veio por aqui, de algum lugar dentro da Floresta
 > Velha.
 
@@ -1097,7 +1097,7 @@ estão sendo observados cresce em suas mentes. Neste lugar selvagem e retorcido,
 Queimada terá a vantagem, e sua caça será a mais difícil.*
 
 > Heróis que perguntem ao Mestre o que sabem sobre histórias da Floresta Velha podem fazer uma rolagem
-> de **SABER**. Com sucesso, aprendem que o rumor diz que a floresta está viva e desgosta ativamente de
+> de **HISTÓRIA**. Com sucesso, aprendem que o rumor diz que a floresta está viva e desgosta ativamente de
 > visitantes, alguns crendo que as próprias árvores se movem para obstruir viajantes com raízes
 > retorcidas e galhos enredantes. Muito tempo atrás, alguns Hobbits de fato empurraram a Floresta Velha
 > de volta, quando a mata mesma se moveu e tentou atacar a sebe. Os habitantes de Buckland viajaram além
@@ -1105,7 +1105,7 @@ Queimada terá a vantagem, e sua caça será a mais difícil.*
 > diz que a Floresta Velha é o lar de **um espírito errante que fala às árvores e curva as bestas que
 > nela vivem à sua vontade**.
 
-**A CAÇA À FERA QUEIMADA**
+**A CAÇADA À FERA QUEIMADA**
 
 O Mestre deve perguntar aos jogadores qual (e apenas um) dos heróis atuará como **batedor** do grupo. O
 batedor fica encarregado de tentar manter a orientação e evitar que se perdam na Floresta Velha estranha
@@ -1114,21 +1114,21 @@ caçadores.** Isso pode incluir tufos de pelo, sangue ou marcas de pata. Não h�
 heróis tentando rastrear a fera, embora **nenhum personagem possa ser batedor e caçador ao mesmo
 tempo**.
 
-> O batedor deve fazer **uma única rolagem de EXPLORAR**, enquanto os caçadores devem acumular **3
-> rolagens de CAÇA bem-sucedidas**. Se a rolagem de EXPLORAR falhar, as rolagens de CAÇA **perdem
+> O batedor deve fazer **uma única rolagem de EXPLORAÇÃO**, enquanto os caçadores devem acumular **3
+> rolagens de CAÇADA bem-sucedidas**. Se a rolagem de EXPLORAÇÃO falhar, as rolagens de CAÇADA **perdem
 > (1d)**; se tiver sucesso com um ou mais ícones de Sucesso, elas **ganham (1d)**.
 
-> Em qualquer rolagem de CAÇA falhada, o Mestre deve rolar um **Dado de Proeza** para determinar que
+> Em qualquer rolagem de CAÇADA falhada, o Mestre deve rolar um **Dado de Proeza** para determinar que
 > tipo de encontro estranho ocorre, usando a tabela encontrada em *The Shire*. Igualmente, a cada par de
 > horas de busca, se os heróis não tiverem rolado 3 sucessos, o Mestre rola na tabela de novo.
 
-Alcançados os sucessos necessários de CAÇA, a Companhia encontra a Fera Queimada, que ronda perto das
+Alcançados os sucessos necessários de CAÇADA, a Companhia encontra a Fera Queimada, que ronda perto das
 margens do Withywindle, preparada para embuscar os personagens. Vá para a Parte Quatro.
 
 **CAIXA — Irritando a Floresta Velha:** heróis que brandam machados ou falem mal da floresta podem
 encontrar as árvores tratando-os com ainda mais desprezo e malícia que antes. Insultos e ameaças
 proferidos na Floresta Velha podem tornar esta jornada ainda mais perigosa, e o Mestre deve considerar
-**aumentar em 1 o número de rolagens de CAÇA exigidas** se falarem tão tolamente.
+**aumentar em 1 o número de rolagens de CAÇADA exigidas** se falarem tão tolamente.
 
 ### Parte Quatro: Batalha Ardente
 
@@ -1218,7 +1218,7 @@ erguerão de novo e voltarão a atormentar o Condado, a menos que sejam mortas c
 ou armas mágicas similares**. Em vez disso, alguns dos heróis devem conter as feras selvagens enquanto
 outros cantam as canções que aprenderam com Bombadil.
 
-> Isso exige que os conspiradores passem em **3 rolagens de CANTO**. **Qualquer número de heróis não
+> Isso exige que os conspiradores passem em **3 rolagens de MÚSICA**. **Qualquer número de heróis não
 > engajados** com as Feras Queimadas pode cantar.
 
 Se bem-sucedidos, as Feras Queimadas ficam de coração leve, conforme toda a escuridão é lavada de seu

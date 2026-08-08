@@ -193,7 +193,7 @@ Exemplos de Empreitadas de Perícia incluem tarefas como examinar uma área ampl
 
 Uma rolagem oposta é resolvida com todos rolando simultaneamente, usando a mesma habilidade ou habilidades diferentes, dependendo das circunstâncias. Cada um rola contra o NA do Atributo relevante.
 
-Por exemplo, você discute um tópico erudito enquanto outro herói-jogador o desafia com observações espirituosas diante de uma plateia (SABER vs. ENIGMA), ou dois heróis disputam braço de ferro (ATLETISMO vs. ATLETISMO).
+Por exemplo, você discute um tópico erudito enquanto outro herói-jogador o desafia com observações espirituosas diante de uma plateia (HISTÓRIA vs. ENIGMA), ou dois heróis disputam braço de ferro (ATLETISMO vs. ATLETISMO).
 
 Se mais de um contendor obtiver um sucesso, então o personagem que obteve o maior número de ícones ᛥ é considerado ter superado a oposição. Se todas as rolagens falham ou os resultados empatam, role novamente ou, se for mais apropriado, a disputa termina em empate.
 
@@ -312,7 +312,7 @@ Na maioria dos casos, uma simples rolagem de Perícia é suficiente para represe
 
 > A rolagem do herói que age *perde (1d)* se a Característica Distintiva estiver tornando a ação particularmente difícil.
 
-*Exemplo: A Companhia tenta localizar o paradeiro de um Goblin selvagem terrivelmente Reservado que aterroriza o campo perto de Archet. Os heróis-jogadores rolam CAÇA, perdendo (1d).*
+*Exemplo: A Companhia tenta localizar o paradeiro de um Goblin selvagem terrivelmente Reservado que aterroriza o campo perto de Archet. Os heróis-jogadores rolam CAÇADA, perdendo (1d).*
 
 Se, ao contrário, um personagem do Mestre exibe uma Característica Distintiva que possa ser interpretada como uma falha, ela pode melhorar as chances do herói que age:
 
@@ -326,7 +326,7 @@ Apenas personagens do Mestre que possuam uma Característica Distintiva apropria
 
 > A rolagem do herói que age *ganha (1d)* se a Característica Distintiva do personagem do Mestre for considerada benéfica, ou *ganha (2d)* se o traço puder ser considerado como garantia de um nível superior de apoio.
 
-*Exemplo: A Companhia recebeu orientação de Tom Bombadil para achar seu caminho na Floresta Velha — o conselho do velho Tom é sólido, se bem que um pouco confuso — todas as rolagens de VIAJAR feitas para navegar pelos bosques ganham (1d).*
+*Exemplo: A Companhia recebeu orientação de Tom Bombadil para achar seu caminho na Floresta Velha — o conselho do velho Tom é sólido, se bem que um pouco confuso — todas as rolagens de VIAGEM feitas para navegar pelos bosques ganham (1d).*
 
 ## A Sombra
 
@@ -1026,7 +1026,7 @@ Enviado às colinas de Tyrn Gorthad pelo Rei-bruxo de Angmar para atormentar seu
 
 **Habilidades Sinistras:**
 - *Habitante das Trevas.* Todas as rolagens de ataque são *Favorecidas* na escuridão.
-- *Feitiços Terríveis.* Gaste 1 de Ódio para fazer um herói-jogador ganhar 3 pontos de Sombra (Feitiçaria). Os alvos que falharem em seu Teste de Sombra ou que estiverem Arrasados caem inconscientes e só podem ser despertados com uma rolagem de CANTO. Do contrário, acordam depois de uma hora.
+- *Feitiços Terríveis.* Gaste 1 de Ódio para fazer um herói-jogador ganhar 3 pontos de Sombra (Feitiçaria). Os alvos que falharem em seu Teste de Sombra ou que estiverem Arrasados caem inconscientes e só podem ser despertados com uma rolagem de MÚSICA. Do contrário, acordam depois de uma hora.
 - *Odeia a Luz do Sol.* A criatura perde 1 de Ódio no início de cada rodada em que está exposta à plena luz do sol.
 
 #### Espectros
@@ -1315,8 +1315,8 @@ Entre parênteses estão listadas opções para ajudar o Mestre a escolher o tip
 
 | Rolagem | Resultado |
 |---|---|
-| 1–2 | Imponência (anel, manto, diadema, gargantilha, cinto, bainha de arma, cajado, corno de guerra) |
-| 3–4 | Encorajar (anel, manto, bainha de arma, cajado, corno de guerra) |
+| 1–2 | Fascínio (anel, manto, diadema, gargantilha, cinto, bainha de arma, cajado, corno de guerra) |
+| 3–4 | Indução (anel, manto, bainha de arma, cajado, corno de guerra) |
 | 5–6 | Persuasão (anel, manto, diadema, gargantilha) |
 
 **2: MOVIMENTO**
@@ -1324,31 +1324,31 @@ Entre parênteses estão listadas opções para ajudar o Mestre a escolher o tip
 | Rolagem | Resultado |
 |---|---|
 | 1–2 | Atletismo (corda, botas, sapatos) |
-| 3–4 | Viajar (cajado, cinto, botas) |
+| 3–4 | Viagem (cajado, cinto, botas) |
 | 5–6 | Furtividade (anel, manto, sapatos) |
 
-**3: PERCEPÇÃO**
+**3: VIGILÂNCIA**
 
 | Rolagem | Resultado |
 |---|---|
-| 1–2 | Percepção (anel, diadema, gargantilha) |
-| 3–4 | Perspicácia (anel, diadema, gargantilha) |
-| 5–6 | Vasculhar (anel, diadema, cajado) |
+| 1–2 | Vigilância (anel, diadema, gargantilha) |
+| 3–4 | Discernimento (anel, diadema, gargantilha) |
+| 5–6 | Busca (anel, diadema, cajado) |
 
 **4: SOBREVIVÊNCIA**
 
 | Rolagem | Resultado |
 |---|---|
-| 1–2 | Caça (cinto, corno de caça, cajado) |
+| 1–2 | Caçada (cinto, corno de caça, cajado) |
 | 3–4 | Cura (incomum, pois poções e unguentos rapidamente perdem sua virtude) |
-| 5–6 | Explorar (botas, cajado, rolo de corda) |
+| 5–6 | Exploração (botas, cajado, rolo de corda) |
 
 **5: COSTUME**
 
 | Rolagem | Resultado |
 |---|---|
 | 1–2 | Cortesia (anel, diadema, par de broches) |
-| 3–4 | Canto (anel, instrumento musical) |
+| 3–4 | Música (anel, instrumento musical) |
 | 5–6 | Enigma (anel) |
 
 **6: VOCAÇÃO**
@@ -1357,7 +1357,7 @@ Entre parênteses estão listadas opções para ajudar o Mestre a escolher o tip
 |---|---|
 | 1–2 | Ofício (anel, ferramenta de ofício) |
 | 3–4 | Batalha (coroa, anel, cajado, corno de guerra — raro, pois normalmente diz respeito a armas) |
-| 5–6 | Saber (espelho, livro, pedra-vidente) |
+| 5–6 | História (espelho, livro, pedra-vidente) |
 
 ### Armas e Armaduras Famosas
 
@@ -1446,7 +1446,7 @@ Esses atos de doação alteram a identidade dos heróis-jogadores aos olhos de s
 
 *Exemplo: Ao limpar de Goblins uma fortaleza Anã abandonada, um herói Bardo encontrou o Escudo de Runas de Ossiriand, que exibiu sua primeira qualidade, Feitura Ardilosa Antiga. O aventureiro carregava antes um escudo Reforçado, presenteado a ele pelos anciãos de sua cidade. Na Fase de Companhia seguinte ele se compromete a visitar a tesouraria de Valle, devolvendo o escudo para que ele possa servir fielmente a outro. Como está trocando uma Recompensa anterior, ele pode ativar outra qualidade possuída pelo Escudo de Runas.*
 
-**BUSCANDO UM MESTRE DE SABER:** Um companheiro que deseje saber mais sobre uma Arma ou Armadura Famosa pode visitar um lugar apropriado e escolher a tarefa Encontrar Patrono durante uma Fase de Companhia de Yule (ver capítulo 7).
+**BUSCANDO UM MESTRE DE HISTÓRIA:** Um companheiro que deseje saber mais sobre uma Arma ou Armadura Famosa pode visitar um lugar apropriado e escolher a tarefa Encontrar Patrono durante uma Fase de Companhia de Yule (ver capítulo 7).
 
 #### Recompensas Encantadas
 
@@ -1638,7 +1638,7 @@ Note que essa Falha é considerada temporária, e não conta para os propósitos
 
 **DESCOBRINDO O UM ANEL:** A descoberta do Um Anel por Bilbo na caverna de Gollum é um exemplo brilhante de predestinação, como discutido neste capítulo. Bilbo estava destinado a encontrar o Anel, e então a passá-lo a Frodo. Talvez o Mestre da campanha de Bilbo estivesse planejando muito à frente de fato — ou talvez nem percebesse na época exatamente o que havia criado — o objetivo poderia ter sido apenas dar ao Gatuno um Artefato Maravilhoso dotado de uma Bênção de FURTIVIDADE.
 
-Mas como o Anel Regente de Sauron poderia ser criado sob as regras de Tesouro Mágico? A resposta curta é que não pode: é afinal o maior artefato mágico jamais criado na história da Terra-média. Mas vamos nos permitir um pouco mais… O Anel provavelmente teria uma Bênção de Furtividade por sua capacidade de tornar quem o veste invisível, e eventualmente revelaria mais tarde outra Bênção na perícia que melhor define as ambições e desejos de quem o veste: IMPONÊNCIA para um poderoso guerreiro, BATALHA para um líder de Homens, OFÍCIO para alguém que desejasse criar coisas, PERSPICÁCIA para aqueles que buscam conhecer o coração dos outros… Mas e quanto às suas Maldições? Bem, não vamos nem começar…
+Mas como o Anel Regente de Sauron poderia ser criado sob as regras de Tesouro Mágico? A resposta curta é que não pode: é afinal o maior artefato mágico jamais criado na história da Terra-média. Mas vamos nos permitir um pouco mais… O Anel provavelmente teria uma Bênção de Furtividade por sua capacidade de tornar quem o veste invisível, e eventualmente revelaria mais tarde outra Bênção na perícia que melhor define as ambições e desejos de quem o veste: FASCÍNIO para um poderoso guerreiro, BATALHA para um líder de Homens, OFÍCIO para alguém que desejasse criar coisas, DISCERNIMENTO para aqueles que buscam conhecer o coração dos outros… Mas e quanto às suas Maldições? Bem, não vamos nem começar…
 
 ## O Olho de Mordor
 

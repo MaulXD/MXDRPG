@@ -104,6 +104,87 @@ npm run sync:data:check       # após editar livros/
 
 ---
 
+### 2026-08-08 — 10 das 18 Perícias tinham nome diferente no livro e na ficha
+
+**Pedido:** continuar o loop.
+
+**Passo a passo:**
+
+1. **Diagnóstico.** Ia começar as Tarefas de Combate e parei na primeira linha:
+   "Preparar Tiro — o jogador faz uma rolagem de **VASCULHAR**". Na ficha do
+   jogador essa Perícia se chama **Busca**. Varri as 18 contra os capítulos e
+   **10 divergiam**:
+
+   | capítulos | ficha (data.ts) |
+   |---|---|
+   | VASCULHAR | Busca |
+   | IMPONÊNCIA | Fascínio |
+   | ENCORAJAR | Indução |
+   | PERCEPÇÃO | Vigilância |
+   | SABER | História |
+   | CANTO (e "Canção") | Música |
+   | CAÇA | Caçada |
+   | VIAJAR | Viagem |
+   | EXPLORAR | Exploração |
+   | PERSPICÁCIA | Discernimento |
+
+   **418 ocorrências em 11 capítulos**, mais o compêndio. Um Mestre lendo "role
+   VASCULHAR" e um jogador olhando "Busca" na ficha não tinham como saber que era
+   a mesma Perícia — e isso vale para 10 das 18, inclusive as quatro que as
+   Tarefas de Combate usam.
+
+2. **Decisão.** Vence o **rótulo da ficha**. O próprio glossário registra que os
+   termos foram reconciliados com a ficha oficial editável em PT-BR e que, onde
+   divergissem, adota-se o da ficha. Os nomes antigos coincidem com os `id`
+   internos (`vasculhar`, `imponencia`…) — que continuam intactos, porque são
+   chave estável; o que não pode é o id vazar como **nome** no texto da mesa.
+
+3. **Como fiz sem repetir o desastre.** Duas passadas com script que **conta e
+   reporta cada substituição**, nunca `sed` largo, e que aborta se qualquer
+   arquivo encolher. Só troquei em contextos que são inequivocamente nome de
+   Perícia — negrito-caixa, célula de tabela, par nome+graduação, chamadas de
+   rolagem, itálico. Prosa solta ficou de fora de propósito: "saber", "canto",
+   "caça", "viajar" e "explorar" são palavras comuns. As últimas 12 ocorrências
+   em prosa foram conferidas uma a uma e trocadas com contagem exata.
+
+   **Uma exceção salvou um nome:** `VERSOS DE SABER` é Característica Distintiva
+   (`versos-de-saber` em data.ts), não a Perícia — sem a exclusão viraria "VERSOS
+   DE HISTÓRIA", que não existe em lugar nenhum. E "Compor uma Canção", "Canção de
+   Vitória" e "Canção de Reis" são Empreitada e itens: continuam "Canção".
+
+4. **Segunda divergência, no mesmo padrão.** O código chamava a Habilidade
+   Sinistra de **"Velocidade de Serpente"** (6×) e o capítulo 8 — que é o capítulo
+   dos adversários e a fonte dos blocos — de **"Velocidade Serpentina"** (6×). E o
+   exemplo do capítulo 6 inventou **"Força Horrível"** para a "Força Horrenda" que
+   todo o resto usa. Unificado pelo capítulo 8.
+
+5. **Validação.** `npx tsc --noEmit` limpo · `npm run build` compila ·
+   `npm run test` verde com **1550 asserções** (o teste novo sozinho responde por
+   ~240 delas: cada capítulo × cada nome antigo). `gen-um-anel.mjs` rodado e o
+   JSON do compêndio commitado junto.
+
+**Falso alarme conferido:** as Tarefas de Combate são "ação **principal** da
+rodada" no capítulo 6, enquanto três Virtudes dizem "como ação **secundária**".
+Parecia contradição — não é: o padrão é custar a ação principal, e a Virtude é
+justamente a exceção que deixa fazer junto com o ataque. Nada a corrigir.
+
+**Arquivos tocados:**
+- 11 capítulos em `livros/um-anel/` — 418 ocorrências de nome de Perícia
+- `livros/um-anel/compendio/` (conselho, jornada, sombra) — 14 ocorrências
+- `data/compendiums/um-anel/` — regenerado por `gen-um-anel.mjs`
+- `lib/character/um-anel/adversaries.ts` — "Velocidade Serpentina"
+- `scripts/verify-um-anel-glossario.mjs` — teste por capítulo × nome antigo, mais o compêndio e as Habilidades Sinistras
+
+**Como testar:** abrir qualquer capítulo e a ficha lado a lado — toda chamada de
+rolagem agora usa o mesmo nome que aparece na ficha do jogador.
+
+**Falta:** as Tarefas de Combate em si (era o alvo desta rodada, e a troca de
+nomes veio antes porque elas dependem justamente desses quatro nomes); efeitos
+com duração de rodada, que destravam Aparar, Investida de Escudo, Quebrar Escudo
+e Agarrar; Empurrão; variante de NA 18; Elmo removível; campanhas de 1ª edição.
+
+---
+
 ### 2026-08-08 — Dano Especial: Golpe Pesado e Perfurar (e a Mão Firme deixa de ser inerte)
 
 **Pedido:** continuar o loop.

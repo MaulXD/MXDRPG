@@ -398,7 +398,7 @@ propósito.
 
 > Para isso, primeiro escolha uma canção entre as que estão na lista de canções da Companhia
 > que seja apropriada ao empreendimento atual (Combate, Jornada ou Conselho). Depois, faça uma
-> rolagem de **CANTO**. Heróis que tiverem sucesso na rolagem ignoram os efeitos de estar
+> rolagem de **MÚSICA**. Heróis que tiverem sucesso na rolagem ignoram os efeitos de estar
 > Exausto pela duração do empreendimento heroico (cantar uma canção em combate é considerado
 > uma ação secundária).
 

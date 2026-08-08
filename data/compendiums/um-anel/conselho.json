@@ -50,7 +50,7 @@
     "system": {
       "grupo": "Sequência",
       "quem": "Porta-voz eleito pela Companhia",
-      "pericias_uteis": "Imponência, Cortesia, Enigmas",
+      "pericias_uteis": "Fascínio, Cortesia, Enigmas",
       "sucesso": "Limite de tempo = Resistência + 1 por cada ícone de Sucesso rolado",
       "falha": "Limite de tempo = Resistência, e se o conselho terminar em falha, termina em Desastre",
       "descricao": "No começo do conselho a Companhia precisa se apresentar. Para isso elege um porta-voz, de preferência aproveitando o melhor orador do grupo. O porta-voz faz uma rolagem de perícia, e o resultado determina o **limite de tempo** do conselho — o número total de tentativas que os heróis têm como grupo para apresentar seu caso antes de serem finalmente dispensados."
@@ -63,7 +63,7 @@
     "system": {
       "grupo": "Sequência",
       "quem": "Toda a Companhia",
-      "pericias_uteis": "Encorajar, Perspicácia, Persuasão, Enigmas, Canção",
+      "pericias_uteis": "Indução, Discernimento, Persuasão, Enigmas, Canção",
       "objetivo": "Acumular sucessos até igualar ou passar a Resistência",
       "limite": "O limite de tempo definido na Introdução",
       "descricao": "A parte principal e mais desafiadora do encontro. É aqui que os jogadores atuam a cena com o Mestre e fazem rolagens de perícia para acumular sucessos suficientes para igualar ou exceder a Resistência do conselho."
@@ -71,12 +71,12 @@
   },
   {
     "id": "CON-P01",
-    "name": "Imponência (Introdução)",
+    "name": "Fascínio (Introdução)",
     "type": "efeito",
     "system": {
       "grupo": "Perícias do Conselho",
       "etapa": "Introdução",
-      "descricao": "Uma rolagem de Imponência passa uma mensagem poderosa com poucas palavras. Serve para impressionar alguém e virar uma reação inicial negativa, ou para fixar rapidamente os termos da discussão que vem. Tem um custo: o porta-voz menciona voluntariamente a linhagem, os feitos e outras informações pessoais dos membros da Companhia para obter efeito pleno."
+      "descricao": "Uma rolagem de Fascínio passa uma mensagem poderosa com poucas palavras. Serve para impressionar alguém e virar uma reação inicial negativa, ou para fixar rapidamente os termos da discussão que vem. Tem um custo: o porta-voz menciona voluntariamente a linhagem, os feitos e outras informações pessoais dos membros da Companhia para obter efeito pleno."
     }
   },
   {
@@ -101,7 +101,7 @@
   },
   {
     "id": "CON-P04",
-    "name": "Encorajar (Interação)",
+    "name": "Indução (Interação)",
     "type": "efeito",
     "system": {
       "grupo": "Perícias do Conselho",
@@ -111,7 +111,7 @@
   },
   {
     "id": "CON-P05",
-    "name": "Perspicácia (Interação)",
+    "name": "Discernimento (Interação)",
     "type": "efeito",
     "system": {
       "grupo": "Perícias do Conselho",

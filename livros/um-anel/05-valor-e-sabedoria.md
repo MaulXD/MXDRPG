@@ -216,7 +216,7 @@ As histórias contam que aqueles que pertencem à linhagem de Valle estão desti
 
 Histórias contadas no Norte falam de como os homens de Valle podem se tornar tão sábios que chegam a compreender a fala dos pássaros e, assim, ao entender seu canto, ser avisados de ameaças iminentes, ou ser capazes de identificar uma fraqueza nas defesas de seus inimigos.
 
-- Você pode se comunicar com qualquer pássaro com rolagens de Perícia apropriadas, normalmente usando CORTESIA, PERSUASÃO ou CANTO, para receber notícias, entregar mensagens, e assim por diante.
+- Você pode se comunicar com qualquer pássaro com rolagens de Perícia apropriadas, normalmente usando CORTESIA, PERSUASÃO ou MÚSICA, para receber notícias, entregar mensagens, e assim por diante.
 - Além disso, quando você está ao ar livre, uma vez durante cada Combate, Conselho ou Jornada, você pode escolher se tornar Inspirado em uma rolagem qualquer.
 
 > *"...era apenas um velho tordo. Sem medo, pousou junto ao seu ouvido e lhe trouxe notícias. Maravilhado, ele descobriu que podia entender sua língua..."*
@@ -421,7 +421,7 @@ Desde que começou suas aventuras, você percebeu que o costume do seu povo de n
 
 É de fato verdade que os assuntos das quatro aldeias são a principal preocupação do povo de Bri, mas os mais curiosos entre os habitantes estão sempre prontos a reunir as notícias que vêm de terras distantes. Você aprendeu que ouvir as estranhas histórias que os viajantes costumam contar pode se mostrar muito valioso.
 
-- Durante qualquer Fase de Companhia, você pode fazer uma rolagem de PERSPICÁCIA ou ENIGMA. Se você tiver sucesso, você recebe um rumor do Mestre.
+- Durante qualquer Fase de Companhia, você pode fazer uma rolagem de DISCERNIMENTO ou ENIGMA. Se você tiver sucesso, você recebe um rumor do Mestre.
 
 > *"Estranho como Notícias de Bri" ainda era um dito no Quadrante Leste, descendente daqueles dias, quando notícias do Norte, do Sul e do Leste podiam ser ouvidas na hospedaria...*
 
@@ -481,6 +481,6 @@ Você foi criado em uma terra pontilhada de ruínas desoladas e túmulos funerá
 
 Os Rangers do Norte vagam incessantemente, caçando coisas malignas e guardando todas as fronteiras. Para você, as Terras Selvagens se tornaram tão familiares quanto a estrada que leva para casa é familiar aos Hobbits, e a própria terra pode revelar informações úteis.
 
-- Sempre que você fizer uma rolagem usando EXPLORAR, CAÇA ou VIAJAR, você pode gastar 1 Esperança para obter um sucesso Mágico. Além disso, você sempre tem permissão para cobrir mais de um papel durante uma jornada.
+- Sempre que você fizer uma rolagem usando EXPLORAÇÃO, CAÇADA ou VIAGEM, você pode gastar 1 Esperança para obter um sucesso Mágico. Além disso, você sempre tem permissão para cobrir mais de um papel durante uma jornada.
 
 > *"Onde a visão falha, a terra pode nos trazer rumores", disse Aragorn. "A terra deve gemer sob seus pés odiados."*

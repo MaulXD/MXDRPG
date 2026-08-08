@@ -177,7 +177,7 @@ da surpresa completa. Se o Mestre considerar que uma rolagem é necessária, ent
 diretrizes se aplicam:
 
 - **A COMPANHIA É EMBOSCADA:** quando inimigos tentam pegar a Companhia de surpresa, todos os
-  heróis-jogadores da Companhia devem fazer uma rolagem de **PERCEPÇÃO**. Heróis-jogadores que
+  heróis-jogadores da Companhia devem fazer uma rolagem de **VIGILÂNCIA**. Heróis-jogadores que
   falharem na rolagem foram pegos desprevenidos — não poderão fazer uma rolagem de salva de
   abertura nem tomar ações na primeira Rodada de Corpo a Corpo.
 - **EMBOSCANDO INIMIGOS:** se a Companhia está tentando surpreender seus inimigos, eles devem
@@ -187,10 +187,10 @@ diretrizes se aplicam:
   nem tomar ações na primeira Rodada de Corpo a Corpo.
 
 **OPÇÕES DE EMBOSCADA (box):** outras escolhas plausíveis de Perícia para evitar ser
-surpreendido incluem **BATALHA** (preparação militar) ou **CAÇA** (especialmente em terras
+surpreendido incluem **BATALHA** (preparação militar) ou **CAÇADA** (especialmente em terras
 selvagens, ou se o inimigo que embosca é uma criatura selvagem). Quanto a emboscar inimigos,
 **BATALHA** é particularmente apropriada quando a situação envolve grupos maiores, mas apenas
-se houver tempo suficiente para planejamento cuidadoso; **CAÇA** é mais apropriada em áreas
+se houver tempo suficiente para planejamento cuidadoso; **CAÇADA** é mais apropriada em áreas
 que oferecem amplas oportunidades de esconderijo, e quando o encontro não é esperado e não
 houve tempo de se preparar antes; **FURTIVIDADE** pode ser a melhor escolha quando você
 precisa se aproximar dos oponentes e permanecer em silêncio é o mais importante — por exemplo,
@@ -637,7 +637,7 @@ seus heróis-jogadores estão fazendo para alcançar o efeito descrito pela Tare
 **INTIMIDAR INIMIGO — Postura Avançada:** guerreiros valentes lutando em postura Avançada podem
 tentar intimidar seus inimigos, para fazê-los vacilar, romper formação ou mesmo fugir.
 
-> Para isso, o jogador que age faz uma rolagem de **IMPONÊNCIA** como ação principal da rodada.
+> Para isso, o jogador que age faz uma rolagem de **FASCÍNIO** como ação principal da rodada.
 
 Com uma rolagem bem-sucedida, o moral do inimigo foi abalado e todos os oponentes com Vigor 1
 ficam Exaustos em sua próxima rolagem de ataque. Se a rolagem produzir um único Ícone de
@@ -649,7 +649,7 @@ luta.
 atentos aos seus arredores, e podem tentar reunir seus companheiros quando a batalha os está
 desgastando. Apenas um herói-jogador pode escolher Reunir Companheiros em uma dada rodada.
 
-> Para isso, o jogador que age faz uma rolagem de **ENCORAJAR** como ação principal da rodada.
+> Para isso, o jogador que age faz uma rolagem de **INDUÇÃO** como ação principal da rodada.
 
 Com uma rolagem bem-sucedida, todos os membros da Companhia lutando em postura Avançada
 *ganham (1d)* em suas rolagens de ataque na rodada seguinte. Se a rolagem produzir um único
@@ -669,7 +669,7 @@ Com uma rolagem bem-sucedida, o próximo ataque dirigido ao herói-jogador prote
 podem tomar tempo para mirar com cuidado e conseguir um disparo mais limpo em seus alvos com
 suas armas à distância.
 
-> Para isso, o jogador que age faz uma rolagem de **VASCULHAR** como ação principal da rodada.
+> Para isso, o jogador que age faz uma rolagem de **BUSCA** como ação principal da rodada.
 
 Com uma rolagem bem-sucedida, o atacante *ganha (1d)* em seu próximo ataque à distância, mais
 outro (1d) por cada Ícone de Sucesso rolado.
@@ -680,10 +680,10 @@ outro (1d) por cada Ícone de Sucesso rolado.
 > Azog, o grande Orc de Moria. Náin está Exausto, pois já vem lutando há longas horas,
 > enquanto Azog acaba de entrar na peleja. Movido pelo ódio e tentando compensar sua exaustão,
 > Náin avança em postura Avançada, tentando um grande golpe com sua picareta. Mas o monstro é
-> cheio de manha… usando sua habilidade Velocidade de Serpente, ele torna a rolagem de ataque
+> cheio de manha… usando sua habilidade Velocidade Serpentina, ele torna a rolagem de ataque
 > Desfavorecida! Azog salta para o lado, de modo que a picareta acerta a pedra onde Azog estava
 > um instante antes. Agora que Náin perdeu o equilíbrio, Azog desfere sua espada com Força
-> Horrível, golpeando-lhe o pescoço. Azog acerta Náin com um Golpe Pesado valendo 12 pontos de
+> Horrenda, golpeando-lhe o pescoço. Azog acerta Náin com um Golpe Pesado valendo 12 pontos de
 > dano e obtendo um Golpe Perfurante!*
 
 ---
@@ -750,8 +750,8 @@ de ajuda esperam receber? Como pretendem obtê-la? Há algo que estejam disposto
 
 | Etapa | Descrição | Habilidades Úteis (exemplos) |
 |---|---|---|
-| Introdução | O porta-voz apresenta a Companhia. O resultado da rolagem define o limite de tempo do conselho. | IMPONÊNCIA para impressionar estranhos rapidamente, revelando muito sobre si mesmo; CORTESIA para pedir apoio, especialmente de amigos; ENIGMA para extrair informação sem revelar demais. |
-| Interação | A parte principal de um conselho. Rolagens bem-sucedidas se acumulam para igualar ou exceder a Resistência. | ENCORAJAR para se dirigir a multidões e elevar os ânimos; PERSPICÁCIA para observar e avaliar; PERSUASÃO para defender um argumento; ENIGMA para colher informações; CANTO para conquistar aprovação. |
+| Introdução | O porta-voz apresenta a Companhia. O resultado da rolagem define o limite de tempo do conselho. | FASCÍNIO para impressionar estranhos rapidamente, revelando muito sobre si mesmo; CORTESIA para pedir apoio, especialmente de amigos; ENIGMA para extrair informação sem revelar demais. |
+| Interação | A parte principal de um conselho. Rolagens bem-sucedidas se acumulam para igualar ou exceder a Resistência. | INDUÇÃO para se dirigir a multidões e elevar os ânimos; DISCERNIMENTO para observar e avaliar; PERSUASÃO para defender um argumento; ENIGMA para colher informações; MÚSICA para conquistar aprovação. |
 
 #### 2 — Introdução
 
@@ -769,9 +769,9 @@ grupo para apresentar seu caso, antes de serem finalmente dispensados.
 
 Perícias particularmente úteis para montar uma boa Introdução:
 
-- **IMPONÊNCIA** — uma rolagem de Imponência transmite uma mensagem poderosa usando poucas
+- **FASCÍNIO** — uma rolagem de Fascínio transmite uma mensagem poderosa usando poucas
   palavras. Heróis-jogadores podem usá-la para impressionar alguém e reverter uma reação inicial
-  negativa, ou para estabelecer rapidamente os termos da discussão que vem. Usar Imponência tem
+  negativa, ou para estabelecer rapidamente os termos da discussão que vem. Usar Fascínio tem
   uma desvantagem, porém, pois o porta-voz menciona voluntariamente a linhagem, os feitos e
   outras informações pessoais dos vários membros da Companhia para obter efeito pleno.
 - **CORTESIA** — uma apresentação polida é a melhor forma de suavizar uma relação antes de pedir
@@ -808,23 +808,23 @@ obtidas pela Companhia (cada Ícone de Sucesso rolado conta como um sucesso adic
 
 **PERÍCIAS ÚTEIS** durante a Interação:
 
-- **ENCORAJAR** — exige uma multidão de ouvintes, ou ao menos a atenção completa de um único
-  indivíduo; heróis-jogadores podem tentar uma rolagem de Perícia usando ENCORAJAR para elevar o
+- **INDUÇÃO** — exige uma multidão de ouvintes, ou ao menos a atenção completa de um único
+  indivíduo; heróis-jogadores podem tentar uma rolagem de Perícia usando INDUÇÃO para elevar o
   ânimo de uma comunidade ameaçada, ou de um líder desanimado. O objetivo da tentativa de
   Perícia deve ser óbvio, do contrário, mesmo que a rolagem seja um sucesso, seu efeito será
   fraco.
-- **PERSPICÁCIA** — útil para avaliar as emoções de quem quer que a Companhia esteja
+- **DISCERNIMENTO** — útil para avaliar as emoções de quem quer que a Companhia esteja
   interagindo, possivelmente revelando propósitos não declarados ou sentimentos ocultos.
 - **PERSUASÃO** — heróis-jogadores podem usar sua persuasão para conquistar as mentes de seus
   ouvintes, ou para fortalecer seu domínio sobre uma audiência já cativada. Ao contrário de
-  ENCORAJAR, PERSUASÃO pode ser usada discretamente durante qualquer tipo de interação social.
+  INDUÇÃO, PERSUASÃO pode ser usada discretamente durante qualquer tipo de interação social.
 - **ENIGMA** — pode ser usada em um ambiente social, seja para jogar formalmente o antigo jogo
   dos enigmas — praticado e respeitado até pelas mais improváveis criaturas malignas — seja para
   colher informações e notícias. Neste último caso, uma rolagem bem-sucedida de ENIGMA permite a
   um herói-jogador juntar todo tipo de fragmento que oradores incautos possam deixar escapar
   acidentalmente em sua conversa, ou simplesmente reunir fatos interessantes, tudo isso enquanto
   parece desinteressado ou despreocupado.
-- **CANTO** — uma boa canção ou melodia quase nunca está fora de lugar em um encontro social
+- **MÚSICA** — uma boa canção ou melodia quase nunca está fora de lugar em um encontro social
   descontraído, mas também pode ser um poderoso instrumento diplomático se o cantor encontrar a
   canção adequada ou entoar palavras bem escolhidas.
 
@@ -965,15 +965,15 @@ caminho uma série de eventos que representam ameaças e ocorrências inesperada
 
 > Os eventos acontecem em pontos específicos ao longo do caminho de jornada da Companhia. Para
 > determinar exatamente onde, o Guia da Companhia deve fazer um **Teste de Marcha**, rolando
-> **VIAJAR**.
+> **VIAGEM**.
 
 Tão logo a Companhia parta, o Guia faz um primeiro Teste de Marcha, e conta um número de
-hexágonos ao longo do caminho de jornada com base no resultado da rolagem de VIAJAR:
+hexágonos ao longo do caminho de jornada com base no resultado da rolagem de VIAGEM:
 
-- Se a rolagem de VIAJAR foi um **fracasso**, o evento ocorre a **2 hexágonos** de distância ao
+- Se a rolagem de VIAGEM foi um **fracasso**, o evento ocorre a **2 hexágonos** de distância ao
   longo do caminho de jornada no Verão e na Primavera, e a apenas **1 hexágono** de distância se
   for Inverno ou Outono.
-- Se a rolagem de VIAJAR foi um **sucesso**, o evento ocorre a uma distância de **3 hexágonos,
+- Se a rolagem de VIAGEM foi um **sucesso**, o evento ocorre a uma distância de **3 hexágonos,
   mais 1 por cada Ícone de Sucesso**.
 
 O Mestre encontra o ponto exato contando o número apropriado de hexágonos, começando da posição
@@ -1009,7 +1009,7 @@ jornada durar.
 - Ao fim da jornada, heróis-jogadores com uma montaria primeiro reduzem seu total de Fadiga pelo
   índice de Vigor (Vigour) de sua montaria.
 - Então, todos os heróis-jogadores podem reduzir ainda mais sua Fadiga acumulada com uma rolagem
-  de **VIAJAR**. Um sucesso reduz o total de Fadiga de um herói-jogador em 1, mais 1 ponto por
+  de **VIAGEM**. Um sucesso reduz o total de Fadiga de um herói-jogador em 1, mais 1 ponto por
   cada Ícone de Sucesso rolado.
 
 Qualquer Fadiga restante é registrada nas fichas de personagem dos heróis-jogadores afetados.
@@ -1071,9 +1071,9 @@ tabela de Alvo do Evento abaixo.
 
 | Resultado do Dado de Sucesso | Alvo | Perícias |
 |---|---|---|
-| 1–2 | Batedores | EXPLORAR |
-| 3–4 | Vigias | PERCEPÇÃO |
-| 5–6 | Caçadores | CAÇA |
+| 1–2 | Batedores | EXPLORAÇÃO |
+| 3–4 | Vigias | VIGILÂNCIA |
+| 5–6 | Caçadores | CAÇADA |
 
 #### 2 — Determinar o Evento
 

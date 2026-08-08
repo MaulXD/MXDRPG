@@ -29,7 +29,7 @@ acumula funções (ainda assim, só um Guia).
 
 ## JOR-P02 — Batedor
 
-- **Perícia:** Explorar
+- **Perícia:** Exploração
 - **Único:** não
 - **Ordem:** 2
 
@@ -39,7 +39,7 @@ acumula funções (ainda assim, só um Guia).
 
 ## JOR-P03 — Olheiro
 
-- **Perícia:** Percepção
+- **Perícia:** Vigilância
 - **Único:** não
 - **Ordem:** 3
 
@@ -49,7 +49,7 @@ acumula funções (ainda assim, só um Guia).
 
 ## JOR-P04 — Caçador
 
-- **Perícia:** Caça
+- **Perícia:** Caçada
 - **Único:** não
 - **Ordem:** 4
 
@@ -99,7 +99,7 @@ acumula funções (ainda assim, só um Guia).
 ## JOR-A01 — Alvo do evento: Batedores
 
 - **Rolagem (Dado de Sucesso):** 1–2
-- **Perícia testada:** Explorar
+- **Perícia testada:** Exploração
 
 > Descrição: O Mestre rola um Dado de Sucesso para escolher quem enfrenta o evento, entre os
 > heróis que cobrem os papéis de Batedor, Olheiro e Caçador.
@@ -109,14 +109,14 @@ acumula funções (ainda assim, só um Guia).
 ## JOR-A02 — Alvo do evento: Olheiros
 
 - **Rolagem (Dado de Sucesso):** 3–4
-- **Perícia testada:** Percepção
+- **Perícia testada:** Vigilância
 
 ---
 
 ## JOR-A03 — Alvo do evento: Caçadores
 
 - **Rolagem (Dado de Sucesso):** 5–6
-- **Perícia testada:** Caça
+- **Perícia testada:** Caçada
 
 ---
 

@@ -100,7 +100,7 @@ torna quase impossível que servos do Inimigo ou andarilhos casuais encontrem o 
 de Elrond ou um guia adequado, o terreno parece desprovido de marcos e até viajantes experientes se
 perdem.
 
-- **Regra:** Quando a companhia se aproxima do vale, o Batedor deve fazer uma rolagem de VASCULHAR
+- **Regra:** Quando a companhia se aproxima do vale, o Batedor deve fazer uma rolagem de BUSCA
   para achar a trilha de pedras brancas. Se o Batedor for Elfo, a rolagem *ganha (1d)*. Se nunca
   esteve em Valfenda antes, a rolagem *perde (1d)*. O Batedor pode fazer duas rolagens por dia; cada
   conjunto de falhas representa um dia gasto procurando entre ravinas e barrancos, ou contornando
@@ -421,14 +421,14 @@ sublinhadas e marque-a como Favorecida.
 
 | Perícia | Grad. | Perícia | Grad. | Perícia | Grad. |
 |---|---|---|---|---|---|
-| IMPONÊNCIA | 2 | ENCORAJAR | 0 | PERSUASÃO | 0 |
+| FASCÍNIO | 2 | INDUÇÃO | 0 | PERSUASÃO | 0 |
 | ATLETISMO | 2 | VIAGEM | 1 | FURTIVIDADE | 0 |
-| **PERCEPÇÃO** (sublinhada) | 2 | **CURA** (sublinhada) | 2 | VASCULHAR | 0 |
-| CAÇA | 0 | CORTESIA | 1 | EXPLORAR | 0 |
+| **VIGILÂNCIA** (sublinhada) | 2 | **CURA** (sublinhada) | 2 | BUSCA | 0 |
+| CAÇADA | 0 | CORTESIA | 1 | EXPLORAÇÃO | 0 |
 | CANÇÃO | 2 | BATALHA | 2 | ENIGMAS | 0 |
-| OFÍCIO | 2 | — | — | SABER | 3 |
+| OFÍCIO | 2 | — | — | HISTÓRIA | 3 |
 
-(Escolha PERCEPÇÃO ou CURA como Favorecida.)
+(Escolha VIGILÂNCIA ou CURA como Favorecida.)
 
 ### Proficiências de Combate
 
@@ -467,7 +467,7 @@ Elfos-ferreiros de Eregion.
 
 - No próximo Yule, você pode acrescentar uma única Recompensa Encantada de fabricação Élfica a uma
   arma de sua escolha, ou criar um Artefato Maravilhoso (sua escolha).
-- Além disso, durante qualquer Fase de Companhia você pode fazer uma rolagem de OFÍCIO ou SABER. Se
+- Além disso, durante qualquer Fase de Companhia você pode fazer uma rolagem de OFÍCIO ou HISTÓRIA. Se
   tiver sucesso, aprende tudo o que há para descobrir sobre as qualidades de um único Artefato
   Maravilhoso ou Item Prodigioso na posse da Companhia (como se tivesse escolhido a Empreitada
   Estudar Itens Mágicos, exceto que estuda um único item).
