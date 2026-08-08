@@ -645,6 +645,95 @@ const AVENTURAS = [
       );
     },
   },
+  {
+    arquivo: "21-wilderland-07-a-torre-de-urzal-seco.md",
+    titulo: "A Torre de Urzal Seco",
+    cvrObrigatorias: {
+      "CVR-004": "Trolls e o dragão são de Ódio",
+      "CVR-006": "a Armadura de Raenar, com dois valores",
+      "CVR-010": "Agarrar Vítima que virou Dano Especial",
+      "CVR-012": "as Habilidades Sinistras reaproveitadas, e as que viraram lacuna",
+      "CVR-013": "as perícias renomeadas",
+      "CVR-016": "o NA fixo que some",
+      "CVR-017": "a dificuldade que vira Complicação/Vantagem",
+      "CVR-018": "os graus de sucesso",
+      "CVR-019": "as ações prolongadas que viram Empreitada de Perícia",
+      "CVR-020": "as Tolerâncias que viram Conselho — inclusive a do dragão",
+      "CVR-021": "os Eventos de Jornada",
+      "CVR-024": "os Testes de Sombra com fonte declarada",
+      "CVR-028": "a tabela de queda, lida ao contrário",
+      "CVR-030": "as lacunas de Vigor",
+    },
+    adversarios: {
+      "Soldado Orc": "soldado-orc",
+      "Arqueiro Goblin": "arqueiro-goblin",
+      "Guarda-costas Grande Orc": "guarda-costas-grande-orc",
+      "Grande Troll das Cavernas": "grande-troll-das-cavernas",
+    },
+    /* Troll da Neve e Raenar. */
+    blocosEsperados: 2,
+    extra(AV) {
+      for (const [quem, campo, valor] of [
+        ["Troll da Neve", "Nível de Atributo", "8"],
+        ["Troll da Neve", "Resistência", "80"],
+        ["Troll da Neve", "Ódio", "8"],
+        ["Troll da Neve", "Bloqueio", "6"],
+        ["Raenar", "Nível de Atributo", "10"],
+        ["Raenar", "Resistência", "120"],
+        ["Raenar", "Ódio", "12"],
+        ["Raenar", "Bloqueio", "12"],
+      ]) {
+        ok(`  ${quem}: ${campo} = ${valor}`, new RegExp(`\\| ${campo} \\| ${valor} \\|`).test(AV));
+      }
+
+      const vigores = [...AV.matchAll(/\| Vigor \| ([^|]+) \|/g)].map((m) => m[1].trim());
+      ok(
+        "  os dois blocos declaram o Vigor como lacuna",
+        vigores.length === 2 && vigores.every((v) => v.startsWith("**lacuna")),
+        `achei ${JSON.stringify(vigores)} — fugir ao ser ferido não é número de Ferimentos`
+      );
+
+      /* A Armadura de Raenar tem DOIS valores, e a habilidade Ponto Fraco é
+         quem decide qual. Se a linha virar um número só, a regra some. */
+      ok(
+        "  a Armadura de Raenar guarda os dois valores",
+        /\| Armadura \| 6 \(\*\*1\*\* no ponto fraco\) \|/.test(AV) && /Ponto Fraco/.test(AV),
+        "o original escreve 6d/1d* — o asterisco é o ponto fraco"
+      );
+
+      /* Habilidades que vêm do bestiário. */
+      for (const hab of ["Força Horrenda", "Infundir Medo", "Couro Grosso"]) {
+        ok(
+          `  "${hab}" existe no bestiário e é usada aqui`,
+          new RegExp(`name: "${hab}"`).test(ADVERSARIES) && AV.includes(hab)
+        );
+      }
+      /* "Agarrar Vítima" NÃO é habilidade na 2ª edição: é Dano Especial. */
+      ok(
+        "  Agarrar Vítima virou o Dano Especial Agarrar",
+        /specialDamage: \["Agarrar"\]/.test(ADVERSARIES) && /\| Agarrar \|/.test(AV),
+        "não é habilidade na 2ª edição — é opção gasta com ícone de Sucesso"
+      );
+      ok(
+        '  "Investida Selvagem" e "Encarnação do Horror" continuam lacuna',
+        /"Investida Selvagem"\*\* e \*\*"Encarnação do Horror"/.test(AV) &&
+          !/name: "Investida Selvagem"/.test(ADVERSARIES) &&
+          !/name: "Encarnação do Horror"/.test(ADVERSARIES)
+      );
+
+      /* O Conselho com um adversário — o mais estranho da campanha. */
+      ok(
+        "  a negociação com o dragão é declarada como Conselho",
+        /Conselho com um dragão/.test(AV) && /a audiência é um adversário/.test(AV)
+      );
+
+      /* O teste de medo virou Teste de Sombra, como nas aventuras 4 e 6. */
+      ok(
+        "  o teste de medo virou Teste de Sombra, e o efeito é Arrasado",
+        /a 2ª edição não tem teste de medo/.test(AV) && /Arrasado/.test(AV)
+      );
+    },
+  },
 ];
 
 /* ══════════════════════════════════════════════════════════════════════
