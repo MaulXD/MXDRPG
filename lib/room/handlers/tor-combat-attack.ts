@@ -27,6 +27,14 @@ export type TorAttackExecuteOpts = {
   weaponId?: string;
   /** Só atacante kind:"adversary" — id da ação em torCombat.actions (padrão: a primeira). */
   actionId?: string;
+  /**
+   * Só atacante kind:"adversary" — o Mestre gasta 1 de Ódio/Resolução para o
+   * adversário *ganhar (1d)* nesta rolagem (08-mestre-e-adversarios.md).
+   *
+   * É opção, nunca automático: o ponto pode valer mais numa Habilidade Sinistra
+   * mais adiante na luta, e essa escolha é do Mestre.
+   */
+  spendHate?: boolean;
   room?: RoomState;
 };
 
@@ -49,6 +57,11 @@ function countEngagingFoes(tokens: BattleToken[], hero: BattleToken): number {
       !t.torCombat.eliminated &&
       axialDistance(t.axial, hero.axial) === 1
   ).length;
+}
+
+/** Ódio (lacaios do Inimigo) × Resolução (Homens Maus) — muda só o nome na mesa. */
+export function hateLabel(kind: "hate" | "resolve" | undefined): string {
+  return kind === "resolve" ? "Resolução" : "Ódio";
 }
 
 function severityToInjuryText(severity: NonNullable<ReturnType<typeof resolveTorAttack>["severity"]>): string {
@@ -101,6 +114,8 @@ export async function executeRoomTorAttack(
    * Arco do bestiário. Ação sem a marca conta como corpo a corpo.
    */
   let attackIsRanged = false;
+  /** O Mestre gastou 1 de Ódio/Resolução neste ataque — desconta ao persistir. */
+  let hateSpent = false;
   let weaponDamage: number;
   let weaponInjury: number | null;
   let weaponLabel: string;
@@ -156,6 +171,25 @@ export async function executeRoomTorAttack(
     weaponDamage = action.damage;
     weaponInjury = action.injury;
     weaponLabel = action.label;
+
+    // "O Mestre pode reduzir o Ódio ou a Resolução de um adversário para fazê-lo
+    // ganhar (1d) em uma rolagem durante o combate." O gasto é (1d) de Dado de
+    // SUCESSO — mexe no rank, nunca em Favorecida.
+    // Exausto zera Dados de Sucesso de 1 a 3 — vale pro adversário igual ao
+    // herói. A flag é marcada na virada de rodada (combat-turn.ts), não aqui.
+    attackerWeary = Boolean(atkCombat.weary);
+
+    if (opts.spendHate) {
+      const available = atkCombat.hate ?? 0;
+      if (available <= 0) {
+        return {
+          ok: false,
+          error: `${attackerToken.name} não tem ${hateLabel(atkCombat.hateKind)} para gastar`,
+        };
+      }
+      attackerRank += 1;
+      hateSpent = true;
+    }
   }
 
   let defenderWeary = false;
@@ -190,6 +224,10 @@ export async function executeRoomTorAttack(
       }).favoured;
       defenderHeroSheetId = defSheet.id;
     }
+  } else if (defCombat.kind === "adversary") {
+    // Adversário Exausto também rola Proteção pior — a condição não é privilégio
+    // do herói. Sem isto, zerar o Ódio de um Troll não mudava nada na defesa dele.
+    defenderWeary = Boolean(defCombat.weary);
   }
 
   const result = resolveTorAttack({
@@ -228,6 +266,15 @@ export async function executeRoomTorAttack(
   const patchedDefenderToken = applyTorAttackResultToDefender(defenderToken, result);
   const tokens = [...room.scene.tokens];
   tokens[defIdx] = patchedDefenderToken;
+  // Desconta o ponto DEPOIS de resolver, e a partir do array já copiado: o
+  // atacante pode ser o mesmo índice de nada mais, mas escrever antes faria a
+  // cópia do defensor sobrescrever o desconto se os dois fossem tocados juntos.
+  if (hateSpent && atkCombat.hate != null) {
+    tokens[atkIdx] = {
+      ...tokens[atkIdx]!,
+      torCombat: { ...atkCombat, hate: Math.max(0, atkCombat.hate - 1) },
+    };
+  }
   room.scene = { ...room.scene, tokens };
 
   // Sincroniza Resistência/Ferida de volta pra ficha — só se o requisitante tiver
@@ -253,8 +300,11 @@ export async function executeRoomTorAttack(
 
   // Sem nomear a Virtude, a mensagem diz "(Favorecida)" e ninguém na mesa sabe
   // por quê — some no meio de Exausto/Arrasado/postura.
-  const weaponTxt =
-    attackerFavouredBy.length > 0 ? `${weaponLabel}, ${attackerFavouredBy.join(", ")}` : weaponLabel;
+  const notas = [
+    ...attackerFavouredBy,
+    ...(hateSpent ? [`gastou 1 de ${hateLabel(atkCombat.hateKind)} — ganha (1d)`] : []),
+  ];
+  const weaponTxt = notas.length > 0 ? `${weaponLabel}, ${notas.join(", ")}` : weaponLabel;
   const message = formatTorAttackMessage(attackerToken.name, defenderToken.name, weaponTxt, result);
   const { sides, value } = featDieRollPayload(result.attackRoll.featDie);
   appendRoomChatMessage(room, {

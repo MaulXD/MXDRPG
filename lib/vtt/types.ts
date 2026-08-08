@@ -148,6 +148,38 @@ export type TorCombatTokenFields = {
   /** Só adversário — Ferimentos acumulados; ao alcançar o Vigor, é eliminado. */
   wounds?: number;
   /**
+   * Só adversário — Ódio (lacaios do Inimigo) ou Resolução (Homens Maus e outros
+   * não monstruosos). Mesma função que a Esperança tem para o herói: o Mestre
+   * gasta para *ganhar (1d)* numa rolagem, e várias Habilidades Sinistras exigem
+   * o gasto (08-mestre-e-adversarios.md).
+   *
+   * Ficava só no bestiário e nunca chegava à mesa: o Mestre não tinha onde ver
+   * nem como gastar, então metade do bloco do adversário era decorativa.
+   */
+  hate?: number;
+  hateMax?: number;
+  /**
+   * Só adversário — Exausto: "se uma criatura começa uma rodada sem pontos de
+   * Ódio ou Resolução, ela é considerada Exausta" (08-mestre-e-adversarios.md).
+   *
+   * Guardado no token, e não derivado de `hate <= 0` na hora da rolagem, porque
+   * o livro garante ao Mestre o direito de gastar o ÚLTIMO ponto numa Habilidade
+   * Sinistra. Derivar na hora puniria esse gasto na mesma rodada; a Exaustão só
+   * vale a partir da rodada seguinte.
+   */
+  weary?: boolean;
+  /** Qual dos dois nomes usar na tela — muda o texto, não a mecânica. */
+  hateKind?: "hate" | "resolve";
+  /**
+   * Só adversário — Habilidades Sinistras do bloco, como texto.
+   *
+   * Não são mecanizadas de propósito: quase todas são gastos OPCIONAIS ("gaste 1
+   * de Ódio para…"), decisão do Mestre. Mesmo critério das Virtudes — o que é
+   * opcional não dispara sozinho. O que o app faz é pôr o texto e o contador na
+   * frente de quem decide.
+   */
+  fellAbilities?: import("@/lib/character/um-anel/adversary-types").TorAdversaryFellAbility[];
+  /**
    * Postura de Combate do herói (Avançada/Aberta/Defensiva/Retaguarda).
    *
    * Opcional de propósito: token gravado antes deste campo simplesmente lê como

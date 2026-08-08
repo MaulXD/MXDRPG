@@ -62,11 +62,37 @@ function resetChiPoolsForCombat(room: RoomState): void {
   room.scene = { ...room.scene, tokens };
 }
 
+/**
+ * Um Anel — "se uma criatura começa uma rodada sem pontos de Ódio ou Resolução,
+ * ela é considerada Exausta" (08-mestre-e-adversarios.md).
+ *
+ * Roda na virada de rodada, e não na hora da rolagem, porque o livro garante ao
+ * Mestre o direito de gastar o último ponto numa Habilidade Sinistra: derivar de
+ * `hate <= 0` na hora puniria esse gasto já na mesma rodada.
+ *
+ * Guardado por `rpgSystemId` — isolamento de hub: nenhuma mesa do Eldarin toca
+ * neste campo.
+ */
+function applyTorHateWearinessOnNewRound(room: RoomState): void {
+  if (room.rpgSystemId !== "um-anel") return;
+  let changed = false;
+  const tokens = room.scene.tokens.map((t) => {
+    const c = t.torCombat;
+    if (c?.kind !== "adversary" || c.hate == null) return t;
+    const weary = c.hate <= 0;
+    if (Boolean(c.weary) === weary) return t;
+    changed = true;
+    return { ...t, torCombat: { ...c, weary } };
+  });
+  if (changed) room.scene = { ...room.scene, tokens };
+}
+
 function stepToNextCombatant(room: RoomState, notices: string[]): void {
   const prevRound = room.combat.round;
   clearActiveTurnPaGrant(room);
   room.combat = nextTurn(room.combat);
   if (room.combat.round > prevRound) {
+    applyTorHateWearinessOnNewRound(room);
     pushRoundCheckpoint(room);
     const tick = tickAllTimedEffectsOnNewRound(room.scene.tokens, prevRound);
     const tokens = tick.tokens.map((t) => tickDeathTrackOnRound(t));

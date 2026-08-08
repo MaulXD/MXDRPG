@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { assertTokenControl, chatRoleForUser } from "@/lib/auth/authorize-room";
-import { canBypassCombatTurn } from "@/lib/auth/room-access";
+import { canBypassCombatTurn, canManageRoom } from "@/lib/auth/room-access";
 import { effectiveBypassTurn } from "@/lib/combat/turn-guard";
 import { getSession } from "@/lib/auth/session";
 import { safeMutationDeltaResponse } from "@/lib/room/mutation-response";
@@ -21,6 +21,8 @@ type Body = {
   /** O Um Anel — arma equipada (herói) ou ação do adversário. */
   torWeaponId?: string;
   torActionId?: string;
+  /** O Um Anel — Mestre gasta 1 de Ódio/Resolução pro adversário ganhar (1d). */
+  torSpendHate?: boolean;
 };
 
 function authorFromSession(
@@ -90,6 +92,12 @@ export async function POST(req: Request, { params }: Params) {
         ? await executeRoomTorAttack(roomId, attackerTokenId, defenderTokenId ?? defenderTokenIds![0]!, author, {
             weaponId: body.torWeaponId?.trim(),
             actionId: body.torActionId?.trim(),
+            // Gasto de Ódio/Resolução é ato do Mestre — só vale pra quem
+            // gerencia a mesa. Sem isso um jogador esvaziaria o Ódio do
+            // adversário chamando a rota direto. NÃO usar canBypassCombatTurn
+            // aqui: hoje é um stub que devolve false sempre, e o gasto nunca
+            // funcionaria.
+            spendHate: body.torSpendHate === true && canManageRoom(room, session?.user ?? null),
             room,
           })
         : await executeRoomAttack(
