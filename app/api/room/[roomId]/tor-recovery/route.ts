@@ -11,6 +11,7 @@ const ACTIONS: TorRecoveryAction[] = [
   "rest",
   "madness",
   "heal-scar",
+  "short-rest",
   "journey-end",
 ];
 
