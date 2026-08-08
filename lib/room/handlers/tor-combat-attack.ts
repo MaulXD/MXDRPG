@@ -561,8 +561,26 @@ export async function executeRoomTorAttack(
 
   // Sem nomear a Virtude, a mensagem diz "(Favorecida)" e ninguém na mesa sabe
   // por quê — some no meio de Exausto/Arrasado/postura.
+  /**
+   * Malfeitoria: "o ato de atacar ou matar um adversário com **Resolução**
+   * deveria sempre ser avaliado pelo Mestre como possível Malfeitoria"
+   * (08-mestre-e-adversarios.md §Ódio vs Resolução).
+   *
+   * O app **não** atribui Sombra sozinho — quem julga é o Mestre, e o próprio
+   * livro manda advertir os jogadores antes. Mas sem o aviso a regra fica
+   * invisível e nunca acontece na mesa: um Rufião morto é indistinguível de um
+   * Orc morto no chat. Então avisa, e o Mestre decide no painel de Sombra.
+   */
+  const misdeedWarning =
+    atkCombat.kind === "hero" && defCombat.kind === "adversary" && defCombat.hateKind === "resolve"
+      ? result.dying
+        ? `matar ${defenderToken.name} (Resolução) pode ser Malfeitoria — o Mestre avalia`
+        : `atacar ${defenderToken.name} (Resolução) pode ser Malfeitoria — o Mestre avalia`
+      : null;
+
   const notas = [
     ...attackerFavouredBy,
+    ...(misdeedWarning ? [misdeedWarning] : []),
     ...(hopeBonusDice > 0
       ? [`gastou 1 de Esperança — ganha (${hopeBonusDice}d)${hopeBonusDice >= 2 ? ", Inspirado" : ""}`]
       : []),
