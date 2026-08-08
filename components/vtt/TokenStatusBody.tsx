@@ -7,6 +7,7 @@ import { TokenConditionsPanel } from "@/components/vtt/TokenConditionsPanel";
 import { TokenDelegatePanel } from "@/components/vtt/TokenDelegatePanel";
 import { PaHudMeter } from "@/components/vtt/PaHudMeter";
 import { formatTokenHpLine, hpBarColor, hpRatio } from "@/lib/vtt/token-hp-display";
+import { TOR_DEFAULT_STANCE, isTorStance, torStanceLabel } from "@/lib/combat/um-anel/stances";
 
 type Props = {
   token: BattleToken;
@@ -49,6 +50,14 @@ export function TokenStatusBody({
             <span className="vtt-status-modal-stat">CA {token.defesa}</span>
           ) : null}
           {!token.torCombat ? <PaHudMeter token={token} /> : null}
+          {/* A postura muda quem pode atacar quem (Retaguarda) e quantos Dados
+              de Sucesso a rolagem leva — a mesa inteira precisa enxergar, não
+              só quem abriu o popup de ataque daquele herói. */}
+          {token.torCombat?.kind === "hero" ? (
+            <span className="vtt-status-modal-stat">
+              Postura {torStanceLabel(isTorStance(token.torCombat.stance) ? token.torCombat.stance : TOR_DEFAULT_STANCE)}
+            </span>
+          ) : null}
         </div>
       ) : null}
 

@@ -104,6 +104,98 @@ npm run sync:data:check       # após editar livros/
 
 ---
 
+### 2026-08-08 — Posturas de Combate chegam à mesa (D17 sai do papel)
+
+**Pedido:** continuar o loop.
+
+**Passo a passo:**
+
+1. **Diagnóstico.** `lib/combat/um-anel/stances.ts` estava pronto e testado desde
+   o D17 — e era **código morto**. A palavra `stance` não aparecia em lugar
+   nenhum de `lib/room/`: sem campo no token, sem rota, sem UI. Todo ataque
+   resolvia como Aberta × Aberta, então Avançada, Defensiva e Retaguarda não
+   existiam na prática. E o motor passava nos testes o tempo todo — teste de
+   motor puro não pega fiação desligada, que era exatamente o problema.
+
+2. **Decisão.** Campo `stance` **opcional** no token: quem foi gravado antes lê
+   como Aberta, que é neutra em todos os modificadores, então nenhuma sala salva
+   precisa de migração. O teste fixa essa neutralidade — se alguém der um bônus à
+   Aberta, muda em silêncio o resultado de salas antigas.
+
+   Rota própria `/tor-stance`, **sem** `requireRoomManage`: a postura é escolha do
+   jogador ("todos os jogadores selecionam uma postura para seus heróis no início
+   de cada rodada"), e exigir Mestre tiraria a decisão de quem joga. Quem valida é
+   o handler, conferindo o dono da ficha. O `override` do requisito da Retaguarda
+   ("o Mestre pode liberar por terreno") só é honrado para quem gerencia a mesa —
+   sem isso um jogador burlaria o limite chamando a API direto.
+
+3. **Implementação.** Token → rota → handler → motor, e agora `attackIsRanged`
+   pode ser ligado, o que a rodada anterior tinha bloqueado de propósito. O
+   seletor entra no popup de ataque com a tarefa de combate de cada postura, e a
+   postura aparece no status do token — quem só olha o token precisa ver, senão
+   descobre que o alvo estava em Retaguarda só quando o ataque é barrado.
+
+   **Engajamento.** A Defensiva perde 1d por oponente que engaja. O livro trata
+   engajamento de forma abstrata; aqui a mesa é posicional, então a leitura do app
+   é **célula adjacente** — é a única definição observável no mapa. Sem ela a
+   Defensiva não teria custo nenhum e seria estritamente melhor que a Aberta.
+
+4. **Auditoria da rodada.** Três achados e um falso alarme evitado:
+
+   - **Adversário com Arco não alcançava a Retaguarda.** `TorAdversaryAction` não
+     distinguia alcance, então todo adversário contava como corpo a corpo — e o
+     **Arqueiro Goblin** ficava sem poder atingir justamente o alvo que é o dele.
+     Marquei as quatro ações de Arco do bestiário com `ranged`.
+   - **"Preparar Disparo" × "Preparar Tiro".** O capítulo 6, que *descreve* a
+     tarefa, usava um nome; o glossário, o compêndio, `stances.ts` e a Virtude
+     Arco Mortal usavam outro — quem lesse a Virtude não achava a tarefa no
+     capítulo. Mesma classe do "Porrete".
+   - **Falso alarme conferido antes de virar bug:** os limites de engajamento
+     (3 heróis por inimigo humano, 6 por inimigo grande) pareciam brigar com o
+     "três aventureiros para um inimigo humano, cinco para um maior" do texto de
+     Retaguarda. São regras diferentes — engajamento × relaxamento da Retaguarda.
+     Nada a corrigir.
+
+5. **Validação.** `npx tsc --noEmit` limpo · `npm run build` compila, com a rota
+   `/api/room/[roomId]/tor-stance` registrada · `npm run test` verde com **1227
+   asserções**.
+
+**Erro cometido e contido:** ao marcar as ações de Arco, testei a asserção
+negativa com um `sed` largo que casou `specialDamage: ["Perfurar"] }` em toda
+ação — marcou Lança, Mordida e Presas como armas à distância. A asserção
+"nenhuma ação corpo a corpo virou à distância" pegou na hora. Restaurei do git e
+reapliquei com o script preciso (que aborta se não fizer exatamente 4 trocas).
+É a terceira vez que um patch em massa por regex larga estraga um arquivo de
+dados — o antídoto que funcionou de novo foi a asserção que vigia o lado oposto
+da mudança.
+
+**Arquivos tocados:**
+- `lib/vtt/types.ts` — campo `stance` opcional no token
+- `lib/vtt/tor-player-token.ts` — herói nasce em Aberta
+- `lib/room/handlers/tor-stance.ts` — **novo**: troca de postura, permissão e requisito da Retaguarda
+- `app/api/room/[roomId]/tor-stance/route.ts` — **novo**: rota (apelido como autor, nunca nome real)
+- `lib/room/handlers/tor-combat-attack.ts` — posturas, alcance e contagem de engajadores no ataque
+- `lib/character/um-anel/adversary-types.ts` — `ranged` na ação de adversário
+- `lib/character/um-anel/adversaries.ts` — 4 ações de Arco marcadas
+- `hooks/useRoomSync.ts` — `postRoomTorStance`
+- `components/vtt/TorAttackPopup.tsx` — seletor de postura
+- `components/vtt/TokenStatusBody.tsx` — postura no status do token
+- `components/vtt/vtt.css` — `.vtt-field__hint`
+- `livros/um-anel/06-fases-de-aventura-combate.md` — "Preparar Tiro"
+- `scripts/verify-um-anel-posturas-mesa.mjs` — **novo**, 46 asserções (o caminho, não a tabela)
+- `scripts/verify-um-anel-virtudes.mjs` / `verify-um-anel-glossario.mjs` — asserções atualizadas
+- `package.json` — novo teste na suíte
+
+**Como testar:** colocar dois heróis e três adversários no mapa. Tentar
+Retaguarda com um herói só em corpo a corpo — tem de recusar dizendo quantos
+faltam. Pôr dois em corpo a corpo e o terceiro consegue recuar. Atacar o recuado
+com um Rufião de espada: barrado. Atacar com o Arqueiro Goblin: passa.
+
+**Falta:** Habilidades Sinistras; variante de NA 18; Elmo removível em combate;
+converter as campanhas de 1ª edição; glyph da runa de Gandalf.
+
+---
+
 ### 2026-08-08 — Virtudes entram nas rolagens + auditoria de terminologia (glossário e nomes de Virtude)
 
 **Pedido:** continuar e criar um loop.

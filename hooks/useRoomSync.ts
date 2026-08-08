@@ -715,6 +715,31 @@ export async function postRoomAttack(
   return res.json() as Promise<RoomApiPayload>;
 }
 
+/**
+ * Um Anel — troca a Postura de Combate de um herói.
+ *
+ * Rota própria e não `combat/attack`: a postura é escolhida no início da rodada,
+ * antes e independentemente de haver ataque, e vale mesmo para quem só se defende.
+ */
+export async function postRoomTorStance(
+  roomId: string,
+  tokenId: string,
+  stance: string,
+  opts: { override?: boolean } = {}
+) {
+  const res = await roomFetch(
+    `/api/room/${roomId}/tor-stance`,
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "same-origin",
+      body: JSON.stringify({ tokenId, stance, ...opts }),
+    },
+    "Falha ao trocar a postura"
+  );
+  return res.json() as Promise<RoomApiPayload>;
+}
+
 export async function postRoomAbility(
   roomId: string,
   attackerTokenId: string,

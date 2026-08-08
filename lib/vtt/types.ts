@@ -147,6 +147,17 @@ export type TorCombatTokenFields = {
   might?: number;
   /** Só adversário — Ferimentos acumulados; ao alcançar o Vigor, é eliminado. */
   wounds?: number;
+  /**
+   * Postura de Combate do herói (Avançada/Aberta/Defensiva/Retaguarda).
+   *
+   * Opcional de propósito: token gravado antes deste campo simplesmente lê como
+   * Aberta (`TOR_DEFAULT_STANCE`), que é a postura neutra — não altera nenhum
+   * número. Isso dispensa migração de sala salva.
+   *
+   * Adversário não escolhe postura: o livro diz que a mecânica retrata só o
+   * ponto de vista do herói (06-fases-de-aventura-combate.md §Stances).
+   */
+  stance?: import("@/lib/combat/um-anel/stances").TorStanceId;
   /** Adversário eliminado (Ferimentos = Vigor, ou Resistência 0). */
   eliminated: boolean;
 };

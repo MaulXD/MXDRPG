@@ -66,7 +66,7 @@ const TOR_ADVERSARIES_RAW: TorAdversaryStats[] = [
     description: "Um bandido covarde, pronto pra roubar uma vítima indefesa, mas capaz de emboscar um companheiro solitário com ajuda de outros.",
     actions: [
       { id: "porrete", label: "Porrete", rating: 2, damage: 3, injury: 12 },
-      { id: "arco", label: "Arco", rating: 2, damage: 3, injury: 14, specialDamage: ["Perfurar"] },
+      { id: "arco", label: "Arco", rating: 2, damage: 3, injury: 14, specialDamage: ["Perfurar"], ranged: true },
     ],
     fellAbilities: [
       { name: "Covarde", text: "Quando afetado pela Tarefa de Combate Intimidar Inimigo, a criatura também perde 1 Resolução." },
@@ -87,7 +87,7 @@ const TOR_ADVERSARIES_RAW: TorAdversaryStats[] = [
     description: "Mais resistente ou simplesmente mais feroz, um chefe é um arruaceiro que chegou ao topo com a ajuda de uma mente ou lâmina mais afiada.",
     actions: [
       { id: "espada-curta", label: "Espada Curta", rating: 3, damage: 3, injury: 16 },
-      { id: "arco", label: "Arco", rating: 2, damage: 3, injury: 14, specialDamage: ["Perfurar"] },
+      { id: "arco", label: "Arco", rating: 2, damage: 3, injury: 14, specialDamage: ["Perfurar"], ranged: true },
     ],
     fellAbilities: [
       { name: "Grito de Triunfo", text: "Gaste 1 Resolução pra restaurar 1 Resolução a todos os outros Rufiões na luta." },
@@ -108,7 +108,7 @@ const TOR_ADVERSARIES_RAW: TorAdversaryStats[] = [
     description: "Mais perigoso que um bandido comum, um assaltante de estrada está acostumado à vida selvagem e sabe lidar com vítimas armadas.",
     actions: [
       { id: "lanca", label: "Lança", rating: 3, damage: 4, injury: 14, specialDamage: ["Perfurar"] },
-      { id: "arco", label: "Arco", rating: 2, damage: 3, injury: 14, specialDamage: ["Perfurar"] },
+      { id: "arco", label: "Arco", rating: 2, damage: 3, injury: 14, specialDamage: ["Perfurar"], ranged: true },
     ],
     fellAbilities: [
       { name: "Velocidade de Serpente", text: "Quando alvo de um ataque, gaste 1 Resolução pra tornar a rolagem de ataque Desfavorecida." },
@@ -222,7 +222,7 @@ const TOR_ADVERSARIES_RAW: TorAdversaryStats[] = [
     armour: 1,
     description: "Um Arqueiro Goblin é um Orc escolhido por sua visão aguçada. Sua capacidade de enxergar no escuro, aliada a mãos firmes, permite atirar flechas com precisão de dia ou de noite.",
     actions: [
-      { id: "arco-de-chifre", label: "Arco de Chifre", rating: 3, damage: 3, injury: 14, specialDamage: ["Perfurar"] },
+      { id: "arco-de-chifre", label: "Arco de Chifre", rating: 3, damage: 3, injury: 14, specialDamage: ["Perfurar"], ranged: true },
       { id: "faca-serrilhada", label: "Faca Serrilhada", rating: 2, damage: 2, injury: 14 },
     ],
     fellAbilities: [

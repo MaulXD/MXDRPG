@@ -10,9 +10,12 @@ import { resolveTorAttack, formatTorAttackMessage } from "@/lib/combat/um-anel/r
 import { featDieRollPayload } from "@/lib/character/um-anel/dice";
 import { applyTorAttackResultToDefender } from "@/lib/combat/um-anel/vitals";
 import { appendRoomChatMessage } from "./chat";
+import { torTokenStance } from "./tor-stance";
+import { axialDistance } from "@/lib/vtt/grid-math";
 import { syncCombatOrderWithTokens } from "../combat-order";
 import { getRoom, persistRoom, toSnapshot } from "../internal/registry";
 import type { ChatMessage } from "../chat";
+import type { BattleToken } from "@/lib/vtt/types";
 import type { RoomSnapshot, RoomState } from "../types";
 
 export type TorAttackExecuteResult =
@@ -26,6 +29,27 @@ export type TorAttackExecuteOpts = {
   actionId?: string;
   room?: RoomState;
 };
+
+/**
+ * Quantos inimigos engajam este herói — só a postura Defensiva usa (perde 1d por
+ * engajador).
+ *
+ * O livro trata engajamento de forma abstrata; aqui a mesa é posicional, então a
+ * leitura do app é **célula adjacente**. É a única definição observável no mapa,
+ * e sem ela a Defensiva ficava sem custo nenhum: dava −1d a quem ataca o herói e
+ * não tirava nada dele, virando estritamente melhor que Aberta.
+ *
+ * Adversário em Retaguarda não existe, e eliminado não engaja.
+ */
+function countEngagingFoes(tokens: BattleToken[], hero: BattleToken): number {
+  return tokens.filter(
+    (t) =>
+      t.id !== hero.id &&
+      t.torCombat?.kind === "adversary" &&
+      !t.torCombat.eliminated &&
+      axialDistance(t.axial, hero.axial) === 1
+  ).length;
+}
 
 function severityToInjuryText(severity: NonNullable<ReturnType<typeof resolveTorAttack>["severity"]>): string {
   if (severity.kind === "moderado") return "Ferimento Moderado — sem efeito duradouro";
@@ -69,6 +93,14 @@ export async function executeRoomTorAttack(
   let attackerFavoured = false;
   /** Virtudes que favoreceram o ataque — vão pra mensagem, pro Mestre conferir. */
   let attackerFavouredBy: string[] = [];
+  /**
+   * Ataque à distância. Decide postura (Retaguarda só ataca/é atacada assim) e
+   * se o modificador de corpo a corpo da postura do alvo vale.
+   *
+   * Do lado do adversário vem de `action.ranged`, marcado nas quatro ações de
+   * Arco do bestiário. Ação sem a marca conta como corpo a corpo.
+   */
+  let attackIsRanged = false;
   let weaponDamage: number;
   let weaponInjury: number | null;
   let weaponLabel: string;
@@ -101,15 +133,12 @@ export async function executeRoomTorAttack(
       shadowScars: sheet.shadowScars,
       hopeMax: sheet.hope.max,
     });
+    attackIsRanged = Boolean(weapon.ranged);
     // Virtudes que tornam ESTE ataque Favorecido. Só aqui dá pra decidir: o
     // motor não conhece ficha, e a rolagem avulsa da ficha não conhece o alvo.
-    // Nota: passamos `ranged` só pra Virtude, não como `attackIsRanged` do
-    // motor — esse último também alimenta a checagem de postura, que ainda não
-    // é escolhida em lugar nenhum; ligá-lo agora barraria todo ataque de arco
-    // com "exige a postura de Retaguarda" (ver stances.ts::canAttackFromStance).
     const virtue = torVirtueRollEffect(sheet.virtues, {
       kind: "attack",
-      ranged: Boolean(weapon.ranged),
+      ranged: attackIsRanged,
       targetMight: defCombat.kind === "adversary" ? defCombat.might : undefined,
     });
     attackerFavoured = virtue.favoured;
@@ -121,6 +150,9 @@ export async function executeRoomTorAttack(
     const action = atkCombat.actions?.find((a) => a.id === opts.actionId) ?? atkCombat.actions?.[0];
     if (!action) return { ok: false, error: "Adversário sem ação de ataque" };
     attackerRank = action.rating;
+    // Adversário com Arco alcança quem está na Retaguarda — e só ele. É a outra
+    // metade da regra: "só pode ser alvo de atacantes usando armas similares".
+    attackIsRanged = Boolean(action.ranged);
     weaponDamage = action.damage;
     weaponInjury = action.injury;
     weaponLabel = action.label;
@@ -184,6 +216,13 @@ export async function executeRoomTorAttack(
     // quantos Ferimentos faltam pra abatê-lo e eliminaria no primeiro.
     defenderMight: defCombat.might,
     defenderWounds: defCombat.wounds,
+    // Posturas (D17). Adversário não escolhe postura — `resolveTorAttack` cai em
+    // Aberta, que é neutra, quando o campo não vem.
+    attackerStance: atkCombat.kind === "hero" ? torTokenStance(attackerToken) : undefined,
+    defenderStance: defCombat.kind === "hero" ? torTokenStance(defenderToken) : undefined,
+    attackIsRanged,
+    attackerEngagedByCount:
+      atkCombat.kind === "hero" ? countEngagingFoes(room.scene.tokens, attackerToken) : 0,
   });
 
   const patchedDefenderToken = applyTorAttackResultToDefender(defenderToken, result);
