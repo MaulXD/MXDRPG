@@ -118,6 +118,19 @@ export function isTorEyeSource(v: unknown): v is TorEyeSource {
   return typeof v === "string" && (TOR_EYE_SOURCES as readonly string[]).includes(v);
 }
 
+/**
+ * Face física do d12 que representa o Olho de Sauron.
+ *
+ * É por ela que o gancho automático reconhece um ⊘ numa rolagem: o que trafega
+ * do painel para o chat é a FACE (11/12), não o valor de jogo — o Olho vale zero
+ * e a Runa vale 10, então olhar o valor não distinguiria o Olho de um zero
+ * qualquer.
+ *
+ * Precisa bater com `featDiePhysicalFace` em lib/character/um-anel/dice.ts; o
+ * teste confere os dois lados.
+ */
+export const TOR_EYE_FEAT_FACE = 11;
+
 /* ══════════════════════════════════════════════════════════════════════
    Limiar da Caçada
    ══════════════════════════════════════════════════════════════════════ */

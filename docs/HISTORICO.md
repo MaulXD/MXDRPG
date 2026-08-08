@@ -104,6 +104,71 @@ npm run sync:data:check       # após editar livros/
 
 ---
 
+### 2026-08-08 — O ⊘ rolado sobe o Olho sozinho: o gancho estava a uma rota de distância
+
+**Pedido:** continuar o loop.
+
+**Passo a passo:**
+
+1. **A dívida da rodada anterior.** Deixei registrado que "+1 de Atenção do Olho
+   por ⊘ fora do combate" dependia de o Mestre clicar, porque as rolagens de
+   Jornada e Conselho acontecem no cliente. A saída que eu tinha imaginado era
+   mover as duas para o servidor — refatoração grande.
+
+2. **Não era preciso.** Toda rolagem de Dado de Proeza de painel e de ficha já
+   passa por **uma rota só**: `POST /chat`, com `torFeatDie`. São exatamente três
+   chamadores — Jornada, Conselho e a ficha do herói —, todos rolagens de jogador
+   fora do combate. O ataque **não** passa por ali, e é justamente o caso que o
+   livro exclui. O gancho é uma chamada, no lugar que já vê tudo.
+
+3. **A face, não o valor.** O que trafega para o chat é a **face física** do d12
+   (11 = Olho, 12 = Runa), não o valor de jogo — o Olho vale **zero** e a Runa
+   vale 10, então olhar o valor não distinguiria o Olho de um zero qualquer.
+   `TOR_EYE_FEAT_FACE = 11` mora em `eye.ts` e há asserção conferindo que bate com
+   `featDiePhysicalFace` em `dice.ts`: duas constantes divergentes fariam o gancho
+   nunca disparar, em silêncio.
+
+4. **Roda depois de gravar.** O gancho só age com a rolagem já persistida — não
+   pode desfazer o que a mesa já leu. Tem asserção de ordem.
+
+5. **As duas fontes automáticas passaram a compartilhar a mesma função**
+   (`applyTorEyeAutoGain`), então a guarda de "fora do combate" e a de "regra
+   desligada" valem para as duas sem serem escritas duas vezes — que é
+   exatamente o erro que a guarda do NA 18 cometeu.
+
+6. **O julgamento do livro precisou de sinal negativo.** O livro dá ao Mestre o
+   direito de subir para 2 numa cena grave **ou anular num lugar seguro**. Com o
+   +1 automático já lançado, anular exige poder **tirar** — então o handler passou
+   a aceitar ajuste negativo (com piso em zero) e o painel virou "+1 (cena grave)"
+   e "−1 (lugar seguro)". Sem isso o julgamento só funcionaria numa direção.
+
+7. **Asserção antiga trancando a forma, não a regra (11ª vez).** A negativa "o
+   painel não oferece botão manual de Sombra" casava com
+   `filter((s) => s !== "sombra")`, que sumiu quando o ⊘ rolado também virou
+   automático. Reescrita para provar a regra direto: o painel não posta
+   `source: "sombra"` em lugar nenhum.
+
+8. **Validação.** `npx tsc --noEmit` limpo · `npm run build` compila ·
+   `npm run test` verde com **2100 asserções**. Quatro asserções foram quebradas
+   de propósito e falharam como deviam.
+
+**Arquivos tocados:**
+- `lib/combat/um-anel/eye.ts` — `TOR_EYE_FEAT_FACE`
+- `lib/room/handlers/tor-eye.ts` — `applyTorEyeAutoGain`, `applyTorEyeRolledEye`,
+  `appendTorEyeFromFeatDie`, e o ajuste negativo
+- `app/api/room/[roomId]/chat/route.ts` — o gancho
+- `components/vtt/TorEyePanel.tsx` — ajuste nos dois sentidos
+- `scripts/verify-um-anel-olho-de-mordor.mjs` — 10 asserções novas
+
+**Como testar:** com o Olho de Mordor ligado e sem combate em curso, rolar
+qualquer Perícia pela ficha até sair o Olho — a Atenção sobe sozinha, com uma
+segunda linha no chat. Com a fila de iniciativa montada, o mesmo Olho não sobe
+nada.
+
+**Falta:** campanhas de 1ª edição; glyph da runa de Gandalf.
+
+---
+
 ### 2026-08-08 — Elmo removível: a fotografia do token que envelhecia
 
 **Pedido:** continuar o loop.

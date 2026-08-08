@@ -4,6 +4,7 @@ import { canChatInRoomSession } from "@/lib/auth/mesa-watch-session";
 import { getSession } from "@/lib/auth/session";
 import { getRoom } from "@/lib/room/store";
 import { addRoomChatMessage } from "@/lib/room/store";
+import { appendTorEyeFromFeatDie } from "@/lib/room/handlers/tor-eye";
 import type { ChatMessage } from "@/lib/room/chat";
 
 type Params = { params: Promise<{ roomId: string }> };
@@ -95,6 +96,20 @@ export async function POST(req: Request, { params }: Params) {
 
   if (!snapshot) {
     return NextResponse.json({ error: "Sala não encontrada" }, { status: 404 });
+  }
+
+  /* Olho de Mordor: "aumente a Atenção do Olho em 1 ponto sempre que uma rolagem
+     feita por um jogador fora do combate produzir um ícone ⊘". Esta rota é por
+     onde TODA rolagem de Dado de Proeza de painel e de ficha já passa — Jornada,
+     Conselho e a ficha do herói —, então é o único ponto que vê todas elas. O
+     ataque não passa por aqui, e é justamente o caso que o livro exclui.
+
+     Roda depois de a rolagem estar persistida: o gancho não pode desfazer o que
+     a mesa já leu. Devolve `null` quando a mesa não é do Um Anel, quando a regra
+     opcional está desligada, ou quando há combate em curso. */
+  if (featDieValue != null) {
+    const comOlho = await appendTorEyeFromFeatDie(roomId, featDieValue, author);
+    if (comOlho) return NextResponse.json(comOlho);
   }
 
   return NextResponse.json(snapshot);

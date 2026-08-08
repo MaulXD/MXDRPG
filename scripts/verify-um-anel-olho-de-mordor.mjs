@@ -321,17 +321,84 @@ ok(
   "o botão de Revelação só aparece quando a Companhia está revelada",
   /\{revealed \?[\s\S]{0,500}action: "reveal"/.test(panelCode)
 );
-/* NEGATIVA: a Sombra não pode ter botão manual aqui, senão o Mestre somaria
-   duas vezes — uma pelo painel do token (automático) e outra aqui. */
+/* NEGATIVA: nenhuma das DUAS fontes automáticas pode ter botão de "+1" aqui,
+   senão o Mestre somaria duas vezes — uma pelo gancho e outra pela mão.
+
+   A asserção antiga casava com o `filter((s) => s !== "sombra")` do painel, que
+   sumiu quando o ⊘ rolado também virou automático. Ela travava a FORMA, não a
+   regra; esta trava a regra. */
 ok(
   "o painel NÃO oferece botão manual de Sombra",
-  /TOR_EYE_SOURCES\.filter\(\(s\) => s !== "sombra"\)/.test(panelCode),
+  !/source: "sombra"/.test(panelCode),
   "a Sombra já sobe sozinha pelo painel do token; um botão aqui contaria em dobro"
+);
+ok(
+  "o ⊘ rolado aparece como AJUSTE, com um botão que TIRA",
+  /source: "olho-rolado",\s*points: p,/.test(panelCode) && /\{ p: -1, label: "−1/.test(panelCode),
+  "o gancho já lançou o +1 padrão; o que sobra é o julgamento do livro, e ele vai nos dois sentidos"
 );
 ok(
   "o jogador vê o placar, mas não os controles",
   /if \(!canManage\) return null;/.test(panelCode) && /\{!canManage \? null : \(/.test(panelCode)
 );
+
+/* ── 4b. O gancho automático do ⊘ rolado ───────────────────────────────── */
+
+const chatRoute = stripComments(
+  readFileSync(root("app", "api", "room", "[roomId]", "chat", "route.ts"), "utf8")
+);
+ok(
+  "a rota de chat chama o gancho quando veio um Dado de Proeza",
+  /if \(featDieValue != null\) \{[\s\S]{0,220}appendTorEyeFromFeatDie\(roomId, featDieValue, author\)/.test(
+    chatRoute
+  ),
+  "é a única rota por onde passam TODAS as rolagens de painel e de ficha"
+);
+/* Ordem: o gancho roda DEPOIS de a rolagem estar persistida — ancorado nas
+   CHAMADAS, não nos imports. */
+const persistiu = chatRoute.indexOf("await addRoomChatMessage(roomId, {\n    ...author,\n    kind: \"chat\"");
+const enganchou = chatRoute.indexOf("appendTorEyeFromFeatDie(roomId");
+ok(
+  "o gancho roda DEPOIS de a rolagem estar gravada",
+  persistiu > 0 && enganchou > 0 && persistiu < enganchou,
+  `persistiu=${persistiu} enganchou=${enganchou} — o gancho não pode desfazer o que a mesa já leu`
+);
+ok(
+  "o gancho só reage à face do Olho",
+  /if \(featDieFace !== TOR_EYE_FEAT_FACE\) return null;/.test(handlerCode),
+  "é a FACE (11) que trafega no chat, não o valor de jogo — o Olho vale zero"
+);
+ok(
+  "a face do Olho no gancho bate com a de dice.ts",
+  /export const TOR_EYE_FEAT_FACE = 11;/.test(EYE) &&
+    /"eye"\) return 11;/.test(readFileSync(root("lib", "character", "um-anel", "dice.ts"), "utf8")),
+  "duas constantes que divergissem fariam o gancho nunca disparar"
+);
+ok(
+  "o gancho recusa mesa que não é do Um Anel",
+  /if \(!room \|\| room\.rpgSystemId !== "um-anel"\) return null;/.test(handlerCode)
+);
+ok(
+  "as duas fontes automáticas passam pela MESMA função",
+  /function applyTorEyeAutoGain\(/.test(handlerCode) &&
+    /return applyTorEyeAutoGain\(room, "sombra", shadowPoints\);/.test(handlerCode) &&
+    /return applyTorEyeAutoGain\(room, "olho-rolado", 1\);/.test(handlerCode),
+  "a guarda de 'fora do combate' e a de regra desligada valem para as duas"
+);
+/* O julgamento do livro vai nos DOIS sentidos: subir para 2+ numa cena grave, ou
+   anular num lugar seguro. Como o automático já lançou o +1, anular exige tirar. */
+ok(
+  "o handler aceita ajuste negativo",
+  /const points = Math\.max\(-10, Math\.min\(10, Math\.floor\(action\.points\)\)\);/.test(
+    handlerCode
+  ),
+  "sem negativo, 'um ⊘ pode não provocar aumento algum' seria impossível de aplicar"
+);
+ok(
+  "mas a Atenção nunca fica negativa",
+  /after = Math\.max\(0, Math\.min\(99, before \+ points\)\);/.test(handlerCode)
+);
+ok("e zero não é um ajuste válido", /if \(points === 0\) return \{ ok: false/.test(handlerCode));
 
 const journeyCode = stripComments(JOURNEY_PANEL);
 ok(

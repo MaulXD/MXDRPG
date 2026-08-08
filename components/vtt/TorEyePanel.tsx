@@ -265,34 +265,68 @@ export function TorEyePanel({ roomId, canManage, eye, onUpdate }: Props) {
             ))}
           </div>
 
-          {/* As três fontes do livro. O Olho rolado tem um padrão de 1 ponto que
-              o Mestre pode subir; a magia varia por porte do feitiço. A Sombra
-              ganha fora do combate NÃO tem botão aqui de propósito: ela sobe
-              sozinha quando o Mestre atribui Sombra pelo painel do token. */}
+          {/* Magia é a única fonte totalmente manual: o porte do feitiço é
+              julgamento do Mestre, e o app não tem como saber. */}
           <div className="tor-journey__ranks">
-            <p className="tor-journey__pending-hint">Aumentar a Atenção do Olho</p>
-            {TOR_EYE_SOURCES.filter((s) => s !== "sombra").map((s: TorEyeSource) =>
-              (s === "magia" ? [1, 2, 3] : [1, 2]).map((p) => (
-                <button
-                  key={`${s}-${p}`}
-                  type="button"
-                  className="btn-ghost"
-                  disabled={busy}
-                  title={TOR_EYE_SOURCE_META[s].description}
-                  onClick={() =>
-                    void guard(async () => {
-                      await postRoomTorEye(roomId, { action: "gain", source: s, points: p });
-                      onUpdate();
-                    })
-                  }
-                >
-                  {TOR_EYE_SOURCE_META[s].label} +{p}
-                </button>
-              ))
-            )}
+            <p className="tor-journey__pending-hint" title={TOR_EYE_SOURCE_META.magia.description}>
+              {TOR_EYE_SOURCE_META.magia.label} — menor, maior, poderoso
+            </p>
+            {[1, 2, 3].map((p) => (
+              <button
+                key={`magia-${p}`}
+                type="button"
+                className="btn-ghost"
+                disabled={busy}
+                onClick={() =>
+                  void guard(async () => {
+                    await postRoomTorEye(roomId, { action: "gain", source: "magia", points: p });
+                    onUpdate();
+                  })
+                }
+              >
+                +{p}
+              </button>
+            ))}
+          </div>
+
+          {/* As duas fontes automáticas ficam sem botão de "+1": elas já
+              dispararam sozinhas. O que sobra aqui é o JULGAMENTO que o livro
+              reserva ao Mestre sobre o ⊘ rolado — subir para 2 numa cena grave,
+              ou anular num lugar seguro. Por isso um dos botões TIRA. */}
+          <div className="tor-journey__ranks">
+            <p
+              className="tor-journey__pending-hint"
+              title={TOR_EYE_SOURCE_META["olho-rolado"].description}
+            >
+              Ajustar o último ⊘ rolado
+            </p>
+            {[
+              { p: 1, label: "+1 (cena grave)" },
+              { p: -1, label: "−1 (lugar seguro)" },
+            ].map(({ p, label }) => (
+              <button
+                key={`olho-${p}`}
+                type="button"
+                className="btn-ghost"
+                disabled={busy}
+                onClick={() =>
+                  void guard(async () => {
+                    await postRoomTorEye(roomId, {
+                      action: "gain",
+                      source: "olho-rolado",
+                      points: p,
+                    });
+                    onUpdate();
+                  })
+                }
+              >
+                {label}
+              </button>
+            ))}
           </div>
           <p className="tor-journey__pending-hint">
-            A Sombra ganha fora do combate sobe a Atenção do Olho sozinha, pelo painel do token.
+            Sobem sozinhas: o ⊘ em qualquer rolagem fora do combate (+1) e a Sombra ganha fora do
+            combate, pelo painel do token.
           </p>
 
           {revealed ? (
