@@ -448,6 +448,26 @@
   margin: 0 0 0.75rem;
 }
 
+/* Estas duas classes eram usadas no JSX sem nenhuma definição aqui. A linha de
+   referência carregava a aparência em `style=` inline no componente — o que faz
+   a mesma decisão visual morar em dois lugares. Agora mora só aqui. */
+.comp-detail-ref {
+  font-size: 0.78rem;
+  color: var(--text-dim);
+  margin: 0 0 0.65rem;
+}
+
+.comp-detail-ref code {
+  font-size: 0.95em;
+}
+
+.comp-detail-actions {
+  margin-top: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
 .comp-locked {
   padding: 2rem;
   text-align: center;

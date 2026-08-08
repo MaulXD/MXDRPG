@@ -56,12 +56,15 @@ export default async function MesaRoomPage({ params, searchParams }: Props) {
   if (!room) {
     return (
       <div className="page-wrap" style={{ maxWidth: 520, paddingTop: "2rem" }}>
+        {/* Esta tela aparece para QUALQUER visitante que abra um link de convite
+            vencido. Antes ela mandava rodar `npm run homolog:up` — instrução de
+            desenvolvedor, inútil e confusa para quem só clicou num link. */}
         <p>
-          Sala <code>{roomId}</code> não foi encontrada. Rode <code>npm run homolog:up</code> ou{" "}
-          <code>npm run local</code> com <code>npm run dev:homolog</code> (MariaDB local).
+          A mesa <code>{roomId}</code> não existe mais, ou o link de convite expirou.
         </p>
         <p style={{ color: "var(--text-muted)", fontSize: "0.9rem" }}>
-          Tente abrir de novo em <Link href="/rpg/eldarin">Suas mesas</Link> ou recrie a mesa na aventura.
+          Peça um convite novo ao Mestre, ou abra <Link href="/rpg/eldarin">Suas mesas</Link> para ver
+          as mesas de que você já participa.
         </p>
         <Link href="/rpg/eldarin" className="btn" style={{ marginTop: "1rem" }}>
           Ir para Suas mesas

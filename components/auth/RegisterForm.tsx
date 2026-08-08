@@ -79,10 +79,12 @@ export function RegisterForm({ redirect = "", persistentAccounts = true }: Props
 
   return (
     <form className="auth-form" onSubmit={submit} autoComplete="on">
+      {/* O aviso abaixo FICA — quem cria conta precisa saber que ela pode sumir.
+          O que saiu foi a instrução de configurar a variável de ambiente: quem lê
+          esta tela é quem está se cadastrando, não quem opera o servidor. */}
       {!persistentAccounts ? (
         <p className="auth-form__intro" role="status">
-          Sem banco no servidor: a conta criada pode sumir se o site reiniciar. Para produção,
-          configure <code>DATABASE_URL</code> no Contabo.
+          O servidor está sem banco de dados: a conta criada agora pode sumir se o site reiniciar.
         </p>
       ) : null}
       <p className="auth-form__intro">

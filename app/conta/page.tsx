@@ -21,7 +21,12 @@ export default async function ContaPage() {
   if (!dbEnabled()) {
     return (
       <div className="page-wrap" style={{ maxWidth: 520, paddingTop: "2rem" }}>
-        <p className="lead">Perfil requer banco MariaDB configurado.</p>
+        {/* Dizia "requer banco MariaDB configurado" — o nome do banco é detalhe
+            de infraestrutura, e quem lê esta tela não pode configurar nada. */}
+        <p className="lead">
+          O perfil está indisponível no momento: o servidor está sem banco de dados. Tente de novo
+          mais tarde.
+        </p>
       </div>
     );
   }
