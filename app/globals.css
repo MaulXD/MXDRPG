@@ -1572,3 +1572,95 @@ pre {
     width: 100%;
   }
 }
+
+/* ── Documentos legais (Privacidade, Termos) ─────────────────────────────
+   Texto corrido de documento jurídico dentro de um card `.glass` (chrome
+   escuro). Usa `--text`, NÃO `--text-muted`: medido, `--text-muted` (#8a7d68)
+   sobre `--glass` (#1a1916) dá 4.36:1, abaixo do mínimo AA de 4.5:1 para texto
+   normal. `--text` (#d4ccbe) dá 11.35:1. A conta está assertada em
+   `scripts/verify-legal-pages.mjs`, que implementa a fórmula WCAG — documento
+   legal ilegível é problema de acessibilidade e de conformidade, não de estilo. */
+.legal-doc {
+  color: var(--text);
+  line-height: 1.7;
+  font-size: 0.95rem;
+}
+
+.legal-doc__updated {
+  color: var(--text);
+  margin: 0 0 1.5rem;
+}
+
+.legal-doc h2 {
+  font-family: var(--font-display);
+  color: var(--text-strong);
+  font-size: 1rem;
+  letter-spacing: 0.04em;
+  margin: 2rem 0 0.75rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--glass-border);
+}
+
+.legal-doc h2:first-of-type {
+  border-top: 0;
+  padding-top: 0;
+  margin-top: 1rem;
+}
+
+.legal-doc p {
+  margin: 0 0 0.9rem;
+}
+
+.legal-doc ul {
+  margin: 0 0 1rem;
+  padding-left: 1.25rem;
+}
+
+.legal-doc li {
+  margin-bottom: 0.4rem;
+}
+
+.legal-doc strong {
+  color: var(--text-strong);
+}
+
+.legal-doc code {
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 4px;
+  padding: 0.1em 0.35em;
+  font-size: 0.9em;
+}
+
+/* A tabela rola dentro do próprio contêiner — a página nunca rola na
+   horizontal, nem em tela estreita. */
+.legal-doc__table-wrap {
+  overflow-x: auto;
+  margin: 0 0 1rem;
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-sm, 6px);
+}
+
+.legal-doc__table {
+  border-collapse: collapse;
+  width: 100%;
+  min-width: 480px;
+  font-size: 0.85rem;
+}
+
+.legal-doc__table th,
+.legal-doc__table td {
+  text-align: left;
+  padding: 0.6rem 0.75rem;
+  border-bottom: 1px solid var(--glass-border);
+  vertical-align: top;
+}
+
+.legal-doc__table th {
+  color: var(--text-strong);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.legal-doc__table tr:last-child td {
+  border-bottom: 0;
+}
