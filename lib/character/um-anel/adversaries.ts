@@ -848,6 +848,66 @@ const TOR_ADVERSARIES_RAW: TorAdversaryStats[] = [
       },
     ],
   },
+  {
+    // Apêndice de *The Darkening of Mirkwood*, página impressa 137. Convertido
+    // inteiro: as CINCO Habilidades Especiais do bloco de 1ª edição ou já
+    // existem no bestiário da 2ª ("Natural da Escuridão" = Habitante das
+    // Trevas, "Poltrão" = Covarde, "Amedrontar" = Infundir Medo, "Medo de
+    // Fogo" = Medo do Fogo) ou são descritas pelo próprio original (Horror da
+    // Floresta). Nenhuma ficou pendente — por isso este bloco entrou e os de
+    // Sarqin e Tyulqin não.
+    //
+    // Vigor: lacuna de fonte (CVR-030). Fica em 1, o padrão do motor, e a
+    // asserção do teste existe para impedir que vire outro número.
+    id: "espirito-da-floresta",
+    name: "Espírito da Floresta",
+    traits: "Rancoroso, Silencioso",
+    tier: "boss",
+    attributeLevel: 5,
+    endurance: 54,
+    might: 1,
+    hate: 8,
+    hateKind: "hate",
+    parry: 7,
+    armour: 4,
+    description:
+      "Durante os longos séculos do comando do Necromante, muitos espíritos malignos saíram de Dol Guldur. Alguns chegaram aos cemitérios dos nórdicos, outros habitavam os cadáveres de viajantes perdidos e vítimas das Aranhas. Quem os viu e sobreviveu fala de horrores feitos de ossos, folhas mofadas e galhos caídos, e de crânios que riam da escuridão. **A Resistência e a Armadura altíssimas refletem a resistência deles ao dano de armas corporais.**",
+    actions: [
+      { id: "garras-estranguladoras", label: "Garras Estranguladoras", rating: 3, damage: 5, injury: 16 },
+    ],
+    fellAbilities: [
+      // 1ª ed. "Natural da Escuridão" — e o próprio texto da aventura de 2953
+      // explica o efeito: apagar as luzes dá à criatura o benefício dela.
+      {
+        name: "Habitante das Trevas",
+        text: "Todas as rolagens de ataque são Favorecidas enquanto estiver na escuridão.",
+      },
+      // 1ª ed. "Poltrão".
+      {
+        name: "Covarde",
+        text: "Quando afetado pela Tarefa de Combate Intimidar Inimigo, a criatura também perde 1 Ódio.",
+      },
+      // 1ª ed. "Amedrontar (NA 16)" — o NA fixo some (CVR-017).
+      {
+        name: "Infundir Medo",
+        text: "Gaste 1 Ódio pra fazer todos os heróis à vista ganharem 3 pontos de Sombra (Pavor). Quem falhar no Teste de Sombra fica intimidado e não pode gastar Esperança pelo resto da luta.",
+      },
+      {
+        name: "Medo do Fogo",
+        text: "Perde 1 Ódio no início de cada rodada engajado em combate corpo a corpo com um adversário empunhando tocha ou item em chamas.",
+      },
+      // Descrita no próprio original: "todos os testes de Batalha feitos para
+      // obter Vantagens de Combate veem o seu NA aumentado pelo Nível de
+      // Atributo da criatura (+5)". O NA fixo vira Complicação (CVR-017), e as
+      // âncoras da régua são +4 = perde (1d) e +6 = perde (2d). O +5 cai EXATO
+      // no meio; a conversão sobe, pela mesma regra que já vale para a
+      // Empreitada — arredondar para baixo facilitaria a cena em silêncio.
+      {
+        name: "Horror da Floresta",
+        text: "Dentro da Floresta das Trevas, toda rolagem de BATALHA feita para obter Vantagem de Combate é uma Complicação: perde (2d).",
+      },
+    ],
+  },
 ];
 
 const TIER_DIFFICULTY_RANK: Record<TorAdversaryStats["tier"], number> = {
