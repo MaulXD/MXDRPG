@@ -104,6 +104,66 @@ npm run sync:data:check       # após editar livros/
 
 ---
 
+### 2026-08-08 — Acesso de Loucura, descansos e recuperação: a Sombra ganha saída
+
+**Pedido:** continuar o loop.
+
+**Passo a passo:**
+
+1. **O buraco que importava.** Um herói cuja Sombra alcançasse a Esperança
+   máxima ficava **Desfavorecido para sempre** — dois Dados de Proeza, fica o
+   pior, em toda rolagem, sem saída. O **Acesso de Loucura** é a única regra que
+   zera a Sombra nesse ponto, e existia no motor sem chamador nenhum.
+
+2. **Quatro ações ligadas:** recuperação espiritual da Fase (devolve Esperança —
+   cheia no Yule, senão até o CORAÇÃO — e tira Sombra até o limite do resultado
+   da Fase), Descanso Prolongado (−1 Fadiga), Acesso de Loucura (Sombra a zero,
+   +1 Falha) e curar Cicatriz (5 Pontos de Aventura, só no Yule).
+
+3. **Um campo que faltava.** O Acesso de Loucura precisa de um **contador** de
+   Falhas — na quarta o herói sucumbe e sai de jogo. A ficha só tinha `flaws`,
+   que é o **texto livre** que o jogador escreve. Contar palavras nesse texto
+   erraria na primeira Falha com vírgula, então entrou `shadowFlaws: number`,
+   recortado 0–4 na normalização.
+
+4. **Validação.** `npx tsc --noEmit` limpo · `npm run build` compila, com
+   `/api/room/[roomId]/tor-recovery` registrada · `npm run test` verde com
+   **1751 asserções**.
+
+**O erro desta rodada foi meu, no mecanismo de dívida.** As listas de "funções
+sem consumidor" gravadas nos dois testes deveriam falhar ao serem pagas — e
+**não falharam**. A varredura olhava uma lista **fixa** de arquivos, e as funções
+foram ligadas num handler novo (`tor-recovery.ts`) que não estava nela. A dívida
+seguiria marcada como pendente depois de paga, que é pior que não ter registro:
+dá a impressão de que ainda falta.
+
+É exatamente o defeito que venho caçando — **a asserção provava um texto, não um
+fato** —, agora na ferramenta que criei para vigiar isso. Quinta ocorrência da
+família. A varredura passou a percorrer os diretórios inteiros
+(`lib/room/handlers/`, `components/vtt/`, `lib/combat/um-anel/`), e cada função
+paga ganhou a asserção **oposta**: precisa TER consumidor. Sem ela, a lista
+poderia esvaziar por engano e ninguém notaria.
+
+**Dívida que sobra:** `applyTorJourneyEndRecovery` (recuperação de fim de
+jornada), `appendTorChronicle` e `torFellowshipLevel` — agora com varredura que
+acusa de verdade quando forem ligadas.
+
+**Arquivos tocados:**
+- `lib/room/handlers/tor-recovery.ts` · `app/api/room/[roomId]/tor-recovery/route.ts` — **novos**
+- `lib/character/um-anel/types.ts` · `normalize.ts` · `build-from-wizard.ts` — `shadowFlaws`
+- `components/vtt/TorShadowPanel.tsx` · `TorAdvancePanel.tsx` · `hooks/useRoomSync.ts`
+- `scripts/verify-um-anel-sombra-mesa.mjs` · `verify-um-anel-avanco.mjs` — varredura ampla e asserção oposta
+
+**Como testar:** levar a Sombra de um herói até a Esperança máxima — as rolagens
+passam a sair Desfavorecidas. Clicar "Acesso de Loucura": a Sombra zera e ele
+ganha a 1ª Falha do Caminho da Sombra. Repetir até a quarta: a mensagem avisa que
+o herói sucumbiu. No Yule, "Curar Cicatriz" cobra 5 Pontos de Aventura.
+
+**Falta:** recuperação de fim de jornada; crônica; Elmo removível; campanhas de
+1ª edição; glyph da runa de Gandalf.
+
+---
+
 ### 2026-08-08 — Progressão: o herói acumulava pontos e não tinha como gastar
 
 **Pedido:** continuar o loop.

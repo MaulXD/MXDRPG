@@ -20,6 +20,8 @@ export function normalizeTorCharacter(raw: TorCharacterSheet): TorCharacterSheet
   const shadow = raw.shadow ?? 0;
   // Cicatrizes e Fadiga entram nas condições derivadas abaixo — ver comentário lá.
   const shadowScars = raw.shadowScars ?? 0;
+  // 0..4 — o quarto Acesso de Loucura tira o herói de jogo (TOR_MAX_FLAWS).
+  const shadowFlaws = Math.min(4, Math.max(0, Math.floor(raw.shadowFlaws ?? 0)));
   const fatigue = raw.fatigue ?? 0;
 
   return {
@@ -33,6 +35,7 @@ export function normalizeTorCharacter(raw: TorCharacterSheet): TorCharacterSheet
     // Explícitos, não só via `...raw`: ficha legada pode não ter os campos, e
     // `undefined` aqui quebraria as condições derivadas abaixo (NaN silencioso).
     shadowScars,
+    shadowFlaws,
     fatigue,
     parry: raw.parry ?? derived.parry,
     // DERIVADO do escudo equipado, não persistido. A Carga já é recalculada

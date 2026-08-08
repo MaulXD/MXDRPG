@@ -141,6 +141,7 @@ export function buildTorCharacterFromWizard(
 
     shadow: 0,
     shadowScars: 0,
+    shadowFlaws: 0,
     fatigue: 0,
     conditions: { weary: false, miserable: false, wounded: false },
     injury: "",

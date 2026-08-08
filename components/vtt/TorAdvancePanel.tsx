@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { postRoomTorAdvance } from "@/hooks/useRoomSync";
+import { postRoomTorAdvance, postRoomTorRecovery } from "@/hooks/useRoomSync";
 import { COMBAT_PROFICIENCY_LABEL, SKILLS } from "@/lib/character/um-anel/data";
 import { TOR_XP_COST_BY_LEVEL } from "@/lib/combat/um-anel/progression";
 import type { TorCharacterSheet, TorCombatProficiencyId } from "@/lib/character/um-anel/types";
@@ -59,6 +59,20 @@ export function TorAdvancePanel({ roomId, characterIds, onUpdate }: Props) {
       // "Máximo de 1 grau por Perícia em cada Fase", "Faltam N pontos" e
       // "Valor e Sabedoria não podem ambos subir" chegam por aqui.
       setErr(e instanceof Error ? e.message : "Falha ao avançar");
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function recover(characterId: string) {
+    if (busy) return;
+    setBusy(true);
+    setErr(null);
+    try {
+      await postRoomTorRecovery(roomId, characterId, "spiritual");
+      onUpdate();
+    } catch (e) {
+      setErr(e instanceof Error ? e.message : "Falha na recuperação");
     } finally {
       setBusy(false);
     }
@@ -124,6 +138,17 @@ export function TorAdvancePanel({ roomId, characterIds, onUpdate }: Props) {
               })}
             </select>
           </label>
+
+          {/* Fecho da Fase: devolve Esperança (cheia no Yule, senão até o
+              CORAÇÃO) e tira Sombra até o limite do resultado da Fase. */}
+          <button
+            type="button"
+            className="btn btn-ghost"
+            disabled={busy}
+            onClick={() => void recover(s.id)}
+          >
+            Recuperação espiritual da Fase
+          </button>
 
           <div className="vtt-special-damage">
             <button

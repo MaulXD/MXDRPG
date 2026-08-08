@@ -16,7 +16,7 @@
  *
  * Fonte: livros/um-anel/compendio/sombra.md e o capítulo da Sombra.
  */
-import { readFileSync as rawReadFileSync, existsSync } from "fs";
+import { readFileSync as rawReadFileSync, existsSync, readdirSync } from "fs";
 
 /* Normaliza CRLF -> LF na leitura: âncoras de linha não devem depender de fim
    de linha (no Windows um clone novo entrega CRLF). */
@@ -169,17 +169,39 @@ ok(
  * que segue sem consumidor está listado aqui de propósito: quando alguém ligar,
  * a asserção falha e obriga a mexer nesta lista — que é o registro de dívida.
  */
-const AINDA_SEM_CONSUMIDOR = [
-  "applyTorBoutOfMadness",
-  "applyTorProlongedRest",
-  "applyTorJourneyEndRecovery",
-  "healTorShadowScar",
-];
-const CONSUMIDORES = [
-  readFileSync(root("lib", "room", "handlers", "tor-shadow.ts"), "utf8"),
-  readFileSync(root("lib", "combat", "um-anel", "progression.ts"), "utf8"),
-  PANEL,
-].map(stripComments);
+const AINDA_SEM_CONSUMIDOR = ["applyTorJourneyEndRecovery"];
+
+/**
+ * A varredura tem de ser AMPLA. A primeira versão desta checagem olhava uma
+ * lista fixa de arquivos, e quando as funções foram ligadas num handler novo
+ * (`tor-recovery.ts`) ela **não acusou** — a dívida seguiu "registrada" depois
+ * de paga. Mesmo defeito que este teste existe para evitar: a asserção provava
+ * um texto, não um fato.
+ */
+function consumidoresDoProjeto() {
+  const dirs = [root("lib", "room", "handlers"), root("components", "vtt"), root("lib", "combat", "um-anel")];
+  const out = [];
+  for (const dir of dirs) {
+    for (const f of readdirSync(dir)) {
+      if (!/\.(ts|tsx)$/.test(f)) continue;
+      // O próprio shadow.ts não conta: nele as funções são DEFINIDAS.
+      if (f === "shadow.ts") continue;
+      out.push(stripComments(readFileSync(join(dir, f), "utf8")));
+    }
+  }
+  return out;
+}
+const CONSUMIDORES = consumidoresDoProjeto();
+
+/* O lado positivo: as que foram ligadas precisam TER consumidor. Sem isto, a
+   lista poderia esvaziar por engano e ninguém notaria. */
+for (const fn of ["applyTorBoutOfMadness", "applyTorProlongedRest", "healTorShadowScar"]) {
+  ok(
+    `${fn} tem consumidor real`,
+    CONSUMIDORES.some((src) => new RegExp(`\\b${fn}\\(`).test(src)),
+    "saiu da lista de dívida mas ninguém chama"
+  );
+}
 for (const fn of AINDA_SEM_CONSUMIDOR) {
   const usada = CONSUMIDORES.some((src) => new RegExp(`\\b${fn}\\(`).test(src));
   ok(
