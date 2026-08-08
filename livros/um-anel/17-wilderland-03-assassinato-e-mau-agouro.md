@@ -184,7 +184,7 @@ que sejam tão afortunados. **Alguma coisa está por trás desses movimentos.**
 **Jantar.** *"Toda essa conversa me deu fome!"* Beorn bate as mãos, uma porta se abre e vem um
 rebanho de ovelhas e vários cães peludos — as ovelhas com bandejas nas costas, os cães servindo de
 pé. Pão, ensopado de ervas e legumes, hidromel e biscoitos de mel. Rolagens de **Enigma**,
-**Música** ou **Cortesia** mantêm o clima; sucesso rende **1 ponto de avanço** ao herói
+**Música** ou **Cortesia** mantêm o clima; sucesso rende **1 ponto de Perícia** (CVR-033) ao herói
 responsável. Falhando, as mulheres começam a chorar e os homens olham com tristeza para o hidromel.
 
 **Arranjos para a noite.** Se a Companhia não excedeu o limite de tentativas do Conselho, Beorn

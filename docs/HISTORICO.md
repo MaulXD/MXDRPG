@@ -104,6 +104,128 @@ npm run sync:data:check       # após editar livros/
 
 ---
 
+### 2026-08-08 — Abrindo *The Darkening of Mirkwood*: o PLANO, o pack de Propriedades e cinco vazamentos de moeda
+
+**Pedido:** continuar o loop — abrir a campanha de 30 anos, **decidir e escrever o plano
+de conversão antes de converter em massa**, e registrar o porquê aqui.
+
+**Passo a passo:**
+
+1. **Leitura de reconhecimento (páginas 1–12).** *The Darkening of Mirkwood* NÃO é
+   sete aventuras soltas como *Tales from Wilderland*: é **uma campanha de 30 anos,
+   2947–2977, organizada ANO A ANO**. Cada ano tem a mesma forma —
+   `Ano` → `Eventos` → `Fase de aventura` → `Fase em sociedade`. Os 30 anos vêm
+   agrupados pelo próprio livro em **cinco blocos**:
+
+   | Bloco | Anos | Página | Título |
+   |---|---|---|---|
+   | 1 | 2947–2950 | 8 | Os Últimos Bons Anos |
+   | 2 | 2951–2960 | 21 | O Retorno da Sombra |
+   | 3 | 2961–2966 | 63 | Congregação da Escuridão |
+   | 4 | 2967–2974 | 84 | Os Anos da Praga |
+   | 5 | 2975–2977 | 116 | O Escurecimento da Floresta das Trevas |
+
+   Mais **Apêndices** na página 125 (Nazgûl de Dol Guldur; Personagens e Criaturas).
+
+2. **DECISÃO — cinco arquivos, um por bloco do livro. Não um por ano.**
+
+   Considerei três formas e descartei duas:
+
+   - **Um arquivo por ano (30 arquivos)** — descartado. Um ano do livro costuma ser
+     meia página; 30 arquivos de meia página quebram a leitura corrida da campanha,
+     e a maioria dos ganchos atravessa vários anos (a Sombra sobe *entre* anos). O
+     índice ficaria maior que o conteúdo.
+   - **Um índice mestre + um arquivo por episódio** — descartado. Não existe
+     "episódio" no livro: existe **ano**. Recortar por episódio seria inventar uma
+     estrutura que a fonte não tem, e a régua CVR não ajuda a decidir onde cortar.
+   - **✔ Um arquivo por bloco (cinco arquivos)** — **escolhido**, porque é o
+     agrupamento **que o próprio livro já fez**, com título e página de abertura
+     próprios. Cada bloco vira `22-mirkwood-01-…` … `26-mirkwood-05-…`, continuando
+     a numeração de Wilderland (que terminou em `21-`). Tamanho estimado por
+     arquivo: 13–40 páginas de fonte, a mesma ordem de grandeza de uma aventura de
+     Wilderland — que já provou caber numa rodada.
+
+   **Os Apêndices NÃO viram um sexto arquivo de campanha**: as criaturas vão para o
+   bestiário (`lib/rpg/um-anel/adversaries.ts`), que é onde o resto do sistema
+   procura por bloco de adversário. Ler o apêndice **primeiro**, antes do bloco 1 —
+   ele pode fechar as lacunas de **Aranha** e **Troll da Colina**, e nesse dia as
+   asserções negativas de CVR-030 vão falhar **de propósito**.
+
+   **Teste:** um segundo `scripts/verify-um-anel-campanha-mirkwood.mjs`, no mesmo
+   formato de lista (`cvrObrigatorias`, `adversarios`, `blocosEsperados`, `extra`)
+   do de Wilderland — não estender o de Wilderland, porque lá as checagens são de
+   aventura solta (uma trama, um clímax) e aqui são de linha do tempo.
+
+3. **Regra de campanha convertida na mesma rodada: Propriedades** (páginas 5–6, antes
+   do ano 2947). Novo pack `livros/um-anel/compendio/propriedades.md`, 14 entradas
+   `PRO-001`…`PRO-014`. O que a conversão precisou resolver:
+
+   - **A escala do Valor é INVERTIDA** — 4 é *Rico*, 9 é *Modesto*; quanto menor o
+     número, melhor a propriedade. Está escrito em voz alta no arquivo porque é o
+     tipo de coisa que uma mesa lê ao contrário.
+   - **Esta tabela lê o Dado de Proeza no sentido NORMAL** (Runa = melhor, Olho =
+     pior) — o **oposto** da tabela de Fontes de Dano (CVR-028), onde a Runa é
+     *Ileso* e o Olho **reduz a zero**. Duas tabelas do mesmo corpus lidas em
+     direções contrárias; o aviso está nos dois lados.
+   - **Metade da regra não converte, e ficou registrado que não converte.** A
+     Pontuação Mínima da 1ª edição limita por **Prestígio** dentro da terra natal e
+     por **VALOR** fora dela. Prestígio não existe no corpus traduzido da 2ª edição
+     (CVR-030) — então sobra o VALOR nos dois casos. **Nada foi inventado para
+     substituir o Prestígio.**
+   - "Novo Afazer: Tratar das Terras" → **Empreitada** da Fase de Companhia; "rolar
+     duas vezes e escolher o melhor" → **rolagem Favorecida**, dita com esse nome
+     para a mesa saber que a mecânica já existe.
+
+4. **Duas entradas novas na régua CVR**, com fonte em `03-aventureiros.md:1083`
+   ("existem dois tipos de pontos de Experiência: pontos de Perícia… e pontos de
+   Aventura…"):
+
+   - **CVR-033** — "Ponto de Avanço" → **ponto de Perícia**.
+   - **CVR-034** — "Ponto de Experiência" → **ponto de Aventura**, marcado como
+     *armadilha de nome*: o termo da 1ª edição ainda existe na 2ª, mas como
+     **guarda-chuva** das duas moedas, não como moeda. Traduzir literal troca a
+     recompensa errada.
+
+5. **AUDITORIA — padrão 21 (afirmação minha virando asserção): cinco vazamentos de
+   moeda de 1ª edição nas aventuras já convertidas.** "ponto de avanço" e "ponto de
+   Experiência" tinham passado nas aventuras 3, 4 e 6. Corrigidos por script que
+   **conta** as substituições (`4 substituições, todas conferidas.`) — e então a
+   varredura nova, que percorre o **diretório** `livros/um-anel/` procurando
+   `/^\d\d-wilderland-/` em vez de consultar uma lista fixa, achou um **quinto** em
+   `livros/um-anel/18-wilderland-04-aqueles-que-nao-permanecem-mais.md:206` que o
+   meu grep manual tinha deixado passar. É a segunda vez que varrer diretório acha o
+   que lista fixa não acha.
+
+6. **Uma regex mais estrita que a regra (a décima).** A asserção da escala invertida
+   procurava `/\*\*quanto MENOR o número, melhor a[\s>]*propriedade\*\*/`, mas o
+   negrito do markdown começa **antes** de "quanto" — o regex esperava o `**` no
+   lugar errado. Corrigido no regex, não no texto.
+
+**Validação:** as duas asserções novas de Propriedades foram **quebradas de
+propósito** e confirmadas disparando (`Valor 4 é Rico` e `Tratar das Terras vira
+rolagem Favorecida`), depois revertidas com Edit — nunca `git checkout`. A varredura
+de moeda de experiência não precisou ser quebrada: **disparou de verdade** nesta
+rodada. `npx tsc --noEmit` limpo · `npm run build` compila · `npm run test` verde com
+**2797 asserções** (`verify-um-anel-conversao: 101 ok`,
+`verify-um-anel-aventuras-wilderland: 463 ok`) · `gen-um-anel: 7 packs, 145 entradas`.
+
+**Arquivos tocados:**
+- `livros/um-anel/compendio/propriedades.md` — **novo**: 14 entradas PRO-001…PRO-014
+- `livros/um-anel/compendio/conversao-primeira-edicao.md` — CVR-033 e CVR-034
+- `scripts/gen-um-anel.mjs` — pack `propriedades` registrado (7 packs)
+- `scripts/verify-um-anel-conversao.mjs` — +15 asserções: varredura de moeda por
+  diretório e as checagens do pack de Propriedades
+- `livros/um-anel/17-…`, `18-…`, `20-…` — cinco termos de moeda de 1ª edição corrigidos
+- `data/compendiums/um-anel/propriedades.json`, `index.json`,
+  `conversao-primeira-edicao.json` — regerados
+
+**Commits / deploy:** ver commit desta rodada na branch `fix/login-google-e-responsivo-um-anel`.
+
+**Como testar:** `node scripts/verify-um-anel-conversao.mjs` · o pack aparece em
+`/compendio` do Um Anel como **Propriedades**.
+
+---
+
 ### 2026-08-08 — "A Torre de Urzal Seco": Wilderland fechada, sete de sete
 
 **Pedido:** continuar o loop — converter as campanhas de 1ª edição.

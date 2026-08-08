@@ -14,7 +14,7 @@
  * Fonte: livros/um-anel/compendio/conversao-primeira-edicao.md e os capítulos
  * que ela cita.
  */
-import { readFileSync as rawReadFileSync, existsSync } from "fs";
+import { readFileSync as rawReadFileSync, existsSync, readdirSync } from "fs";
 
 const readFileSync = (p, enc) => rawReadFileSync(p, enc).replace(/\r\n/g, "\n");
 
@@ -364,6 +364,110 @@ ok(
     /lancas: "Lanças"/.test(DATA) &&
     /espadas: "Espadas"/.test(DATA) &&
     /Machados, Arcos, Lanças e[\s>]+Espadas/.test(entrada("CVR-007"))
+);
+
+/* ── 3b. As duas moedas de experiência ─────────────────────────────────── */
+
+/* Armadilha de nome: "Experiência" existe nas DUAS edições com sentidos
+   diferentes. Na 2ª ela é o guarda-chuva; a moeda que compra Proficiências,
+   VALOR e SABEDORIA chama-se ponto de Aventura. Deixar "ponto de Experiência"
+   passar numa conversão não parece erro — e é. */
+ok(
+  "livro: a 2ª edição separa ponto de Perícia de ponto de Aventura",
+  /existem dois tipos de pontos de Experiência: pontos de Perícia, que são gastos para adquirir novos níveis em qualquer Perícia, e pontos de Aventura, que são usados para aprimorar Proficiências de Combate ou ganhar novos níveis em VALOR ou SABEDORIA/i.test(
+    CAP3
+  )
+);
+ok(
+  "tabela: CVR-033 manda o ponto de avanço virar ponto de Perícia",
+  /2ª edição:\*\* \*\*ponto de Perícia\*\*/.test(entrada("CVR-033"))
+);
+ok(
+  "tabela: CVR-034 manda o ponto de Experiência virar ponto de Aventura",
+  /2ª edição:\*\* \*\*ponto de Aventura\*\*/.test(entrada("CVR-034"))
+);
+ok(
+  "tabela: CVR-034 avisa que é o MESMO nome com sentidos diferentes",
+  /Armadilha de nome/.test(entrada("CVR-034")),
+  "é o padrão mais fácil de deixar passar — o termo existe nas duas edições"
+);
+
+/* NEGATIVA sobre TODAS as aventuras convertidas: nenhum termo de 1ª edição para
+   moeda de experiência pode ter sobrevivido. Varre o diretório, e não uma lista
+   fixa — aventura nova entra sozinha na varredura. */
+const convertidas = readdirSync(root("livros", "um-anel")).filter((f) =>
+  /^\d\d-wilderland-/.test(f)
+);
+ok("há aventuras convertidas para varrer", convertidas.length >= 7, `achei ${convertidas.length}`);
+for (const f of convertidas) {
+  const md = readFileSync(root("livros", "um-anel", f), "utf8");
+  ok(
+    `${f}: não sobrou moeda de experiência da 1ª edição`,
+    !/pontos? de avanço/i.test(md) && !/pontos? de Experiência/i.test(md),
+    "vazou em duas aventuras antes de CVR-033/034 existirem"
+  );
+}
+
+/* ── 3c. O pack de Propriedades ────────────────────────────────────────── */
+
+/* A regra de Propriedades de *The Darkening of Mirkwood* é subsistema, não
+   aventura — por isso virou pack do compêndio, e não arquivo de aventura. */
+const PROP = readFileSync(root("livros", "um-anel", "compendio", "propriedades.md"), "utf8");
+ok("o pack de Propriedades está registrado no gerador", /propriedades: \{/.test(GEN));
+ok(
+  "o JSON de Propriedades foi gerado",
+  existsSync(root("data", "compendiums", "um-anel", "propriedades.json"))
+);
+
+/* A escala do Valor é INVERTIDA: 4 é a melhor propriedade e 9 a pior. Trocar os
+   extremos faria a cabana do caçador render mais que a mina de ouro. */
+ok(
+  "Propriedades: Valor 4 é Rico e Valor 9 é Modesto",
+  /## PRO-006 — Rico[\s\S]{0,120}\*\*Valor:\*\* 4/.test(PROP) &&
+    /## PRO-001 — Modesto[\s\S]{0,120}\*\*Valor:\*\* 9/.test(PROP),
+  "a escala é invertida — número menor é propriedade melhor"
+);
+ok(
+  "Propriedades: a inversão está escrita em voz alta",
+  /\*\*quanto MENOR o número, melhor a[\s>]*propriedade\*\*/.test(PROP)
+);
+
+/* Duas tabelas do mesmo corpus lidas em direções OPOSTAS. A de Propriedades é a
+   normal (Runa boa, Olho ruim); a de Fontes de Dano é a invertida. O aviso tem
+   de estar no arquivo, senão o Mestre lê uma pela outra. */
+ok(
+  "Propriedades: avisa que esta tabela é lida ao contrário da de Fontes de Dano",
+  /Perda de Resistência das Fontes de\s*[\s>]*Dano \(CVR-028\)/.test(PROP) &&
+    /Runa de Gandalf é o melhor\s*[\s>]*resultado/.test(PROP),
+  "as duas convivem no corpus e são lidas em direções contrárias"
+);
+ok(
+  "Propriedades: a Runa melhora a propriedade, com piso em 3",
+  /## PRO-012 — Runa de Gandalf/.test(PROP) && /até um\s*[\s>]*mínimo de \*\*3\*\*/.test(PROP)
+);
+ok(
+  "Propriedades: o Olho cria dívida com prazo",
+  /## PRO-013 — Olho de Sauron/.test(PROP) && /dívida com prazo/.test(PROP)
+);
+
+/* "Rolar duas vezes e escolher o melhor" é Favorecida — e a conversão tem de
+   dizer isso, senão a mesa não sabe que já existe mecânica para aquilo. */
+ok(
+  "Propriedades: Tratar das Terras vira rolagem Favorecida",
+  /## PRO-014 — Tratar das Terras/.test(PROP) &&
+    /exatamente uma rolagem \*\*Favorecida\*\*/.test(PROP)
+);
+ok(
+  "Propriedades: a recompensa da Especialidade é ponto de Perícia, não 'Evolução'",
+  /1\s*[\s>]*ponto de Perícia\*\* \(CVR-033/.test(PROP) && !/Ponto de Evolução\*\*/.test(PROP)
+);
+/* A metade da regra que dependia de Prestígio NÃO converte. */
+ok(
+  "Propriedades: a Pontuação Mínima registra a lacuna do Prestígio",
+  /## PRO-007 — Pontuação Mínima/.test(PROP) &&
+    /não converte/.test(PROP) &&
+    /CVR-030/.test(PROP),
+  "metade da regra depende de Prestígio, que não existe na 2ª edição"
 );
 
 /* ── 4. As lacunas são lacunas de verdade ──────────────────────────────── */

@@ -372,6 +372,30 @@
     }
   },
   {
+    "id": "CVR-033",
+    "name": "Ponto de Avanço",
+    "type": "efeito",
+    "system": {
+      "grupo": "Recursos",
+      "1_edicao": "ponto de avanço (*Advancement Point*)",
+      "2_edicao": "**ponto de Perícia**",
+      "muda": "o nome, e a moeda passa a ter par",
+      "descricao": "A 2ª edição divide a experiência em duas moedas: \"existem dois tipos de pontos de Experiência: **pontos de Perícia**, que são gastos para adquirir novos níveis em qualquer Perícia, e **pontos de Aventura**, que são usados para aprimorar Proficiências de Combate ou ganhar novos níveis em VALOR ou SABEDORIA\" (03-aventureiros.md). O ponto de avanço da 1ª edição comprava Perícias Comuns — é o **ponto de Perícia**."
+    }
+  },
+  {
+    "id": "CVR-034",
+    "name": "Ponto de Experiência",
+    "type": "efeito",
+    "system": {
+      "grupo": "Recursos",
+      "1_edicao": "ponto de Experiência",
+      "2_edicao": "**ponto de Aventura**",
+      "muda": "sim — na 2ª edição \"Experiência\" virou o guarda-chuva das duas moedas",
+      "descricao": "Armadilha de nome (o mesmo termo com significados diferentes). Na 1ª edição, \"Experiência\" é a moeda que compra **Perícias de Arma, VALOR e SABEDORIA**; na 2ª edição, \"pontos de Experiência\" é o **nome do conjunto**, e a moeda que compra Proficiências de Combate, VALOR e SABEDORIA chama-se **ponto de Aventura**. Deixar \"ponto de Experiência\" passar numa conversão não parece erro — e é: o leitor da 2ª edição não sabe qual das duas moedas recebeu."
+    }
+  },
+  {
     "id": "CVR-030",
     "name": "O que a fonte não converte",
     "type": "efeito",

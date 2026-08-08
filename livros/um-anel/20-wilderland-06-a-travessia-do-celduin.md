@@ -76,7 +76,7 @@ Na 2ª edição, é uma sequência de **três rolagens de Enigma** (CVR-013) com
 primeira normal, a segunda **moderadamente prejudicada — *perde (1d)***, a terceira **severamente
 prejudicada — *perde (2d)*** (CVR-017; o original punha NA 10, 14 e 18 — CVR-016). Passando nas três,
 o herói vence o jogo de enigmas e pode **trocar um de seus Aspectos para Astuto**. Cada personagem que
-participa também ganha **1 ponto de avanço**.
+participa também ganha **1 ponto de Perícia** (CVR-033).
 
 > **Amostra de enigmas.**
 > *"Embora eu corra da todo, eu nunca me canso / Pois minha cama é dura e fria / E embora você me
@@ -216,7 +216,7 @@ prejudicado — *perde (1d)*** (CVR-017; o original punha NA 16 — CVR-016).
 seus melhores guerreiros. Se os companheiros ainda estiverem de pé, devem escolher se querem lutar
 contra Gerold ou Elstan — **não lutam contra os anões**. Ganhando, devem derrotar o que ficar dos dois.
 
-**O fim da Batalha.** Se o vencedor foi um companheiro, ele recebe **1 ponto de Experiência adicional**
+**O fim da Batalha.** Se o vencedor foi um companheiro, ele recebe **1 ponto de Aventura adicional** (CVR-034)
 e conta com **dois degraus de atitude** em qualquer encontro em Valle e Cidade do Lago até o próximo
 ano (cumulativos com os dos outros torneios, até o teto de Amigável — CVR-020).
 
@@ -809,7 +809,7 @@ influencia fortemente a natureza dessa vitória.
 - **Derrotados na Parte VII.** O Rei Enforcado atravessa o Rio Corrente cedo. Bard só encontra as forças
   inimigas quando já estão dentro das Comarcas Superiores. A batalha é cara e calamitosa: **de cada três
   que marcharam de Valle, menos de um marcha de volta**, e o próprio Bard sofre uma ferida terrível.
-  Recompensa: **3 pontos de Tesouro** cada e **1 ponto de Experiência de bônus**.
+  Recompensa: **3 pontos de Tesouro** cada e **1 ponto de Aventura de bônus** (CVR-034).
 - **A Companhia manteve a Travessia por uma noite** (derrotada na Parte VIII). A horda cruza o Celduin e
   Bard consegue interceptá-la a vários quilômetros ao norte do rio, ainda fora das áreas mais povoadas.
 
