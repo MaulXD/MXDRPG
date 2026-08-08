@@ -104,6 +104,59 @@ npm run sync:data:check       # após editar livros/
 
 ---
 
+### 2026-08-08 — Atitude da audiência: a penalidade que faltava
+
+**Pedido:** continuar o loop.
+
+**Passo a passo:**
+
+1. **Duas buscas, um achado.** Fui atrás do **Empenho de Perícia** e do emissor
+   de **penalidade** em Dados de Sucesso, e os dois caminhos terminaram no mesmo
+   lugar: o Conselho.
+
+2. **A atitude da audiência não existia.** "Suas rolagens de Perícia são
+   modificadas pela atitude das pessoas que encontram" — **Relutante** *perde
+   (1d)*, **Aberta** nada, **Amigável** *ganha (1d)*. Não estava no motor, nem no
+   estado da sala, nem no painel. Era o único emissor de penalidade que faltava
+   fora do combate: `bonusDice` já aceitava negativo e nada o alimentava.
+
+   Vale para **todas** as rolagens do Conselho, inclusive a Introdução — o livro
+   não exclui nenhuma, e aplicar só na Interação daria a vantagem pela metade. A
+   Interação lê a atitude **guardada na sala**, não o rascunho do formulário:
+   usar o rascunho ignoraria a atitude do Conselho em andamento se o Mestre
+   mexesse no seletor. Cada uma tem asserção própria.
+
+   Duas Virtudes Culturais dependiam disto existir: "Amigável e Familiar" e
+   "Amigo dos Anões", que garantem atitude Amigável.
+
+3. **Falso alarme conferido:** o Conselho parecia ter mais buracos, mas as sete
+   funções de `council.ts` têm consumidor real no painel. Só a atitude faltava.
+
+4. **Validação.** `npx tsc --noEmit` limpo · `npm run build` compila ·
+   `npm run test` verde com **1841 asserções**. A asserção da atitude guardada
+   foi conferida trocando por `draftAttitude` — falhou como devia.
+
+**Lacuna de fonte registrada:** o **Empenho de Perícia** aparece uma única vez no
+corpus traduzido — em `12-o-mundo-eriador.md`, como "Empenho de Perícia,
+Resistência 6" — e **a regra em si não está traduzida em capítulo nenhum**. Sem o
+texto, não dá para mecanizar sem inventar. Fica anotado, como a taxa de
+Companhia→Esperança da rodada anterior.
+
+**Arquivos tocados:**
+- `lib/combat/um-anel/council.ts` — as três atitudes e o modificador
+- `lib/combat/um-anel/session-state.ts` — atitude no estado, recortada na leitura
+- `components/vtt/TorCouncilPanel.tsx` — seletor e aplicação nas duas rolagens
+- `scripts/verify-um-anel-council.mjs` — 14 asserções novas
+
+**Como testar:** abrir um Conselho com audiência Relutante e rolar — a Introdução
+sai com um Dado de Sucesso a menos. Amigável, um a mais. Trocar o seletor com o
+Conselho já aberto não muda as Interações em andamento, que é o correto.
+
+**Falta:** Fadiga que sobe (marcha forçada e eventos); Elmo removível; campanhas
+de 1ª edição; glyph da runa de Gandalf.
+
+---
+
 ### 2026-08-08 — Descanso: a Resistência que ninguém devolvia
 
 **Pedido:** continuar o loop.

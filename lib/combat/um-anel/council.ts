@@ -97,8 +97,59 @@ export function resolveTorIntroduction(opts: {
    Interação (CON-S03)
    ══════════════════════════════════════════════════════════════════════ */
 
+/**
+ * Atitude da audiência (06-fases-de-aventura-combate.md §Conselho).
+ *
+ * "As rolagens de Perícia são modificadas pela atitude das pessoas que
+ * encontram" — vale para **todas** as rolagens do Conselho, não só a
+ * Introdução. É Dado de SUCESSO, então soma ao rank; Aberta é o padrão e não
+ * modifica nada.
+ *
+ * Duas Virtudes Culturais dependem disto existir: "Amigável e Familiar" ("o povo
+ * encontrado é sempre considerado Amigável") e "Amigo dos Anões" ("Anões são
+ * sempre considerados Amigáveis num Conselho").
+ */
+export const TOR_COUNCIL_ATTITUDES = ["relutante", "aberta", "amigavel"] as const;
+export type TorCouncilAttitude = (typeof TOR_COUNCIL_ATTITUDES)[number];
+
+export const TOR_COUNCIL_ATTITUDE_META: Record<
+  TorCouncilAttitude,
+  { id: TorCouncilAttitude; label: string; diceDelta: number; description: string }
+> = {
+  relutante: {
+    id: "relutante",
+    label: "Relutante",
+    diceDelta: -1,
+    description:
+      "O grupo encontrado tem razões para não querer ajudar a Companhia — preconceito ou outra preocupação.",
+  },
+  aberta: {
+    id: "aberta",
+    label: "Aberta",
+    diceDelta: 0,
+    description: "Atitude padrão: inclinação geral a ouvir o que a Companhia tem a dizer.",
+  },
+  amigavel: {
+    id: "amigavel",
+    label: "Amigável",
+    diceDelta: 1,
+    description: "A audiência está interessada e disposta a escutar o apelo dos heróis.",
+  },
+};
+
+export function isTorCouncilAttitude(v: unknown): v is TorCouncilAttitude {
+  return typeof v === "string" && (TOR_COUNCIL_ATTITUDES as readonly string[]).includes(v);
+}
+
+/** Dados de Sucesso que a atitude soma (ou tira) de cada rolagem do Conselho. */
+export function torCouncilAttitudeDice(attitude: TorCouncilAttitude | undefined): number {
+  return TOR_COUNCIL_ATTITUDE_META[attitude ?? "aberta"].diceDelta;
+}
+
 export type TorCouncilState = {
   resistance: TorCouncilResistance;
+  /** Atitude da audiência — ausente é Aberta, que é neutra. */
+  attitude?: TorCouncilAttitude;
   timeLimit: number;
   disasterOnFailure: boolean;
   /** Sucessos acumulados até agora. */
@@ -109,10 +160,12 @@ export type TorCouncilState = {
 
 export function startTorCouncil(
   resistance: TorCouncilResistance,
-  intro: TorIntroductionResult
+  intro: TorIntroductionResult,
+  attitude: TorCouncilAttitude = "aberta"
 ): TorCouncilState {
   return {
     resistance,
+    attitude,
     timeLimit: intro.timeLimit,
     disasterOnFailure: intro.disasterOnFailure,
     successes: 0,

@@ -15,6 +15,10 @@ import {
   resolveTorInteraction,
   startTorCouncil,
   torCouncilOutcome,
+  torCouncilAttitudeDice,
+  TOR_COUNCIL_ATTITUDES,
+  TOR_COUNCIL_ATTITUDE_META,
+  type TorCouncilAttitude,
   type TorCouncilResistance,
   type TorCouncilState,
 } from "@/lib/combat/um-anel/council";
@@ -44,6 +48,9 @@ function skillLabel(id: string): string {
 export function TorCouncilPanel({ roomId, canManage, council, onUpdate }: Props) {
   // Só a Resistência e a perícia escolhida são locais — o resto vem da sala.
   const [draftResistance, setDraftResistance] = useState<TorCouncilResistance>(6);
+  /* Atitude escolhida pelo Mestre ao abrir o Conselho — depois vive no estado da
+     sala, porque vale para todas as rolagens seguintes. */
+  const [draftAttitude, setDraftAttitude] = useState<TorCouncilAttitude>("aberta");
   const [introSkill, setIntroSkill] = useState<string>(TOR_INTRODUCTION_SKILLS[0]);
   const [interSkill, setInterSkill] = useState<string>(TOR_INTERACTION_SKILLS[0]);
   const [busy, setBusy] = useState(false);
@@ -85,7 +92,14 @@ export function TorCouncilPanel({ roomId, canManage, council, onUpdate }: Props)
   const introduce = useCallback(
     (rank: number) =>
       guard(async () => {
-        const roll = rollTorCheck({ rank, tn: DEFAULT_TN });
+        // A atitude vale para TODAS as rolagens do Conselho, inclusive a
+        // Introdução: o livro diz "suas rolagens de Perícia são modificadas pela
+        // atitude das pessoas que encontram", sem excluir nenhuma.
+        const roll = rollTorCheck({
+          rank,
+          tn: DEFAULT_TN,
+          bonusDice: torCouncilAttitudeDice(draftAttitude),
+        });
         const intro = resolveTorIntroduction({
           resistance: draftResistance,
           passed: roll.success,
@@ -95,7 +109,7 @@ export function TorCouncilPanel({ roomId, canManage, council, onUpdate }: Props)
           `Conselho — ${TOR_RESISTANCE_META[draftResistance].label} (Resistência ${draftResistance}). ` +
             formatTorIntroductionMessage("Porta-voz", skillLabel(introSkill), intro),
           featDieRollPayload(roll.featDie).value,
-          startTorCouncil(draftResistance, intro)
+          startTorCouncil(draftResistance, intro, draftAttitude)
         );
       }),
     [guard, commit, draftResistance, introSkill]
@@ -105,7 +119,11 @@ export function TorCouncilPanel({ roomId, canManage, council, onUpdate }: Props)
     (rank: number) =>
       guard(async () => {
         if (!council || finished) return;
-        const roll = rollTorCheck({ rank, tn: DEFAULT_TN });
+        const roll = rollTorCheck({
+          rank,
+          tn: DEFAULT_TN,
+          bonusDice: torCouncilAttitudeDice(council.attitude),
+        });
         const result = resolveTorInteraction(council, {
           passed: roll.success,
           successIcons: roll.successIcons,
@@ -196,9 +214,33 @@ export function TorCouncilPanel({ roomId, canManage, council, onUpdate }: Props)
                   ))}
                 </select>
               </label>
+              {/* A atitude modifica TODAS as rolagens do Conselho — precisa ser
+                  escolhida antes da Introdução, não depois. */}
+              <label className="vtt-field">
+                Atitude da audiência
+                <select
+                  value={draftAttitude}
+                  disabled={busy}
+                  onChange={(e) => setDraftAttitude(e.target.value as TorCouncilAttitude)}
+                >
+                  {TOR_COUNCIL_ATTITUDES.map((a) => (
+                    <option key={a} value={a}>
+                      {TOR_COUNCIL_ATTITUDE_META[a].label}
+                      {TOR_COUNCIL_ATTITUDE_META[a].diceDelta > 0
+                        ? " (+1d)"
+                        : TOR_COUNCIL_ATTITUDE_META[a].diceDelta < 0
+                          ? " (−1d)"
+                          : ""}
+                    </option>
+                  ))}
+                </select>
+              </label>
             </div>
             <p className="tor-journey__pending-hint">
               {TOR_RESISTANCE_META[draftResistance].description}
+            </p>
+            <p className="tor-journey__pending-hint">
+              {TOR_COUNCIL_ATTITUDE_META[draftAttitude].description}
             </p>
           </section>
 

@@ -181,3 +181,76 @@ ok(
 
 console.log(`\nverify-um-anel-council: ${pass} passaram, ${fail} falharam`);
 if (fail > 0) process.exit(1);
+
+/* ══════════════════════════════════════════════════════════════════════
+   Atitude da audiência
+   ══════════════════════════════════════════════════════════════════════
+
+   "Suas rolagens de Perícia são modificadas pela atitude das pessoas que
+   encontram" — Relutante *perde (1d)*, Aberta nada, Amigável *ganha (1d)*.
+
+   Não existia: nem no motor, nem no estado da sala, nem no painel. E era o único
+   emissor de PENALIDADE que faltava — o motor já aceitava `bonusDice` negativo e
+   nada o alimentava com penalidade fora do combate.
+
+   Duas Virtudes Culturais dependem disto existir: "Amigável e Familiar" ("o povo
+   encontrado é sempre considerado Amigável") e "Amigo dos Anões" ("Anões são
+   sempre considerados Amigáveis num Conselho"). */
+
+const CAP6_COUNCIL = readFileSync(
+  join(__dirname, "..", "livros", "um-anel", "06-fases-de-aventura-combate.md"),
+  "utf8"
+);
+const COUNCIL_PANEL = readFileSync(
+  join(__dirname, "..", "components", "vtt", "TorCouncilPanel.tsx"),
+  "utf8"
+);
+const SESSION_COUNCIL = readFileSync(
+  join(__dirname, "..", "lib", "combat", "um-anel", "session-state.ts"),
+  "utf8"
+);
+
+ok(
+  "livro: a atitude modifica as rolagens do Conselho",
+  /suas rolagens de\s*\n?Perícia são modificadas pela atitude das pessoas que encontram/.test(
+    CAP6_COUNCIL
+  )
+);
+ok("livro: Relutante perde (1d)", /\*\*Relutante\*\* — \*perde \(1d\)\*/.test(CAP6_COUNCIL));
+ok("livro: Aberta não modifica", /\*\*Aberta\*\* — \(nenhum modificador\)/.test(CAP6_COUNCIL));
+ok("livro: Amigável ganha (1d)", /\*\*Amigável\*\* — \*ganha \(1d\)\*/.test(CAP6_COUNCIL));
+
+ok("as três atitudes existem no motor", /TOR_COUNCIL_ATTITUDES = \["relutante", "aberta", "amigavel"\]/.test(SRC));
+ok("Relutante vale −1", /relutante:[\s\S]{0,160}?diceDelta: -1/.test(SRC));
+ok("Aberta vale 0", /aberta:[\s\S]{0,160}?diceDelta: 0/.test(SRC));
+ok("Amigável vale +1", /amigavel:[\s\S]{0,160}?diceDelta: 1/.test(SRC));
+ok(
+  "atitude ausente cai em Aberta",
+  /TOR_COUNCIL_ATTITUDE_META\[attitude \?\? "aberta"\]\.diceDelta/.test(SRC),
+  "Conselho de sala antiga não pode ganhar nem perder dado"
+);
+ok(
+  "atitude inválida é recortada na leitura",
+  /isTorCouncilAttitude\(r\.attitude\) \? r\.attitude : "aberta"/.test(SESSION_COUNCIL)
+);
+
+/* Vale para TODAS as rolagens, inclusive a Introdução — o livro não exclui
+   nenhuma, e aplicar só na Interação daria vantagem/desvantagem pela metade. */
+ok(
+  "a Introdução usa a atitude",
+  /bonusDice: torCouncilAttitudeDice\(draftAttitude\)/.test(COUNCIL_PANEL),
+  "o livro não exclui a Introdução"
+);
+ok(
+  "a Interação usa a atitude guardada na sala",
+  /bonusDice: torCouncilAttitudeDice\(council\.attitude\)/.test(COUNCIL_PANEL),
+  "usar o rascunho aqui ignoraria a atitude do Conselho em andamento"
+);
+ok("o painel deixa escolher a atitude", /TOR_COUNCIL_ATTITUDES\.map/.test(COUNCIL_PANEL));
+ok(
+  "a atitude é gravada ao abrir o Conselho",
+  /startTorCouncil\(draftResistance, intro, draftAttitude\)/.test(COUNCIL_PANEL)
+);
+
+console.log(`\nverify-um-anel-council (atitude): ${pass} passaram, ${fail} falharam`);
+if (fail > 0) process.exit(1);
