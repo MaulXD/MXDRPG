@@ -104,6 +104,110 @@ npm run sync:data:check       # após editar livros/
 
 ---
 
+### 2026-08-08 — Virtudes entram nas rolagens + auditoria de terminologia (glossário e nomes de Virtude)
+
+**Pedido:** continuar e criar um loop.
+
+**Passo a passo:**
+
+1. **Diagnóstico.** `sheet.virtues` era uma lista de ids decorativa: aparecia na
+   ficha e nunca chegava a `rollTorCheck`. O caso que expôs o buraco é o Bilbo
+   pré-gerado, que tem "Certeiro no Alvo" ("todos os seus ataques à distância são
+   Favorecidos") e atirava de arco com rolagem normal — `dice.ts` tinha
+   `favoured: false` fixo, com um comentário admitindo a pendência.
+
+   Auditando em volta, apareceram cinco divergências que ninguém tinha conferido:
+
+   - **Glossário nunca foi cruzado com o código.** `Might → Poder`, enquanto o
+     capítulo 8, o bestiário, o token e a ficha usam **Vigor** — o Mestre lendo
+     "criaturas com Poder 2 ou mais" não tinha como ligar ao "Vigor 2" do bloco do
+     adversário. E `Rally Comrades → Reanimar Companheiros`, nome já corrigido em
+     `stances.ts` numa rodada anterior: o glossário ficou sendo a última fonte do
+     nome errado. Mais as posturas no masculino contra o feminino da UI.
+   - **14 nomes de Virtude divergentes entre livro e app** — mesma classe do
+     "Porrete" que motivou `verify-um-anel-equipamento.mjs`, agora em Virtudes:
+     "MIRA CERTEIRA" (cap. 5) × "Certeiro no Alvo" (código e ficha do Bilbo no
+     cap. 11); "RESISTENTE COMO RAÍZES ANTIGAS" (cap. 5) × "Duro como Raiz de
+     Árvore Velha" (cap. 12) × "Duro como Raiz Velha" (código) — **três** nomes
+     para a mesma Virtude; "PERÍCIA DOS ELDAR" (cap. 10) × "Habilidade dos Eldar"
+     (código), sendo que "Habilidade" já é Habilidade Sinistra.
+   - **Virtude Cultural sumia da ficha.** `TorCharacterSheetView` resolvia só
+     contra `STARTING_VIRTUES` e o `filter(Boolean)` engolia o que não achasse.
+   - **PDF imprimia o id cru** ("agilidade-de-aparar") em Virtudes e Recompensas,
+     enquanto a tela mostrava o nome.
+   - **Bônus fixos de Esperança das Virtudes Culturais** não eram somados: quatro
+     delas dizem literalmente "aumente sua Esperança máxima em 1", e o herói ficava
+     1 abaixo do livro — o que também desloca o limiar de Desfavorecido, que usa
+     `hopeMax`.
+
+2. **Decisão.** Módulo novo `virtues.ts` com uma função pura que recebe os ids e o
+   contexto da rolagem. Só entram as Virtudes cujo gatilho o servidor decide
+   sozinho. Ficam de fora, com teste que garante isso:
+
+   - as **opcionais** ("uma vez por combate, você PODE tornar Favorecida") —
+     ligar automaticamente queimaria o uso do jogador sem ele pedir;
+   - as que dependem de **circunstância narrada** (estar no escuro, subterrâneo);
+   - as que dão **Inspirado**, que não é Favorecida — Inspirado dobra o bônus de
+     Esperança (*ganha (2d)* em vez de *(1d)*, cap. 2). Confundir os dois daria um
+     segundo Dado de Proeza a quem só tem direito a Dados de Sucesso extras.
+
+   Nos nomes divergentes, o critério foi a consistência com o vocabulário já
+   estabelecido, caso a caso: doze foram para o nome do app (é o que o jogador vê
+   no compêndio, na ficha e nos pré-gerados, e o cap. 11 já usava), e dois foram
+   para o do livro — "Estranho como **Notícias** de Bri" porque o dito é citado
+   assim no próprio capítulo, e "**Perícia** dos Eldar" porque Skill = Perícia no
+   glossário. Os `id` não mudaram: são chave estável e renomear quebra ficha salva.
+
+3. **Implementação.** `torVirtueRollEffect(virtueIds, ctx)` cobre Certeiro no Alvo
+   (ataque à distância), Matador de Dragões (alvo com Vigor ≥ 2), Duro como Pedra
+   (Proteção, exceto Arrasado), Duro como Raiz Velha (Severidade da Ferida) e
+   Contra o Invisível (Teste de Sombra por Pavor). O motor `resolve-attack.ts`
+   ganhou `defenderProtectionFavoured` e `defenderWoundSeverityFavoured` como
+   booleanos prontos — segue sem conhecer ficha. Quem decide é o handler, único
+   lugar que conhece arma, ficha e alvo ao mesmo tempo. A Virtude que disparou vai
+   no texto da mensagem: sem isso o chat diz "(Favorecida)" e ninguém na mesa sabe
+   de onde veio.
+
+4. **Validação.** `npx tsc --noEmit` limpo · `npm run build` compila · `npm run
+   test` verde com **1175 asserções**. Os dois testes novos foram conferidos com
+   asserção negativa: quebrei de propósito `attackIsRanged` e `baruk-khazad` e
+   ambos falharam como deviam, depois reverti.
+
+**Cuidado que evitou uma regressão:** `attackIsRanged` continua **desligado** de
+propósito, com teste que falha se alguém ligar. Passá-lo hoje barraria **todo**
+ataque de arco: a postura não é escolhida em lugar nenhum (D17 é motor isolado —
+`stance` não aparece em `lib/room/`, não há campo no token nem UI), cai sempre em
+Aberta, e `canAttackFromStance` responde "ataques à distância exigem a postura de
+Retaguarda". A Virtude usa o mesmo dado (`weapon.ranged`) sem passar por esse
+portão. Ligar os dois é a próxima rodada.
+
+**Arquivos tocados:**
+- `lib/character/um-anel/virtues.ts` — **novo**: Virtude → Favorecida por contexto, e resolução de nome de Virtude (inicial + Cultural)
+- `lib/character/um-anel/dice.ts` — rolagem de Proficiência consulta as Virtudes; só Arcos conta como à distância na rolagem avulsa (Lanças têm arremesso opcional)
+- `lib/character/um-anel/rules.ts` — soma o +1 de Esperança máxima das quatro Virtudes Culturais incondicionais; Alto Destino fica de fora por ser condicional
+- `lib/character/um-anel/cultural-virtues.ts` — "Notícias de Bri" e "Perícia dos Eldar"
+- `lib/combat/um-anel/resolve-attack.ts` — Proteção e Severidade aceitam Favorecida
+- `lib/room/handlers/tor-combat-attack.ts` — calcula Favorecida do atacante e do defensor pelas Virtudes; nomeia a Virtude na mensagem
+- `components/character/sheet/TorCharacterSheetView.tsx` — Virtude Cultural não some mais da ficha
+- `components/character/TorSheetPdfDocument.tsx` — PDF imprime nome, não id (Virtudes e Recompensas)
+- `livros/um-anel/00-glossario-termos.md` — Vigor, Reunir Companheiros, posturas no feminino
+- `livros/um-anel/05-valor-e-sabedoria.md` — 12 títulos de Virtude alinhados; "Vigor (Might)"
+- `livros/um-anel/12-o-mundo-eriador.md` — Pequeno Povo, Duro como Raiz Velha
+- `scripts/verify-um-anel-virtudes.mjs` — **novo**, 142 asserções
+- `scripts/verify-um-anel-glossario.mjs` — **novo**, 50 asserções
+- `package.json` — os dois entram em `test` e `test:um-anel`
+
+**Como testar:** criar um herói Hobbit com "Certeiro no Alvo", atacar de arco pela
+ficha e conferir que a mensagem traz "(Favorecida) [Certeiro no Alvo]" e dois
+Dados de Proeza. Um Anão com "Duro como Pedra" deve ter o Teste de Proteção
+Favorecido — e perder isso ao ficar Arrasado.
+
+**Falta:** posturas de combate chegarem à mesa (campo no token + UI + wiring, e
+aí `attackIsRanged`); Habilidades Sinistras; variante de NA 18 como opção de
+campanha; Elmo removível em combate; converter as campanhas de 1ª edição.
+
+---
+
 ### 2026-08-04 — D19: Olho de Sauron e tengwa nas faces do dado 3D
 
 **Pedido:** prosseguir.

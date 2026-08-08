@@ -1,5 +1,6 @@
 import { ATTRIBUTE_LABEL, COMBAT_PROFICIENCY_LABEL, SKILLS, SKILL_LABEL } from "./data";
 import { attributeTN, isTorIllFavouredByShadow } from "./rules";
+import { TOR_RANGED_PROFICIENCIES, torVirtueRollEffect } from "./virtues";
 import type { TorCharacterSheet, TorCombatProficiencyId, TorSkillId } from "./types";
 
 /**
@@ -180,18 +181,26 @@ export function rollTorCombatProficiencyCheck(
 ): { outcome: TorRollOutcome; message: string } {
   const tn = attributeTN(character.attributes.forca);
   const rank = character.combatProficiencies[profId] ?? 0;
-  // Proficiências de combate nunca são Favorecidas por serem Proficiências —
-  // só uma Virtude pode favorecê-las (ex.: "Certeiro no Alvo", do Bilbo
-  // pré-gerado). Virtudes ainda não entram nas rolagens; quando entrarem, é
-  // aqui que o `favoured` deixa de ser fixo.
+  // Proficiências de Combate nunca são Favorecidas por serem Proficiências (não
+  // existe "Proficiência Favorecida" como as Perícias) — só uma Virtude pode
+  // favorecê-las. Aqui só a Proficiência é conhecida, não a arma, então vale
+  // apenas o que é à distância por definição (ver TOR_RANGED_PROFICIENCIES); o
+  // ataque em mesa passa pelo handler, que conhece a arma e o alvo.
+  const virtue = torVirtueRollEffect(character.virtues, {
+    kind: "attack",
+    ranged: (TOR_RANGED_PROFICIENCIES as readonly string[]).includes(profId),
+  });
   const outcome = rollTorCheck({
     rank,
     tn,
-    favoured: false,
+    favoured: virtue.favoured,
     illFavoured: torSheetIllFavoured(character),
     weary: character.conditions.weary,
     miserable: character.conditions.miserable,
   });
-  const label = `${character.name} — ${COMBAT_PROFICIENCY_LABEL[profId]} (Força ${rank})`;
+  // A Virtude aparece no rótulo: sem isso o jogador vê "(Favorecida)" e não tem
+  // como saber de onde veio — nem o Mestre, pra conferir contra a ficha.
+  const virtueTxt = virtue.sources.length > 0 ? ` [${virtue.sources.join(", ")}]` : "";
+  const label = `${character.name} — ${COMBAT_PROFICIENCY_LABEL[profId]} (Força ${rank})${virtueTxt}`;
   return { outcome, message: formatTorRollMessage(label, outcome) };
 }

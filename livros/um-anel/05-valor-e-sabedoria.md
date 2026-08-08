@@ -174,7 +174,7 @@ Você aprendeu a antiga receita do cram, um bolo semelhante a um biscoito que se
 
 A lenda de Bard, o Arqueiro, inspirou muitos jovens homens e mulheres de Valle, tanto que eles anseiam por provar seu valor matando um grande monstro. Como muitos antes de você, você há muito reflete sobre as maneiras de lidar com criaturas enormes, esperando um dia conquistar renome ao derrotá-las.
 
-- Quando você está lutando contra criaturas com Poder (Might) 2 ou mais, todas as suas rolagens de ataque são *Favorecidas*.
+- Quando você está lutando contra criaturas com Vigor (Might) 2 ou mais, todas as suas rolagens de ataque são *Favorecidas*.
 
 > *"Eu sou Bard, e por minha mão o dragão foi morto e vosso tesouro entregue."*
 
@@ -224,7 +224,7 @@ A língua secreta dos Anões é guardada como um tesouro do passado, mas seu gri
 
 > *"Baruk Khazâd! Khazâd ai-mênu!" Um machado girou e voltou. Dois Orcs caíram sem cabeça. O resto fugiu.*
 
-**FEITIÇOS QUEBRADOS**
+**FEITIÇOS FRAGMENTADOS**
 
 Nos tempos antigos, os Anões criavam poderosos feitiços. Você aprendeu fragmentos de antigos encantamentos que retêm algum poder até hoje.
 
@@ -232,7 +232,7 @@ Nos tempos antigos, os Anões criavam poderosos feitiços. Você aprendeu fragme
 
 > *...proferiram fragmentos de feitiços quebrados de abertura...*
 
-**ESCURO PARA NEGÓCIOS ESCUROS**
+**ESCURO PRA TRABALHO ESCURO**
 
 Seu povo não se incomoda com a mera escuridão em si, como a maioria dos membros de outras culturas se incomoda. Ao contrário, você passou a gostar mais do escuro do que da luz, sentindo-se à vontade em seu abraço frio.
 
@@ -240,7 +240,7 @@ Seu povo não se incomoda com a mera escuridão em si, como a maioria dos membro
 
 > *"Nós gostamos do escuro", disseram os anões. "Escuro para negócios escuros! Há muitas horas antes do amanhecer."*
 
-**O MODO DE DURIN**
+**CAMINHO DE DURIN**
 
 Os Anões travaram muitas guerras em lugares profundos sob a terra. Você aprendeu a melhor forma de se defender lutando sob a terra. Como resultado, você sabe como explorar cantos, escuridão e outros obstáculos naturais em sua vantagem.
 
@@ -276,7 +276,7 @@ Elfos podem perceber criaturas que habitam o mundo dos espectros, sejam espírit
 
 > *"Eu também irei", disse Legolas, "pois não temo os Mortos."*
 
-**ARQUEIRIA MORTAL**
+**ARCO MORTAL**
 
 Elfos possuem um talento natural para acertar o alvo ao usar seus arcos. Você apurou esse talento quase à perfeição, e suas flechas encontram seu alvo com precisão sobrenatural.
 
@@ -300,7 +300,7 @@ O espírito dos Elfos é tão forte que seus corpos se recuperam rapidamente de 
 
 > *...ele podia dormir, se dormir se podia chamar pelos Homens, repousando a mente nos estranhos caminhos dos sonhos élficos, mesmo enquanto caminhava de olhos abertos à luz deste mundo.*
 
-**BRILHO DE IRA**
+**BRILHO DA IRA**
 
 Seu povo viu muitas derrotas e muitas vitórias infrutíferas em suas guerras contra a Sombra. A fúria mortal que sua gente guarda pelo Inimigo infunde suas armas com um brilho de chama gélida.
 
@@ -308,7 +308,7 @@ Seu povo viu muitas derrotas e muitas vitórias infrutíferas em suas guerras co
 
 > *Os Elfos foram os primeiros a atacar. Seu ódio pelos Trasgos é frio e amargo.*
 
-**MEMÓRIA DOS DIAS ANTIGOS**
+**MEMÓRIA DE DIAS ANTIGOS**
 
 Longos séculos e incontáveis gerações de Homens parecem apenas um breve momento para os Elfos. Suas memórias remontam a um tempo antes de Eriador se tornar desolada, e seu conhecimento da terra está retornando a você agora que você viaja novamente para fora das fronteiras do seu reino.
 
@@ -330,7 +330,7 @@ Se alguém esperar que você esteja ali, parecerá que você se desvaneceu no ar
 
 > *Possuíam desde o princípio a arte de desaparecer rápida e silenciosamente, quando gente grande que não desejavam encontrar vinha passando desajeitadamente...*
 
-**CORAJOSO NUM APERTO**
+**BRAVO NO APERTO**
 
 Um dos Sábios disse uma vez que é preciso colocar um Hobbit em um aperto antes de descobrir o que há dentro dele. Você prefere evitar se encontrar em um, mas também está certo de que seria capaz de cuidar bem de si mesmo nessas circunstâncias.
 
@@ -338,7 +338,7 @@ Um dos Sábios disse uma vez que é preciso colocar um Hobbit em um aperto antes
 
 > *"...ele é um dos melhores, um dos melhores — feroz como um dragão num aperto."*
 
-**GENTE PEQUENA**
+**PEQUENO POVO**
 
 Hobbits são um povo pequeno, mas sua desenvoltura excede em muito sua estatura. Você aprendeu a explorar seu tamanho reduzido em sua vantagem em uma luta.
 
@@ -346,7 +346,7 @@ Hobbits são um povo pequeno, mas sua desenvoltura excede em muito sua estatura.
 
 > *Pois são um povo pequeno, menores que os Anões...*
 
-**MIRA CERTEIRA**
+**CERTEIRO NO ALVO**
 
 Hobbits são ágeis e têm olhos aguçados, qualidades que os tornam bons arqueiros. Você apurou esse talento natural à perfeição, tanto que basta se abaixar para pegar uma pedra e você se encontra armado com uma arma mortal.
 
@@ -362,7 +362,7 @@ Os Sábios dizem que às vezes é melhor confiar na amizade do que na grande sab
 
 > *"Nós hobbits devemos ficar juntos, e ficaremos. Eu irei, a menos que me acorrentem."*
 
-**RESISTENTE COMO RAÍZES ANTIGAS**
+**DURO COMO RAIZ VELHA**
 
 Dizem que Hobbits são difíceis de desanimar ou matar, e que recuperam a saúde a um ritmo prodigioso se lhes for permitido desfrutar de alguma paz e tranquilidade. Você descobriu que se recupera admiravelmente de quedas e contusões (ao custo de uma dor considerável).
 
@@ -436,7 +436,7 @@ Dizem que um Ranger com uma trilha clara a seguir nunca pode ficar exausto. Voc�
 
 > *"Resistente é a raça de Elendil!"*
 
-**PRESCIÊNCIA DE SUA GENTE**
+**PRESCIÊNCIA DE SUA ESTIRPE**
 
 Os Rangers do Norte ainda possuem uma medida da presciência que seus ancestrais possuíam por inteiro. No Crepúsculo da Terceira Era, esse dom se manifesta como um senso de vigilância e de temor, que surge para advertir um Ranger de um perigo que ainda não se concretizou.
 
@@ -468,7 +468,7 @@ Você foi criado em uma terra pontilhada de ruínas desoladas e túmulos funerá
 
 > *"Ele não sente medo?", murmurou o Anão.*
 
-**CAMINHOS DAS TERRAS SELVAGENS**
+**COSTUMES DO ERMO**
 
 Os Rangers do Norte vagam incessantemente, caçando coisas malignas e guardando todas as fronteiras. Para você, as Terras Selvagens se tornaram tão familiares quanto a estrada que leva para casa é familiar aos Hobbits, e a própria terra pode revelar informações úteis.
 

@@ -49,6 +49,13 @@ export type TorAttackParams = {
    * (livro §The Shadow e §Using Flaws). Estar Arrasado NÃO desfavorece por si.
    */
   defenderIllFavoured?: boolean;
+  /**
+   * Virtude que favorece o Teste de Proteção (Duro como Pedra). Vem pronto do
+   * chamador — o motor não conhece ficha nem lista de Virtudes.
+   */
+  defenderProtectionFavoured?: boolean;
+  /** Virtude que favorece a rolagem de Severidade da Ferida (Duro como Raiz Velha). */
+  defenderWoundSeverityFavoured?: boolean;
   /** Só kind:"hero" — já tem 1 Ferida marcada (a próxima é fatal, sem rolar severidade). */
   defenderAlreadyWounded?: boolean;
   /**
@@ -106,9 +113,14 @@ function attributeTN(strength: number): number {
   return 20 - strength;
 }
 
-/** Severidade da Ferida — 1 Dado de Proeza isolado, sem TN (livro, "Wound Severity"). */
-function rollWoundSeverity(): TorWoundSeverity {
-  const { featDie } = rollTorCheck({ rank: 0, tn: 0 });
+/**
+ * Severidade da Ferida — 1 Dado de Proeza isolado, sem TN (livro, "Wound Severity").
+ *
+ * `favoured` existe pra Duro como Raiz Velha ("role 2 Dados de Proeza e fique
+ * com o melhor"), que é a definição de Favorecida aplicada a esta rolagem.
+ */
+function rollWoundSeverity(favoured = false): TorWoundSeverity {
+  const { featDie } = rollTorCheck({ rank: 0, tn: 0, favoured });
   if (featDie.kind === "gandalf") return { kind: "moderado" };
   if (featDie.kind === "eye") return { kind: "grave-critico" };
   return { kind: "grave", days: featDie.numeric };
@@ -235,6 +247,7 @@ export function resolveTorAttack(params: TorAttackParams): TorAttackResolution {
     // Proteção uma penalidade que o livro não dá: Arrasado só faz o Olho virar
     // falha (o que o próprio `miserable` abaixo já faz). Desfavorecido é a
     // condição separada de Sombra no máximo, ou de uma Falha.
+    favoured: params.defenderProtectionFavoured,
     illFavoured: params.defenderIllFavoured,
     weary: params.defenderWeary,
     miserable: params.defenderMiserable,
@@ -291,7 +304,7 @@ export function resolveTorAttack(params: TorAttackParams): TorAttackResolution {
     };
   }
 
-  const severity = rollWoundSeverity();
+  const severity = rollWoundSeverity(params.defenderWoundSeverityFavoured);
   return {
     attackRoll,
     hit: true,

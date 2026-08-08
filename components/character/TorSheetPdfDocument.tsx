@@ -10,8 +10,10 @@ import {
   ARMOUR_BY_ID,
   SHIELD_BY_ID,
   CALLING_BY_ID,
+  STARTING_REWARDS,
 } from "@/lib/character/um-anel/data";
 import { attributeTN, computeProtectionDice } from "@/lib/character/um-anel/rules";
+import { torVirtueInfo } from "@/lib/character/um-anel/virtues";
 import type { TorCharacterSheet, TorCombatProficiencyId } from "@/lib/character/um-anel/types";
 import "./sheet-pdf.css";
 import "./tor-sheet-pdf.css";
@@ -252,8 +254,12 @@ export function TorSheetPdfDocument({ character }: Props) {
 
             <h3>Recompensas</h3>
             <ul className="tor-pdf__list">
+              {/* A ficha guarda ids ("mao-firme"); imprimir o id cru levava
+                  kebab-case pro papel, enquanto a ficha na tela mostrava o nome. */}
               {character.rewards.length > 0 ? (
-                character.rewards.map((r, i) => <li key={i}>{r}</li>)
+                character.rewards.map((r, i) => (
+                  <li key={i}>{STARTING_REWARDS.find((d) => d.id === r)?.label ?? r}</li>
+                ))
               ) : (
                 <li>—</li>
               )}
@@ -263,7 +269,7 @@ export function TorSheetPdfDocument({ character }: Props) {
             <h3>Virtudes</h3>
             <ul className="tor-pdf__list">
               {character.virtues.length > 0 ? (
-                character.virtues.map((v, i) => <li key={i}>{v}</li>)
+                character.virtues.map((v, i) => <li key={i}>{torVirtueInfo(v).label}</li>)
               ) : (
                 <li>—</li>
               )}
