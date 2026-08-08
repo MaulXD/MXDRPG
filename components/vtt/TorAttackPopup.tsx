@@ -5,7 +5,13 @@ import { createPortal } from "react-dom";
 import { WEAPON_BY_ID } from "@/lib/character/um-anel/data";
 import type { TorCharacterSheet } from "@/lib/character/um-anel/types";
 import type { BattleToken } from "@/lib/vtt/types";
-import { postRoomAttack, postRoomTorStance, type RoomApiPayload } from "@/hooks/useRoomSync";
+import {
+  postRoomAttack,
+  postRoomTorStance,
+  postRoomTorTask,
+  type RoomApiPayload,
+} from "@/hooks/useRoomSync";
+import { TOR_COMBAT_TASK_BY_ID } from "@/lib/combat/um-anel/combat-tasks";
 import { ADVERSARY_PIERCE_BONUS, heroPierceBonus } from "@/lib/combat/um-anel/special-damage";
 import {
   TOR_DEFAULT_STANCE,
@@ -34,6 +40,7 @@ export function TorAttackPopup({ token, allTokens, roomId, onClose, onRoomSync }
   const [choiceId, setChoiceId] = useState<string>("");
   const [busy, setBusy] = useState(false);
   const [spendHate, setSpendHate] = useState(false);
+  const [allyId, setAllyId] = useState<string>("");
   const [heavyBlow, setHeavyBlow] = useState(0);
   const [pierce, setPierce] = useState(0);
   const [err, setErr] = useState<string | null>(null);
@@ -87,6 +94,20 @@ export function TorAttackPopup({ token, allTokens, roomId, onClose, onRoomSync }
     }
   }, [weaponChoices, choiceId]);
 
+  /* Proteger Companheiro só alcança outro herói em postura de corpo a corpo —
+     quem está em Retaguarda não pode ser protegido (o handler recusa). */
+  const allies = useMemo(
+    () =>
+      allTokens.filter(
+        (t) =>
+          t.id !== token.id &&
+          t.torCombat?.kind === "hero" &&
+          !t.torCombat.eliminated &&
+          t.torCombat.stance !== "retaguarda"
+      ),
+    [allTokens, token.id]
+  );
+
   const targets = useMemo(
     () => allTokens.filter((t) => t.id !== token.id && t.torCombat && !t.torCombat.eliminated),
     [allTokens, token.id]
@@ -127,6 +148,33 @@ export function TorAttackPopup({ token, allTokens, roomId, onClose, onRoomSync }
       // O erro mais comum é o requisito da Retaguarda ("faltam 2 aventureiros
       // em corpo a corpo") — precisa aparecer, não pode falhar em silêncio.
       setErr(e instanceof Error ? e.message : "Falha ao trocar a postura");
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  /* A tarefa disponível é decidida pela postura — é assim que o livro amarra as
+     duas coisas, e evita oferecer Preparar Tiro a quem está no corpo a corpo. */
+  const task = useMemo(
+    () => (isHero ? Object.values(TOR_COMBAT_TASK_BY_ID).find((t) => t.stance === stance) : undefined),
+    [isHero, stance]
+  );
+
+  async function runTask() {
+    if (!task || busy) return;
+    setBusy(true);
+    setErr(null);
+    try {
+      const payload = await postRoomTorTask(roomId, token.id, task.id, {
+        allyTokenId: task.needsAlly ? allyId : undefined,
+      });
+      const messages = "chat" in payload ? payload.chat : (payload.chatAppend ?? []);
+      setLastMessage(messages[messages.length - 1]?.text ?? null);
+      onRoomSync(payload);
+    } catch (e) {
+      // Postura errada, "já usaram nesta rodada" e alvo em Retaguarda voltam
+      // como erro — precisam aparecer, não podem falhar em silêncio.
+      setErr(e instanceof Error ? e.message : "Falha na Tarefa de Combate");
     } finally {
       setBusy(false);
     }
@@ -217,6 +265,35 @@ export function TorAttackPopup({ token, allTokens, roomId, onClose, onRoomSync }
             ))}
           </select>
         </label>
+
+        {task ? (
+          <div className="vtt-field">
+            <span>Tarefa de Combate — {task.label}</span>
+            <span className="vtt-field__hint">{task.description}</span>
+            {task.needsAlly ? (
+              <select value={allyId} onChange={(e) => setAllyId(e.target.value)} disabled={busy}>
+                <option value="">Escolha quem proteger</option>
+                {allies.map((t) => (
+                  <option key={t.id} value={t.id}>
+                    {t.name}
+                  </option>
+                ))}
+              </select>
+            ) : null}
+            <button
+              type="button"
+              className="btn btn-ghost"
+              disabled={busy || (task.needsAlly && !allyId)}
+              onClick={() => void runTask()}
+            >
+              {busy ? "Executando…" : `Tentar ${task.label}`}
+            </button>
+            <span className="vtt-field__hint">
+              Custa a ação principal da rodada — Baruk Khazâd!, Arco Mortal, Realeza Revelada e Amigo
+              dos Anões deixam usar como ação secundária.
+            </span>
+          </div>
+        ) : null}
 
         {/* Dano Especial é declarado ANTES da rolagem: o ataque é uma requisição
             só, então o jogador diz quanto quer gastar e o motor gasta o que os

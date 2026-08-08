@@ -744,6 +744,26 @@ export async function postRoomTorStance(
   return res.json() as Promise<RoomApiPayload>;
 }
 
+/** Um Anel — executa a Tarefa de Combate ligada à postura do herói. */
+export async function postRoomTorTask(
+  roomId: string,
+  tokenId: string,
+  taskId: string,
+  opts: { allyTokenId?: string } = {}
+) {
+  const res = await roomFetch(
+    `/api/room/${roomId}/tor-task`,
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "same-origin",
+      body: JSON.stringify({ tokenId, taskId, ...opts }),
+    },
+    "Falha na Tarefa de Combate"
+  );
+  return res.json() as Promise<RoomApiPayload>;
+}
+
 export async function postRoomAbility(
   roomId: string,
   attackerTokenId: string,

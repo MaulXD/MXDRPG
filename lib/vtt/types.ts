@@ -190,6 +190,11 @@ export type TorCombatTokenFields = {
    * ponto de vista do herói (06-fases-de-aventura-combate.md §Stances).
    */
   stance?: import("@/lib/combat/um-anel/stances").TorStanceId;
+  /**
+   * Efeitos com duração de rodada (Tarefas de Combate). Opcional — token de sala
+   * antiga simplesmente não tem nenhum, que é o mesmo que a lista vazia.
+   */
+  roundEffects?: import("@/lib/combat/um-anel/round-effects").TorRoundEffect[];
   /** Adversário eliminado (Ferimentos = Vigor, ou Resistência 0). */
   eliminated: boolean;
 };
