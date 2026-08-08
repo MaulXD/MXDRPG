@@ -13,7 +13,7 @@ import {
 } from "@/lib/combat/um-anel/special-damage";
 import { resolveTorCharacter, patchTorCharacterResources } from "@/lib/character/um-anel/characters";
 import { resolveTorAttack, formatTorAttackMessage } from "@/lib/combat/um-anel/resolve-attack";
-import { featDieRollPayload } from "@/lib/character/um-anel/dice";
+import { featDieRollPayload, torHopeBonusDice } from "@/lib/character/um-anel/dice";
 import { applyTorAttackResultToDefender } from "@/lib/combat/um-anel/vitals";
 import { appendRoomChatMessage } from "./chat";
 import { torTokenStance } from "./tor-stance";
@@ -54,6 +54,9 @@ export type TorAttackExecuteOpts = {
    * dados realmente derem.
    */
   specialDamage?: TorSpecialDamagePlan;
+  /** Só herói — gasta 1 de Esperança para *ganhar (1d)*, ou (2d) se Inspirado. */
+  spendHope?: boolean;
+  inspired?: boolean;
   room?: RoomState;
 };
 
@@ -146,6 +149,10 @@ export async function executeRoomTorAttack(
   let canBreakShield = false;
   let canSeize = false;
   let canEscape = false;
+  /** Dados de Sucesso extras vindos do Bônus de Esperança (0, 1 ou 2). */
+  let hopeBonusDice = 0;
+  let hopeSpentSheetId: string | null = null;
+  let hopeAfter = 0;
   /** Só adversário — opções de Dano Especial listadas na ação escolhida. */
   let attackerSpecialOptions: string[] = [];
   /** Efeitos de rodada já gastos — gravados no token depois de resolver. */
@@ -206,6 +213,14 @@ export async function executeRoomTorAttack(
     // Mão Firme finalmente faz alguma coisa: existia em STARTING_VIRTUES desde
     // sempre e nenhuma rolagem a consultava.
     attackerSteadyHand = sheet.virtues.includes("mao-firme");
+    // Bônus de Esperança: "um herói a ponto de fazer uma rolagem pode gastar 1
+    // ponto para ganhar (1d)" — e Inspirado dobra. Só desconta se houver ponto:
+    // marcar a caixa sem Esperança não pode virar saldo negativo.
+    if (opts.spendHope && sheet.hope.value > 0) {
+      hopeBonusDice = torHopeBonusDice({ spendHope: true, inspired: opts.inspired });
+      hopeSpentSheetId = sheet.id;
+      hopeAfter = sheet.hope.value - 1;
+    }
     // Aparar vale para qualquer arma de corpo a corpo; Arcos ficam de fora.
     parryValue = weapon.ranged ? 0 : heroParryBonus(weapon.proficiency);
     // Investida de Escudo exige escudo E "se sua FORÇA for maior que o Nível de
@@ -419,6 +434,7 @@ export async function executeRoomTorAttack(
     // Regra opcional de campanha curta (NA 18) — vem do estado da mesa, não da
     // ficha: o mesmo herói pode jogar uma one-shot e uma campanha longa.
     attributeTnBase: torAttributeTnBase(room.torSession),
+    hopeBonusDice,
     attackerEngagedByCount:
       atkCombat.kind === "hero" ? countEngagingFoes(room.scene.tokens, attackerToken) : 0,
   });
@@ -531,12 +547,25 @@ export async function executeRoomTorAttack(
     }
   }
 
+  // O ponto de Esperança sai da ficha depois de a rolagem existir. Falha aqui
+  // não desfaz o ataque — mesma política do dano no defensor.
+  if (hopeSpentSheetId) {
+    try {
+      await patchTorCharacterResources(hopeSpentSheetId, { hopeValue: hopeAfter }, author.authorId);
+    } catch (e) {
+      console.error("[tor-attack] falha ao descontar Esperança:", e);
+    }
+  }
+
   syncCombatOrderWithTokens(room);
 
   // Sem nomear a Virtude, a mensagem diz "(Favorecida)" e ninguém na mesa sabe
   // por quê — some no meio de Exausto/Arrasado/postura.
   const notas = [
     ...attackerFavouredBy,
+    ...(hopeBonusDice > 0
+      ? [`gastou 1 de Esperança — ganha (${hopeBonusDice}d)${hopeBonusDice >= 2 ? ", Inspirado" : ""}`]
+      : []),
     ...(hateSpent ? [`gastou 1 de ${hateLabel(atkCombat.hateKind)} — ganha (1d)`] : []),
     ...notasEfeito,
   ];

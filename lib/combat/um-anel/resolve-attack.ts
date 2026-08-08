@@ -109,6 +109,8 @@ export type TorAttackParams = {
   canEscape?: boolean;
   /** Base do NA da mesa — 18 na regra opcional de campanha curta. Padrão 20. */
   attributeTnBase?: number;
+  /** Dados de Sucesso do Bônus de Esperança (0, 1 ou 2 se Inspirado). */
+  hopeBonusDice?: number;
 };
 
 export type TorWoundSeverity =
@@ -235,6 +237,7 @@ export function resolveTorAttack(params: TorAttackParams): TorAttackResolution {
     illFavoured: params.attackerIllFavoured,
     weary: params.attackerWeary,
     miserable: params.attackerMiserable,
+    hopeBonusDice: params.hopeBonusDice,
   });
 
   const stanceEffect = {

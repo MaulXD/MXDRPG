@@ -42,6 +42,8 @@ export function TorAttackPopup({ token, allTokens, roomId, onClose, onRoomSync }
   const [choiceId, setChoiceId] = useState<string>("");
   const [busy, setBusy] = useState(false);
   const [spendHate, setSpendHate] = useState(false);
+  const [spendHope, setSpendHope] = useState(false);
+  const [inspired, setInspired] = useState(false);
   const [allyId, setAllyId] = useState<string>("");
   const [heavyBlow, setHeavyBlow] = useState(0);
   const [pierce, setPierce] = useState(0);
@@ -246,6 +248,8 @@ export function TorAttackPopup({ token, allTokens, roomId, onClose, onRoomSync }
         torWeaponId: isHero ? choiceId : undefined,
         torActionId: isHero ? undefined : choiceId,
         torSpendHate: !isHero && spendHate,
+        torSpendHope: isHero && spendHope,
+        torInspired: isHero && inspired,
         torSpecialDamage: {
           heavyBlow,
           pierce,
@@ -259,6 +263,8 @@ export function TorAttackPopup({ token, allTokens, roomId, onClose, onRoomSync }
       // As opções de 1 ícone desmarcam sozinhas: deixar marcadas gastaria de
       // novo no ataque seguinte sem ninguém pedir — mesmo motivo do Ódio.
       setExtras({});
+      setSpendHope(false);
+      setInspired(false);
       // O ponto só some se o ataque aconteceu — deixar marcado gastaria de novo
       // no próximo clique sem o Mestre pedir.
       setSpendHate(false);
@@ -373,6 +379,36 @@ export function TorAttackPopup({ token, allTokens, roomId, onClose, onRoomSync }
             <span className="vtt-field__hint">
               Custa a ação principal da rodada — Baruk Khazâd!, Arco Mortal, Realeza Revelada e Amigo
               dos Anões deixam usar como ação secundária.
+            </span>
+          </div>
+        ) : null}
+
+        {isHero ? (
+          <div className="vtt-field">
+            <span>Esperança</span>
+            <label className="vtt-inline-check">
+              <input
+                type="checkbox"
+                checked={spendHope}
+                disabled={busy || (sheet != null && sheet.hope.value <= 0)}
+                onChange={(e) => setSpendHope(e.target.checked)}
+              />
+              Gastar 1 de Esperança — ganha (1d)
+              {sheet ? ` · tem ${sheet.hope.value}` : ""}
+            </label>
+            <label className="vtt-inline-check">
+              <input
+                type="checkbox"
+                checked={inspired}
+                disabled={busy}
+                onChange={(e) => setInspired(e.target.checked)}
+              />
+              Inspirado — dobra o bônus (2d)
+            </label>
+            {/* Inspirado sozinho não dá dado: é o benefício do PONTO que dobra. */}
+            <span className="vtt-field__hint">
+              Inspiração vem de invocar uma Característica Distintiva ou de uma Virtude Cultural.
+              Sem gastar Esperança, não rende dado nenhum.
             </span>
           </div>
         ) : null}
