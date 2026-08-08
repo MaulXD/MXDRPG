@@ -858,6 +858,35 @@ export async function postRoomTorFatigue(
   return res.json() as Promise<RoomApiPayload>;
 }
 
+/**
+ * Um Anel — Fontes de Dano fora do combate (Frio Extremo, Queda, Fogo, Asfixia,
+ * Veneno) e a rolagem de CURA que neutraliza o veneno. O Dado de Proeza é rolado
+ * no servidor: é ele que grava a Resistência na ficha.
+ */
+export async function postRoomTorHazard(
+  roomId: string,
+  tokenId: string,
+  body:
+    | {
+        action: "apply";
+        source: "frio" | "queda" | "fogo" | "asfixia" | "veneno";
+        level: "moderado" | "severo" | "gravissimo";
+      }
+    | { action: "cure-poison"; healerRank: number }
+) {
+  const res = await roomFetch(
+    `/api/room/${roomId}/tor-hazard`,
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "same-origin",
+      body: JSON.stringify({ tokenId, ...body }),
+    },
+    "Falha ao aplicar a Fonte de Dano"
+  );
+  return res.json() as Promise<RoomApiPayload>;
+}
+
 /** Um Anel — o herói aceita ser empurrado e amortece metade do último golpe. */
 export async function postRoomTorPush(roomId: string, tokenId: string) {
   const res = await roomFetch(

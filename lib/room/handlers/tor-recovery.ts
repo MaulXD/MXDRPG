@@ -118,6 +118,18 @@ export async function executeRoomTorRecovery(
     next = { ...sheet, fatigue: r.state.fatigue };
     text = `${sheet.name} chega ao fim da jornada — perde ${r.removed} de Fadiga (agora ${r.state.fatigue})`;
   } else if (action === "rest" || action === "short-rest") {
+    // "Um herói-jogador envenenado NÃO PODE DESCANSAR" (cap. 8, §Veneno). Vale
+    // para as duas formas: o livro não distingue. O veneno vive no token porque
+    // é lá que a cena acontece — a ficha é achada pelo id do personagem.
+    const poisonedToken = room.scene.tokens.find(
+      (t) => t.torCombat?.kind === "hero" && t.torCombat.torCharacterId === sheet.id
+    );
+    if (poisonedToken?.torCombat?.poison) {
+      return {
+        ok: false,
+        error: `${sheet.name} está envenenado e não pode descansar — uma rolagem de CURA bem-sucedida remove o veneno`,
+      };
+    }
     const prolongado = action === "rest";
     // Duro como Raiz Velha dobra a FORÇA nesta conta — a Virtude é resolvida
     // aqui, onde a ficha é conhecida, e o motor recebe o valor pronto.
