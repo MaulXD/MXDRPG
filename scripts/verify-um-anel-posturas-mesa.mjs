@@ -229,3 +229,68 @@ ok(
 
 console.log(`\n  ${pass} ok, ${fail} falhas`);
 if (fail > 0) process.exit(1);
+
+/* ══════════════════════════════════════════════════════════════════════
+   Limites de engajamento (POS-R03)
+   ══════════════════════════════════════════════════════════════════════
+
+   `TOR_ENGAGEMENT_LIMITS` existia sem consumidor NENHUM: os quatro tetos do
+   livro estavam escritos e ninguém conferia. Dez heróis podiam cercar um Orc.
+
+   O app AVISA, não barra: quem engaja quem é decisão do Mestre, e a leitura por
+   célula adjacente é aproximação — barrar puniria uma arrumação de tokens que
+   pode estar certa na cabeça da mesa. Mas calar deixa a regra invisível. */
+
+const ATTACK_ENG = stripComments(
+  readFileSync(root("lib", "room", "handlers", "tor-combat-attack.ts"), "utf8")
+);
+const ADV_TYPES = readFileSync(root("lib", "character", "um-anel", "adversary-types.ts"), "utf8");
+const ADV_LIST = readFileSync(root("lib", "character", "um-anel", "adversaries.ts"), "utf8");
+const POSTURAS_MD = readFileSync(root("livros", "um-anel", "compendio", "posturas.md"), "utf8");
+
+ok("livro: até 3 heróis por inimigo humano", /\*\*Heróis por inimigo humano:\*\* até 3/.test(POSTURAS_MD));
+ok("livro: até 6 heróis por inimigo grande", /\*\*Heróis por inimigo grande:\*\* até 6/.test(POSTURAS_MD));
+ok("livro: até 3 inimigos humanos por herói", /\*\*Inimigos humanos por herói:\*\* até 3/.test(POSTURAS_MD));
+ok("livro: até 2 inimigos grandes por herói", /\*\*Inimigos grandes por herói:\*\* até 2/.test(POSTURAS_MD));
+
+ok(
+  "os limites têm consumidor real",
+  /TOR_ENGAGEMENT_LIMITS\.heroesPerLargeFoe/.test(ATTACK_ENG) &&
+    /TOR_ENGAGEMENT_LIMITS\.humanFoesPerHero/.test(ATTACK_ENG),
+  "os quatro tetos estavam escritos e ninguém conferia"
+);
+ok(
+  "o teto de cercadores depende do TAMANHO do inimigo",
+  /foe\.torCombat\?\.large\s*\n?\s*\? TOR_ENGAGEMENT_LIMITS\.heroesPerLargeFoe/.test(ATTACK_ENG),
+  "um grande aceita o dobro de cercadores"
+);
+ok(
+  "grandes e humanos são contados separadamente sobre o herói",
+  /const grandes = inimigosNoHeroi\.filter\(\(t\) => t\.torCombat\?\.large\)\.length/.test(ATTACK_ENG),
+  "3 humanos OU 2 grandes — misturar os dois usaria o teto errado"
+);
+/* Avisa, não barra: nenhum `return { ok: false }` por causa de limite. */
+ok(
+  "estourar o limite não barra o ataque",
+  !/engagementWarnings[\s\S]{0,200}?return \{ ok: false/.test(ATTACK_ENG),
+  "quem engaja quem é decisão do Mestre"
+);
+
+/* `large` só onde o livro diz. O texto dá "criaturas grandes (como Trolls)" como
+   o único critério explícito; Vigor 2 NÃO serve de atalho, porque mede
+   Ferimentos para abater e não tamanho. */
+ok("bloco de adversário tem o campo `large`", /large\?: boolean/.test(ADV_TYPES));
+const marcados = [...ADV_LIST.matchAll(/^ {4}large: true,$/gm)].length;
+ok("os 5 blocos de Troll estão marcados como grandes", marcados === 5, `achou ${marcados}`);
+const naoTroll = [...ADV_LIST.matchAll(/id: "([a-z0-9-]+)",\n[^\n]*\n {4}large: true,/g)]
+  .map((m) => m[1])
+  .filter((id) => !id.includes("troll"));
+ok(
+  "só Trolls estão marcados como grandes",
+  naoTroll.length === 0,
+  `marcados sem base no livro: ${naoTroll.join(", ")}`
+);
+ok("token carrega o tamanho", /large: stats\.large/.test(readFileSync(root("lib", "character", "um-anel", "adversary-token.ts"), "utf8")));
+
+console.log(`\nverify-um-anel-posturas-mesa (engajamento): ${pass} ok, ${fail} falhas`);
+if (fail > 0) process.exit(1);

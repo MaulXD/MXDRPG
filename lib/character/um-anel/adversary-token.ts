@@ -54,6 +54,7 @@ export function createTorAdversaryToken(
       hateMax: stats.hate,
       hateKind: stats.hateKind,
       fellAbilities: stats.fellAbilities,
+      large: stats.large,
       eliminated: false,
     },
     ...defaultMovementFields({ walk: TOR_TOKEN_WALK, run: TOR_TOKEN_RUN }),

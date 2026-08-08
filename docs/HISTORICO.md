@@ -104,6 +104,54 @@ npm run sync:data:check       # após editar livros/
 
 ---
 
+### 2026-08-08 — Limites de engajamento: os quatro tetos que ninguém conferia
+
+**Pedido:** continuar o loop.
+
+**Passo a passo:**
+
+1. **O achado da rodada anterior, agora resolvido.** `TOR_ENGAGEMENT_LIMITS`
+   tinha os quatro tetos do livro escritos — 3 heróis por inimigo humano, 6 por
+   grande, 3 inimigos humanos por herói, 2 grandes — e **consumidor nenhum**. Dez
+   heróis podiam cercar um Orc e nada acusava.
+
+2. **Avisa, não barra.** Quem engaja quem é decisão do Mestre, e a leitura do app
+   é célula adjacente, que é aproximação. Barrar o ataque puniria uma arrumação
+   de tokens que pode estar certa na cabeça da mesa; calar deixaria a regra
+   invisível. O teste tranca as duas coisas: que os limites são consultados **e**
+   que estourá-los não devolve erro.
+
+3. **Precisou de um dado que faltava: tamanho.** O teto depende de a criatura ser
+   maior que humana — 3 humanos **ou** 2 grandes sobre um herói, e um grande
+   aceita o dobro de cercadores. O bloco do adversário não tinha esse campo.
+
+   **Marquei só onde o livro diz.** O texto dá "criaturas grandes (**como
+   Trolls**)" como único critério explícito, então os cinco blocos de Troll foram
+   marcados e mais nada. Vigor 2 seria um atalho tentador e **errado**: mede
+   Ferimentos para abater, não tamanho, e há adversários de Vigor 2 do tamanho de
+   um homem. O teste garante os dois lados — os cinco Trolls marcados, e nenhum
+   não-Troll marcado.
+
+4. **Validação.** `npx tsc --noEmit` limpo · `npm run build` compila ·
+   `npm run test` verde com **1818 asserções**. A asserção do teto por tamanho foi
+   conferida fixando o teto humano — falhou como devia.
+
+**Arquivos tocados:**
+- `lib/character/um-anel/adversary-types.ts` · `adversaries.ts` — campo `large`, 5 Trolls
+- `lib/character/um-anel/adversary-token.ts` · `lib/vtt/types.ts` — o tamanho viaja com o token
+- `lib/room/handlers/tor-combat-attack.ts` — avisos de limite estourado
+- `scripts/verify-um-anel-posturas-mesa.mjs` — 12 asserções novas
+
+**Como testar:** pôr quatro heróis adjacentes a um Rufião e atacar — a mensagem
+avisa que o livro permite três. Trocar o Rufião por um Grande Troll das Cavernas:
+o aviso some, porque o teto de um grande é seis.
+
+**Falta:** Fadiga por Carga e descanso (cap. 4); Empenho de Perícia; penalidades
+em Dados de Sucesso; Elmo removível; campanhas de 1ª edição; glyph da runa de
+Gandalf.
+
+---
+
 ### 2026-08-08 — Varredura de constantes: a Falha sem nome e a tabela de custo duplicada
 
 **Pedido:** continuar o loop.

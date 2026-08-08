@@ -17,6 +17,7 @@ import { featDieRollPayload, torHopeBonusDice } from "@/lib/character/um-anel/di
 import { applyTorAttackResultToDefender } from "@/lib/combat/um-anel/vitals";
 import { appendRoomChatMessage } from "./chat";
 import { torTokenStance } from "./tor-stance";
+import { TOR_ENGAGEMENT_LIMITS } from "@/lib/combat/um-anel/stances";
 import {
   addTorRoundEffect,
   consumeTorRoundEffect,
@@ -84,6 +85,57 @@ function countEngagingFoes(tokens: BattleToken[], hero: BattleToken): number {
 /** Ódio (lacaios do Inimigo) × Resolução (Homens Maus) — muda só o nome na mesa. */
 export function hateLabel(kind: "hate" | "resolve" | undefined): string {
   return kind === "resolve" ? "Resolução" : "Ódio";
+}
+
+/**
+ * Avisa quando os limites de engajamento do livro (POS-R03) foram estourados.
+ *
+ * **Avisa, não barra.** Quem engaja quem é decisão do Mestre; a leitura do app é
+ * célula adjacente, que é uma aproximação. Barrar o ataque puniria uma
+ * arrumação de tokens que pode estar certa na cabeça da mesa. Mas calar deixaria
+ * a regra invisível — os limites existem para impedir que dez heróis cerquem um
+ * Orc, e ninguém confere de cabeça.
+ *
+ * As contagens distinguem tamanho: um herói aguenta 3 humanos **ou 2 grandes**,
+ * e um grande aceita o dobro de cercadores que um humano.
+ */
+function engagementWarnings(tokens: BattleToken[], hero: BattleToken, foe: BattleToken): string[] {
+  const adjacentes = (alvo: BattleToken, kind: "hero" | "adversary") =>
+    tokens.filter(
+      (t) =>
+        t.id !== alvo.id &&
+        t.torCombat?.kind === kind &&
+        !t.torCombat.eliminated &&
+        axialDistance(t.axial, alvo.axial) === 1
+    );
+
+  const avisos: string[] = [];
+
+  const cercandoInimigo = adjacentes(foe, "hero").length;
+  const tetoHerois = foe.torCombat?.large
+    ? TOR_ENGAGEMENT_LIMITS.heroesPerLargeFoe
+    : TOR_ENGAGEMENT_LIMITS.heroesPerHumanFoe;
+  if (cercandoInimigo > tetoHerois) {
+    avisos.push(
+      `${cercandoInimigo} aventureiros cercam ${foe.name} — o livro permite ${tetoHerois}`
+    );
+  }
+
+  const inimigosNoHeroi = adjacentes(hero, "adversary");
+  const grandes = inimigosNoHeroi.filter((t) => t.torCombat?.large).length;
+  const humanos = inimigosNoHeroi.length - grandes;
+  if (humanos > TOR_ENGAGEMENT_LIMITS.humanFoesPerHero) {
+    avisos.push(
+      `${hero.name} está engajado por ${humanos} inimigos de tamanho humano — o livro permite ${TOR_ENGAGEMENT_LIMITS.humanFoesPerHero}`
+    );
+  }
+  if (grandes > TOR_ENGAGEMENT_LIMITS.largeFoesPerHero) {
+    avisos.push(
+      `${hero.name} está engajado por ${grandes} criaturas grandes — o livro permite ${TOR_ENGAGEMENT_LIMITS.largeFoesPerHero}`
+    );
+  }
+
+  return avisos;
 }
 
 function severityToInjuryText(severity: NonNullable<ReturnType<typeof resolveTorAttack>["severity"]>): string {
@@ -578,9 +630,17 @@ export async function executeRoomTorAttack(
         : `atacar ${defenderToken.name} (Resolução) pode ser Malfeitoria — o Mestre avalia`
       : null;
 
+  const heroToken = atkCombat.kind === "hero" ? attackerToken : defenderToken;
+  const foeToken = atkCombat.kind === "hero" ? defenderToken : attackerToken;
+  const limitesEstourados =
+    atkCombat.kind !== defCombat.kind
+      ? engagementWarnings(room.scene.tokens, heroToken, foeToken)
+      : [];
+
   const notas = [
     ...attackerFavouredBy,
     ...(misdeedWarning ? [misdeedWarning] : []),
+    ...limitesEstourados,
     ...(hopeBonusDice > 0
       ? [`gastou 1 de Esperança — ganha (${hopeBonusDice}d)${hopeBonusDice >= 2 ? ", Inspirado" : ""}`]
       : []),
