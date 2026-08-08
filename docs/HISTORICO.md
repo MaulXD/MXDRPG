@@ -104,6 +104,85 @@ npm run sync:data:check       # após editar livros/
 
 ---
 
+### 2026-08-08 — "Não Desvie da Trilha": a primeira aventura convertida
+
+**Pedido:** continuar o loop — converter as campanhas de 1ª edição.
+
+**Passo a passo:**
+
+1. **Aventura 1 de *Tales from Wilderland* convertida por inteiro** — seis partes
+   e o epílogo, das páginas 2–16 do PDF, em
+   `livros/um-anel/15-wilderland-01-nao-desvie-da-trilha.md`. Cada conversão não
+   óbvia cita o id da entrada da tabela (CVR-xxx) que a sustenta.
+
+2. **O que a conversão mudou de verdade:**
+   - os **NAs fixos sumiram** — a dificuldade virou Complicação/Vantagem em Dados
+     de Sucesso (CVR-016, CVR-017);
+   - os **testes de corrupção** viraram **Testes de Sombra** com fonte declarada:
+     Pavor na floresta, **Malfeito** ao matar o eremita na própria casa — e
+     Malfeito não pode ser reduzido por teste;
+   - as duas **Tolerâncias** (Dindar e o Eremita) viraram **Conselhos** de
+     Resistência 3, com a atitude da audiência substituindo os ajustes de ±1;
+   - os **testes de fadiga por estação** viraram **Eventos de Jornada** em Terras
+     Sombrias, com o Dado de Proeza Desfavorecido;
+   - as **ações prolongadas** da escalada e da ponte de teia viraram
+     **Empreitadas de Perícia** de Resistência 3 (CVR-019);
+   - as **perdas fixas de Resistência** (queda de 3/6/9 metros, galho caindo)
+     viraram **Fontes de Dano** de nível moderado/severo/gravíssimo (CVR-028).
+
+3. **Os bandidos são Resolução, e isso muda a cena.** O bloco `Thug` de 1ª edição
+   tem Nível de Atributo 2, Ódio 2 e a habilidade *Poltrão* — que é exatamente o
+   **Salteador** da 2ª edição, com a habilidade **Covarde**. E como Homens Maus
+   têm **Resolução**, atacá-los ou matá-los passa a ser avaliado como
+   **Malfeitoria** (CVR-004). Eles se rendem: é o caso que o livro manda pesar.
+
+4. **O Vigor da Coisa do Fosso não precisou ser estimado.** CVR-003 registra que
+   a 2ª edição não dá regra de conversão de Vigor — mas o **texto da própria
+   aventura** diz que a criatura some "se for Ferida **duas vezes**", e Vigor é
+   exatamente o número de Ferimentos para abater. **Vigor 2**, derivado da fonte,
+   com a justificativa escrita no arquivo e asserção exigindo que ela esteja lá.
+   Uma asserção negativa impede que esse caso vire fórmula para os outros.
+
+5. **A lacuna das Aranhas continua lacuna.** As Partes III e IV pedem aranhas e o
+   bestiário traduzido não tem o bloco. As cenas foram convertidas
+   narrativamente, a lacuna está declarada no fim do arquivo, e há asserção
+   contando os blocos de estatísticas: **só pode existir um**, o da Coisa do
+   Fosso. Um segundo bloco seria estatística inventada.
+
+6. **Duas entradas novas na régua:** CVR-031 (comitiva → **Companhia**) e CVR-032
+   (Fase em Sociedade → **Fase de Companhia**). A primeira é a substituição mais
+   frequente do texto de cena depois dos nomes de perícia.
+
+7. **A lição do "Parada" se repetiu, e o teste já sabia.** Banir "comitiva",
+   "Tolerância" e "teste de corrupção" do arquivo falharia contra o próprio
+   resumo da conversão, que precisa nomeá-los para dizer no que viraram. As
+   asserções fixam **contexto**: toda frase que cita o termo antigo tem de dizer
+   "virou" ou "original". O mesmo para NA numérico — e ali foi preciso restringir
+   a **dois dígitos**, senão "a 2ª edição rola contra o NA do Atributo" era
+   acusada por causa do "2ª".
+
+8. **Validação.** `npx tsc --noEmit` limpo · `npm run build` compila ·
+   `npm run test` verde com **2269 asserções** (65 novas + 14). Três asserções
+   foram quebradas de propósito — NA fixo introduzido, bloco de Aranha
+   improvisado, justificativa do Vigor removida — e falharam como deviam. A
+   guarda de nomes antigos do glossário, que varre `livros/um-anel/*.md`, passou
+   na aventura sem exceção nenhuma: nenhum nome de perícia de 1ª edição sobreviveu.
+
+**Arquivos tocados:**
+- `livros/um-anel/15-wilderland-01-nao-desvie-da-trilha.md` — **novo**
+- `livros/um-anel/compendio/conversao-primeira-edicao.md` — CVR-031 e CVR-032
+- `data/compendiums/um-anel/{conversao-primeira-edicao,index}.json` — gerados
+- `scripts/verify-um-anel-aventura-wilderland-01.mjs` — **novo**, 65 asserções
+
+**Como testar:** ler o arquivo da aventura de cabo a rabo — cada parte traz a
+conversão explicada no lugar onde ela importa, e o bloco da Coisa do Fosso está
+pronto para a mesa.
+
+**Falta:** aventuras 2 a 7 de Wilderland; *The Darkening of Mirkwood*; o bloco de
+Aranha (lacuna de fonte); glyph da runa de Gandalf.
+
+---
+
 ### 2026-08-08 — Tabela de conversão da 1ª edição: a régua antes das aventuras
 
 **Pedido:** continuar o loop — converter *Tales from Wilderland* e *The Darkening

@@ -348,6 +348,30 @@
     }
   },
   {
+    "id": "CVR-031",
+    "name": "Comitiva",
+    "type": "efeito",
+    "system": {
+      "grupo": "Recursos",
+      "1_edicao": "comitiva",
+      "2_edicao": "Companhia",
+      "muda": "só o nome, e aparece em toda página",
+      "descricao": "O grupo de heróis chama-se **Companhia** em toda a 2ª edição — é o termo que dá nome à Fase de Companhia, ao Nível de Companhia e ao Ponto de Companhia. A tradução de 1ª edição usa \"comitiva\". Substituição direta, e a mais frequente do texto de cena depois dos nomes de perícia."
+    }
+  },
+  {
+    "id": "CVR-032",
+    "name": "Fase em Sociedade",
+    "type": "efeito",
+    "system": {
+      "grupo": "Recursos",
+      "1_edicao": "Fase em Sociedade",
+      "2_edicao": "Fase de Companhia",
+      "muda": "o nome, e o conteúdo cresce",
+      "descricao": "A 2ª edição chama de **Fase de Companhia** e amarra a ela um conjunto que a 1ª edição não tinha nessa forma: Empreitadas, recuperação espiritual, avanço de Perícias e Proficiências, e a Fase de Yule como terceira do ano. Aventuras de 1ª edição que terminam dizendo \"se uma Fase em Sociedade se segue\" continuam valendo — o que muda é o que a Companhia pode fazer nela."
+    }
+  },
+  {
     "id": "CVR-030",
     "name": "O que a fonte não converte",
     "type": "efeito",

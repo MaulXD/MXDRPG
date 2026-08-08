@@ -417,6 +417,33 @@ quase inteiro; o que muda é a camada de regras.
 
 ---
 
+## CVR-031 — Comitiva
+
+- **1ª edição:** comitiva
+- **2ª edição:** Companhia
+- **Muda?:** só o nome, e aparece em toda página
+
+> Descrição: O grupo de heróis chama-se **Companhia** em toda a 2ª edição — é o
+> termo que dá nome à Fase de Companhia, ao Nível de Companhia e ao Ponto de
+> Companhia. A tradução de 1ª edição usa "comitiva". Substituição direta, e a mais
+> frequente do texto de cena depois dos nomes de perícia.
+
+---
+
+## CVR-032 — Fase em Sociedade
+
+- **1ª edição:** Fase em Sociedade
+- **2ª edição:** Fase de Companhia
+- **Muda?:** o nome, e o conteúdo cresce
+
+> Descrição: A 2ª edição chama de **Fase de Companhia** e amarra a ela um conjunto
+> que a 1ª edição não tinha nessa forma: Empreitadas, recuperação espiritual,
+> avanço de Perícias e Proficiências, e a Fase de Yule como terceira do ano.
+> Aventuras de 1ª edição que terminam dizendo "se uma Fase em Sociedade se segue"
+> continuam valendo — o que muda é o que a Companhia pode fazer nela.
+
+---
+
 # Lacunas de fonte registradas
 
 ## CVR-030 — O que a fonte não converte
