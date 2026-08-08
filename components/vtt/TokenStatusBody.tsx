@@ -9,6 +9,7 @@ import { PaHudMeter } from "@/components/vtt/PaHudMeter";
 import { formatTokenHpLine, hpBarColor, hpRatio } from "@/lib/vtt/token-hp-display";
 import { TOR_DEFAULT_STANCE, isTorStance, torStanceLabel } from "@/lib/combat/um-anel/stances";
 import { TorShadowPanel } from "@/components/vtt/TorShadowPanel";
+import { TorHazardPanel } from "@/components/vtt/TorHazardPanel";
 
 type Props = {
   token: BattleToken;
@@ -101,6 +102,18 @@ export function TokenStatusBody({
           cada rolagem — precisa estar onde o Mestre já clica no herói. */}
       {token.torCombat?.kind === "hero" ? (
         <TorShadowPanel
+          roomId={roomId}
+          token={token}
+          canManage={canApplyConditions}
+          onUpdate={onUpdate}
+        />
+      ) : null}
+
+      {/* Frio, Queda, Fogo, Asfixia e Veneno — o capítulo 8 inteiro que não
+          tinha caminho até a mesa. O Veneno mora aqui porque persiste entre
+          cenas e é ele que impede o descanso. */}
+      {token.torCombat?.kind === "hero" ? (
+        <TorHazardPanel
           roomId={roomId}
           token={token}
           canManage={canApplyConditions}

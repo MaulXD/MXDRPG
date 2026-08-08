@@ -200,6 +200,19 @@ export type TorCombatTokenFields = {
   /** Qual dos dois nomes usar na tela — muda o texto, não a mecânica. */
   hateKind?: "hate" | "resolve";
   /**
+   * Só herói — nível do veneno que corre no corpo, ou ausente se não envenenado.
+   *
+   * Guardado porque o veneno **persiste entre cenas**: "um herói-jogador
+   * envenenado não pode descansar e deve rolar a perda de Resistência
+   * correspondente ao fim de cada dia" (08-mestre-e-adversarios.md). O nível é o
+   * mesmo da Fonte de Dano que envenenou, e é ele que penaliza a rolagem de CURA
+   * que cura — por isso guarda o nível, não um booleano.
+   *
+   * Opcional: token gravado antes deste campo lê como não envenenado, então sala
+   * salva não precisa de migração.
+   */
+  poison?: import("@/lib/combat/um-anel/hazards").TorHazardLevel;
+  /**
    * Só adversário — Habilidades Sinistras do bloco, como texto.
    *
    * Não são mecanizadas de propósito: quase todas são gastos OPCIONAIS ("gaste 1

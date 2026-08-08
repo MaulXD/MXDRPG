@@ -104,6 +104,83 @@ npm run sync:data:check       # após editar livros/
 
 ---
 
+### 2026-08-08 — Fontes de Dano: o capítulo 8 inteiro que não tinha caminho até a mesa
+
+**Pedido:** continuar o loop.
+
+**Passo a passo:**
+
+1. **O achado.** Fui atrás do **Veneno** e encontrei o sistema em volta dele:
+   **Fontes de Dano** — Frio Extremo, Queda, Fogo, Asfixia e Veneno, com níveis
+   de perda e cadência de rolagem. **Nada disso estava no motor.** A única forma
+   de um herói perder Resistência no app era levar um golpe: afogar, queimar,
+   cair e envenenar não existiam.
+
+2. **A armadilha é a INVERSÃO da tabela.** Na Perda de Resistência o Dado de
+   Proeza é lido **ao contrário** do resto do jogo:
+
+   | Dado de Proeza | O herói está… | Efeito |
+   |---|---|---|
+   | Olho | Desacordado | reduzido a **zero** |
+   | 1–10 | Machucado | perde o resultado numérico |
+   | Runa | Ileso | sai incólume |
+
+   Logo **Favorecida ajuda o herói** aqui — e é por isso que a perda **moderada**
+   rola Favorecida e a **gravíssima** rola Desfavorecida. Trocar os dois faria o
+   dano leve doer mais que o mortal. Tem asserção com esse texto exato ao lado.
+
+   Duas leituras a mais que a intuição erra: o Olho é *reduzido a zero*, não
+   "perde 0" nem "perde 10" — por isso `reducedToZero` é campo separado de
+   `loss`; e a **Runa vale 10 no resto do motor** e aqui é Ileso, com asserção
+   negativa provando que a perda não sai 10.
+
+3. **Veneno.** "Não pode descansar e deve rolar a perda de Resistência ao fim de
+   cada dia — se a rolagem produzir um ᛥ, o herói não sofre dano e não está mais
+   envenenado." O nível fica no token (não um booleano) porque é ele que penaliza
+   a rolagem de **CURA** que cura: *perde (1d)* no Severo, *(2d)* no Gravíssimo.
+   Entra como Dado de Sucesso negativo, **não** como Desfavorecida — Desfavorecida
+   se cancela com Favorecida, o dado de Sucesso soma. A rolagem de CURA é de quem
+   **trata**, então o painel pede a graduação de quem cuida, não a do doente.
+
+   O bloqueio de descanso entrou em `tor-recovery` **antes** da conta de
+   recuperação, com asserção de ordem — barrar depois de calcular seria
+   decorativo. Vale para os **dois** descansos: o livro diz "não pode descansar",
+   sem distinguir.
+
+4. **A zero de Resistência a fonte muda o desfecho.** Regra geral do capítulo 6:
+   zero derruba inconsciente. A tabela acrescenta: Queda e Fogo deixam **Ferido**;
+   Frio, Asfixia e Veneno deixam **Morrendo**. Está na tabela de fontes, campo a
+   campo, com asserção por fonte.
+
+5. **O Dado de Proeza rola no servidor**, como no ataque — é ele que grava a
+   Resistência na ficha, e número vindo do cliente é número que o cliente escolhe.
+
+6. **Validação.** `npx tsc --noEmit` limpo · `npm run build` compila ·
+   `npm run test` verde com **1968 asserções** (65 novas). Cinco asserções foram
+   quebradas de propósito e falharam como deviam — incluindo a inversão
+   Favorecida/Desfavorecida, a Runa lida como 10, e a de ordem do bloqueio.
+
+**Arquivos tocados:**
+- `lib/combat/um-anel/hazards.ts` — **novo**: níveis, fontes, tabela, veneno
+- `lib/room/handlers/tor-hazard.ts` — **novo**: rolagem e escrita na ficha
+- `app/api/room/[roomId]/tor-hazard/route.ts` — **novo**
+- `lib/room/handlers/tor-recovery.ts` — envenenado não descansa
+- `lib/vtt/types.ts` — `poison` no token, opcional (sala salva não migra)
+- `components/vtt/TorHazardPanel.tsx` — **novo**
+- `components/vtt/TokenStatusBody.tsx` — o painel entra no token do herói
+- `hooks/useRoomSync.ts` — `postRoomTorHazard`
+- `scripts/verify-um-anel-fontes-de-dano.mjs` — **novo**, 65 asserções
+
+**Como testar:** abrir o painel de um herói, escolher Fogo/Gravíssimo e rolar — o
+d12 sai no chat e a Resistência cai na ficha. Escolher Veneno deixa o herói
+ENVENENADO, e a partir daí o Descanso Curto e o Prolongado são recusados até uma
+rolagem de CURA bem-sucedida (ou uma Runa na rolagem do fim do dia).
+
+**Falta:** Consciência do Olho; Elmo removível; campanhas de 1ª edição; glyph da
+runa de Gandalf.
+
+---
+
 ### 2026-08-08 — Fadiga: existia quem tira, não existia quem põe
 
 **Pedido:** continuar o loop.
