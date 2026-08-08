@@ -1,21 +1,11 @@
 import Link from "next/link";
 import { ENTRAR_PATH } from "@/lib/site-paths";
-import fs from "fs";
-import path from "path";
 import { pageMetadata } from "@/lib/site-metadata";
+import { PrivacidadeConteudo } from "./conteudo";
 
 export const metadata = pageMetadata("Privacidade");
 
 export default function PrivacidadePage() {
-  const mdPath = path.join(process.cwd(), "docs/PRIVACIDADE-LGPD.md");
-  let body =
-    "Política em atualização. Edite docs/PRIVACIDADE-LGPD.md com e-mail do titular antes do lançamento.";
-  try {
-    body = fs.readFileSync(mdPath, "utf8");
-  } catch {
-    /* fallback */
-  }
-
   return (
     <div className="page-wrap content-card glass" style={{ maxWidth: 720, padding: "2rem", marginTop: "1rem" }}>
       <header className="page-header" style={{ paddingBottom: "1rem" }}>
@@ -23,16 +13,9 @@ export default function PrivacidadePage() {
         <h1 className="display-lg">Privacidade</h1>
         <p className="lead">MXDRPG — mesa virtual gratuita.</p>
       </header>
-      <article
-        style={{
-          lineHeight: 1.7,
-          color: "var(--text-muted)",
-          whiteSpace: "pre-wrap",
-          fontSize: "0.9rem",
-        }}
-      >
-        {body}
-      </article>
+
+      <PrivacidadeConteudo />
+
       <p style={{ marginTop: "2rem" }}>
         <Link href={ENTRAR_PATH}>Voltar ao login</Link>
       </p>

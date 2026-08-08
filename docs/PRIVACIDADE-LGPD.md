@@ -1,5 +1,15 @@
 # Política de Privacidade — MXDRPG
 
+> **ATENÇÃO — editar este arquivo NÃO muda o site.** O que vai ao ar é
+> `app/privacidade/conteudo.tsx`. Este markdown é o texto autoral de referência.
+>
+> Foi assim que o problema apareceu: a página lia este arquivo em tempo de
+> execução, mas `docs/` está no `.dockerignore` — em produção ele nunca existia, e
+> o que era publicado como política de privacidade era um recado interno de
+> desenvolvedor. Ao alterar a política, mude **os dois** arquivos;
+> `scripts/verify-legal-pages.mjs` confere que as seções e o e-mail do titular
+> batem, e quebra se divergirem.
+
 **Última atualização:** junho de 2026
 
 ---

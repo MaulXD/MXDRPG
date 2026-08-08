@@ -112,7 +112,7 @@ export async function executeGmSavingThrows(
 
   const author = {
     authorId: user?.id ?? "gm",
-    authorName: user?.name ?? "Mestre",
+    authorName: user?.nickname?.trim() || "Mestre",
     authorRole: "mestre" as const,
   };
 

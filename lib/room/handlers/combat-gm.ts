@@ -59,7 +59,7 @@ export async function executeGmCombatAction(
 
   const author = {
     authorId: user?.id ?? "gm",
-    authorName: user?.name ?? "Mestre",
+    authorName: user?.nickname?.trim() || "Mestre",
     authorRole: "mestre" as const,
   };
 

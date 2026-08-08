@@ -49,7 +49,7 @@ export async function executeStructuredMeal(
 
   appendRoomChatMessage(room, {
     authorId: user?.id ?? "gm",
-    authorName: user?.name ?? "Mestre",
+    authorName: user?.nickname?.trim() || "Mestre",
     authorRole: "mestre",
     kind: "chat",
     text: resolved.result.chatLines.join("\n"),

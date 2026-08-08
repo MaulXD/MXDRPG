@@ -104,6 +104,125 @@ npm run sync:data:check       # após editar livros/
 
 ---
 
+### 2026-08-08 — Volta ao Eldarin: a política de privacidade que não ia ao ar, e o nome real vazando de novo
+
+**Pedido:** o usuário pediu para virar o loop para o **Eldarin**. Antes de escolher
+alvos, reverificar a auditoria de UX de 20/06 (49 dias) contra o código de hoje.
+
+**Passo a passo:**
+
+1. **Auditoria multi-agente: 13 agentes, 6 frentes, cada achado lido por dois
+   leitores independentes** (um investigador e um cético instruído a *derrubar* o
+   achado). Resultado: **64 achados, 54 abertos**, sintetizados em 22 alvos
+   priorizados — mais uma lista explícita do que **não** fazer agora.
+
+   **Dez itens da auditoria antiga já tinham caído** e foram removidos da lista:
+   cards do compêndio clicáveis, `/mundo` na navbar, persistência das janelas
+   flutuantes, badge de não-lida, labels do rail no desktop, e a mesa demo — que
+   foi **removida por inteiro** em 24/07, então o item "demo com grid vazio" nem
+   se aplica mais.
+
+2. **Contexto que a auditoria não tinha: o Eldarin está parado desde ~28/06.**
+   Tudo de 24/07 em diante foi Um Anel. O desequilíbrio aparece no teste — contando
+   chamadas de asserção no código dos scripts:
+
+   | Sistema | Chamadas de asserção |
+   |---|---|
+   | Um Anel | **1390** |
+   | Eldarin + comum | **12** |
+
+   O sistema proprietário, que é o carro-chefe, praticamente não tem rede estática.
+
+3. **ALVO 1 (crítico/legal) — a política de privacidade não ia ao ar.**
+   `app/privacidade/page.tsx` lia `docs/PRIVACIDADE-LGPD.md` com `fs.readFileSync`
+   dentro de um `try/catch {}` silencioso, com fallback literal. Mas **`docs/` está
+   no `.dockerignore`** — na imagem de produção o arquivo nunca existe, o `catch`
+   engolia a falha, e o que a plataforma publicava como política de privacidade era:
+
+   > *"Política em atualização. Edite docs/PRIVACIDADE-LGPD.md com e-mail do titular
+   > antes do lançamento."*
+
+   Um recado interno de desenvolvedor no lugar de um documento com efeito legal. E,
+   mesmo em desenvolvimento, o markdown era jogado num `<article>` com
+   `white-space: pre-wrap` **sem parser** — saíam `#`, `**` e a tabela de pipes crus.
+
+   Convertido para JSX em `app/privacidade/conteudo.tsx`: sem `fs`, sem `catch`, sem
+   fallback, com tabela e listas de verdade. **Nenhuma dependência nova** — instalar
+   um parser de markdown por causa de uma página é caro demais. O markdown continua
+   como texto autoral de referência, agora com aviso no topo de que editá-lo não muda
+   o site, e uma asserção amarra os dois.
+
+4. **O texto legal também estava ilegível — e agora a conta está no teste.** O corpo
+   usava `var(--text-muted)`. Calculado pela fórmula WCAG dentro do próprio script:
+
+   | Token | Sobre `--glass` (#1a1916) | AA (4.5:1) |
+   |---|---|---|
+   | `--text-muted` (#8a7d68) | **4.36:1** | **reprova** |
+   | `--text` (#d4ccbe) | 11.03:1 | passa |
+   | `--text-strong` (#ede6d8) | 14.16:1 | passa |
+
+   O corpo passou a usar `--text`. A fórmula é aritmética pura, então está
+   **implementada no script**, não afirmada por mim — inclusive com dois casos de
+   sanidade (preto/branco = 21, mesma cor = 1), porque uma fórmula errada faria todas
+   as asserções de contraste passarem sempre.
+
+5. **ALVO 2 (crítico/privacidade) — o nome real da conta vazando pela quarta vez.**
+   Quatro handlers de Mestre gravavam `authorName: user?.name ?? "Mestre"` no
+   snapshot da sala, que é distribuído a **todos** os participantes:
+   `combat-gm.ts:62`, `culinary-meal.ts:52`, `gm-actor-progress.ts:87`,
+   `gm-saving-throw.ts:115`. Corrigido para `user?.nickname?.trim() || "Mestre"`, que
+   é o padrão já usado em 20+ rotas.
+
+   Este vazamento já tinha sido corrigido **três vezes** (29/07 no chat e nos logs de
+   combate, 29/07 no perfil/amigos, 31/07 nos fallbacks) e voltou. Por isso a guarda
+   nova varre **diretório** (`lib/room/handlers/` e `app/api/`, 132 arquivos), não
+   lista fixa: um handler criado amanhã com o padrão errado quebra o teste sem
+   ninguém lembrar de atualizá-lo. A guarda proíbe o nome real preenchendo campo
+   **público** (`authorName`, `displayName`, `senderName`…) e continua permitindo
+   `user.name` nas telas do próprio dono e no admin — banir a palavra inteira seria
+   mais estrito que a regra.
+
+6. **Seis testes de Eldarin existiam, passavam, e não rodavam no portão:**
+   `verify-combat-dice-sync`, `verify-combat-fx-live`, `verify-combat-roll-display`,
+   `verify-culinary`, `verify-turn-guard`, `verify-xp`. É o padrão "motor pronto e
+   desligado" aplicado ao próprio teste. Registrados no `npm test`.
+
+   **Falso alarme evitado:** `verify-inventory-requests` também está fora, mas rodei
+   e ele falha com `ECONNREFUSED 127.0.0.1:3306` — precisa de MySQL. É teste de
+   integração e fica fora do portão estático **com razão**. Não foi registrado.
+
+7. **Uma asserção minha nasceu errada, do jeito já catalogado: casou com o
+   COMENTÁRIO.** A primeira versão de `verify-legal-pages.mjs` acusou
+   `conteudo.tsx` de conter o texto de fallback e de chamar `readFileSync` — as duas
+   coisas estavam no comentário que explica por que o arquivo existe. Corrigido com
+   `stripComments`, que já existia noutros testes deste repositório.
+
+**Validação:** as duas guardas foram quebradas de propósito e confirmadas disparando
+— reintroduzi o fallback e o `catch {}` na página (as duas acusaram), e reverti um dos
+quatro handlers para `user?.name` (a varredura apontou `combat-gm.ts:62` **e** a
+contagem de handlers corretos caiu de 4 para 3). Revertidas com Edit, nunca
+`git checkout`. `npx tsc --noEmit` limpo · `npm run build` compila · `npm run test`
+verde com **3037 asserções** (`verify-legal-pages: 21 ok`,
+`verify-privacidade-apelido: 7 ok`).
+
+**Arquivos tocados:**
+- `app/privacidade/conteudo.tsx` — **novo**, a política em JSX
+- `app/privacidade/page.tsx` — sem `fs`, sem `catch`, sem fallback
+- `app/globals.css` — bloco `.legal-doc` com o token de contraste aprovado
+- `lib/room/handlers/combat-gm.ts`, `culinary-meal.ts`, `gm-actor-progress.ts`,
+  `gm-saving-throw.ts` — apelido no lugar do nome real
+- `scripts/verify-legal-pages.mjs`, `scripts/verify-privacidade-apelido.mjs` — **novos**
+- `package.json` — 8 testes registrados no portão
+- `docs/PRIVACIDADE-LGPD.md` — aviso de que editá-lo não muda o site
+
+**Commits / deploy:** ver commit desta rodada na branch `fix/login-google-e-responsivo-um-anel`.
+
+**Como testar:** `node scripts/verify-legal-pages.mjs` (imprime as razões de contraste
+medidas) · `node scripts/verify-privacidade-apelido.mjs` · abrir `/privacidade` e ver o
+documento formatado, com tabela.
+
+---
+
 ### 2026-08-08 — Mirkwood 2951–2953, o Espírito da Floresta no bestiário, e o contador que mentia
 
 **Pedido:** continuar o loop — atacar o bloco 2 da campanha em fatias. Ao final da
