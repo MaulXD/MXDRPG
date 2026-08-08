@@ -104,6 +104,122 @@ npm run sync:data:check       # após editar livros/
 
 ---
 
+### 2026-08-08 — O produto falando em linguagem de mantenedor, e o compêndio que apagava a própria ficha
+
+**Pedido:** rodada 3 do loop do Eldarin — alvos 6 e 7 do backlog.
+
+**Passo a passo:**
+
+1. **ALVO 6 — três telas falavam com o usuário em linguagem de quem mantém o
+   produto.** Confirmei os três no código antes de mexer:
+
+   - `app/mesa/[roomId]/page.tsx` — a tela de **convite vencido** mandava o
+     visitante *"rodar `npm run homolog:up` ou `npm run local` com
+     `npm run dev:homolog` (MariaDB local)"*. Quem clicou num link de convite não
+     tem repositório. Trocado por: a mesa não existe mais ou o link expirou, peça
+     um convite novo ao Mestre.
+   - `components/compendium/CompendiumBrowser.tsx` — renderizava
+     *"Fase 2: arrastar para ficha ou mesa."* para todo visitante de
+     `/compendios`. Número de fase de roadmap não significa nada para quem lê.
+   - `app/instalar/page.tsx` — documentação de deploy servida publicamente e
+     **sem nenhum link apontando para ela** (confirmei: `grep href="/instalar"`
+     volta vazio). Duplicava o `DEPLOY.md`, que tem 103 linhas e cobre mais.
+     Página removida — e a asserção confere que o `DEPLOY.md` continua lá, porque
+     apagar só é seguro se a documentação de verdade existir.
+
+2. **A varredura genérica achou TRÊS lugares que a auditoria não tinha visto.**
+   O backlog nomeava três arquivos; `scripts/verify-sem-texto-dev.mjs` varre
+   `app/**` e `components/**` (320 `.tsx`) por vocabulário e achou mais:
+
+   - `app/conta/page.tsx` — "Perfil requer banco **MariaDB** configurado."
+   - `components/auth/RegisterForm.tsx` — mandava "configurar **DATABASE_URL** no
+     Contabo" para quem estava se **cadastrando**.
+   - `components/vtt/MesaPersistenceNotice.tsx` — "**DATABASE_URL** ignorada" e
+     "Local: `npm run homolog:up` (Docker) e `npm run dev`", num banner que
+     aparece na mesa do jogador quando o banco cai.
+
+   É o argumento inteiro a favor de varrer diretório em vez de listar arquivo.
+
+   **O corte foi cirúrgico, não cego.** Esses três últimos são **diagnóstico
+   operacional legítimo**: o jogador precisa saber que nada está sendo salvo. O
+   que saiu foi só a parte que ele não pode executar — nome de variável de
+   ambiente e comando de terminal. O aviso ficou.
+
+3. **A função que extrai "texto de tela" tem quatro casos de sanidade próprios.**
+   Ela precisa pegar texto entre tags e literal de string, e **ignorar
+   comentário** — senão acusaria o próprio comentário que explica esta correção.
+   Já caí nessa armadilha na rodada 1.
+
+4. **ALVO 7 — o compêndio apagava a ficha que o usuário estava lendo.**
+   `CompendiumBrowser.tsx:66` fazia `selected = entries.find(...)`, e `entries`
+   **já é o resultado da busca**. Bastava digitar qualquer coisa que não casasse
+   com o item aberto — inclusive a primeira letra de uma busca nova — para o
+   painel de detalhe **desaparecer da tela**. Agora deriva da lista completa.
+
+5. **A busca ignorava o código de catálogo que ela mesma mostra.** O código é
+   exibido em `<code>` no painel de detalhe, e **571 de 571 entradas** dos seis
+   packs têm o campo (conferido contra o JSON, não afirmado). Digitar o código que
+   estava na tela não achava nada. Corrigido **nos dois caminhos de busca** — o
+   filtro do cliente e o `getPackEntries` do servidor. Se só um soubesse procurar
+   por código, o resultado mudaria conforme a busca rodasse no navegador ou no
+   servidor; a asserção confere os dois lados.
+
+6. **Ordenação alfabética, com `localeCompare("pt-BR")`.** A lista saía na ordem
+   bruta do gerador de JSON. Sem o locale, "Água" cai depois de "Zarabatana" — e
+   a asserção exige o locale, não só o `sort`.
+
+7. **Isolamento de hub quebrado na navegação.** `/compendios` tinha o seletor
+   Eldarin ↔ O Um Anel; `/compendios/armas` **não**. Entrar num pack prendia o
+   usuário num sistema sem caminho de volta para o outro. As abas foram para a
+   rota de pack também, e a asserção **varre o diretório de rotas** — uma rota
+   nova sem as abas quebra o teste.
+
+8. **Duas classes CSS usadas sem definição** (`.comp-detail-ref`,
+   `.comp-detail-actions`). Ao definir, a linha de referência **deixou de carregar
+   `style=` inline no componente**: a mesma decisão visual morava em dois lugares.
+   Agora mora só no CSS.
+
+9. **Padrão 21 de novo, e a asserção pegou.** Escrevi o caminho do CSS de cabeça
+   como `app/compendium.css`; o arquivo está em `components/compendium/`. A
+   asserção foi desenhada para **falhar alto** se não achasse o arquivo, em vez de
+   pular a seção em silêncio — e foi o que ela fez.
+
+10. **Um erro meu no meio do caminho:** pus um comentário JSX dentro do ramo de um
+    ternário, o que criou dois filhos e quebrou o parse de `RegisterForm.tsx`. O
+    `tsc` acusou na hora; comentário movido para fora do ternário.
+
+**O saldo do desequilíbrio:** o lado Eldarin/comum saiu de **12 chamadas de
+asserção para 81** em três rodadas. Ainda é pouco perto das 1390 do Um Anel, mas a
+distância está fechando.
+
+**Validação:** as guardas foram quebradas de propósito e confirmadas disparando —
+troquei `selected` de volta para `entries.find` (acusou as duas asserções do
+painel) e removi o import das abas da rota de pack. Revertidas com Edit, nunca
+`git checkout`. `npx tsc --noEmit` limpo · `npm run build` compila ·
+`npm run test` verde com **3077 asserções** (`verify-sem-texto-dev: 10 ok`,
+`verify-compendium-ui: 15 ok`).
+
+**Arquivos tocados:**
+- `app/mesa/[roomId]/page.tsx`, `app/conta/page.tsx`,
+  `components/auth/RegisterForm.tsx`, `components/vtt/MesaPersistenceNotice.tsx` —
+  texto de mantenedor removido, aviso de usuário preservado
+- `app/instalar/page.tsx` — **removida** (órfã, duplicava `DEPLOY.md`)
+- `components/compendium/CompendiumBrowser.tsx` — painel, busca por código, ordem
+- `lib/compendium/registry.ts` — mesma busca e mesma ordem do lado servidor
+- `app/compendios/[packId]/page.tsx` — abas de sistema
+- `components/compendium/compendium.css` — as duas classes que faltavam
+- `scripts/verify-sem-texto-dev.mjs`, `scripts/verify-compendium-ui.mjs` — **novos**
+- `package.json` — dois testes registrados no portão
+
+**Commits / deploy:** ver commit desta rodada na branch `fix/login-google-e-responsivo-um-anel`.
+
+**Como testar:** abrir `/compendios/armas`, selecionar um item e **digitar na
+busca** — a ficha continua aberta · buscar por um código de catálogo (ex.: o que
+aparece em `<code>` no painel) e achar o item · conferir que as abas Eldarin / O
+Um Anel aparecem dentro do pack.
+
+---
+
 ### 2026-08-08 — `/personagem` mandava todo mundo pra um 404, e o alvo seguinte tinha receita errada
 
 **Pedido:** rodada 2 do loop do Eldarin — alvos 5 e 4 do backlog.

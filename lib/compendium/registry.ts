@@ -132,11 +132,17 @@ export function getPackEntries(
   if (q) {
     entries = entries.filter((e) => {
       const desc = String((e.system.description as string | undefined) ?? "").toLowerCase();
-      return e.name.toLowerCase().includes(q) || desc.includes(q);
+      /* MESMA REGRA do filtro do cliente (`CompendiumBrowser.tsx`). São dois
+         caminhos de busca para o mesmo compêndio; se só um souber procurar por
+         código de catálogo, o resultado muda conforme a busca rodar no servidor
+         ou no navegador. `verify-compendium-ui.mjs` confere os dois lados. */
+      const catalogo = String((e.system.catalogId as string | undefined) ?? "").toLowerCase();
+      return e.name.toLowerCase().includes(q) || desc.includes(q) || catalogo.includes(q);
     });
   }
 
-  return entries;
+  /* Ordem alfabética: o JSON sai na ordem bruta do gerador. */
+  return [...entries].sort((a, b) => a.name.localeCompare(b.name, "pt-BR"));
 }
 
 export function getEntry(packId: CompendiumPackId, entryId: string): CompendiumEntry | null {

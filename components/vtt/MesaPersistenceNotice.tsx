@@ -41,10 +41,13 @@ export function MesaPersistenceNotice() {
           bannerId="persistence:url-issue"
           className="mesa-persistence-notice"
           role="status"
-          aria-label="DATABASE_URL inválida"
+          aria-label="Configuração de banco inválida"
         >
+          {/* Dizia "DATABASE_URL ignorada". O jogador na mesa precisa saber que
+              nada está sendo salvo; o nome da variável de ambiente é do operador,
+              e sai no /api/health, que é onde ele olha. */}
           <p>
-            <strong>DATABASE_URL ignorada</strong> — {urlIssue}
+            <strong>Configuração de banco inválida</strong> — {urlIssue}
           </p>
         </DismissibleMesaBanner>
       ) : null}
@@ -55,9 +58,10 @@ export function MesaPersistenceNotice() {
           role="status"
           aria-label="Aviso de persistência"
         >
+          {/* Saiu a receita de subir o banco local — o jogador na mesa não tem
+              repositório. O aviso em si fica: nada está sendo salvo. */}
           <p>
-            <strong>Sem banco de dados</strong> — nada fica salvo após reinício. Local:{" "}
-            <code>npm run homolog:up</code> (Docker) e <code>npm run dev</code>.
+            <strong>Sem banco de dados</strong> — nada do que acontecer nesta mesa fica salvo.
           </p>
         </DismissibleMesaBanner>
       ) : null}

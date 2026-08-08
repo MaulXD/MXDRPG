@@ -53,17 +53,32 @@ export function CompendiumBrowser({
 
   const activePack = packs.find((p) => p.id === packId) ?? packs[0];
 
-  const entries = useMemo(() => {
+  /* Lista ORDENADA do pack, antes de qualquer filtro. Duas coisas dependem dela:
+     a ordenação alfabética (o JSON vem na ordem bruta de geração) e o painel de
+     detalhe — ver `selected` abaixo. */
+  const todas = useMemo(() => {
     const list = data[packId] ?? [];
-    const q = query.trim().toLowerCase();
-    if (!q) return list;
-    return list.filter((e) => {
-      const desc = stripHtml(String(e.system.description ?? "")).toLowerCase();
-      return e.name.toLowerCase().includes(q) || desc.includes(q);
-    });
-  }, [data, packId, query]);
+    return [...list].sort((a, b) => a.name.localeCompare(b.name, "pt-BR"));
+  }, [data, packId]);
 
-  const selected = entries.find((e) => e.id === selectedId) ?? null;
+  const entries = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    if (!q) return todas;
+    return todas.filter((e) => {
+      const desc = stripHtml(String(e.system.description ?? "")).toLowerCase();
+      /* O código de catálogo é EXIBIDO em <code> no painel de detalhe e as 571
+         entradas dos seis packs têm o campo. Sem ele aqui, digitar o código que
+         está na tela não achava nada. */
+      const catalogo = String(e.system.catalogId ?? "").toLowerCase();
+      return e.name.toLowerCase().includes(q) || desc.includes(q) || catalogo.includes(q);
+    });
+  }, [todas, query]);
+
+  /* Deriva de `todas`, NÃO de `entries`.
+     `entries` já é o resultado da busca: derivar dali fazia o painel de detalhe
+     aberto DESAPARECER assim que o usuário digitasse qualquer coisa que não
+     casasse com o item selecionado — inclusive a primeira letra de outra busca. */
+  const selected = todas.find((e) => e.id === selectedId) ?? null;
 
   function onPickPack(id: CompendiumPackId) {
     setPackId(id);
@@ -284,7 +299,7 @@ function CompendiumDetail({
         <h3>{entry.name}</h3>
       </div>
       {catalogId || bookRef ? (
-        <p className="comp-detail-ref" style={{ fontSize: "0.78rem", color: "var(--text-dim)", margin: "0 0 0.65rem" }}>
+        <p className="comp-detail-ref">
           {catalogId ? <code>{catalogId}</code> : null}
           {catalogId && bookRef ? " · " : null}
           {bookRef ? <em>{bookRef}</em> : null}
@@ -310,11 +325,9 @@ function CompendiumDetail({
           </button>
         </div>
       ) : null}
-      {layout === "page" && entry.packId !== "monstros" ? (
-        <p style={{ marginTop: "1rem", fontSize: "0.78rem", color: "var(--text-dim)" }}>
-          Fase 2: arrastar para ficha ou mesa.
-        </p>
-      ) : null}
+      {/* Aqui havia "Fase 2: arrastar para ficha ou mesa." — nota de roadmap
+          interno renderizada para todo visitante de /compendios. Removida: o
+          usuário não tem o que fazer com o número de uma fase de projeto. */}
     </OrnamentCard>
   );
 }
