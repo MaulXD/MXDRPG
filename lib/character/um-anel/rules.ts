@@ -8,9 +8,16 @@ import type {
 } from "./types";
 import type { TorWeaponDef } from "./data";
 
-/** NA (Número-Alvo) de um Atributo = 20 - valor do Atributo (Core Rules p.29). */
-export function attributeTN(score: number): number {
-  return 20 - score;
+/**
+ * NA (Número-Alvo) de um Atributo = 20 − valor do Atributo (Core Rules p.29).
+ *
+ * `base` existe para a regra opcional do quadro "Ajustando os Números-Alvo"
+ * (02-resolucao-de-acoes.md): campanhas curtas ou jogo de uma sessão podem
+ * derivar o NA de **18**. É opção de mesa, guardada no `torSession` da sala —
+ * ver `torAttributeTnBase`. O padrão continua 20 quando ninguém escolhe.
+ */
+export function attributeTN(score: number, base = 20): number {
+  return base - score;
 }
 
 /**

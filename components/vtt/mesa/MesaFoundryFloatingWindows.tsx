@@ -333,6 +333,7 @@ export function MesaFoundryFloatingWindows(props: MesaFoundryFloatingWindowsProp
             roomId={roomId}
             canManage={Boolean(effectiveIsGm)}
             fellowship={torSession?.fellowship ?? null}
+            attributeTnBase={torSession?.attributeTnBase}
             onUpdate={() => void onRefresh()}
           />
         </FoundryWindow>

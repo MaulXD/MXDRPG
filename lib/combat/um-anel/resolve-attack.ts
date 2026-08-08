@@ -1,4 +1,5 @@
 import { rollTorCheck, formatTorRollMessage, type TorRollOutcome } from "@/lib/character/um-anel/dice";
+import { attributeTN } from "@/lib/character/um-anel/rules";
 import {
   attackRankWithStance,
   canAttackFromStance,
@@ -106,6 +107,8 @@ export type TorAttackParams = {
   canSeize?: boolean;
   /** O atacante está agarrado e pode gastar 1 ícone para se libertar. */
   canEscape?: boolean;
+  /** Base do NA da mesa — 18 na regra opcional de campanha curta. Padrão 20. */
+  attributeTnBase?: number;
 };
 
 export type TorWoundSeverity =
@@ -138,9 +141,9 @@ export type TorAttackResolution = {
   severity?: TorWoundSeverity;
 };
 
-function attributeTN(strength: number): number {
-  return 20 - strength;
-}
+/* Duplicava a fórmula de `rules.ts`. Passou a importar: com a base do NA virando
+   opção de mesa (18 para campanhas curtas), duas cópias divergiriam na primeira
+   mesa que ligasse a variante. */
 
 /**
  * Severidade da Ferida — 1 Dado de Proeza isolado, sem TN (livro, "Wound Severity").
@@ -176,7 +179,7 @@ function noRoll(tn: number): TorRollOutcome {
 export function resolveTorAttack(params: TorAttackParams): TorAttackResolution {
   const tn =
     params.attackerKind === "hero"
-      ? attributeTN(params.attackerStrength ?? 0) + params.defenderParry
+      ? attributeTN(params.attackerStrength ?? 0, params.attributeTnBase) + params.defenderParry
       : params.defenderParry;
 
   // Adversário não escolhe postura (regra do livro) — cai em Aberta, que é neutra.

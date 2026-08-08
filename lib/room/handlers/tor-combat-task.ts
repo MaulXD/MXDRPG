@@ -16,6 +16,7 @@ import {
   type TorRoundEffect,
 } from "@/lib/combat/um-anel/round-effects";
 import { torStanceLabel } from "@/lib/combat/um-anel/stances";
+import { torAttributeTnBase } from "@/lib/combat/um-anel/session-state";
 import { appendRoomChatMessage } from "./chat";
 import { torTokenStance } from "./tor-stance";
 import { getRoom, persistRoom, toSnapshot } from "../internal/registry";
@@ -108,7 +109,7 @@ export async function executeRoomTorTask(
     }
   }
 
-  const { outcome, message } = rollTorSkillCheck(sheet, task.skill);
+  const { outcome, message } = rollTorSkillCheck(sheet, task.skill, torAttributeTnBase(room.torSession));
   const tokens = [...room.scene.tokens];
   const notas: string[] = [];
 

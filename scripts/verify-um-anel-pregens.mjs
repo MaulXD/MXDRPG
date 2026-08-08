@@ -84,10 +84,17 @@ ok(
   tnStatements >= 4,
   `achou ${tnStatements}`
 );
-ok("rules.ts::attributeTN usa 20 − Atributo", /return 20 - score;/.test(stripComments(RULES)));
+/* O 20 deixou de ser literal e virou o PADRÃO do parâmetro, quando a variante de
+   NA 18 entrou como opção de mesa (quadro "Ajustando os Números-Alvo"). O que
+   este teste protege continua sendo o mesmo: quem não escolheu nada joga com 20. */
 ok(
-  "rules.ts NÃO usa o 18 impresso nas fichas",
-  !/return 18 - score/.test(stripComments(RULES))
+  "rules.ts::attributeTN tem 20 como padrão",
+  /export function attributeTN\(score: number, base = 20\)/.test(stripComments(RULES))
+);
+ok(
+  "rules.ts NÃO fixa o 18 impresso nas fichas",
+  !/base = 18/.test(stripComments(RULES)) && !/return 18 - score/.test(stripComments(RULES)),
+  "18 é opção de campanha, nunca o padrão"
 );
 // O 18 é regra opcional oficial. Se este box sair do markdown, o comentário
 // de pregens.ts passa a mentir — então a explicação tem que CONTINUAR lá.
