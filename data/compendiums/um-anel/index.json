@@ -6,6 +6,12 @@
     "count": 13
   },
   {
+    "id": "conversao-primeira-edicao",
+    "label": "Conversão da 1ª edição",
+    "description": "Equivalências de termos e regras entre a 1ª e a 2ª edição, para converter aventuras antigas sem inventar números.",
+    "count": 30
+  },
+  {
     "id": "jornada",
     "label": "Jornada",
     "description": "Papéis da Companhia, Testes de Marcha, eventos por região e Fadiga de viagem.",

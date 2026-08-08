@@ -52,6 +52,11 @@ const PACKS = {
     description:
       "Custos de Experiência, limites por Fase, Valor e Sabedoria, Yule, Empreitadas e Nível de Companhia.",
   },
+  "conversao-primeira-edicao": {
+    label: "Conversão da 1ª edição",
+    description:
+      "Equivalências de termos e regras entre a 1ª e a 2ª edição, para converter aventuras antigas sem inventar números.",
+  },
 };
 
 /** "**Campo:** valor" → ["campo", "valor"]. Chave normalizada em minúsculas sem acento. */

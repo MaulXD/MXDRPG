@@ -155,7 +155,25 @@ for (const f of readdirSync(root("livros", "um-anel")).filter((x) => x.endsWith(
 /* O compêndio é o texto que o jogador abre DENTRO do app — divergir ali é pior
    que no capítulo, porque está a um clique da ficha. */
 for (const f of readdirSync(root("livros", "um-anel", "compendio"))) {
-  const md = readFileSync(root("livros", "um-anel", "compendio", f), "utf8");
+  const bruto = readFileSync(root("livros", "um-anel", "compendio", f), "utf8");
+
+  /* A tabela de conversão da 1ª edição é a ÚNICA que precisa escrever os nomes
+     antigos: a entrada CVR-013 existe justamente para pôr o nome velho ao lado
+     do novo ("Caça → Caçada"). Recortar essa entrada mantém a guarda ativa em
+     todo o resto do arquivo — exemplo: se alguém escrever "teste de Caça" numa
+     entrada de jornada, continua falhando.
+
+     A asserção de baixo fecha o outro lado: os nomes antigos só podem estar ali. */
+  const conversao = f === "conversao-primeira-edicao.md";
+  const md = conversao ? bruto.replace(/## CVR-013 —[\s\S]*?\n---\n/, "") : bruto;
+  if (conversao) {
+    ok(
+      `compendio/${f}: a entrada CVR-013 foi mesmo recortada antes da checagem`,
+      md.length < bruto.length && !md.includes("CVR-013"),
+      "sem o recorte a guarda ficaria desligada para o arquivo inteiro"
+    );
+  }
+
   for (const [antigo, atual] of Object.entries(ANTIGOS)) {
     const cap = antigo[0] + antigo.slice(1).toLowerCase();
     const achados = [...md.matchAll(new RegExp(`\\b(${antigo}|${cap})\\b`, "g"))];
