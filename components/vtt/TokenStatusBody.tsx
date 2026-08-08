@@ -10,6 +10,7 @@ import { formatTokenHpLine, hpBarColor, hpRatio } from "@/lib/vtt/token-hp-displ
 import { TOR_DEFAULT_STANCE, isTorStance, torStanceLabel } from "@/lib/combat/um-anel/stances";
 import { TorShadowPanel } from "@/components/vtt/TorShadowPanel";
 import { TorHazardPanel } from "@/components/vtt/TorHazardPanel";
+import { TorHelmControl } from "@/components/vtt/TorHelmControl";
 
 type Props = {
   token: BattleToken;
@@ -107,6 +108,13 @@ export function TokenStatusBody({
           canManage={canApplyConditions}
           onUpdate={onUpdate}
         />
+      ) : null}
+
+      {/* Tirar o Elmo é jogada de combate, não edição de ficha: quem joga o
+          herói decide, no meio da luta, trocar 1 dado de Proteção por Carga a
+          menos. Por isso o botão fica no token e não só na ficha. */}
+      {token.torCombat?.kind === "hero" ? (
+        <TorHelmControl roomId={roomId} token={token} onUpdate={onUpdate} />
       ) : null}
 
       {/* Frio, Queda, Fogo, Asfixia e Veneno — o capítulo 8 inteiro que não

@@ -50,6 +50,8 @@ export function createTorPlayerTokenFromCharacter(
       // Guardado à parte: é exatamente a parcela que Quebrar Escudo remove.
       shieldParryBonus: sheet.shieldParryBonus,
       protectionDice: computeProtectionDice(sheet.armour),
+      // Espelho de exibição do Elmo — ver o comentário em TorCombatTokenFields.
+      helm: Boolean(sheet.armour.helm),
       strength: sheet.attributes.forca,
       wounded: sheet.conditions.wounded,
       eliminated: false,
