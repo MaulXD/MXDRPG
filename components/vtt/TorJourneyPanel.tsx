@@ -30,7 +30,8 @@ import {
   type TorSeason,
   type TorTerrainType,
 } from "@/lib/combat/um-anel/journey";
-import type { TorJourneyProgress } from "@/lib/combat/um-anel/session-state";
+import type { TorEyeState, TorJourneyProgress } from "@/lib/combat/um-anel/session-state";
+import { TorEyePanel } from "./TorEyePanel";
 import "./tor-journey.css";
 
 type Props = {
@@ -42,6 +43,12 @@ type Props = {
    * e chega a todos os jogadores por SSE, então o placar da viagem é público.
    */
   progress: TorJourneyProgress | null;
+  /**
+   * Atenção do Olho. Mora neste painel porque o **limiar da Caçada é definido
+   * pela região atravessada** — a mesma região que a Jornada já escolhe —, e
+   * porque a Fase de Aventura é o recorte de tempo dos dois.
+   */
+  eye?: TorEyeState | null;
   onUpdate: () => void;
 };
 
@@ -68,7 +75,7 @@ function rollSuccessDie(): number {
   return 1 + Math.floor(Math.random() * 6);
 }
 
-export function TorJourneyPanel({ roomId, canManage, progress, onUpdate }: Props) {
+export function TorJourneyPanel({ roomId, canManage, progress, eye, onUpdate }: Props) {
   // Configuração da rota: local só ATÉ iniciar. Depois a verdade é `progress`.
   const [draftTrechos, setDraftTrechos] = useState(10);
   const [draftHard, setDraftHard] = useState(2);
@@ -162,6 +169,13 @@ export function TorJourneyPanel({ roomId, canManage, progress, onUpdate }: Props
         // de Caçada, no meio da viagem.
         const check = validateTorRoleAssignment(draftRoles);
         if (!check.ok) throw new Error(check.reason);
+        /* A região da Jornada É a região que define o limiar da Caçada. Sem
+           esta linha haveria duas regiões guardadas, e a do Olho ficaria
+           parada na anterior — a Companhia entraria em Terras Sombrias com o
+           limiar das Fronteiriças. */
+        if (eye && eye.region !== draftRegion) {
+          await patchTorSession(roomId, { eye: { ...eye, region: draftRegion } });
+        }
         await commit(
           `Jornada iniciada — ${draftTrechos} trechos por ${TOR_REGION_META[draftRegion].label}, ` +
             `${SEASON_LABEL[draftSeason]}. Previsão: ${length.days} dia${length.days === 1 ? "" : "s"}. ` +
@@ -183,6 +197,8 @@ export function TorJourneyPanel({ roomId, canManage, progress, onUpdate }: Props
       draftForced,
       draftRoles,
       length.days,
+      eye,
+      roomId,
     ]
   );
 
@@ -407,6 +423,9 @@ export function TorJourneyPanel({ roomId, canManage, progress, onUpdate }: Props
       return (
         <div className="tor-journey">
           <p className="vtt-combat-hint">Nenhuma jornada em curso.</p>
+          {/* A Atenção do Olho vale a Fase de Aventura inteira, não só a
+              viagem — o placar continua visível sem jornada em curso. */}
+          <TorEyePanel roomId={roomId} canManage={false} eye={eye ?? null} onUpdate={onUpdate} />
         </div>
       );
     }
@@ -430,6 +449,7 @@ export function TorJourneyPanel({ roomId, canManage, progress, onUpdate }: Props
             </div>
           ) : null}
         </section>
+        <TorEyePanel roomId={roomId} canManage={false} eye={eye ?? null} onUpdate={onUpdate} />
         {diary}
       </div>
     );
@@ -643,6 +663,10 @@ export function TorJourneyPanel({ roomId, canManage, progress, onUpdate }: Props
           {diary}
         </>
       )}
+
+      {/* Vale a Fase de Aventura inteira, com ou sem jornada em curso — por isso
+          fica fora do ramo "!started". */}
+      <TorEyePanel roomId={roomId} canManage eye={eye ?? null} onUpdate={onUpdate} />
     </div>
   );
 }

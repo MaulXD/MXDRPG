@@ -287,6 +287,7 @@ export function MesaFoundryFloatingWindows(props: MesaFoundryFloatingWindowsProp
             roomId={roomId}
             canManage={Boolean(effectiveIsGm)}
             progress={torSession?.journey ?? null}
+            eye={torSession?.eye ?? null}
             onUpdate={() => void onRefresh()}
           />
         </FoundryWindow>

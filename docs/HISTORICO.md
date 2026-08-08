@@ -104,6 +104,95 @@ npm run sync:data:check       # após editar livros/
 
 ---
 
+### 2026-08-08 — Olho de Mordor: Atenção do Olho, limiar da Caçada e Revelação
+
+**Pedido:** continuar o loop.
+
+**Passo a passo:**
+
+1. **O achado.** O capítulo 8 traz o **Olho de Mordor** inteiro — Atenção do
+   Olho, limiar da Caçada, episódio de Revelação — e nada disso existia. Uma
+   Companhia podia atravessar Terras Sombrias derramando Sombra sem que o Inimigo
+   jamais reparasse.
+
+2. **É regra OPCIONAL, e o livro diz isso em voz alta:** "particularmente
+   adequadas para serem introduzidas mais tarde no jogo (…) acrescentam uma
+   camada de complexidade que não todo grupo achará do seu gosto". Por isso o
+   estado nasce **ausente** — e ausente tem de ser distinguível de zero, senão
+   toda mesa do Um Anel ganharia um placar que ninguém pediu.
+
+3. **Três armadilhas, uma asserção cada:**
+   - a entrada de Cultura é a **mais alta**, não a soma. Anão + Elfo dá 2, não 3
+     — e o erro cresce com o tamanho do grupo, que é onde ele passa despercebido;
+   - **igualar** o limiar já revela. `>` deixaria a Companhia escondida exatamente
+     no ponto em que o livro manda revelá-la;
+   - depois do episódio a contagem volta ao valor **inicial**, não a zero — zerar
+     apagaria a Atenção que a composição da Companhia sempre dá.
+
+4. **O gancho automático.** "Sempre que um herói-jogador ganha 1 ou mais pontos de
+   Sombra fora do combate, aumente o nível de Atenção do Olho em quantidade
+   igual." Ficou dentro do handler de Sombra, usando o ganho **efetivo** (o Teste
+   de Sombra pode ter reduzido o pedido) e só quando **não há fila de iniciativa
+   montada** — que é o sinal de "fora do combate" que a mesa já usa. E o painel do
+   Olho **não** tem botão manual de Sombra, com asserção negativa: teria contado
+   em dobro.
+
+5. **O app avisa, não decide.** O episódio de Revelação é do Mestre por escrito no
+   livro ("deveria ponderar as circunstâncias atuais da Companhia"). O app anuncia
+   no instante em que o limiar é alcançado e devolve a contagem ao inicial quando
+   o Mestre disser que já interpretou. Asserção negativa garante que não há sorteio.
+
+6. **Uma região só.** O limiar sai da região atravessada, que é a mesma que a
+   Jornada escolhe — iniciar uma jornada sincroniza a região do Olho. Sem isso a
+   Companhia entraria em Terras Sombrias com o limiar das Fronteiriças.
+
+7. **Auditoria da rodada — e uma afirmação minha que estava errada.**
+   `applyTorSessionPatch` descartava o estado inteiro quando não havia
+   jornada/conselho/companhia. `normalizeTorSession` já preservava
+   `attributeTnBase` sozinho: **duas leituras opostas da mesma condição, em
+   arquivos vizinhos**, e a que roda no save era a errada. Ou seja: a mesa que
+   ligava só o NA 18 perdia a opção na gravação — exatamente o bug que a entrada
+   do Empurrão/NA 18 dizia ter evitado. **Corrigi a afirmação no lugar onde ela
+   está**, e a asserção antiga (10ª vez que uma trancava a regra errada) virou
+   duas: uma para a leitura e uma para a gravação.
+
+8. **Validação.** `npx tsc --noEmit` limpo · `npm run build` compila ·
+   `npm run test` verde com **2038 asserções** (69 novas + 1). Seis asserções
+   foram quebradas de propósito e falharam como deviam.
+
+**Lacuna deliberada, registrada:** o **Olho rolado** ("+1 sempre que uma rolagem
+de jogador fora do combate produzir o ícone") ainda depende de o Mestre clicar. As
+rolagens de Jornada e Conselho acontecem no cliente e só chegam ao servidor como
+texto de chat, então não há um ponto único onde enganchar. O painel oferece os
+botões com os valores do livro; o gancho automático fica para quando as rolagens
+passarem pelo servidor.
+
+**Arquivos tocados:**
+- `lib/combat/um-anel/eye.ts` — **novo**: tabelas, limiar, Revelação
+- `lib/combat/um-anel/session-state.ts` — estado do Olho + a guarda corrigida
+- `lib/room/handlers/tor-eye.ts` — **novo**: aumento, Revelação e o gancho de Sombra
+- `lib/room/handlers/tor-shadow.ts` — Sombra fora do combate chama o Olho
+- `app/api/room/[roomId]/tor-eye/route.ts` — **novo**
+- `app/api/room/[roomId]/tor-session/route.ts` — ligar/desligar a regra opcional
+- `components/vtt/TorEyePanel.tsx` — **novo**
+- `components/vtt/TorJourneyPanel.tsx` — renderiza o painel e sincroniza a região
+- `components/vtt/mesa/{MesaFoundryDockRail,MesaFoundryFloatingWindows}.tsx`
+- `hooks/useRoomSync.ts` — `postRoomTorEye` e `eye` no patch de sessão
+- `scripts/verify-um-anel-olho-de-mordor.mjs` — **novo**, 69 asserções
+- `scripts/verify-um-anel-session-state.mjs` — asserção da guarda desdobrada em duas
+- `docs/HISTORICO.md` — correção da afirmação errada sobre o NA 18
+
+**Como testar:** no painel de Jornada, montar a Companhia e ligar o Olho de
+Mordor — a conta inicial aparece parcela a parcela. Atribuir Sombra a um herói
+pelo painel do token **fora de combate**: a Atenção sobe sozinha na mesma
+mensagem. Ao alcançar o limiar, o chat anuncia a Revelação e o botão de "episódio
+interpretado" aparece.
+
+**Falta:** Elmo removível; gancho automático do Olho rolado; campanhas de 1ª
+edição; glyph da runa de Gandalf.
+
+---
+
 ### 2026-08-08 — Fontes de Dano: o capítulo 8 inteiro que não tinha caminho até a mesa
 
 **Pedido:** continuar o loop.
@@ -1049,6 +1138,16 @@ o que preserva exatamente a mesma garantia) e a da sessão vazia, que precisava
 passar a contar `attributeTnBase`: uma mesa que só ligou a regra opcional, sem
 jornada nem conselho, **precisa** gravar estado, senão a opção se perderia no
 próximo save. Quinta vez que este padrão aparece.
+
+> **Correção (2026-08-08, rodada do Olho de Mordor).** A frase acima descreve o
+> que eu *queria* que acontecesse, não o que acontecia. Só `normalizeTorSession`
+> (a LEITURA) ganhou `attributeTnBase` na guarda. `applyTorSessionPatch` — a
+> função que roda no **save** — continuou com `if (!next.journey &&
+> !next.council && !next.fellowship) return undefined;`, então uma mesa que
+> ligasse só o NA 18 realmente **perdia a opção na gravação**, exatamente o bug
+> que este parágrafo dizia ter evitado. A asserção da época cobria só a leitura,
+> e por isso não acusou. Corrigido junto com a entrada do Olho de Mordor, com
+> uma asserção nova para a gravação.
 
 **Cuidado com o teste, não com o código:** o teste importa `push.ts` para conferir
 a conta, e o `catch` do import poderia apagar as cinco checagens em silêncio.

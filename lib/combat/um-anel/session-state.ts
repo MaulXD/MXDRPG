@@ -28,6 +28,7 @@ import {
   type TorRegionType,
   type TorSeason,
 } from "@/lib/combat/um-anel/journey";
+import { isTorHuntModifier, type TorHuntModifier } from "@/lib/combat/um-anel/eye";
 import {
   TOR_PHASE_OUTCOMES,
   type TorChronicleEntry,
@@ -158,6 +159,28 @@ export type TorSessionState = {
    * fichas pré-geradas do Starter Set (ver 11-personagens-exemplo.md).
    */
   attributeTnBase?: 18 | 20;
+  /**
+   * Atenção do Olho e limiar da Caçada. **Ausente = mesa nunca ligou a regra**,
+   * que é opcional por escrito no livro ("acrescentam uma camada de complexidade
+   * que não todo grupo achará do seu gosto").
+   */
+  eye?: TorEyeState | null;
+};
+
+export type TorEyeState = {
+  /** Valor corrente da Atenção do Olho. */
+  value: number;
+  /**
+   * Valor inicial calculado da Companhia. Guardado porque é para ELE que a
+   * contagem volta depois de um episódio de Revelação e no começo de cada Fase
+   * de Aventura — recalcular na hora exigiria a lista de heróis, que pode ter
+   * mudado no meio da Fase.
+   */
+  initial: number;
+  /** Região atravessada — define o limiar base (18/16/14). */
+  region: TorRegionType;
+  /** Modificadores do limiar em vigor. */
+  modifiers: TorHuntModifier[];
 };
 
 /* ══════════════════════════════════════════════════════════════════════
@@ -246,6 +269,32 @@ function normalizeCouncil(raw: unknown): TorCouncilState | null {
     disasterOnFailure: bool(r.disasterOnFailure),
     successes: int(r.successes, 0, 0, 99),
     attemptsUsed: int(r.attemptsUsed, 0, 0, 99),
+  };
+}
+
+/**
+ * Recorta a Atenção do Olho vinda do JSONB.
+ *
+ * Ausente devolve `null` de propósito: a regra é opcional, e "nunca ligou" tem
+ * de ser distinguível de "está em zero".
+ */
+function normalizeEye(raw: unknown): TorEyeState | null {
+  if (!raw || typeof raw !== "object") return null;
+  const r = raw as Record<string, unknown>;
+  const region =
+    typeof r.region === "string" && (TOR_REGION_TYPES as readonly string[]).includes(r.region)
+      ? (r.region as TorRegionType)
+      : "selvagem";
+  const modifiers = Array.isArray(r.modifiers)
+    ? (r.modifiers.filter(isTorHuntModifier) as TorHuntModifier[])
+    : [];
+  return {
+    value: int(r.value, 0, 0, 99),
+    initial: int(r.initial, 0, 0, 99),
+    region,
+    // Sem `Set`, um estado gravado com "discricao" duas vezes daria +4 em vez de
+    // +2 — modificador é ligado/desligado, não acumulável.
+    modifiers: [...new Set(modifiers)],
   };
 }
 
@@ -355,17 +404,19 @@ export function normalizeTorSession(raw: unknown): TorSessionState | undefined {
   const journey = normalizeJourney(r.journey);
   const council = normalizeCouncil(r.council);
   const fellowship = normalizeFellowship(r.fellowship);
+  const eye = normalizeEye(r.eye);
 
   // 18 só entra se estiver escrito exatamente assim — qualquer outro valor cai
   // no padrão do livro, que é 20.
   const attributeTnBase = r.attributeTnBase === 18 ? (18 as const) : undefined;
 
-  if (!journey && !council && !fellowship && !attributeTnBase) return undefined;
+  if (!journey && !council && !fellowship && !attributeTnBase && !eye) return undefined;
   return {
     ...(journey ? { journey } : {}),
     ...(council ? { council } : {}),
     ...(fellowship ? { fellowship } : {}),
     ...(attributeTnBase ? { attributeTnBase } : {}),
+    ...(eye ? { eye } : {}),
   };
 }
 
@@ -385,6 +436,8 @@ export type TorSessionPatch = {
   fellowship?: TorFellowshipProgress | null;
   /** `null` volta ao padrão do livro (20). */
   attributeTnBase?: 18 | 20 | null;
+  /** `null` desliga a regra opcional do Olho de Mordor. */
+  eye?: TorEyeState | null;
 };
 
 export function applyTorSessionPatch(
@@ -411,7 +464,19 @@ export function applyTorSessionPatch(
     if (patch.attributeTnBase === 18) next.attributeTnBase = 18;
     else delete next.attributeTnBase;
   }
+  if ("eye" in patch) {
+    if (patch.eye === null) delete next.eye;
+    else next.eye = normalizeEye(patch.eye) ?? undefined;
+  }
 
-  if (!next.journey && !next.council && !next.fellowship) return undefined;
+  /* A guarda tem de citar TODOS os campos que o estado carrega.
+     Antes olhava só jornada/conselho/companhia, então uma mesa que ligasse o NA
+     18 (ou agora o Olho de Mordor) sem ter nada dos três em curso via a opção
+     ser jogada fora na hora de gravar — e `normalizeTorSession`, que já
+     preservava `attributeTnBase` sozinho, discordava desta função. Duas leituras
+     opostas da mesma condição, em arquivos vizinhos. */
+  if (!next.journey && !next.council && !next.fellowship && !next.attributeTnBase && !next.eye) {
+    return undefined;
+  }
   return next;
 }

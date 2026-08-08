@@ -91,12 +91,27 @@ ok(
   "Resistência do Conselho validada por isTorCouncilResistance",
   /isTorCouncilResistance\(resistance\)/.test(STATE)
 );
-/* A guarda ganhou `attributeTnBase` quando a variante de NA virou opção de mesa:
-   uma sala que só ligou a regra opcional, sem jornada/conselho/companhia, PRECISA
-   gravar estado — senão a opção se perderia no próximo save. */
+/* A guarda ganhou `attributeTnBase` quando a variante de NA virou opção de mesa,
+   e `eye` quando o Olho de Mordor entrou: uma sala que só ligou uma regra
+   opcional, sem jornada/conselho/companhia, PRECISA gravar estado — senão a
+   opção se perderia no próximo save.
+
+   ATENÇÃO: são DUAS funções, e por muito tempo só uma tinha a guarda certa.
+   `normalizeTorSession` (leitura) preservava `attributeTnBase` sozinho, mas
+   `applyTorSessionPatch` (gravação) descartava — e é a gravação que roda no
+   save. A asserção de baixo é a que faltava. */
 ok(
-  "Sessão vazia devolve undefined (não infla o JSON da sala)",
-  /if \(!journey && !council && !fellowship && !attributeTnBase\) return undefined;/.test(STATE)
+  "Sessão vazia devolve undefined na LEITURA (não infla o JSON da sala)",
+  /if \(!journey && !council && !fellowship && !attributeTnBase && !eye\) return undefined;/.test(
+    STATE
+  )
+);
+ok(
+  "a GRAVAÇÃO usa a mesma guarda da leitura",
+  /if \(!next\.journey && !next\.council && !next\.fellowship && !next\.attributeTnBase && !next\.eye\) \{/.test(
+    STATE
+  ),
+  "guarda mais curta na gravação joga fora a opção que a leitura preservava"
 );
 
 /* ── Patch: null apaga, ausente mantém ───────────────────────────── */

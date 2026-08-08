@@ -887,6 +887,30 @@ export async function postRoomTorHazard(
   return res.json() as Promise<RoomApiPayload>;
 }
 
+/**
+ * Um Anel — Atenção do Olho subindo, e o episódio de Revelação já interpretado
+ * (que devolve a contagem ao valor inicial). Regra opcional: a rota recusa se a
+ * mesa não a ligou.
+ */
+export async function postRoomTorEye(
+  roomId: string,
+  body:
+    | { action: "gain"; source: "olho-rolado" | "sombra" | "magia"; points: number }
+    | { action: "reveal" }
+) {
+  const res = await roomFetch(
+    `/api/room/${roomId}/tor-eye`,
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "same-origin",
+      body: JSON.stringify(body),
+    },
+    "Falha ao registrar a Atenção do Olho"
+  );
+  return res.json() as Promise<RoomApiPayload>;
+}
+
 /** Um Anel — o herói aceita ser empurrado e amortece metade do último golpe. */
 export async function postRoomTorPush(roomId: string, tokenId: string) {
   const res = await roomFetch(
@@ -1292,6 +1316,8 @@ export async function patchTorSession(
     fellowship?: unknown | null;
     /** Regra opcional: 18 em campanhas curtas; `null` volta ao padrão 20. */
     attributeTnBase?: 18 | 20 | null;
+    /** Regra opcional do Olho de Mordor; `null` desliga. */
+    eye?: unknown | null;
   }
 ) {
   const res = await roomFetch(
