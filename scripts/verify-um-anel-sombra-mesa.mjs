@@ -281,5 +281,35 @@ ok(
   "o Malfeito mais grave traz 1 Cicatriz junto"
 );
 
+/* ── 9. O Acesso de Loucura nomeia a Falha ─────────────────────────────── */
+
+/**
+ * `applyTorBoutOfMadness` recebe o mapa de Falhas por Caminho da Sombra num
+ * terceiro argumento com valor padrão `{}`. Chamá-la com dois argumentos compila,
+ * roda, e devolve `flawName: null` **sempre** — o Acesso de Loucura anunciava
+ * "ganha a 1ª Falha" sem dizer qual, que é justamente o que o Caminho da Sombra
+ * existe para dizer. Foi assim que ficou até esta rodada.
+ *
+ * Parâmetro opcional com padrão silencioso é armadilha: não há erro de tipo, e o
+ * comportamento degrada sem sinal.
+ */
+ok(
+  "o Acesso de Loucura recebe o mapa de Falhas",
+  /applyTorBoutOfMadness\(state, sheet\.shadowPathId, SHADOW_PATH_FLAWS\)/.test(
+    stripComments(readFileSync(root("lib", "room", "handlers", "tor-recovery.ts"), "utf8"))
+  ),
+  "sem o terceiro argumento, flawName volta nulo sempre e a Falha nunca é nomeada"
+);
+ok(
+  "cada Caminho da Sombra tem as 4 Falhas",
+  (() => {
+    const data = readFileSync(root("lib", "character", "um-anel", "data.ts"), "utf8");
+    const bloco = data.match(/SHADOW_PATH_FLAWS[\s\S]*?\n\};/)?.[0] ?? "";
+    const linhas = [...bloco.matchAll(/: \[([^\]]*)\]/g)];
+    return linhas.length === 6 && linhas.every((m) => m[1].split(",").length === 4);
+  })(),
+  "são 6 Caminhos × 4 Falhas — a quarta é a que tira o herói de jogo"
+);
+
 console.log(`\n  ${pass} ok, ${fail} falhas`);
 if (fail > 0) process.exit(1);

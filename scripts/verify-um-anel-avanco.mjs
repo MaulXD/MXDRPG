@@ -280,5 +280,26 @@ for (const fn of AINDA_SEM_CONSUMIDOR) {
   );
 }
 
+/* ── 8. Uma tabela de custo só ─────────────────────────────────────────── */
+
+/**
+ * `TOR_EXPERIENCE_COSTS` (undertakings.ts) era uma **segunda cópia** dos mesmos
+ * números de `TOR_XP_COST_BY_LEVEL` (progression.ts): dois lugares guardando o
+ * mesmo preço de avanço. E a cópia era justamente a que ninguém consultava —
+ * corrigir um degrau na tabela viva e esquecer da morta passaria despercebido,
+ * porque a morta não quebra nada até alguém ligá-la.
+ */
+const UNDERTAKINGS = readFileSync(root("lib", "character", "um-anel", "undertakings.ts"), "utf8");
+ok(
+  "a tabela de custo das Empreitadas é DERIVADA, não redigitada",
+  /Object\.entries\(\s*\n?\s*TOR_XP_COST_BY_LEVEL\s*\n?\s*\)\.map/.test(UNDERTAKINGS),
+  "duas cópias do mesmo preço divergem na primeira correção"
+);
+ok(
+  "não há segunda lista de custos escrita à mão",
+  !/\{ rank: 1, cost: 4 \}/.test(UNDERTAKINGS),
+  "os números têm de vir de um lugar só"
+);
+
 console.log(`\n  ${pass} ok, ${fail} falhas`);
 if (fail > 0) process.exit(1);

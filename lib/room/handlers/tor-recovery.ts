@@ -3,6 +3,7 @@ import type { SessionUser } from "@/lib/auth/types";
 import { resolveCharacterAccount } from "@/lib/auth/account-user";
 import { resolveTorCharacter, saveTorCharacter } from "@/lib/character/um-anel/characters";
 import { computeLoad } from "@/lib/character/um-anel/rules";
+import { SHADOW_PATH_FLAWS } from "@/lib/character/um-anel/data";
 import {
   applyTorBoutOfMadness,
   applyTorJourneyEndRecovery,
@@ -124,7 +125,10 @@ export async function executeRoomTorRecovery(
       r.shadowRemoved > 0 ? `, −${r.shadowRemoved} Sombra` : ""
     } (limite ${TOR_SHADOW_RELIEF[outcome]} pelo resultado da Fase)${isYule ? " · Yule: Esperança cheia" : ""}`;
   } else if (action === "madness") {
-    const r = applyTorBoutOfMadness(state, sheet.shadowPathId);
+    // O terceiro argumento é o que dá NOME à Falha. Sem ele, `flawName` volta
+    // sempre nulo e o Acesso de Loucura anuncia "ganha a 1ª Falha" sem dizer
+    // qual — justamente o que o Caminho da Sombra existe para dizer.
+    const r = applyTorBoutOfMadness(state, sheet.shadowPathId, SHADOW_PATH_FLAWS);
     if (!r.ok) return { ok: false, error: r.reason };
     next = { ...sheet, shadow: r.state.shadow, shadowFlaws: r.flawIndex };
     text = `${sheet.name} sofre um Acesso de Loucura — Sombra zerada, ganha a ${r.flawIndex}ª Falha${
