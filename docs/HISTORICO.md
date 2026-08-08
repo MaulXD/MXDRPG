@@ -104,6 +104,112 @@ npm run sync:data:check       # após editar livros/
 
 ---
 
+### 2026-08-08 — `/personagem` mandava todo mundo pra um 404, e o alvo seguinte tinha receita errada
+
+**Pedido:** rodada 2 do loop do Eldarin — alvos 5 e 4 do backlog.
+
+**Passo a passo:**
+
+1. **ALVO 5 — o layout de `/personagem` anulava as guardas certas das filhas.**
+   `app/personagem/layout.tsx:13` fazia:
+
+   ```ts
+   const path = h.get("x-pathname") ?? h.get("x-invoke-path") ?? "/personagem";
+   redirect(signInPath(path.startsWith("/personagem") ? path : "/personagem"));
+   ```
+
+   **Nenhum dos dois cabeçalhos existe** — confirmei que `middleware.ts` não os
+   define e o Next não os injeta. Então o `?? "/personagem"` era o único ramo
+   alcançável. E **`/personagem` não tem `page.tsx`** (confirmei: o diretório tem
+   só `[id]`, `layout.tsx` e `novo`). Resultado: quem abrisse um link de ficha com
+   a sessão vencida ia para o login e, depois de autenticar, caía num **404**.
+
+   Pior: as três páginas-filhas **já fazem o redirect certo**, com o caminho exato
+   de volta (`/personagem/[id]`, `/personagem/[id]/editar?requestId=…`,
+   `/personagem/novo`) — e o layout roda antes, anulando todas.
+
+   O gate saiu do layout. Sem sessão, ele devolve `children` cru e a filha assume.
+   Não dava para simplesmente apagar o `getSession()`: o `PortalShell` precisa de
+   `session.user`, então a correção é `if (!session) return <>{children}</>`.
+
+2. **`scripts/verify-rotas.mjs` — a guarda é GENÉRICA de propósito.** Proibir os
+   dois cabeçalhos consertaria o caso e deixaria a classe do problema em pé. O
+   teste varre **todo** `redirect("/…")` e `signInPath("/…")` literal em `app/**`
+   (17 destinos hoje) e exige que cada um resolva para um `page.tsx` existente,
+   um segmento dinâmico, ou um redirect do `next.config.ts`. Qualquer 404 interno
+   futuro quebra o teste.
+
+   A função `rotaExiste` tem **cinco casos de sanidade próprios**, incluindo o que
+   motivou tudo: ela precisa *recusar* `/personagem`. Sem isso, uma função quebrada
+   faria a varredura passar sempre.
+
+   E há uma asserção que **conta os destinos encontrados** antes de checá-los. Sem
+   ela, o dia em que alguém trocar aspas por crase o regex para de casar,
+   `quebrados` fica vazio, e o teste diz "tudo certo" sem ter olhado nada — a
+   armadilha da checagem negativa que não roda.
+
+   Como o gate saiu do layout, o teste também exige que **toda página sob
+   `/personagem` tenha guarda própria** (varre diretório, não lista), e que o
+   layout **não volte** a redirecionar.
+
+3. **ALVO 4 — comecei a implementar e a receita do backlog estava errada.** Ela
+   mandava pôr `import "server-only"` em `lib/compendium/registry.ts` e
+   `lib/vtt/monsters.ts` como "trava permanente, esforço médio". Isso **quebraria o
+   build**: **dez componentes cliente** importam esses dois módulos, e **quatro
+   deles precisam legitimamente do dado no navegador** — os painéis de Mestre
+   invocam e editam monstro no cliente. `server-only` ali não é trava barata, é
+   proibir o que o produto faz.
+
+   O diagnóstico, esse sim, se confirmou — e agora com números:
+
+   | Medida | Valor |
+   |---|---|
+   | `monstros.json` | 451.068 bytes |
+   | chunk `7918-*.js` | 659.134 bytes |
+   | fatia de dado de monstro no chunk | **~295 KB, 45%** |
+   | rotas que carregam o chunk | **9 de 156** |
+
+   Não é "o bundle público" inteiro, como a auditoria dizia — mas as 9 rotas
+   incluem `/personagem/[id]`, `/personagem/novo`, `/personagem/[id]/editar` e
+   `/mesa/[roomId]`. Ou seja: **um jogador comum baixa ~295 KB de bestiário
+   admin-only só para abrir a própria ficha.**
+
+   O defeito real é **gating de dado sem gating de bundle**: o acesso já é
+   protegido por papel em tempo de execução (`canViewPack`, `registry.ts:106`),
+   mas o `import` no topo entra no grafo estático, então o chunk da ficha carrega
+   o bestiário junto. A correção certa é **separação de chunk** (`await import()`),
+   não `server-only`.
+
+   **Não implementei**, e por regra minha: `entriesForPack` é síncrona e usada em
+   todo o registry, então o refactor propaga pelos dez componentes — e os painéis
+   de invocação **não têm teste nenhum**. Refatorar caminho sem cobertura é
+   exatamente o que este backlog existe para evitar. O alvo foi **reclassificado de
+   médio para GRANDE** e a entrada foi corrigida no lugar onde ela está, com um
+   pré-requisito explícito: cobrir `MonsterSpawnPanel` e `GmCreationsPanel` antes
+   de mexer.
+
+**O que ficou de fora:** o alvo 4 não foi implementado — só medido, rediagnosticado
+e reespecificado. Está dito na entrada do backlog e aqui.
+
+**Validação:** a varredura de rotas foi quebrada de propósito (troquei o destino de
+`/personagem/novo` para `/personagem`) e acusou `app/personagem/novo/page.tsx →
+/personagem`; revertida com Edit, nunca `git checkout`. `npx tsc --noEmit` limpo ·
+`npm run build` compila · `npm run test` verde com **3052 asserções**
+(`verify-rotas: 15 ok`).
+
+**Arquivos tocados:**
+- `app/personagem/layout.tsx` — gate removido, com o porquê no arquivo
+- `scripts/verify-rotas.mjs` — **novo**, 15 asserções
+- `package.json` — teste registrado no portão
+- `docs/AUDITORIA-ELDARIN-2026-08.md` — alvo 4 corrigido no lugar, com os números
+
+**Commits / deploy:** ver commit desta rodada na branch `fix/login-google-e-responsivo-um-anel`.
+
+**Como testar:** `node scripts/verify-rotas.mjs` · abrir um link de ficha com sessão
+vencida e confirmar que o login devolve para a ficha, não para um 404.
+
+---
+
 ### 2026-08-08 — Volta ao Eldarin: a política de privacidade que não ia ao ar, e o nome real vazando de novo
 
 **Pedido:** o usuário pediu para virar o loop para o **Eldarin**. Antes de escolher
