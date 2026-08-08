@@ -351,13 +351,33 @@ ok(
 ok("só pode haver um Guia", /Só pode haver um Guia/.test(SRC));
 ok("a Companhia precisa cobrir os quatro papéis", /Papéis sem ninguém/.test(SRC));
 
-/* Dívida que continua: Áreas Perigosas (JOR-M05) — a Companhia para ao entrar e
-   enfrenta um evento por ponto de Perigo. O motor existe e segue sem chamador. */
+/* Áreas Perigosas (JOR-M05) — a dívida foi paga, e a asserção inverteu: agora
+   exige consumidor real. A regra tem duas metades, e uma sem a outra não vale
+   nada: a Marcha fica BARRADA enquanto houver Evento pendente, e cada Evento
+   resolvido desconta um do Perigo. */
 const CONSUMIDORES_JORNADA = [PANEL_JOURNEY, SESSION_TS];
 ok(
-  "torPerilousAreaEventCount segue sem consumidor (dívida registrada)",
-  !CONSUMIDORES_JORNADA.some((s) => /torPerilousAreaEventCount\(/.test(s)),
-  "ligou? então atualize esta asserção"
+  "torPerilousAreaEventCount tem consumidor real",
+  CONSUMIDORES_JORNADA.some((s) => /torPerilousAreaEventCount\(/.test(s))
+);
+ok(
+  "Marcha fica barrada dentro de Área Perigosa",
+  /if \(\(progress\.perilousRemaining \?\? 0\) > 0\) \{[\s\S]{0,240}?throw new Error/.test(PANEL_JOURNEY),
+  "sem barrar, a Companhia atravessa a área sem pagar o Perigo"
+);
+ok(
+  "cada Evento resolvido desconta um do Perigo",
+  /perilousRemaining = Math\.max\(0, \(progress\.perilousRemaining \?\? 0\) - 1\)/.test(PANEL_JOURNEY),
+  "sem descontar, a Companhia nunca sai da área"
+);
+ok(
+  "livro: a Companhia para ao entrar e paga o índice de Perigo",
+  /A Companhia em viagem para na área Perigosa tão logo entre nela/.test(
+    readFileSync(
+      join(__dirname, "..", "livros", "um-anel", "06-fases-de-aventura-combate.md"),
+      "utf8"
+    )
+  )
 );
 
 console.log(`\nverify-um-anel-journey (papéis): ${pass} passaram, ${fail} falharam`);

@@ -35,16 +35,22 @@ export function TorShadowPanel({ roomId, token, canManage, onUpdate }: Props) {
   const [scars, setScars] = useState(0);
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState<string | null>(null);
+  const [mountVigour, setMountVigour] = useState(0);
+  const [travelPassed, setTravelPassed] = useState(false);
+  const [travelIcons, setTravelIcons] = useState(0);
 
   const combat = token.torCombat;
   const characterId = combat?.torCharacterId;
 
-  async function recover(action: "spiritual" | "rest" | "madness" | "heal-scar") {
+  async function recover(
+    action: "spiritual" | "rest" | "madness" | "heal-scar" | "journey-end",
+    extra: { mountVigour?: number; travelRoll?: { passed: boolean; successIcons: number } } = {}
+  ) {
     if (busy || !characterId) return;
     setBusy(true);
     setErr(null);
     try {
-      await postRoomTorRecovery(roomId, characterId, action);
+      await postRoomTorRecovery(roomId, characterId, action, extra);
       onUpdate();
     } catch (e) {
       // "Acesso de Loucura só ocorre quando a Sombra alcança a Esperança
@@ -169,6 +175,53 @@ export function TorShadowPanel({ roomId, token, canManage, onUpdate }: Props) {
             onClick={() => void recover("rest")}
           >
             Descanso Prolongado (−1 Fadiga)
+          </button>
+          {/* Fim de jornada tira Fadiga pelo Vigor da montaria e pela rolagem de
+              Viagem. Os dois números vêm da mesa — o painel do token não sabe se
+              a Companhia viajou montada nem o que o Guia rolou. */}
+          <label className="vtt-field">
+            Fim de jornada — Vigor da montaria
+            <input
+              type="number"
+              min={0}
+              max={6}
+              value={mountVigour}
+              disabled={busy}
+              onChange={(e) => setMountVigour(Math.max(0, Math.min(6, Number(e.target.value) || 0)))}
+            />
+          </label>
+          <label className="vtt-inline-check">
+            <input
+              type="checkbox"
+              checked={travelPassed}
+              disabled={busy}
+              onChange={(e) => setTravelPassed(e.target.checked)}
+            />
+            Rolagem de Viagem bem-sucedida
+          </label>
+          <label className="vtt-field">
+            Ícones de Sucesso na Viagem
+            <input
+              type="number"
+              min={0}
+              max={6}
+              value={travelIcons}
+              disabled={busy}
+              onChange={(e) => setTravelIcons(Math.max(0, Math.min(6, Number(e.target.value) || 0)))}
+            />
+          </label>
+          <button
+            type="button"
+            className="btn btn-ghost"
+            disabled={busy}
+            onClick={() =>
+              void recover("journey-end", {
+                mountVigour,
+                travelRoll: { passed: travelPassed, successIcons: travelIcons },
+              })
+            }
+          >
+            Recuperação de fim de jornada
           </button>
           <button
             type="button"

@@ -68,6 +68,15 @@ export type TorJourneyProgress = {
    * o que a mesa lê.
    */
   roles?: TorRoleAssignment;
+  /**
+   * Eventos que ainda faltam para sair de uma Área Perigosa (JOR-M05).
+   *
+   * "A Companhia para na Área Perigosa tão logo entre nela. Antes que os heróis
+   * possam deixar a área, devem enfrentar um número de Eventos igual ao seu
+   * índice de Perigo." Enquanto isto for maior que zero, o Teste de Marcha fica
+   * bloqueado — é o que impede a Companhia de simplesmente atravessar.
+   */
+  perilousRemaining?: number;
   /** Diário da viagem — linhas curtas, na ordem em que aconteceram. */
   log: string[];
 };
@@ -184,6 +193,9 @@ function normalizeJourney(raw: unknown): TorJourneyProgress | null {
     dayDelta: int(r.dayDelta, 0, -60, 60),
     pending: normalizePending(r.pending),
     ...(normalizeRoles(r.roles) ? { roles: normalizeRoles(r.roles)! } : {}),
+    // Índice de Perigo é pequeno por natureza; o teto evita uma Área Perigosa
+    // adulterada travar a jornada para sempre.
+    perilousRemaining: int(r.perilousRemaining, 0, 0, 12),
     log: strList(r.log, 60),
   };
 }
