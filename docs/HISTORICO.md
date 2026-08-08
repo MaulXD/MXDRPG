@@ -104,6 +104,64 @@ npm run sync:data:check       # após editar livros/
 
 ---
 
+### 2026-08-08 — Apoio: o companheiro que gasta a própria Esperança
+
+**Pedido:** continuar o loop.
+
+**Passo a passo:**
+
+1. **O achado.** Auditando o capítulo 2 regra a regra, o **Apoio** — parágrafo
+   imediatamente seguinte à Inspiração — também não existia no motor: "o
+   personagem que apoia pode gastar 1 ponto de Esperança para que o herói ativo
+   *ganhe (1d)*". Mesma família do Bônus de Esperança da rodada anterior: o
+   rastro terminava antes do código.
+
+2. **Detalhe que muda o desenho: o ponto sai de QUEM APOIA.** Não é o herói ativo
+   que paga. Por isso `supported` não desconta nada na ficha de quem foi apoiado
+   — marcar ali só reconhece o (1d) que já foi pago do outro lado. E é **booleano,
+   não contador**: "apenas um herói-jogador pode gastar Esperança para apoiar o
+   herói ativo".
+
+3. **Cumulativos, não excludentes.** O livro é explícito: Dados de Sucesso de
+   fontes diferentes **somam** ("ganha (1d) de um companheiro, ganha (2d)
+   gastando Esperança enquanto Inspirado, perde (1d) de penalidade → ganha
+   (2d)"), ao contrário de Favorecida/Desfavorecida, que se cancelam. O campo
+   novo é genérico e aceita negativo, que é como a penalidade entra, com piso em
+   zero.
+
+4. **Um bug que quase entrou.** A função que limpa as marcas depois da rolagem
+   saía cedo quando não havia gasto de Esperança — o "Apoiado" ficaria marcado
+   para a rolagem **seguinte**, dando um (1d) que ninguém pagou. As marcas valem
+   para uma rolagem só e agora desmarcam sempre.
+
+5. **De quebra, duas ocorrências que a renomeação de Perícias tinha deixado
+   passar:** "Perícia de Saber" e "Perícia de Caça". Meus padrões cobriam
+   "Perícia Saber", não a forma com "de" no meio. Corrigidas.
+
+6. **Validação.** `npx tsc --noEmit` limpo · `npm run build` compila ·
+   `npm run test` verde com **1793 asserções**. A asserção da limpeza das marcas
+   foi conferida restaurando o `return` antecipado — falhou como devia.
+
+**Uma asserção antiga travou a forma errada** — a que fixava a soma do rank, que
+ganhou o termo do Apoio. Oitava vez; segue sendo mudança de assinatura/forma o
+gatilho.
+
+**Arquivos tocados:**
+- `lib/character/um-anel/dice.ts` — `bonusDice` cumulativo e `supported`
+- `components/character/sheet/TorCharacterSheetView.tsx` — caixa de Apoio, limpeza das marcas
+- `livros/um-anel/02-resolucao-de-acoes.md` · `12-o-mundo-eriador.md` — nome de Perícia
+- `scripts/verify-um-anel-dice.mjs` — 8 asserções novas
+
+**Como testar:** na ficha, marcar "Apoiado por um companheiro" e rolar — a
+mensagem traz "[Apoio +1d]" e a rolagem leva um Dado de Sucesso a mais, **sem**
+descontar Esperança de quem rolou. Marcar Apoio e Esperança juntos: os dois
+somam.
+
+**Falta:** Malfeitoria (cap. 8); Elmo removível; campanhas de 1ª edição; glyph da
+runa de Gandalf.
+
+---
+
 ### 2026-08-08 — Gastar Esperança por (1d): a ação mais usada do jogo não existia
 
 **Pedido:** continuar o loop.
