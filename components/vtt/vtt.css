@@ -4310,6 +4310,16 @@
   accent-color: var(--accent);
 }
 
+/* Sombra de um herói do Um Anel, dentro do painel do token. */
+.tor-shadow-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+  padding-top: 0.65rem;
+  border-top: 1px solid var(--glass-border);
+}
+
 /* Dois campos numéricos lado a lado (Golpe Pesado / Perfurar). */
 .vtt-special-damage {
   display: grid;

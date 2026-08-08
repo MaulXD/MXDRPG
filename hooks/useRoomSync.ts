@@ -752,6 +752,28 @@ export async function postRoomTorStance(
   return res.json() as Promise<RoomApiPayload>;
 }
 
+/**
+ * Um Anel — Sombra: ganho por fonte (Mestre) ou Endurecer a Vontade (jogador).
+ * Quem separa quem pode o quê é o servidor.
+ */
+export async function postRoomTorShadow(
+  roomId: string,
+  tokenId: string,
+  body: { action: "gain"; source: string; points: number; scars?: number } | { action: "harden" }
+) {
+  const res = await roomFetch(
+    `/api/room/${roomId}/tor-shadow`,
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "same-origin",
+      body: JSON.stringify({ tokenId, ...body }),
+    },
+    "Falha ao registrar a Sombra"
+  );
+  return res.json() as Promise<RoomApiPayload>;
+}
+
 /** Um Anel — o herói aceita ser empurrado e amortece metade do último golpe. */
 export async function postRoomTorPush(roomId: string, tokenId: string) {
   const res = await roomFetch(
