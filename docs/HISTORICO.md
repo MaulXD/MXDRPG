@@ -104,6 +104,113 @@ npm run sync:data:check       # após editar livros/
 
 ---
 
+### 2026-08-08 — Três bugs de mesa reportados pelo dono: um consertado, dois investigados
+
+**Pedido:** o dono reportou três defeitos na mesa de Eldarin: (1) os jogadores não
+estão tomando dano; (2) a imagem de token do personagem não está salvando; (3) ao
+criar personagem é preciso recarregar a página para ele aparecer. Bug reportado
+por quem usa passa na frente do backlog.
+
+**Passo a passo:**
+
+1. **BUG 3 CONSERTADO — criar personagem na mesa não atualizava a tela.**
+   `CharacterCreationWizard` tem **três pontos de saída de sucesso**: edição
+   salva (`:417`), criação com navegação (`:461`) e **criação embutida na mesa**
+   (`onCreated`). Os dois primeiros chamavam `router.refresh()`. O terceiro fazia
+   `onCreated(...); return;` e saía antes.
+
+   Por que passava por revisão: `handleCharacterCreated`
+   (`MesaWorkspace.tsx:358`) **chama `await refresh()`** — então parecia coberto.
+   Mas esse `refresh()` é o do **room-sync**, que atualiza o snapshot da sala. Os
+   dados de ficha na mesa vêm de **Server Component**, e esses só se renovam com
+   `router.refresh()`. São dois refreshes diferentes com o mesmo nome coloquial —
+   padrão 1 do catálogo, mesmo nome com significados diferentes.
+
+   **O mesmo defeito estava nos DOIS assistentes**, no mesmo lugar: Eldarin e O
+   Um Anel. Consertar um só recriaria o padrão 18. Ambos corrigidos.
+
+2. **`scripts/verify-wizard-refresh.mjs`** — 10 asserções. A guarda **varre o
+   diretório** de assistentes (`*CreationWizard.tsx`) em vez de olhar arquivo
+   nomeado, e é **condicional**: assistente sem caminho embutido não é acusado de
+   não ter o refresh dele. Confere três coisas por assistente: que o caminho da
+   mesa atualiza, que o refresh vem **antes do `return`** (depois seria código
+   morto — o tipo de conserto que parece feito e não está), e que **todas** as
+   saídas continuam atualizando.
+
+   O recorte do bloco `if (onCreated) { … }` é feito **contando chaves**, não por
+   janela de linhas, e tem três casos de sanidade próprios — inclusive um que
+   exige que o recorte **não vaze** para depois do bloco.
+
+3. **BUG 2 — mecanismo encontrado, mas a correção depende de decisão.**
+   `lib/room/portrait-sync.ts:30`:
+
+   ```ts
+   resolveLinkedTokenImageUrl = (token, actor) =>
+     firstPortraitDataUrl(actor.tokenImageUrl, actor.portraitUrl, token.imageUrl)
+   ```
+
+   A prioridade é **ator primeiro, token por último**. E `syncLinkedTokens`
+   (`lib/room/sync.ts:82`) roda em **toda** persistência de sala (`bumpRoom`,
+   `registry.ts:85`), reescrevendo `imageUrl` do token a partir do ator.
+
+   Consequência: se o personagem já tem retrato de ficha, uma imagem posta **no
+   token** é sobrescrita no próximo salvamento. E `backfillActorPortraitsFromTokens`
+   (`:87`) só copia token→ator quando o ator **não tem nenhuma** das duas — então
+   nesse caso a imagem do token nunca chega a ser persistida.
+
+   **Não corrigi** porque a correção certa depende de qual fluxo está quebrado, e
+   inverter a prioridade muda o que **todos** veem no mapa. Pergunta feita ao dono.
+
+4. **BUG 1 — NÃO consegui isolar, e não vou adivinhar.** O que verifiquei e
+   descartei:
+
+   - `applyDamageWithTempHp` / `resistedDamageAmount` / `effectiveDefenderAc`
+     (`= defesa + defesaBonus`) — a matemática está correta.
+   - `patchTokenVitals` grava a vida no token mesmo sem `vidaMax`.
+   - O handler grava a vida **no token** (`combat-attack.ts:279`) **e no ator**
+     (`:302`), e a condição do ator (`defender.linked && defender.actorId &&
+     room.actors[…]`) é **a mesma** que `syncLinkedTokens` usa para reescrever o
+     token. Nas duas pontas bate — não é a assimetria óbvia.
+
+   A pista que sobrou: `syncLinkedTokens` reescreve `vida`/`vidaMax`/`vidaTemp` do
+   token a partir do ator em **toda** persistência (`sync.ts:64-66`), então
+   qualquer caminho que atualize o token e não o ator perde o dano em silêncio.
+   Isso é padrão 10 — valor derivado guardado como fonte da verdade — e existem
+   vários handlers de combate além do de ataque.
+
+   **Mexer em combate no escuro é pior que o bug.** Precisa de detalhe de
+   reprodução, que é o que perguntei.
+
+**O que ficou de fora:** bugs 1 e 2 não foram corrigidos — só investigados, com o
+mecanismo documentado acima e perguntas feitas ao dono.
+
+**Um erro meu no caminho:** tentei quebrar a guarda de propósito com um
+`node -e` e o `replace` **não casou e não fez nada**, porque o arquivo está em
+CRLF no disco e meu padrão usava `\n`. O teste continuou verde — corretamente,
+porque nada mudou. É exatamente o motivo pelo qual patch em massa aqui tem de
+CONTAR as substituições e abortar: um no-op silencioso parece sucesso. Refiz com
+`Edit` e a guarda disparou.
+
+**Validação:** a guarda foi quebrada de propósito (removi o `router.refresh()` do
+caminho da mesa) e acusou as duas asserções — a da presença e a da ordem antes do
+`return`. Revertida com Edit, nunca `git checkout`. `npx tsc --noEmit` limpo ·
+`npm run build` compila · `npm run test` verde com **3087 asserções**
+(`verify-wizard-refresh: 10 ok`).
+
+**Arquivos tocados:**
+- `components/character/wizard/CharacterCreationWizard.tsx` — `router.refresh()`
+  no caminho embutido
+- `components/character/wizard/TorCharacterCreationWizard.tsx` — o mesmo
+- `scripts/verify-wizard-refresh.mjs` — **novo**, 10 asserções
+- `package.json` — teste registrado no portão
+
+**Commits / deploy:** ver commit desta rodada na branch `fix/login-google-e-responsivo-um-anel`.
+
+**Como testar:** abrir uma mesa de Eldarin, criar um personagem pelo assistente
+embutido e conferir que ele aparece **sem recarregar a página**.
+
+---
+
 ### 2026-08-08 — O produto falando em linguagem de mantenedor, e o compêndio que apagava a própria ficha
 
 **Pedido:** rodada 3 do loop do Eldarin — alvos 6 e 7 do backlog.
