@@ -341,3 +341,69 @@ Ordem correta de ataque, porque a ordem inversa desperdiça trabalho:
 ---
 
 Já caíram e não estão nesta lista (10): cards clicáveis do compêndio, `/mundo` na navbar, mesa demo removida por inteiro, persistência de posição das janelas flutuantes, labels do rail no desktop, ficha clara como decisão de design (não regressão), badge de não-lida no chat da navbar, privacidade correta nas demais superfícies sociais (amigos/perfil/presença/pedidos/notificações), nome real e e-mail restritos a superfícies próprias e admin, e ausência de símbolos Eldarin mantidos vivos só por scripts de teste.
+
+---
+
+# Bugs reportados pelo dono na mesa (2026-08-08)
+
+Reportados em uso real. **Passam na frente de todos os alvos acima.**
+
+### B3. Criar personagem na mesa não aparecia sem recarregar — RESOLVIDO (152d6d3)
+
+Três saídas de sucesso no assistente, duas chamavam `router.refresh()` e a da mesa saía antes
+com `return`. `handleCharacterCreated` chamava `refresh()` do room-sync, que é outra coisa: os
+dados de ficha na mesa vêm de Server Component. Estava nos DOIS assistentes.
+Guarda: `scripts/verify-wizard-refresh.mjs`.
+
+### B1. Monstro acerta o jogador e não causa dano — HIPÓTESE PRINCIPAL, NÃO CORRIGIDO
+
+Sintoma confirmado pelo dono: **o ataque ACERTA e a vida não muda.**
+
+**Descartado, lido no código:**
+- `resolveMonsterAttack` (`lib/combat/attack.ts:764-846`) — a conta está certa: rola dano,
+  `resistedDamageAmount` devolve o dano cheio quando não há resistência, `applyDamageWithTempHp`
+  subtrai, `defenderHpAfter` sai correto.
+- `effectiveDefenderAc` = `defesa + defesaBonus`, sem inflar.
+- `patchTokenVitals` grava a vida mesmo quando `vidaMax` é nulo.
+- A condição que atualiza o ator em `combat-attack.ts:302`
+  (`defender.linked && defender.actorId && room.actors[…]`) é **a mesma** que
+  `syncLinkedTokens` usa para reescrever o token — não é a assimetria óbvia.
+
+**A assimetria que sobrou, e é real:**
+
+| Handler | `saveCharacter` | `persistActorToAdventureSheet` |
+|---|---|---|
+| `combat-gm.ts` | 5× | sim |
+| `gm-actor-progress.ts` | — | sim |
+| `culinary-meal.ts` | — | sim |
+| `handlers/actors.ts` | — | sim |
+| **`combat-attack.ts`** | **0×** | **não** |
+
+O handler de ataque atualiza `room.actors[…].resources.vida` **só no estado da sala** e nunca
+persiste a ficha. Existe `syncAdventureActorsForRoom` (`lib/adventure/store.ts:397`,
+`lib/character/characters.ts:18`) que empurra **ficha → sala**. Quando isso roda, a vida
+não-persistida é sobrescrita pela da ficha, e o dano desaparece.
+
+É o padrão 9 (regra de duas metades) somado ao 10 (valor derivado como fonte da verdade).
+
+**Antes de corrigir:** confirmar QUANDO `syncAdventureActorsForRoom` roda, e se a correção é
+persistir no handler de ataque ou parar de reescrever a vida a partir da ficha. Persistir dentro
+do ataque é `await` em caminho quente — medir. **Não corrigir no escuro: é combate.**
+
+### B2. Imagem de token não salva — TODOS OS TRÊS FLUXOS, NÃO CORRIGIDO
+
+O dono confirmou que falham os três: upload na ficha não persiste, troca no token volta atrás, e
+a imagem não sobrevive ao reload. Isso descarta "prioridade errada" como causa única — é a
+persistência inteira.
+
+**Mecanismo localizado:** `resolveLinkedTokenImageUrl` (`lib/room/portrait-sync.ts:30`) prioriza
+`actor.tokenImageUrl` → `actor.portraitUrl` → **`token.imageUrl` por último**, e
+`syncLinkedTokens` (`lib/room/sync.ts:82`) reescreve `imageUrl` do token em **toda** persistência
+(`bumpRoom`, `registry.ts:85`). Além disso `backfillActorPortraitsFromTokens` (`:87`) só copia
+token→ator quando o ator **não tem nenhuma** das duas imagens — então com retrato existente a
+imagem do token nunca é persistida.
+
+**Investigar antes de mexer:** a rota de upload (persiste `tokenImageUrl` na ficha?), o limite de
+tamanho do payload (o assistente já trata 413), e se `tokenImageUrl` sobrevive ao
+`normalizeCharacter`. Inverter a prioridade muda o que **todos** veem no mapa — não é decisão
+para tomar sem saber onde o dado se perde.
