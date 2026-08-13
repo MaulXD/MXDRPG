@@ -226,6 +226,11 @@ export function TorCharacterCreationWizard({
       const charId = data.character.id;
 
       if (onCreated) {
+        /* Mesmo defeito do assistente de Eldarin, no mesmo lugar: este ponto de
+           saída não chamava `router.refresh()` e o de baixo chamava, então quem
+           criava personagem dentro da mesa não via a ficha até recarregar.
+           Corrigir só um dos dois assistentes recriaria o problema no outro. */
+        router.refresh();
         onCreated({ characterId: charId, name: data.character.name });
         return;
       }

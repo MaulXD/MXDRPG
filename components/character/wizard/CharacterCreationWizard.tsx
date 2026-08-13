@@ -444,6 +444,16 @@ export function CharacterCreationWizard({
       const charId = data.character.id;
 
       if (onCreated) {
+        /* `router.refresh()` TAMBÉM aqui.
+           Este é o caminho da mesa (assistente embutido). Os outros dois pontos
+           de saída desta função — edição salva e criação com navegação — já
+           chamavam `router.refresh()`; só este saía antes, com `return`.
+           Resultado: quem criava personagem dentro da mesa não via a ficha
+           aparecer até recarregar a página na mão.
+           `onCreated` atualiza o snapshot da SALA (`refresh()` do room-sync), que
+           é outra coisa: os dados de ficha na mesa vêm de Server Component e só
+           se renovam com `router.refresh()`. Precisa dos dois. */
+        router.refresh();
         onCreated({ characterId: charId, name: data.character.name });
         return;
       }
