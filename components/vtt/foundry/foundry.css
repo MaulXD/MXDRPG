@@ -2437,13 +2437,62 @@
     gap: 0.15rem;
   }
 
+  /* Rótulo visível no celular (A-12b): sem ele o jogador não sabe o que cada
+     ícone faz. Ícone um pouco menor e rótulo de 7px para caber na altura
+     do rail (48px) sem criar rolagem da página. */
   .foundry-icon-bar__btn {
-    min-width: var(--touch-target);
+    min-width: 3.1rem;
     min-height: var(--touch-target);
+    padding: 0.1rem 0.1rem 0.05rem;
+    gap: 0.08rem;
+  }
+
+  .foundry-icon-bar__icon-wrap {
+    width: 1.9rem;
+    height: 1.9rem;
   }
 
   .foundry-icon-bar__label {
+    display: block;
+    font-size: 0.45rem;
+  }
+
+  /* A barra de rolagem do rail comia a faixa de baixo e cobria os rótulos,
+     então fica oculta. Para indicar que há mais botões à direita, uma sombra
+     na borda direita aparece só enquanto há conteúdo fora da tela: a camada
+     de cima acompanha o conteúdo e cobre a sombra no fim da rolagem. */
+  .foundry-icon-bar {
+    scrollbar-width: none;
+    overflow-y: hidden;
+    background:
+      linear-gradient(to right, #12110f, #12110f) right center / 14px 100% no-repeat local,
+      linear-gradient(to left, rgba(196, 164, 74, 0.35), rgba(196, 164, 74, 0)) right center / 14px 100% no-repeat scroll,
+      rgba(18, 17, 15, 0.94);
+  }
+
+  .foundry-icon-bar::-webkit-scrollbar {
     display: none;
+  }
+
+  /* Os dois grupos do rail (jogador e mestre) ficavam em coluna dentro da
+     barra de uma linha: os botões de baixo caíam para fora da faixa de 48px
+     e sumiam. Agora cada grupo também vira linha e o rail rola na horizontal. */
+  .foundry-icon-bar__section {
+    flex-direction: row;
+    flex-shrink: 0;
+    width: auto;
+    gap: 0.15rem;
+  }
+
+  .foundry-icon-bar__section--gm {
+    margin-top: 0;
+  }
+
+  .foundry-icon-bar__divider {
+    width: 1px;
+    height: auto;
+    align-self: stretch;
+    margin: 0.2rem 0.1rem;
   }
 
   .mesa-mobile-bar {
