@@ -15,6 +15,7 @@ import {
   resolveActorTokenImageUrl,
   resolveLinkedTokenImageFocus,
 } from "./portrait-sync";
+import { keepRoomVitals } from "./actor-vitals";
 import type { RoomActor, RoomState } from "./types";
 
 function participantIds(room: RoomState): string[] {
@@ -197,8 +198,9 @@ export async function syncAdventureActorsForRoom(roomId: string): Promise<RoomSt
       for (const sheet of sheets) {
         if (!characterBelongsToAdventure(sheet, adventureId)) continue;
         const prev = room.actors[sheet.id];
-        const next = toRoomActor(sheet, prev);
-        if (!next) continue;
+        const built = toRoomActor(sheet, prev);
+        if (!built) continue;
+        const next = keepRoomVitals(built, prev);
         room.actors[sheet.id] = next;
         if (portraitChangedBetween(prev, next)) {
           syncLinkedTokenPortraits(room, sheet.id, next);
