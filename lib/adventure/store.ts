@@ -266,7 +266,7 @@ export async function createAdventure(
     return {
       ok: false,
       error: dbEnabled()
-        ? "Não foi possível gravar a mesa no banco. Confira se as migrations foram aplicadas (npm run db:migrate)."
+        ? "Não foi possível salvar a mesa agora. Tente de novo em instantes."
         : "Não foi possível criar a mesa. Tente novamente.",
     };
   }

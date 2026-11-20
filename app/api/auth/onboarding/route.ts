@@ -16,7 +16,11 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Faça login" }, { status: 401 });
   }
   if (!dbEnabled()) {
-    return NextResponse.json({ error: "Perfil requer MariaDB (DATABASE_URL)" }, { status: 503 });
+    console.error("[onboarding] banco indisponível: DATABASE_URL ausente ou inválida");
+    return NextResponse.json(
+      { error: "Não foi possível salvar o perfil agora. Tente de novo em instantes." },
+      { status: 503 }
+    );
   }
 
   const body = (await request.json()) as {

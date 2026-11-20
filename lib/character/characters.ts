@@ -222,9 +222,7 @@ export async function saveCharacter(sheet: CharacterSheet): Promise<CharacterShe
         "[eldarin] Postgres upsertCharacter falhou (ficha salva em registry local):",
         e instanceof Error ? e.message : e
       );
-      throw new Error(
-        "Não foi possível gravar a ficha no banco. Rode npm run db:migrate ou verifique DATABASE_URL."
-      );
+      throw new Error("Não foi possível salvar a ficha agora. Tente de novo em instantes.");
     }
   }
 

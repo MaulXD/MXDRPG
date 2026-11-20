@@ -50,12 +50,12 @@ function stripComments(src) {
   return src.replace(/\/\*[\s\S]*?\*\//g, "").replace(/(^|[^:])\/\/[^\n]*/g, "$1");
 }
 
-function varrer(dir, acc = []) {
+function varrer(dir, acc = [], extensao = /\.tsx$/) {
   if (!existsSync(dir)) return acc;
   for (const nome of readdirSync(dir)) {
     const caminho = join(dir, nome);
-    if (statSync(caminho).isDirectory()) varrer(caminho, acc);
-    else if (/\.tsx$/.test(nome)) acc.push(caminho);
+    if (statSync(caminho).isDirectory()) varrer(caminho, acc, extensao);
+    else if (extensao.test(nome)) acc.push(caminho);
   }
   return acc;
 }
@@ -157,6 +157,87 @@ ok(
   "a tela de mesa inexistente explica o que houve, em linguagem de usuário",
   /não existe mais, ou o link de convite expirou/.test(MESA) &&
     /Peça um convite novo ao Mestre/.test(MESA)
+);
+
+/* ── Mensagem de erro do servidor não cita o que é de mantenedor ───────── */
+
+/**
+ * Mensagem lançada (throw) ou devolvida em JSON de lib/ e app/api/ vai para a tela
+ * do jogador quando a rota repassa `e.message`. Por isso o texto de erro não pode
+ * citar comando, variável de ambiente nem arquivo local. O detalhe técnico vai
+ * para console.error no servidor, não para a resposta.
+ */
+const PROIBIDOS_SERVIDOR = [
+  ["npm run", "comando de terminal"],
+  ["DATABASE_URL", "nome de variável de ambiente"],
+  ["db:migrate", "comando de migration"],
+  ["migrate", "comando de migration"],
+  [".env", "arquivo de configuração local"],
+];
+
+/**
+ * Diagnóstico de operação: /api/health e o ping do banco são lidos por quem
+ * mantém o servidor, não pelo jogador. Ficam fora da varredura de propósito.
+ */
+const DIAGNOSTICO = new Set([
+  "app/api/health/route.ts",
+  "lib/db/enabled.ts",
+  "lib/db/client.ts",
+  "lib/db/client-mariadb.ts",
+]);
+
+/**
+ * Literais de string do código, sem comentário. Um par de aspas pode pegar o trecho
+ * entre dois literais vizinhos (`"1" || process.env.X === "1"`); por isso descarta o
+ * que tem operador de código. Mensagem para o jogador não tem `===` nem `||`.
+ */
+function literaisDeCodigo(src) {
+  return [...stripComments(src).matchAll(/["'`]([^"'`\n]{4,})["'`]/g)]
+    .map((m) => m[1])
+    .filter((t) => !/===|!==|\|\||&&|=>/.test(t))
+    /* Prefixo de log "[tag] ..." é mensagem de console, não de tela. O detalhe técnico
+       (DATABASE_URL etc.) fica nele de propósito. */
+    .filter((t) => !/^\[[\w-]+\]/.test(t));
+}
+
+ok(
+  "literaisDeCodigo pega texto de throw",
+  literaisDeCodigo('throw new Error("rode npm run db:migrate");').includes("rode npm run db:migrate")
+);
+ok(
+  "literaisDeCodigo IGNORA comentário",
+  literaisDeCodigo("// npm run antigo\nconst x = 1;").length === 0
+);
+
+const servidor = [
+  ...varrer(root("lib"), [], /\.tsx?$/),
+  ...varrer(root("app", "api"), [], /\.tsx?$/),
+].filter((caminho) => !DIAGNOSTICO.has(rel(caminho)));
+ok(`varreu lib/ e app/api/ (${servidor.length} arquivos)`, servidor.length > 100);
+
+const infratoresServidor = [];
+let literaisExaminados = 0;
+for (const caminho of servidor) {
+  const literais = literaisDeCodigo(readFileSync(caminho, "utf8"));
+  literaisExaminados += literais.length;
+  for (const literal of literais) {
+    for (const [termo, porque] of PROIBIDOS_SERVIDOR) {
+      if (literal.includes(termo)) {
+        infratoresServidor.push(`${rel(caminho)} → "${termo}" (${porque}): ${literal.slice(0, 70)}`);
+      }
+    }
+  }
+}
+/* Mesma regra da checagem de tela: sem literais examinados, "tudo limpo" não diz nada. */
+ok(
+  `a varredura extraiu literais de código para examinar (${literaisExaminados})`,
+  literaisExaminados > 500,
+  "checagem negativa que não examinou nada é checagem que não roda"
+);
+ok(
+  "nenhum erro de servidor chega ao jogador citando comando ou variável de ambiente",
+  infratoresServidor.length === 0,
+  infratoresServidor.join(" · ")
 );
 
 console.log(`\nverify-sem-texto-dev: ${pass} ok, ${fail} falhas`);

@@ -165,9 +165,7 @@ export async function saveTorCharacter(sheet: TorCharacterSheet): Promise<TorCha
         "[um-anel] MariaDB upsertTorCharacter falhou (ficha salva em registry local):",
         e instanceof Error ? e.message : e
       );
-      throw new Error(
-        "Não foi possível gravar a ficha no banco. Rode npm run db:migrate ou verifique DATABASE_URL."
-      );
+      throw new Error("Não foi possível salvar a ficha agora. Tente de novo em instantes.");
     }
   }
 

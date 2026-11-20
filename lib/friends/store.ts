@@ -33,7 +33,8 @@ import type {
 
 function requireDb(): { ok: true } | { ok: false; error: string } {
   if (!dbEnabled()) {
-    return { ok: false, error: "Amigos e convites exigem MariaDB (DATABASE_URL)." };
+    console.error("[friends] banco indisponível: DATABASE_URL ausente ou inválida");
+    return { ok: false, error: "Amigos e convites não estão disponíveis agora. Tente de novo em instantes." };
   }
   return { ok: true };
 }

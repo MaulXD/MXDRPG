@@ -324,7 +324,10 @@ export async function fetchUserById(id: string): Promise<SessionUser | null> {
 /** Leitura sem fallback silencioso — usada antes de gravar apelido/perfil. */
 export async function fetchUserByIdStrict(id: string): Promise<SessionUser | null> {
   const sql = getSql();
-  if (!sql) throw new Error("DATABASE_URL não configurada");
+  if (!sql) {
+    console.error("[users] banco indisponível: DATABASE_URL não configurada");
+    throw new Error("Não foi possível salvar agora. Tente de novo em instantes.");
+  }
   const r = await queryOneUserRow(sql, "id = ?", [id]);
   return r ? toSessionUser(r) : null;
 }
@@ -359,7 +362,10 @@ export async function updateUserAvatar(
   }
 ): Promise<SessionUser> {
   const sql = getSql();
-  if (!sql) throw new Error("DATABASE_URL não configurada");
+  if (!sql) {
+    console.error("[users] banco indisponível: DATABASE_URL não configurada");
+    throw new Error("Não foi possível salvar agora. Tente de novo em instantes.");
+  }
 
   const avatarSource = normalizeAvatarSource(opts.avatarSource);
 
@@ -415,7 +421,10 @@ export async function insertUser(
   nickname?: string | null
 ): Promise<StoredUser> {
   const sql = getSql();
-  if (!sql) throw new Error("DATABASE_URL não configurada");
+  if (!sql) {
+    console.error("[users] banco indisponível: DATABASE_URL não configurada");
+    throw new Error("Não foi possível salvar agora. Tente de novo em instantes.");
+  }
 
   const key = slugEmail(email);
   let nick: string;
@@ -471,7 +480,10 @@ export async function backfillDefaultNickname(userId: string): Promise<SessionUs
 
 export async function setUserNickname(userId: string, nickname: string): Promise<SessionUser> {
   const sql = getSql();
-  if (!sql) throw new Error("DATABASE_URL não configurada");
+  if (!sql) {
+    console.error("[users] banco indisponível: DATABASE_URL não configurada");
+    throw new Error("Não foi possível salvar agora. Tente de novo em instantes.");
+  }
 
   const v = validateNickname(nickname);
   if (!v.ok) throw new Error(v.error);
@@ -501,7 +513,10 @@ export async function completeUserPasswordRegistration(
   opts?: { name?: string; nickname?: string | null }
 ): Promise<StoredUser> {
   const sql = getSql();
-  if (!sql) throw new Error("DATABASE_URL não configurada");
+  if (!sql) {
+    console.error("[users] banco indisponível: DATABASE_URL não configurada");
+    throw new Error("Não foi possível salvar agora. Tente de novo em instantes.");
+  }
   if (password.length < 6) throw new Error("Senha deve ter pelo menos 6 caracteres");
 
   const existing = await queryOneUserRow(sql, "id = ?", [userId]);
@@ -537,7 +552,10 @@ export async function updateUserProfile(
   opts: { name?: string; nickname?: string | null }
 ): Promise<StoredUser> {
   const sql = getSql();
-  if (!sql) throw new Error("DATABASE_URL não configurada");
+  if (!sql) {
+    console.error("[users] banco indisponível: DATABASE_URL não configurada");
+    throw new Error("Não foi possível salvar agora. Tente de novo em instantes.");
+  }
 
   const existing = await queryOneUserRow(sql, "id = ?", [userId]);
   if (!existing) throw new Error("Conta não encontrada");
@@ -569,7 +587,10 @@ export async function updateUserProfile(
 
 export async function deleteUserAccount(userId: string): Promise<void> {
   const sql = getSql();
-  if (!sql) throw new Error("DATABASE_URL não configurada");
+  if (!sql) {
+    console.error("[users] banco indisponível: DATABASE_URL não configurada");
+    throw new Error("Não foi possível salvar agora. Tente de novo em instantes.");
+  }
 
   await sql`DELETE FROM eldarin_characters WHERE owner_id = ${userId}`;
   await sql`DELETE FROM eldarin_users WHERE id = ${userId}`;

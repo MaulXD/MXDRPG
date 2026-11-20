@@ -12,8 +12,9 @@ export async function PATCH(req: Request) {
     return NextResponse.json({ error: "Faça login" }, { status: 401 });
   }
   if (!dbEnabled()) {
+    console.error("[account] banco indisponível: DATABASE_URL ausente ou inválida");
     return NextResponse.json(
-      { error: "Perfil requer MariaDB (DATABASE_URL)" },
+      { error: "Não foi possível salvar a foto agora. Tente de novo em instantes." },
       { status: 503 }
     );
   }
@@ -49,8 +50,9 @@ export async function DELETE() {
   }
 
   if (!dbEnabled()) {
+    console.error("[account] exclusão sem banco: DATABASE_URL ausente ou inválida");
     return NextResponse.json(
-      { error: "Exclusão de conta requer MariaDB (DATABASE_URL)" },
+      { error: "Não foi possível excluir a conta agora. Tente de novo em instantes." },
       { status: 503 }
     );
   }
