@@ -2,7 +2,10 @@ import type { ChatMessage } from "@/lib/room/chat";
 import type { RoomSnapshot } from "@/lib/room/types";
 import type { RoomSyncStatus } from "@/hooks/useRoomSync";
 
-export type MesaRoomSlice = "chat" | "map" | "combat" | "actors" | "settings" | "meta";
+const EMPTY_CHAT: ChatMessage[] = [];
+const EMPTY_ACTORS: RoomSnapshot["actors"] = Object.freeze({}) as RoomSnapshot["actors"];
+
+export type MesaRoomSlice ="chat" | "map" | "combat" | "actors" | "settings" | "meta";
 
 export type MesaMapSlice = {
   revision: number;
@@ -51,7 +54,7 @@ export class MesaRoomStore {
   }
 
   getChat(): ChatMessage[] {
-    return this.snapshot?.chat ?? [];
+    return this.snapshot?.chat ?? EMPTY_CHAT;
   }
 
   getMapSlice(): MesaMapSlice | null {
@@ -95,7 +98,9 @@ export class MesaRoomStore {
   }
 
   getActors(): RoomSnapshot["actors"] {
-    return this.snapshot?.actors ?? {};
+    // Objeto vazio estável: useSyncExternalStore exige a mesma referência entre
+    // chamadas, senão o React acusa loop enquanto a sala ainda não carregou.
+    return this.snapshot?.actors ?? EMPTY_ACTORS;
   }
 
   getSettings(): RoomSnapshot["settings"] | undefined {
