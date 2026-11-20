@@ -60,6 +60,7 @@ register("data:text/javascript," + encodeURIComponent(hookSrc));
 
 const { spellcastingAttribute } = await import(pathToFileURL(join(ROOT, "lib", "combat", "attack.ts")).href);
 const { computeSpellSaveDc } = await import(pathToFileURL(join(ROOT, "lib", "combat", "spell.ts")).href);
+const { maxPreparedSpells } = await import(pathToFileURL(join(ROOT, "lib", "character", "spell-prep.ts")).href);
 
 let pass = 0;
 let fail = 0;
@@ -109,6 +110,30 @@ caso("CD de magia do Feiticeiro usa carisma: 8 + prof 2 + CAR +2 = 12", () => {
 caso("CD do Feiticeiro nao usa a inteligencia (que daria 9)", () => {
   const dc = computeSpellSaveDc(fichaFeiticeiro(1), { name: "Mao Gelidas", kind: "spell" });
   assert.notEqual(dc, 9);
+});
+
+// BAL-D6b: magias conhecidas do Feiticeiro = nivel + CAR, minimo 2 (livros/LIVRO-DO-JOGADOR.md:1142).
+function fichaComCar(classe, nivel, carisma) {
+  return {
+    identity: { classe, nivel },
+    attributes: { forca: 8, destreza: 10, constituicao: 10, inteligencia: 10, sabedoria: 10, carisma },
+  };
+}
+
+caso("Feiticeiro nv1 CAR 15 conhece 3 magias (nivel + CAR)", () => {
+  assert.equal(maxPreparedSpells(fichaComCar("Feiticeiro", 1, 15)), 3);
+});
+
+caso("Feiticeiro nv3 CAR 15 conhece 5 magias (nao a tabela 2 + nivel - 1)", () => {
+  assert.equal(maxPreparedSpells(fichaComCar("Feiticeiro", 3, 15)), 5);
+});
+
+caso("Feiticeiro nv5 CAR 15 conhece 7 magias", () => {
+  assert.equal(maxPreparedSpells(fichaComCar("Feiticeiro", 5, 15)), 7);
+});
+
+caso("Feiticeiro nv1 CAR 8 (mod -1) respeita o minimo de 2", () => {
+  assert.equal(maxPreparedSpells(fichaComCar("Feiticeiro", 1, 8)), 2);
 });
 
 console.log(`\n${pass} ok, ${fail} falha(s)`);

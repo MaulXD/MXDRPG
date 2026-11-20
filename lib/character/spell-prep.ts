@@ -3,7 +3,6 @@ import {
   classSpellAccess,
   isCasterClassId,
   isSpellAllowedForClass,
-  maxSpellsKnownForClass,
 } from "@/lib/character/spell-lists";
 import { attributeMod, type ClassId } from "@/lib/character/rules";
 import type { CharacterSheet } from "@/lib/character/types";
@@ -52,10 +51,9 @@ export function maxPreparedSpells(actor: CharacterSheet): number {
       return Math.max(1, nivel + wis);
     case "Mago":
       return Math.max(4, nivel + int + 3);
-    case "Feiticeiro": {
-      const known = maxSpellsKnownForClass("Feiticeiro", nivel);
-      return known ?? Math.max(2, nivel + cha);
-    }
+    case "Feiticeiro":
+      // livros/LIVRO-DO-JOGADOR.md:1142 (Feiticeiro): "magias conhecidas = nível + CAR (mín. 2)".
+      return Math.max(2, nivel + cha);
     case "Bardo":
       return Math.max(3, nivel + 2);
     case "Bruxo":
