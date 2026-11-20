@@ -753,7 +753,7 @@
       "description": "<p>Marca inimigo visível 9m; Golpe Sagrado contra ele não gasta PA extra 1×/turno.</p>",
       "tactical": {
         "alcanceCells": {
-          "value": 9,
+          "value": 6,
           "min": 0
         },
         "custoPontosAcao": {
@@ -945,7 +945,7 @@
       "description": "<p>Investida 12m: vantagem no primeiro ataque; derruba em acerto (FOR CD 14).</p>",
       "tactical": {
         "alcanceCells": {
-          "value": 6,
+          "value": 8,
           "min": 0
         },
         "custoPontosAcao": {
@@ -1041,7 +1041,7 @@
       "description": "<p>Confusão 1 min (INT CD 16); aberrações INT ≤ 8 falham automaticamente.</p>",
       "tactical": {
         "alcanceCells": {
-          "value": 6,
+          "value": 12,
           "min": 0
         },
         "custoPontosAcao": {
@@ -1185,7 +1185,7 @@
       "description": "<p>Puxa alvo 9m e 2d8 frio (FOR CD 15).</p>",
       "tactical": {
         "alcanceCells": {
-          "value": 5,
+          "value": 6,
           "min": 0
         },
         "custoPontosAcao": {
