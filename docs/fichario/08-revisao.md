@@ -2,6 +2,34 @@
 
 Pareceres do Revisor: APROVADO ou REPROVADO, com achados.
 
+## BV-018 — guarda do flush da cena pendente (Lupa)
+Parecer: REPROVADO. A hipótese se sustenta e a guarda resolve o caso do flush, mas ela cobre só um caminho.
+- components/vtt/Battlefield.tsx:753 — syncRoom guarda pendingCombatSnapRef sem checar revisão e chama onApplySnapshot com force (755). hooks/useRoomSync.ts:146 só descarta com force falso, então um snap velho chega à página e fica se chegar depois da resposta do movimento. O que fazer: no topo de syncRoom, if (snap.revision < appliedSceneRevisionRef.current) return; antes de guardar, de setScene e de onApplySnapshot.
+- hooks/vtt/useBattlefieldCombatFxQueue.ts:136-147 — onCombatApplyState e onCombatFxDone aplicam o pending via applyCombatSnapshot (Battlefield.tsx:670-676), que faz setScene sem checar revisão. Um pending velho guardado durante FX é reaplicado ao fim do FX. O que fazer: o mesmo corte do item anterior, ou checar em applyCombatSnapshot.
+- Sem teste no diff. O que fazer: verify que falhe sem a guarda (move R2 aplicado, pending R1, o flush não reaplica R1, e o FX não reaplica R1).
+- Chamadores de flush: moveSelectedTo (Battlefield.tsx:1922), onRepositionToken (1979), onGmDragPreview (1994). Os três passam pela guarda; onRepositionToken ajusta applied antes, então é consistente.
+- Risco (não bloqueia): a revisão pode voltar a zero (useRoomSync.ts:209 e 322 zeram revisionRef). Com applied alto, a guarda descarta todo pending até trocar de sala. Medir antes de aceitar.
+- Verificado: npm run test exit 0; npx tsc --noEmit exit 0. Navegador não testado.
+
+## BV-014 r2 — teto do pool na ficha e nos cards da mesa (Lupa)
+Parecer: APROVADO, com um nit.
+- components/vtt/PlayableCharactersPanel.tsx:215 e components/vtt/PlayerSpawnPanel.tsx:267 — agora usam paPoolMaxForSheet. A pendência da rodada 1 está fechada.
+- scripts/verify-ficha-pa-teto.mjs — chama a função real, 3 ok, encadeado no npm test. Sem a correção (teto 5), o caso 1 falha.
+- Nit: o caso 'valor 9 cabe no teto 9' repete o Math.min em vez de chamar o componente. Só o caso do teto pega regressão.
+- Ressalva D-12 (página 03): clamps em normalize.ts:124 e identity.ts:93 seguem como estão, não alterados aqui.
+- BV-010 segue como D-11, sem código.
+- Verificado: npm run test exit 0; npx tsc --noEmit exit 0.
+
+## BV-014 e BV-010 — PA da ficha e dano do aprimoramento (Lupa)
+Parecer BV-014: REPROVADO. O teto da ficha agora é o da mesa, mas o 9/5 continua nos cards da mesa.
+- components/vtt/PlayableCharactersPanel.tsx:215 e components/vtt/PlayerSpawnPanel.tsx:267 — os cards usam pontosAcao.max, que na sala é a recuperação 5 (lib/combat/combat-token-pa.ts:52). Com PA 9 na mesa, o card mostra 9/5. O que fazer: usar o mesmo teto nesses dois cards.
+- Sem teste que falhe sem a correção. O que fazer: caso em scripts/ para paPoolMaxForSheet (sem talento = 9; com talento de PA = teto + bônus) e para valor acima do teto.
+- Ressalva: lib/character/normalize.ts:124 e lib/character/identity.ts:93 limitam o valor guardado a 5, mas o BV-014 foi visto com 9 fora da mesa. Há um caminho sem esse limite; confirmar qual.
+- Verificado: paPoolMaxForSheet = accumulationCap (lib/combat/pa-economy.ts:96), mesmo teto de dotCapacity (lib/combat/pa-display.ts:21). npm run test: exit 0. npx tsc --noEmit: exit 0.
+Parecer BV-010: REPROVADO como correção. Não há mudança de código: o diff não toca armas nem lib/combat/attack.ts. O chip segue 1d4.
+- lib/combat/attack.ts:185 usa só weapon.dano.formula. Diagnóstico confirmado. data/compendiums/armas.json:6325: o +1 de dano só existe no texto.
+- Decisão D-11 (página 03) confere com o código. O que fazer: escolher (a), (b) ou (c). Com (a), o dano em attack.ts e o chip mudam juntos e pedem teste de dano na mesa.
+
 ## 152d6d3 — fix(eldarin): criar personagem na mesa sem recarregar (Lupa)
 Parecer: APROVADO, com ressalvas que nao bloqueiam.
 - components/character/wizard/CharacterCreationWizard.tsx:456 — ataca a causa: o caminho onCreated saia sem router.refresh(), e a ficha vem de Server Component. O refresh esta antes do return. OK.
@@ -184,4 +212,47 @@ Parecer: APROVADO, com ressalvas que não bloqueiam.
 - Verificado aqui: node scripts/verify-limite-fichas-mesa.mjs = 10 ok, 0 falha. npx tsc --noEmit = exit 0. Navegador não testado: o botão e o aviso com 10 fichas não foram conferidos na tela.
 - Sem regressão em PA, combate, sync, permissões ou privacidade. Sem texto de UI novo; sem emoji. Nenhum arquivo do repo editado.
 - Sem commit. Nenhum arquivo do repo editado.
+
+## N-02 — mensagem de erro do servidor sem termo de mantenedor (Claude Code)
+Parecer: APROVADO. Os 9 arquivos tiram npm run, DATABASE_URL e migrate da mensagem ao jogador; o detalhe foi para console.error com prefixo [tag]. Ressalvas que nao bloqueiam:
+- lib/auth/auth-capabilities.ts:54 — 'cadastros novos exigem MariaDB no servidor' aparece para o visitante em /entrar (app/entrar/page.tsx:36). Fica fora dos 9 arquivos e a guarda nao cobre MariaDB. O que fazer: abrir item N-02b com este texto e lib/auth/password-recover.ts:65 ('requer banco MariaDB em producao').
+- scripts/verify-sem-texto-dev.mjs, literaisDeCodigo — qualquer literal que comeca com [tag] sai da checagem, inclusive um throw para o jogador. Hoje nao ha caso. O que fazer: filtrar so o que esta dentro de console.error/console.warn, nao todo prefixo [tag].
+- scripts/verify-sem-texto-dev.mjs, DIAGNOSTICO — lib/db/client.ts, client-mariadb.ts e enabled.ts ficam fora. GET /api/health (publico) devolve dbUrlIssue com npm run homolog:up. E de operacao, nao tela de jogador: aceitar e registrar.
+- Verificado aqui: node scripts/verify-sem-texto-dev.mjs = 15 ok, 0 falhas. npx tsc --noEmit = exit 0. A guarda acusa os 8 arquivos na versao do HEAD (1 a 7 infracoes cada), entao o teste falharia sem a correcao.
+- Sem commit. Nenhum arquivo do repo editado.
+
+## BAL-D6 — Feiticeiro conjura com Carisma (Claude Code)
+Parecer: APROVADO com ressalvas que não bloqueiam.
+- lib/combat/attack.ts:477-489 — ataca a causa: Feiticeiro saiu do case Mago e entrou no grupo carisma. Mago segue com inteligencia.
+- Atributo de conjuração: CD (lib/combat/spell.ts:66), acerto (attack.ts:495 via attackAttribute, hit-chance.ts:196), cura (attack.ts:947 e spell-utility.ts:91) e rótulo (spell.ts:50, attack.ts:504 são só mapas de nome). Todos passam por spellcastingAttribute. Nenhum decide por classe fora dele.
+- Ressalva 1: lib/character/spell-prep.ts:55-57 — limite de magias conhecidas do Feiticeiro usa a tabela de data/character/spell-lists.json (2 + nível-1), não nível + CAR como manda LIVRO-DO-JOGADOR.md:1142. Fora deste diff. O que fazer: item separado.
+- Ressalva 2: lib/combat/spell-parse.ts:245 — saveDc vem de spell.save.cd. Hoje nenhum dado tem cd, então não sobrepõe. Se um dia vier com CD fixa, passa por cima do cálculo com CAR. O que fazer: registrar.
+- Ressalva 3: lib/character/sheet-skills.ts:182 — salvaguarda proficiente do Feiticeiro = INT + CAR. Não é conjuração e não conferi no livro. O que fazer: conferir separado.
+- Verificado aqui: node scripts/verify-feiticeiro-carisma.mjs = 6 ok; npx tsc --noEmit = exit 0; npm run test:pa = OK. Os testes chamam spellcastingAttribute e computeSpellSaveDc reais; pelo código, falhariam sem a correção (CD daria 9 com INT).
+- package.json: só a linha do test mudou. Não rodei o npm test completo.
+- Sem commit. Nenhum arquivo do repo editado.
+
+## BAL-D6b e D6c — revisão (Claude Code)
+Parecer: D6b APROVADO. D6c REPROVADO.
+- lib/character/spell-prep.ts:54-56 — D6b ataca a causa: o ramo Feiticeiro lia a tabela do JSON (known ?? ...) e nunca chegava à fórmula. Agora é max(2, nivel + CAR), igual a livros/LIVRO-DO-JOGADOR.md:1142 ('mín. 2') e :3498. Mínimo 2 confere.
+- scripts/verify-feiticeiro-carisma.mjs:116-133 — nv1/nv3/nv5 com CAR 15 esperam 3/5/7; o HEAD daria 2/4/6 (tabela 2 + (nv-1)), então falham sem a correção. O caso CAR 8 só guarda o mínimo e passa nos dois lados.
+- scripts/verify-feiticeiro-carisma.mjs:140-142 — D6c REPROVADO: o comentário cita livro:1135 para salvaguarda de CAR, mas o livro só diz 'Atributos Primários: Carisma'. Atributo primário não é proficiência em salvaguarda. Como sheet-skills.ts não mudou, o caso passa no HEAD também: não cobre correção nenhuma. O que fazer: tirar a afirmação de livro do comentário e do título do caso (dizer que é regra do código, não confirmada pelo livro), ou remover o caso.
+- Pendente, fora de D6c: INT como salvaguarda do Feiticeiro segue sem confirmação no livro; o verify não cobre INT.
+- Rodei: node scripts/verify-feiticeiro-carisma.mjs = 11 ok, 0 falha. Não rodei tsc nem npm test completo.
+- Reprovação de D6c resolvida (20/11/2026): caso de salvaguarda de CAR e import de isSaveTrained removidos do verify. Verify 10 ok, 0 falha; sheet-skills.ts sem mudança. D6c APROVADO.
+
+## BV-018 r2 — guardas por revisão (Lupa)
+Parecer: REPROVADO.
+- components/vtt/Battlefield.tsx:752 — a guarda de syncRoom também barra o caminho direto (ramo não deferido, linhas 790-797). Sem banco, o servidor reinicia com revision 1 (lib/room/adventure-room.ts:45 e backfill; registry.ts sem DB). O cliente segue com ~40 e descarta as respostas com force de syncRoom (Battlefield.tsx:1405, 1583, 1612, 1755) até a revisão passar de 40. No HEAD isso só acontecia no efeito da linha 1172. O que fazer: pôr a guarda só antes de pendingCombatSnapRef.current = snap (linha 757) e nos caminhos de pending (flush 1149, applyCombatSnapshot 671), ajustar o caso 2 do verify; ou registrar a limitação do modo sem banco.
+- Revisão do servidor: com banco é monotônica na prática (lib/room/internal/registry.ts:172-177; revision +1 em :92). Sem banco não é.
+- scripts/verify-bv018-flush-revisao.mjs: só casa texto e ordem de índice. Um comentário com a guarda, ou um return fora do ramo, passaria. Nit: caso 3b passa no HEAD, como esperado.
+- Verificado aqui: verify na working copy = 8 ok, exit 0; verify contra o HEAD (git show) = falha nos casos 1, 2 e 3a. npx tsc --noEmit = exit 0. useBattlefieldCombatFxQueue.ts sem alteração. Não rodei npm test completo.
+- Sem commit. Nenhum arquivo do repo editado.
+
+## BV-018 r3 — sem parecer (Lupa)
+Parecer: não emitido. Na hora da revisão, Battlefield.tsx, package.json e scripts/verify-bv018-flush-revisao.mjs não estavam mais no working tree (sem stash, sem commit). Bigorna informou que parou o pedido e avisou o Regente para desfazer.
+- Snapshot de r3 guardado no scratchpad (base.tsx, 16:15). Leitura estática: guarda no ramo deferido correta; pendência: no modo sem banco, o ramo deferido ainda descarta a resposta durante FX ou movimento até a revisão passar da antiga.
+- Verify: variante sem espaço e com chaves no caminho direto passaria, pois a regex exige ') return'. Pela leitura, não executado.
+- Lupa, revisão em 20/11/2026.
+- Lupa, revisão em 20/11/2026.
 
