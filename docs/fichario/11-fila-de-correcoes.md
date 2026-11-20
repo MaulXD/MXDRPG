@@ -45,4 +45,5 @@ Feitos fora da fila: B1 (31841ac), N-01 (3b37186), BV-002 e BV-003 loop da mesa 
 Pausados até as correções andarem: caça-bugs no site, história, balanceamento. OpenCode grátis esgotou a cota.
 
 Fechamento do loop do Regente (16:55): npm test passou (exit 0) — cadeia completa de verify-*.mjs, npm run test:um-anel e npm run sync:data:check, sem falhas. Itens parados: BV-018/019 (D-13), teste de combate do item 2 (BV-019/BV-021), N-02b API (D-14), A-09 mostradores (D-15), BV-022 catálogo (D-16).
+Fechamento (16:57): merge fast-forward concluído — fix/login-google-e-responsivo-um-anel agora em 8a90e0c (sem force, sem push, sem mexer na main). `maestri dismiss` foi bloqueado neste terminal: This terminal is not the Maestro; agentes seguem conectados. Notificação de encerramento enviada com 14 commits desde 606a259.
 
