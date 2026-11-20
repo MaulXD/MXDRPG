@@ -19,7 +19,8 @@ Só correções, uma por vez: Bigorna corrige, Lupa revisa, o maestro confere e 
 | 11 | A-10c | P2 | Limite global de 10 fichas sem guarda antes do wizard (feito, 519741f) | aprovada pela Lupa, sem commit |
 | 12 | BV-006 | P3 | Aviso de hidratação no MesaSyncIndicator (title diferente entre servidor e cliente) | diagnosticado, sem ação: NativeTitleBlockScript troca title por data-site-tip no load + 2 frames; em dev a hidratação às vezes chega depois e o React reclama. Não afeta o usuário. Conserto exigiria mudar o script do site todo. |
 
-| 13 | N-02 | P2 | Mensagem de erro com texto de mantenedor ('Rode npm run db:migrate...') chega ao usuário (lib/character/characters.ts:225) | feito, b3f055a (N-02b: 'MariaDB' em /entrar e na recuperação de senha, na fila) |
+| 13 | N-02 | P2 | Mensagem de erro com texto de mantenedor ('Rode npm run db:migrate...') chega ao usuário (lib/character/characters.ts:225) | feito, b3f055a |
+| 13b | N-02b | P3 | Texto técnico de MariaDB em /entrar, recuperação e cadastro | feito, bb8622e; API ainda aceita cadastro sem banco (D-14) |
 | 14 | BAL-D6 | P1 | Feiticeiro conjura com INT no código; o livro diz Carisma (propostas/balanceamento.md, seção 2) | feito, 4a46437 |
 | 14b | BAL-D6b | P2 | Magias conhecidas do Feiticeiro usam a tabela 2 + nível-1 (spell-prep.ts:55); o livro diz nível + CAR (LIVRO-DO-JOGADOR.md:3498) | aprovada pela Lupa, sem commit |
 | 14c | BAL-D6c | P3 | Salvaguardas proficientes do Feiticeiro = INT + CAR (sheet-skills.ts:182); conferir no livro | aprovada pela Lupa, sem commit; INT como salvaguarda segue em aberto (sem confirmação no livro) |

@@ -54,4 +54,8 @@ Causa provável: uma cena pendente mais velha é reaplicada com force em compone
 Risco: a guarda por revisão trava a mesa quando o servidor reinicia sem banco, porque a revisão volta a 1 (lib/room/adventure-room.ts:45) enquanto o cliente fica com ~40; respostas com force passam a ser descartadas. Com banco, a revisão é monotônica na prática.
 Recomendação: corrigir com o dono presente, decidindo como casar revisão e reinício sem banco. Nada foi alterado; a tentativa anterior foi desfeita.
 
+## D-14 Cadastro sem banco continua aceito pela API (N-02b)
+A tela /entrar agora esconde Criar conta quando não há contas persistentes, mas app/api/auth/register ainda aceita cadastro pelo registro local (lib/auth/user-store.ts, ramo sem dbSqlReady). A frase Novos cadastros estão indisponíveis no momento vale só para a interface.
+Opções: (a) travar a rota quando não há banco (muda autenticação, fora do escopo do Regente); (b) manter a API como está e documentar que a indisponibilidade é apenas visual. Escolha conservadora: (b) até o dono decidir. Nada foi alterado na API.
+
 

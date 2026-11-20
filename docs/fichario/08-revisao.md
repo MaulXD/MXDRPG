@@ -255,6 +255,31 @@ Parecer: não emitido. Na hora da revisão, Battlefield.tsx, package.json e scri
 - Verify: variante sem espaço e com chaves no caminho direto passaria, pois a regex exige ') return'. Pela leitura, não executado.
 - Lupa, revisão em 20/11/2026.
 
+## N-02b — textos de /entrar e recuperação (Lupa)
+Parecer: REPROVADO.
+- app/entrar/page.tsx:71 — ainda mostra ao jogador, na mesma tela de /entrar, 'Servidor sem banco — cadastro com e-mail funciona só enquanto o container estiver no ar.' (condição: !persistentAccounts e emailLogin). É o detalhe de mantenedor que N-02b devia tirar, e a frase nova de authLoginLead ('Novos cadastros estão indisponíveis no momento') contradiz esta: uma diz que cadastro está fora, a outra que funciona enquanto o container estiver no ar. O que fazer: trocar ou remover o parágrafo, deixando uma só mensagem coerente, e fazer o verify varrer app/entrar/page.tsx por banco, container e variável de ambiente.
+- scripts/verify-sem-texto-dev.mjs (bloco N-02b): a negativa só procura as duas frases antigas. Por isso não pegou o app/entrar/page.tsx:71. O que fazer: ampliar a varredura do /entrar.
+- lib/auth/password-recover.ts:49 e :54 seguem citando /conta. É rota real do jogador, então não é detalhe de mantenedor; só registrar. Já o :65 manda falar com o suporte, sem caminho de /conta. Vale confirmar que /conta não salva CPF sem banco, para justificar a diferença entre os ramos.
+- Residual da mesma classe, fora do escopo: lib/auth/session-user.ts:37 'Não foi possível criar sua conta no banco' chega ao jogador.
+- Verificado aqui: verify-sem-texto-dev.mjs = 19 ok, 0 falhas; npx tsc --noEmit = exit 0. Sem commit. Nenhum arquivo do repo editado.
+- Lupa, revisão em 20/11/2026.
+
+## N-02b r3 — aba Criar conta só com contas persistentes (Lupa)
+Parecer: APROVADO com ressalvas que não bloqueiam.
+- components/auth/AuthTabs.tsx — podeCadastrar = persistentAccounts; tabAtiva força login sem contas persistentes; o botão Criar conta e o RegisterForm ficam dentro de {podeCadastrar ? ... : null}. Ataca a causa: a aba não deve existir sem contas persistentes.
+- components/auth/RegisterForm.tsx:82-86 — aviso trocado por 'Novos cadastros estão indisponíveis no momento.' Fica sem efeito na tela, porque o formulário não é renderizado sem contas persistentes; é só salvaguarda.
+- Ressalva 1 (a decidir): app/api/auth/register continua aceitando cadastro sem banco, pelo registro local (lib/auth/user-store.ts, ramo sem dbSqlReady). A UI esconde a aba, mas a frase 'indisponíveis' vale só para a tela. O que fazer: ou travar a rota quando !persistentAccounts, ou registrar que a API continua aceitando por escolha (escopo fora desta correção).
+- Ressalva 2: o verify confere o ternário por regex e o texto por varredura; não renderiza a página. Aceitável para o padrão do projeto. Nit.
+- Verificado aqui: verify-sem-texto-dev.mjs = 30 ok, 0 falhas; npx tsc --noEmit = exit 0. Sem commit. Nenhum arquivo do repo editado.
+- Lupa, revisão em 20/11/2026.
+
+## N-02b r2 — /entrar sem detalhe de banco (Lupa)
+Parecer: REPROVADO.
+- components/auth/RegisterForm.tsx:85-87 — a aba Criar conta de /entrar (AuthTabs.tsx:39 renderiza RegisterForm sempre) mostra ao jogador, sem banco: 'O servidor está sem banco de dados: a conta criada agora pode sumir se o site reiniciar.' Em HEAD esse texto já estava ali e o r2 não tocou. Ainda expõe termo técnico e contradiz authLoginLead ('Novos cadastros estão indisponíveis'): o formulário de cadastro continua disponível na mesma tela. O verify não pega porque varre só app/entrar/page.tsx.
+- O que fazer, em uma das duas direções: (a) se cadastro fica indisponível sem banco, esconder a aba ou o formulário de RegisterForm quando !persistentAccounts; ou (b) se cadastro continua, tirar a frase de authLoginLead e trocar o aviso por algo sem 'banco de dados', ex.: 'Sua conta pode sumir se o site reiniciar.'. Em qualquer caso, incluir components/auth/AuthTabs.tsx, RegisterForm.tsx e LoginForm.tsx na varredura do /entrar.
+- Verificado aqui: verify-sem-texto-dev.mjs = 22 ok, 0 falhas; npx tsc --noEmit = exit 0 (app/entrar/page.tsx mudou). Sem commit. Nenhum arquivo do repo editado.
+- Lupa, revisão em 20/11/2026.
+
 ## BV-012 — Alcance do Agarrão do Pacto 5 para 6 células (Lupa)
 Parecer: APROVADO com ressalvas que não bloqueiam.
 - scripts/generate-compendium.mjs:594 — ataca a causa: a linha do catálogo tinha 5 e o texto diz Tentáculos 9m. Com 1 célula = 1,5 m, 9 m = 6 células. Confere com livros/LIVRO-DO-JOGADOR.md:3098 (Nv 12). Diff de uma linha só.
