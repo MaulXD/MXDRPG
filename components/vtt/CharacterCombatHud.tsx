@@ -3,6 +3,8 @@
 import type { CombatTrack } from "@/lib/room/combat";
 import { activeTokenId } from "@/lib/room/combat";
 import { resolveLivingActiveTokenId } from "@/lib/room/combat-order";
+import { useEndTurnConfirm } from "@/hooks/vtt/useEndTurnConfirm";
+import { EndTurnConfirmDialog } from "@/components/vtt/EndTurnConfirmDialog";
 import type { RoomSnapshot } from "@/lib/room/types";
 import type { BattleToken } from "@/lib/vtt/types";
 import { hpRatio, isTokenDefeated } from "@/lib/vtt/token-hp-display";
@@ -100,6 +102,14 @@ export function CharacterCombatHud({
     ? resolveLivingActiveTokenId(combat, sceneTokens ?? [token]) ?? activeTokenId(combat)
     : null;
   const isYourTurn = Boolean(activeId && token.id === activeId && isControlled);
+  const activeToken = (sceneTokens ?? [token]).find((t) => t.id === activeId);
+  const { requestEndTurn, dialog } = useEndTurnConfirm({
+    passTurn,
+    busy,
+    snapshot,
+    activeToken,
+    round: combat?.round ?? 0,
+  });
   const ratio = hpRatio(token);
   const hpPct = Math.round(ratio * 100);
   const defeated = isTokenDefeated(token);
@@ -133,13 +143,9 @@ export function CharacterCombatHud({
     onOpenMonsterSheet?.(sheetTarget.entryId);
   }
 
-  async function handleEndTurn() {
+  function handleEndTurn() {
     clearPassErr();
-    try {
-      await passTurn();
-    } catch {
-      /* err já definido no hook */
-    }
+    requestEndTurn();
   }
 
   const hudClass = [
@@ -271,6 +277,7 @@ export function CharacterCombatHud({
       </div>
 
       {err ? <p className="dice-err vtt-combat-hud__err">{err}</p> : null}
+      <EndTurnConfirmDialog {...dialog} />
     </div>
   );
 }

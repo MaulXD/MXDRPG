@@ -35,6 +35,10 @@ import { MesaFoundryDockRail } from "@/components/vtt/mesa/MesaFoundryDockRail";
 import { MesaFoundryFloatingWindows } from "@/components/vtt/mesa/MesaFoundryFloatingWindows";
 import { MesaFoundryStageHeader } from "@/components/vtt/mesa/MesaFoundryStageHeader";
 import { usePassTurn } from "@/hooks/vtt/usePassTurn";
+import { useEndTurnConfirm } from "@/hooks/vtt/useEndTurnConfirm";
+import { EndTurnConfirmDialog } from "@/components/vtt/EndTurnConfirmDialog";
+import { activeTokenId, normalizeCombatTrack } from "@/lib/room/combat";
+import { resolveLivingActiveTokenId } from "@/lib/room/combat-order";
 import { scheduleCombatDiceWarm } from "@/lib/vtt/dice-combat-box";
 import { useRoomPresence } from "@/hooks/useRoomPresence";
 import { MesaPresenceAlerts } from "@/components/vtt/MesaPresenceAlerts";
@@ -274,6 +278,19 @@ function MesaWorkspaceInner({
     snapshot,
     applyActionSnapshot
   );
+  const mobileTokens = snapshot?.scene.tokens ?? [];
+  const mobileTrack = snapshot?.combat ? normalizeCombatTrack(snapshot.combat, mobileTokens) : null;
+  const mobileActiveId = mobileTrack
+    ? resolveLivingActiveTokenId(mobileTrack, mobileTokens) ?? activeTokenId(mobileTrack)
+    : null;
+  const mobileActiveToken = mobileTokens.find((t) => t.id === mobileActiveId);
+  const { requestEndTurn: requestMobileEndTurn, dialog: mobileEndTurnDialog } = useEndTurnConfirm({
+    passTurn: passMobileTurn,
+    busy: mobileEndTurnBusy,
+    snapshot,
+    activeToken: mobileActiveToken,
+    round: mobileTrack?.round ?? 0,
+  });
 
   const windows = useFoundryWindows(roomId);
   const { close: closeWindow } = windows;
@@ -553,8 +570,8 @@ function MesaWorkspaceInner({
   );
 
   const handleMobileEndTurn = useCallback(() => {
-    void passMobileTurn();
-  }, [passMobileTurn]);
+    requestMobileEndTurn();
+  }, [requestMobileEndTurn]);
 
   const openMobilePanel = useCallback(
     (id: MesaWindowId) => {
@@ -766,6 +783,7 @@ function MesaWorkspaceInner({
             endTurnBusy={mobileEndTurnBusy}
             combatActive={roomSettings.combatActive}
           />
+          <EndTurnConfirmDialog {...mobileEndTurnDialog} />
         </div>
       </div>
     </VttToastProvider>

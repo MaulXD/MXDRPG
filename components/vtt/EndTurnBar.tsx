@@ -7,6 +7,8 @@ import type { RoomSnapshot } from "@/lib/room/types";
 import type { BattleToken } from "@/lib/vtt/types";
 import { usePassTurn } from "@/hooks/vtt/usePassTurn";
 import type { RoomApiPayload } from "@/hooks/useRoomSync";
+import { useEndTurnConfirm } from "@/hooks/vtt/useEndTurnConfirm";
+import { EndTurnConfirmDialog } from "@/components/vtt/EndTurnConfirmDialog";
 
 type Props = {
   roomId: string;
@@ -28,11 +30,18 @@ export function EndTurnBar({
   onApplySnapshot,
 }: Props) {
   const { passTurn, busy, err } = usePassTurn(roomId, snapshot, onApplySnapshot);
-
   const track = normalizeCombatTrack(combat, tokens);
   const activeId = resolveLivingActiveTokenId(track, tokens) ?? activeTokenId(track);
   const activeToken = tokens.find((t) => t.id === activeId);
   const hasOrder = track.order.length > 0;
+
+  const { requestEndTurn, dialog } = useEndTurnConfirm({
+    passTurn,
+    busy,
+    snapshot,
+    activeToken,
+    round: track.round,
+  });
 
   if (!canEndTurn || !hasOrder) return null;
 
@@ -50,10 +59,11 @@ export function EndTurnBar({
         type="button"
         className="btn vtt-end-turn-btn"
         disabled={busy}
-        onClick={() => void passTurn()}
+        onClick={requestEndTurn}
       >
         {busy ? "Passando…" : "Passar turno"}
       </button>
+      <EndTurnConfirmDialog {...dialog} />
       {isGm ? (
         <span className="vtt-end-turn-hint">Mestre · ou jogador na vez</span>
       ) : (
