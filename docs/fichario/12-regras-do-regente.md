@@ -19,6 +19,13 @@ Escrito em 20/11/2026, 16:10, pelo maestro anterior (Claude Code). Vale até as 
    - REPROVADO: mande a Bigorna corrigir o que a Lupa apontou (segunda rodada). No máximo 3 rodadas; depois disso, desfaça só os arquivos do item com `git checkout -- <arquivos>` e marque o item como "parado" na fila.
    - APROVADO: rode você mesmo `npx tsc --noEmit` e o `node scripts/verify-*.mjs` da área. Se passar, commite.
 5. Atualize a coluna Estado do item na página "11 Fila de correções" com `maestri note edit`.
+6. Pedido do dono (16:20): ao fim de CADA item (feito, parado ou virado decisão), salve as páginas do fichário no repositório e commite. Para cada par nota → arquivo abaixo, rode `maestri note read "<nota>"`, tire a primeira linha (cabeçalho "[lines ...]") e o número de linha do início de cada linha, e grave no arquivo:
+   - "03 Precisa de decisão" → `docs/fichario/03-precisa-de-decisao.md`
+   - "06 Bugs ao vivo" → `docs/fichario/06-bugs-ao-vivo.md`
+   - "07 Correções" → `docs/fichario/07-correcoes.md`
+   - "08 Revisão" → `docs/fichario/08-revisao.md`
+   - "11 Fila de correções" → `docs/fichario/11-fila-de-correcoes.md`
+   No Git Bash isso é: `maestri note read "03 Precisa de decisão" | tail -n +2 | sed -E 's/^ *[0-9]+\t//' > docs/fichario/03-precisa-de-decisao.md` (idem para as outras). Depois: `git commit -m "docs(eldarin): fichário após <ID>" -- docs/fichario`.
 
 ## Regras de commit
 
@@ -47,5 +54,6 @@ Escrito em 20/11/2026, 16:10, pelo maestro anterior (Claude Code). Vale até as 
 1. Não mande tarefa nova. Espere a Bigorna terminar o que estiver fazendo (até 10 minutos); o que não estiver aprovado, desfaça só os arquivos daquele item com `git checkout -- <arquivos>`.
 2. Rode `npm test`. Escreva o resultado (passou ou qual script falhou) na página "11 Fila de correções".
 3. Acrescente no fim de `docs/HISTORICO.md` um bloco `### 2026-11-20 (cont.) — Loop do Regente (OpenCode)` com: pedido, itens feitos com o hash de cada commit, itens parados, resultado do npm test. Copie a página 11 para `docs/fichario/11-fila-de-correcoes.md` (`maestri note read` e grave sem os números de linha). Commite os dois arquivos (`docs(eldarin): ...`).
-4. Dispense os agentes: `maestri dismiss "Bigorna"`, `maestri dismiss "Lupa"`, `maestri dismiss "Farejador"`.
-5. Mande `maestri notify "MXDRPG: loop do Regente encerrado. <N> commits. O PC desliga às 17:25."`. O desligamento já está agendado; não rode nenhum comando de desligar.
+4. Merge (pedido do dono): leve os commits para o branch de origem sem trocar de branch e só se for avanço direto (fast-forward): `git fetch . chore/fichario-correcoes-2026-11:fix/login-google-e-responsivo-um-anel`. Se o git recusar por não ser fast-forward, NÃO force: anote na página 11 que o merge ficou para o dono. Não mexa na `main` e não dê push.
+5. Dispense os agentes: `maestri dismiss "Bigorna"`, `maestri dismiss "Lupa"`, `maestri dismiss "Farejador"`.
+6. Mande `maestri notify "MXDRPG: loop do Regente encerrado. <N> commits. O PC desliga às 17:25."`. O desligamento já está agendado; não rode nenhum comando de desligar.
