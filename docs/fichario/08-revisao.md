@@ -264,6 +264,24 @@ Parecer: REPROVADO.
 - Verificado aqui: verify-sem-texto-dev.mjs = 19 ok, 0 falhas; npx tsc --noEmit = exit 0. Sem commit. Nenhum arquivo do repo editado.
 - Lupa, revisão em 20/11/2026.
 
+## A-18 r2 — robots e sitemap (Lupa)
+Parecer: APROVADO com ressalva que não bloqueia.
+- app/sitemap.ts:6 — PAGINAS_PUBLICAS = /, /compendios, /privacidade. /rpg/eldarin e /rpg/um-anel saíram, certo: redirecionam para login sem sessão (app/rpg/eldarin/page.tsx:14-15; app/rpg/um-anel/page.tsx:14-15).
+- Conferido à mão que as três são abertas: app/page.tsx, app/privacidade/page.tsx e app/compendios/page.tsx não têm redirect nem getSession. /compendios chama getSession dentro de CompendiumPage (components/compendium/CompendiumPage.tsx:25), mas sem sessão usa role null e renderiza os pacotes visíveis, sem redirecionar.
+- app/robots.ts:5-8 — allow '/' com disallow /api/, /admin, /mesa/, /conta, /aventura/, /painel e /personagem/. Bate com o pedido.
+- Ressalva (nit): scripts/verify-robots-sitemap.mjs confere a lista exata e os disallow, mas não que as três páginas do sitemap são abertas. Sugiro um teste que falhe se alguma tiver redirect(...) ou getSession com redirect. Hoje isso depende da leitura manual acima.
+- Verificado aqui: node scripts/verify-robots-sitemap.mjs = OK, exit 0; npx tsc --noEmit = exit 0. package.json e rotas intactos. Sem commit. Nenhum arquivo do repo editado.
+- Lupa, revisão em 20/11/2026.
+
+## A-18 — robots e sitemap, r1 (Lupa)
+Parecer: REPROVADO.
+- app/sitemap.ts (lista PAGINAS_PUBLICAS) — /rpg/eldarin e /rpg/um-anel não são públicas. Sem sessão, redirecionam para o login: app/rpg/eldarin/page.tsx:14-15 e app/rpg/um-anel/page.tsx:14-15 (redirect(signInPath(...)) quando getSession() é nulo). O sitemap manda indexar URLs que só levam ao login, o que contradiz 'cinco páginas públicas'. Não há redirect em /, /compendios e /privacidade. O que fazer: tirar as duas do sitemap (ficam 3) ou torná-las públicas; e o verify deve checar que cada página do sitemap não tem redirect de sessão.
+- scripts/verify-robots-sitemap.mjs — confere a existência das rotas, mas não se são públicas. Por isso não pegou o item acima.
+- app/robots.ts — allow '/' sem disallow libera /api, /admin, /mesa, /conta, /aventura, /painel e /personagem. Você já marcou como ponto para decidir. Minha recomendação: manter allow '/' e acrescentar disallow para /api/, /admin, /mesa/, /conta, /aventura/, /painel e /personagem/. Assim a intenção 'indexar o público' fica explícita e o resto fica fora. A decisão é sua.
+- Não há noindex nem 'robots:' em lib/app/components, e o middleware não bloqueia /robots.txt nem /sitemap.xml (middleware.ts:66). O canal de indexação está livre.
+- Verificado aqui: node scripts/verify-robots-sitemap.mjs = OK, exit 0; npx tsc --noEmit = exit 0. Sem commit. Nenhum arquivo do repo editado.
+- Lupa, revisão em 20/11/2026.
+
 ## A-09 — pool (bankedPa) fora do log do mestre (Lupa)
 Parecer: APROVADO com ressalva que não bloqueia.
 - components/vtt/GmCombatLogPanel.tsx:104 — tirou o ' +X pool'. Ataca a causa do que o log mostrava: o rótulo do pool legado. O gasto do turno continua.
