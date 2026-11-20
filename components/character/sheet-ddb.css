@@ -1695,7 +1695,7 @@
   border-radius: 0;
 }
 
-.sheet-shell--ddb .sheet-toolbar .btn:not(.btn-primary-cta):not(.btn--level-ready) {
+.sheet-shell--ddb .sheet-toolbar .btn:not(.btn-primary):not(.btn-primary-cta):not(.btn--level-ready) {
   color: var(--ddb-ink);
   background: linear-gradient(180deg, #f5f0e8 0%, #ebe4d8 100%);
   border-color: var(--ddb-panel-border);
@@ -1709,7 +1709,7 @@
   font-weight: 600;
 }
 
-.sheet-shell--ddb .sheet-toolbar .btn:not(.btn-primary-cta):not(.btn--level-ready):hover {
+.sheet-shell--ddb .sheet-toolbar .btn:not(.btn-primary):not(.btn-primary-cta):not(.btn--level-ready):hover {
   color: var(--ddb-ink);
   border-color: var(--ddb-gold);
   background: linear-gradient(180deg, #fff 0%, #f0ebe2 100%);
