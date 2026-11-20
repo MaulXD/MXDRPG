@@ -157,9 +157,10 @@ export function useFoundryWindows(roomId?: string) {
     setHydrated(true);
   }, [roomId]);
 
+  // A-12a: prende as janelas flutuantes na area visivel ao carregar e ao redimensionar a janela.
   useEffect(() => {
     if (!hydrated || typeof window === "undefined") return;
-    const id = window.requestAnimationFrame(() => {
+    const clampFloating = () => {
       setRegistry((prev) => {
         let changed = false;
         const next: Registry = { ...prev };
@@ -174,8 +175,13 @@ export function useFoundryWindows(roomId?: string) {
         }
         return changed ? next : prev;
       });
-    });
-    return () => window.cancelAnimationFrame(id);
+    };
+    const id = window.requestAnimationFrame(clampFloating);
+    window.addEventListener("resize", clampFloating);
+    return () => {
+      window.cancelAnimationFrame(id);
+      window.removeEventListener("resize", clampFloating);
+    };
   }, [hydrated, floating, roomId]);
 
   useEffect(() => {
@@ -215,30 +221,29 @@ export function useFoundryWindows(roomId?: string) {
     [floating]
   );
 
+  // Updaters puros (BV-004b): nada de setState aninhado dentro de outro updater.
   const openAsPopup = useCallback((id: MesaWindowId) => {
-    setFloating((floatPrev) => {
-      const wasFloating = Boolean(floatPrev[id]);
-      setRegistry((prev) => {
-        const cur = prev[id] ?? defaultEntry(id, 10);
-        if (cur.open && !cur.minimized && wasFloating) {
-          const z = maxZ(prev) + 1;
-          return { ...prev, [id]: { ...cur, z } };
-        }
-        const nextFloating: FloatingMap = { ...floatPrev, [id]: true };
-        const size = {
-          width: cur.width ?? DEFAULT_LAYOUTS[id].width,
-          height: cur.height ?? DEFAULT_LAYOUTS[id].height,
-        };
-        const pos = computePopupPosition(id, prev, nextFloating, size);
+    const wasFloating = Boolean(floating[id]);
+    setRegistry((prev) => {
+      const cur = prev[id] ?? defaultEntry(id, 10);
+      if (cur.open && !cur.minimized && wasFloating) {
         const z = maxZ(prev) + 1;
-        return {
-          ...prev,
-          [id]: { ...cur, open: true, minimized: false, z, x: pos.x, y: pos.y },
-        };
-      });
-      return { ...floatPrev, [id]: true };
+        return { ...prev, [id]: { ...cur, z } };
+      }
+      const nextFloating: FloatingMap = { ...floating, [id]: true };
+      const size = {
+        width: cur.width ?? DEFAULT_LAYOUTS[id].width,
+        height: cur.height ?? DEFAULT_LAYOUTS[id].height,
+      };
+      const pos = computePopupPosition(id, prev, nextFloating, size);
+      const z = maxZ(prev) + 1;
+      return {
+        ...prev,
+        [id]: { ...cur, open: true, minimized: false, z, x: pos.x, y: pos.y },
+      };
     });
-  }, []);
+    setFloating((floatPrev) => ({ ...floatPrev, [id]: true }));
+  }, [floating]);
 
   /** Clique direito: abre na barra lateral; se já estiver na barra, fecha. */
   const openInDock = useCallback((id: MesaWindowId) => {
@@ -291,27 +296,25 @@ export function useFoundryWindows(roomId?: string) {
     });
   }, []);
 
+  // Updater puro (BV-004b): le `floating` do escopo, sem setState aninhado.
   const restore = useCallback((id: MesaWindowId) => {
-    setFloating((floatPrev) => {
-      setRegistry((prev) => {
-        const cur = prev[id] ?? defaultEntry(id, 10);
-        const z = maxZ(prev) + 1;
-        if (floatPrev[id]) {
-          const size = {
-            width: cur.width ?? DEFAULT_LAYOUTS[id].width,
-            height: cur.height ?? DEFAULT_LAYOUTS[id].height,
-          };
-          const pos = computePopupPosition(id, prev, floatPrev, size);
-          return {
-            ...prev,
-            [id]: { ...cur, minimized: false, open: true, z, x: pos.x, y: pos.y },
-          };
-        }
-        return { ...prev, [id]: { ...cur, minimized: false, open: true, z } };
-      });
-      return floatPrev;
+    setRegistry((prev) => {
+      const cur = prev[id] ?? defaultEntry(id, 10);
+      const z = maxZ(prev) + 1;
+      if (floating[id]) {
+        const size = {
+          width: cur.width ?? DEFAULT_LAYOUTS[id].width,
+          height: cur.height ?? DEFAULT_LAYOUTS[id].height,
+        };
+        const pos = computePopupPosition(id, prev, floating, size);
+        return {
+          ...prev,
+          [id]: { ...cur, minimized: false, open: true, z, x: pos.x, y: pos.y },
+        };
+      }
+      return { ...prev, [id]: { ...cur, minimized: false, open: true, z } };
     });
-  }, []);
+  }, [floating]);
 
   const focus = useCallback((id: MesaWindowId) => {
     setRegistry((prev) => {
