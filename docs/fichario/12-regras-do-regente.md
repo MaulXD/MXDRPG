@@ -33,6 +33,10 @@ Escrito em 20/11/2026, 16:10, pelo maestro anterior (Claude Code). Vale até as 
 - Mensagem em português, no padrão do repositório: `fix(eldarin): <o que o usuário percebe> (<ID>)`, uma linha em branco, 2 a 5 linhas explicando a causa e a correção, e por fim a linha `Co-Authored-By: Claude Haiku 5.5 <noreply@anthropic.com>` (a correção foi escrita pela Bigorna).
 - Nunca commite arquivo de `.maestri/`, `.env*`, `data/compendiums/*.json` nem `livros/`.
 
+## Dúvidas
+
+Não pare o loop esperando resposta: ninguém vai responder. Na dúvida, escolha a opção mais conservadora (não commitar, desfazer só os arquivos do item, registrar na página 03) e siga para o próximo item. Exceção já respondida: dado gerado por `npm run sync:data` pode ser commitado junto com o gerador, desde que o diff só tenha a mudança do item e `npm run sync:data:check` passe.
+
 ## O que nunca fazer
 
 - Não edite código você mesmo. Não rode `npm run build` nem reinicie o servidor (quebra o site local). Não rode `npm install`.
