@@ -73,4 +73,4 @@ npm run smoke:a1
 
 ## Próximo gate
 
-**A2** — Clerk + nickname ([P1-CLERK-SETUP.md](./P1-CLERK-SETUP.md))
+**A2** — Clerk + nickname

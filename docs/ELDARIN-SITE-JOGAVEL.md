@@ -362,7 +362,6 @@ Marque quando **todos** forem verdade:
 | [VTT-ACOES-PA-AREAS.md](./VTT-ACOES-PA-AREAS.md) | PA, movimento, áreas na mesa |
 | [BETA-P9-CHECKLIST.md](./BETA-P9-CHECKLIST.md) | Formulário sessão beta (P9) |
 | [ESTRUTURA-PROJETOS.md](../ESTRUTURA-PROJETOS.md) | Pastas |
-| [REFATORACAO.md](../REFATORACAO.md) | Passos técnicos |
 | [API-SALA.md](./API-SALA.md) | Endpoints |
 | [PARIDADE-FOUNDRY.md](./PARIDADE-FOUNDRY.md) | Checklist features |
 | [LIVRO-DO-JOGADOR.md](../livros/LIVRO-DO-JOGADOR.md) | Regras PA |

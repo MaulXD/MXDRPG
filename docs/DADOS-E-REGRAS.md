@@ -53,4 +53,4 @@ import { CLASS_CANON_ID, RACE_CANON_ID, LINHAGEM_CANON_ID } from "@/lib/characte
 ## O que não gerar aqui
 
 - Comportamento de combate → `lib/combat/`, `lib/room/handlers/`
-- Estado de sala → memória (`lib/room/`); DB no Passo 5 do [REFATORACAO.md](../REFATORACAO.md)
+- Estado de sala → memória (`lib/room/`); DB no Passo 5 do REFATORACAO.md

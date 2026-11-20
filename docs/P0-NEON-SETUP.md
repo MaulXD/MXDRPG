@@ -43,7 +43,7 @@ npm run smoke:p0
 |----------|------------|
 | `DATABASE_URL` | Neon → pooled connection string |
 | `SESSION_SECRET` | string aleatória 32+ chars |
-| Clerk (P1) | [P1-CLERK-SETUP.md](./P1-CLERK-SETUP.md) |
+| Clerk (P1) | |
 
 Passos:
 

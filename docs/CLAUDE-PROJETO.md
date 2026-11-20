@@ -71,7 +71,7 @@ npm run test             # PA, movimento, célula path
 | Variável | Efeito |
 |----------|--------|
 | `DATABASE_URL` | Postgres: salas, usuários, personagens, aventuras |
-| Clerk (`NEXT_PUBLIC_CLERK_*`, `CLERK_SECRET_KEY`) | Login social; ver `docs/P1-CLERK-SETUP.md` |
+| Clerk (`NEXT_PUBLIC_CLERK_*`, `CLERK_SECRET_KEY`) | Login social |
 | Sem DB | Memória + seeds; perde estado no cold start serverless |
 
 Saúde: `GET /api/health` → `{ ok, db, persistence }`.
@@ -395,7 +395,7 @@ npm run sync:data:check   # se mexeu em livros/scripts
 | Convite / aventura | `lib/adventure/`, `components/adventure/AdventureLobby.tsx`, APIs adventures |
 | Settings mesa (HP monstro, ping) | `lib/room/settings.ts`, `handlers/settings.ts`, página configurar |
 | Novo monstro/magia no jogo | `livros/` → `sync:data` |
-| Auth Clerk | `lib/auth/clerk-*.ts`, `middleware.ts`, `docs/P1-CLERK-SETUP.md` |
+| Auth Clerk | `lib/auth/clerk-*.ts`, `middleware.ts` |
 | Retrato / token | `lib/media/`, `PortraitEditorPanel.tsx`, `image-upload-client.ts` |
 | Fog of war | `lib/vtt/fog-of-war.ts`, scene tokens |
 
@@ -407,7 +407,6 @@ npm run sync:data:check   # se mexeu em livros/scripts
 |-----------|----------|
 | [README.md](../README.md) | Quick start, deploy |
 | [PRODUTO.md](../PRODUTO.md) | Visão produto |
-| [REFATORACAO.md](../REFATORACAO.md) | Plano de passos (0–9) |
 | [ESTRUTURA-PROJETOS.md](../ESTRUTURA-PROJETOS.md) | Árvore resumida |
 | [docs/PRD-ELDARIN-VTT.md](./PRD-ELDARIN-VTT.md) | PRD v2.2 completo |
 | [docs/DADOS-E-REGRAS.md](./DADOS-E-REGRAS.md) | Pipeline livros → JSON |
@@ -418,7 +417,6 @@ npm run sync:data:check   # se mexeu em livros/scripts
 | [docs/UX-MESA-E-RAIL.md](./UX-MESA-E-RAIL.md) | UX mesa e compêndio |
 | [docs/PARIDADE-FOUNDRY.md](./PARIDADE-FOUNDRY.md) | Checklist vs Foundry |
 | [docs/P4-WIZARD.md](./P4-WIZARD.md) | Wizard personagem |
-| [docs/P1-CLERK-SETUP.md](./P1-CLERK-SETUP.md) | Clerk |
 | [docs/P9-READY.md](./P9-READY.md) | Checklist pré-beta |
 | [FICHA_PERSONAGEM_ELDARIN_v4.md](../FICHA_PERSONAGEM_ELDARIN_v4.md) | Modelo de ficha |
 | [livros/LIVRO-DO-JOGADOR.md](../livros/LIVRO-DO-JOGADOR.md) | Regras jogador |
