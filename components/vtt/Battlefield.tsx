@@ -184,6 +184,8 @@ type Props = {
   /** Abre ficha de monstro do compêndio em janela flutuante. */
   onOpenMonsterSheet?: (entryId: string) => void;
   onHoverAxialChange?: (axial: Axial | null) => void;
+  /** Janela Invocar aberta (BV-008): acompanha a célula sob o mouse sem precisar arrastar. */
+  spawnPanelOpen?: boolean;
   onOpenDungeonPanel?: () => void;
   showSpawnInSidebar?: boolean;
   session?: import("@/lib/auth/types").SessionUser | null;
@@ -252,6 +254,7 @@ export function Battlefield({
   onOpenMonsterSheet,
   onCreateCharacter,
   onHoverAxialChange,
+  spawnPanelOpen = false,
   onOpenDungeonPanel,
   showSpawnInSidebar = true,
   session = null,
@@ -954,7 +957,7 @@ export function Battlefield({
       Boolean(
         highlights.showMovement ||
           highlights.isAreaSpellMode ||
-          (spawnDragActive && (battlefieldGm || canEdit)) ||
+          ((spawnDragActive || spawnPanelOpen) && (battlefieldGm || canEdit)) ||
           dungeonMapEditing ||
           mapToolMode === "measure" ||
           gmDragTokenId
@@ -963,6 +966,7 @@ export function Battlefield({
       highlights.showMovement,
       highlights.isAreaSpellMode,
       spawnDragActive,
+      spawnPanelOpen,
       canControlCombat,
       canEdit,
       dungeonMapEditing,

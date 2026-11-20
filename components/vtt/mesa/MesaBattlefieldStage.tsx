@@ -48,6 +48,8 @@ export type MesaBattlefieldStageProps = {
   onOpenMonsterSheet: (entryId: string) => void;
   onCreateCharacter?: () => void;
   onHoverAxialChange: (axial: Axial | null) => void;
+  /** Janela Invocar aberta: o mapa acompanha a célula sob o mouse para o botão Colocar na mesa. */
+  spawnPanelOpen?: boolean;
   onOpenDungeonPanel: () => void;
   onCombatChatReveal: (messageIds: string[], phase: "roll" | "damage" | "done") => void;
   gmWindowLayout: FoundryWindowLayout;
@@ -118,6 +120,7 @@ function MesaBattlefieldStageInner(props: MesaBattlefieldStageProps) {
       onOpenMonsterSheet={props.onOpenMonsterSheet}
       onCreateCharacter={props.onCreateCharacter}
       onHoverAxialChange={props.onHoverAxialChange}
+      spawnPanelOpen={props.spawnPanelOpen}
       onOpenDungeonPanel={props.onOpenDungeonPanel}
       showSpawnInSidebar={false}
       foundryLayout

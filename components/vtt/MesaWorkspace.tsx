@@ -696,6 +696,7 @@ function MesaWorkspaceInner({
               onOpenMonsterSheet={openMonsterSheet}
               onCreateCharacter={canCreateCharacter ? openCharacterWizard : undefined}
               onHoverAxialChange={setSpawnAxial}
+              spawnPanelOpen={windows.isActive("spawn")}
               onOpenDungeonPanel={openDungeonPanel}
               onCombatChatReveal={onCombatChatReveal}
               gmWindowLayout={win("gm")}
