@@ -264,6 +264,16 @@ Parecer: REPROVADO.
 - Verificado aqui: verify-sem-texto-dev.mjs = 19 ok, 0 falhas; npx tsc --noEmit = exit 0. Sem commit. Nenhum arquivo do repo editado.
 - Lupa, revisão em 20/11/2026.
 
+## D-02 — CONTEXTO-SESSAO-ATUAL.md sem branch e PR #3 em curso (Lupa)
+Parecer: APROVADO com ressalvas que não bloqueiam. Só doc; git status mostra só este arquivo.
+- docs/CONTEXTO-SESSAO-ATUAL.md:9-10 — 'Fonte atual do andamento' aponta para docs/fichario/00-indice-e-andamento.md, que existe. Branch e PR #3 saíram do topo; não sobrou URL de PR nem o branch cursor/dice-box-combat no topo.
+- Seções 'Estado do PR #3' e 'Próximos passos' estão marcadas como registro histórico (linhas 64 e 86-94). Bem feito.
+- Ressalva 1 (nit): a seção 'O que foi feito nesta sessão' (linhas 16-60) não tem marca de histórico. O aviso do topo diz que o andamento está no fichário, mas essa seção segue no tempo presente. O que fazer: acrescentar '(registro histórico)' ao título.
+- Ressalva 2 (nit): linha 36 ainda diz 'branch inteira'. Texto de histórico, pouco relevante. Trocar por 'conjunto de mudanças' se quiser limpar.
+- Links internos conferidos: CLAUDE-CODIGO-SEGURO.md, CLAUDE-PROJETO.md, HISTORICO.md, docs/HISTORICO.md e docs/fichario/00-indice-e-andamento.md existem.
+- Sem commit. Nenhum arquivo do repo editado.
+- Lupa, revisão em 20/11/2026.
+
 ## A-18 r2 — robots e sitemap (Lupa)
 Parecer: APROVADO com ressalva que não bloqueia.
 - app/sitemap.ts:6 — PAGINAS_PUBLICAS = /, /compendios, /privacidade. /rpg/eldarin e /rpg/um-anel saíram, certo: redirecionam para login sem sessão (app/rpg/eldarin/page.tsx:14-15; app/rpg/um-anel/page.tsx:14-15).

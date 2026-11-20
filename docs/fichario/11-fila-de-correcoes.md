@@ -27,7 +27,7 @@ Só correções, uma por vez: Bigorna corrige, Lupa revisa, o maestro confere e 
 | 15 | BAL-D1..D5 | P2 | Proficiência de arma: sem bônus para Guerreiro, Ladino e Mago; Clérigo com Maça de Guerra que o livro não dá | na fila |
 | 16 | A-09 | P3 | bankedPa sempre 0 e aparece em três telas | parcial, 803919d (só o log do mestre); mostradores compactos dependem do cálculo (D-15) |
 | 17 | A-18 | P3 | Sem robots nem sitemap; doc de cores diverge do código | feito, 4f04e3b (só as três páginas públicas; ressalva: verify não prova que abrem sem login) |
-| 18 | D-02 | P3 | CONTEXTO-SESSAO-ATUAL.md aponta branch e PR antigos | na fila |
+| 18 | D-02 | P3 | CONTEXTO-SESSAO-ATUAL.md aponta branch e PR antigos | feito, 3c1b16c |
 | 18b | BV-008 | P2 | Botão 'Colocar na mesa' do Invocar nunca habilita: a célula alvo só é registrada durante o arraste (trackGridHover em Battlefield.tsx:952 exige spawnDragActive), então o botão depende de um hover que não acontece. Arrastar continua funcionando com mouse de verdade. | feito (ver git log, BV-008) |
 | 20 | BV-014 | P2 | Ficha fora da mesa mostra PA 9/5 (atual acima do máximo); na mesa 9/9 | aprovada pela Lupa, sem commit |
 | 21 | BV-010 | P2 | Chips das Adagas +1/+2/+3 mostram 1d4 sem o +N de dano | decisão D-11 (página 03); Lupa reprovou como correção, aguarda escolha do dono
