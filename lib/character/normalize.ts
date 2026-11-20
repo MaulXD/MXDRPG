@@ -117,6 +117,7 @@ export function normalizeCharacter(sheet: CharacterSheet): CharacterSheet {
       vida: {
         max: hpMax,
         value: Math.min(sheet.resources?.vida?.value ?? hpMax, hpMax),
+        ...(sheet.resources?.vida?.temp !== undefined ? { temp: sheet.resources.vida.temp } : {}),
       },
       pontosAcao: {
         max: paMax,
