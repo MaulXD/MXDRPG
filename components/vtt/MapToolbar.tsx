@@ -51,9 +51,9 @@ type ToolBtn = {
 
 const MAP_TOOLS: ToolBtn[] = [
   { id: "token", label: "Interagir", title: "Selecionar tokens e jogar (padrão)", section: "map" },
-  { id: "ping", label: "Ping", title: "Clique no mapa para marcar posição para o grupo", section: "map" },
+  { id: "ping", label: "Ping", title: "Clique no mapa para marcar posição para o grupo. Alt+clique marca em célula vazia, fora de uma ação em andamento e exceto com Régua ou Névoa", section: "map" },
   { id: "measure", label: "Régua", title: "Arraste no mapa para medir distância em células e metros", section: "map" },
-  { id: "fog", label: "Névoa", title: "Clique para revelar célula (mestre)", section: "map" },
+  { id: "fog", label: "Névoa", title: "Clique para revelar célula (mestre). Com a névoa ligada, Ctrl+clique revela em célula vazia, exceto com Ping ou Régua", section: "map" },
 ];
 
 const DRAW_TOOLS: ToolBtn[] = [
@@ -61,7 +61,7 @@ const DRAW_TOOLS: ToolBtn[] = [
   { id: "pen", label: "Livre", title: "Traço livre", section: "draw" },
   { id: "line", label: "Linha", title: "Segmento reto", section: "draw" },
   { id: "arrow", label: "Seta", title: "Seta indicativa", section: "draw" },
-  { id: "shape", label: "Retângulo", title: "Arraste retângulo", section: "draw" },
+  { id: "shape", label: "Retângulo", title: "Arraste retângulo. Segure Alt para desenhar círculo", section: "draw" },
   { id: "circle", label: "Círculo", title: "Arraste círculo", section: "draw" },
   { id: "text", label: "Texto", title: "Clique para rotular", section: "draw" },
 ];
