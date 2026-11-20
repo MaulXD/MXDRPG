@@ -242,29 +242,30 @@ export function useFoundryWindows(roomId?: string) {
 
   /** Clique direito: abre na barra lateral; se já estiver na barra, fecha. */
   const openInDock = useCallback((id: MesaWindowId) => {
-    setFloating((floatPrev) => {
-      const wasFloating = Boolean(floatPrev[id]);
-      setRegistry((prev) => {
-        const cur = prev[id] ?? defaultEntry(id, 10);
-        if (cur.open && !cur.minimized && !wasFloating) {
-          return { ...prev, [id]: { ...cur, open: false, minimized: false } };
+    // Os updaters abaixo precisam ser puros: o React pode executar um updater
+    // mais de uma vez (StrictMode). Antes, um setRegistry aninhado dentro do
+    // setFloating fazia o toggle rodar duas vezes e o painel nao abria (BV-004).
+    const wasFloating = Boolean(floating[id]);
+    setRegistry((prev) => {
+      const cur = prev[id] ?? defaultEntry(id, 10);
+      if (cur.open && !cur.minimized && !wasFloating) {
+        return { ...prev, [id]: { ...cur, open: false, minimized: false } };
+      }
+      const next: Registry = { ...prev };
+      if (FOUNDRY_DOCK_PANEL_IDS.includes(id)) {
+        for (const dockId of FOUNDRY_DOCK_PANEL_IDS) {
+          if (dockId === id) continue;
+          if (floating[dockId]) continue;
+          const other = next[dockId] ?? defaultEntry(dockId, 10);
+          next[dockId] = { ...other, open: false, minimized: false };
         }
-        const next: Registry = { ...prev };
-        if (FOUNDRY_DOCK_PANEL_IDS.includes(id)) {
-          for (const dockId of FOUNDRY_DOCK_PANEL_IDS) {
-            if (dockId === id) continue;
-            if (floatPrev[dockId]) continue;
-            const other = next[dockId] ?? defaultEntry(dockId, 10);
-            next[dockId] = { ...other, open: false, minimized: false };
-          }
-        }
-        const z = maxZ(prev) + 1;
-        next[id] = { ...cur, open: true, minimized: false, z };
-        return next;
-      });
-      return { ...floatPrev, [id]: false };
+      }
+      const z = maxZ(prev) + 1;
+      next[id] = { ...cur, open: true, minimized: false, z };
+      return next;
     });
-  }, []);
+    setFloating((floatPrev) => ({ ...floatPrev, [id]: false }));
+  }, [floating]);
 
   const toggle = openInDock;
 
