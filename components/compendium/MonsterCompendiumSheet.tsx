@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { CompendiumIcon } from "@/components/compendium/CompendiumIcon";
-import { entryBookRef } from "@/lib/compendium/format";
+import { entryBookRef, sanitizeCompendiumHtml } from "@/lib/compendium/format";
 import { compendiumTypeColor } from "@/lib/compendium/icons";
 import { getEntry } from "@/lib/compendium/registry";
 import { formatCombatActionTooltipLines } from "@/lib/combat/action-tooltip";
@@ -86,7 +86,9 @@ export function MonsterCompendiumSheet({ entryId, onClose, variant = "dialog" }:
   const { catalogId, bookRef } = entryBookRef(entry.system);
   const biomes = resolveMonsterBiomes(template);
   const color = compendiumTypeColor(entry.type);
-  const descriptionHtml = String(entry.system.description ?? template.description ?? "");
+  const descriptionHtml = sanitizeCompendiumHtml(
+    String(entry.system.description ?? template.description ?? "")
+  );
   const baseXp = xpRewards[0]?.poolXp ?? 0;
 
   return (

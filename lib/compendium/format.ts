@@ -2,6 +2,27 @@ export function stripHtml(html: string): string {
   return html.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
 }
 
+/** Tags que a descrição do compêndio pode usar. Qualquer outra tag some; atributos somem sempre. */
+const COMPENDIUM_HTML_TAGS = new Set([
+  "p", "strong", "em", "ul", "ol", "li", "br", "h3", "h4",
+  "table", "thead", "tbody", "tr", "th", "td", "code",
+]);
+
+/**
+ * A-22: sanitiza a descrição antes de dangerouslySetInnerHTML.
+ * Remove blocos perigosos com conteúdo, mantém só a lista branca de tags sem atributos
+ * e escapa qualquer "<" que não forme uma tag completa.
+ */
+export function sanitizeCompendiumHtml(html: string): string {
+  return html
+    .replace(/<(script|style|iframe|object|embed|svg|math|noscript|template)\b[\s\S]*?<\/\1\s*>/gi, "")
+    .replace(/<(\/?)([a-zA-Z][a-zA-Z0-9]*)(?:\s[^<>]*)?\/?>|</g, (_token, slash: string | undefined, name: string | undefined) => {
+      if (name === undefined) return "&lt;";
+      const tag = name.toLowerCase();
+      return COMPENDIUM_HTML_TAGS.has(tag) ? `<${slash ?? ""}${tag}>` : "";
+    });
+}
+
 export type EntryBookRef = {
   catalogId?: string;
   bookRef?: string;

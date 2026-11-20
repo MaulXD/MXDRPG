@@ -7,7 +7,7 @@ import type { UserRole } from "@/lib/auth/types";
 import type { CompendiumEntry, CompendiumPackId, CompendiumPackMeta } from "@/lib/compendium/types";
 import { CompendiumIcon } from "@/components/compendium/CompendiumIcon";
 import { OrnamentCard } from "@/components/ui/OrnamentCard";
-import { entryBookRef, entrySummary, stripHtml } from "@/lib/compendium/format";
+import { entryBookRef, entrySummary, sanitizeCompendiumHtml, stripHtml } from "@/lib/compendium/format";
 import { compendiumTypeColor } from "@/lib/compendium/icons";
 import { MonsterSheetDialog } from "@/components/compendium/MonsterSheetDialog";
 import "./compendium.css";
@@ -286,7 +286,7 @@ function CompendiumDetail({
   onOpenMonsterSheet?: (entryId: string) => void;
 }) {
   const tags = entrySummary(entry.system, entry.type);
-  const html = String(entry.system.description ?? "");
+  const html = sanitizeCompendiumHtml(String(entry.system.description ?? ""));
   const { catalogId, bookRef } = entryBookRef(entry.system);
 
   const color = compendiumTypeColor(entry.type);
