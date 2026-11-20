@@ -240,5 +240,84 @@ ok(
   infratoresServidor.join(" · ")
 );
 
+/* ── N-02b: /entrar e recuperação de senha falam com o jogador ─────────── */
+
+const FRASES_ANTIGAS = ["exigem MariaDB no servidor", "requer banco MariaDB em produção"];
+const FRASE_ENTRAR = "E-mail e senha. Novos cadastros estão indisponíveis no momento.";
+const FRASE_RECUPERAR = "Esta conta ainda não tem recuperação de senha. Fale com o suporte para ativá-la.";
+
+const AUTH_CAP = readFileSync(root("lib", "auth", "auth-capabilities.ts"), "utf8");
+const RECOVER = readFileSync(root("lib", "auth", "password-recover.ts"), "utf8");
+
+ok("/entrar mostra a frase nova para jogador", AUTH_CAP.includes(FRASE_ENTRAR));
+ok("recuperação de senha mostra a frase nova para jogador", RECOVER.includes(FRASE_RECUPERAR));
+ok(
+  "as duas frases novas não citam banco, comando nem variável",
+  ![FRASE_ENTRAR, FRASE_RECUPERAR].some((f) => /MariaDB|banco|npm run|DATABASE_URL|\.env/.test(f))
+);
+
+/* N-02b r2: /entrar não pode voltar a dizer "servidor sem banco" nem contradizer a frase de authLoginLead. */
+const PAGINA_ENTRAR = readFileSync(root("app", "entrar", "page.tsx"), "utf8");
+const TELA_ENTRAR = textoDeTela(PAGINA_ENTRAR);
+ok(
+  "app/entrar/page.tsx sem termo técnico (banco, container, MariaDB) no texto de tela",
+  !/sem banco|container|MariaDB|banco/i.test(TELA_ENTRAR),
+  TELA_ENTRAR.slice(0, 120)
+);
+ok(
+  "app/entrar/page.tsx não contradiz 'Novos cadastros estão indisponíveis' com 'cadastro com e-mail funciona'",
+  !/cadastro com e-mail funciona/i.test(PAGINA_ENTRAR)
+);
+ok(
+  "app/entrar/page.tsx continua usando authLoginLead (frase de cadastro única)",
+  PAGINA_ENTRAR.includes("authLoginLead(auth)")
+);
+
+/* N-02b r3: a aba Criar conta e o formulário de cadastro não podem falar de banco nem contradizer
+   "Novos cadastros estão indisponíveis". A aba fica atrás de podeCadastrar (sem contas persistentes, some). */
+const TELAS_AUTH = ["components/auth/AuthTabs.tsx", "components/auth/RegisterForm.tsx", "components/auth/LoginForm.tsx"];
+for (const alvo of TELAS_AUTH) {
+  const src = readFileSync(root(...alvo.split("/")), "utf8");
+  const tela = textoDeTela(src);
+  ok(
+    `${alvo} sem termo técnico (banco de dados, MariaDB, container, servidor)`,
+    !/banco de dados|sem banco|MariaDB|container|servidor está|servidor esta/i.test(tela),
+    tela.slice(0, 120)
+  );
+  ok(
+    `${alvo} não contradiz 'Novos cadastros estão indisponíveis'`,
+    !/cadastro com e-mail funciona|pode sumir se o site reiniciar/i.test(src)
+  );
+}
+const AUTH_TABS = readFileSync(root("components", "auth", "AuthTabs.tsx"), "utf8");
+const inicioCondicao = AUTH_TABS.indexOf("{podeCadastrar ? (");
+const fimCondicao = AUTH_TABS.indexOf(") : null}", inicioCondicao);
+const posCriar = AUTH_TABS.indexOf("Criar conta", inicioCondicao);
+ok(
+  "AuthTabs: a aba Criar conta só aparece com podeCadastrar (sem contas persistentes, some)",
+  inicioCondicao >= 0 && posCriar > inicioCondicao && posCriar < fimCondicao,
+  "a aba precisa estar dentro de {podeCadastrar ? ( ... ) : null}"
+);
+ok(
+  "AuthTabs: sem cadastro, o formulário de cadastro não é renderizado",
+  /tabAtiva === "login"\s*\?\s*\(\s*<LoginForm/.test(AUTH_TABS)
+);
+
+/* Negativa: as frases antigas não podem estar em nenhum arquivo de tela ou de servidor. */
+const CODIGO_AUTH = [
+  ...varrer(root("app"), [], /\.tsx?$/),
+  ...varrer(root("components"), [], /\.tsx?$/),
+  ...varrer(root("lib"), [], /\.tsx?$/),
+];
+const antigasAindaAqui = CODIGO_AUTH.filter((c) => {
+  const src = readFileSync(c, "utf8");
+  return FRASES_ANTIGAS.some((f) => src.includes(f));
+}).map(rel);
+ok(
+  "as frases antigas de /entrar e recuperação sumiram do código",
+  antigasAindaAqui.length === 0,
+  antigasAindaAqui.join(" · ")
+);
+
 console.log(`\nverify-sem-texto-dev: ${pass} ok, ${fail} falhas`);
 if (fail > 0) process.exit(1);

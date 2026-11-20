@@ -79,12 +79,11 @@ export function RegisterForm({ redirect = "", persistentAccounts = true }: Props
 
   return (
     <form className="auth-form" onSubmit={submit} autoComplete="on">
-      {/* O aviso abaixo FICA — quem cria conta precisa saber que ela pode sumir.
-          O que saiu foi a instrução de configurar a variável de ambiente: quem lê
-          esta tela é quem está se cadastrando, não quem opera o servidor. */}
+      {/* Sem contas persistentes o AuthTabs nem mostra esta aba; o aviso e so
+          uma salvaguarda, em linguagem de jogador. */}
       {!persistentAccounts ? (
         <p className="auth-form__intro" role="status">
-          O servidor está sem banco de dados: a conta criada agora pode sumir se o site reiniciar.
+          Novos cadastros estão indisponíveis no momento.
         </p>
       ) : null}
       <p className="auth-form__intro">

@@ -63,14 +63,6 @@ export default async function EntrarPage({ searchParams }: Props) {
             {successMsg}
           </p>
         ) : null}
-        {!auth.persistentAccounts && auth.emailLogin ? (
-          <p
-            className="auth-form__intro"
-            style={{ marginTop: 0, marginBottom: "1rem", color: "var(--text-muted)" }}
-          >
-            Servidor sem banco — cadastro com e-mail funciona só enquanto o container estiver no ar.
-          </p>
-        ) : null}
         <AuthTabs
           redirect={afterAuth}
           initialTab={initialTab}

@@ -62,7 +62,7 @@ export async function checkPasswordRecovery(email: string): Promise<RecoveryChec
   if (!local.cpfPrefixHash || !local.birthDate) {
     return {
       canRecover: false,
-      hint: "Cadastre recuperação em /conta (requer banco MariaDB em produção).",
+      hint: "Esta conta ainda não tem recuperação de senha. Fale com o suporte para ativá-la.",
     };
   }
   return {

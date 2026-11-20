@@ -21,30 +21,35 @@ export function AuthTabs({
   persistentAccounts = true,
 }: Props) {
   const [tab, setTab] = useState<"login" | "register">(initialTab);
+  // Sem contas persistentes, nao ha cadastro: a aba Criar conta some e fica so Entrar.
+  const podeCadastrar = persistentAccounts;
+  const tabAtiva = podeCadastrar ? tab : "login";
 
   return (
     <div>
       <div className="auth-tabs">
         <button
           type="button"
-          className={`auth-tabs__btn ${tab === "login" ? "btn" : "btn btn-secondary"}`}
+          className={`auth-tabs__btn ${tabAtiva === "login" ? "btn" : "btn btn-secondary"}`}
           onClick={() => setTab("login")}
         >
           Entrar
         </button>
-        <button
-          type="button"
-          className={`auth-tabs__btn ${tab === "register" ? "btn" : "btn btn-secondary"}`}
-          onClick={() => setTab("register")}
-        >
-          Criar conta
-        </button>
+        {podeCadastrar ? (
+          <button
+            type="button"
+            className={`auth-tabs__btn ${tabAtiva === "register" ? "btn" : "btn btn-secondary"}`}
+            onClick={() => setTab("register")}
+          >
+            Criar conta
+          </button>
+        ) : null}
       </div>
       {oauthProviders.length > 0 ? (
         <OAuthSignInButtons
           redirect={redirect}
           providers={oauthProviders}
-          mode={tab === "register" ? "register" : "login"}
+          mode={tabAtiva === "register" ? "register" : "login"}
         />
       ) : null}
       {oauthProviders.length > 0 ? (
@@ -52,7 +57,7 @@ export function AuthTabs({
           ou
         </p>
       ) : null}
-      {tab === "login" ? (
+      {tabAtiva === "login" ? (
         <LoginForm redirect={redirect} />
       ) : (
         <RegisterForm redirect={redirect} persistentAccounts={persistentAccounts} />
