@@ -2,7 +2,8 @@ import { redirect } from "next/navigation";
 import type { Metadata } from "next";
 import { CompendiumPage, isCompendiumPackId } from "@/components/compendium/CompendiumPage";
 import { RpgSystemContentTabs } from "@/components/rpg/RpgSystemContentTabs";
-import { getCompendiumPackLabel } from "@/lib/compendium/registry";
+import { getCompendiumPackLabel, getVisiblePacks } from "@/lib/compendium/registry";
+import { getSession } from "@/lib/auth/session";
 import { normalizeRpgSystemId } from "@/lib/rpg/systems";
 import { pageMetadata } from "@/lib/site-metadata";
 
@@ -20,6 +21,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function CompendiosPackPage({ params, searchParams }: Props) {
   const { packId } = await params;
   if (!isCompendiumPackId(packId)) {
+    redirect("/compendios");
+  }
+  // BV-013: pack fora do alcance desta conta (o bestiário é só do mestre, dentro da
+  // mesa) caía em Armas sem aviso, com o título do pack errado. Volta para o índice.
+  const session = await getSession();
+  if (!getVisiblePacks(session?.user.role ?? null).some((p) => p.id === packId)) {
     redirect("/compendios");
   }
 
