@@ -5,7 +5,7 @@ import type { RoomSyncStatus } from "@/hooks/useRoomSync";
 const EMPTY_CHAT: ChatMessage[] = [];
 const EMPTY_ACTORS: RoomSnapshot["actors"] = Object.freeze({}) as RoomSnapshot["actors"];
 
-export type MesaRoomSlice ="chat" | "map" | "combat" | "actors" | "settings" | "meta";
+export type MesaRoomSlice = "chat" | "map" | "combat" | "actors" | "settings" | "meta";
 
 export type MesaMapSlice = {
   revision: number;
