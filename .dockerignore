@@ -5,3 +5,8 @@ coverage/
 .git*
 .env*
 docs/
+.next/
+archive/
+the one ring/
+.tmp-traducao/
+.maestri/
