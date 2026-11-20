@@ -131,6 +131,13 @@ Passo 1 concluido (compendios Eldarin, 3 ou 4 entradas por aba, lidas pelo detal
 - Erro do console: nenhum.
 - URL: http://localhost:3000/compendios/habilidades
 
+## BV-023 Correntes Infernais e Manto de Bruma: alcances a conferir (P3, a confirmar)
+- Severidade: P3 a confirmar; ressalva 2 da Lupa na revisao de BV-022.
+- Sintoma no gerador: Correntes Infernais tem 3 celulas com texto Selo de sangue 3m (daria 2); Manto de Bruma tem 3 celulas com texto Nevoa 6m (daria 4, talvez area).
+- Esperado: cada alcance em celulas bater com os metros do texto e do livro.
+- Regente (16:55): conferir no LIVRO-DO-JOGADOR.md antes de corrigir; item 23c na pagina 11.
+- Sem edicao de codigo neste item.
+
 Passo 1b: bestiario nao achado. Nao ha aba Bestiario no Eldarin (abas: Armas, Habilidades, Magias, Equipamentos, Consumiveis). Ver BV-013.
 
 ## BV-013 Bestiario ausente; rota /compendios/monstros mostra Armas (P2, a confirmar)

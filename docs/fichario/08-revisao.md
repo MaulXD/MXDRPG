@@ -264,6 +264,18 @@ Parecer: REPROVADO.
 - Verificado aqui: verify-sem-texto-dev.mjs = 19 ok, 0 falhas; npx tsc --noEmit = exit 0. Sem commit. Nenhum arquivo do repo editado.
 - Lupa, revisão em 20/11/2026.
 
+## BV-022 — alcance em células de quatro habilidades (Lupa)
+Parecer: APROVADO com ressalvas que não bloqueiam.
+- scripts/generate-compendium.mjs: Julgamento Ardente 9 para 6 (linha 583), Carga do Juramento 6 para 8 (linha 591), Mente Partida 6 para 12 (linha 595), Puxão Abissal 5 para 6 (linha 601). Conta confere com 1 célula = 1,5 m: 9m = 6, 12m = 8, 18m = 12, 9m = 6.
+- Textos do livro conferidos em livros/LIVRO-DO-JOGADOR.md: Julgamento 9m (linha 3048), Carga 12m (3080), Mente Partida 18m (3100), Puxão 9m (3132).
+- data/compendiums/habilidades.json: diff com 4 linhas alteradas (numstat 4/4). Só essas quatro entradas mudaram.
+- npm run sync:data:check: OK, exit 0 (7 compêndios, 83 monstros, um-anel 148). tsc --noEmit: exit 0.
+- Ressalva 1: livros/CATALOGO-HABILIDADES-TATICAS.md:77 ainda diz Puxão Abissal alcance 5. É o bookRef do gerador e fica em desacordo com o JSON, que agora diz 6. O que fazer: corrigir a linha do catálogo para 6 (é fonte, em livros/).
+- Ressalva 2 (fora do item, para decidir): mesma classe em outras entradas. Correntes Infernais tem 3 células e 'Selo de sangue 3m' (daria 2). Manto de Bruma tem 3 células e 'Névoa 6m' (daria 4), mas pode ser área e não alcance. Decidir antes de mexer.
+- Nota: HEAD já tem o Agarrão em 6 (BV-012 foi commitado por outro agente), então o diff de hoje tem só este item.
+- Sem commit. Nenhum arquivo do repo editado.
+- Lupa, revisão em 20/11/2026.
+
 ## D-02 — CONTEXTO-SESSAO-ATUAL.md sem branch e PR #3 em curso (Lupa)
 Parecer: APROVADO com ressalvas que não bloqueiam. Só doc; git status mostra só este arquivo.
 - docs/CONTEXTO-SESSAO-ATUAL.md:9-10 — 'Fonte atual do andamento' aponta para docs/fichario/00-indice-e-andamento.md, que existe. Branch e PR #3 saíram do topo; não sobrou URL de PR nem o branch cursor/dice-box-combat no topo.

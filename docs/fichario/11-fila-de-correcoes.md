@@ -33,7 +33,8 @@ Só correções, uma por vez: Bigorna corrige, Lupa revisa, o maestro confere e 
 | 21 | BV-010 | P2 | Chips das Adagas +1/+2/+3 mostram 1d4 sem o +N de dano | decisão D-11 (página 03); Lupa reprovou como correção, aguarda escolha do dono
 | 22 | BV-013 | P2 | /compendios/monstros mostra Armas; bestiário fora do compêndio | feito: bestiário é só do mestre por desenho; a rota agora volta ao índice |
 | 23 | BV-012 | P3 | Agarrão: 5 células vs 9 m no texto | feito, 29cd6c0 |
-| 23b | BV-022 | P3 | Outros alcances de habilidades discordam do texto: Julgamento Ardente 9 m/9 cel., Mente Partida 18 m/6 cel., Puxão Abissal 9 m/5 cel., Carga do Juramento 12 m/6 cel. (ressalva da Lupa em BV-012) | na fila, conferir no livro |
+| 23b | BV-022 | P3 | Outros alcances de habilidades discordam do texto: Julgamento Ardente 9 m/9 cel., Mente Partida 18 m/6 cel., Puxão Abissal 9 m/5 cel., Carga do Juramento 12 m/6 cel. (ressalva da Lupa em BV-012) | feito, a840d6d; CATÁLOGO diz 5 para Puxão (D-16) |
+| 23c | BV-023 | P3 | Correntes Infernais (3 cel. vs 3 m) e Manto de Bruma (3 cel. vs 6 m, talvez área) | na fila, conferir no livro |
 | 24 | BV-011 | P3 | Textos sem acento ou concordância em magias | na fila |
 | 25 | BV-015 | P3 | /termos dá 404 (é o A-03: texto jurídico depende do dono) | decisão |
 | 19 | BV-* | ? | O que o Farejador achar no combate da mesa (etapa 2b) | entra conforme chega |

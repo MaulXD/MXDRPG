@@ -62,4 +62,8 @@ Opções: (a) travar a rota quando não há banco (muda autenticação, fora do 
 O rótulo do pool saiu do log do mestre, mas bankedPa continua em ActiveCharactersPanel e MapTokenList porque materializeCombatPa (lib/combat/pa-token-state.ts:10-14) soma o valor à PA exibida. Se um token antigo tiver bankedPa > 0, o log passa a mostrar uma PA menor que os mostradores compactos. Não achei dado com bankedPa diferente de 0.
 Opções: (a) mostrar pa + bankedPa também no log do mestre; (b) zerar o campo legado na leitura. Escolha conservadora: (a), sem mexer na regra de PA, até o dono decidir. Nada foi alterado além do rótulo do log.
 
+## D-16 CATÁLOGO-HABILIDADES-TÁTICAS desatualizado (BV-022)
+O gerador e o JSON já usam 6 células para Puxão Abissal (9 m), conforme o LIVRO-DO-JOGADOR.md, mas livros/CATALOGO-HABILIDADES-TATICAS.md:77 ainda diz 5. A Lupa não pode editar livros/.
+Opções: (a) corrigir o catálogo para 6; (b) manter como está e aceitar a divergência. Escolha conservadora: (a), mas livro é fora do escopo do Regente neste loop; nada foi alterado em livros/.
+
 
