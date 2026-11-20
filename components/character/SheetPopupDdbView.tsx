@@ -9,6 +9,7 @@ import {
   type AttributeKey,
   type CulinaryKey,
 } from "@/lib/character/rules";
+import { paPoolMaxForSheet } from "@/lib/combat/pa-economy";
 import { formatXpProgressDetail, xpProgressRatio, MAX_LEVEL } from "@/lib/character/xp";
 import { SheetHoverTip } from "@/components/character/SheetHoverTip";
 import { religionDisplayName } from "@/lib/character/pantheon";
@@ -76,10 +77,9 @@ export function SheetPopupDdbView({
   const xpPct = Math.round(xpProgressRatio(nivel, xpTotal) * 100);
   const xpDetail = formatXpProgressDetail(nivel, xpTotal);
   const saves = buildSheetSavingThrows(character);
-  const paPct =
-    resources.pontosAcao.max > 0
-      ? Math.round((resources.pontosAcao.value / resources.pontosAcao.max) * 100)
-      : 0;
+  const paPoolMax = paPoolMaxForSheet(character);
+  const paPoolValue = Math.min(resources.pontosAcao.value, paPoolMax);
+  const paPct = paPoolMax > 0 ? Math.round((paPoolValue / paPoolMax) * 100) : 0;
 
   const classLine = [identity.classe, nivel ? `NV ${nivel}` : null]
     .filter(Boolean)
@@ -255,14 +255,14 @@ export function SheetPopupDdbView({
           <SheetHoverTip
             className="sheet-ddb-resource-tip"
             tip={combatStatTip("pa", {
-              pa: `${resources.pontosAcao.value}/${resources.pontosAcao.max}`,
+              pa: `${paPoolValue}/${paPoolMax}`,
             })}
           >
             <div className="sheet-ddb-resource" tabIndex={0}>
               <div className="sheet-ddb-resource__head">
                 <span>Pontos de ação</span>
                 <strong>
-                  {resources.pontosAcao.value}/{resources.pontosAcao.max}
+                  {paPoolValue}/{paPoolMax}
                 </strong>
               </div>
               <div className="sheet-ddb-resource__bar sheet-ddb-resource__bar--pa">

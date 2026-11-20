@@ -8,6 +8,7 @@ import { deleteRoomToken, placeRoomActorOnCell } from "@/hooks/useRoomSync";
 import { canEditRoomActor } from "@/lib/auth/room-access";
 import type { SessionUser } from "@/lib/auth/types";
 import type { Axial } from "@/lib/vtt/grid-math";
+import { paPoolMaxForSheet } from "@/lib/combat/pa-economy";
 import type { RoomActor, RoomSnapshot } from "@/lib/room/types";
 import {
   canDragActorToMap,
@@ -212,7 +213,7 @@ export function PlayableCharactersPanel({
                       <SpawnCardStatsRow
                         hp={`${actor.resources.vida.value}/${actor.resources.vida.max}`}
                         def={actor.tactical.defesa}
-                        pa={`${actor.resources.pontosAcao.value}/${actor.resources.pontosAcao.max}`}
+                        pa={`${Math.min(actor.resources.pontosAcao.value, paPoolMaxForSheet(actor))}/${paPoolMaxForSheet(actor)}`}
                       />
                     </div>
                   </div>

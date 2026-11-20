@@ -6,6 +6,7 @@ import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import type { CharacterSheet as CharacterSheetData, InventoryItem } from "@/lib/character/types";
 import { formatXpProgress } from "@/lib/character/xp";
+import { paPoolMaxForSheet } from "@/lib/combat/pa-economy";
 import { loadInventory, newInstanceId, saveInventory } from "@/lib/character/inventory-storage";
 import type { CompendiumEntry, CompendiumPackId } from "@/lib/compendium/types";
 import { getPackEntries } from "@/lib/compendium/registry";
@@ -1046,7 +1047,7 @@ function CharacterSheetLoaded({
             <div className="sheet-stat">
               <label>PA</label>
               <strong>
-                {resources.pontosAcao.value}/{resources.pontosAcao.max}
+                {Math.min(resources.pontosAcao.value, paPoolMaxForSheet(live))}/{paPoolMaxForSheet(live)}
               </strong>
             </div>
             <div className="sheet-stat">

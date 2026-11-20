@@ -13,6 +13,7 @@ import {
   type CulinaryKey,
 } from "@/lib/character/rules";
 import { formatXpProgress } from "@/lib/character/xp";
+import { paPoolMaxForSheet } from "@/lib/combat/pa-economy";
 import { resolveActorDefesa } from "@/lib/character/armor-defense";
 import { religionDisplayName } from "@/lib/character/pantheon";
 import {
@@ -199,7 +200,7 @@ export function SheetPdfDocument({ character, inventory, roomId }: Props) {
                 </td>
                 <th>PA</th>
                 <td>
-                  {resources.pontosAcao.value}/{resources.pontosAcao.max}
+                  {Math.min(resources.pontosAcao.value, paPoolMaxForSheet(character))}/{paPoolMaxForSheet(character)}
                 </td>
               </tr>
               <tr>

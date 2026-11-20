@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useMemo, useRef, useState } from "react";
 import type { Axial } from "@/lib/vtt/grid-math";
+import { paPoolMaxForSheet } from "@/lib/combat/pa-economy";
 import type { RoomActor, RoomSnapshot } from "@/lib/room/types";
 import { canEditRoomActor, canPlaceRoomActorOnBoard } from "@/lib/auth/room-access";
 import type { SessionUser } from "@/lib/auth/types";
@@ -264,7 +265,7 @@ export function PlayerSpawnPanel({
                   <SpawnCardStatsRow
                     hp={`${actor.resources.vida.value}/${actor.resources.vida.max}`}
                     def={actor.tactical.defesa}
-                    pa={`${actor.resources.pontosAcao.value}/${actor.resources.pontosAcao.max}`}
+                    pa={`${Math.min(actor.resources.pontosAcao.value, paPoolMaxForSheet(actor))}/${paPoolMaxForSheet(actor)}`}
                   />
                   {!placeable ? (
                     <span className="vtt-spawn-drag-card-warn">Inconsciente</span>

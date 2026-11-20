@@ -92,6 +92,11 @@ export function paMaxForActor(sheet: CharacterSheet): number {
   return paTurnRulesForActor(sheet).recoveryPerTurn;
 }
 
+/** Teto do pool de PA exibido na ficha (mesmo teto da mesa: accumulationCap). */
+export function paPoolMaxForSheet(sheet: CharacterSheet): number {
+  return paTurnRulesForActor(sheet).accumulationCap;
+}
+
 /** @deprecated Alias — recuperação por turno, sem escala por nível. */
 export function paMaxFor(level: number, base = PA_RECOVERY_PER_TURN): number {
   return paRecoveryPerTurn(level, base);
