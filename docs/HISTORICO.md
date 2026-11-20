@@ -6697,3 +6697,23 @@ Aproveitando o esclarecimento, atendido o pedido de melhorar de verdade a UX: at
 **Arquivos tocados:** novo — nenhum arquivo novo (só funções novas em arquivos existentes); editados — `lib/auth/{session,session-user,user-store,nickname}.ts`, `lib/db/users.ts`, `lib/friends/store.ts`, `lib/room/{presence-enrich,handlers/ping}.ts`, `lib/adventure/{list-enrich,join-requests}.ts`, `lib/notifications/store.ts`, `app/api/adventures/[adventureId]/members/route.ts`, `app/api/adventure/[adventureId]/player-bestiary/route.ts`, `app/api/room/[roomId]/{chat,events,presence}/route.ts`, `app/api/room/[roomId]/combat/{attack,area,ability,consume}/route.ts`.
 
 ---
+
+### 2026-11-20 — Análise do repositório, fichário de progresso e 14 correções com agentes no Maestri
+
+**Pedido:** análise de todo o repositório com tabelas do que foi feito, dos bugs e de limpeza de código, dividida em agentes, com notas e um fichário de progresso e do que precisa de decisão. Depois: usar o Maestri para tudo (terminais, portal, fichário), agentes em Haiku por custo, e focar nas correções primeiro.
+
+**Passo a passo:**
+1. Levantamento em 4 frentes paralelas (feito, bugs e decisões, limpeza, mapa/Um Anel/branches/docs), gravado em `docs/fichario/01` a `05`.
+2. Ambiente local com MariaDB (`npm run local`) e portal "Site local" no canvas; agentes Haiku em terminais próprios: Farejador (caça-bugs no site), Bigorna (correção), Lupa (revisão), Pergaminho (história), Balança (balanceamento), Vassoura e Rodo (limpeza). Cada etapa com contexto zerado para economizar.
+3. Limpeza segura em 5 commits (órfãos, scripts de uso único, links mortos, .dockerignore, npm test sem duplicação).
+4. Fila de correções, um bug por vez: Bigorna corrige, Lupa revisa (várias reprovações úteis), eu confiro no navegador e commito.
+
+**Principais correções:** B1 (dano, cura e PA sumiam ao recarregar a mesa: `lib/room/actor-vitals.ts`), loop de render em `GmSavingThrowPanel` que travava a atualização ao vivo da mesa, confirmação de passar turno perdida desde 768f03f, atalho da barra lateral, limites de fichas antes do wizard, janelas fora da tela, rótulos do rail no celular, sanitização do compêndio.
+
+**Arquivos:** ver `git log 21e78a6..HEAD` (19 commits) e `docs/fichario/00-indice-e-andamento.md`.
+
+**Como testar:** `npx tsc --noEmit`, `npm test` (55 scripts, 5 novos: verify-sync-preserva-vida, verify-vida-temporaria, verify-mesa-barra-lateral, verify-end-turn-confirm, verify-limite-fichas-mesa, verify-a22-a23-sanitize-botoes), `npm run build`. No navegador: mesa em combate, aplicar dano, recarregar e ver a vida mantida; Passar turno pede confirmação; mesa a 390x844 mostra rótulos no rail.
+
+**Pendências:** decisões D-01 a D-10 em `docs/fichario/03-precisa-de-decisao.md` (D-01 urgente: texto dos livros de O Um Anel em repositório público); B2 sem log de produção; nada desta sessão nem do branch de agosto está em produção.
+
+---
