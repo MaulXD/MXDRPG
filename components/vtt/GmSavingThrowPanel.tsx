@@ -91,7 +91,13 @@ export function GmSavingThrowPanel({
 
   useEffect(() => {
     if (mode === "pick") return;
-    setPicked(new Set(modeSelection));
+    // Só troca o Set se a seleção mudou: `modeSelection` depende de `picked`,
+    // então um Set novo a cada efeito realimentava o efeito sem parar (BV-002).
+    setPicked((prev) =>
+      prev.size === modeSelection.length && modeSelection.every((id) => prev.has(id))
+        ? prev
+        : new Set(modeSelection)
+    );
   }, [mode, modeSelection]);
 
   function togglePick(actorId: string) {
