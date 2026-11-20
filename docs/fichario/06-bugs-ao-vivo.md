@@ -195,3 +195,11 @@ Passo 5 (390x844, depois voltou a 1900x1191): compendio Armas e Habilidades sem 
 - Obtido: o hover mostra Este passo 1 cel., Rota 1 passos, Apos mover 0/4 celulas; o clique normal devolve Sem rota — celula bloqueada ou fora do alcance e o dispatch de pointerdown + pointerup + click no canvas devolve Mesma celula. A Lira fica em (782,596) com 6 PA. Pode ser gesto do portal, nao confirmado como bug do app.
 - Regente (16:26): reproduzido no portal Site local. Sem edicao de codigo.
 - URL: http://localhost:3000/mesa/aventura-teste-farejador-8sghq
+
+## BV-022 Outros alcances de habilidades podem estar errados (P3, a confirmar)
+- Severidade: P3 a confirmar; ressalva 3 da Lupa na revisao de BV-012.
+- Sintoma no gerador: Julgamento Ardente diz 9 m com 9 cel.; Mente Partida diz 18 m com 6 cel.; Puxao Abissal diz 9 m com 5 cel.; Carga do Juramento diz 12 m com 6 cel.
+- Esperado: cada alcance em celulas bater com a distancia em metros do texto e do livro (1 cel. = 1,5 m).
+- Regente (16:33): conferir no LIVRO-DO-JOGADOR.md antes de corrigir; item 23b na pagina 11.
+- Sem edicao de codigo neste item.
+- URL: http://localhost:3000/compendios/habilidades

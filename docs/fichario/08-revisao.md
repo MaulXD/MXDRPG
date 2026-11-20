@@ -254,5 +254,15 @@ Parecer: não emitido. Na hora da revisão, Battlefield.tsx, package.json e scri
 - Snapshot de r3 guardado no scratchpad (base.tsx, 16:15). Leitura estática: guarda no ramo deferido correta; pendência: no modo sem banco, o ramo deferido ainda descarta a resposta durante FX ou movimento até a revisão passar da antiga.
 - Verify: variante sem espaço e com chaves no caminho direto passaria, pois a regex exige ') return'. Pela leitura, não executado.
 - Lupa, revisão em 20/11/2026.
+
+## BV-012 — Alcance do Agarrão do Pacto 5 para 6 células (Lupa)
+Parecer: APROVADO com ressalvas que não bloqueiam.
+- scripts/generate-compendium.mjs:594 — ataca a causa: a linha do catálogo tinha 5 e o texto diz Tentáculos 9m. Com 1 célula = 1,5 m, 9 m = 6 células. Confere com livros/LIVRO-DO-JOGADOR.md:3098 (Nv 12). Diff de uma linha só.
+- Regeneração verificada no scratchpad (cópia do gerador, sem tocar no repo): habilidades.json muda só a linha 1020, de 5 para 6.
+- Ressalva 1: rodar só o gerador NÃO é seguro. Ele reescreve monstros.json sem as entradas assim-001-* (6804 linhas de diferença), que o passo sync-monster-assimilation-abilities.mjs adiciona depois. Para regenerar, usar o pipeline completo (npm run sync:data) e conferir o diff.
+- Ressalva 2: nenhum teste cobre o alcance do Agarrão. O que fazer: um verify que confira 6 no habilidades.json gerado (falharia hoje, de propósito, até a regeneração).
+- Ressalva 3, mesma classe, fora deste item: pelo texto do próprio gerador, Julgamento Ardente (9 m) está com 9 células, Mente Partida (18 m) com 6, Puxão Abissal (9 m) com 5 e Carga do Juramento (12 m) com 6. Conferir no livro antes de mexer.
+- Verificado aqui: diff do arquivo, geração em scratchpad (exit 0). Não rodei tsc (sem mudança em TS). Sem commit. Nenhum arquivo do repo editado.
+- Lupa, revisão em 20/11/2026.
 - Lupa, revisão em 20/11/2026.
 
