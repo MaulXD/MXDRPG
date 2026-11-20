@@ -50,7 +50,7 @@ import {
   mergePortraitPatchIntoSnapshot,
   type RoomActorPatchResult,
 } from "@/lib/character/portrait-persist-client";
-import { VttToastProvider } from "@/components/vtt/VttToast";
+import { useVttToast, VttToastProvider } from "@/components/vtt/VttToast";
 import { useSheetPdfDeepLink } from "@/hooks/useSheetPdfDeepLink";
 import "@/components/vtt/foundry/foundry.css";
 
@@ -81,6 +81,18 @@ type Props = {
   initialSnapshot?: RoomSnapshot | null;
   memberOnlineRef?: import("react").MutableRefObject<((event: RoomMemberOnlineEvent) => void) | null>;
 };
+
+/** Avisa, dentro do provedor de toast, quando o wizard foi pedido na URL mas a aventura já está no limite. */
+function CharacterLimitToast({ active }: { active: boolean }) {
+  const toast = useVttToast();
+  const shownRef = useRef(false);
+  useEffect(() => {
+    if (!active || shownRef.current) return;
+    shownRef.current = true;
+    toast.push("Você já atingiu o limite de fichas nesta aventura.", "warn");
+  }, [active, toast]);
+  return null;
+}
 
 export function MesaWorkspace(props: Props) {
   const presenceUser =
@@ -586,6 +598,9 @@ function MesaWorkspaceInner({
       <MesaPresenceAlerts bridgeRef={memberOnlineRefLocal} selfUserId={session?.id} />
       <MesaCombatFlowHost roomId={roomId} />
       <MesaCombatChatRevealBridge roomId={roomId} onReveal={onCombatChatReveal} />
+      <CharacterLimitToast
+        active={openCharacterWizardOnLoad && charactersInAdventure >= MAX_CHARACTERS_PER_USER_PER_ADVENTURE}
+      />
       <div className="mesa-workspace mesa-workspace--foundry">
         <div className="foundry-mesa">
           <MesaFoundryDockRail
