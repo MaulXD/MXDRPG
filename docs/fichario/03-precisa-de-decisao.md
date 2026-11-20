@@ -58,4 +58,8 @@ Recomendação: corrigir com o dono presente, decidindo como casar revisão e re
 A tela /entrar agora esconde Criar conta quando não há contas persistentes, mas app/api/auth/register ainda aceita cadastro pelo registro local (lib/auth/user-store.ts, ramo sem dbSqlReady). A frase Novos cadastros estão indisponíveis no momento vale só para a interface.
 Opções: (a) travar a rota quando não há banco (muda autenticação, fora do escopo do Regente); (b) manter a API como está e documentar que a indisponibilidade é apenas visual. Escolha conservadora: (b) até o dono decidir. Nada foi alterado na API.
 
+## D-15 bankedPa legado e a PA mostrada (A-09)
+O rótulo do pool saiu do log do mestre, mas bankedPa continua em ActiveCharactersPanel e MapTokenList porque materializeCombatPa (lib/combat/pa-token-state.ts:10-14) soma o valor à PA exibida. Se um token antigo tiver bankedPa > 0, o log passa a mostrar uma PA menor que os mostradores compactos. Não achei dado com bankedPa diferente de 0.
+Opções: (a) mostrar pa + bankedPa também no log do mestre; (b) zerar o campo legado na leitura. Escolha conservadora: (a), sem mexer na regra de PA, até o dono decidir. Nada foi alterado além do rótulo do log.
+
 

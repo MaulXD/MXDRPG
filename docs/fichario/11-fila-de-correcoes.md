@@ -25,7 +25,7 @@ Só correções, uma por vez: Bigorna corrige, Lupa revisa, o maestro confere e 
 | 14b | BAL-D6b | P2 | Magias conhecidas do Feiticeiro usam a tabela 2 + nível-1 (spell-prep.ts:55); o livro diz nível + CAR (LIVRO-DO-JOGADOR.md:3498) | aprovada pela Lupa, sem commit |
 | 14c | BAL-D6c | P3 | Salvaguardas proficientes do Feiticeiro = INT + CAR (sheet-skills.ts:182); conferir no livro | aprovada pela Lupa, sem commit; INT como salvaguarda segue em aberto (sem confirmação no livro) |
 | 15 | BAL-D1..D5 | P2 | Proficiência de arma: sem bônus para Guerreiro, Ladino e Mago; Clérigo com Maça de Guerra que o livro não dá | na fila |
-| 16 | A-09 | P3 | bankedPa sempre 0 e aparece em três telas | na fila |
+| 16 | A-09 | P3 | bankedPa sempre 0 e aparece em três telas | parcial, 803919d (só o log do mestre); mostradores compactos dependem do cálculo (D-15) |
 | 17 | A-18 | P3 | Sem robots nem sitemap; doc de cores diverge do código | na fila |
 | 18 | D-02 | P3 | CONTEXTO-SESSAO-ATUAL.md aponta branch e PR antigos | na fila |
 | 18b | BV-008 | P2 | Botão 'Colocar na mesa' do Invocar nunca habilita: a célula alvo só é registrada durante o arraste (trackGridHover em Battlefield.tsx:952 exige spawnDragActive), então o botão depende de um hover que não acontece. Arrastar continua funcionando com mouse de verdade. | feito (ver git log, BV-008) |

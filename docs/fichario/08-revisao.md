@@ -264,6 +264,15 @@ Parecer: REPROVADO.
 - Verificado aqui: verify-sem-texto-dev.mjs = 19 ok, 0 falhas; npx tsc --noEmit = exit 0. Sem commit. Nenhum arquivo do repo editado.
 - Lupa, revisão em 20/11/2026.
 
+## A-09 — pool (bankedPa) fora do log do mestre (Lupa)
+Parecer: APROVADO com ressalva que não bloqueia.
+- components/vtt/GmCombatLogPanel.tsx:104 — tirou o ' +X pool'. Ataca a causa do que o log mostrava: o rótulo do pool legado. O gasto do turno continua.
+- Conferido no código: bankedPa é campo legado (lib/combat/pa-turn.ts:37, 51 'Funde bankedPa legado no pool'); os escritores atuais gravam 0. A regra de PA ainda soma o legado: materializeCombatPa (lib/combat/pa-token-state.ts:10-14) entra em PaDotMeter, ActiveCharactersPanel e MapTokenList. Por isso manter banked nesses mostradores está certo.
+- Ressalva: token antigo com bankedPa > 0 salvo em banco faria o log do mestre mostrar PA menor que os mostradores compactos. Não achei nenhum dado com bankedPa diferente de 0 em data/. Se quiser fechar, mostrar pa + bankedPa no log, ou registrar que o legado é zerado na leitura.
+- scripts/verify-pa-bank.mjs: as checagens de fonte conferem o que o item diz (log sem bankedPa, ActiveCharactersPanel e MapTokenList passando banked, PaDotMeter com bankedPa). Verificado aqui: verify-pa-bank: OK, exit 0. Nit: as checagens leem fonte, não renderizam o log.
+- npx tsc --noEmit = exit 0. Sem commit. Nenhum arquivo do repo editado.
+- Lupa, revisão em 20/11/2026.
+
 ## N-02b r3 — aba Criar conta só com contas persistentes (Lupa)
 Parecer: APROVADO com ressalvas que não bloqueiam.
 - components/auth/AuthTabs.tsx — podeCadastrar = persistentAccounts; tabAtiva força login sem contas persistentes; o botão Criar conta e o RegisterForm ficam dentro de {podeCadastrar ? ... : null}. Ataca a causa: a aba não deve existir sem contas persistentes.
