@@ -5,13 +5,13 @@
 
 ---
 
-## Branch ativa
+## Fonte atual do andamento
 
-`cursor/dice-box-combat` — 6 commits à frente de `main`. **PR #3 aberto** em `github.com/MaulXD/MXDRPG/pull/3`.
+O andamento atual do projeto está em `docs/fichario/00-indice-e-andamento.md`. As referências de branch e PR que estavam aqui ficaram desatualizadas e não são mais mantidas neste arquivo.
 
 ---
 
-## O que foi feito nesta sessão
+## O que foi feito nesta sessão (registro histórico)
 
 ### 1. Transição Combate ↔ Aventura — redesign completo
 
@@ -33,7 +33,7 @@
 
 ---
 
-### 2. Dados 3D dice-box no combate (branch inteira)
+### 2. Dados 3D dice-box no combate (conjunto de mudanças)
 
 **Arquivos principais:**
 - `components/vtt/DiceCombatPanel.tsx` — usa `@3d-dice/dice-box` via vendor bundle (`/vendor/dice-box/dice-box.es.min.js`), dois slots (ataque + dano), pré-carrega bundle no mount.
@@ -61,7 +61,7 @@ boss        → #d43838 (vermelho)
 
 ---
 
-## Estado do PR #3
+## Histórico do PR #3 (registro de quando este doc foi escrito)
 
 Commits incluídos:
 - `f145d1c` — chore: assets dice-box, tema, skills Clerk, tooltips nav
@@ -86,7 +86,9 @@ Commits incluídos:
 
 ---
 
-## Próximos passos pendentes
+## Próximos passos pendentes (registro de quando este doc foi escrito)
+
+Os próximos passos atuais estão em `docs/fichario/00-indice-e-andamento.md`. A lista abaixo é a de quando este doc foi escrito.
 
 - [ ] Commit + push do redesign da transição (névoa vermelha/azul + brasas)
 - [ ] Merge do PR #3 quando validado
