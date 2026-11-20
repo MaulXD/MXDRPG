@@ -477,7 +477,6 @@ export function resolveWeaponForActor(actor: CharacterSheet): CombatActionOption
 export function spellcastingAttribute(classId: string): AttributeKey {
   switch (classId) {
     case "Mago":
-    case "Feiticeiro":
       return "inteligencia";
     case "Clérigo":
     case "Druida":
@@ -485,6 +484,7 @@ export function spellcastingAttribute(classId: string): AttributeKey {
     case "Bardo":
     case "Paladino":
     case "Bruxo":
+    case "Feiticeiro":
       return "carisma";
     default:
       return "inteligencia";
