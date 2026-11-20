@@ -1017,7 +1017,7 @@
       "description": "<p>Tentáculos 9m: até 2 alvos Restringidos (FOR CD 15).</p>",
       "tactical": {
         "alcanceCells": {
-          "value": 5,
+          "value": 6,
           "min": 0
         },
         "custoPontosAcao": {

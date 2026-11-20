@@ -591,7 +591,7 @@ const ABILITY_CATALOG = [
   ["Carga do Juramento", 6, 2, "ativa", "1/descanso curto", "Investida 12m: vantagem no primeiro ataque; derruba em acerto (FOR CD 14)."],
   ["Pele de Quimera", 1, 1, "reacao", "", "Retalho 2d6+FOR (tipo da quimera); usos = CON/descanso curto."],
   ["Olhar Entre Dimensões", 6, 1, "reacao", "", "Reação: 2d6 psíquico a quem faz aliado falhar save mental."],
-  ["Agarrão do Pacto", 5, 2, "ativa", "1/combate", "Tentáculos 9m: até 2 alvos Restringidos (FOR CD 15)."],
+  ["Agarrão do Pacto", 6, 2, "ativa", "1/combate", "Tentáculos 9m: até 2 alvos Restringidos (FOR CD 15)."],
   ["Mente Partida", 6, 2, "ativa", "1/descanso longo", "Confusão 1 min (INT CD 16); aberrações INT ≤ 8 falham automaticamente."],
   ["Sangue do Patrono", 0, 1, "ativa", "", "Sacrifica 1d8 HP para recuperar 1 slot de Pacto."],
   ["Pacto de Ferro", 5, 2, "ativa", "1/combate", "Correntes 3d8 fogo + Restringir alvo (FOR CD 15)."],
