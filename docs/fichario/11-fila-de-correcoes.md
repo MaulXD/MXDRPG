@@ -44,3 +44,5 @@ Loop de 2 h (15:45 a 17:45 de 20/11): Bigorna e Lupa na fila, Farejador testando
 Feitos fora da fila: B1 (31841ac), N-01 (3b37186), BV-002 e BV-003 loop da mesa (eb8a4bd), aviso de loop do store da mesa (eb25f17).
 Pausados até as correções andarem: caça-bugs no site, história, balanceamento. OpenCode grátis esgotou a cota.
 
+Fechamento do loop do Regente (16:55): npm test passou (exit 0) — cadeia completa de verify-*.mjs, npm run test:um-anel e npm run sync:data:check, sem falhas. Itens parados: BV-018/019 (D-13), teste de combate do item 2 (BV-019/BV-021), N-02b API (D-14), A-09 mostradores (D-15), BV-022 catálogo (D-16).
+

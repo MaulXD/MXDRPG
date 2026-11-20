@@ -6717,3 +6717,16 @@ Aproveitando o esclarecimento, atendido o pedido de melhorar de verdade a UX: at
 **Pendências:** decisões D-01 a D-10 em `docs/fichario/03-precisa-de-decisao.md` (D-01 urgente: texto dos livros de O Um Anel em repositório público); B2 sem log de produção; nada desta sessão nem do branch de agosto está em produção.
 
 ---
+
+### 2026-11-20 (cont.) — Loop do Regente (OpenCode)
+
+**Pedido:** seguir o ciclo do fichário até 17:10 — Bigorna corrige um item por vez, Lupa revisa, Farejador testa no portal "Site local", o Regente confere com `tsc`/verify e commita só o aprovado; ao fim de cada item, salvar as páginas 03, 06, 07, 08 e 11 no repositório; no fechamento, rodar `npm test` e levar os commits por fast-forward ao branch de origem.
+
+**Itens feitos:** BV-012, alcance do Agarrão do Pacto (`29cd6c0`); N-02b, texto de mantenedor fora de /entrar e da recuperação (`bb8622e`); A-09, rótulo de pool fora do log do mestre (`803919d`); A-18, robots e sitemap só com páginas públicas (`4f04e3b`); D-02, CONTEXTO aponta o fichário como andamento (`3c1b16c`); BV-022, quatro alcances de habilidades conferidos com o livro (`a840d6d`). O fichário de cada item foi salvo em `9f46fec`, `3689406`, `01a0893`, `49ccf61`, `8ea587e` e `592595b`.
+
+**Itens parados:** BV-018/019 (D-13, sincronização da mesa); teste de combate do item 2 (BV-019/BV-021, clique de confirmação de movimento não reproduzido de forma confiável no portal); API de cadastro sem banco (D-14); mostradores compactos de PA (D-15); CATÁLOGO-HABILIDADES-TÁTICAS desatualizado (D-16). Farejador encerrou o item 2 por limite de contexto; o novo BV-023 ficou na fila para conferência no livro.
+
+**Teste:** `npm test` passou (exit 0) — cadeia completa de `verify-*.mjs`, `npm run test:um-anel` e `npm run sync:data:check`, sem falhas. `npx tsc --noEmit` limpo em cada item com código.
+
+---
+
