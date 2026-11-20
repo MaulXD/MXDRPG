@@ -101,7 +101,6 @@ export function GmCombatLogPanel({ combatLog = [], tokens, combat }: Props) {
                 <span className="vtt-gm-combat-log__pa-name">{t.name}</span>
                 <span className="vtt-gm-combat-log__pa-values">
                   PA {t.pa ?? 0}
-                  {(t.bankedPa ?? 0) > 0 ? ` +${t.bankedPa} pool` : ""}
                   {(t.paSpentThisTurn ?? 0) > 0 ? ` · gastou ${t.paSpentThisTurn}` : ""}
                 </span>
               </li>

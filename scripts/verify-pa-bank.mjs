@@ -69,4 +69,26 @@ function formatNext(remaining) {
 assert.equal(formatNext(4), 9);
 assert.equal(formatNext(0), 5);
 
+/* A-09: o mostrador do log do mestre nao exibe mais o pool (bankedPa).
+   A regra de PA continua: os mostradores compactos ainda recebem bankedPa no calculo. */
+import { readFileSync } from "node:fs";
+import { dirname, join } from "node:path";
+import { fileURLToPath } from "node:url";
+
+const raiz = join(dirname(fileURLToPath(import.meta.url)), "..");
+const ler = (p) => readFileSync(join(raiz, p), "utf8").replace(/\r\n/g, "\n");
+
+const GM_LOG = ler("components/vtt/GmCombatLogPanel.tsx");
+assert.ok(!GM_LOG.includes("bankedPa"), "GmCombatLogPanel nao mostra mais bankedPa");
+assert.ok(!GM_LOG.includes("pool`"), "GmCombatLogPanel nao mostra mais o rotulo ' pool' do bankedPa");
+assert.ok(GM_LOG.includes("gastou ${t.paSpentThisTurn}"), "GmCombatLogPanel mantem o gasto do turno");
+
+const ATIVOS = ler("components/vtt/ActiveCharactersPanel.tsx");
+const MAPA = ler("components/vtt/MapTokenList.tsx");
+assert.ok(ATIVOS.includes("banked={t.bankedPa}"), "ActiveCharactersPanel segue passando bankedPa ao calculo de PA");
+assert.ok(MAPA.includes("banked={t.bankedPa}"), "MapTokenList segue passando bankedPa ao calculo de PA");
+
+const PA_DOT = ler("components/vtt/PaDotMeter.tsx");
+assert.ok(PA_DOT.includes("bankedPa: banked"), "PaDotMeter segue usando bankedPa em materializeCombatPa");
+
 console.log("verify-pa-bank: OK");
