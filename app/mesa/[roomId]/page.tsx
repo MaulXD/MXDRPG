@@ -22,9 +22,13 @@ import { isAdventureClosed } from "@/lib/adventure/access";
 import { shouldAutoJoinRoom } from "@/lib/auth/adventure-room-access";
 import {
   listCharactersForSessionUserInAdventureSafe,
+  listCharactersForSessionUserSafe,
   MAX_CHARACTERS_PER_USER,
 } from "@/lib/character/characters";
-import { MAX_TOR_CHARACTERS_PER_USER } from "@/lib/character/um-anel/characters";
+import {
+  listTorCharactersForSessionUserSafe,
+  MAX_TOR_CHARACTERS_PER_USER,
+} from "@/lib/character/um-anel/characters";
 import { MesaClosedGate } from "@/components/vtt/MesaClosedGate";
 import { joinRoomMembers } from "@/lib/room/adventure-room";
 import { joinRoomByInvite } from "@/lib/room/store";
@@ -191,20 +195,30 @@ export default async function MesaRoomPage({ params, searchParams }: Props) {
       Object.keys(room.actors)[0]);
 
   const advId = room.adventureId ?? roomId;
-  const [adventure, mesaInvite] = await Promise.all([
+  const isUmAnel = room.rpgSystemId === "um-anel";
+  const isEldarin = room.rpgSystemId === "eldarin";
+  const showAccountCount = canParticipate && accountUser;
+  // Contagens da conta e da aventura, na mesma Promise.all (sem latência extra).
+  // Mesmas funções que o servidor usa ao criar ficha (createCharacterFromWizard e
+  // createTorCharacterFromWizard). A guarda global de 10 fichas fica aqui, antes do wizard.
+  const [adventure, mesaInvite, accountSheets, adventureSheets] = await Promise.all([
     getAdventure(advId),
     canonicalInviteForRoom(room),
+    showAccountCount ?
+      isUmAnel ?
+        listTorCharactersForSessionUserSafe(accountUser)
+      : listCharactersForSessionUserSafe(accountUser)
+    : Promise.resolve([]),
+    // Limite por aventura só existe no Eldarin (o Um Anel não tem).
+    showAccountCount && isEldarin ?
+      listCharactersForSessionUserInAdventureSafe(accountUser, advId)
+    : Promise.resolve([]),
   ]);
   const adventureName = adventure?.name ?? room.name;
-  const maxCharactersPerUser =
-    room.rpgSystemId === "um-anel" ? MAX_TOR_CHARACTERS_PER_USER : MAX_CHARACTERS_PER_USER;
-  const characterSlotsLeft = canParticipate ? maxCharactersPerUser : 0;
-  // Limite por aventura só existe no Eldarin (o Um Anel não tem). Mesma contagem que o
-  // servidor usa em criar ficha (lib/character/characters.ts).
-  const charactersInAdventure =
-    canParticipate && accountUser && room.rpgSystemId === "eldarin" ?
-      (await listCharactersForSessionUserInAdventureSafe(accountUser, advId)).length
-    : 0;
+  const maxCharactersPerUser = isUmAnel ? MAX_TOR_CHARACTERS_PER_USER : MAX_CHARACTERS_PER_USER;
+  const characterSlotsLeft =
+    canParticipate ? Math.max(0, maxCharactersPerUser - accountSheets.length) : 0;
+  const charactersInAdventure = adventureSheets.length;
   const canEdit = canParticipate;
 
   const initialSnapshot =

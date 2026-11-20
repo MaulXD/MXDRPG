@@ -47,11 +47,35 @@ check("mesa conta as fichas da aventura com a funcao do servidor", () => {
 });
 
 check("guarda por aventura so vale no Eldarin (Um Anel nao tem limite)", () => {
+  assert.match(page, /isEldarin\s*=\s*room\.rpgSystemId === "eldarin"/);
+  assert.match(page, /showAccountCount && isEldarin/);
+  assert.doesNotMatch(page, /removidas do SSR/);
+});
+
+// A-10c: limite global de fichas da conta (10 Eldarin, Um Anel tem a sua constante).
+check("characterSlotsLeft nao e constante: desconta as fichas que a conta ja tem", () => {
+  assert.doesNotMatch(page, /const\s+characterSlotsLeft\s*=\s*canParticipate\s*\?\s*maxCharactersPerUser\s*:\s*0/);
+  assert.match(page, /characterSlotsLeft\s*=[\s\S]*?Math\.max\(0,\s*maxCharactersPerUser\s*-\s*accountSheets\.length\)/);
+});
+
+check("mesa conta as fichas da conta com a funcao do servidor, por sistema", () => {
+  assert.match(page, /listCharactersForSessionUserSafe\(accountUser\)/);
+  assert.match(page, /listTorCharactersForSessionUserSafe\(accountUser\)/);
+  assert.match(page, /isUmAnel \? MAX_TOR_CHARACTERS_PER_USER : MAX_CHARACTERS_PER_USER/);
+});
+
+check("contagens entram no mesmo Promise.all (sem latencia extra)", () => {
   assert.match(
     page,
-    /charactersInAdventure\s*=\s*canParticipate && accountUser && room\.rpgSystemId === "eldarin"/
+    /const \[adventure, mesaInvite, accountSheets, adventureSheets\] = await Promise\.all\(\[/
   );
-  assert.doesNotMatch(page, /removidas do SSR/);
+  assert.doesNotMatch(page, /\(await listCharactersForSessionUserInAdventureSafe/);
+});
+
+check("servidor tem a mesma guarda global (10 fichas) ao criar", () => {
+  assert.match(chars, /existing\.length >= MAX_CHARACTERS_PER_USER/);
+  const tor = read("lib/character/um-anel/characters.ts");
+  assert.match(tor, /existing\.length >= MAX_TOR_CHARACTERS_PER_USER/);
 });
 
 check("servidor e mesa usam a mesma constante (adventure-bind)", () => {
