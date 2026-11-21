@@ -110,9 +110,11 @@ export const CLASS_LIST: ClassDef[] = [
     hpDieMax: 10,
     hpDieAvg: 6,
     primary: "Força ou Destreza",
-    proficiencies: "Todas armaduras, escudos e armas",
+    proficiencies: "Todas as armaduras, todos os escudos, todas as armas",
     culinary: { trinchar: 3, estomagoDeFerro: 2 },
-    dietBonus: "Foco de Combate — Vantagem em Força/Atletismo após descanso curto na masmorra",
+    // Livro: LIVRO-DO-JOGADOR.md, secao GUERREIRO.
+    dietBonus:
+      "Metabolismo Focado — Após uma Refeição Comum ou melhor, ganha Vantagem em testes de Força e Atletismo até o próximo descanso longo.",
     subclasses: [
       "Caçador de Feras",
       "Quebrador de Carapaças",
@@ -127,9 +129,11 @@ export const CLASS_LIST: ClassDef[] = [
     hpDieMax: 10,
     hpDieAvg: 6,
     primary: "Destreza e Sabedoria",
-    proficiencies: "Armaduras leves/médias, escudos, armas simples e marciais",
+    proficiencies: "Armaduras leves e médias, escudos, armas simples e marciais",
     culinary: { harmonizacao: 3, trinchar: 2 },
-    dietBonus: "Rastreador — sem penalidade ao forragear ou caçar no campo",
+    // Livro: LIVRO-DO-JOGADOR.md, secao PATRULHEIRO.
+    dietBonus:
+      "Estômago Selvagem — Não sofre penalidades ao consumir alimentos crus, semi-preparados ou de qualidade duvidosa. Pode comer no campo sem fogueira sem risco.",
     subclasses: [
       "Caçador do Céu",
       "Explorador de Esporos",
@@ -144,9 +148,11 @@ export const CLASS_LIST: ClassDef[] = [
     hpDieMax: 8,
     hpDieAvg: 5,
     primary: "Destreza e Inteligência",
-    proficiencies: "Armaduras leves, armas fines",
+    proficiencies: "Armaduras leves, armas simples, espadas curtas, bestas de mão, rapiers",
     culinary: { trinchar: 4, harmonizacao: 2 },
-    dietBonus: "Reflexos de Masmorra — +6m movimento e Vantagem em Iniciativa no 1º turno",
+    // Livro: LIVRO-DO-JOGADOR.md, secao LADINO.
+    dietBonus:
+      "Digestão Rápida — Uma refeição antes da batalha concede +6m de deslocamento e Vantagem em Iniciativa no primeiro turno de qualquer combate.",
     subclasses: [
       "Sombra Etérea",
       "Forma Amorfa",
@@ -163,7 +169,9 @@ export const CLASS_LIST: ClassDef[] = [
     primary: "Inteligência",
     proficiencies: "Adagas, dardos, fundas, cajados, bestas leves",
     culinary: { coccao: 4, harmonizacao: 3 },
-    dietBonus: "Arcanista de Campo — componentes de masmorra restauram 1 feitiço de nível baixo",
+    // Livro: LIVRO-DO-JOGADOR.md, secao MAGO.
+    dietBonus:
+      "Mente Nutrígena — Consumir qualquer ingrediente mágico (lodo elemental, glândula de mana, cristal de monstro) restaura 1 espaço de feitiço de nível baixo.",
     subclasses: [
       "Piromante das Brasas",
       "Criomante do Gelo",
@@ -179,9 +187,11 @@ export const CLASS_LIST: ClassDef[] = [
     hpDieMax: 8,
     hpDieAvg: 5,
     primary: "Sabedoria e Carisma",
-    proficiencies: "Armaduras leves/médias, escudos, armas simples",
+    proficiencies: "Armaduras leves e médias, escudos, armas simples",
     culinary: { harmonizacao: 4, estomagoDeFerro: 3 },
-    dietBonus: "Comunhão de Masmorra — descanso concede HP temporários = nv×2 ao grupo",
+    // Livro: LIVRO-DO-JOGADOR.md, secao CLERIGO.
+    dietBonus:
+      "Comunhão Material — Toda vez que se alimenta de qualquer refeição, recebe HP Temporários igual ao nível do Clérigo vezes 2.",
     subclasses: [
       "Sacerdote Purificador",
       "Clérigo Contemplativo",
@@ -197,7 +207,7 @@ export const CLASS_LIST: ClassDef[] = [
     hpDieMax: 12,
     hpDieAvg: 7,
     primary: "Força e Constituição",
-    proficiencies: "Armaduras leves/médias, escudos, todas armas",
+    proficiencies: "Armaduras leves e médias (não pesadas), escudos, todas as armas",
     culinary: { estomagoDeFerro: 4, trinchar: 2 },
     // BV-062: nome e texto do livro (LIVRO-DO-JOGADOR.md:1065); antes dizia "Sede de Batalha".
     dietBonus:
@@ -216,9 +226,11 @@ export const CLASS_LIST: ClassDef[] = [
     hpDieMax: 8,
     hpDieAvg: 5,
     primary: "Carisma e Destreza",
-    proficiencies: "Armaduras leves, armas simples, instrumentos",
+    proficiencies: "Armaduras leves, armas simples, algumas marciais, todos os instrumentos musicais",
     culinary: { harmonizacao: 5, coccao: 2 },
-    dietBonus: "Inspiração de Grupo — bônus de suporte do grupo duram +50%",
+    // Livro: LIVRO-DO-JOGADOR.md, secao BARDO.
+    dietBonus:
+      "Harmonia de Sabores — Quando o Bardo come junto do grupo, a duração dos bônus de comida de todos os membros é estendida em 50%.",
     subclasses: [
       "Estratega de Masmorra",
       "Bardo Fermentador",
@@ -233,9 +245,12 @@ export const CLASS_LIST: ClassDef[] = [
     hpDieMax: 8,
     hpDieAvg: 5,
     primary: "Sabedoria",
-    proficiencies: "Armaduras leves/médias (não metálicas), escudos, armas simples",
+    proficiencies:
+      "Armaduras leves e médias (não metálicas), escudos não metálicos, armas simples não metálicas",
     culinary: { harmonizacao: 5, trinchar: 1 },
-    dietBonus: "Ciclo da Masmorra — toxinas naturais viram resistência",
+    // Livro: LIVRO-DO-JOGADOR.md, secao DRUIDA.
+    dietBonus:
+      "Ciclo da Vida — Pode se alimentar de qualquer planta, raiz ou fungo venenoso da masmorra, convertendo o veneno em nutrição sem sofrer dano.",
     subclasses: [
       "Círculo da Podridão",
       "Círculo do Predador",
@@ -252,8 +267,9 @@ export const CLASS_LIST: ClassDef[] = [
     primary: "Carisma",
     proficiencies: "Adagas, dardos, fundas, bestas leves",
     culinary: { harmonizacao: 3, coccao: 2 },
+    // Livro: LIVRO-DO-JOGADOR.md, secao FEITICEIRO.
     dietBonus:
-      "Centelha Inata — após Refeição Comum+, primeira magia ofensiva do combate +1d6 (conforme subclasse)",
+      "Centelha Inata — Após Refeição Comum ou melhor, a primeira magia ofensiva do próximo combate causa +1d6 de dano do elemento da sua linhagem (fogo, frio, ácido, elétrico ou psíquico conforme subclasse).",
     subclasses: [
       "Linhagem Bestial",
       "Sangue Selvagem",
@@ -270,8 +286,9 @@ export const CLASS_LIST: ClassDef[] = [
     primary: "Destreza e Sabedoria",
     proficiencies: "Armas simples, espadas curtas, bestas leves; sem armadura pesada",
     culinary: { estomagoDeFerro: 3, harmonizacao: 2 },
+    // Livro: LIVRO-DO-JOGADOR.md, secao ESPIRITUALISTA.
     dietBonus:
-      "Respiração de Combate — após descanso curto na masmorra, recupera 2 Chi extras no próximo combate",
+      "Respiração de Combate — Após descanso curto na masmorra, recupera 2 Chi extras no próximo combate (além do pool padrão).",
     subclasses: [
       "Punho do Limiar",
       "Tecelão do Vácuo",
@@ -286,10 +303,11 @@ export const CLASS_LIST: ClassDef[] = [
     hpDieMax: 10,
     hpDieAvg: 6,
     primary: "Força e Carisma",
-    proficiencies: "Todas armaduras, escudos, armas simples e marciais",
+    proficiencies: "Todas as armaduras, escudos, armas simples e marciais",
     culinary: { harmonizacao: 3, estomagoDeFerro: 3 },
+    // Livro: LIVRO-DO-JOGADOR.md, secao PALADINO.
     dietBonus:
-      "Voto Alimentar — após Refeição Comum+, HP temporários = nível; aliados da mesma devoção adjacentes +1 em saves",
+      "Voto Alimentar — Após uma Refeição Comum ou melhor, ganha HP Temporários igual ao seu nível. Aliados adjacentes da mesma devoção recebem +1 em testes de resistência até o próximo descanso longo.",
     subclasses: ["Jurado do Sol", "Cavaleiro do Limiar", "Guardião da Gorge"],
   },
   {
@@ -301,8 +319,9 @@ export const CLASS_LIST: ClassDef[] = [
     primary: "Carisma",
     proficiencies: "Armaduras leves, armas simples",
     culinary: { coccao: 4, harmonizacao: 2 },
+    // Livro: LIVRO-DO-JOGADOR.md, secao BRUXO.
     dietBonus:
-      "Pacto Gastronômico — ingredientes do patrono restauram 1 slot de Pacto ao descanso curto",
+      "Pacto Gastronômico — Ingredientes ligados ao seu patrono restauram 1 slot de Pacto ao terminar um descanso curto, uma vez por descanso.",
     subclasses: ["Filho da Voragem", "Herdeiro do Sangue", "Voz das Profundezas"],
   },
 ];
