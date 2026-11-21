@@ -270,6 +270,16 @@ caso("dono adiciona habilidade que a classe nao sincronizou: bloqueado", () => {
   assert.equal(ownerInventoryAdditionBlocked(sala, ficha, dono, antes, depois, chaves), true);
 });
 
+caso("recurso de classe em varias copias ou quantidade maior que 1: bloqueado", () => {
+  const sync = syncClassAbilitiesToInventory(fichaPaladino).inventory;
+  const chaves = classResourceKeysFor(fichaPaladino);
+  const primeiro = sync[0];
+  const copias = [primeiro, { ...primeiro, instanceId: `${primeiro.instanceId}-b` }];
+  assert.equal(ownerInventoryAdditionBlocked(sala, ficha, dono, [], copias, chaves), true);
+  const muitos = [{ ...primeiro, quantity: 5 }];
+  assert.equal(ownerInventoryAdditionBlocked(sala, ficha, dono, [], muitos, chaves), true);
+});
+
 caso("dono adiciona arma com a lista de recursos de classe: continua bloqueado", () => {
   const chaves = classResourceKeysFor(fichaPaladino);
   assert.equal(ownerInventoryAdditionBlocked(sala, ficha, dono, [], [item("n1")], chaves), true);

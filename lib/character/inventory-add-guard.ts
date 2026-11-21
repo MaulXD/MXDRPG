@@ -39,7 +39,8 @@ export function inventoryPatchAddsItems(
   for (const [key, now] of after) {
     const prev = before.get(key) ?? { count: 0, quantity: 0 };
     // Recurso de classe/subclasse (sincronizado sozinho, ver classResourceKeysFor): nao conta.
-    if (prev.count === 0 && classResourceKeys.has(key)) continue;
+    // Só uma cópia, com quantidade 1, como a sincronização cria; mais que isso conta.
+    if (prev.count === 0 && classResourceKeys.has(key) && now.count === 1 && now.quantity <= 1) continue;
     if (now.count > prev.count || now.quantity > prev.quantity) return true;
   }
   return false;
