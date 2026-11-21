@@ -1026,8 +1026,9 @@ export function CharacterCreationWizard({
                     const preset = kitId
                       ? resolveStarterKitOption(draft.classe, kitId)
                       : null;
-                    if (preset) return `${preset.label} — ${describeStarterEquipment(draft.starterEquipment)}`;
-                    return describeStarterEquipment(draft.starterEquipment);
+                    const equip = describeStarterEquipment(draft.starterEquipment, { omitSpells: true });
+                    if (preset) return `${preset.label} — ${equip}`;
+                    return equip;
                   })()}
                   {showValidation && stepError(5) ? (
                     <button type="button" className="char-wizard-review-fix" onClick={() => goToStep(5)}>

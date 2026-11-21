@@ -862,7 +862,10 @@ export function previewEquipmentDefesa(
   return computeDefesaFromArmor(desMod, entry);
 }
 
-export function describeStarterEquipment(equipment: StarterEquipmentDraft): string {
+export function describeStarterEquipment(
+  equipment: StarterEquipmentDraft,
+  opts?: { omitSpells?: boolean }
+): string {
   const parts: string[] = [];
   if (equipment.combatLoadout) {
     const entry = getEntry(equipment.combatLoadout.packId, equipment.combatLoadout.entryId);
@@ -878,10 +881,15 @@ export function describeStarterEquipment(equipment: StarterEquipmentDraft): stri
   } else {
     parts.push("Sem armadura");
   }
-  for (const spellId of equipment.spellEntryIds) {
-    if (equipment.combatLoadout?.packId === "magias" && equipment.combatLoadout.entryId === spellId) continue;
-    const entry = getEntry("magias", spellId);
-    if (entry) parts.push(entry.name);
+  // BV-044: a Revisão do wizard passa omitSpells e lista as magias no cartão
+  // "Magias e truques"; os demais chamadores continuam recebendo as magias aqui.
+  // A magia de combate já saiu pelo combatLoadout acima (BV-042).
+  if (!opts?.omitSpells) {
+    for (const spellId of equipment.spellEntryIds) {
+      if (equipment.combatLoadout?.packId === "magias" && equipment.combatLoadout.entryId === spellId) continue;
+      const entry = getEntry("magias", spellId);
+      if (entry) parts.push(entry.name);
+    }
   }
   for (const extraId of equipment.extraEntryIds) {
     const entry = getEntry("equipamentos", extraId);
