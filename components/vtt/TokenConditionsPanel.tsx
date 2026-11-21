@@ -55,7 +55,9 @@ export function TokenConditionsPanel({
     });
     await patchRoomToken(roomId, token.id, {
       conditions: next.conditions,
-      timedEffects: next.timedEffects,
+      // BV-053: ao tirar a última condição, timedEffects vira undefined e some do JSON;
+      // o servidor mesclava o patch e mantinha o contador antigo (selo "2R" no token).
+      timedEffects: next.timedEffects ?? [],
     });
     setPending(null);
     onUpdate();
