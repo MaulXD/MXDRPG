@@ -15,12 +15,15 @@ import "./monster-sheet.css";
 
 type Props = {
   packs: CompendiumPackMeta[];
-  data: Record<CompendiumPackId, CompendiumEntry[]>;
+  /** Dados já carregados (pelo servidor). Packs que faltam são buscados ao trocar de aba. */
+  data: Partial<Record<CompendiumPackId, CompendiumEntry[]>>;
   role: UserRole | null;
   /** Painel estreito da mesa (layout em lista, sem grid largo) */
   variant?: "page" | "rail";
   /** Pack inicial (rota /compendios/[packId]) */
   initialPackId?: CompendiumPackId;
+  /** Sala da mesa: a busca por pack leva roomId (monstros dependem de ser mestre da sala) */
+  roomId?: string;
 };
 
 export function CompendiumBrowser({
@@ -29,6 +32,7 @@ export function CompendiumBrowser({
   role,
   variant = "page",
   initialPackId,
+  roomId,
 }: Props) {
   const [packId, setPackId] = useState<CompendiumPackId>(
     initialPackId && packs.some((p) => p.id === initialPackId)
@@ -39,6 +43,38 @@ export function CompendiumBrowser({
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [monsterSheetId, setMonsterSheetId] = useState<string | null>(null);
   const detailRef = useRef<HTMLDivElement>(null);
+
+  /* Packs buscados depois, guardados aqui para não buscar de novo ao voltar de aba. */
+  const [buscados, setBuscados] = useState<Partial<Record<CompendiumPackId, CompendiumEntry[]>>>({});
+  const [falhaPack, setFalhaPack] = useState<CompendiumPackId | null>(null);
+  const emVoo = useRef<Set<string>>(new Set());
+
+  /* Dados novos vindos do pai (outra sala, outra página): descarta o que foi buscado. */
+  useEffect(() => {
+    setBuscados({});
+    setFalhaPack(null);
+  }, [data]);
+
+  const listaDoPack = data[packId] ?? buscados[packId];
+  const jaTemPack = listaDoPack !== undefined;
+
+  useEffect(() => {
+    if (jaTemPack || emVoo.current.has(packId)) return;
+    emVoo.current.add(packId);
+    const alvo = packId;
+    const qs = `pack=${encodeURIComponent(alvo)}${roomId ? `&roomId=${encodeURIComponent(roomId)}` : ""}`;
+    fetch(`/api/compendium?${qs}`, { credentials: "same-origin" })
+      .then((res) => {
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        return res.json() as Promise<{ data: Partial<Record<CompendiumPackId, CompendiumEntry[]>> }>;
+      })
+      .then((json) => {
+        setBuscados((antes) => ({ ...antes, [alvo]: json.data[alvo] ?? [] }));
+        setFalhaPack(null);
+      })
+      .catch(() => setFalhaPack(alvo))
+      .finally(() => emVoo.current.delete(alvo));
+  }, [packId, roomId, jaTemPack]);
 
   useEffect(() => {
     if (!initialPackId || !packs.some((p) => p.id === initialPackId)) return;
@@ -52,14 +88,16 @@ export function CompendiumBrowser({
   }, [selectedId]);
 
   const activePack = packs.find((p) => p.id === packId) ?? packs[0];
+  const carregandoPack = !jaTemPack;
+  const erroPack = falhaPack === packId && carregandoPack;
 
   /* Lista ORDENADA do pack, antes de qualquer filtro. Duas coisas dependem dela:
      a ordenação alfabética (o JSON vem na ordem bruta de geração) e o painel de
      detalhe — ver `selected` abaixo. */
   const todas = useMemo(() => {
-    const list = data[packId] ?? [];
+    const list = listaDoPack ?? [];
     return [...list].sort((a, b) => a.name.localeCompare(b.name, "pt-BR"));
-  }, [data, packId]);
+  }, [listaDoPack]);
 
   const entries = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -126,11 +164,13 @@ export function CompendiumBrowser({
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
               />
-              <span className="comp-count">{entries.length}</span>
+              <span className="comp-count">{carregandoPack ? "" : entries.length}</span>
             </div>
 
             <div className="comp-rail-list">
-              {entries.length === 0 ? (
+              {carregandoPack ? (
+                <p className="comp-rail-empty">{erroPack ? "Falha ao carregar compêndio." : "Carregando…"}</p>
+              ) : entries.length === 0 ? (
                 <p className="comp-rail-empty">Nenhuma entrada encontrada.</p>
               ) : (
                 entries.map((entry) => (
@@ -206,20 +246,26 @@ export function CompendiumBrowser({
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
               />
-              <span className="comp-count">{entries.length} entradas</span>
+              <span className="comp-count">{carregandoPack ? "" : `${entries.length} entradas`}</span>
             </div>
 
-            <div className="comp-grid">
-              {entries.map((entry) => (
-                <CompendiumCard
-                  key={entry.id}
-                  entry={entry}
-                  active={entry.id === selectedId}
-                  onSelect={() => setSelectedId(entry.id)}
-                  layout="page"
-                />
-              ))}
-            </div>
+            {carregandoPack ? (
+              <p style={{ color: "var(--text-muted)" }}>
+                {erroPack ? "Falha ao carregar compêndio." : "Carregando…"}
+              </p>
+            ) : (
+              <div className="comp-grid">
+                {entries.map((entry) => (
+                  <CompendiumCard
+                    key={entry.id}
+                    entry={entry}
+                    active={entry.id === selectedId}
+                    onSelect={() => setSelectedId(entry.id)}
+                    layout="page"
+                  />
+                ))}
+              </div>
+            )}
 
             {selected ? (
               <div ref={detailRef}>

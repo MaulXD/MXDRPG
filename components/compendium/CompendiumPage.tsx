@@ -26,12 +26,15 @@ export async function CompendiumPage({ initialPackId, topSlot }: Props) {
   const role = session?.user.role ?? null;
   const packs = getVisiblePacks(role);
 
-  const data = Object.fromEntries(
-    packs.map((p) => [p.id, getPackEntries(p.id, { role })])
-  ) as Record<CompendiumPackId, ReturnType<typeof getPackEntries>>;
-
   const resolvedPack =
     initialPackId && packs.some((p) => p.id === initialPackId) ? initialPackId : undefined;
+
+  /* Só o pack inicial vai no HTML; os outros o navegador busca ao trocar de aba
+     (GET /api/compendium?pack=...). Pack inicial = o pedido ou o primeiro visível. */
+  const packInicial = resolvedPack ?? packs[0]?.id;
+  const data: Partial<Record<CompendiumPackId, ReturnType<typeof getPackEntries>>> = packInicial
+    ? { [packInicial]: getPackEntries(packInicial, { role }) }
+    : {};
 
   return (
     <div className="page-wrap page-hero">
@@ -42,7 +45,14 @@ export async function CompendiumPage({ initialPackId, topSlot }: Props) {
         Armas, habilidades, magias e equipamentos para jogadores. Monstros só para o mestre — tudo no
         navegador, integrado à mesa Eldarin.
       </p>
-      <CompendiumBrowser packs={packs} data={data} role={role} initialPackId={resolvedPack} />
+      {/* key: ao trocar de pack pela rota, o navegador começa limpo com os dados do novo pack */}
+      <CompendiumBrowser
+        key={packInicial ?? "vazio"}
+        packs={packs}
+        data={data}
+        role={role}
+        initialPackId={resolvedPack}
+      />
     </div>
   );
 }

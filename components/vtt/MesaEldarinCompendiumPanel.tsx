@@ -7,7 +7,7 @@ import type { UserRole } from "@/lib/auth/types";
 
 type CompendiumApiData = {
   packs: CompendiumPackMeta[];
-  data: Record<CompendiumPackId, CompendiumEntry[]>;
+  data: Partial<Record<CompendiumPackId, CompendiumEntry[]>>;
   role: UserRole | null;
 };
 
@@ -16,7 +16,8 @@ type Props = {
 };
 
 /** Compêndio Eldarin dentro da mesa — busca via /api/compendium (papel + se é
- * mestre desta sala definem o que aparece, igual à página /compendios). */
+ * mestre desta sala definem o que aparece, igual à página /compendios). Traz só
+ * o primeiro pack; os outros o CompendiumBrowser busca ao trocar de aba (com roomId). */
 export function MesaEldarinCompendiumPanel({ roomId }: Props) {
   const [state, setState] = useState<CompendiumApiData | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -39,5 +40,13 @@ export function MesaEldarinCompendiumPanel({ roomId }: Props) {
   if (error) return <p className="sheet-inline-msg">{error}</p>;
   if (!state) return <p className="vtt-combat-hint">Carregando…</p>;
 
-  return <CompendiumBrowser packs={state.packs} data={state.data} role={state.role} variant="rail" />;
+  return (
+    <CompendiumBrowser
+      packs={state.packs}
+      data={state.data}
+      role={state.role}
+      variant="rail"
+      roomId={roomId}
+    />
+  );
 }
