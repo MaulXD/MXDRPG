@@ -340,3 +340,65 @@ Parecer: APROVADO com ressalvas que não bloqueiam.
 - Lupa, revisão em 20/11/2026.
 - Lupa, revisão em 20/11/2026.
 
+## D-12 — PA guardado respeita o teto do pool (Lupa)
+Parecer: REPROVADO.
+- lib/room/handlers/combat-gm.ts:268 — ao subir de nível pelo GM, pontosAcao.value = Math.min(current, paMax), ou seja, 5. Ficha com 8 PA cai para 5. É a mesma causa do D-12, fora dos quatro arquivos. O que fazer: usar paPoolMaxForSheet no lugar de paMax (o identity novo já está montado ali).
+- lib/room/handlers/gm-actor-progress.ts:57 — mesmo problema; o normalizeCharacter chamado depois não restaura o valor. Mesmo ajuste.
+- scripts/verify-pa-guardado-ficha.mjs — cobre só normalize.ts. identity.ts (applyIdentityPatch) não tem caso. Conferi à mão no scratchpad: 8 fica 8, 12 vira 9. O que fazer: incluir um caso que chame applyIdentityPatch.
+- Os quatro arquivos pedidos estão corretos: npm run test:pa OK, verify-pa-guardado-ficha 3 ok 0 falha, npx tsc --noEmit exit 0. package.json tem a linha do script no test.
+- components/vtt/Battlefield.tsx está modificado no working tree, fora do D-12; não revisei.
+- Lupa, revisão em 20/11/2026.
+
+## D-13 — cena velha na FX e no flush, revisão do servidor sem banco (Lupa)
+Parecer: REPROVADO.
+- components/vtt/Battlefield.tsx:1187-1190 — o efeito que aplica o snapshot da prop sai cedo se snap.revision <= applied. Depois de um reinício sem banco, o refresh() (linhas 672 e 1161) traz revisão menor, esse efeito descarta, e a cena nova não aparece até um syncRoom sem FX e sem movimento. Era a pendência do r3, e não foi coberta. O que fazer: quando a revisão vem de refresh e é menor que applied, tratá-la como nova referência, ou tirar essa comparação do efeito.
+- components/vtt/Battlefield.tsx:757-759 — no ramo deferido, a guarda continua com applied alto. A resposta nova vai para pendingCombatSnapRef, o flush (1159-1163) a descarta e chama refresh, que cai no item anterior. O mesmo vale para moveSelectedTo (1922-1926), que só grava a cena se rev >= applied. Não confirmei pelo código se o onApplySnapshot do pai aplica o movimento nesse caso.
+- components/vtt/Battlefield.tsx:804 — o caminho direto grava applied = snap.revision sem limite. Uma resposta atrasada (revisão menor, sem reinício) rebaixa a referência, e a guarda da FX deixa passar cena velha. O que fazer: só aceitar a queda quando a revisão veio confirmada pelo servidor após refresh.
+- Revisão 0: isStaleSceneRevision (667-670) está certo. Nit: o caminho direto grava applied = 0 para snap sem revisão (804) e desliga a guarda até a próxima revisão.
+- Loop de refresh: não encontrei. O resultado do refresh entra pelo efeito da prop (item 1), não por applyCombatSnapshot, então não gera outra cena velha. Inferido pelo código, não testado.
+- Troca de sala: o efeito de roomId (1168-1171) zera applied. Ok.
+- Sem verify no diff para D-13. scripts/verify-bv018-flush-revisao.mjs não existe no working tree.
+
+## D-13 r2 — guardas com revisão monotônica (Lupa)
+Parecer: REPROVADO.
+- components/vtt/Battlefield.tsx:757-759 (ramo deferido de syncRoom) — a resposta de revisão 9, chegando depois da 10, grava pendingCombatSnapRef = 9 e sobrescreve a 10 pendente. applied continua 10 (759 só sobe). O flush descarta a 9 e chama refresh. O efeito da prop (mapUnchanged, perto da linha 1190) sai cedo porque 10 <= applied, então os tokens protegidos da 10 ficam com a cena antiga até a próxima revisão. Isso é o ponto 2 da minha r2 (guarda antes da linha 757), que não entrou. O que fazer: no ramo deferido, if (snap.revision < appliedSceneRevisionRef.current) return; antes de gravar o pending e de chamar onApplySnapshot, ou gravar o pending só se a revisão for maior ou igual à guardada.
+- Resposta à pergunta (a): com revisão monotônica, a guarda de applyCombatSnapshot e a do flush só descartam rev menor que applied, ou seja, cena já superada. Não vi outro caso de descarte indevido. O problema é o do item acima, que é anterior à guarda.
+- Resposta à pergunta (b): moveSelectedTo (1921-1926) aplica a própria resposta quando rev >= applied e sempre chama onApplySnapshot(force, immediate). Se já houver revisão maior aplicada, a resposta vai para o pai ou para syncRoom direto, que não tem guarda e pode reverter a cena para a mais antiga. Isso já existia e o diff não mexe nele. Fica como risco fora do escopo.
+- Resposta à pergunta (c): não encontrei loop. Com revisão monotônica, o refresh devolve rev igual ou maior que applied. No primeiro caso o efeito retorna; no segundo aplica a cena e sobe applied. A pendência é limpa antes do refresh, e o refresh é debounced e enfileirado no useRoomSync. Inferido pelo código, não testado.
+- Verificado aqui: npx tsc --noEmit exit 0. Navegador não testado. Nenhum arquivo do repo editado.
+- Lupa, revisão em 20/11/2026.
+
+## D-13 r3 — pendente só troca por revisão maior ou igual (Lupa)
+Parecer: REPROVADO, com o ponto (a2) fechado.
+- components/vtt/Battlefield.tsx:765-769 — fecha (a2): a resposta 9 não substitui a pendente 10, e o flush aplica a 10 quando a FX terminar. Ok.
+- components/vtt/Battlefield.tsx:771-789 — a resposta 9 continua entrando no ramo deferido. Ela vai para onApplySnapshot (771) e para o merge parcial (776-789), que repinta os tokens não protegidos com a posição da 9 durante a FX. Isso é o sintoma do BV-018 (token voltando para a célula antiga), só que transitório. O que fazer: antes de onApplySnapshot e do merge parcial, if (snap.revision < appliedSceneRevisionRef.current) return; (pode manter playCombatFxFromSnapRef se for preciso). Sem isso a resposta velha ainda é aplicada ao tabuleiro.
+- Verificado aqui: npx tsc --noEmit exit 0 (rodada anterior, sem mudança de tipo nesta rodada). Navegador não testado. Nenhum arquivo do repo editado.
+- Lupa, revisão em 20/11/2026.
+
+## D-13 r4 — retorno antecipado para revisão menor no ramo deferido (Lupa)
+Parecer: APROVADO, com ressalvas que não bloqueiam.
+- components/vtt/Battlefield.tsx:770 (if (isStaleSceneRevision(snap.revision)) return;, no início do ramo deferido) — fecha o ponto de 771-789 da r3: a resposta velha não toca pendente, onApplySnapshot, merge parcial nem FX. A guarda usa revisão > 0, então a revisão 0 passa; o applied não é rebaixado aqui.
+- Ressalva 1 (sobre o efeito de pular a FX): a FX lê snap.chat (hooks/vtt/useBattlefieldCombatFxQueue.ts:70-100), e essas mensagens já foram vistas pela resposta mais nova. Isso parte de chat cumulativo no servidor, que não conferi. Se não for cumulativo, uma FX só presente na resposta velha se perde. Nit, verificar no servidor.
+- Ressalva 2 (já existia, fora do trecho): o caminho direto de syncRoom, sem ramo deferido, ainda não tem guarda; grava a cena e chama onApplySnapshot mesmo com revisão menor. Não entrou neste diff e não bloqueia esta rodada.
+- Verificado aqui: leitura do trecho e da FX. Não rodei tsc nesta rodada. Navegador não testado. Nenhum arquivo do repo editado.
+- Lupa, revisão em 20/11/2026.
+
+## D-12 r2 — clamps de PA guardado no level-up e na comida (Lupa)
+Parecer: REPROVADO.
+- lib/culinary/apply-meal.ts:96 — a refeição grava pontosAcao.value = Math.min(max, value + paRestored), com max = 5. Com 8 PA guardados, paRestoredByMealQuality (meal-rules.ts:49) devolve 0 (missing = max(0, 5 - 8) = 0), e a ficha cai para 5. É o mesmo clamp que a causa do D-12 descreve, e não está nos arquivos da lista. O que fazer: prender no teto do pool, value = Math.min(paPoolMaxForSheet(actor), value + paRestored); o paRestored pode continuar calculado contra o max. Incluir um caso no verify (8 + comum ou gourmet continua 8 ou sobe até 9).
+- Ressalva 1: combat-gm.ts (level-up-all, 252-270) e gm-actor-progress.ts (applySetLevel, 38-62) estão corretos: o teto é calculado com o nível novo e os talentos após reset. Nenhum dos 5 casos do verify cobre esses dois handlers. Não bloqueia sozinho, mas é o caminho que a r1 já tinha deixado escapar.
+- Ressalva 2: o verify confere normalize e applyIdentityPatch, com 8 e 12. Nada novo a apontar nele.
+- Verificado aqui: node scripts/verify-pa-guardado-ficha.mjs = 5 ok, exit 0; npm run test:pa = exit 0; npx tsc --noEmit = exit 0. Nenhum arquivo do repo editado.
+- Lupa, revisão em 20/11/2026.
+
+## D-12 r3 — refeição não corta PA guardado (Lupa)
+Parecer: APROVADO.
+- lib/culinary/apply-meal.ts:96-102 — value = Math.max(value, Math.min(max, value + paRestored)). Com 8 PA, paRestored é 0 (missing = max(0, 5 - 8)) e o resultado fica 8. Com 3 PA e comum, paRestored é 1 e o resultado é 4. Fecha a causa: a refeição não reduz mais o PA guardado.
+- scripts/verify-pa-guardado-ficha.mjs — 7 casos, incluindo os 2 de refeição (8 continua 8; 3 + comum vira 4). Confere com o comportamento acima.
+- Ressalva 1: a busca por escritas em pontosAcao.value encontrou só esses pontos corrigidos. monsters.ts (NPC) está fora do escopo do D-12.
+- Ressalva 2: o caso de refeição usa comum. Não há caso com gourmet e 8 PA. A matemática cobre, mas um caso a mais seria barato.
+- Verificado aqui: node scripts/verify-pa-guardado-ficha.mjs = 7 ok, exit 0; npm run test:pa = exit 0; npm run test:culinary = exit 0; npx tsc --noEmit = exit 0. Nenhum arquivo do repo editado.
+- Lupa, revisão em 20/11/2026.
+- Verificado aqui: npx tsc --noEmit exit 0. Navegador não testado. Nenhum arquivo do repo editado.
+- Lupa, revisão em 20/11/2026.
+

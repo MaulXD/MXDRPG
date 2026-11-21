@@ -41,6 +41,20 @@ Só correções, uma por vez: Bigorna corrige, Lupa revisa, o maestro confere e 
 
 Loop de 2 h (15:45 a 17:45 de 20/11): Bigorna e Lupa na fila, Farejador testando combate no portal.
 
+## Rodada 3 (20/11, 22:40 em diante) — decisões tomadas, ver página 03
+| ID | O quê | Quem | Estado |
+|---|---|---|---|
+| D-13 | Movimento só aparece depois de recarregar (BV-018/019) | Claude Code + Lupa | feito, 87c2613 |
+| D-12 | PA guardado cortado para 5 ao salvar a ficha | Bigorna | feito, df56873 |
+| D-11 | Dano do +N das armas aprimoradas | Bigorna | em andamento |
+| D-07 | Vida temporária na subida de nível | Bigorna | na fila |
+| D-09 | updateRoomActor engole erro de gravação (B2) | Bigorna | na fila |
+| D-14 | Cadastro sem banco aceito pela API | Bigorna | na fila |
+| D-15 | Log do mestre mostra pa + bankedPa | Bigorna | na fila |
+| D-16 + A-10a | Catálogo do Puxão Abissal; mensagem e docs do limite 3 por aventura | Bigorna | na fila |
+| D-05 + D-03 | npm test no CI; init MariaDB no docker-compose.local | Claude Code | feito, 369ab6f |
+| D-10 + D-04 | Docs do auto-passe; CLAUDE-PROJETO.md com a pilha real | OpenCode | feito, 6b23519 e 930eb68 |
+
 Feitos fora da fila: B1 (31841ac), N-01 (3b37186), BV-002 e BV-003 loop da mesa (eb8a4bd), aviso de loop do store da mesa (eb25f17).
 Pausados até as correções andarem: caça-bugs no site, história, balanceamento. OpenCode grátis esgotou a cota.
 
