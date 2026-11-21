@@ -66,6 +66,17 @@ export function FriendsPageClient({ selfUserId }: Props) {
     void load();
   }, [load]);
 
+  // BV-079: quem mandou o pedido não via o aceite até recarregar. Enquanto houver
+  // pedido enviado em aberto e a aba estiver visível, a página consulta de novo a cada 10 s.
+  const hasOutgoing = outgoingRequests.length > 0;
+  useEffect(() => {
+    if (!hasOutgoing) return;
+    const id = window.setInterval(() => {
+      if (document.visibilityState === "visible") void load();
+    }, 10_000);
+    return () => window.clearInterval(id);
+  }, [hasOutgoing, load]);
+
   useEffect(() => {
     const com = searchParams.get("com");
     if (com && friends.some((f) => f.id === com)) {
