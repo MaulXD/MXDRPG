@@ -777,7 +777,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -1111,7 +1111,10 @@
         "nivel": 4,
         "escola": "Adivinhação",
         "tempo": "10 minutos",
-        "alcance": "0 célula"
+        "alcance": "0 célula",
+        "save": {
+          "attribute": "sabedoria"
+        }
       },
       "bookRef": "_parte_x_magias_v4_revisada.md"
     }
@@ -1172,7 +1175,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -1180,7 +1183,10 @@
         "nivel": 4,
         "escola": "Biomancia",
         "tempo": "1 ação",
-        "alcance": "12 célula"
+        "alcance": "12 célula",
+        "save": {
+          "attribute": "constituicao"
+        }
       },
       "bookRef": "_parte_x_magias_v4_revisada.md"
     }
@@ -1629,6 +1635,9 @@
         "escola": "Evocação",
         "tempo": "1 ação",
         "alcance": "12 célula",
+        "save": {
+          "attribute": "forca"
+        },
         "recarga": "1/turno"
       },
       "weapon": {

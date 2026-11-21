@@ -2,6 +2,8 @@
 
 Somente leitura. Nenhum gerador, JSON ou livro foi alterado. Nenhum commit foi feito.
 
+Status CUS-fix (Bigorna): corrigidas 2 divergencias de PA, 5 de CD (inclui Mutação Forçada, CON CD, linha 236, que faltava na lista acima) e 1 texto (Terremoto; so chega ao JSON se o texto do livro for usado, ver pagina 03). Parede de Fogo ja traz 2d8 radiante no texto. Ventania, Terremoto e Esporos Necroticos seguem no dado, em decisao (pagina 03). Ver scripts/verify-custos-livro.mjs.
+
 Objetivo: comparar, para habilidades e magias, (1) custo em PA, (2) fórmula de dano, (3) tipo de dano e (4) CD de salvaguarda fixada no livro, entre o que o livro diz e o que o dado gerado traz.
 
 Fontes consultadas: `data/compendiums/habilidades.json`, `data/compendiums/magias.json`, `scripts/generate-compendium.mjs`, `livros/LIVRO-DO-JOGADOR.md`, `livros/_parte_x_magias_v4_revisada.md` e `livros/CATALOGO-HABILIDADES-TATICAS.md`.

@@ -410,7 +410,7 @@ const SPELLS = [
   }),
   spell("Muralha de Energia", 2, "Abjuração", 3, 2, "Barreira reta em 3 células.", { area: { shape: "wall", cellCount: 3 } }),
   spell("Animação de Mortos", 3, "Necromancia", 2, 2, "Anima 2 cadáveres por 24h.", { tempo: "1 minuto" }),
-  spell("Injeção Biomágica", 3, "Biomancia", 1, 1, "Habilidade assimilacao 12h do ingrediente."),
+  spell("Injeção Biomágica", 3, "Biomancia", 1, 2, "Habilidade assimilacao 12h do ingrediente."),
   spell("Bola de Fogo", 3, "Evocação", 30, 3, "Raio 6 m: 8d6 fogo; save DES. Canalizável.", {
     dano: "8d6",
     tipo: "fogo",
@@ -448,7 +448,7 @@ const SPELLS = [
     save: "constituicao",
     channel: true,
   }),
-  spell("Visão do Ecossistema", 4, "Adivinhação", 0, 2, "Visão através de criatura do bioma.", { tempo: "10 minutos" }),
+  spell("Visão do Ecossistema", 4, "Adivinhação", 0, 2, "Visão através de criatura do bioma.", { tempo: "10 minutos", save: "sabedoria" }),
   spell("Murcha", 4, "Necromancia", 3, 3, "8d8 necrótico; save CON. Canalizável.", {
     dano: "8d8",
     tipo: "necrótico",
@@ -456,7 +456,7 @@ const SPELLS = [
     channel: true,
     recarga: "1/turno",
   }),
-  spell("Mutação Forçada", 4, "Biomancia", 12, 1, "Mutação negativa aleatória 1h."),
+  spell("Mutação Forçada", 4, "Biomancia", 12, 2, "Mutação negativa aleatória 1h.", { save: "constituicao" }),
   spell("Parede de Fogo", 4, "Evocação", 24, 3, "Parede até 18 m: 5d8 fogo.", {
     dano: "5d8",
     tipo: "fogo",
@@ -513,11 +513,13 @@ const SPELLS = [
   spell("Prisão de Gelo", 7, "Evocação", 12, 3, "Restringido + 5d6 frio/turno.", {
     dano: "5d6",
     tipo: "frio",
+    save: "forca",
     recarga: "1/turno",
   }),
   spell("Regeneração Biomágica", 7, "Biomancia", 1, 2, "4d8+15 HP no início de cada turno."),
   spell("Invisibilidade Maior", 7, "Ilusão", 1, 1, "Até 6 aliados invisíveis."),
-  spell("Terremoto", 8, "Evocação", 100, 3, "Área 30 célula; save DES prostrado.", {
+  // Terremoto: a descricao vem do grimorio (SPELL_LORE, linhas 650-661); este texto so vale sem lore.
+  spell("Terremoto", 8, "Evocação", 100, 3, "Raio 30 m (20 células); save DES prostrado.", {
     dano: "6d6",
     tipo: "contundente",
     save: "destreza",
@@ -595,10 +597,10 @@ const ABILITY_CATALOG = [
   ["Mente Partida", 12, 2, "ativa", "1/descanso longo", "Confusão 1 min (INT CD 16); aberrações INT ≤ 8 falham automaticamente."],
   ["Sangue do Patrono", 0, 1, "ativa", "", "Sacrifica 1d8 HP para recuperar 1 slot de Pacto."],
   ["Pacto de Ferro", 6, 2, "ativa", "1/combate", "Correntes 3d8 fogo + Restringir alvo (FOR CD 15)."],
-  ["Correntes Infernais", 3, 3, "ativa", "1/turno", "Selo de sangue 3m: 3d6 fogo a quem entrar; fogo ignora resistência."],
+  ["Correntes Infernais", 3, 3, "ativa", "1/turno", "Selo de sangue 3m: 3d6 fogo a quem entrar (DES CD 16 evita metade e negativa lentidão); fogo ignora resistência."],
   ["Corrente Mental", 12, 1, "ativa", "1/descanso curto", "Eco mental: repete encantamento nv.1 sem slot."],
   ["Manto de Bruma", 3, 2, "ativa", "", "Névoa 6m 1 min: aliados furtivos; inimigos −2 em ataques à distância."],
-  ["Puxão Abissal", 6, 3, "ativa", "1/turno", "Puxa alvo 9m e 2d8 frio (FOR CD 15)."],
+  ["Puxão Abissal", 6, 3, "ativa", "1/turno", "Puxa alvo 9m e 2d8 frio (FOR CD 16)."],
 ];
 
 const BOOK_CHI = "ESPIRITUALISTA-CRIACAO-PERSONAGEM.md";

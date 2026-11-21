@@ -1110,7 +1110,7 @@
     "system": {
       "catalogId": "HAB-correntes-infernais",
       "bookRef": "CATALOGO-HABILIDADES-TATICAS.md",
-      "description": "<p>Selo de sangue 3m: 3d6 fogo a quem entrar; fogo ignora resistência.</p>",
+      "description": "<p>Selo de sangue 3m: 3d6 fogo a quem entrar (DES CD 16 evita metade e negativa lentidão); fogo ignora resistência.</p>",
       "tactical": {
         "alcanceCells": {
           "value": 3,
@@ -1182,7 +1182,7 @@
     "system": {
       "catalogId": "HAB-puxao-abissal",
       "bookRef": "CATALOGO-HABILIDADES-TATICAS.md",
-      "description": "<p>Puxa alvo 9m e 2d8 frio (FOR CD 15).</p>",
+      "description": "<p>Puxa alvo 9m e 2d8 frio (FOR CD 16).</p>",
       "tactical": {
         "alcanceCells": {
           "value": 6,
