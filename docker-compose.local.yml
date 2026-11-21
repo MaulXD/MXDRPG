@@ -21,7 +21,7 @@ services:
       MARIADB_PASSWORD: ${DB_PASSWORD:-mxdrpg_local}
     volumes:
       - db_data:/var/lib/mysql
-      - ./scripts/db/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql:ro
+      - ./scripts/db/schema.mariadb.sql:/docker-entrypoint-initdb.d/01-schema.sql:ro
     healthcheck:
       test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
       interval: 5s

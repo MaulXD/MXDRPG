@@ -77,3 +77,8 @@ jobs:
 
       - name: Build
         run: npm run build
+
+      # D-05: os verify-*.mjs (PA, combate, privacidade, Um Anel, dados) rodam em
+      # todo push e PR. Lint fica fora: o projeto não tem ESLint configurado.
+      - name: Test
+        run: npm test
