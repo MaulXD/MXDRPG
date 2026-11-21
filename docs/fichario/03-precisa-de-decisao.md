@@ -103,7 +103,7 @@ O sistema tem 4 atributos culinários: Extração, Forrageio, Fabricação e For
 ## D-23 Escolha de truques no wizard (BV-072)
 O wizard não deixa escolher truques: a revisão só lista o que vem do kit (CharacterCreationWizard.tsx:1040-1058; starter-kits.ts). O cantripsKnown de data/.../spell-lists.json:186 (Bruxo = 2) não é lido por nenhum código. O livro dá 2 truques ao Bruxo no nível 1 (LIVRO-DO-JOGADOR.md:1248). Além disso, a tabela de kits do Bruxo (:2113) dá Raio do Limiar (nível 3 no pacto) e Sussurro de Masmorra (truque do nível 4, :3126). Decidir: (a) passo novo no wizard para escolher os truques pelo cantripsKnown de cada classe; (b) corrigir a tabela de kits do Bruxo no livro. Sugestão: (a) e (b). É recurso novo, por isso ficou para o dono.
 
-## D-24 Publicar o branch no site oficial (loop de desempenho, 21/11)
+## D-24 Publicar o branch no site oficial (loop de desempenho, 21/11) — FEITO 21/11 15:45 (main 33f4299)
 O oficial roda be69f6f (main). As correções de sincronização ao vivo da mesa (ficha, XP, vida, Jornada/Conselho; emissor em globalThis), segurança da rota de token e todo o loop de desempenho (P-01 a P-13) estão só no branch fix/login-google-e-responsivo-um-anel. Boa parte do 'lento e bugando' no oficial já está resolvida aqui e só chega com o merge na main e o deploy. Decisão do dono: quando publicar.
 
 ## D-25 Servidor longe dos jogadores (loop de desempenho, 21/11)

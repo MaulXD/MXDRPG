@@ -6841,3 +6841,12 @@ Aproveitando o esclarecimento, atendido o pedido de melhorar de verdade a UX: at
 **Fichário:** página nova `docs/fichario/13-desempenho.md`; 03, 06, 08 e `propostas/desempenho.md` atualizadas.
 
 ---
+
+### 2026-11-21 (fim da tarde) — Merge na main e deploy
+
+**Pedido:** fazer o merge na main, publicar e testar no site oficial.
+
+- Antes do merge, as mensagens dos 234 commits fora da main foram reescritas sem as 68 linhas `Co-Authored-By` (código idêntico; backup em `backup/antes-merge-main-20261121`). Por isso os hashes citados nas entradas de 20 e 21/11 mudaram; o backup guarda os antigos.
+- main avançou em fast-forward `be69f6f -> 33f4299` e foi enviada; CI e o workflow de imagem passaram, e o oficial passou a responder `buildSha 33f4299` às 15:45.
+- O branch `fix/login-google-e-responsivo-um-anel` no GitHub continua com os commits antigos (com coautoria); trocar exige force push.
+- Teste no oficial com 2 contas temporárias (apagadas no fim, junto com a mesa): cadastro, criar mesa, entrar pelo código, chat e dado do jogador (resposta já com a revisão nova e filtrada), delta e 304 no GET, SSE avisando o mestre, presença e pulso de amigos. Tudo OK. Mesa recém-criada devolve a sala inteira no primeiro `since` (o diário de revisões não guarda a revisão de criação); da 1ª mudança em diante volta delta. Pré-existente e barato (~1 KB).
