@@ -55,7 +55,7 @@ Refatorar **combate**, **economia de PA**, **fluxo de turno** e **shell da mesa*
 |----|---------|
 | **R20** | **Surpresa / entrada tardia:** todos presentes rolam iniciativa; quem **entra depois** só age **no fim da rodada atual**; na **rodada seguinte** entra na ordem normal. |
 | **R21** | **Empate iniciativa:** **d100** até desempatar (só para iniciativa). |
-| **R22** | **Auto-pass:** delay **configurável** pelo mestre (padrão ~1,5 s). |
+| **R22** | **Auto-pass:** delay **configurável** pelo mestre (padrão 150 ms). |
 | **R23** | **Reação sem PA no pool:** **débito** — no próximo turno recupera **4 PA** em vez de 5 (1 PA “emprestado”). |
 | **R24** | **Checkpoint:** mestre pode voltar até **20 rodadas** atrás; jogador **vê** aviso no chat quando mestre desfaz/restaura. |
 

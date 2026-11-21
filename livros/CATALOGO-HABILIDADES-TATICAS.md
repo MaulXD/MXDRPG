@@ -74,7 +74,7 @@
 | ID | Nome | Alc. | PA | Tipo | Recarga | Como funciona |
 |----|------|------|----|------|---------|---------------|
 | HAB-correntes-infernais | Correntes Infernais | 3 | 3 | ativa | 1/turno | Selo de sangue 3 m: 3d6 fogo a quem entrar; fogo ignora resistência. |
-| HAB-puxao-abissal | Puxão Abissal | 5 | 3 | ativa | 1/turno | Puxa alvo 9 m e 2d8 frio (FOR CD 15). |
+| HAB-puxao-abissal | Puxão Abissal | 6 | 3 | ativa | 1/turno | Puxa alvo 9 m e 2d8 frio (FOR CD 15). |
 
 ---
 

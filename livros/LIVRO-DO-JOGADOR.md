@@ -250,7 +250,7 @@ Regras completas, exemplos de turno e tabelas de talentos: **Cap. 3.1** e **Cap.
 3. **Movimento:** integrado ao gasto de PA por **faixas de células** (`walk`/`run`) no modo combate; fora de combate, movimento **livre sem PA** (`§3.1.4`).
 4. **Reacao:** uma por rodada, em resposta a gatilhos (`§3.1.5`). Em combate, reacoes **gastam PA** ou geram **debito** de 1 PA na recuperacao do proximo turno se o pool estiver vazio.
 
-**Mesa digital (VTT):** turnos usam **Pontos de Acao (PA)** (`Cap. 2.6`), no estilo **DOS**. No inicio do seu turno voce soma **PA base** ao que sobrou no pool (com teto). Se o token ativo **esgota PA** (chega a 0), o VTT **passa o turno** automaticamente apos pausa **configuravel pelo mestre** (padrao ~1,5 s), salvo **Atordoado** (que zera o pool no inicio do turno).
+**Mesa digital (VTT):** turnos usam **Pontos de Acao (PA)** (`Cap. 2.6`), no estilo **DOS**. No inicio do seu turno voce soma **PA base** ao que sobrou no pool (com teto). Se o token ativo **esgota PA** (chega a 0), o VTT **passa o turno** automaticamente apos pausa **configuravel pelo mestre** (padrao 150 ms), salvo **Atordoado** (que zera o pool no inicio do turno).
 
 ### 3.1.1 Economia de PA (mesa digital)
 

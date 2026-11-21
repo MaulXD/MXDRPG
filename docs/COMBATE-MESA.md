@@ -113,7 +113,7 @@ Dois caminhos:
 **A) Auto-pass (padrão)** — `lib/combat/combat-pa-engine.ts`:
 
 - Após ação, se PA gastável = 0, já gastou PA no turno (`paSpentThisTurn > 0`) e não restam opções de 0 PA (ex.: caminhada grátis do talento O Peão), agenda `pendingAutoPass`.
-- Delay: `settings.autoPassDelayMs` (padrão **500 ms**, mínimo 200 ms). PRD sugere ~1,5 s — **discrepância**.
+- Delay: `settings.autoPassDelayMs` (padrão **150 ms**, mínimo 100 ms), configurável pelo mestre por sala.
 - Em todo `persistRoom`, `executePendingAutoPassIfDue` executa se `Date.now() >= passAt`.
 
 **B) Pass manual** — `POST .../combat/next-turn` com `{ force: true }`:
@@ -445,7 +445,7 @@ Documentação parcial em `docs/API-SALA.md` — **faltam** `consume`, `gm` e ca
 |------|-----|-------------|
 | Reações v1 (oportunidade, Escudo, Contramágica) | R7, R21 | `applyReactionPaDebt` existe; **sem triggers nas rotas** |
 | Entrada tardia na iniciativa | R20 | Spawn entra na ordem **na hora** |
-| Delay auto-pass padrão | ~1,5 s (R22) | **500 ms** (`DEFAULT_AUTO_PASS_DELAY_MS`) |
+| Delay auto-pass padrão | 150 ms (R22) | **150 ms** (`DEFAULT_AUTO_PASS_DELAY_MS`), sem discrepância |
 | Boss/miniboss pool PA | PRD variante 8 | **`MONSTER_PA_BOSS = 8`** em `pa-economy.ts` |
 | Atributo de iniciativa | Comentários dizem AGI | Usa **`destreza`** (DEX) |
 | Surpresa | Mencionado | **Não implementado** |

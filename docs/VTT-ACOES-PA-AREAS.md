@@ -16,7 +16,7 @@ Toda ação na mesa deve exibir **PA efetivo** (não só o custo bruto do JSON):
 | Motor | `effectivePaCost(actor, action, ctx?)` | Custo após talentos / Afinidade / Guerreiro |
 | Motor | `totalAttackPaCost` | Multi-ataque arma |
 | Motor | `paMaxForActor` (PC) / `MONSTER_PA_MIN` 6 (NPC) + token `pa` | “Gasta X · restam Y” |
-| Turno | `scheduleAutoPassWhenActivePaZero` | **PA = 0** → passagem automática (~1,5 s) |
+| Turno | `scheduleAutoPassWhenActivePaZero` | **PA = 0** → passagem automática (150 ms) |
 
 **Chip padrão no hover/rodapé:**
 
