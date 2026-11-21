@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { postRoomTorHazard } from "@/hooks/useRoomSync";
+import { TOR_SHEET_NOT_SAVED_MESSAGE } from "@/lib/character/portrait-sheet-saved";
 import {
   TOR_HAZARD_LEVELS,
   TOR_HAZARD_LEVEL_META,
@@ -52,8 +53,9 @@ export function TorHazardPanel({ roomId, token, canManage, onUpdate }: Props) {
     setBusy(true);
     setErr(null);
     try {
-      await postRoomTorHazard(roomId, token.id, body);
+      const res = await postRoomTorHazard(roomId, token.id, body);
       onUpdate();
+      if (res.sheetSaved === false) setErr(TOR_SHEET_NOT_SAVED_MESSAGE);
     } catch (e) {
       setErr(e instanceof Error ? e.message : "Falha ao aplicar a Fonte de Dano");
     } finally {

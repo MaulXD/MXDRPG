@@ -34,7 +34,7 @@ import type { BattleToken } from "@/lib/vtt/types";
 import type { RoomSnapshot, RoomState } from "../types";
 
 export type TorAttackExecuteResult =
-  | { ok: true; snapshot: RoomSnapshot }
+  | { ok: true; snapshot: RoomSnapshot; sheetSaved: boolean }
   | { ok: false; error: string };
 
 export type TorAttackExecuteOpts = {
@@ -591,7 +591,9 @@ export async function executeRoomTorAttack(
 
   // Sincroniza Resistência/Ferida de volta pra ficha — só se o requisitante tiver
   // permissão (dono da ficha ou mestre da aventura; ver patchTorCharacterResources).
-  // Falha aqui não desfaz o ataque no token/mapa, só fica sem persistir na ficha.
+  // Falha aqui não desfaz o ataque no token/mapa, só fica sem persistir na ficha:
+  // sheetSaved: false avisa o jogador (ver TorAttackPopup).
+  let sheetSaved = true;
   if (result.hit && defCombat.kind === "hero" && defenderHeroSheetId) {
     try {
       await patchTorCharacterResources(
@@ -604,6 +606,7 @@ export async function executeRoomTorAttack(
         author.authorId
       );
     } catch (e) {
+      sheetSaved = false;
       console.error("[tor-attack] falha ao sincronizar ficha do defensor:", e);
     }
   }
@@ -614,6 +617,7 @@ export async function executeRoomTorAttack(
     try {
       await patchTorCharacterResources(hopeSpentSheetId, { hopeValue: hopeAfter }, author.authorId);
     } catch (e) {
+      sheetSaved = false;
       console.error("[tor-attack] falha ao descontar Esperança:", e);
     }
   }
@@ -667,7 +671,7 @@ export async function executeRoomTorAttack(
   });
 
   try {
-    return { ok: true, snapshot: toSnapshot(await persistRoom(roomId, room)) };
+    return { ok: true, snapshot: toSnapshot(await persistRoom(roomId, room)), sheetSaved };
   } catch (e) {
     console.error("[tor-attack] persistRoom failed:", e);
     return { ok: false, error: e instanceof Error ? e.message : "Falha ao salvar a mesa após o ataque" };

@@ -12,6 +12,7 @@ import {
   postRoomTorPush,
   type RoomApiPayload,
 } from "@/hooks/useRoomSync";
+import { TOR_SHEET_NOT_SAVED_MESSAGE } from "@/lib/character/portrait-sheet-saved";
 import { torPushRecovery } from "@/lib/combat/um-anel/push";
 import { TOR_COMBAT_TASK_BY_ID } from "@/lib/combat/um-anel/combat-tasks";
 import { ADVERSARY_PIERCE_BONUS, heroPierceBonus } from "@/lib/combat/um-anel/special-damage";
@@ -272,6 +273,8 @@ export function TorAttackPopup({ token, allTokens, roomId, onClose, onRoomSync }
       const last = messages[messages.length - 1];
       setLastMessage(last?.text ?? null);
       onRoomSync(payload);
+      // A mesa já aplicou o ataque; só a ficha do herói ficou para trás.
+      if (payload.sheetSaved === false) setErr(TOR_SHEET_NOT_SAVED_MESSAGE);
     } catch (e) {
       setErr(e instanceof Error ? e.message : "Falha no ataque");
     } finally {

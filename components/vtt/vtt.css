@@ -5813,6 +5813,8 @@
 
 .dice-custom input {
   flex: 1;
+  /* Sem min-width: 0 o input (largura padrão ~20 caracteres) não encolhe e empurra o ROLAR para fora do painel (BV-039). */
+  min-width: 0;
   padding: 0.45rem 0.65rem;
   border-radius: var(--radius);
   border: 1px solid var(--glass-border);
@@ -5820,6 +5822,10 @@
   color: var(--text);
   font-family: inherit;
   font-size: 0.85rem;
+}
+
+.dice-custom .btn {
+  flex: 0 0 auto;
 }
 
 .dice-err {

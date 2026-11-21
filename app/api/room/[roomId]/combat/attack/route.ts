@@ -155,9 +155,12 @@ export async function POST(req: Request, { params }: Params) {
       return NextResponse.json({ error: result.error }, { status: 400 });
     }
 
-    return NextResponse.json(
-      safeMutationDeltaResponse(beforeSnap, result.snapshot, room, session?.user ?? null)
-    );
+    const payload = safeMutationDeltaResponse(beforeSnap, result.snapshot, room, session?.user ?? null);
+    // Um Anel: a mesa gravou, mas a ficha pode não ter gravado (ver executeRoomTorAttack).
+    if ("sheetSaved" in result && result.sheetSaved === false) {
+      return NextResponse.json({ ...payload, sheetSaved: false });
+    }
+    return NextResponse.json(payload);
   } catch (e) {
     console.error("[attack] erro interno:", e);
     return NextResponse.json(

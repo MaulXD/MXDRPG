@@ -730,7 +730,7 @@ export async function postRoomAttack(
     },
     "Falha no ataque"
   );
-  return res.json() as Promise<RoomApiPayload>;
+  return res.json() as Promise<RoomApiPayload & { sheetSaved?: boolean }>;
 }
 
 /**
@@ -887,7 +887,8 @@ export async function postRoomTorHazard(
     },
     "Falha ao aplicar a Fonte de Dano"
   );
-  return res.json() as Promise<RoomApiPayload>;
+  /** sheetSaved: false quando a mesa gravou mas a ficha do herói não (ver executeRoomTorHazard). */
+  return res.json() as Promise<RoomApiPayload & { sheetSaved?: boolean }>;
 }
 
 /**

@@ -7,6 +7,7 @@ import { postRoomChat } from "@/hooks/useRoomSync";
 import type { FoundryWindowLayout } from "@/hooks/vtt/useFoundryWindows";
 import type { TorFeatDieRollPayload } from "@/lib/character/um-anel/dice";
 import type { TorCharacterSheet, TorResourcePatch } from "@/lib/character/um-anel/types";
+import { TOR_CHARACTER_CHANGED_EVENT } from "@/lib/character/um-anel/character-changed-event";
 
 type Props = {
   characterId: string | null;
@@ -62,6 +63,7 @@ export function TorCharacterSheetPopup({
       const data = (await res.json()) as { character?: TorCharacterSheet; error?: string };
       if (!res.ok) throw new Error(data.error ?? "Falha ao salvar");
       if (data.character) setCharacter(data.character);
+      window.dispatchEvent(new Event(TOR_CHARACTER_CHANGED_EVENT));
     } catch (e) {
       setCharacter(prev);
       setError(e instanceof Error ? e.message : "Falha ao salvar ajuste");

@@ -186,7 +186,7 @@ await caso("cliente: assert lanca a mensagem para o jogador quando sheetSaved fa
   );
   assert.equal(
     SHEET_NOT_SAVED_MESSAGE,
-    "A imagem foi aplicada na mesa, mas não foi salva na ficha. Tente de novo."
+    "A mesa foi atualizada, mas a ficha não foi salva. Tente de novo."
   );
 });
 

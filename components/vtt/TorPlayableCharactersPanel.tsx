@@ -8,6 +8,8 @@ import type { Axial } from "@/lib/vtt/grid-math";
 import type { RoomSnapshot } from "@/lib/room/types";
 import { placeRoomTorCharacterOnCell } from "@/hooks/useRoomSync";
 import { endTorCharacterSpawnDrag, startTorCharacterSpawnDrag } from "@/lib/vtt/tor-spawn-drag-ui";
+import { TOR_CHARACTER_CHANGED_EVENT } from "@/lib/character/um-anel/character-changed-event";
+import { useMesaMapSlice } from "@/hooks/vtt/useMesaRoomSlice";
 
 type Props = {
   adventureId: string;
@@ -32,6 +34,25 @@ export function TorPlayableCharactersPanel({
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   const dragGhostRef = useRef<HTMLElement | null>(null);
+  const [reloadKey, setReloadKey] = useState(0);
+  // A mesa recebe tudo por SSE: a revisão muda quando qualquer aba grava (ataque,
+  // Fonte de Dano, ficha). Um refetch por revisão, sem polling.
+  const roomRevision = useMesaMapSlice(roomId ?? "")?.revision;
+
+  useEffect(() => {
+    // Revisões chegam em rajada no combate (cada movimento de token conta). Junta tudo
+    // num refetch só, 1,5 s depois da última, em vez de uma requisição por revisão.
+    if (roomRevision == null) return;
+    const t = window.setTimeout(() => setReloadKey((k) => k + 1), 1500);
+    return () => window.clearTimeout(t);
+  }, [roomRevision]);
+
+  useEffect(() => {
+    // Atalho local: a ficha salva nesta aba recarrega sem esperar a revisão da mesa.
+    const onChanged = () => setReloadKey((k) => k + 1);
+    window.addEventListener(TOR_CHARACTER_CHANGED_EVENT, onChanged);
+    return () => window.removeEventListener(TOR_CHARACTER_CHANGED_EVENT, onChanged);
+  }, []);
 
   useEffect(() => {
     let cancelled = false;
@@ -52,7 +73,7 @@ export function TorPlayableCharactersPanel({
     return () => {
       cancelled = true;
     };
-  }, [adventureId]);
+  }, [adventureId, reloadKey]);
 
   async function placeOnMap(characterId: string) {
     if (!roomId || !spawnAxial || busy) return;

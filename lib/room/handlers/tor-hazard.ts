@@ -16,7 +16,9 @@ import { getRoom, persistRoom, toSnapshot } from "../internal/registry";
 import type { ChatMessage } from "../chat";
 import type { RoomSnapshot, RoomState } from "../types";
 
-export type TorHazardResult = { ok: true; snapshot: RoomSnapshot } | { ok: false; error: string };
+export type TorHazardResult =
+  | { ok: true; snapshot: RoomSnapshot; sheetSaved: boolean }
+  | { ok: false; error: string };
 
 export type TorHazardAction =
   | { kind: "apply"; source: TorHazardSource; level: TorHazardLevel }
@@ -130,7 +132,8 @@ export async function executeRoomTorHazard(
   room.scene = { ...room.scene, tokens };
 
   // Sincroniza a ficha. Falhar aqui não desfaz o que aconteceu no mapa — mesmo
-  // critério do ataque.
+  // critério do ataque, mas sheetSaved: false avisa o Mestre (ver TorHazardPanel).
+  let sheetSaved = true;
   if (combat.torCharacterId) {
     try {
       await patchTorCharacterResources(
@@ -139,6 +142,7 @@ export async function executeRoomTorHazard(
         author.authorId
       );
     } catch (e) {
+      sheetSaved = false;
       console.error("[tor-hazard] falha ao sincronizar a ficha:", e);
     }
   }
@@ -153,7 +157,7 @@ export async function executeRoomTorHazard(
   });
 
   try {
-    return { ok: true, snapshot: toSnapshot(await persistRoom(roomId, room)) };
+    return { ok: true, snapshot: toSnapshot(await persistRoom(roomId, room)), sheetSaved };
   } catch (e) {
     console.error("[tor-hazard] persistRoom failed:", e);
     return { ok: false, error: e instanceof Error ? e.message : "Falha ao salvar a mesa" };

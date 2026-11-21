@@ -57,5 +57,5 @@ export async function POST(req: Request, { params }: Params) {
   }, { room });
 
   if (!result.ok) return NextResponse.json({ error: result.error }, { status: 400 });
-  return NextResponse.json({ snapshot: result.snapshot });
+  return NextResponse.json({ snapshot: result.snapshot, sheetSaved: result.sheetSaved });
 }
