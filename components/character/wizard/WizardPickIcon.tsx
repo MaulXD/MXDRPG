@@ -10,10 +10,23 @@ type Props = {
   kind: WizardIconKind;
   color: string;
   className?: string;
+  /** Arte emoldurada (public/icons/...). Sem ela, mostra o glifo SVG de sempre. */
+  artSrc?: string | null;
 };
 
-export function WizardPickIcon({ kind, color, className }: Props) {
+export function WizardPickIcon({ kind, color, className, artSrc }: Props) {
   const label = wizardIconLabel(kind);
+  if (artSrc) {
+    const artClass = ["char-wizard-pick__icon", "char-wizard-pick__icon--art", className]
+      .filter(Boolean)
+      .join(" ");
+    return (
+      <span className={artClass} data-site-tip={label} aria-label={label}>
+        {/* eslint-disable-next-line @next/next/no-img-element -- ícone fixo de 256 px, já otimizado em webp */}
+        <img src={artSrc} alt="" width={76} height={76} loading="lazy" decoding="async" />
+      </span>
+    );
+  }
   const rootClass = ["char-wizard-pick__icon", "char-wizard-pick__icon--svg", className]
     .filter(Boolean)
     .join(" ");

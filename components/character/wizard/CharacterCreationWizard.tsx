@@ -13,6 +13,7 @@ import {
 import { ReligionPickGrid } from "@/components/character/ReligionPickGrid";
 import { religionDisplayName } from "@/lib/character/pantheon";
 import { WizardPickIcon } from "@/components/character/wizard/WizardPickIcon";
+import { classeIconeId, iconeGeradoUrl } from "@/lib/icons/catalog-icons";
 import { WizardProgress } from "@/components/character/wizard/WizardProgress";
 import {
   classIconColor,
@@ -694,7 +695,11 @@ export function CharacterCreationWizard({
                   }}
                 >
                   <div style={{ display: "flex", width: "100%", alignItems: "flex-start" }}>
-                    <WizardPickIcon kind={resolveClassIcon(c.id)} color={classIconColor(c.id)} />
+                    <WizardPickIcon
+                      kind={resolveClassIcon(c.id)}
+                      color={classIconColor(c.id)}
+                      artSrc={iconeGeradoUrl("classes", classeIconeId(c.id))}
+                    />
                     <span className="char-wizard-pick__check" aria-hidden>
                       <IconCheck size={14} />
                     </span>

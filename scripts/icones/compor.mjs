@@ -7,7 +7,7 @@
  * Entrada: assets-src/icones/<categoria>/<catalogId>.png (fora do git, ver .gitignore)
  * Saída:   public/icons/<categoria>/<catalogId>.webp (256x256)
  */
-import { existsSync, mkdirSync, readFileSync, readdirSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import sharp from "sharp";
@@ -75,6 +75,24 @@ function arteFalsa(cor) {
 </svg>`);
 }
 
+/**
+ * Reescreve lib/icons/icones-gerados.json com os ids que têm .webp em public/icons/<categoria>.
+ * É essa lista que o site lê (lib/icons/catalog-icons.ts) para trocar o glifo pela arte.
+ */
+export function atualizarManifesto(categoria, saida, porId, arquivo = join(ROOT, "lib", "icons", "icones-gerados.json")) {
+  const atual = existsSync(arquivo) ? JSON.parse(readFileSync(arquivo, "utf8")) : {};
+  const ids = existsSync(saida)
+    ? readdirSync(saida)
+        .filter((a) => a.endsWith(".webp"))
+        .map((a) => a.slice(0, -5))
+        .filter((id) => porId.has(id))
+        .sort()
+    : [];
+  const proximo = { classes: [], habilidades: [], magias: [], ...atual, [categoria]: ids };
+  writeFileSync(arquivo, `${JSON.stringify(proximo, null, 2)}\n`, "utf8");
+  console.log(`manifesto: ${ids.length} ícones de ${categoria} em lib/icons/icones-gerados.json`);
+}
+
 async function main() {
   const [categoria = "magias", flag] = process.argv.slice(2);
   const cfg = CATEGORIAS[categoria];
@@ -119,6 +137,7 @@ async function main() {
     feitos++;
   }
   console.log(`${feitos} de ${porId.size} ícones de ${categoria} compostos em public/icons/${categoria}`);
+  atualizarManifesto(categoria, saida, porId);
   if (desconhecidos.length) console.log("arquivos sem catalogId conhecido:", desconhecidos.join(", "));
 }
 

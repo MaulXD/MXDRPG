@@ -6889,3 +6889,14 @@ Contas temporárias de mestre e jogador e uma mesa, testadas no portal do Maestr
 - `app/layout.tsx` usa `next/font/local` com as mesmas variáveis CSS (`--font-body`, `--font-ui`, `--font-display`) e as mesmas faixas de peso. O build não acessa mais o Google.
 - Conferido: `tsc`, `next build` (3 woff2 próprios no preload), página /sistema numa build de produção local com Cinzel e Source Sans carregadas, `npm test` inteiro.
 - O `next build` no repositório quebrou o servidor de dev da porta 3000, que ainda estava vivo (respondia 500 e derrubou o verify-p01); ele foi parado.
+
+### 2026-11-21 (noite) — Cartões de classe prontos para os ícones
+
+**Pedido:** deixar o código dos cartões pronto para os ícones emoldurados (depois da prévia aprovada no criador de personagens).
+
+- `lib/icons/catalog-icons.ts`: `iconeGeradoUrl(categoria, id)` devolve `/icons/<categoria>/<id>.webp` só se o id estiver em `lib/icons/icones-gerados.json`; `classeIconeId("Clérigo") = "CLA-clerigo"` (mesmos ids de `docs/icones/prompts-classes.json`).
+- `scripts/icones/compor.mjs` reescreve esse manifesto depois de compor (só .webp com id conhecido; preserva as outras categorias). O manifesto começa vazio: sem arte, nada muda na tela e nenhum arquivo que falta é pedido.
+- `WizardPickIcon` ganhou `artSrc`: com arte mostra a imagem (76 px, classe `char-wizard-pick__icon--art`, brilho ametista no escolhido); sem arte, o glifo de sempre. O passo Classe do criador passa `artSrc` para as 12 classes.
+- Conferido de ponta a ponta com arte provisória (o glifo atual) passando pelo `compor.mjs` real e por uma build de produção: 12 de 12 imagens no cartão, cache de 1 dia. Arte provisória, `public/icons/classes` e manifesto desfeitos depois.
+- Teste novo `scripts/verify-icones-cartoes.mjs` (no `npm test`).
+- Para ligar quando houver arte: `gerar-gemini.mjs classes`, `compor.mjs classes` e commitar `public/icons/classes` + `lib/icons/icones-gerados.json`.
