@@ -81,11 +81,11 @@ assert.match(helperSrc, /addEventListener\("visibilitychange", onVisibility\)/, 
 assert.match(helperSrc, /removeEventListener\("visibilitychange", onVisibility\)/, "helper precisa remover o listener na limpeza");
 ok("helper startVisiblePoll checa visibilidade e limpa o listener");
 
-// [arquivo, usos do helper, setInterval que sobram: o do painel da ficha em useSheetEditRequest
-// e usePlayerInventoryRequests nao sao da topbar da mesa e continuam como estavam]
+// [arquivo, usos do helper, setInterval que sobram]. O P-14 levou para o helper os
+// dois setInterval que tinham sobrado (painel da ficha e usePlayerInventoryRequests).
 const sitesPoll = [
-  ["hooks/useSheetEditRequest.ts", 2, 1],
-  ["hooks/useInventoryItemRequest.ts", 2, 1],
+  ["hooks/useSheetEditRequest.ts", 3, 0],
+  ["hooks/useInventoryItemRequest.ts", 3, 0],
   ["components/notifications/NotificationsProvider.tsx", 1, 0],
 ];
 for (const [rel, quantos, sobram] of sitesPoll) {
