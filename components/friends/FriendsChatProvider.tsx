@@ -13,10 +13,9 @@ import { FriendsMessengerDock } from "@/components/friends/FriendsMessengerDock"
 import type { FriendSummary } from "@/lib/friends/types";
 import "./friends.css";
 
-// BV-078: com 30 s o pedido de amizade levava de 20 a 40 s para aparecer no sino.
-// São duas consultas leves (countOnly); 10 s fica perto do 'na hora' sem pesar.
-const INVITE_POLL_MS = 10_000;
-const UNREAD_POLL_MS = 4_000;
+// P-01: um único pedido (/api/friends/pulse) a cada 15 s, só com a aba visível.
+// Com a mesa parada antes eram 27 pedidos/min por jogador (4 s + 10 s + 10 s).
+const PULSE_MS = 15_000;
 const fetchOpts = { credentials: "same-origin" as const, cache: "no-store" as const };
 
 type FriendsChatContextValue = {
@@ -67,10 +66,12 @@ export function FriendsChatProvider({ children, initialUserId = null }: Provider
 
   const refreshUnread = useCallback(async () => {
     try {
-      const res = await fetch("/api/friends/messages/unread", fetchOpts);
+      const res = await fetch("/api/friends/pulse", fetchOpts);
       if (!res.ok) return;
-      const data = (await res.json()) as { unreadCount?: number };
-      setUnreadCount(Math.max(0, data.unreadCount ?? 0));
+      const data = (await res.json()) as { unread?: number; invites?: number; requestsCount?: number };
+      setUnreadCount(Math.max(0, data.unread ?? 0));
+      setInviteCount(Math.max(0, data.invites ?? 0));
+      setRequestCount(Math.max(0, data.requestsCount ?? 0));
     } catch {
       /* ignore */
     }
@@ -87,28 +88,6 @@ export function FriendsChatProvider({ children, initialUserId = null }: Provider
       /* ignore */
     }
   }, [selfUserId]);
-
-  const refreshInvites = useCallback(async () => {
-    try {
-      const res = await fetch("/api/friends/invites", fetchOpts);
-      if (!res.ok) return;
-      const data = (await res.json()) as { invites?: unknown[] };
-      setInviteCount(Array.isArray(data.invites) ? data.invites.length : 0);
-    } catch {
-      /* ignore */
-    }
-  }, []);
-
-  const refreshFriendRequests = useCallback(async () => {
-    try {
-      const res = await fetch("/api/friends/requests?countOnly=1", fetchOpts);
-      if (!res.ok) return;
-      const data = (await res.json()) as { count?: number };
-      setRequestCount(Math.max(0, data.count ?? 0));
-    } catch {
-      /* ignore */
-    }
-  }, []);
 
   const openMessenger = useCallback(() => {
     setMessengerOpen(true);
@@ -172,22 +151,36 @@ export function FriendsChatProvider({ children, initialUserId = null }: Provider
         setReady(true);
       }
     })();
-    void refreshInvites();
-    void refreshFriendRequests();
-    void refreshUnread();
-    const inviteId = window.setInterval(() => {
-      void refreshInvites();
-      void refreshFriendRequests();
-    }, INVITE_POLL_MS);
-    const unreadId = window.setInterval(() => void refreshUnread(), UNREAD_POLL_MS);
-    return () => {
-      window.clearInterval(inviteId);
-      window.clearInterval(unreadId);
+    // Polling só com a aba visível: pausa ao esconder e faz uma leitura ao voltar ou ao focar a janela.
+    let timer: number | null = null;
+    const stop = () => {
+      if (timer != null) window.clearInterval(timer);
+      timer = null;
     };
-  }, [refreshInvites, refreshFriendRequests, refreshUnread]);
+    const start = () => {
+      if (timer == null) timer = window.setInterval(() => void refreshUnread(), PULSE_MS);
+    };
+    const onVisibleOrFocus = () => {
+      if (document.visibilityState === "hidden") {
+        stop();
+        return;
+      }
+      void refreshUnread();
+      start();
+    };
+    onVisibleOrFocus();
+    document.addEventListener("visibilitychange", onVisibleOrFocus);
+    window.addEventListener("focus", onVisibleOrFocus);
+    return () => {
+      stop();
+      document.removeEventListener("visibilitychange", onVisibleOrFocus);
+      window.removeEventListener("focus", onVisibleOrFocus);
+    };
+  }, [refreshUnread]);
 
   useEffect(() => {
     if (!selfUserId) return;
+    // Ao entrar na conta sem recarregar, os contadores não esperam o próximo pulso.
     void refreshUnread();
     void refreshFriends();
   }, [selfUserId, refreshUnread, refreshFriends]);

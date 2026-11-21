@@ -117,14 +117,32 @@ export function FriendsChat({
       });
   }, [selectedId, loadMessages, markThreadRead, scrollToBottom]);
 
+  // P-01: o polling rápido só roda com a conversa aberta e a aba visível.
   useEffect(() => {
     if (!selectedId) return;
-    const id = window.setInterval(() => {
+    let id: number | null = null;
+    const tick = () => {
       void loadMessages(selectedId)
         .then(() => markThreadRead(selectedId))
         .then(scrollToBottom);
-    }, POLL_MS);
-    return () => window.clearInterval(id);
+    };
+    const stop = () => {
+      if (id != null) window.clearInterval(id);
+      id = null;
+    };
+    const start = () => {
+      if (id == null) id = window.setInterval(tick, POLL_MS);
+    };
+    const onVisibility = () => {
+      if (document.visibilityState === "hidden") stop();
+      else start();
+    };
+    onVisibility();
+    document.addEventListener("visibilitychange", onVisibility);
+    return () => {
+      stop();
+      document.removeEventListener("visibilitychange", onVisibility);
+    };
   }, [selectedId, loadMessages, markThreadRead, scrollToBottom]);
 
   const submitDraft = useCallback(async () => {
