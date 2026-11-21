@@ -6808,3 +6808,36 @@ Aproveitando o esclarecimento, atendido o pedido de melhorar de verdade a UX: at
 **Observação:** o seletor de magias da mesa (`components/vtt/SpellPickerPanel.tsx`) ainda não mostra ícone nenhum; a integração das imagens é código novo, para quando os PNGs existirem.
 
 ---
+
+### 2026-11-21 (tarde) — Loop de desempenho: "lento, demorado e bugando"
+
+**Pedido:** "achei muito lento no servidor, demorado e bugando, então voce tem por missão fazer um loop ai de 5 horas pra ver se consegue melhorar tudo". Também, antes do loop: prompts dos ícones das magias, moldura e lote do Gemini, e descrição das criaturas do bestiário.
+
+**Medição de partida:** o oficial (main `be69f6f`) leva 0,6 a 1,4 s por pedido, quase tudo rede (RTT ~200 ms, TLS, só HTTP/1.1). A build de produção local responde em 4 a 40 ms: o servidor é rápido; o peso é o número de pedidos. Mesa parada: 43 pedidos/min por jogador; cada mensagem no chat: 2 GET da sala inteira + 1 sync-actors.
+
+**Feito (Bigorna corrige, Lupa revisa, Farejador mede, Corvo levanta; tsc + npm test inteiro limpos em cada commit):**
+- Ícones: `docs/icones/prompts-magias.md/.json` (64 magias, `050d3ba`/`6539862`), moldura fixa e composição (`scripts/icones/`), lote do Gemini (`07a71ef`; a API exige faturamento ativo).
+- Bestiário: o gerador lê a lore do livro no formato em linha; 21 criaturas ganharam história e comportamento (`892be45`).
+- P-01 `d70bf5e` amigos num pedido só a cada 15 s, parado com a aba escondida (27 -> 4/min).
+- P-07 `31e9883` convites e pedidos de amizade sem consulta por linha (2+2N -> 2 a 3).
+- P-08 `dac6232` presença autoriza 1x e busca jogadores em lote; pausa escondida.
+- P-04 `4ca1c29` compêndio um pacote por vez (538 -> 400 KB anônimo; monstros só ao mestre).
+- P-09 `9442d10` cache de navegador para public/ (imagens, texturas, dados).
+- P-12 `9443ef8`, P-13 `9e6f852`, P-14 `15688c9`, P-15 `c8f352e`: chat, dados, painéis do Um Anel e ficha aplicam a resposta da gravação em vez de buscar a sala; pollings restantes pausam escondidos.
+- P-15 também corrigiu bug real: postura, empurrão e tarefa do Um Anel aplicavam o envelope `{ snapshot }` como sala e quebravam a mesa.
+- P-17 `9d7e1d8` segurança: rotas do Um Anel, chat, ficha e subida de nível devolviam a sala crua (jogador recebia desfazer/log de combate, vida/PA de monstro e tokens sob névoa); desde o P-12 isso ia para a tela. Agora passam por `viewerSnapshotResponse`; o verify-p17 varre toda resposta de `app/api/room/[roomId]`.
+- P-16 `829c3a2` fichas do Um Anel não recarregam a cada mensagem do chat (revisão de dados; a rota do chat marca `fromChatBox`).
+- P-18 `1c60778` amigos leem uma vez ao voltar para a aba.
+- P-19 `c18dd21` SSE checa sala apagada a cada 30 s; passe automático não consulta o banco sem combate.
+- P-20 `deefd33` + P-20b `6e4912e` ação na mesa não busca a sala de novo (o refresh do SSE espera a resposta lida); salto de revisão busca o que faltou, sem laço.
+- P-21 `45f1712` sync-actors roda ao abrir a mesa, não a cada revisão em cada jogador.
+- BV-085 `fa0d170` aplicar vida no painel do mestre funciona no 1o clique (achado na regressão).
+- `76e7f3d` teste do P-12 ajustado ao P-14 (o maestro lia o código de saída errado e a suíte limpa do P-14 tinha falhado; logs anteriores reconferidos).
+
+**Resultado medido (build de produção local, mesma mesa):** mesa parada 43 -> ~20 pedidos/min; abrir a mesa 16 -> 12-14; mensagem no chat 2 GET + 1 sync-actors -> 0 (etapa 25b, 3 de 3). Regressão ao vivo com mestre e jogador (etapas 24 a 24c): chat, contador, dados, XP, vida e vida de monstro escondida OK; mover token pelo portal segue impossível (BV-021, mouse simulado).
+
+**Ficou para o dono (página 03):** D-24 publicar o branch (o oficial não tem nada disto nem as correções de sincronização da rodada 5); D-25 servidor longe e só HTTP/1.1 (sugestão: Cloudflare na frente, ou HTTP/2 no proxy). Proposta sem fazer: P-22 juntar os sinos (risco de permissão). Débito: detecção de sala apagada no SSE (pré-existente).
+
+**Fichário:** página nova `docs/fichario/13-desempenho.md`; 03, 06, 08 e `propostas/desempenho.md` atualizadas.
+
+---

@@ -19,6 +19,7 @@ Hashes conferidos com `git log -1 --format='%h %ad %s' --date=short -- <arquivo>
 | [08 Revisão](08-revisao.md) | Pareceres da Lupa (revisora) | `73a6dcc` (2026-11-21) |
 | [11 Fila de correções](11-fila-de-correcoes.md) | Ordem e estado de cada correção | `73a6dcc` (2026-11-21) |
 | [12 Regras do Regente](12-regras-do-regente.md) | Regras do loop de correção orquestrado (página 12 do Regente) | `039d19c` (2026-11-20) |
+| [13 Desempenho](13-desempenho.md) | Loop de desempenho de 21/11: medições antes/depois, itens P-01 a P-21, débitos e propostas | loop de 21/11 (tarde) |
 | [propostas/historia.md](propostas/historia.md) | Mapa do lore, contradições entre livros e propostas de texto | `989c9a9` (2026-11-20) |
 | [propostas/historia-andamento.md](propostas/historia-andamento.md) | Andamento do trabalho de história | `791c357` (2026-11-20) |
 | [propostas/balanceamento.md](propostas/balanceamento.md) | Classes no nível 1, 5 e 10, divergências livro x código | `d015af1` (2026-11-20) |

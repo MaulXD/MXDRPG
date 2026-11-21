@@ -103,6 +103,13 @@ O sistema tem 4 atributos culinários: Extração, Forrageio, Fabricação e For
 ## D-23 Escolha de truques no wizard (BV-072)
 O wizard não deixa escolher truques: a revisão só lista o que vem do kit (CharacterCreationWizard.tsx:1040-1058; starter-kits.ts). O cantripsKnown de data/.../spell-lists.json:186 (Bruxo = 2) não é lido por nenhum código. O livro dá 2 truques ao Bruxo no nível 1 (LIVRO-DO-JOGADOR.md:1248). Além disso, a tabela de kits do Bruxo (:2113) dá Raio do Limiar (nível 3 no pacto) e Sussurro de Masmorra (truque do nível 4, :3126). Decidir: (a) passo novo no wizard para escolher os truques pelo cantripsKnown de cada classe; (b) corrigir a tabela de kits do Bruxo no livro. Sugestão: (a) e (b). É recurso novo, por isso ficou para o dono.
 
+## D-24 Publicar o branch no site oficial (loop de desempenho, 21/11)
+O oficial roda be69f6f (main). As correções de sincronização ao vivo da mesa (ficha, XP, vida, Jornada/Conselho; emissor em globalThis), segurança da rota de token e todo o loop de desempenho (P-01 a P-13) estão só no branch fix/login-google-e-responsivo-um-anel. Boa parte do 'lento e bugando' no oficial já está resolvida aqui e só chega com o merge na main e o deploy. Decisão do dono: quando publicar.
+
+## D-25 Servidor longe dos jogadores (loop de desempenho, 21/11)
+Medido daqui: RTT ~200 ms até www.mxdrpg.com.br; conexão nova (TCP+TLS) ~400 ms antes do primeiro byte; o servidor em si responde rápido (build de produção local: 4-40 ms). Cada pedido no oficial custa 0,6-1 s quase só de rede. Opções: (a) VPS em região no Brasil; (b) Cloudflare (ou outro CDN) na frente: TLS perto do jogador e cache dos arquivos fixos; (c) manter e só cortar pedidos (o que o loop já fez). Sugestão do maestro: (b) primeiro, é barato e não muda o servidor. Precisa do dono (DNS e conta).
+Achado extra (21/11 13:00): o oficial responde só HTTP/1.1. O navegador abre no máximo 6 conexões por site, uma fica presa ao SSE da mesa, e cada conexão nova custa ~400 ms (TCP+TLS daqui). Com ~30 scripts + 12 pedidos de API ao abrir a mesa, isso enfileira. HTTP/2 (uma conexão, tudo em paralelo) resolve: ligar http2 no proxy reverso do servidor (nginx/caddy) ou o Cloudflare da opção (b), que já serve HTTP/2 e HTTP/3.
+
 ## Rodada 5 (21/11), decisões do maestro
 - BV-009/BV-020: o Regente tinha deixado 'sem ação'. Mudei: o erro de hidratação aparecia em todo console e atrapalhava a caça a bugs. Feito em 5a05b79.
 - BV-052: XP negativo continua recusado (XP só sobe). Os 400 XP da Lira de teste ficam; é conta de teste.
@@ -111,5 +118,8 @@ O wizard não deixa escolher truques: a revisão só lista o que vem do kit (Cha
 - SINGLETON: caches que só custam memória por cópia de módulo (packCache, clerkIdCache, ensured, inviteSyncCheckedAt, auto-pass-tick) ficam como estão.
 
 BV-045b (Bigorna, risco alto: regra de permissao de inventario, nao corrigido): a ficha aberta em /personagem/[id] passa so canEdit para CharacterSheet (app/personagem/[id]/page.tsx:52-71). Dono de ficha de aventura tem canEdit true, entao inventoryEditMode cai no default direct: o pedido ao mestre (+ COMPENDIO e + CONSUMIVEL como request) nao aparece, e o dono edita o inventario direto, sem a aprovacao do mestre que a mesa aplica (requiresInventoryGmApproval). Decidir: o dono de ficha de campanha deve pedir ao mestre tambem fora da mesa? Se sim, a pagina precisa calcular o modo de inventario com a mesma regra da mesa.
+
+BV-082 e copy de /sistema (Bigorna, 21/11): o botao Google so aparece com GOOGLE_CLIENT_ID e GOOGLE_CLIENT_SECRET no servidor (lib/auth/oauth-config.ts); /api/health do local mostra oauth.google false. Nao e regressao de codigo. Mas app/sistema/page.tsx:49 e :192 dizem 'faca login com Google ou e-mail/senha' sem condicao. Decidir: (a) manter o texto (so o ambiente local esta sem as chaves) ou (b) fazer o texto depender de oauthProviders. Sugestao: (a).
+DECIDIDO pelo maestro (21/11): (a). No site oficial o Google esta ligado, entao o texto e verdadeiro para quem le. Sem mudanca de codigo.
 
 

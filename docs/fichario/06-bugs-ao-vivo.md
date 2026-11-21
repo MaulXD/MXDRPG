@@ -830,3 +830,48 @@ OK (nao e bug):
 - Observacao (nao e bug): a pagina traz o e-mail da propria conta no codigo (so visivel na fonte); a conversa abre com ?com= e o id interno usr_..., sem dado pessoal.
 - Nao feito por limite de consumo: REMOVER AMIGO (desfazer) e refazer.
 - URL: http://localhost:3000/mesa/aventura-teste-farejador-v44fo
+
+Etapa 21 - comparativo Site oficial x Site local (21/11, sem login, so leitura). Paginas: /, /mesas, /compendios, /mundo, /sistema, /download, /entrar, /rpg/eldarin, /rpg/um-anel, /privacidade. Sem emoji em nenhuma pagina; sem link quebrado (404) nos dois; console sem erro (no local so "Fast Refresh", ruido de dev); 390x844 sem rolagem horizontal nos dois. Falso positivo: fetch de /api/auth/oauth/google no oficial retorna ERR (redirecionamento externo para o Google, nao 404).
+
+### BV-081 (P1) Site oficial: /privacidade mostra instrucao interna de desenvolvimento (SO NO OFICIAL; local ja tem a politica)
+- Passos: abrir https://www.mxdrpg.com.br/privacidade, sem login.
+- Esperado: politica de privacidade completa, como no local (controlador, dados coletados, base legal, ultima atualizacao).
+- Obtido: texto "MXDRPG - mesa virtual gratuita. Politica em atualizacao. Edite docs/PRIVACIDADE-LGPD.md com e-mail do titular antes do lancamento." Expoe caminho de arquivo interno e instrucao de desenvolvedor ao publico.
+- Erro do console: nenhum.
+- URL: https://www.mxdrpg.com.br/privacidade (local: http://localhost:3000/privacidade, 3467 caracteres, "Ultima atualizacao: junho de 2026").
+- Status (maestro): JA CORRIGIDO no branch (b238e22). O texto ainda esta em app/privacidade/page.tsx da main; some quando o dono publicar o branch (merge na main e decisao do dono).
+
+### BV-082 (P1) Site local: botao de login com Google sumiu da tela /entrar (SO NO LOCAL, possivel regressao)
+- Passos: deslogado, abrir /entrar no oficial e no local e comparar.
+- Esperado: como no oficial, botao ENTRAR COM GOOGLE ("Um clique - sem senha nova") e texto "Entre com Google em um clique - ou use e-mail e senha abaixo". A pagina /sistema (igual nos dois) diz "faca login com Google ou e-mail/senha".
+- Obtido: no local so e-mail e senha, com o texto "Entre com e-mail e senha - uma conta para mesas, fichas e convites." Nao ha botao Google, mas /sistema do local continua prometendo login com Google.
+- Erro do console: nenhum.
+- Observacao: nao sei se a remocao foi intencional; decisao do dono. Se for regressao, prioridade alta.
+- URL: http://localhost:3000/entrar (oficial: https://www.mxdrpg.com.br/entrar).
+- Status (maestro): NAO E REGRESSAO. O botao so aparece quando o servidor tem GOOGLE_CLIENT_ID e GOOGLE_CLIENT_SECRET (lib/auth/oauth-config.ts); o site local roda sem essas chaves. A logica do OAuth nao mudou entre a main e o branch. Fechado.
+
+### BV-083 (P3) Site local: ordem dos cards em /compendios difere do oficial (confirmar se e intencional)
+- Passos: abrir /compendios, aba Armas, sem filtro.
+- Esperado: a mesma ordem do oficial, que abre com Arco Longo de Vinha.
+- Obtido: o local abre com Adaga de Masmorra (ordem alfabetica). Os dois mostram 224 entradas.
+- Observacao: nao e bug claro; pode ser mudanca intencional.
+- Status (maestro): INTENCIONAL. O branch ordena o compendio em ordem alfabetica com localeCompare pt-BR (commit 8600304); a main mostra a ordem bruta do JSON. Fechado.
+- URL: http://localhost:3000/compendios (oficial: https://www.mxdrpg.com.br/compendios)
+
+### BV-084 (P1) Um Anel: painel Mestre (Sala, Jogadores, Criaturas, Combate) sumiu da barra do mestre (possivel regressao; Etapa 6 achou o painel)
+- Passos: logar como mestre farejador_teste01 em http://localhost:3100/mesa/aventura-teste-farejador-v44fo e ler a barra lateral da mesa (sem clicar em nada alem disso).
+- Esperado: botao Mestre na barra lateral, com as abas Sala, Jogadores, Culinaria, Criaturas e Combate (como na Etapa 6, BV-036/BV-038). Sem ele nao da para dar XP, mudar vida nem invocar monstro pelo painel.
+- Obtido: a barra tem so Status, Turno, Ficha, Chat, Dados, Compendio e Convite. Nao aparece Mestre nem Invocar. No DOM nao ha texto Sala, Jogadores ou Criaturas. Clicar em Status e Ficha abre os paineis, mas nenhum tem essas abas.
+- Erro do console: nenhum capturado (logs vazios nos dois portais).
+- Observacao: o jogador jogador_teste02 nao tem personagem nesta aventura (Personagens jogaveis vazio nos dois lados). Isso e dado de teste, nao bug.
+- URL: http://localhost:3100/mesa/aventura-teste-farejador-v44fo (mestre)
+- Status (maestro): NAO E BUG. O commit 9a24fa9 (BV-036, BV-038) tirou de proposito da mesa do Um Anel as ferramentas e regras do Eldarin (XP por nivel, Criaturas, Combate de PA). A Etapa 6 era numa mesa Eldarin. O loop de desempenho de hoje nao tocou nisso. Fechado.
+
+### BV-085 (P3, a confirmar) Mesa Eldarin: APLICAR VIDA do painel Mestre nao aplicou no primeiro clique
+- Passos: mestre farejador_teste01 em http://localhost:3100/mesa/aventura-teste-farejador-8sghq, painel Mestre > aba Jogadores, personagem Lira Teste Farejador. Preencher Vida atual com 15 e clicar APLICAR VIDA (botao no fim do painel, quase na borda inferior da janela 1900x1192). Esperar 3 s e olhar a ficha da Lira no lado do jogador.
+- Esperado: vida 15/22 no painel do mestre, no HUD e na ficha do jogador, sem recarregar.
+- Obtido: o campo mostrou 15, mas o HUD do mestre e a ficha do jogador continuaram 22/22 por 3 s. Na tentativa seguinte, com o mesmo valor e o mesmo botao (rolado para a vista com scrollintoview), aplicou: 15/22 nos dois lados em cerca de 0,4 s. Pode ser clique que caiu fora do botao; por isso P3 a confirmar.
+- Erro do console: nenhum capturado.
+- URL: http://localhost:3100/mesa/aventura-teste-farejador-8sghq
+- Hipotese (maestro): components/vtt/GmActorProgressPanel.tsx:33-37 reescreve o campo de vida com o valor salvo sempre que a vida do ator muda na sala; se uma sync chega entre digitar e clicar (ex.: a do XP do passo anterior), o numero digitado volta ao antigo e o clique grava o mesmo valor. Pre-existente, nao vem do loop de desempenho. Correcao possivel: so ressincronizar o campo quando o ator selecionado muda ou quando o campo nao foi editado. P3. CORRIGIDO em fa0d170 (Lupa aprovou).
+

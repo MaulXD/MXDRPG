@@ -169,3 +169,82 @@ Os tres bells estao montados na topbar da mesa em `components/vtt/mesa/MesaFound
 `useRoomSync` nao acrescenta GET periodico com SSE ativo: o fallback para em `useRoomSync.ts:409`; heartbeat de presenca e desligado em `:480` e em `useRoomPresence.ts:113`. O tick de 5 s do SSE (`events/route.ts:82-93`) e servidor, nao pedido HTTP.
 
 **Correcao minima:** passar `enabled` condicional aos hooks dos bells e aos de notificacao, pausando quando `document.visibilityState === "hidden"` (mesmo padrao de P-01). Os bells de solicitacao so precisam de polling enquanto ha pendencia visivel. Ganho maior: publicar essas mudancas pelo SSE da mesa, que ja entrega revisoes, eliminando as 5 rotas periodicas.
+
+---
+
+## P-22 sinos
+
+Levantamento somente leitura em `D:/Cursor/RPG`, feito em 2026-11-21. Nenhum codigo foi alterado. Continuacao de P-12 (d), que mediu os 10 pedidos/min da mesa.
+
+### (1) Quem monta os hooks na mesa
+
+A topbar da mesa (`components/vtt/mesa/MesaFoundryStageHeader.tsx:70-72`) monta ate tres bells. O bell de mestre so aparece quando `isActualGm` e verdadeiro (`:70`), os dois bells de jogador aparecem para qualquer sessao (`:71-72`). `isActualGm` vem de `canManageRoom(room, user)` (`app/mesa/[roomId]/page.tsx:187`, `components/vtt/MesaWorkspace.tsx:153`), ou seja, admin ou dono da sala.
+
+Mestre com sessao monta 4 consultas periodicas:
+
+| Fonte | Chamador | Hook | Rota |
+|---|---|---|---|
+| `MesaEditRequestsBell` (`MesaFoundryStageHeader.tsx:70`) | `useGmEditRequests` (`MesaEditRequestsBell.tsx:16`) | `hooks/useSheetEditRequest.ts:37`, GET em `:48` | `/api/adventures/[id]/edit-requests` |
+| `MesaEditRequestsBell` (mesmo local) | `useGmInventoryRequests` (`MesaEditRequestsBell.tsx:17`) | `hooks/useInventoryItemRequest.ts:43`, GET em `:56` | `/api/adventures/[id]/inventory-requests` |
+| `MesaPlayerEditRequestsBell` (`MesaFoundryStageHeader.tsx:71`) | `usePlayerEditRequests` (`MesaPlayerEditRequestsBell.tsx:24`) | `hooks/useSheetEditRequest.ts:72`, GET em `:80` | `/api/adventures/[id]/my-edit-requests` |
+| `MesaPlayerInventoryRequestsBell` (`MesaFoundryStageHeader.tsx:72`) | `usePlayerInventoryNotifications` (`MesaPlayerInventoryRequestsBell.tsx:23`) | `hooks/useInventoryItemRequest.ts:78`, GET em `:86` | `/api/adventures/[id]/my-inventory-requests` |
+
+A quinta vem do provider global `NotificationsProvider`, montado em `app/layout.tsx:104`, que busca `/api/notifications` em `components/notifications/NotificationsProvider.tsx:51`. Nao e especifico da mesa.
+
+Jogador sem `isActualGm` monta so os dois bells de jogador e o provider global, 3 consultas. Sem sessao, nenhum bell e o provider nao inicia o polling (`NotificationsProvider.tsx:95-96`).
+
+Os tres bells retornam `null` quando nao ha pendencia (`MesaEditRequestsBell.tsx:35`, `MesaPlayerEditRequestsBell.tsx:38`, `MesaPlayerInventoryRequestsBell.tsx:37`), mas o hook continua montado e o intervalo ja foi registrado. Codigo atual usa `startVisiblePoll` (`hooks/usePollWhenVisible.ts:9-34`) nos 5 polling, entao a aba escondida pausa e faz uma leitura ao voltar. A medicao de 10/6 por minuto de P-12 (d) vale com aba visivel. Alem disso, `usePlayerInventoryNotifications` troca o intervalo de 30 s para 5 s quando ha item `pending` (`useInventoryItemRequest.ts:97,102`); o mesmo vale para o hook da ficha em `components/character/CharacterSheet.tsx:284`.
+
+### (2) Retorno e permissao de cada rota
+
+| Rota | Devolve | Permissao |
+|---|---|---|
+| `/api/notifications` | `{ items, count }` (`app/api/notifications/route.ts:33`). `items` e `NotificationItem` de 5 tipos (`lib/notifications/types.ts:1-6`): amizade, convite de mesa, edicao de ficha para GM, edicao de ficha para jogador, pedido de entrada. Agrega todas as aventuras do usuario, amigos e convites (`lib/notifications/store.ts:107-177`). Nao cobre inventario. | So login (`:15-18`); escopo ao proprio usuario via `listNotificationsForUser(accountUser.id)` (`:29`). |
+| `/api/adventures/[id]/edit-requests` | `{ requests }` com `listPendingSheetEditRequests(adventureId)` mais `characterName` (`:23-38`). Filtro opcional `roomId` em `:22-26`. | `canManageAdventure` (`:18`): admin ou dono da aventura (`lib/auth/adventure-access.ts:21-28`). 401 sem sessao, 403 se nao mestre. |
+| `/api/adventures/[id]/inventory-requests` | `{ requests }` com `listPendingInventoryRequestsForAdventure` mais `characterName` (`:26-41`), mesmo filtro `roomId` em `:25-29`. O PATCH `approve_all` esta em `:44-66`. | Mesma regra (`:21`, `:52`). |
+| `/api/adventures/[id]/my-edit-requests` | `{ requests }` com `listActiveSheetEditRequestsForUser(adventureId, session.user.id)` mais `characterName` (`:21-29`). Inclui `pending`, `approved`, `rejected` (`lib/character/sheet-edit-request-store.ts:64-80`). | Login + aventura existente (404 em `:16-19`). Cada usuario ve so os proprios, por filtro em `:21`. |
+| `/api/adventures/[id]/my-inventory-requests` | `{ requests }` com `listActiveInventoryRequestsForUser` mais `characterName` (`:21-29`), tambem `pending`, `approved`, `rejected` (`lib/character/inventory-item-request-store.ts:61-77`). | Mesma regra (`:11-19`, `:21`). |
+
+Dois pontos a preservar. `pending` e a vista do mestre, so da aventura, com filtro de sala e ordem por criacao (`sheet-edit-request-store.ts:104-114`, `inventory-item-request-store.ts:49-59`); `active` e a vista do jogador, so dos proprios, com ate tres status e ordem por atualizacao. E `/api/notifications` e global, nao por aventura, e nao inclui inventario.
+
+### (3) Proposta: `/api/adventures/[id]/pending-requests`
+
+Um GET a cada 30 s no lugar dos 5, servido por um provider unico na mesa (por exemplo `MesaRequestsProvider`, montado uma vez em `MesaWorkspace` e consumido pelos tres bells e pelo sino global). Payload:
+
+```
+{
+  "notifications": { "items": [], "count": 0 },
+  "isGm": true,
+  "gm": { "sheet": [], "inventory": [] },
+  "mine": { "sheet": [], "inventory": [] }
+}
+```
+
+Regras para manter quem ve o quê:
+
+- `notifications`: copiar `{ items, count }` de `listNotificationsForUser`/`countNotificationsForUser` (`lib/notifications/store.ts:107-182`), com o mesmo escopo ao usuario. Continua global, com amigos, convites, outras aventuras e pedidos de entrada.
+- `mine.sheet` e `mine.inventory`: `listActive*ForUser(adventureId, session.user.id)` mais `characterName`, iguais as duas rotas `my-*`. Preenchido para qualquer usuario logado, inclusive o mestre.
+- `gm.sheet` e `gm.inventory`: `listPending*ForAdventure(adventureId)` mais `characterName`, com o mesmo filtro `roomId` da query. Preenchido so quando `canManageAdventure` for verdadeiro. Para os demais, `gm: null`, nunca 403, para nao quebrar os bells de jogador.
+- `isGm`: mesmo resultado de `canManageAdventure` da rota, para o cliente decidir se monta o bell de mestre. Hoje o cliente usa `canManageRoom`, regra diferente (ver risco 2).
+
+Pedidos/min, com aba visivel:
+
+| Cenario | Hoje | Rota unica |
+|---|---|---|
+| Mestre, sem pendencia | 10/min (5 rotas x 2) | 2/min |
+| Jogador, sem pendencia | 6/min (3 rotas x 2) | 2/min |
+| Mestre, item de inventario pendente | 20/min (my-inventory a 5 s) | 12/min mantendo fast-poll, ou 2/min sem ele |
+| Jogador, item de inventario pendente | 16/min | 12/min mantendo fast-poll, ou 2/min sem ele |
+| Aba escondida | 0 | 0 |
+
+Reducao no caso base: 80% para mestre e 67% para jogador. Com item pendente, a reducao e so 40% e 25% se o provider mantiver o fast-poll de 5 s; 90% e 88% se aceitar esperar ate 30 s. O trabalho no servidor nao cai na mesma proporcao, porque a rota unica continua executando as cinco consultas. O ganho e menos HTTP round-trips; para cortar SQL de verdade, o caminho e publicar essas mudancas pelo SSE da mesa, que ja entrega revisoes em `app/api/room/[roomId]/events/route.ts:75-79`.
+
+### (4) Riscos
+
+1. Difusao de dados. A rota passa a ser chamada por jogadores. Se `gm` for preenchido sem `canManageAdventure`, qualquer jogador ve todos os pedidos pendentes da aventura, com nome de personagem e de quem pediu. `gm` tem que comecar `null` e so ser preenchido apos a checagem no servidor.
+2. Regras de papel divergentes. O bell de mestre e montado com `canManageRoom` (`app/mesa/[roomId]/page.tsx:187`, `lib/auth/room-access.ts:55-62`: admin ou dono da sala) e as rotas usam `canManageAdventure` (admin ou dono da aventura). Dono de sala e dono de aventura podem ser diferentes. Se cliente e servidor usarem regras distintas, o sino some ou aparece vazio. Escolher uma regra so.
+3. Escopo de `/api/notifications`. E global (`lib/notifications/store.ts:107-177`). Coloca-lo dentro de `/api/adventures/[id]/...` cria acoplamento enganoso: abrir duas aventuras buscaria a mesma lista global duas vezes. Melhor manter o sino global como provider de app e unir so as 4 rotas da aventura, ou aceitar o `id` como filtro opcional.
+4. Perda de granularidade. Hoje cada hook tem `enabled`, intervalo proprio e fast-poll por pendencia (`useInventoryItemRequest.ts:34,102`). Uma rota so impoe um intervalo unico; manter os 5 s exige que o provider exponha um flag de pendencia e dispare refresh extra. Cache HTTP separado por rota tambem deixa de existir.
+5. Formato dos dados. `pending` e `active` tem status e ordenacao diferentes (`sheet-edit-request-store.ts:64-80` contra `:104-114`; `inventory-item-request-store.ts:49-59` contra `:61-77`). Os bells esperam `{ requests: [...] }` (`MesaEditRequestsBell.tsx:16-17`, `MesaPlayerEditRequestsBell.tsx:24`, `MesaPlayerInventoryRequestsBell.tsx:23`); trocar o formato sem adaptar os consumidores quebra os tres.
+6. Escrita continua fora da rota. `approve_all` fica em `/inventory-requests` (`inventory-requests/route.ts:44-66`) e approve/reject/dismiss em `/api/characters/[id]/...` (`MesaEditRequestsBell.tsx:44,67`, `MesaPlayerEditRequestsBell.tsx:43`, `MesaPlayerInventoryRequestsBell.tsx:42`). A rota nova e so leitura; o provider precisa chamar seu `refresh` depois de cada acao, no lugar do `refreshAll()` de `MesaEditRequestsBell.tsx:37-39`.
+7. Custo de servidor. A rota unica herda `force-dynamic` de `/api/notifications` (`notifications/route.ts:12`), `getSession` + `materializeSessionUser` + `getAdventure` por chamada, e continua varrendo todas as aventuras do usuario para montar as notificacoes (`notifications/store.ts:26-105`). Menos pedidos HTTP, mesma quantidade de SQL por tick.

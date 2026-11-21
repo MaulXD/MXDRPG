@@ -2,6 +2,156 @@
 
 Pareceres do Revisor: APROVADO ou REPROVADO, com achados.
 
+## P-20 3a rodada: decidirAplicacao com origem (Lupa)
+Parecer: APROVADO, sem bloqueio. 1 nit.
+- (1) OK: o laco sumiu. decidirAplicacao (lib/room/room-delta.ts) so pede GET quando origem e mutacao, base existe e o delta pula revisao. O refresh chama applyRoomResponse com doGet: true (useRoomSync.ts:287), e o GET since=X entra inteiro. Unico chamador com since e a linha 257 (refresh). Os demais applyRoomResponse (MesaWorkspace, MesaBattlefieldStage, DiceRoller, MesaSyncProvider) sao mutacao ou snapshot completo.
+- (2) OK: mutacao 4 -> 6 segura a revisao em 4, mostra a mudanca propria e pede GET; o GET since=4 devolve as duas gravacoes e sobe para 6; mutacao contigua 4 -> 5 entra sem GET. Confere com os casos do verify.
+- (3) OK por leitura: corrida com GET em voo fica coberta (refresh enfileira). Merge do delta e idempotente, entao reaplicar um delta sobre conteudo ja visto nao duplica token nem chat.
+- (4) OK: o verify-p20 roda a funcao real (lib/room/room-delta.ts) e nao so texto. Sem o filtro de origem o caso 'GET since=4 sem novo GET' falha (linha 122).
+- (5) Nit, nao bloqueia: se base for null, decidirAplicacao nao pede GET num salto de mutacao, e o seed fica parcial com revisao do delta. Caminho raro (mutacao antes do primeiro snapshot). Pode pedir GET tambem nesse caso.
+- Verificado aqui: node scripts/verify-p20-sem-get-depois-da-acao.mjs, OK. Nao rodei tsc nem os testes de hook.
+- Lupa, revisao em 21/11/2026.
+
+## P-20 2a rodada: salto de revisao no applyRoomResponse (Lupa)
+Parecer: REPROVADO. Bloqueio: loop de GET quando um GET com since devolve delta com salto.
+- (1) BLOQUEIO: hooks/useRoomSync.ts:286 (refresh chama applyRoomResponse(data) com a resposta do GET). O GET com since=X devolve sync.delta (app/api/room/[roomId]/route.ts:43; lib/room/sync-response.ts:60-71, buildViewerSyncDelta(before = X, current)). Esse delta traz a revisao atual. Se faltam 2 ou mais revisoes, por exemplo since=4 e revisao atual 6, deltaPulaRevisao(4, delta 6) e verdadeiro. Entao applyRoomResponse segura a revisao em 4 e chama refreshImplRef, linha 'void refreshImplRef.current?.()' dentro do applyRoomResponse. Como refresh ainda esta em voo (refreshInFlightRef = true), ela so marca refreshQueuedRef, e o finally refaz o GET. A resposta e a mesma, a revisao continua 4, e o ciclo se repete sem atraso: GET em loop enquanto a sala estiver ate 2 revisoes atras. Isso e comum: qualquer sync apos duas gravacoes de outros jogadores. Regressao grave de carga no servidor. Correcao: o caminho do GET (refresh) nao deve passar pela checagem de salto. O GET com since ja e contiguo por construcao. Aplicar o pulo so nas respostas de mutacao (onUpdate, MesaWorkspace, MesaBattlefieldStage, DiceRoller). Teste: applyRoomResponse via refresh com since=4 e delta rev 6 deve setar revisao 6 e nao chamar refresh de novo.
+- (2) OK: deltaPulaRevisao (lib/room/room-delta.ts) esta correto para o caso de mutacao: 4->6 e salto, 5->6 nao, sala completa nao.
+- (3) OK por leitura: a revisao segurada passa pelo applySnapshot sem regressao (applySnapshot aceita igual). O since=4 busca as duas gravacoes, quando o GET nao cai no loop do item (1).
+- (4) Teste: o verify-p20 novo cobre a funcao deltaPulaRevisao e a leitura do bloco. Nao cobre o caminho do GET, por isso passa com o loop. Aqui passou: OK.
+- Verificado aqui: node scripts/verify-p20-sem-get-depois-da-acao.mjs, OK. Nao rodei tsc nem testes de comportamento de hook. Nao editei nada no repositorio.
+- Lupa, revisao em 21/11/2026.
+
+## P-20 busca extra da sala depois de toda acao (Lupa)
+Parecer: REPROVADO. Bloqueio: o pulo do GET pode esconder a mudanca de outro jogador.
+- (1) BLOQUEIO: hooks/useRoomSync.ts:313-316. A resposta do POST nao e a sala inteira: e o delta da propria mutacao (lib/room/mutation-response.ts:15 e lib/room/room-delta.ts:86, buildRoomDelta(before, after)). Cenario: cliente na rev 4; outro jogador grava rev 5 e o SSE avisa 5 (alvo = 5); o POST do cliente grava rev 6 sobre a rev 5 e volta so com o que ele mudou; applyRoomResponse sobe revisionRef para 6; dispara ve 6 >= 5 e pula o GET. A mudanca da rev 5 (token, chat, ator) nunca entra nesse cliente. Antes do P-20 o GET do SSE trazia a sala inteira. Correcao: pular so se nao houve salto de revisao (delta.revision igual a revisao anterior + 1) ou se a resposta for snapshot completo; senao, GET. Teste: cliente em rev 4, alvo 5, POST rev 6 deve gerar GET.
+- (2) OK: sem mutacao propria em voo o contador fica em 0 e o caminho e o de antes. O pulo so acontece com revisao ja aplicada.
+- (3) OK: throw cai no finally, decrementa; o chamador nao aplica; o timer ve revisao menor que o alvo e faz GET (inclusive timeout com servidor ja gravado).
+- (1b) Nit: o contador decrementa no finally de roomFetch (useRoomSync.ts:572), antes do res.json() e do applyRoomResponse dos chamadores. Se o timer disparar nessa janela sai um GET extra. Nao pula revisao (revisionRef so sobe ao aplicar), mas o recheque de 100 ms nao cobre a janela, porque o timer nao reagenda depois de aplicar. Custo baixo.
+- (4) OK: scheduleRefresh so e chamado pelo handler do SSE (useRoomSync.ts:434 e :443), sempre com data.revision. Nenhuma chamada sem argumento. refresh e refreshImplRef seguem nos caminhos de fallback, retry e fila.
+- (5) Teste: leitura por texto (scripts/verify-p20-sem-get-depois-da-acao.mjs). Sem o contador falha (linhas 19, 25, 28); sem o pulo falha (linhas 40-46). Aqui passou: OK. Mas nao olha comportamento: passa com o bug do item (1). Pede um teste de cenario com salto de revisao.
+- Nit: mutacoesRoomEmVoo e global do modulo; um POST em uma sala pode atrasar o refresh de outra sala em ate 2 s.
+- Verificado aqui: node scripts/verify-p20-sem-get-depois-da-acao.mjs, OK. Nao rodei tsc, npm test nem teste de comportamento. Nao editei nada no repositorio.
+- Lupa, revisao em 21/11/2026.
+
+## P-18 leitura unica ao voltar para a aba (Lupa)
+Parecer: APROVADO, sem bloqueio. Duas lacunas de teste, nao bloqueiam.
+- (1) OK: ultimaLeituraVisivelRef comeca em 0, entao a primeira volta sempre le (FriendsChatProvider.tsx, onVisibleOrFocus). Coberto pelo verify, cenarios B e D.
+- (2) OK por leitura: o setInterval de PULSE_MS (15 s) chama refreshUnread direto, sem passar pela trava. PULSE_MS = 15_000 intacto. NAO coberto pelo verify: o setInterval do teste e stub e nunca dispara.
+- (3) OK por leitura: o efeito de selfUserId chama refreshUnread sem a trava. NAO coberto pelo verify: nao ha cenario de login sem recarregar.
+- (4) OK, verificado aqui: mutante sem a trava (if (true)) faz o verify falhar com 'voltar para a aba deveria ler 1 vez, leu 2'. Original passa, 9 verificacoes.
+- package.json: so entrou verify-p18-leitura-unica.mjs no fim da cadeia test; o resto da linha nao mudou.
+- Nao rodei a cadeia npm test inteira, nem tsc nem build.
+- Sugestao (nit): cenario com setInterval disparando a cada 15 s e cenario de selfUserId mudando.
+- Lupa, revisao em 21/11/2026.
+
+## P-16 4a rodada: delta da revisao contra a caixa (Lupa)
+Parecer: APROVADO, sem bloqueio. 1 nit.
+- (1) OK: revisaoAlemDaCaixa = revDelta > daCaixa. Cada gravacao e cada mensagem da caixa passam por persistRoom, que sobe a revisao em 1 (registry.ts:95). Assim o caso ficha fora da sala + 1 mensagem da caixa no mesmo sync (+2) sobe, e so a caixa (+1) nao sobe.
+- (2) OK: gravacao narrada sem marca sobe por chatTrazGravacao; ficha fora da sala sem chat sobe por revisaoAlemDaCaixa; so caixa nao sobe.
+- (3) Nit, aceito: ping continua recarregando card e ficha (mapDataChanged inclui pings).
+- (4) Ponto nao verificado por mim: o relato de tsc e de test:um-anel-sheet-sync (26 ok) vem do autor; nao rodei.
+- Verificado aqui: node scripts/verify-p16-tor-sem-chat.mjs, exit 0.
+- Lupa, revisao em 21/11/2026.
+
+## P-16 3a rodada: ping sem otimizacao (Lupa)
+Parecer: REPROVADO. Bloqueio estreito: falta um caso de revisao sem chat dentro de sync com chat da caixa.
+- (1) BLOQUEIO: hooks/vtt/mesa-room-store.ts, linha 226. A condicao e revisionChanged && (!chatChanged || chatTrazGravacao). Se a sync traz uma mensagem da caixa (fromChatBox) e ao mesmo tempo uma ficha gravada fora da sala (so revisao), chatChanged e true e chatTrazGravacao e false, entao a revisao de dados nao sobe. A ficha aberta fica sem recarregar. Cenario real: reconexao do SSE, em que varias revisoes chegam numa sync so. Correcao: a revisao muda por mais do que as mensagens da caixa da sync (delta maior que o numero de mensagens com fromChatBox), ou sobe sempre que a revisao muda e houve qualquer fatia que nao e chat. Teste: ficha fora da sala + mensagem da caixa no mesmo sync deve subir.
+- (2) Nit, aceito pela regra: ping sozinho volta a subir a revisao (mapDataChanged inclui pings), entao card e ficha recarregam a cada ping. Escolha consciente da 3a rodada.
+- OK: ping + ficha fora da sala sobe; ping + gravacao narrada sem marca sobe; caixa do chat sem gravacao nao sobe; marca so vem da rota do chat.
+- Verificado aqui: node scripts/verify-p16-tor-sem-chat.mjs, exit 0. Nao rodei tsc nem test:um-anel-sheet-sync.
+- Lupa, revisao em 21/11/2026.
+
+## P-16 2a rodada: marca fromChatBox (Lupa)
+Parecer: REPROVADO. Bloqueio: ping no mesmo sync de outra mudanca suprime a recarga. A correcao da 1a rodada vale para gravacao isolada, mas soPing ignora revisao e chat.
+- (1) BLOQUEIO: hooks/vtt/mesa-room-store.ts, soPing. A lista de soPing nao inclui revision nem chat. Entao ping + revisao nova sem chat (ficha do Um Anel gravada fora da sala) nao sobe a revisao de dados, porque a condicao final e revisionChanged && !soPing. Ping + gravacao narrada com kind chat sem marca (avanco, Sombra) tambem nao sobe: soPing fica verdadeiro e chatTrazGravacao e ignorado. E a mesma regressao da 1a rodada, so que com ping junto.
+- (2) Teste: verify-p16 linhas 243-251 diz ping sozinho, mas o patch leva revision: 12, entao o teste trava o comportamento errado. Faltam dois casos: ping + revisao nova sem chat (deve subir) e ping + kind chat sem marca (deve subir).
+- Correcao: soPing so vale com revision igual e sem mensagem nova sem marca. Ou calcular o gatilho sem pings e acrescentar pings so quando nada mais mudou.
+- OK pelo diff: a marca vem so da rota do chat (app/api/room/[roomId]/chat/route.ts, linhas de fromChatBox: true); o corpo da requisicao nao e espalhado, entao o cliente nao forja a marca. As gravacoes do Um Anel (tor-advance, tor-recovery, tor-fatigue, tor-eye, tor-shadow) nao marcam, e a revisao sobe.
+- Verificado aqui: node scripts/verify-p16-tor-sem-chat.mjs, exit 0. Nao rodei tsc nem test:um-anel-sheet-sync; o relato do autor cobre esses dois.
+- Lupa, revisao em 21/11/2026.
+
+## P-16 fichas do Um Anel recarregavam a cada chat (Lupa)
+Parecer: REPROVADO. Bloqueio: gravacoes de ficha que narram no chat com kind chat nao sobem a revisao de dados, entao a ficha aberta e o card nao recarregam ao vivo.
+- (1) BLOQUEIO: lib/room/handlers/tor-advance.ts:171 (avanco), tor-recovery.ts:218 (recuperacao), tor-fatigue.ts:146-148 (fadiga), tor-eye.ts:84 e :185 (Olho) e tor-shadow.ts:135 (Sombra) postam mensagem kind chat e persistem a sala logo depois. A revisao sobe junto com chat novo, e hooks/vtt/mesa-room-store.ts:219-224 (chatTrazGravacao) so conta kind system e combat, entao a revisao de dados nao sobe. Antes do P-16 a ficha recarregava. Efeito: mestre ou dono com a ficha aberta nao ve avanco, recuperacao, fadiga, Olho ou Sombra ate recarregar. Correcao: tratar essas gravacoes como narradas (kind system ou combat, ou marcar a gravacao), ou subir a revisao de dados quando a revisao muda e o chat novo nao e so conversa ou rolagem comum. Ajustar o teste junto.
+- OK: XP dado pelo mestre sobe, porque gm-actor-progress.ts:114, :130 e :161 e combat-xp.ts:161 usam kind system.
+- (2) Nit, nao bloqueia: ping.ts:28 grava room.pings, e pings esta na lista mapDataChanged (mesa-room-store.ts:192). Cada ping recarrega card e ficha. Pela regra escrita e esperado, mas e recarga desnecessaria. Sugestao: tirar pings de mapDataChanged.
+- (3) OK: subscribe devolve o unsubscribe (mesa-room-store.ts:50-52), e useSyncExternalStore limpa. Nit: o subscribe inline e recriado a cada render, igual ao padrao antigo.
+- (4) Lacuna no teste: verify-p16 cobre system e combat (caso 4b) e chat comum sem kind (caso 2), mas nao cobre kind chat em gravacao com revisao nova. Por isso passa com o bloqueio.
+- Verificado aqui: node scripts/verify-p16-tor-sem-chat.mjs, 19 ok, exit 0. Nao editei nada no repositorio.
+- Lupa, revisao em 21/11/2026.
+
+## P-15 envelope das rotas tor (Lupa)
+Parecer: REPROVADO. Bloqueio: as rotas tor-* devolvem a sala crua para qualquer membro, sem snapshotForViewer, e o P-15 passa a aplicar essa sala no cliente.
+- (1) BLOQUEIO: lib/room/handlers/tor-advance.ts:174, tor-recovery.ts:221, tor-fatigue.ts:155 e tor-eye.ts:87 devolvem toSnapshot(...) direto. As rotas app/api/room/[roomId]/tor-advance/route.ts:62, tor-recovery/route.ts:74, tor-fatigue/route.ts:65 e tor-eye/route.ts:53 devolvem { snapshot } sem filtro de visao. Efeito: o jogador recebe combatUndo, combatLog e gmCreations (so do mestre, lib/room/snapshot-for-viewer.ts:67-69), HP de monstro com showMonsterHpToPlayers desligado e tokens fora da nevoa. Antes o cliente descartava isso e refazia o GET filtrado; agora aplica e a UI mostra. As rotas combat/area, culinary/meal e gm/actor-progress passam por snapshotForViewer, entao o padrao existe.
+- (1b) Mesmo problema ja no P-14: lib/room/handlers/tor-session.ts:36 devolve toSnapshot e o TorEyePanel aplica. Eu aprovei o P-14 sem ver isso. Corrigir os dois juntos.
+- (2) OK: nenhum outro chamador depende do envelope. TorShadowPanel (postRoomTorRecovery e postRoomTorFatigue) ignora o retorno e segue com onUpdate() sem payload. Grep em components, hooks, app e lib.
+- (3) OK: Avanco e Recuperacao (TorAdvancePanel), Fadiga (TorJourneyPanel, 2 pontos) e Olho (TorEyePanel, 3 chamadas) passam o retorno a onUpdate(snapshot). Sem payload, MesaWorkspace refreshOrApply cai no refresh, porque payload.revision nao existe.
+- (4) OK: p13 foi de 2 para 0 onUpdate() vazios na Jornada; p14 troca o teste do envelope por contagem de 3 postRoomTorEye guardados e 0 onUpdate() vazio. As checagens continuam.
+- (5) OK: p15 parte 1 faz deepEqual do retorno das 4 funcoes contra o envelope stub; se uma voltar a devolver { snapshot }, falha. Ressalva: testa o cliente, nao a rota.
+- Verificado aqui: p13 10 ok, p14 6 ok, p15 6 ok; um-anel-avanco, um-anel-fadiga, um-anel-olho-de-mordor e um-anel-sheet-sync exit 0. tsc --noEmit: nenhum erro nos arquivos do P-15. Ha 1 erro fora do escopo: components/vtt/TorCharacterSheetPopup.tsx:54 usa useMesaRoomRevision, que nao existe (so useMesaRoomDataRevision em hooks/vtt/useMesaRoomSlice.ts). Arquivo modificado no working tree, fora do diff do P-15.
+- Para aprovar: as rotas tor-advance, tor-recovery, tor-fatigue, tor-eye e tor-session passam a devolver snapshotForViewer(snapshot, room, session.user); o p15 ganha checagem de que as rotas usam snapshotForViewer. Depois, nova revisao.
+- Nao editei nada no repositorio.
+- Lupa, revisao em 21/11/2026.
+
+## P-14 pausa com aba escondida e Olho de Mordor (Lupa)
+Parecer: APROVADO, sem bloqueio. 1 nit.
+- (1) Troca 5 s / 30 s: cada effect guarda o proprio timer e o cleanup (stop + removeEventListener) roda antes do novo effect. Um timer so. Confirmado em hooks/useInventoryItemRequest.ts:31-36 e :99-104 (deps incluem hasPending). Sheet usa 30 s fixo.
+- (2) Aba escondida: hooks/usePollWhenVisible.ts para o timer. Ao voltar, com timer nulo, faz uma leitura (run) e religa. Montado ja escondido nao inicia timer.
+- (3) hooks/useRoomSync.ts:1334 devolve data.snapshot (RoomSnapshot com revision, route tor-session devolve { snapshot } via toSnapshot). MesaWorkspace refreshOrApply aplica por revision. TorJourneyPanel e MesaFoundry* repassam onRefresh(payload). Sem regressao em TorAdvancePanel (onUpdate() sem payload segue no envelope).
+- (4) Teste: components/vtt/TorEyePanel.tsx:187, :212 e :355 sao os tres patchTorSession, todos com const snapshot e onUpdate(snapshot). A conta de await patchTorSession igual a de const snapshot quebra se um volta a onUpdate() vazio. setInterval cru: doesNotMatch de window.setInterval nos dois hooks.
+- Verificado aqui: node scripts/verify-p14-pausa-e-um-anel.mjs 6 ok; verify-p13 10 ok; tsc --noEmit exit 0. Nao rodei mutacao no repo (nao edito arquivo do repo).
+- Nit (nao bloqueia): o regex e window.setInterval; um setInterval sem o prefixo window passaria. Sugestao: trocar por uma checagem de setInterval( sem window.
+- Lupa, revisao em 21/11/2026.
+
+## P-12 desempenho: pedidos repetidos na mesa (Lupa)
+Parecer 1a rodada: REPROVADO (item 5). 2a rodada: APROVADO. O teste agora conta onUpdate() == 1 em send() e no DiceRoller; mutacao de onUpdate() extra falha nos dois. Riscos seguem sem bloqueio. O código da correção está certo; falta o teste cobrir o item (5) do pedido.
+Lido: diff de RoomChat.tsx, MesaRoomChatPanel.tsx, DiceRoller.tsx, FriendsChatProvider.tsx, useSheetEditRequest.ts, useInventoryItemRequest.ts, NotificationsProvider.tsx, package.json; hooks/usePollWhenVisible.ts (inteiro); scripts/verify-p12-pedidos-repetidos.mjs (inteiro); app/api/room/[roomId]/chat/route.ts; lib/room/handlers/chat.ts; lib/room/internal/registry.ts (toSnapshot, persistRoom); hooks/useRoomSync.ts:162 e 1360. Rodei node scripts/verify-p12-pedidos-repetidos.mjs: 8/8 ok.
+- (1) OK: o POST devolve snapshot com revision (toSnapshot) e persistRoom chama notifyRoomUpdated (SSE). applyRoomResponse aceita snapshot completo (applyRoomApiPayload devolve o payload quando nao e delta). Sem payload cai em onUpdate. Ressalva: falha do POST nao faz refresh, igual ao codigo antigo; o pedido diz 'cai no refresh antigo' e o codigo nao faz isso. Nao verifiquei se roomFetch lanca em status de erro.
+- (2) OK: initialUserId do layout pula /api/auth/me; visitante (null) continua buscando no mount. Risco (nao bloqueia): FriendsChatProvider.tsx:144-146, se initialUserId mudar de null para um id sem remontar, selfUserId continua null. Ja era assim antes.
+- (3) OK: NotificationsProvider, useSheetEditRequest e useInventoryItemRequest usam startVisiblePoll; POLL_FAST de 5 s com pedido pendente preservado (usePlayerInventoryNotifications). Pendente: hooks/useSheetEditRequest.ts:31 e hooks/useInventoryItemRequest.ts:35 seguem com setInterval sem pausa com aba escondida (o teste aceita como sobras).
+- (4) OK no helper: so escuta visibilitychange, sem focus. Mas FriendsChatProvider.tsx:168-178 ouve visibilitychange e focus e le duas vezes ao voltar a aba. Pre-existente do P-01, fora deste diff.
+- (5) FALHA: o teste so pega onUpdate() logo antes de '} finally' (verify-p12 linha 45). Em DiceRoller.tsx nao ha asserção negativa: um onUpdate() incondicional de volta depois do await passa. Pedido: contar onUpdate() dentro de send() e da rolagem e exigir exatamente uma ocorrencia, dentro do else.
+- Nada editado por mim.
+
+## P-04 desempenho: compêndio por pack (Lupa)
+Parecer: APROVADO, sem bloqueio. Dois nits.
+Lido: app/api/compendium/route.ts (inteiro); CompendiumPage.tsx, CompendiumBrowser.tsx, MesaEldarinCompendiumPanel.tsx (diff); lib/compendium/registry.ts:100-123 (monstros so admin ou isRoomGm); app/compendios/[packId]/page.tsx; scripts/verify-p04-compendio-por-pack.mjs (inteiro).
+- (1) Visibilidade: route e pagina usam o mesmo canViewPack. A pagina manda so o pack inicial no HTML (packInicial). Jogador e visitante nao recebem monstros: 403 com ?pack=monstros e fora da lista. Mestre da sala recebe na mesa via roomId (canManageRoom da sala). Na pagina o navegador busca sem roomId, o que bate com a lista da pagina, que ja exclui monstros para quem nao e admin.
+- (2) Cache: buscados guarda cada pack por chave; voltar a uma aba usa o estado (jaTemPack). Falha de HTTP vira falhaPack e mostra 'Falha ao carregar compendio.' sem loop de retry (as dependencias do efeito nao mudam). Sem emoji.
+- (3) /compendios/[packId]: pack invalido redireciona; initialPackId vira packInicial e o key remonta o navegador. Ordenacao (localeCompare pt-BR) e busca nao mudaram.
+- (4) Corrida: dados guardados por pack e exibidos so do packId atual; resposta atrasada de A nao aparece em B. Conferido por leitura.
+- (5) Teste: os casos 1-8 testam a rota por comportamento e falham se ela voltar a devolver todos os packs. O caso 9 (pagina) e so regex: pega o padrao antigo literal, mas uma reescrita com outra forma passaria.
+- Verificado aqui: node scripts/verify-p04-compendio-por-pack.mjs, 11 ok; node scripts/verify-compendium-ui.mjs, 15 ok, 0 falhas. Nao rodei tsc nem o npm test completo.
+- Nit 1 (components/compendium/CompendiumBrowser.tsx, efeito de busca): sem cancelamento. Se a sala mudar com o componente montado e uma busca estiver em voo, a resposta da sala antiga pode entrar em buscados. Baixa chance; sugestao: descartar a resposta se roomId ou packId mudou.
+- Nit 2 (scripts/verify-p04-compendio-por-pack.mjs, caso 9): regex sobre o texto da pagina. Aceitavel, mas um teste de render pegaria mais.
+Lupa, revisao em 21/11/2026.
+
+## P-08 desempenho: presença da mesa (Lupa)
+Parecer: APROVADO, sem bloqueio. Dois nits.
+Lido: app/api/room/[roomId]/presence/route.ts (inteiro); diff de lib/room/presence-enrich.ts e hooks/useRoomPresence.ts; lib/room/presence.ts:11 (PRESENCE_TTL_MS 40 s); app/api/room/[roomId]/events/route.ts:99; lib/db/users.ts:350-369; lib/db/sql-helpers.ts:34-46; lib/auth/authorize-room-view.ts:13 (RoomViewOk exportado). package.json: so o teste novo entrou na cadeia de test.
+- (1) Quem ve e quem e marcado online: igual. GET faz requireRoomView 1x e canTrackRoomPresence 1x (so decide o touch, como antes). POST faz requireRoomView 1x, checa canTrack e devolve 403 antes de qualquer escrita. presenceResponse nao repete a checagem, mas so e chamado depois que o GET ou o POST ja passou.
+- (2) Enrich: isPresenceGmUser recebe o mapa de clerk ids e aplica as mesmas quatro regras (dono, admin, usr_ x clerk-, usr_ x usr_). O lote traz o clerk de todos os usr_ dos membros e do dono, que e superconjunto do usado. Membros seguem a ordem de raw; profile e userId iguais ao original. Erro de banco vira null, como em fetchClerkIdForUser.
+- (3) Aba escondida: so o GET e pausado (visibilityState), e ao voltar le uma vez. A lista nao cai: PRESENCE_TTL_MS e 40 s e a presenca continua sendo tocada pelo SSE (events/route.ts:99, a cada heartbeat), que nao foi mexido. Sem EventSource, o heartbeat POST (hook, setInterval de 10 s) nao foi pausado. Intervalo segue 10_000.
+- (4) Teste: no HEAD, a rota tem requireRoomView( 3x (grep). O verify exige 2 no fonte e conta chamadas com stub (1 por cenario, com 2 e 5 membros, GET e POST). Se voltar a autorizacao dupla, falha. Verificado aqui: node scripts/verify-p08-presenca.mjs, 7 ok.
+- Nit 1: presence-enrich.ts cria um segundo cache de clerk id (Map proprio, mesmo TTL de 60 s) em vez de reusar o de lib/db/users.ts:350. Nenhum dos dois tem invalidacao, entao e so duplicacao. Pode unificar exportando uma funcao de lote de lib/db/users.ts.
+- Nit 2: o verify so cobre dono usr_ com membros usr_. O ramo de dono clerk- (presence-enrich.ts, regra usr_ x clerk- e clerk- x usr_) nao tem caso de teste; conferido so por leitura.
+- Nao rodei tsc (fora do teto de consumo). Tipos conferidos por leitura: RoomViewOk exportado; clerkOf tipado como Map.
+Lupa, revisao em 21/11/2026.
+
+## P-07 desempenho: N+1 de amigos (Lupa)
+Parecer: APROVADO, sem bloqueio. Tres nits.
+Lido: lib/db/users.ts:325-337 (fetchUsersByIds); lib/friends/store.ts:71-88 (rowToFriendRequest agora sincrona), :173-195 (listFriendRequests), :225-240 (requestFriendship), :479-505 (listReceivedMesaInvites); lib/friends/pulse.ts:17-25 (so comentario novo: o pulso ja contava pela lista). lib/db/friends.ts: o diff e so fim de linha (CRLF), sem mudanca de conteudo.
+- (1) Mesmo resultado: os loops seguem as mesmas listas, na mesma ordem; mesmas chaves (teste confere Object.keys); usuario inexistente vira null (pedido descartado, convite com Jogador); convite de aventura apagada ou sem aventura sai da lista. Aventura vencida: getAdventure devolve null via purgeAdventureIfExpired e sai pelo mesmo caminho.
+- (2) Privacidade: fetchUsersByIds usa o mesmo SELECT e o mesmo toSessionUser de fetchUserById, so para os ids pedidos (IN). Nome real nao chega ao resultado: displayName (store.ts:43-48) usa so o nickname. Nenhum campo novo chega ao cliente.
+- (3) Lista vazia: fetchUsersByIds retorna antes do SQL (unique.length === 0); queryRowsByIds (lib/db/sql-helpers.ts:41) tambem guarda. Nao ha IN ().
+- (4) Teste: scripts/verify-p07-amigos-n1.mjs confere consultas iguais com 5 e com 10 itens (linhas 293 e 315) e 2 consultas para convites (linha 316). Com fetchUserById por linha, a contagem cresce e o teste falha. Nao fiz mutacao (nao edito repo); a conclusao e pela leitura.
+- Verificado aqui: node scripts/verify-p07-amigos-n1.mjs, 7 ok, exit 0.
+- Nit 1 (lib/friends/store.ts:492-496): Promise.all sobre getAdventure abre ate 50 leituras em paralelo (LIMIT 50 em lib/db/friends.ts:122), e getAdventure pode purgar aventura vencida. Antes era sequencial. Sugestao: for...of sequencial ou limite de concorrencia.
+- Nit 2 (scripts/verify-p07-amigos-n1.mjs:357-363): o teste 5 e tautologico. getFriendsPulse chama listReceivedMesaInvites, entao a igualdade vale por construcao. A regra de aventura apagada ja e provada no caso 2 pela lista.
+- Nit 3 (scripts/verify-p07-amigos-n1.mjs:4-5): o cabecalho diz que o pulso listava todos os convites so para contar e foi corrigido, mas pulse.ts so ganhou comentario. A economia vem de listReceivedMesaInvites. Ajustar o texto.
+- Limite desta revisao: docs/CLAUDE-PROJETO.md e docs/CLAUDE-CODIGO-SEGURO.md nao foram lidos por inteiro (teto de consumo do Haiku); usei busca por palavras-chave neles.
+- Lupa, revisao em 21/11/2026.
+
 ## Revisao da rodada 5
 Revisor: Lupa, 21/11/2026. Somente leitura: nenhum arquivo do repo editado, sem commit. Verify nao rodados nesta revisao (diff e codigo em volta lidos).
 1. lib/room/notifier.ts (9d96a8d): OK. Emissor em globalThis, mesmo padrao de rooms() e presence. O unsubscribe usa o mesmo emissor (e.off). Sem risco de conteudo.
@@ -22,7 +172,23 @@ Parecer: APROVADO, com 2 ressalvas e 1 nit (nenhum bloqueia).
 - Ressalva 1 (PA, pré-existente, não piorou): lib/room/handlers/tokens.ts:57-65 grava actor.resources.pontosAcao.value = next.pa em todo patch de token vinculado. Um PATCH só cosmético do jogador (imageUrl) regrava o PA do ator com o PA do token; se os dois divergirem, o cosmético apaga o PA do ator. O que fazer: sincronizar o PA só quando o patch trazer pa.
 - Ressalva 2 (teste): o verify é regex sobre o texto do arquivo e não executa a rota. Pega a remoção do 401, mas não um erro de lógica (por exemplo, trocar canControlToken por true). O cabeçalho diz conferido no site local, mas não há verify de comportamento que reproduza isso. Sugestão: casos com sessão falsa, como no verify-tor-save-comportamento.
 - Nit: body JSON null ou array faz Object.keys e body.conditions lançarem TypeError e virar 500 (route.ts:40 e :49). 404 de sala e de token vem antes do 401, então anônimo descobre se o token existe. Ambos pré-existentes.
-- Lupa, revisão em 21/11/2026.
+- P-20b (Lupa, 21/11/2026): REPROVADO.
+- hooks/useRoomSync.ts:590: ultimaMutacaoTerminouEm e marcado no finally do roomFetch, ou seja, quando chegam os headers. postRoomChat (hooks/useRoomSync.ts:1439) so faz res.json() depois disso, e o chamador aplica depois. Se o corpo (sala inteira) demorar mais de 400 ms, o GET continua. A folga e por tempo: o contador ainda cai antes da aplicacao. A causa nao foi removida.
+- hooks/useRoomSync.ts:335-339: o teto de 2 s e mantido, nada trava. Mudanca de outro jogador chega com ate 400 ms a mais, so logo depois de acao propria: OK.
+- decidirAplicacao: sem mudanca no diff. OK.
+- scripts/verify-p20-sem-get-depois-da-acao.mjs item (6): so confere texto por regex. Rodei: OK. Mas nao prova que o GET sumiu, e nao falharia com folga de 1 ms. Nao e teste de comportamento.
+- Fazer: manter a mutacao contada ate o chamador aplicar a resposta (marcar o fim depois de applyRoomResponse, ou por helper usado por postRoomChat e pelos demais chamadores), mantendo o teto de 2 s. Depois medir de novo com o GET contado.
+
+P-20b 2a (Lupa, 21/11/2026): APROVADO.
+- roomFetch (hooks/useRoomSync.ts ~572-606): contador cai em liberar() no fim da leitura do corpo (res.json), no erro e na seguranca de 2 s. Confirmado que o contador nao cai nos headers.
+- Caminho sem macrotarefa: res.json wrapper -> postRoomChat -> chamador (RoomChat.tsx:54 e DiceRoller.tsx:45 aplicam por applyRoomResponse, que atualiza revisionRef em applySnapshot). Tudo microtarefa, o setTimeout do SSE nao entra no meio.
+- Contei 40 chamadas com await roomFetch (o relatorio diz 34); todas leem o corpo com res.json. Nao muda o resultado.
+- Teto de 2 s mantido. Mudanca de outro jogador espera so enquanto a leitura do corpo dura (cap 2 s).
+- decidirAplicacao sem mudanca. Verify-p20 OK, incluindo item (6) comportamental.
+- Ressalva (nao bloqueia): a seguranca de 2 s comeca antes do fetch. Mutacao com fetch acima de 2 s libera cedo e a corrida volta so nesse caso.
+- Nit: mutacoesRoomEmVooAgora exportada em modulo de producao so para teste. Aceitavel, mas poderia ficar fora do bundle.
+
+Lupa, revisão em 21/11/2026.
 
 ## TOR-SAVE teste de comportamento (Lupa)
 Parecer: APROVADO, com 1 nit (não bloqueia).
@@ -954,5 +1120,62 @@ Parecer: APROVADO, com 1 ressalva. Nada bloqueia o commit.
 - Nit: nomes de uma palavra no vocabulário (ex.: sono, despertar, terremoto) batem com palavras comuns do português. Nenhum texto atual cai nisso, mas pode dar falso FAIL no futuro.
 - Git: lib/character/starter-kits.ts já está no HEAD (3400a60, de outra mão). Só scripts/verify-kits-livro.mjs aparece modificado.
 Verificado aqui: node scripts/verify-kits-livro.mjs: ok, 36 kits. Mutações numa cópia: t1, t2, t3 e t5 falham; t4 (habilidade) passa. Não rodei npm test nem tsc.
+Lupa, revisão em 21/11/2026.
+
+## P-01 polling de amigos (Lupa)
+Parecer: APROVADO, com ressalvas (nenhuma bloqueia).
+- (1) Contadores conferidos: unread usa countUnreadFriendMessages (igual a messages/unread); invites usa listReceivedMesaInvites(...).length (igual a invites); requests usa countIncomingFriendRequests (igual a requests?countOnly=1). Mesmos numeros. As rotas antigas continuam existindo.
+- (2) Nenhum outro consumidor: refreshInvites e refreshFriendRequests so existiam no FriendsChatProvider.tsx e nao estavam no contexto exportado. Grep no repo confirmou.
+- (3) Sem vazamento: o cleanup do Provider (FriendsChatProvider.tsx:174-177) para o timer e remove visibilitychange e focus. FriendsChat.tsx:141-145 faz o mesmo com o intervalo de 4 s.
+- (4) Teste: node scripts/verify-p01-polling-amigos.mjs passa 7/7 com o servidor local no ar. Mutacoes numa copia no scratchpad: com o Provider do HEAD falha em "Provider deveria chamar /api/friends/pulse"; com o FriendsChat do HEAD falha em "FriendsChat sem visibilitychange". Limites: e regex sobre o texto, nao mede o intervalo em tempo real; sem servidor o passo 7 vira so "pulado" e o script ainda passa.
+- (5) Privacidade: a rota pulse usa so session.user.id, nao recebe parametro e devolve tres numeros. Sem vazamento.
+
+Ressalvas (nao bloqueiam):
+1. components/friends/FriendsChatProvider.tsx:18: o comentario do BV-078 saiu. Convites foram de 10 s para 15 s e nao lidas de 4 s para 15 s (com aba visivel). O BV-078 dizia que 10 s era o "na hora". Fazer: registrar o novo tempo na pagina 13 Desempenho e atualizar o BV-078 com essa decisao.
+2. components/friends/FriendsPageClient.tsx:74: fora do P-01, mas ainda ha polling de 10 s (BV-079) com load() enquanto houver pedido enviado. Fazer: decidir se entra antes de medir o ganho.
+3. Nit: FriendsChatProvider.tsx:168 e :184 chamam refreshUnread duas vezes no mount para usuario logado. Sem dano.
+4. Nit: app/api/friends/pulse/route.ts agora chama ensureDbMigrations tambem na parte de convites, que a rota antiga nao chamava. Conferir se e barato depois da primeira vez.
+5. Nit: FriendsChat.tsx:141: ao voltar a aba, a conversa so atualiza no proximo tick (ate 4 s). Aceitavel.
+
+Verificado aqui: verify-p01-polling-amigos.mjs 7 ok. Nao rodei tsc nem npm test.
+
+P-17 (viewerSnapshotResponse nas rotas do Um Anel). PARECER: REPROVADO.
+
+Confirmado OK:
+- 10 rotas tor-*: room = getRoom antes da mutacao, com guarda if (!room); user = session.user em todo return.
+- Configuracoes: toSnapshot (lib/room/internal/registry.ts:43) grava settings pos-mutacao; viewerSnapshotResponse usa snapshot.settings. Correto.
+- Excecao: requireRoomManage (lib/auth/authorize-room.ts:19) exige canManageRoom (dono ou admin). tor-session e settings seguros.
+- node scripts/verify-p17-tor-snapshot-viewer.mjs: 3 ok.
+
+Achados:
+1. app/api/room/[roomId]/chat/route.ts:115 (e :112 via appendTorEyeFromFeatDie, lib/room/handlers/tor-eye.ts:188): POST de chat devolve NextResponse.json(snapshot) cru; addRoomChatMessage retorna toSnapshot sem filtro. Jogador que manda mensagem recebe PA/HP de monstro e tokens sob nevoa. O cliente usa essa resposta desde o P-12. Fazer: viewerSnapshotResponse(snapshot, room, session.user). Pre-existente, mas e a mesma classe que o P-17 diz fechar.
+2. app/api/room/[roomId]/actors/[actorId]/route.ts:85 e actors/[actorId]/level-up/route.ts:67: devolvem scene: snapshot.scene cru ao jogador dono da ficha. Fazer: filtrar a scene pelo viewer ou devolver so actor e revision.
+3. scripts/verify-p17-tor-snapshot-viewer.mjs:19-28: a regex pega so NextResponse.json({ snapshot ...}. Nao pega chat (json(snapshot)) nem scene: de actors. E o 'if requireRoomManage -> continue' pula o arquivo inteiro. Fazer: varrer todo NextResponse.json de app/api/room/[roomId] e listar excecoes explicitas.
+4. scripts/verify-p17-tor-snapshot-viewer.mjs, bloco (2): usa settings undefined e tokens vazios. Nao testa configuracoes pos-mutacao nem redacao de HP de monstro e nevoa. Fazer: caso com token de monstro com HP, showMonsterHpToPlayers false e settings diferentes do room.
+
+2a RODADA (P-17): APROVADO.
+- chat/route.ts: as 3 respostas (rolagem, comOlho, final) passam por viewerSnapshotResponse(..., room, session?.user); room vem de getRoom na mesma rota. OK.
+- actors/[actorId] (PATCH) e level-up: actor e scene filtrados; room e session declarados. OK.
+- Verify: node scripts/verify-p17-tor-snapshot-viewer.mjs, 4 ok.
+- Excecao tokens/[tokenId]: canMoveToken -> canControlToken (lib/auth/combat-turn-access.ts:72) recusa token de monstro ao jogador, entao o token devolvido nao traz HP de monstro. OK.
+- Nit (nao bloqueia): o scanner ainda pula arquivo inteiro com requireRoomManage (verify linha 61). Hoje as rotas assim usam o filtro, mas uma rota futura pode escapar. Fazer: pular so o handler que chama requireRoomManage.
+- Nao rodei tsc (maestro informou ok) nem npm test.
+
+P-15 2a: REPROVADO. Advance, recovery, fatigue e eye desembrulhavam { snapshot }, mas stance, push e task continuavam com o envelope e iam para onRoomSync (TorAttackPopup :153, :215, :228) como se fossem sala.
+
+P-15 3a: APROVADO.
+- hooks/useRoomSync.ts: as seis funcoes (stance, push, task, shadow, helm, hazard) desembrulham { snapshot }; hazard devolve { ...snapshot, sheetSaved }. Helm, shadow e hazard nao usam o retorno, so onUpdate().
+- TorAttackPopup.tsx:231: payload.chat ?? [] e valido porque postRoomTorTask agora devolve a sala. A linha :272 (ataque) nao mudou e continua certa (delta ou sala).
+- verify-p15-envelope-um-anel.mjs: 8 ok, com caso de comportamento para as seis funcoes e para o sheetSaved do perigo.
+- Nao rodei tsc (voce informou ok) nem o navegador. Os testes usam fetch stubado.
+
+P-21 (Lupa, 21/11/2026): APROVADO.
+- MesaWorkspace.tsx:298: efeito do sync-actors roda so ao montar e ao trocar sala, convite ou sessao. refresh e estavel: actions de MesaSyncProvider.tsx:125 tem useMemo([]).
+- MesaWorkspace.tsx:269: a comparacao le getMesaRoomStore(roomId).getRevision() na hora da resposta, nao o closure.
+- Sincronizacao inicial preservada (requestIdleCallback ou setTimeout 6 s, MesaWorkspace.tsx:262).
+- Perda: sync-actors era a unica rota que relia as fichas do banco para a sala a cada revisao. Caminhos que ja empurram para a sala: edit-save, characters/[id], level-up, aprovacao de inventario (updateRoomActor), lifecycle. Nao achei save de ficha sem push. Risco residual: mudanca futura sem push so aparece ao reabrir a mesa.
+- verify-p21: OK. Copia com snapshot?.revision de volta nas deps: FALHOU (3 erros), entao o teste pega a regressao.
+- Nao rodei npm test inteiro nem tsc.
+
 Lupa, revisão em 21/11/2026.
 
