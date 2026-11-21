@@ -490,7 +490,9 @@ export function resolveAbilityBuff(
         ? `${name} prepara ${action.name} (+${dadoGolpe} radiante no próximo ataque corpo a corpo).`
         : `${name} prepara ${action.name} (+2 no próximo ataque corpo a corpo).`,
 
-      attackerUpdate: golpeSagrado ? { bonusDamageFormula: dadoGolpe } : { nextAttackBonus: 2 },
+      attackerUpdate: golpeSagrado
+        ? { bonusDamageFormula: dadoGolpe, bonusDamageType: "radiante" }
+        : { nextAttackBonus: 2 },
 
     };
 

@@ -232,7 +232,8 @@ export function applyConsumableBuffs(
       break;
     }
     case "weapon_coating": {
-      next = { ...next, bonusDamageFormula: def.formula ?? "1d6" };
+      // Veneno na arma nao herda o tipo radiante de um Golpe Sagrado ainda preparado.
+      next = { ...next, bonusDamageFormula: def.formula ?? "1d6", bonusDamageType: undefined };
       next = timedChip(
         next,
         {

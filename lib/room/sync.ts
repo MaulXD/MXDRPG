@@ -74,6 +74,7 @@ export function syncLinkedTokens(
       allyAttackAdvantage: token.allyAttackAdvantage,
       reactionShiftReady: token.reactionShiftReady,
       bonusDamageFormula: token.bonusDamageFormula,
+      bonusDamageType: token.bonusDamageType,
       rangedAttackAdvantage: token.rangedAttackAdvantage,
       weakened: token.weakened,
       nameplateMode: token.nameplateMode,

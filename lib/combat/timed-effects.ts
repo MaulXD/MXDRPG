@@ -394,7 +394,7 @@ export function enrichBuffsWithTimedEffects(
   }
   if (next.bonusDamageFormula?.trim()) {
     const label = effect && ABILITY_BUFF_DURATIONS[effect]?.label ? "Canalização" : "Dano extra";
-    next = attachTurnLimitedBuff(next, label, ["bonusDamageFormula"], 1, ctx);
+    next = attachTurnLimitedBuff(next, label, ["bonusDamageFormula", "bonusDamageType"], 1, ctx);
   }
   if (next.attackMark) {
     const label = next.attackMark.attackerDisadvantage ? "Finta" : "Marca";

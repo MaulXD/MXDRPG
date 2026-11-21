@@ -5,7 +5,8 @@
  * Antes: o motor dava +2 no teste de ataque (ramo melee_attack_bonus com selfTarget) e o
  * nome era "Golpe do Juramento". Agora: nome do livro e buff de dano radiante por nivel,
  * no campo bonusDamageFormula, consumido no proximo ataque que acertar.
- * Fora de escopo (sem teste aqui): morto-vivo e resistencia radiante.
+ * Resistencia: o dado radiante do Golpe Sagrado resiste como radiante, separado do tipo da arma
+ * (bonusDamageType). Fora de escopo (sem teste aqui): morto-vivo.
  *
  * Codigo: lib/combat/golpe-sagrado.ts (escala), lib/combat/ability.ts (buff),
  * lib/combat/attack.ts (dano extra e consumo), lib/character/rules.ts (nome).
@@ -195,6 +196,7 @@ caso("usar Golpe Sagrado no nivel 5 prepara 3d8 radiante no token, sem +2 de ata
   const res = resolveAbilityUse(paladinoBase, null, ficha("Paladino", 5), golpeSagrado, [paladinoBase], TURNO);
   assert.equal(res.kind, "buff", JSON.stringify(res).slice(0, 300));
   assert.equal(res.attackerUpdate.bonusDamageFormula, "3d8");
+  assert.equal(res.attackerUpdate.bonusDamageType, "radiante");
   assert.equal("nextAttackBonus" in res.attackerUpdate, false);
   assert.match(res.summary, /\+3d8 radiante/);
 });
@@ -226,6 +228,40 @@ caso("o buff so sai no ataque que acerta (miss mantem, hit consome)", () => {
   assert.ok("bonusDamageFormula" in acertou, "acerto deveria limpar o buff");
   assert.equal(acertou.bonusDamageFormula, undefined);
   assert.equal("bonusDamageFormula" in errou, false, "erro nao deveria mexer no buff");
+});
+
+// Ataque contra um defensor com resistencias (damageResist): acerto sem critico.
+function ataqueContra(atacante, defensor, actor) {
+  for (let i = 0; i < 500; i++) {
+    const res = resolveAttack(atacante, defensor, actor, acao, undefined, undefined, [atacante, defensor], OPTS);
+    if (res.hit && res.damage && !res.critical) return res;
+  }
+  throw new Error("nao acertou em 500 tentativas");
+}
+// Separa o dano: os ultimos `dados` rolls sao o Golpe Sagrado (o Paladino nao tem furtivo).
+function separaGolpe(res, dados) {
+  const golpe = res.damage.rolls.slice(-dados).reduce((a, b) => a + b, 0);
+  return { golpe, arma: res.damage.total - golpe, perda: res.defenderHpBefore - res.defenderHpAfter };
+}
+
+caso("Golpe Sagrado sem resistencia: a perda e o total da arma mais o radiante inteiro", () => {
+  const preparado = { ...paladinoBase, bonusDamageFormula: "3d8", bonusDamageType: "radiante" };
+  const { golpe, arma, perda } = separaGolpe(ataqueContra(preparado, alvo, ficha("Paladino", 5)), 3);
+  assert.equal(perda, arma + golpe);
+});
+
+caso("Golpe Sagrado: defensor resiste a cortante; o radiante nao cai pela metade", () => {
+  const defensor = { ...alvo, damageResist: ["cortante"] };
+  const preparado = { ...paladinoBase, bonusDamageFormula: "3d8", bonusDamageType: "radiante" };
+  const { golpe, arma, perda } = separaGolpe(ataqueContra(preparado, defensor, ficha("Paladino", 5)), 3);
+  assert.equal(perda, Math.floor(arma / 2) + golpe, `arma ${arma}, golpe ${golpe}, perda ${perda}`);
+});
+
+caso("Golpe Sagrado: defensor resiste a radiante; so o radiante cai pela metade", () => {
+  const defensor = { ...alvo, damageResist: ["radiante"] };
+  const preparado = { ...paladinoBase, bonusDamageFormula: "3d8", bonusDamageType: "radiante" };
+  const { golpe, arma, perda } = separaGolpe(ataqueContra(preparado, defensor, ficha("Paladino", 5)), 3);
+  assert.equal(perda, arma + Math.floor(golpe / 2), `arma ${arma}, golpe ${golpe}, perda ${perda}`);
 });
 
 console.log(`\nverify-d13-golpe-sagrado: ${pass} ok, ${fail} falhas`);

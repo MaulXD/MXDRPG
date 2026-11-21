@@ -34,6 +34,7 @@ import {
   sneakAttackShadowFormula,
   sneakAttackTurnWindow,
 } from "@/lib/combat/sneak-attack";
+import { GOLPE_SAGRADO_TIPO_DANO } from "@/lib/combat/golpe-sagrado";
 import { isAreaSpellAction, parseAreaShape } from "@/lib/combat/area-spell";
 import { buildMagiaCombatAction } from "@/lib/combat/spell-parse";
 import { isSpellCombatReady } from "@/lib/character/spell-prep";
@@ -638,7 +639,10 @@ export function attackerAfterAttack(
   }
   if (consumeAttackerMark) patch.attackMark = undefined;
   if (attacker.chargeReady && action.rangeCells <= 1) patch.chargeReady = undefined;
-  if (hit && attacker.bonusDamageFormula) patch.bonusDamageFormula = undefined;
+  if (hit && attacker.bonusDamageFormula) {
+    patch.bonusDamageFormula = undefined;
+    patch.bonusDamageType = undefined;
+  }
 
   const consumed: (keyof import("@/lib/vtt/types").BattleToken)[] = [];
   if (patch.nextAttackBonus !== undefined) consumed.push("nextAttackBonus");
@@ -1052,10 +1056,13 @@ export function resolveAttack(
   if (hit) {
     const dmgMod = resolved.kind === "spell" ? 0 : attrMod;
     damage = rollActionDamage(resolved.damageFormula, dmgMod, critical, resolved.damageBonus ?? 0);
+    let golpeRadiante = 0;
     if (attackerToken.bonusDamageFormula) {
       const extra = rollDice(attackerToken.bonusDamageFormula);
       damage.rolls.push(...extra.rolls);
       damage.total += extra.total;
+      // Golpe Sagrado: o dano extra e radiante e resiste como radiante, separado da arma.
+      if (attackerToken.bonusDamageType === GOLPE_SAGRADO_TIPO_DANO) golpeRadiante = extra.total;
     }
     const sneakFormula = sneakAttackFormula({
       classe: actor.identity.classe,
@@ -1092,11 +1099,12 @@ export function resolveAttack(
         damage.total += shadowTotal;
       }
     }
-    // Sombra Etérea: o dado necrótico resiste como necrótico; o resto, pelo tipo da arma.
+    // Sombra Etérea (necrótico) e Golpe Sagrado (radiante) resistem pelo próprio tipo; o resto, pelo tipo da arma.
     const necroTotal = damage.sombraNecrotico?.total ?? 0;
     const dmgTotal =
-      resistedDamageAmount(damage.total - necroTotal, defenderToken, resolved.damageType) +
-      (necroTotal > 0 ? resistedDamageAmount(necroTotal, defenderToken, SOMBRA_ETEREA_TIPO_DANO) : 0);
+      resistedDamageAmount(damage.total - necroTotal - golpeRadiante, defenderToken, resolved.damageType) +
+      (necroTotal > 0 ? resistedDamageAmount(necroTotal, defenderToken, SOMBRA_ETEREA_TIPO_DANO) : 0) +
+      (golpeRadiante > 0 ? resistedDamageAmount(golpeRadiante, defenderToken, GOLPE_SAGRADO_TIPO_DANO) : 0);
     const damaged = applyDamageWithTempHp(hpBefore, tempBefore, dmgTotal);
     hpAfter = damaged.hp;
     tempAfter = damaged.tempHp;

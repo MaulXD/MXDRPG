@@ -96,6 +96,8 @@ export type BattleToken = {
   reactionShiftReady?: boolean;
   /** Dano extra no próximo golpe (Canalizar Energia) */
   bonusDamageFormula?: string;
+  /** Tipo do dano extra acima; so o Golpe Sagrado usa "radiante" (resiste separado da arma) */
+  bonusDamageType?: string;
   /** Próximo ataque à distância com vantagem (Tiro Certeiro) */
   rangedAttackAdvantage?: boolean;
   /** Raios de Enfraquecimento etc. — desvantagem em ataques e testes de FOR */

@@ -213,6 +213,7 @@ export function resolveConsumableUse(
     "defesaBonus",
     "defesaBuffSource",
     "bonusDamageFormula",
+    "bonusDamageType",
     "saveAdvantagePoison",
     "damageResist",
   ] as const;
