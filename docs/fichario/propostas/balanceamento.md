@@ -395,6 +395,8 @@ Resultado: e o mesmo padrao do D12 antes da correcao, texto em `classLevelFeatur
 
 ### 4.3 D13, Golpe Sagrado do Paladino
 
+**Status (Bigorna, 20/11/2026).** Parte media feita: nome Golpe Sagrado, escala 2d8 a 6d8 em `lib/combat/golpe-sagrado.ts` e dano radiante extra no proximo ataque, em `lib/combat/ability.ts`. Teste: `scripts/verify-d13-golpe-sagrado.mjs`. Morto-vivo e resistencia radiante ficam de fora. O texto abaixo e o plano original.
+
 **O que o livro manda.** `livros/LIVRO-DO-JOGADOR.md`, linha 1210:
 
 > - Golpe Sagrado (Nivel 2): Ao acertar ataque corpo a corpo com arma, gasta 1 PA extra para +2d8 radiante (escala nos niveis da tabela). Mortos-vivos sofrem dano dobrado.
