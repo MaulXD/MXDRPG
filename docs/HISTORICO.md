@@ -6730,3 +6730,21 @@ Aproveitando o esclarecimento, atendido o pedido de melhorar de verdade a UX: at
 
 ---
 
+
+### 2026-11-20 (noite) — Rodada 3: decisões tomadas por delegação e correções de regra
+
+**Pedido:** continuar o loop de correções e tomar as decisões pendentes; usar o OpenCode para ajudar; commitar tudo no perfil do dono, sem coautoria de Claude ou Cursor (e remover a que existisse nos commits locais).
+
+**Decisões (página 03 do fichário):** D-03 a D-16, A-10a, D11, D12 e D12b decididas por delegação; ficam com o dono D-01 (repositório público com texto de O Um Anel), D-02 (merge na main), D8 a D10 do balanceamento, Termos de Uso e LGPD.
+
+**Correções:** D-13 movimento que voltava para a célula antiga (`d798002`); D-05/D-03 npm test no CI e schema MariaDB no docker-compose local (`38cb748`); D-12 PA guardado cortado para 5 (`9aac402`); A-10a mensagem do limite de fichas (`afd1b8b`); D-11 +N das armas aprimoradas no dano (`b016559`) e sinal de atributo negativo (`a4e813a`); D-07 vida temporária na subida de nível (`1b65d9e`); D-09 aviso quando a imagem não é salva na ficha (`b1abd2e`); D-14 cadastro sem banco recusado pela API (`23c2ed8`); D-15 PA no log do mestre (`a35dd9c`); D12 e D12b textos do Espiritualista sem regra no livro (`7f9e371`, `1cc8695`); D11 Ataque Furtivo do Ladino (`a5201e5`); D13 Golpe Sagrado com dano radiante por nível (`1cc8695`).
+
+**Documentação (OpenCode, modelo grátis big-pickle, conferido pelo maestro):** CLAUDE-PROJETO.md com a pilha real; PRODUTO, ESTRUTURA, API-SALA, P9-READY e PRD sem Clerk/Neon/Vercel; aviso de obsoleto nos guias de Neon/Postgres; PRD do Um Anel atualizado; auto-passe de 150 ms e Puxão Abissal com 6 células alinhados; propostas de história (5 contradições, 3 lacunas, 6 perguntas) e balanceamento nos níveis 5 e 10.
+
+**Coautoria:** os commits locais ainda não enviados foram reescritos sem nenhuma linha Co-Authored-By (backup em `backup/antes-sem-coautoria-20261120`). O histórico já publicado no GitHub ainda tem coautoria; tirar exige force push e confirmação do dono.
+
+**Como testar:** `npx tsc --noEmit`, `npm test` (passa inteiro), `npm run build`.
+
+**Pendências:** D13 completo (morto-vivo e resistência ao radiante separada), golpe sagrado só corpo a corpo se o dono quiser, os itens que ficam com o dono acima. Nada desta sessão está em produção.
+
+---
