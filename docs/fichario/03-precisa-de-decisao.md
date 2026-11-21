@@ -95,3 +95,9 @@ Opções: (a) corrigir o catálogo para 6; (b) manter como está e aceitar a div
 | D8, D9, D10 | Ficam com o dono: o livro se contradiz no PA por golpe e no +1 PA do Guerreiro, e mudar a fórmula de vida altera todo personagem já criado | Ver propostas/balanceamento.md, seção 3.6 |
 
 Ficam com o dono, porque mexem fora do código: D-01 (tornar o repositório privado ou tirar o texto dos livros de O Um Anel), D-02 (merge na `main`, que dispara deploy), Termos de Uso (texto jurídico), promessas da política de privacidade e servidor no Brasil.
+
+## D-20 Bestiário: livro ou curva de balanceamento do VTT? (21/11)
+
+A varredura do bestiário (propostas/bestiario.md) achou 507 diferenças entre as 80 fichas do LIVRO-DO-MESTRE.md e o monstros.json: vida em 77, CA em 66, dano em 227 e mais. Não é erro solto: o gerador calcula vida, CA e dano por uma curva de balanceamento própria (scripts/monster-balance.mjs, defaultMonsterHp) em vez de copiar a ficha do livro. Exemplo: Espectro tem 48 de vida no VTT e 28 no livro; Assombração tem 28 no VTT e 45 no livro.
+Opções: (a) o livro manda: o gerador passa a ler a ficha do livro e a curva vira só reserva para monstro sem ficha; (b) a curva manda e o livro é atualizado com os números do VTT; (c) manter os dois como estão e anotar no livro que a mesa usa a curva.
+Recomendação: (a), que segue a regra "o livro manda" do projeto, feita em lote com teste de spawn (verify-monster-spawn) e uma rodada de jogo antes de ir para produção. Muda a dificuldade de todo combate, por isso fica com o dono. Nada foi alterado.
