@@ -125,7 +125,7 @@ ok(
 
 ok(
   "TorPlayableCharactersPanel recarrega quando a revisão da mesa muda",
-  /useMesaMapSlice\(roomId \?\? ""\)\?\.revision/.test(PANEL) &&
+  /useMesaRoomRevision\(roomId \?\? ""\)/.test(PANEL) &&
     /\}, \[roomRevision\]\);/.test(PANEL)
 );
 

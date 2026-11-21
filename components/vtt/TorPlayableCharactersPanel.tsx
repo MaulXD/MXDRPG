@@ -9,7 +9,7 @@ import type { RoomSnapshot } from "@/lib/room/types";
 import { placeRoomTorCharacterOnCell } from "@/hooks/useRoomSync";
 import { endTorCharacterSpawnDrag, startTorCharacterSpawnDrag } from "@/lib/vtt/tor-spawn-drag-ui";
 import { TOR_CHARACTER_CHANGED_EVENT } from "@/lib/character/um-anel/character-changed-event";
-import { useMesaMapSlice } from "@/hooks/vtt/useMesaRoomSlice";
+import { useMesaRoomRevision } from "@/hooks/vtt/useMesaRoomSlice";
 
 type Props = {
   adventureId: string;
@@ -37,7 +37,7 @@ export function TorPlayableCharactersPanel({
   const [reloadKey, setReloadKey] = useState(0);
   // A mesa recebe tudo por SSE: a revisão muda quando qualquer aba grava (ataque,
   // Fonte de Dano, ficha). Um refetch por revisão, sem polling.
-  const roomRevision = useMesaMapSlice(roomId ?? "")?.revision;
+  const roomRevision = useMesaRoomRevision(roomId ?? "");
 
   useEffect(() => {
     // Revisões chegam em rajada no combate (cada movimento de token conta). Junta tudo

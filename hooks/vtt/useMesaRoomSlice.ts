@@ -93,3 +93,13 @@ export function useMesaSnapshotFull(roomId: string): RoomSnapshot | null {
     () => store.getSnapshotFull()
   );
 }
+
+/** Revisão atual da sala; muda a cada gravação, mesmo sem mudança de cena (BV-048). */
+export function useMesaRoomRevision(roomId: string): number {
+  const store = getMesaRoomStore(roomId);
+  return useSyncExternalStore(
+    (cb) => store.subscribe("revision", cb),
+    () => store.getRevision(),
+    () => store.getRevision()
+  );
+}

@@ -5,7 +5,7 @@ import type { RoomSyncStatus } from "@/hooks/useRoomSync";
 const EMPTY_CHAT: ChatMessage[] = [];
 const EMPTY_ACTORS: RoomSnapshot["actors"] = Object.freeze({}) as RoomSnapshot["actors"];
 
-export type MesaRoomSlice = "chat" | "map" | "combat" | "actors" | "settings" | "meta";
+export type MesaRoomSlice = "chat" | "map" | "combat" | "actors" | "settings" | "meta" | "revision";
 
 export type MesaMapSlice = {
   revision: number;
@@ -196,6 +196,13 @@ export class MesaRoomStore {
     if (prev?.combat !== nextSnap?.combat) this.emit("combat");
     if (prev?.actors !== nextSnap?.actors) this.emit("actors");
     if (prev?.settings !== nextSnap?.settings) this.emit("settings");
+    // BV-048: mudança só de revisão (ex.: ficha do Um Anel gravada fora da cena) não
+    // toca nenhuma fatia acima, mas painéis que recarregam pela revisão precisam saber.
+    if (prev?.revision !== nextSnap?.revision) this.emit("revision");
+  }
+
+  getRevision(): number {
+    return this.snapshot?.revision ?? 0;
   }
 
   reset(): void {

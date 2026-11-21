@@ -140,9 +140,24 @@ ok(
     /\}, \[roomRevision\]\);/.test(CARD)
 );
 ok(
-  "BV-040 card: lê a revisão da mesa pelo slice (SSE, sem polling)",
-  /import \{ useMesaMapSlice \} from "@\/hooks\/vtt\/useMesaRoomSlice";/.test(CARD) &&
-    /const roomRevision = useMesaMapSlice\(roomId \?\? ""\)\?\.revision;/.test(CARD)
+  "BV-040/BV-048 card: lê a revisão da mesa pela fatia própria (SSE, sem polling)",
+  /import \{ useMesaRoomRevision \} from "@\/hooks\/vtt\/useMesaRoomSlice";/.test(CARD) &&
+    /const roomRevision = useMesaRoomRevision\(roomId \?\? ""\);/.test(CARD)
+);
+
+/* ── 2b. BV-048: revisão sozinha também avisa o card ───────────────────── */
+
+const STORE = stripComments(read("hooks", "vtt", "mesa-room-store.ts"));
+const SLICE_HOOKS = stripComments(read("hooks", "vtt", "useMesaRoomSlice.ts"));
+ok(
+  "BV-048 store: emite a fatia \"revision\" quando só a revisão muda",
+  /if \(prev\?\.revision !== nextSnap\?\.revision\) this\.emit\("revision"\);/.test(STORE) &&
+    /"revision"/.test(STORE.match(/export type MesaRoomSlice =[^;]*;/)?.[0] ?? "")
+);
+ok(
+  "BV-048 hook: useMesaRoomRevision assina a fatia \"revision\"",
+  /export function useMesaRoomRevision\(roomId: string\): number/.test(SLICE_HOOKS) &&
+    /store\.subscribe\("revision", cb\)/.test(SLICE_HOOKS)
 );
 ok(
   "BV-040 card: remove o ouvinte ao desmontar",
