@@ -60,7 +60,8 @@ export function MesaPlayerEditRequestsBell({ adventureId }: Props) {
         className="mesa-edit-requests-bell__trigger"
         aria-expanded={open}
         aria-haspopup="dialog"
-        title="Solicitações de edição da sua ficha"
+        data-site-tip="Solicitações de edição da sua ficha"
+        aria-label="Solicitações de edição da sua ficha"
         onClick={() => setOpen((v) => !v)}
       >
         <span className="mesa-edit-requests-bell__icon" aria-hidden>

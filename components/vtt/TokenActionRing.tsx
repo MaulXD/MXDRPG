@@ -807,7 +807,7 @@ export function TokenActionRing({
             if (ringView !== "main") setRingView("main");
             else pickMain("idle");
           }}
-          title={centerTitle}
+          data-site-tip={centerTitle}
         >
           {ringView === "main" ? (
             <>
@@ -874,7 +874,7 @@ export function TokenActionRing({
                 </span>
                 <span className="token-action-ring__pa">{slot.paLabel}</span>
                 {slot.rechargeHint ? (
-                  <span className="token-action-ring__cd" title={`Recarga · ${slot.rechargeHint}`}>
+                  <span className="token-action-ring__cd" data-site-tip={`Recarga · ${slot.rechargeHint}`}>
                     <span className="token-action-ring__cd-icon" aria-hidden>
                       <IconHourglass size={10} />
                     </span>

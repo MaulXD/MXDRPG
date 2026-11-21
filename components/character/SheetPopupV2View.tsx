@@ -133,7 +133,7 @@ export function SheetPopupV2View({
         <div className="sheet-v2-header__main">
           <h2 className="sheet-v2-header__name">{character.name}</h2>
           <p className="sheet-v2-header__class">{classLine}</p>
-          <p className="sheet-v2-header__quick" title="Iniciativa, deslocamento e bônus de proficiência">
+          <p className="sheet-v2-header__quick" data-site-tip="Iniciativa, deslocamento e bônus de proficiência">
             {quickStats}
           </p>
         </div>
@@ -144,7 +144,7 @@ export function SheetPopupV2View({
             </div>
           </SheetHoverTip>
           <SheetHoverTip className="sheet-v2-header__xp-tip" tip={xpBarTip(nivel, xpTotal)}>
-            <div className="sheet-v2-header__xp" tabIndex={0} title={xpDetail.secondary}>
+            <div className="sheet-v2-header__xp" tabIndex={0} data-site-tip={xpDetail.secondary}>
               <span className="sheet-v2-header__xp-text">{xpDetail.primary}</span>
               <div
                 className="sheet-v2-header__xp-bar"
@@ -238,7 +238,7 @@ export function SheetPopupV2View({
               className={`sheet-v2-tab${activeTab === t.id ? " is-active" : ""}`}
               aria-label={t.label}
               aria-current={activeTab === t.id ? "page" : undefined}
-              title={t.label}
+              data-site-tip={t.label}
               onClick={() => onTabChange(t.id)}
             >
               <span className="sheet-v2-tab__icon">{t.icon}</span>

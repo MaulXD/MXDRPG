@@ -93,7 +93,7 @@ export function TokenConditionsPanel({
         <div className="vtt-condition-duration">
           <p
             className="vtt-condition-duration-label"
-            title={formatConditionCatalogTooltip(pending, token)}
+            data-site-tip={formatConditionCatalogTooltip(pending, token)}
           >
             Duração — <strong>{CONDITION_META[pending].label}</strong>
             <span className="vtt-condition-duration-desc">{CONDITION_META[pending].description}</span>
@@ -109,7 +109,7 @@ export function TokenConditionsPanel({
               <button
                 type="button"
                 className="btn btn-ghost vtt-duration-btn vtt-duration-btn--suggested"
-                title="Aplicar duração sugerida do livro"
+                data-site-tip="Aplicar duração sugerida do livro"
                 onClick={() =>
                   void apply(pending, {
                     turnsLeft: CONDITION_SUGGESTED_DURATIONS[pending]?.turnsLeft,
@@ -125,7 +125,7 @@ export function TokenConditionsPanel({
                 key={opt.label}
                 type="button"
                 className="btn btn-ghost vtt-duration-btn"
-                title={
+                data-site-tip={
                   opt.value?.roundsLeft
                     ? `${opt.value.roundsLeft} rodada(s)`
                     : opt.value?.turnsLeft

@@ -603,7 +603,7 @@ export function TorJourneyPanel({ roomId, canManage, progress, eye, onUpdate }: 
                       className="btn-ghost"
                       disabled={busy}
                       onClick={() => void resolveEvent(r)}
-                      title={`Rolar com graduação ${r}`}
+                      data-site-tip={`Rolar com graduação ${r}`}
                     >
                       {r}d
                     </button>

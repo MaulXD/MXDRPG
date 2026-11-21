@@ -78,7 +78,7 @@ export function GmActionHistoryPanel({ roomId, combatUndo = [], onUpdated }: Pro
                 type="button"
                 className="btn btn-secondary vtt-gm-history-revert"
                 disabled={busyId != null}
-                title={`Restaurar o mapa ao estado antes de: ${entry.summary}`}
+                data-site-tip={`Restaurar o mapa ao estado antes de: ${entry.summary}`}
                 onClick={() => void revertTo(entry.id)}
               >
                 {busyId === entry.id ? "Revertendo…" : "↩ Reverter até aqui"}

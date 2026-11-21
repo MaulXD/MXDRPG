@@ -82,7 +82,7 @@ export function MesaGuidedTour({
         type="button"
         className={`demo-guided-tour__trigger${triggerVariant === "map" ? " demo-guided-tour__trigger--map" : ""}`}
         onClick={openTour}
-        title="Tour da mesa"
+        data-site-tip="Tour da mesa"
         aria-label="Tour da mesa"
       >
         {triggerVariant === "map" ? "T" : "Tour"}

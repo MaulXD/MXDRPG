@@ -54,7 +54,7 @@ export function DismissibleMesaBanner({
         className="mesa-dismissible-banner__close"
         onClick={dismiss}
         aria-label="Fechar aviso"
-        title="Fechar"
+        data-site-tip="Fechar"
       >
         ×
       </button>

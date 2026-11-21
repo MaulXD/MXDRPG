@@ -26,7 +26,7 @@ export function WizardPickIcon({ kind, color, className }: Props) {
         color,
         borderColor: `color-mix(in srgb, ${color} 35%, transparent)`,
       }}
-      title={label}
+      data-site-tip={label}
       aria-label={label}
     >
       <svg

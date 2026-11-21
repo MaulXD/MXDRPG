@@ -37,7 +37,7 @@ export function RoomInviteBar({ adventureId, roomId, inviteCode, roomName }: Pro
   return (
     <div
       className="room-invite-bar"
-      title="Jogadores: painel com o código. Espectadores: link (sem chat)."
+      data-site-tip="Jogadores: painel com o código. Espectadores: link (sem chat)."
     >
       <span className="room-invite-title">
         Convite · <span className="room-invite-room">{roomName}</span>
@@ -62,7 +62,7 @@ export function RoomInviteBar({ adventureId, roomId, inviteCode, roomName }: Pro
       <button
         type="button"
         className="btn btn-ghost room-invite-btn"
-        title="Espectador — só assistir"
+        data-site-tip="Espectador — só assistir"
         onClick={() => copy(spectatorLink, "watch")}
       >
         {copied === "watch" ? "OK" : "Assistir"}

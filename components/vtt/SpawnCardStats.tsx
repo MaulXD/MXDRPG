@@ -12,7 +12,7 @@ type StatProps = {
 
 function SpawnCardStat({ icon, value, title }: StatProps) {
   return (
-    <span className="vtt-spawn-stat" title={title}>
+    <span className="vtt-spawn-stat" data-site-tip={title}>
       {icon}
       <strong>{value}</strong>
     </span>

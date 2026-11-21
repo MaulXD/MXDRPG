@@ -63,7 +63,7 @@ export function MesaMobileBar({
         className="mesa-mobile-bar__btn"
         disabled={!canRollDice}
         onClick={onOpenDice}
-        title={canRollDice ? "Rolador de dados" : "Somente jogadores da mesa"}
+        data-site-tip={canRollDice ? "Rolador de dados" : "Somente jogadores da mesa"}
       >
         <span className="mesa-mobile-bar__icon" aria-hidden>
           <MesaRailIcon name="dice" />

@@ -418,7 +418,7 @@ export function TorCharacterSheetView({
               {SKILLS.filter((s) => s.group === attr).map((s) => {
                 const favoured = character.favouredSkills.includes(s.id);
                 return (
-                  <li key={s.id} className={favoured ? "is-favoured" : ""} title={s.description}>
+                  <li key={s.id} className={favoured ? "is-favoured" : ""} data-site-tip={s.description}>
                     <span className="tor-sheet__skill-name">{s.label}</span>
                     <RatingPips value={character.skills[s.id]} favoured={favoured} />
                     {interactive ? (
@@ -438,7 +438,7 @@ export function TorCharacterSheetView({
         <h3>Proficiências de Combate</h3>
         <ul className="tor-sheet__combat-list">
           {(Object.keys(COMBAT_PROFICIENCY_LABEL) as TorCombatProficiencyId[]).map((id) => (
-            <li key={id} title={`Armas: ${WEAPONS.filter((w) => w.proficiency === id).map((w) => w.label).join(", ")}`}>
+            <li key={id} data-site-tip={`Armas: ${WEAPONS.filter((w) => w.proficiency === id).map((w) => w.label).join(", ")}`}>
               <span className="tor-sheet__skill-name">{COMBAT_PROFICIENCY_LABEL[id]}</span>
               <RatingPips value={character.combatProficiencies[id]} />
               {interactive ? (
@@ -456,7 +456,7 @@ export function TorCharacterSheetView({
           <h3>Traços Distintivos</h3>
           <ul className="tor-sheet__tag-list">
             {features.map((f, i) => (
-              <li key={i} title={f?.description}>
+              <li key={i} data-site-tip={f?.description}>
                 {f?.label}
               </li>
             ))}
@@ -466,12 +466,12 @@ export function TorCharacterSheetView({
           <h3>Recompensa &amp; Virtude</h3>
           <ul className="tor-sheet__tag-list">
             {rewards.map((r, i) => (
-              <li key={`r-${i}`} title={r?.description}>
+              <li key={`r-${i}`} data-site-tip={r?.description}>
                 {r?.label} (Valor {character.valour})
               </li>
             ))}
             {virtues.map((v, i) => (
-              <li key={`v-${i}`} title={v.description}>
+              <li key={`v-${i}`} data-site-tip={v.description}>
                 {v.label} (Sabedoria {character.wisdom})
               </li>
             ))}
@@ -498,7 +498,7 @@ export function TorCharacterSheetView({
               {character.warGear.map((item) => {
                 const weapon = WEAPON_BY_ID[item.weaponId];
                 return (
-                  <tr key={item.instanceId} title={weapon?.notes}>
+                  <tr key={item.instanceId} data-site-tip={weapon?.notes}>
                     <td>{weapon?.label ?? item.weaponId}</td>
                     <td>{weapon?.damage}</td>
                     <td>{weapon?.injury ?? "—"}</td>

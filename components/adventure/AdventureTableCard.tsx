@@ -41,7 +41,7 @@ function MemberAvatar({
   return (
     <span
       className={`adventure-table-card__avatar${online ? " adventure-table-card__avatar--online" : ""}`}
-      title={name}
+      data-site-tip={name}
     >
       {avatarUrl ? (
         // eslint-disable-next-line @next/next/no-img-element

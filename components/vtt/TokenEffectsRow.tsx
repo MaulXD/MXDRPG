@@ -79,7 +79,7 @@ export function TokenEffectsRow({
           </div>
         ))}
         {extra > 0 ? (
-          <span className="condition-chip condition-chip--info" title={`+${extra} efeitos`}>
+          <span className="condition-chip condition-chip--info" data-site-tip={`+${extra} efeitos`}>
             <span className="condition-chip__label">+{extra}</span>
           </span>
         ) : null}
@@ -132,7 +132,7 @@ export function TokenEffectsRow({
           </span>
         ))}
         {extra > 0 ? (
-          <span className="vtt-effect-chip vtt-effect-chip--more" title={`+${extra} efeitos`}>
+          <span className="vtt-effect-chip vtt-effect-chip--more" data-site-tip={`+${extra} efeitos`}>
             +{extra}
           </span>
         ) : null}

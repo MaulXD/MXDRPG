@@ -64,7 +64,7 @@ export function SheetEditRequestButton({
       <button
         type="button"
         className={btnClass}
-        title="Solicitar edição ao mestre"
+        data-site-tip="Solicitar edição ao mestre"
         aria-label="Solicitar edição ao mestre"
         onPointerDown={(e) => e.stopPropagation()}
         onPointerUp={(e) => e.stopPropagation()}

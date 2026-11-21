@@ -54,7 +54,7 @@ export function GmMesaModeToggle({
         className={`gm-mesa-mode-toggle__option${!resolvedCombatActive ? " gm-mesa-mode-toggle__option--active" : ""}`}
         aria-pressed={!resolvedCombatActive}
         disabled={busy}
-        title={
+        data-site-tip={
           isTor
             ? "Exploração livre: movimento sem restrição de turno"
             : "Exploração livre: movimento sem PA, magias sem custo de turno"
@@ -69,7 +69,7 @@ export function GmMesaModeToggle({
         className={`gm-mesa-mode-toggle__option${resolvedCombatActive ? " gm-mesa-mode-toggle__option--active" : ""}`}
         aria-pressed={resolvedCombatActive}
         disabled={busy}
-        title={
+        data-site-tip={
           isTor
             ? "Combate: ordem de turno por posição no mapa, ações só na vez de cada token"
             : "Combate: PA, iniciativa e ações só na vez de cada token"
@@ -94,7 +94,7 @@ export function MesaModeIndicator({ combatActive, rpgSystemId = "eldarin" }: Ind
   return (
     <span
       className={`mesa-mode-indicator${combatActive ? " mesa-mode-indicator--combat" : " mesa-mode-indicator--adventure"}`}
-      title={
+      data-site-tip={
         combatActive
           ? "Modo combate — aguarde sua vez para mover e agir"
           : isTor

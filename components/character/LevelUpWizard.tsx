@@ -534,7 +534,7 @@ export function LevelUpWizard({
           type="button"
           className="btn sheet-level-up-trigger sheet-level-up-trigger--compact btn--level-ready btn--level-ready--alert"
           onClick={() => setOpen(true)}
-          title={`Subir para nível ${nextLevel} — ${xpDetail.secondary}`}
+          data-site-tip={`Subir para nível ${nextLevel} — ${xpDetail.secondary}`}
           aria-label={`Subir para nível ${nextLevel}`}
         >
           Subir nv {nextLevel}

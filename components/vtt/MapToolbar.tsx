@@ -146,7 +146,7 @@ export function MapToolbar({
                 type="button"
                 data-tool-icon={mode}
                 className={`map-toolbar__btn${active ? " map-toolbar__btn--active" : ""}`}
-                title={t.title}
+                data-site-tip={t.title}
                 aria-label={t.label}
                 aria-pressed={active}
                 disabled={busy || (mode === "ping" && !canPing)}
@@ -172,7 +172,7 @@ export function MapToolbar({
                     type="button"
                     data-tool-icon={tool}
                     className={`map-toolbar__btn${active ? " map-toolbar__btn--active" : ""}`}
-                    title={t.title}
+                    data-site-tip={t.title}
                     aria-label={t.label}
                     aria-pressed={active}
                     disabled={busy}
@@ -194,7 +194,7 @@ export function MapToolbar({
               type="button"
               data-tool-icon="dungeon"
               className={`map-toolbar__btn map-toolbar__btn--wide${dungeonEditorActive ? " map-toolbar__btn--active" : ""}`}
-              title="Editor de mapa — piso, paredes e objetos"
+              data-site-tip="Editor de mapa — piso, paredes e objetos"
               aria-label="Editor de masmorra"
               aria-pressed={dungeonEditorActive}
               onClick={onToggleDungeonEditor}
@@ -210,7 +210,7 @@ export function MapToolbar({
           type="button"
           data-tool-icon="pan"
           className={`map-toolbar__btn map-toolbar__btn--wide${panToolActive ? " map-toolbar__btn--active" : ""}`}
-          title="Arrastar o mapa — com esta opção ligada, um dedo (ou clique) move a vista em vez de agir no token"
+          data-site-tip="Arrastar o mapa — com esta opção ligada, um dedo (ou clique) move a vista em vez de agir no token"
           aria-label="Arrastar o mapa"
           aria-pressed={panToolActive}
           onClick={onTogglePanTool}
@@ -225,7 +225,7 @@ export function MapToolbar({
             className="map-toolbar__btn"
             onClick={onZoomOut}
             disabled={!canZoomOut}
-            title="Diminuir zoom"
+            data-site-tip="Diminuir zoom"
             aria-label="Diminuir zoom"
           >
             <MapToolbarIcon name="zoom-out" />
@@ -237,7 +237,7 @@ export function MapToolbar({
             className="map-toolbar__btn"
             onClick={onZoomIn}
             disabled={!canZoomIn}
-            title="Aumentar zoom"
+            data-site-tip="Aumentar zoom"
             aria-label="Aumentar zoom"
           >
             <MapToolbarIcon name="zoom-in" />
@@ -247,7 +247,7 @@ export function MapToolbar({
             data-tool-icon="reset-view"
             className="map-toolbar__btn"
             onClick={onResetView}
-            title="Centralizar e resetar zoom"
+            data-site-tip="Centralizar e resetar zoom"
             aria-label="Resetar vista"
           >
             <MapToolbarIcon name="reset-view" />
@@ -301,7 +301,7 @@ export function MapToolbar({
               type="button"
               className={`map-toolbar__dur-btn${durability === "permanent" ? " map-toolbar__dur-btn--active" : ""}`}
               disabled={!canManageAll}
-              title={canManageAll ? undefined : "Só o mestre"}
+              data-site-tip={canManageAll ? undefined : "Só o mestre"}
               onClick={() => onDurabilityChange("permanent")}
             >
               Permanente
@@ -312,7 +312,7 @@ export function MapToolbar({
               type="button"
               className="map-toolbar__clear"
               disabled={busy}
-              title="Remove desenhos temporários da sessão"
+              data-site-tip="Remove desenhos temporários da sessão"
               onClick={onClearSession}
             >
               Limpar sessão

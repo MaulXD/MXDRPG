@@ -35,7 +35,7 @@ export function MesaSyncIndicator({ syncStatus, syncError, onRetry }: Props) {
     <p
       className={`mesa-sync-indicator mesa-sync-indicator--${syncStatus}`}
       aria-live="polite"
-      title="Estado da conexão ao vivo com a mesa"
+      data-site-tip="Estado da conexão ao vivo com a mesa"
     >
       <span className="mesa-sync-indicator__dot" aria-hidden />
       <span className="mesa-sync-indicator__text">{label}</span>

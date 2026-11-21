@@ -78,7 +78,7 @@ export function TorAdversaryPanel({ roomId, spawnAxial, onPlaced }: Props) {
               <div
                 className="vtt-playable-card vtt-playable-card--draggable"
                 draggable={!busy}
-                title="Arraste pro mapa, ou use o botão Invocar"
+                data-site-tip="Arraste pro mapa, ou use o botão Invocar"
                 onDragStart={(e) => {
                   if (busy) {
                     e.preventDefault();

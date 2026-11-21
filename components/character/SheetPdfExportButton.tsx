@@ -122,7 +122,7 @@ export function SheetPdfExportButton({
           void exportPdf();
         }}
         disabled={busy}
-        title={
+        data-site-tip={
           error ||
           "Baixar ficha em PDF (ações rápidas com link para a mesa)"
         }

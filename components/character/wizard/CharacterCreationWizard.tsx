@@ -809,7 +809,7 @@ export function CharacterCreationWizard({
                     <span className="char-wizard-attr-card__label">
                       {ATTRIBUTE_LABELS[key]}
                       {focusRank ? (
-                        <span className="char-wizard-attr-card__focus" title="Foco da classe">
+                        <span className="char-wizard-attr-card__focus" data-site-tip="Foco da classe">
                           {focusRank === 1 ? <IconStar size={12} /> : focusRank}
                         </span>
                       ) : null}

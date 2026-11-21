@@ -240,7 +240,7 @@ export function PlayerSpawnPanel({
                   if (spawnAxial && !busy && placeable) void placeAt(actor.id, spawnAxial);
                   else if (!placeable) setMsg(`${actor.name} está inconsciente — cure antes de entrar no mapa.`);
                 }}
-                title={
+                data-site-tip={
                   placeable
                     ? `Arrastar ${actor.name} para o mapa`
                     : `${actor.name} inconsciente — não pode entrar no mapa`
@@ -252,7 +252,12 @@ export function PlayerSpawnPanel({
                     <strong>{actor.name}</strong>
                     <span
                       className={`vtt-spawn-map-dot${onBoard ? " vtt-spawn-map-dot--on" : ""}`}
-                      title={
+                      data-site-tip={
+                        onBoard
+                          ? `No mapa (q${onBoard.axial.q}, r${onBoard.axial.r})`
+                          : "Fora do mapa"
+                      }
+                      aria-label={
                         onBoard
                           ? `No mapa (q${onBoard.axial.q}, r${onBoard.axial.r})`
                           : "Fora do mapa"
@@ -278,7 +283,7 @@ export function PlayerSpawnPanel({
                   className="vtt-spawn-pull-back"
                   disabled={busy}
                   onClick={() => void pullBack(actor.id, onBoard.id)}
-                  title="Retirar do mapa (ficha permanece na aventura)"
+                  data-site-tip="Retirar do mapa (ficha permanece na aventura)"
                   aria-label={`Retirar ${actor.name} do mapa`}
                 >
                   ↩

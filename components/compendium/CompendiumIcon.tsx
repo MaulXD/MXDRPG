@@ -67,7 +67,7 @@ export function CompendiumIcon({ entry, color, className, fallbackLetter }: Prop
 
   if (imgUrl) {
     return (
-      <span className={rootClass} style={{ background: `${tint}22`, color: tint }} title={label}>
+      <span className={rootClass} style={{ background: `${tint}22`, color: tint }} data-site-tip={label} aria-label={label}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src={imgUrl} alt="" draggable={false} />
       </span>
@@ -75,7 +75,7 @@ export function CompendiumIcon({ entry, color, className, fallbackLetter }: Prop
   }
 
   return (
-    <span className={rootClass} style={{ background: `${tint}22`, color: tint }} title={label} aria-label={label}>
+    <span className={rootClass} style={{ background: `${tint}22`, color: tint }} data-site-tip={label} aria-label={label}>
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
         <path d={SVG_PATHS[kind]} />
       </svg>

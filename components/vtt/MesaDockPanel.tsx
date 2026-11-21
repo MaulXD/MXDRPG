@@ -67,7 +67,7 @@ export function MesaDockPanel({ side, label, layout, onLayoutChange, children }:
           type="button"
           className="mesa-dock-expand"
           onClick={toggle}
-          title={`Expandir ${label}`}
+          data-site-tip={`Expandir ${label}`}
           aria-label={`Expandir ${label}`}
         >
           <span className="mesa-dock-expand-icon" aria-hidden>
@@ -82,7 +82,7 @@ export function MesaDockPanel({ side, label, layout, onLayoutChange, children }:
               type="button"
               className="mesa-dock-toggle"
               onClick={toggle}
-              title={`Recolher ${label}`}
+              data-site-tip={`Recolher ${label}`}
               aria-label={`Recolher ${label}`}
             >
               {side === "left" ? "‹" : "›"}

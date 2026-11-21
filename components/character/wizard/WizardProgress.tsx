@@ -45,7 +45,7 @@ export function WizardProgress({ steps, current, busy, invalidSteps = [], onGoTo
                 onClick={() => onGoTo(i)}
                 aria-current={active ? "step" : undefined}
                 aria-invalid={invalid || undefined}
-                title={invalid ? `${label} — pendente` : label}
+                data-site-tip={invalid ? `${label} — pendente` : label}
               >
                 <span className="char-wizard-progress__dot">
                   {invalid ? "!" : done ? <IconCheck size={12} /> : i + 1}

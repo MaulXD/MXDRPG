@@ -268,7 +268,7 @@ export function TorEyePanel({ roomId, canManage, eye, onUpdate }: Props) {
           {/* Magia é a única fonte totalmente manual: o porte do feitiço é
               julgamento do Mestre, e o app não tem como saber. */}
           <div className="tor-journey__ranks">
-            <p className="tor-journey__pending-hint" title={TOR_EYE_SOURCE_META.magia.description}>
+            <p className="tor-journey__pending-hint" data-site-tip={TOR_EYE_SOURCE_META.magia.description}>
               {TOR_EYE_SOURCE_META.magia.label} — menor, maior, poderoso
             </p>
             {[1, 2, 3].map((p) => (
@@ -296,7 +296,7 @@ export function TorEyePanel({ roomId, canManage, eye, onUpdate }: Props) {
           <div className="tor-journey__ranks">
             <p
               className="tor-journey__pending-hint"
-              title={TOR_EYE_SOURCE_META["olho-rolado"].description}
+              data-site-tip={TOR_EYE_SOURCE_META["olho-rolado"].description}
             >
               Ajustar o último ⊘ rolado
             </p>

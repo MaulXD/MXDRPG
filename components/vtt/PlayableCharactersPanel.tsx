@@ -165,7 +165,7 @@ export function PlayableCharactersPanel({
                   role="button"
                   tabIndex={placeable && !busy ? 0 : -1}
                   draggable={placeable && !busy}
-                  title={dragTitle}
+                  data-site-tip={dragTitle}
                   onDragStart={(e) => {
                     if (isActionTarget(e.target) || !placeable || busy) {
                       e.preventDefault();
@@ -196,13 +196,14 @@ export function PlayableCharactersPanel({
                         <strong>{actor.name}</strong>
                         <span
                           className={`vtt-playable-ownership${mine ? " vtt-playable-ownership--mine" : ""}`}
-                          title={mine ? "Seu personagem" : "Somente leitura"}
+                          data-site-tip={mine ? "Seu personagem" : "Somente leitura"}
+                          aria-label={mine ? "Seu personagem" : "Somente leitura"}
                         >
                           {mine ? <IconStar size={13} /> : <IconEye size={13} />}
                         </span>
                         <span
                           className={`vtt-spawn-map-dot${onBoard ? " vtt-spawn-map-dot--on" : ""}`}
-                          title={mapTitle}
+                          data-site-tip={mapTitle}
                           aria-label={mapTitle}
                         />
                       </div>
@@ -228,7 +229,7 @@ export function PlayableCharactersPanel({
                         className="btn btn-ghost vtt-playable-card__manage"
                         disabled={busy}
                         onClick={() => void pullBack(actor.id, onBoard.id)}
-                        title="Retirar do mapa"
+                        data-site-tip="Retirar do mapa"
                       >
                         ↩ Mapa
                       </button>

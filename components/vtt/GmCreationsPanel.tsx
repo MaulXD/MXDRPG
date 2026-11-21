@@ -321,7 +321,8 @@ export function GmCreationsPanel({
                 }}
                 onClick={() => handleSpawn(item.id)}
                 disabled={busy}
-                title="Colocar na célula sob o cursor"
+                data-site-tip="Colocar na célula sob o cursor"
+                aria-label="Colocar na célula sob o cursor"
               >
                 ⊕
               </button>
@@ -330,7 +331,7 @@ export function GmCreationsPanel({
                 className="btn btn-ghost btn-xs"
                 onClick={() => handleDelete(item.id)}
                 disabled={busy}
-                title="Excluir template"
+                data-site-tip="Excluir template" aria-label="Excluir template"
               >
                 <IconClose size={12} />
               </button>

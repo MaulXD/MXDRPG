@@ -118,7 +118,7 @@ export function TorPlayableCharactersPanel({
                   type="button"
                   className={`vtt-playable-card${canPlaceOnMap ? " vtt-playable-card--draggable" : ""}`}
                   draggable={canPlaceOnMap && !busy}
-                  title={canPlaceOnMap ? "Arraste pro mapa, ou clique pra abrir a ficha" : undefined}
+                  data-site-tip={canPlaceOnMap ? "Arraste pro mapa, ou clique pra abrir a ficha" : undefined}
                   onDragStart={(e) => {
                     if (!canPlaceOnMap || busy) {
                       e.preventDefault();

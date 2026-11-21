@@ -63,7 +63,7 @@ export function FriendsMessengerDock() {
           type="button"
           className="friends-messenger-launcher__main"
           onClick={() => chat.restoreMessenger()}
-          title="Abrir mensagens"
+          data-site-tip="Abrir mensagens"
           aria-label="Abrir mensagens"
         >
           <IconChat size={20} />
@@ -85,7 +85,7 @@ export function FriendsMessengerDock() {
                 chat.openChat(id);
                 chat.restoreMessenger();
               }}
-              title={friendLabel(f)}
+              data-site-tip={friendLabel(f)}
               aria-label={`Conversa com ${friendLabel(f)}`}
             >
               <UserAvatar
@@ -126,7 +126,7 @@ export function FriendsMessengerDock() {
               className="friends-chat-float__close"
               onClick={() => chat.minimizeMessenger()}
               aria-label="Minimizar messenger"
-              title="Minimizar"
+              data-site-tip="Minimizar"
             >
               −
             </button>
@@ -135,7 +135,7 @@ export function FriendsMessengerDock() {
               className="friends-chat-float__close"
               onClick={() => chat.closeMessenger()}
               aria-label="Fechar messenger"
-              title="Fechar"
+              data-site-tip="Fechar"
             >
               ×
             </button>
@@ -160,7 +160,7 @@ export function FriendsMessengerDock() {
                     aria-selected={activeChatId === id}
                     className="friends-messenger-tabs__select"
                     onClick={() => chat.setActiveChatId(id)}
-                    title={label}
+                    data-site-tip={label}
                   >
                     <UserAvatar
                       url={f.avatarUrl}
@@ -175,7 +175,7 @@ export function FriendsMessengerDock() {
                     className="friends-messenger-tabs__close"
                     onClick={() => chat.closeChat(id)}
                     aria-label={`Fechar conversa com ${label}`}
-                    title="Fechar conversa"
+                    data-site-tip="Fechar conversa"
                   >
                     ×
                   </button>
@@ -201,7 +201,7 @@ export function FriendsMessengerDock() {
           className="friends-chat-float__resize"
           role="presentation"
           aria-hidden
-          title="Redimensionar"
+          data-site-tip="Redimensionar"
           onPointerDown={drag.onResizePointerDown}
         />
       </div>

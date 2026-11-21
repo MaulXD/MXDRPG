@@ -106,7 +106,8 @@ export function MesaEditRequestsBell({ adventureId, roomId }: Props) {
         className="mesa-edit-requests-bell__trigger"
         aria-expanded={open}
         aria-haspopup="dialog"
-        title="Solicitações de ficha e inventário"
+        data-site-tip="Solicitações de ficha e inventário"
+        aria-label="Solicitações de ficha e inventário"
         onClick={() => setOpen((v) => !v)}
       >
         <span className="mesa-edit-requests-bell__icon" aria-hidden>

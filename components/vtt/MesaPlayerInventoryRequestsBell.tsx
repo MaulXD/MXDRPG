@@ -62,7 +62,8 @@ export function MesaPlayerInventoryRequestsBell({ adventureId }: Props) {
         className="mesa-edit-requests-bell__trigger"
         aria-expanded={open}
         aria-haspopup="dialog"
-        title="Solicitações de itens do seu inventário"
+        data-site-tip="Solicitações de itens do seu inventário"
+        aria-label="Solicitações de itens do seu inventário"
         onClick={() => setOpen((v) => !v)}
       >
         <span className="mesa-edit-requests-bell__icon" aria-hidden>

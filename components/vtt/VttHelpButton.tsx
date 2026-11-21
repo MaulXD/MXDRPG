@@ -47,7 +47,7 @@ export function VttHelpButton({ rpgSystemId = "eldarin" }: Props) {
         type="button"
         className="vtt-help-trigger"
         onClick={() => setOpen(true)}
-        title="Dicas de jogo — como usar a mesa"
+        data-site-tip="Dicas de jogo — como usar a mesa"
         aria-label="Dicas de jogo"
       >
         ?

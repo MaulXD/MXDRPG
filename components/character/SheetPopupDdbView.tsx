@@ -146,7 +146,7 @@ export function SheetPopupDdbView({
               className="sheet-ddb-header__xp-tip"
               tip={xpBarTip(nivel, xpTotal)}
             >
-              <div className="sheet-ddb-header__xp" tabIndex={0} title={xpDetail.secondary}>
+              <div className="sheet-ddb-header__xp" tabIndex={0} data-site-tip={xpDetail.secondary}>
                 <span className="sheet-ddb-header__xp-text">{xpDetail.primary}</span>
                 <div
                   className="sheet-ddb-header__xp-bar"

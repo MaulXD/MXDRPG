@@ -133,7 +133,7 @@ export function FoundryWindow({
               className="foundry-window__btn"
               onClick={onMinimize}
               aria-label={layout.minimized ? "Restaurar janela" : "Recolher janela"}
-              title={layout.minimized ? "Restaurar" : "Recolher"}
+              data-site-tip={layout.minimized ? "Restaurar" : "Recolher"}
             >
               {layout.minimized ? (
                 <svg viewBox="0 0 12 12" width="12" height="12" aria-hidden>
@@ -167,7 +167,7 @@ export function FoundryWindow({
               className="foundry-window__btn foundry-window__btn--close"
               onClick={onClose}
               aria-label="Fechar janela"
-              title="Fechar"
+              data-site-tip="Fechar"
             >
               <svg viewBox="0 0 12 12" width="12" height="12" aria-hidden>
                 <line

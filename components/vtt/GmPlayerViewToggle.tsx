@@ -14,7 +14,7 @@ export function GmPlayerViewToggle({ playAsPlayer, onToggle }: Props) {
       className={`gm-player-view-toggle${playAsPlayer ? " gm-player-view-toggle--player" : ""}`}
       onClick={onToggle}
       aria-pressed={playAsPlayer}
-      title={
+      data-site-tip={
         playAsPlayer
           ? "Visão de jogador ativa — clique para voltar à visão de mestre"
           : "Testar visão dos jogadores na mesa"

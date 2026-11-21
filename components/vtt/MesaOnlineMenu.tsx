@@ -316,7 +316,7 @@ export function MesaOnlineMenu({ online, loading = false, selfUserId }: Props) {
         aria-expanded={open}
         aria-haspopup="listbox"
         aria-busy={loading || undefined}
-        title={loading ? "Carregando jogadores online…" : "Jogadores online na mesa"}
+        data-site-tip={loading ? "Carregando jogadores online…" : "Jogadores online na mesa"}
         onClick={() => setOpen((v) => !v)}
       >
         <span className="mesa-online-menu__dot" aria-hidden />

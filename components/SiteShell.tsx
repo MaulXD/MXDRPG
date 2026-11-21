@@ -177,7 +177,7 @@ function VttTopbarContent({
             className="vtt-topbar-tab vtt-topbar-tab--collapse glass"
             onClick={hideTopbar}
             aria-label="Ocultar barra de navegação"
-            title="Ocultar menu"
+            data-site-tip="Ocultar menu"
           >
             <span className="vtt-topbar-tab__chevron vtt-topbar-tab__chevron--up" aria-hidden />
           </button>
@@ -189,7 +189,7 @@ function VttTopbarContent({
           className="vtt-topbar-tab vtt-topbar-tab--reveal glass"
           onClick={showTopbar}
           aria-label="Mostrar barra de navegação"
-          title="Mostrar menu"
+          data-site-tip="Mostrar menu"
         >
           <span className="vtt-topbar-tab__chevron vtt-topbar-tab__chevron--down" aria-hidden />
         </button>

@@ -37,7 +37,7 @@ export function FoundryDockPanel({
               type="button"
               className="foundry-dock-panel__btn"
               onClick={onMinimize}
-              title={minimized ? "Expandir" : "Recolher"}
+              data-site-tip={minimized ? "Expandir" : "Recolher"}
               aria-label={minimized ? "Expandir painel" : "Recolher painel"}
             >
               {minimized ? "▢" : "−"}
@@ -47,7 +47,7 @@ export function FoundryDockPanel({
             type="button"
             className="foundry-dock-panel__btn foundry-dock-panel__btn--close"
             onClick={onClose}
-            title="Fechar"
+            data-site-tip="Fechar"
             aria-label="Fechar painel"
           >
             ×

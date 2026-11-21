@@ -53,7 +53,7 @@ type Props = {
 
 function HudCaShield({ value }: { value: number }) {
   return (
-    <div className="hud-ca" title={`Classe de armadura ${value}`}>
+    <div className="hud-ca" data-site-tip={`Classe de armadura ${value}`}>
       <div className="hud-ca-shield">
         <svg viewBox="0 0 32 36" fill="none" aria-hidden>
           <path
@@ -186,7 +186,7 @@ export function CharacterCombatHud({
 
         <div className="hud-body">
           <div className="hud-name-row">
-            <span className="hud-name" title={token.name}>
+            <span className="hud-name" data-site-tip={token.name}>
               {token.name}
             </span>
             {defeated ? (
@@ -257,7 +257,7 @@ export function CharacterCombatHud({
           <button
             type="button"
             className="hud-btn hud-btn--hide"
-            title="Ocultar HUD"
+            data-site-tip="Ocultar HUD"
             aria-label="Ocultar HUD"
             onClick={onHide}
           >

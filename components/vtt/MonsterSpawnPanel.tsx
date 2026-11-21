@@ -206,7 +206,7 @@ export function MonsterSpawnPanel({ roomId, scene, spawnAxial, onSpawned, onOpen
               }}
               onDragStart={(e) => onDragStart(m.entryId, m.name, e)}
               onDragEnd={onDragEnd}
-              title={`Arrastar ${m.name} para o mapa`}
+              data-site-tip={`Arrastar ${m.name} para o mapa`}
             >
               <CompendiumIcon
                 entry={{ id: m.entryId, name: m.name, type: "npc", system: {} }}

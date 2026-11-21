@@ -67,7 +67,7 @@ export function TorSheetPdfExportButton({ character, className }: Props) {
         className={className ?? "btn-ghost"}
         disabled={busy}
         onClick={() => void run()}
-        title="Baixar a ficha em PDF"
+        data-site-tip="Baixar a ficha em PDF"
       >
         {busy ? "Gerando…" : "Exportar PDF"}
       </button>

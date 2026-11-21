@@ -114,7 +114,7 @@ export function CharacterSheetPopupHero({ name, identity }: Props) {
               ].filter(Boolean),
             }}
           >
-            <div className="sheet-popup-identity__xp" tabIndex={0} title={xpDetail.secondary}>
+            <div className="sheet-popup-identity__xp" tabIndex={0} data-site-tip={xpDetail.secondary}>
               <p className="sheet-popup-identity__xp-primary">{xpDetail.primary}</p>
               <div
                 className="sheet-popup-identity__xp-track"

@@ -134,7 +134,7 @@ export const CharacterSheetPopup = memo(function CharacterSheetPopup({
           type="button"
           className="sheet-ddb-toolbar__btn sheet-ddb-toolbar__btn--drag"
           draggable
-          title={
+          data-site-tip={
             spawnAxial
               ? `Arrastar para o mapa (q${spawnAxial.q}, r${spawnAxial.r})`
               : "Arrastar para o mapa"
@@ -163,7 +163,7 @@ export const CharacterSheetPopup = memo(function CharacterSheetPopup({
         className="sheet-ddb-toolbar__btn"
         onClick={onMinimize}
         aria-label="Recolher ficha"
-        title="Recolher"
+        data-site-tip="Recolher"
         onPointerDown={(e) => e.stopPropagation()}
       >
         −
@@ -173,7 +173,7 @@ export const CharacterSheetPopup = memo(function CharacterSheetPopup({
         className="sheet-ddb-toolbar__btn sheet-ddb-toolbar__btn--close"
         onClick={onClose}
         aria-label="Fechar ficha"
-        title="Fechar"
+        data-site-tip="Fechar"
         onPointerDown={(e) => e.stopPropagation()}
       >
         ✕

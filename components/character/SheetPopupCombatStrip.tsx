@@ -34,14 +34,14 @@ export function SheetPopupCombatStrip({
   return (
     <div className="sheet-popup-combat-strip">
       <div className="sheet-popup-combat-strip__main">
-        <div className="sheet-popup-shield" title="Classe de Armadura (CA)">
+        <div className="sheet-popup-shield" data-site-tip="Classe de Armadura (CA)">
           <IconShield size={32} className="sheet-popup-shield__icon" />
           <span className="sheet-popup-shield__value">{defesa}</span>
           <span className="sheet-popup-shield__label">CA</span>
         </div>
 
         <div className="sheet-popup-stat-pills" role="list" aria-label="Estatísticas de combate">
-          <div className="sheet-popup-stat-pill" role="listitem" title="Iniciativa — ordem no combate">
+          <div className="sheet-popup-stat-pill" role="listitem" data-site-tip="Iniciativa — ordem no combate">
             <IconLightning size={16} />
             <span className="sheet-popup-stat-pill__label">Iniciativa</span>
             <strong>{initLabel}</strong>
@@ -49,7 +49,7 @@ export function SheetPopupCombatStrip({
           <div
             className="sheet-popup-stat-pill"
             role="listitem"
-            title="Movimento — caminhada / corrida em células por turno"
+            data-site-tip="Movimento — caminhada / corrida em células por turno"
           >
             <IconBoot size={16} />
             <span className="sheet-popup-stat-pill__label">Movimento</span>
@@ -60,7 +60,7 @@ export function SheetPopupCombatStrip({
           <div
             className="sheet-popup-stat-pill"
             role="listitem"
-            title="Proficiência — bônus em perícias treinadas e ataques"
+            data-site-tip="Proficiência — bônus em perícias treinadas e ataques"
           >
             <IconStar size={16} />
             <span className="sheet-popup-stat-pill__label">Proficiência</span>

@@ -250,7 +250,7 @@ export function TurnOrderPanel({
           <button
             type="button"
             className="vtt-turn-gm-chip vtt-turn-gm-chip--active"
-            title="Definir como turno ativo"
+            data-site-tip="Definir como turno ativo"
             aria-label={`Ativar turno de ${token.name}`}
             disabled={gmBusy != null}
             onClick={(e) => {
@@ -270,7 +270,7 @@ export function TurnOrderPanel({
         <button
           type="button"
           className="vtt-turn-gm-chip"
-          title="Restaurar PA deste token"
+          data-site-tip="Restaurar PA deste token"
           aria-label={`Restaurar PA de ${token.name}`}
           disabled={gmBusy != null}
           onClick={(e) => {
@@ -289,7 +289,7 @@ export function TurnOrderPanel({
         <button
           type="button"
           className="vtt-turn-gm-chip"
-          title={active ? "Adiar para o fim desta rodada" : "Jogar ao fim desta rodada"}
+          data-site-tip={active ? "Adiar para o fim desta rodada" : "Jogar ao fim desta rodada"}
           aria-label={`Adiar ${token.name} para o fim da rodada`}
           disabled={gmBusy != null}
           onClick={(e) => {
@@ -309,7 +309,7 @@ export function TurnOrderPanel({
           <button
             type="button"
             className="vtt-turn-gm-chip vtt-turn-gm-chip--undo"
-            title={`Desfazer: ${undoByToken.get(id)!.summary}`}
+            data-site-tip={`Desfazer: ${undoByToken.get(id)!.summary}`}
             aria-label={`Desfazer jogada de ${token.name}`}
             disabled={gmBusy != null}
             onClick={() =>
@@ -344,7 +344,7 @@ export function TurnOrderPanel({
                   <button
                     type="button"
                     className="vtt-turn-compact-nav-btn"
-                    title="Turno anterior"
+                    data-site-tip="Turno anterior"
                     disabled={gmBusy != null || displayOrder.length < 2}
                     onClick={(e) => {
                       e.stopPropagation();
@@ -359,7 +359,7 @@ export function TurnOrderPanel({
                   <button
                     type="button"
                     className="vtt-turn-compact-nav-btn vtt-turn-compact-nav-btn--next"
-                    title="Próximo turno"
+                    data-site-tip="Próximo turno"
                     disabled={passTurnBusy || !track.order.length}
                     onClick={(e) => {
                       e.stopPropagation();
@@ -384,7 +384,7 @@ export function TurnOrderPanel({
                     <button
                       type="button"
                       className="vtt-turn-compact-icon-btn"
-                      title="Rolar iniciativa"
+                      data-site-tip="Rolar iniciativa" aria-label="Rolar iniciativa"
                       onClick={(e) => {
                         e.stopPropagation();
                         void handleRoll();
@@ -397,7 +397,7 @@ export function TurnOrderPanel({
                     <button
                       type="button"
                       className="vtt-turn-compact-icon-btn"
-                      title="Opções do mestre"
+                      data-site-tip="Opções do mestre" aria-label="Opções do mestre"
                       aria-expanded={settingsOpen}
                       onClick={(e) => {
                         e.stopPropagation();
@@ -668,7 +668,7 @@ export function TurnOrderPanel({
               <li
                 key={id}
                 className={rowClass || undefined}
-                title={compact ? rowTitle(token, active) : undefined}
+                data-site-tip={compact ? rowTitle(token, active) : undefined}
                 {...dragProps}
                 onDragOver={(e) => {
                   if (!draggable || !dragId || dragId === id) return;
@@ -719,7 +719,7 @@ export function TurnOrderPanel({
                         className="vtt-turn-drag-handle"
                         draggable
                         aria-label="Arrastar para reordenar"
-                        title="Arrastar para reordenar"
+                        data-site-tip="Arrastar para reordenar"
                         onDragStart={(e) => {
                           setDragId(id);
                           setDragOverId(id);
@@ -750,11 +750,11 @@ export function TurnOrderPanel({
                           </span>
                         ) : null}
                         {attackFocus ? (
-                          <span className="vtt-turn-target-badge" title="Alvo do ataque">
+                          <span className="vtt-turn-target-badge" data-site-tip="Alvo do ataque">
                             Alvo
                           </span>
                         ) : attackable ? (
-                          <span className="vtt-turn-target-hint" title="Alvo válido">
+                          <span className="vtt-turn-target-hint" role="img" data-site-tip="Alvo válido" aria-label="Alvo válido">
                             <TurnOrderTargetIcon />
                           </span>
                         ) : null}
@@ -778,7 +778,7 @@ export function TurnOrderPanel({
                     </div>
                     <div className="vtt-turn-side">
                       {token.initiative != null ? (
-                        <span className="vtt-turn-init" title="Iniciativa">
+                        <span className="vtt-turn-init" data-site-tip="Iniciativa">
                           <TurnOrderInitiativeIcon className="vtt-turn-init-icon" />
                           <strong>{token.initiative}</strong>
                         </span>
