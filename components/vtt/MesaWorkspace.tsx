@@ -524,10 +524,18 @@ function MesaWorkspaceInner({
     }
     if (showInviteUi) ids.add("invite");
     ids.add("initiative");
+    // BV-037: Jornada, Conselho e Companhia do Um Anel abrem na barra lateral pelo
+    // clique simples; sem estar aqui, a barra não abria e o botão só acendia.
+    if (rpgSystemId === "um-anel" && isActualGm) {
+      ids.add("torJourney");
+      ids.add("torCouncil");
+      ids.add("torFellowship");
+    }
     return ids;
   }, [
     isActualGm,
     showInviteUi,
+    rpgSystemId,
   ]);
 
   const dockOpen = windows.isDockOpen(allowedDockPanels);
