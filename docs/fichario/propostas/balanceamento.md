@@ -303,7 +303,7 @@ Estas continuam a serie D1 a D7 da secao 2.5 e tambem entram em "06 Bugs ao vivo
 - D9. Guerreiro, "+1 PA max" no nivel 5. Tabela de progressao do Guerreiro (linha 939) promete +1 de PA maximo. Cap. 3.1.1 (linha 259) diz recuperacao fixa de 5 PA. Codigo: `paRecoveryPerTurn` ignora o nivel (pa-economy.ts, linhas 45 a 48). Esta secao usou 5 e 9 PA como pedido; se valer o +1, o turno comum passa a 6 PA.
 - D10. Vida por nivel. Livro (linha 92): dado medio vezes nivel, mais MOD CON vezes nivel. Codigo (`hpMaxFor`, rules.ts, linhas 521 a 526): dado maximo no nivel 1 e dado medio nos seguintes. Diferenca constante de maximo menos medio: 4 nas classes de d10, 3 nas de d8, 2 nas de d6 e 5 nas de d12. No nivel 10, Barbaro fica em 95 no codigo e 90 no livro; Mago, 62 e 60.
 - D11. Ladino, Golpe Oportunista. Livro (linha 994) chama o recurso de Ataque Furtivo e escala de 1d6 para 10d6 no nivel 20; no nivel 5 sao 3d6 e no 10, 5d6, numeros repetidos em `classLevelFeatures` (rules.ts, linhas 590 a 595). No codigo, o unico furtivo implementado esta em `resolveMonsterAttack` (attack.ts, linhas 848 a 859) e so vale para monstro goblin (`isGoblinMonster`). O `resolveAttack` do jogador (attack.ts, linhas 1035 a 1047) nao aplica furtivo. Por isso a tabela nao inclui furtivo. O impacto depende de quantas vezes por turno o furtivo vale, regra que o codigo nao resolve para jogador.
-- D12. Espiritualista, Fluxo Marcial. `classLevelFeatures` (rules.ts, linha 608) anuncia no nivel 5 que a primeira tecnica de Chi custa 1 Chi a menos. O livro nao tem essa regra. `chi-economy.ts` mantem o teto de 2 Chi por turno (linha 8) e nao implementa desconto. A tabela por isso mantem 2 golpes de Chi no 5 e no 10. Se o desconto valesse, seriam 3 golpes (0 + 1 + 1 Chi) e o dano 5 PA subiria de 7,82 para 11,38 no nivel 5 e de 5,2 para 7,55 no nivel 10.
+- D12. Espiritualista, Fluxo Marcial. `classLevelFeatures` (rules.ts, linha 608 na epoca) anunciava no nivel 5 que a primeira tecnica de Chi custa 1 Chi a menos. O livro nao tem essa regra. `chi-economy.ts` mantem o teto de 2 Chi por turno (linha 8) e nao implementa desconto. A tabela por isso mantem 2 golpes de Chi no 5 e no 10. Se o desconto valesse, seriam 3 golpes (0 + 1 + 1 Chi) e o dano 5 PA subiria de 7,82 para 11,38 no nivel 5 e de 5,2 para 7,55 no nivel 10. Corrigido no commit 7f9e371: a linha do Fluxo Marcial saiu de `lib/character/rules.ts` e o teste `scripts/verify-d12-chi-sem-fluxo.mjs` entrou no mesmo commit. A analise acima fica como registro do estado anterior.
 - D13. Paladino, Golpe Sagrado. Livro (linhas 1199 a 1203) chama de Golpe Sagrado e da 2d8 no nivel 2, 3d8 no 5, 4d8 no 9. Codigo (`classLevelFeatures`, rules.ts, linhas 617 a 624) chama de Golpe do Juramento e usa os mesmos dados. A habilidade `habilidades-golpe-sagrado` existe e e concedida ao Paladino a partir do nivel 2 (class-vtt.ts, linha 12), mas resolve como buff de +2 no ataque (ability.ts, linhas 472 a 490), nao como +2d8 radiante. A tabela considera so a Espada Longa. O extra nao escala com o nivel e nao dobra contra morto-vivo.
 
 Nao e divergencia nesta etapa: Afinidade da primeira magia de 2+ PA (livro linha 268 e `CLASS_PA_FEATURES`, pa-modifiers.json, linhas 72 a 96, batem, inclusive o limite de uma vez por turno); teto de 2 Chi por turno (livro linha 1167 e chi-economy.ts, linha 8); limite de 2 truques iguais por turno (livro linha 269).
@@ -356,6 +356,8 @@ O nome no livro e Ataque Furtivo. O texto fixa 1d6 no nivel 1 e 10d6 no nivel 20
 
 ### 4.2 D12, Fluxo Marcial do Espiritualista
 
+**Status: corrigido no commit 7f9e371.** A linha do nivel 5 saiu de `lib/character/rules.ts` e o teste `scripts/verify-d12-chi-sem-fluxo.mjs` entrou no mesmo commit. Todo o texto abaixo continua como registro da analise feita antes da correcao. Onde dizia "faz hoje", leia "fazia ate o commit 7f9e371".
+
 **O que o livro manda.** `livros/LIVRO-DO-JOGADOR.md`, linha 1167:
 
 > **Chi:** Recurso próprio renovado a cada combate. **10 Chi** no início do combate; pode gastar no máximo **2 Chi por turno**.
@@ -364,24 +366,32 @@ A linha 920 repete 10 por combate e limite de 2 por turno. A linha 1179 manda te
 
 **O que o codigo faz hoje.**
 
-- `lib/character/rules.ts`, linha 608: `classLevelFeatures` anuncia no nivel 5 `Fluxo Marcial - 1a tecnica de Chi do turno custa 1 Chi a menos`.
+- `lib/character/rules.ts`, linha 608 ate o commit 7f9e371: `classLevelFeatures` anunciava no nivel 5 `Fluxo Marcial - 1a tecnica de Chi do turno custa 1 Chi a menos`. A linha foi removida no commit 7f9e371. Hoje a linha 608 e o Passo do Vácuo do nivel 11 e o nivel 5 nao aparece mais na lista.
 - `lib/combat/chi-economy.ts`, linhas 5 a 8: pool 10 e teto `CHI_SPEND_CAP_PER_TURN = 2`. `canSpendChi` (linhas 39 a 43) e `spendChi` (linhas 45 a 51) so olham pool e gasto no turno, sem nivel e sem ordem de tecnica.
 - `lib/combat/ability.ts`, linhas 1050 a 1052: `canUseAbility` barra o uso com a mensagem `Chi insuficiente ou limite de 2 por turno`.
 - `lib/room/handlers/combat-ability.ts`, linhas 81 a 83: o servidor desconta o Chi de verdade.
 - `lib/combat/pa-chip.ts`, linhas 74 a 79: a chip mostra o Chi restante e quantas unidades ainda cabem no turno, usando a mesma constante 2.
 
-**Onde entraria no motor.** Nao entraria. O texto da linha 608 e a única parte que existe, e o motor nunca o implementou. A acao correta e apagar essa linha de `rules.ts`. Se alguém decidir implementar o desconto, a regra teria de entrar em `chi-economy.ts`, em `canSpendChi` e `spendChi`, com um campo novo em `BattleToken` para marcar a primeira tecnica do turno, mais ajuste na chip em `pa-chip.ts`. Isso mexeria em `lib/vtt/types.ts` e em `combat-turn.ts`, que hoje so zera `chiSpentThisTurn` (linhas 57 e 58 do handler de turno).
+**Onde entraria no motor.** Nao entraria. O texto da linha 608 era a única parte que existia, e o motor nunca implementou o desconto. A acao correta, apagar essa linha de `rules.ts`, ja foi tomada no commit 7f9e371. Se alguém decidir implementar o desconto, a regra teria de entrar em `chi-economy.ts`, em `canSpendChi` e `spendChi`, com um campo novo em `BattleToken` para marcar a primeira tecnica do turno, mais ajuste na chip em `pa-chip.ts`. Isso mexeria em `lib/vtt/types.ts` e em `combat-turn.ts`, que hoje so zera `chiSpentThisTurn` (linhas 57 e 58 do handler de turno).
 
 **Tamanho:** pequena para remover o texto. Grande para implementar, porque cria estado novo no token e muda uma constante usada em tres lugares.
 
 **Risco.**
 
-- Manter o texto e custo zero de implementacao, mas continua enganando quem le a ficha. E o risco que já existe hoje.
+- Manter o texto e custo zero de implementacao, mas continuaria enganando quem le a ficha. Esse risco foi removido no commit 7f9e371 com a exclusao da linha.
 - Implementar o desconto quebra a invariante de 2 Chi por turno. `CHI_SPEND_CAP_PER_TURN` e usado por `canSpendChi` e pela chip. O limite passaria a depender de ordem de uso, e a chip diria "excede limite" justamente quando o desconto permitisse o gasto.
 - O campo de primeira tecnica teria de resetar no inicio de cada turno. Hoje `resetChiSpentThisTurn` (`chi-economy.ts`, linhas 27 a 29) faz so isso, e o handler de turno limpa os campos de Chi ao trocar de round (`combat-turn.ts`, linhas 57 e 58).
 - Contradiz o livro. Qualquer verify de regra vai falhar se o desconto existir.
 
-**Como testar:** `scripts/verify-d12-chi-sem-fluxo.mjs`, com o mesmo loader. Casos: o texto `Fluxo Marcial` nao aparece em nenhum arquivo de `livros/`; `classLevelFeatures("Espiritualista", 5)` nao contem `Fluxo Marcial`; `CHI_SPEND_CAP_PER_TURN === 2`; `canSpendChi({ chi: 10, chiSpentThisTurn: 2 }, 1) === false`; `spendChi` com esses valores devolve `null`; `classLevelFeatures` nos niveis 1, 5 e 10 nao muda a regra de Chi. Caso extra de regressao: `unifiedPaChipForAction` com uma tecnica de 1 Chi e 1 Chi ja gasto no turno mostra `turno 0 restante`.
+**Como testar:** `scripts/verify-d12-chi-sem-fluxo.mjs`, ja incluido no commit 7f9e371 (96 linhas), com o mesmo loader. Casos: o texto `Fluxo Marcial` nao aparece em nenhum arquivo de `livros/`; `classLevelFeatures("Espiritualista", 5)` nao contem `Fluxo Marcial`; `CHI_SPEND_CAP_PER_TURN === 2`; `canSpendChi({ chi: 10, chiSpentThisTurn: 2 }, 1) === false`; `spendChi` com esses valores devolve `null`; `classLevelFeatures` nos niveis 1, 5 e 10 nao muda a regra de Chi. Caso extra de regressao: `unifiedPaChipForAction` com uma tecnica de 1 Chi e 1 Chi ja gasto no turno mostra `turno 0 restante`.
+
+**Nota da revisao, Corpo Transcendente.** A mesma revisao do D12 encontrou em `lib/character/rules.ts`, linha 609, o texto do nivel 20 do Espiritualista: `Corpo Transcendente - Chi maximo 12 neste combate`. Busca feita em 20/11/2026 em `livros/`, pelos termos `Corpo Transcendente`, `Transcendente`, `Chi máximo 12`, `Chi maximo 12` e `12 Chi`:
+
+- `Corpo Transcendente` nao aparece em nenhum arquivo de `livros/`. Nao existe feature de nivel 20 com esse nome no livro.
+- `Chi máximo 12` tambem nao aparece. A única ocorrencia de 12 Chi esta em `livros/guias-criacao/Espiritualista-Punho-do-Limiar.md`, linha 53: `Descanso curto + Respiração de Combate = até 12 Chi no próximo combate (classe)`. O numero 12 vem do pool de 10 mais os 2 Chi extras da Respiração de Combate (`LIVRO-DO-JOGADOR.md`, linha 1165), condicionado a descanso curto, e nao de um beneficio automatico do nivel 20.
+- No codigo, o limite continua em 10. `CHI_POOL_PER_COMBAT = 10` em `lib/combat/chi-economy.ts`, linha 5; `chiMaxForEspiritualista` retorna essa constante nas linhas 14 a 16; `resetTokenChi` usa o mesmo maximo nas linhas 18 a 25. Nenhum lugar aplica 12.
+
+Resultado: e o mesmo padrao do D12 antes da correcao, texto em `classLevelFeatures` que nao tem regra correspondente no livro e nao tem efeito no motor. Nao foi mudado nada. Se o maestro quiser, o caso vira nova entrada de divergencia, com numero a definir na proxima rodada.
 
 ### 4.3 D13, Golpe Sagrado do Paladino
 
@@ -437,5 +447,5 @@ A tabela de progressao, linhas 1199 a 1203, da 2d8 no 2, 3d8 no 5, 4d8 no 9, 5d8
 - [x] Etapa 1 - tabela-base nivel 1 (este arquivo, secao 1). Corrigida na Etapa 2 (secao 2.0).
 - [x] Etapa 2 - nivel 1 com atributos, acerto, magia e Chi (secao 2). Feiticeiro e Espiritualista calculados; Clerigo e Druida conferidos com o livro (2.4); divergencias D1 a D7 em 2.5.
 - [x] Etapa 3, parte 1 - niveis 5 e 10 (secao 3). Divergencias D8 a D13 em 3.6.
-- [x] Plano para D11, D12 e D13 (secao 4). So leitura; nada mudado em lib/, data/, livros/ ou scripts/.
+- [x] Plano para D11, D12 e D13 (secao 4). So leitura; nada mudado em lib/, data/, livros/ ou scripts/. D12 corrigido depois no commit 7f9e371; registro em 3.6 e 4.2, com nota sobre Corpo Transcendente em 4.2.
 - [ ] Etapa 3, parte 2 - subclasses, nivel maximo, turnos contra bestiario e propostas de ajuste.
