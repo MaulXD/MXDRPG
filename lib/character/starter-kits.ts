@@ -58,8 +58,8 @@ const CLASS_STARTER_KITS: Record<ClassId, StarterKitOption[]> = {
   Guerreiro: [
     {
       id: "guerreiro-lamina",
-      label: "Lâmina e couro",
-      summary: "Corpo a corpo versátil — lâmina leve e couro curtido.",
+      label: "Lâmina leve e couro curtido",
+      summary: "Corpo a corpo versátil: lâmina leve e couro curtido.",
       items: [
         { packId: "armas", entryId: "armas-wpn-s01" },
         { packId: "equipamentos", entryId: "equipamentos-arm-01" },
@@ -69,8 +69,8 @@ const CLASS_STARTER_KITS: Record<ClassId, StarterKitOption[]> = {
     },
     {
       id: "guerreiro-espada",
-      label: "Espada e cota",
-      summary: "Tanque de linha de frente — espada longa e armadura média.",
+      label: "Espada longa e cota de malha",
+      summary: "Linha de frente: espada longa e cota de malha.",
       items: [
         { packId: "armas", entryId: "armas-wpn-s02" },
         { packId: "equipamentos", entryId: "equipamentos-arm-05" },
@@ -80,8 +80,8 @@ const CLASS_STARTER_KITS: Record<ClassId, StarterKitOption[]> = {
     },
     {
       id: "guerreiro-arco",
-      label: "Arco e couro acolchoado",
-      summary: "Atirador — arco longo e mobilidade.",
+      label: "Arco longo e couro acolchoado",
+      summary: "Atirador: arco longo e couro acolchoado.",
       items: [
         { packId: "armas", entryId: "armas-arc-l01" },
         { packId: "equipamentos", entryId: "equipamentos-arm-02" },
@@ -94,7 +94,7 @@ const CLASS_STARTER_KITS: Record<ClassId, StarterKitOption[]> = {
     {
       id: "patrulheiro-arco",
       label: "Arco curto e couro",
-      summary: "Caçador clássico — arco curto e couro curtido.",
+      summary: "Caçador: arco curto e couro.",
       items: [
         { packId: "armas", entryId: "armas-arc-c01" },
         { packId: "equipamentos", entryId: "equipamentos-arm-01" },
@@ -104,8 +104,8 @@ const CLASS_STARTER_KITS: Record<ClassId, StarterKitOption[]> = {
     },
     {
       id: "patrulheiro-duas-armas",
-      label: "Gladius e gibão",
-      summary: "Escaramuça — lâmina curta e gibão de peles.",
+      label: "Gladius e gibão de peles",
+      summary: "Escaramuça: gladius e gibão de peles.",
       items: [
         { packId: "armas", entryId: "armas-wpn-s08" },
         { packId: "equipamentos", entryId: "equipamentos-arm-03" },
@@ -116,7 +116,7 @@ const CLASS_STARTER_KITS: Record<ClassId, StarterKitOption[]> = {
     {
       id: "patrulheiro-melee",
       label: "Rapieira e meia-armadura",
-      summary: "Duelista protegido — rapieira e meia-armadura.",
+      summary: "Duelista protegido: rapieira e meia-armadura.",
       items: [
         { packId: "armas", entryId: "armas-wpn-s05" },
         { packId: "equipamentos", entryId: "equipamentos-arm-07" },
@@ -129,7 +129,7 @@ const CLASS_STARTER_KITS: Record<ClassId, StarterKitOption[]> = {
     {
       id: "ladino-rapieira",
       label: "Rapieira e couro",
-      summary: "Finesse — rapieira e couro curtido.",
+      summary: "Finesse: rapieira e couro.",
       items: [
         { packId: "armas", entryId: "armas-wpn-s05" },
         { packId: "equipamentos", entryId: "equipamentos-arm-01" },
@@ -139,8 +139,8 @@ const CLASS_STARTER_KITS: Record<ClassId, StarterKitOption[]> = {
     },
     {
       id: "ladino-adagas",
-      label: "Adagas gêmeas",
-      summary: "Duas lâminas — adagas gêmeas e couro acolchoado.",
+      label: "Adagas gêmeas e couro acolchoado",
+      summary: "Duas lâminas: adagas gêmeas e couro acolchoado.",
       items: [
         { packId: "armas", entryId: "armas-wpn-o02" },
         { packId: "equipamentos", entryId: "equipamentos-arm-02" },
@@ -150,8 +150,8 @@ const CLASS_STARTER_KITS: Record<ClassId, StarterKitOption[]> = {
     },
     {
       id: "ladino-arco",
-      label: "Arco curto furtivo",
-      summary: "À distância — arco curto, sem armadura pesada.",
+      label: "Arco curto (sem armadura pesada)",
+      summary: "À distância: arco curto, sem armadura pesada.",
       items: [{ packId: "armas", entryId: "armas-arc-c01" }],
       combatLoadout: { packId: "armas", entryId: "armas-arc-c01" },
       armorLoadout: null,
@@ -160,8 +160,8 @@ const CLASS_STARTER_KITS: Record<ClassId, StarterKitOption[]> = {
   Mago: [
     {
       id: "mago-adaga",
-      label: "Adaga e truques",
-      summary: "Conjurador — adaga, lâmina de espírito e chama de fogareiro.",
+      label: "Adaga e Lâmina de Espírito",
+      summary: "Conjurador: adaga, Lâmina de Espírito e Chama de Fogareiro.",
       items: [
         { packId: "armas", entryId: "armas-wpn-o01" },
         { packId: "magias", entryId: "magias-lamina-de-espirito" },
@@ -172,21 +172,20 @@ const CLASS_STARTER_KITS: Record<ClassId, StarterKitOption[]> = {
     },
     {
       id: "mago-bestia",
-      label: "Besta e couro",
-      summary: "À distância — besta leve, couro e raio do limiar.",
+      label: "Besta leve e couro",
+      summary: "À distância: besta leve e couro, com Raio do Limiar no grimório.",
       items: [
         { packId: "armas", entryId: "armas-bst-01" },
         { packId: "equipamentos", entryId: "equipamentos-arm-01" },
         { packId: "magias", entryId: "magias-raio-do-limiar" },
-        { packId: "magias", entryId: "magias-chama-de-fogareiro" },
       ],
       combatLoadout: { packId: "armas", entryId: "armas-bst-01" },
       armorLoadout: { packId: "equipamentos", entryId: "equipamentos-arm-01" },
     },
     {
       id: "mago-arcano",
-      label: "Arcano puro",
-      summary: "Sem armadura — onda de trovão e escudo arcano no grimório.",
+      label: "Adaga e Onda de Trovão",
+      summary: "Sem armadura: adaga, Onda de Trovão e Escudo Arcano.",
       items: [
         { packId: "armas", entryId: "armas-wpn-o01" },
         { packId: "magias", entryId: "magias-onda-de-trovao" },
@@ -199,21 +198,20 @@ const CLASS_STARTER_KITS: Record<ClassId, StarterKitOption[]> = {
   Clérigo: [
     {
       id: "clerigo-maca",
-      label: "Maça e meia-armadura",
-      summary: "Sacerdote guerreiro — maça e armadura média.",
+      label: "Maça, meia-armadura e cura",
+      summary: "Sacerdote guerreiro: maça, meia-armadura e Curar Ferimentos.",
       items: [
         { packId: "armas", entryId: "armas-wpn-o05" },
         { packId: "equipamentos", entryId: "equipamentos-arm-07" },
         { packId: "magias", entryId: "magias-curar-ferimentos" },
-        { packId: "magias", entryId: "magias-estabilizar" },
       ],
       combatLoadout: { packId: "armas", entryId: "armas-wpn-o05" },
       armorLoadout: { packId: "equipamentos", entryId: "equipamentos-arm-07" },
     },
     {
       id: "clerigo-bestia",
-      label: "Besta e couro",
-      summary: "Suporte à distância — besta, couro e cura.",
+      label: "Besta, couro e Curar Ferimentos",
+      summary: "Suporte à distância: besta leve, couro e Curar Ferimentos.",
       items: [
         { packId: "armas", entryId: "armas-bst-01" },
         { packId: "equipamentos", entryId: "equipamentos-arm-01" },
@@ -225,21 +223,20 @@ const CLASS_STARTER_KITS: Record<ClassId, StarterKitOption[]> = {
     {
       id: "clerigo-azagaia",
       label: "Azagaia e brigandina",
-      summary: "Linha de frente — azagaia e brigandina.",
+      summary: "Linha de frente: azagaia e brigandina.",
       items: [
         { packId: "armas", entryId: "armas-wpn-p04" },
-        { packId: "equipamentos", entryId: "equipamentos-arm-10" },
-        { packId: "magias", entryId: "magias-curar-ferimentos" },
+        { packId: "equipamentos", entryId: "equipamentos-arm-09" },
       ],
       combatLoadout: { packId: "armas", entryId: "armas-wpn-p04" },
-      armorLoadout: { packId: "equipamentos", entryId: "equipamentos-arm-10" },
+      armorLoadout: { packId: "equipamentos", entryId: "equipamentos-arm-09" },
     },
   ],
   Bárbaro: [
     {
       id: "barbaro-machado",
-      label: "Machado grande",
-      summary: "Fúria pesada — machado grande e gibão de peles.",
+      label: "Machado grande e gibão",
+      summary: "Fúria pesada: machado grande e gibão de peles.",
       items: [
         { packId: "armas", entryId: "armas-wpn-o04" },
         { packId: "equipamentos", entryId: "equipamentos-arm-03" },
@@ -250,7 +247,7 @@ const CLASS_STARTER_KITS: Record<ClassId, StarterKitOption[]> = {
     {
       id: "barbaro-gladius",
       label: "Gladius e couro batido",
-      summary: "Ágil — gladius e couro batido.",
+      summary: "Ágil: gladius e couro batido.",
       items: [
         { packId: "armas", entryId: "armas-wpn-s08" },
         { packId: "equipamentos", entryId: "equipamentos-arm-04" },
@@ -260,8 +257,8 @@ const CLASS_STARTER_KITS: Record<ClassId, StarterKitOption[]> = {
     },
     {
       id: "barbaro-maca",
-      label: "Maça de guerra",
-      summary: "Impacto brutal — maça e couro curtido.",
+      label: "Maça e couro curtido",
+      summary: "Impacto brutal: maça e couro curtido.",
       items: [
         { packId: "armas", entryId: "armas-wpn-o05" },
         { packId: "equipamentos", entryId: "equipamentos-arm-01" },
@@ -273,8 +270,8 @@ const CLASS_STARTER_KITS: Record<ClassId, StarterKitOption[]> = {
   Bardo: [
     {
       id: "bardo-rapieira",
-      label: "Rapieira e inspiração",
-      summary: "Duelista — rapieira, couro e inspiração culinária.",
+      label: "Rapieira, couro e Inspiração Culinária",
+      summary: "Duelista: rapieira, couro e Inspiração Culinária.",
       items: [
         { packId: "armas", entryId: "armas-wpn-s05" },
         { packId: "equipamentos", entryId: "equipamentos-arm-01" },
@@ -285,8 +282,8 @@ const CLASS_STARTER_KITS: Record<ClassId, StarterKitOption[]> = {
     },
     {
       id: "bardo-adaga",
-      label: "Adaga e sussurros",
-      summary: "Furtivo — adaga, couro e magia de apoio.",
+      label: "Adaga, couro acolchoado e Sussurro de Masmorra",
+      summary: "Furtivo: adaga, couro acolchoado e Sussurro de Masmorra.",
       items: [
         { packId: "armas", entryId: "armas-wpn-o01" },
         { packId: "equipamentos", entryId: "equipamentos-arm-02" },
@@ -297,8 +294,8 @@ const CLASS_STARTER_KITS: Record<ClassId, StarterKitOption[]> = {
     },
     {
       id: "bardo-arco",
-      label: "Arco e performance",
-      summary: "À distância — arco curto e truques de palco.",
+      label: "Arco curto e Ilusão Menor",
+      summary: "À distância: arco curto e Ilusão Menor.",
       items: [
         { packId: "armas", entryId: "armas-arc-c01" },
         { packId: "magias", entryId: "magias-ilusao-menor" },
@@ -310,8 +307,8 @@ const CLASS_STARTER_KITS: Record<ClassId, StarterKitOption[]> = {
   Druida: [
     {
       id: "druida-cimitarra",
-      label: "Cimitarra e gibão",
-      summary: "Predador — cimitarra e gibão de peles.",
+      label: "Cimitarra, gibão e Crescimento Acelerado",
+      summary: "Predador: cimitarra, gibão de peles e Crescimento Acelerado.",
       items: [
         { packId: "armas", entryId: "armas-wpn-s07" },
         { packId: "equipamentos", entryId: "equipamentos-arm-03" },
@@ -322,8 +319,8 @@ const CLASS_STARTER_KITS: Record<ClassId, StarterKitOption[]> = {
     },
     {
       id: "druida-organica",
-      label: "Azagaia e escamas",
-      summary: "Armadura orgânica — azagaia e escamas de dragonete.",
+      label: "Azagaia, escamas de dragonete e Purificar Veneno",
+      summary: "Armadura orgânica: azagaia, escamas de dragonete e Purificar Veneno.",
       items: [
         { packId: "armas", entryId: "armas-wpn-p04" },
         { packId: "equipamentos", entryId: "equipamentos-arm-14" },
@@ -334,8 +331,8 @@ const CLASS_STARTER_KITS: Record<ClassId, StarterKitOption[]> = {
     },
     {
       id: "druida-adaga",
-      label: "Adaga e couro de troll",
-      summary: "Místico — adaga, couro de troll e estabilizar.",
+      label: "Adaga, couro de troll e Estabilizar",
+      summary: "Místico: adaga, couro de troll e Estabilizar.",
       items: [
         { packId: "armas", entryId: "armas-wpn-o01" },
         { packId: "equipamentos", entryId: "equipamentos-arm-15" },
@@ -348,85 +345,75 @@ const CLASS_STARTER_KITS: Record<ClassId, StarterKitOption[]> = {
   Feiticeiro: [
     {
       id: "feiticeiro-centelha",
-      label: "Adaga e centelha",
-      summary: "Inato — adaga, couro e lâmina de espírito.",
+      label: "Adaga e Lâmina de Espírito",
+      summary: "Inato: adaga e Lâmina de Espírito.",
       items: [
         { packId: "armas", entryId: "armas-wpn-o01" },
-        { packId: "equipamentos", entryId: "equipamentos-arm-01" },
         { packId: "magias", entryId: "magias-lamina-de-espirito" },
-        { packId: "magias", entryId: "magias-maos-gelidas" },
       ],
-      combatLoadout: { packId: "magias", entryId: "magias-maos-gelidas" },
-      armorLoadout: { packId: "equipamentos", entryId: "equipamentos-arm-01" },
+      combatLoadout: { packId: "magias", entryId: "magias-lamina-de-espirito" },
+      armorLoadout: null,
     },
     {
       id: "feiticeiro-trovao",
-      label: "Besta e trovão",
-      summary: "Burst — besta leve e onda de trovão.",
+      label: "Besta e Onda de Trovão",
+      summary: "Burst: besta leve e Onda de Trovão.",
       items: [
         { packId: "armas", entryId: "armas-bst-01" },
-        { packId: "equipamentos", entryId: "equipamentos-arm-01" },
-        { packId: "magias", entryId: "magias-chama-de-fogareiro" },
         { packId: "magias", entryId: "magias-onda-de-trovao" },
       ],
       combatLoadout: { packId: "magias", entryId: "magias-onda-de-trovao" },
-      armorLoadout: { packId: "equipamentos", entryId: "equipamentos-arm-01" },
+      armorLoadout: null,
     },
     {
       id: "feiticeiro-chama",
-      label: "Fundas e chama",
-      summary: "Elemental — funda, brigandina e chama de vinha.",
+      label: "Maça e Chama de Vinha",
+      summary: "Elemental: maça e Chama de Vinha.",
       items: [
-        { packId: "armas", entryId: "armas-wpn-o03" },
-        { packId: "equipamentos", entryId: "equipamentos-arm-10" },
+        { packId: "armas", entryId: "armas-wpn-o05" },
         { packId: "magias", entryId: "magias-chama-de-vinha" },
       ],
       combatLoadout: { packId: "magias", entryId: "magias-chama-de-vinha" },
-      armorLoadout: { packId: "equipamentos", entryId: "equipamentos-arm-10" },
+      armorLoadout: null,
     },
   ],
   Espiritualista: [
     {
       id: "espiritualista-punhos",
-      label: "Punhos e foco",
-      summary: "Corpo a corpo — sem arma, gibão; Chi no combate.",
-      items: [
-        { packId: "equipamentos", entryId: "equipamentos-arm-03" },
-        { packId: "habilidades", entryId: "habilidades-golpe-de-chi" },
-      ],
-      combatLoadout: { packId: "habilidades", entryId: "habilidades-golpe-de-chi" },
-      armorLoadout: { packId: "equipamentos", entryId: "equipamentos-arm-03" },
+      label: "Punhos (sem arma) e Golpe de Chi",
+      summary: "Corpo a corpo sem arma: Golpe de Chi.",
+      items: [{ packId: "habilidades", entryId: "chi-golpe-de-chi" }],
+      combatLoadout: { packId: "habilidades", entryId: "chi-golpe-de-chi" },
+      armorLoadout: null,
     },
     {
       id: "espiritualista-bastao",
-      label: "Bastão e passo",
-      summary: "Mobilidade — bastão, couro e técnica de vácuo.",
+      label: "Lança curta e Passo do Vácuo",
+      summary: "Mobilidade: lança curta e Passo do Vácuo.",
       items: [
         { packId: "armas", entryId: "armas-wpn-p01" },
-        { packId: "equipamentos", entryId: "equipamentos-arm-01" },
-        { packId: "habilidades", entryId: "habilidades-passo-do-vacuo" },
+        { packId: "habilidades", entryId: "chi-passo-do-vacuo" },
       ],
-      combatLoadout: { packId: "habilidades", entryId: "habilidades-passo-do-vacuo" },
-      armorLoadout: { packId: "equipamentos", entryId: "equipamentos-arm-01" },
+      combatLoadout: { packId: "habilidades", entryId: "chi-passo-do-vacuo" },
+      armorLoadout: null,
     },
     {
       id: "espiritualista-lamina",
-      label: "Espada curta e ferida",
-      summary: "Asceta da Dor — espada curta, couro, técnica brutal.",
+      label: "Lâmina de Vinha e Ferida Aberta",
+      summary: "Asceta da Dor: lâmina de vinha e Ferida Aberta.",
       items: [
         { packId: "armas", entryId: "armas-wpn-s01" },
-        { packId: "equipamentos", entryId: "equipamentos-arm-01" },
-        { packId: "habilidades", entryId: "habilidades-ferida-aberta" },
+        { packId: "habilidades", entryId: "chi-ferida-aberta" },
       ],
-      combatLoadout: { packId: "habilidades", entryId: "habilidades-ferida-aberta" },
-      armorLoadout: { packId: "equipamentos", entryId: "equipamentos-arm-01" },
+      combatLoadout: { packId: "habilidades", entryId: "chi-ferida-aberta" },
+      armorLoadout: null,
     },
   ],
   Paladino: [
     {
       id: "paladino-espada",
-      label: "Espada e cota",
-      summary: "Cavaleiro sagrado — espada longa, cota de malha e cura.",
+      label: "Espada longa e cota de malha",
+      summary: "Cavaleiro sagrado: espada longa, cota de malha, Curar Ferimentos e Raio do Limiar.",
       items: [
         { packId: "armas", entryId: "armas-wpn-s02" },
         { packId: "equipamentos", entryId: "equipamentos-arm-05" },
@@ -439,7 +426,7 @@ const CLASS_STARTER_KITS: Record<ClassId, StarterKitOption[]> = {
     {
       id: "paladino-maca",
       label: "Maça e meia-armadura",
-      summary: "Templo guerreiro — maça, meia-armadura e escudo arcano.",
+      summary: "Templo guerreiro: maça, meia-armadura, cura e Escudo Arcano.",
       items: [
         { packId: "armas", entryId: "armas-wpn-o05" },
         { packId: "equipamentos", entryId: "equipamentos-arm-07" },
@@ -452,22 +439,21 @@ const CLASS_STARTER_KITS: Record<ClassId, StarterKitOption[]> = {
     {
       id: "paladino-gladius",
       label: "Gladius e brigandina",
-      summary: "Voto móvel — gladius, brigandina e purificação.",
+      summary: "Voto móvel: gladius, brigandina e Purificar Veneno.",
       items: [
         { packId: "armas", entryId: "armas-wpn-s08" },
-        { packId: "equipamentos", entryId: "equipamentos-arm-10" },
+        { packId: "equipamentos", entryId: "equipamentos-arm-09" },
         { packId: "magias", entryId: "magias-purificar-veneno" },
-        { packId: "magias", entryId: "magias-estabilizar" },
       ],
       combatLoadout: { packId: "armas", entryId: "armas-wpn-s08" },
-      armorLoadout: { packId: "equipamentos", entryId: "equipamentos-arm-10" },
+      armorLoadout: { packId: "equipamentos", entryId: "equipamentos-arm-09" },
     },
   ],
   Bruxo: [
     {
       id: "bruxo-adaga",
       label: "Adaga e couro",
-      summary: "Pacto arcano — adaga, couro, raio do limiar e sussurro.",
+      summary: "Pacto arcano: adaga, couro, Raio do Limiar e Sussurro de Masmorra.",
       items: [
         { packId: "armas", entryId: "armas-wpn-o01" },
         { packId: "equipamentos", entryId: "equipamentos-arm-01" },
@@ -479,29 +465,27 @@ const CLASS_STARTER_KITS: Record<ClassId, StarterKitOption[]> = {
     },
     {
       id: "bruxo-cajado",
-      label: "Cajado e couro acolchoado",
-      summary: "Canal do patrono — cajado, couro acolchoado e chamas.",
+      label: "Machado de batalha e couro acolchoado",
+      summary: "Canal do patrono: machado de batalha, couro acolchoado e Chama de Fogareiro.",
       items: [
         { packId: "armas", entryId: "armas-wpn-o03" },
         { packId: "equipamentos", entryId: "equipamentos-arm-02" },
         { packId: "magias", entryId: "magias-chama-de-fogareiro" },
-        { packId: "magias", entryId: "magias-ler-mentes" },
       ],
       combatLoadout: { packId: "armas", entryId: "armas-wpn-o03" },
       armorLoadout: { packId: "equipamentos", entryId: "equipamentos-arm-02" },
     },
     {
       id: "bruxo-bestia",
-      label: "Besta e couro",
-      summary: "Pacto à distância — besta leve, lâmina de espírito e ilusão.",
+      label: "Besta e Lâmina de Espírito",
+      summary: "Pacto à distância: besta, Lâmina de Espírito e Ilusão Menor.",
       items: [
         { packId: "armas", entryId: "armas-bst-01" },
-        { packId: "equipamentos", entryId: "equipamentos-arm-01" },
         { packId: "magias", entryId: "magias-lamina-de-espirito" },
         { packId: "magias", entryId: "magias-ilusao-menor" },
       ],
       combatLoadout: { packId: "armas", entryId: "armas-bst-01" },
-      armorLoadout: { packId: "equipamentos", entryId: "equipamentos-arm-01" },
+      armorLoadout: null,
     },
   ],
 };
