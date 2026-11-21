@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { viewerSnapshotResponse } from "@/lib/room/mutation-response";
 import {
   actorForRoomAuth,
   canEditRoomActor,
@@ -80,9 +81,11 @@ export async function PATCH(req: Request, { params }: Params) {
     return NextResponse.json({ error: "Sala ou personagem não encontrado" }, { status: 404 });
   }
 
+  // P-17: a cena vai filtrada (névoa, monstros) para quem pediu.
+  const visto = viewerSnapshotResponse(snapshot, room, session?.user);
   return NextResponse.json({
-    actor: snapshot.actors[actorId],
-    scene: snapshot.scene,
+    actor: visto.actors[actorId],
+    scene: visto.scene,
     revision: snapshot.revision,
     sheetSaved: snapshot.sheetSaved,
   });

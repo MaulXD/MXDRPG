@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { viewerSnapshotResponse } from "@/lib/room/mutation-response";
 import { chatRoleForUser } from "@/lib/auth/authorize-room";
 import { getSession } from "@/lib/auth/session";
 import { getRoom } from "@/lib/room/store";
@@ -39,5 +40,5 @@ export async function POST(req: Request, { params }: Params) {
   }, { room });
 
   if (!result.ok) return NextResponse.json({ error: result.error }, { status: 400 });
-  return NextResponse.json({ snapshot: result.snapshot });
+  return NextResponse.json({ snapshot: viewerSnapshotResponse(result.snapshot, room, session.user) });
 }

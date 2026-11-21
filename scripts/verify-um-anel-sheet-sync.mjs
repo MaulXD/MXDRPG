@@ -104,7 +104,8 @@ ok(
 );
 ok(
   "TOR-SAVE rota da Fonte de Dano: devolve sheetSaved",
-  /NextResponse\.json\(\{ snapshot: result\.snapshot, sheetSaved: result\.sheetSaved \}\)/.test(HAZARD_ROUTE)
+  // P-17: a sala vai filtrada para quem pediu; o sheetSaved continua junto.
+  /NextResponse\.json\(\{ snapshot: viewerSnapshotResponse\(result\.snapshot, room, session\.user\), sheetSaved: result\.sheetSaved \}\)/.test(HAZARD_ROUTE)
 );
 
 // Cliente: avisa quando sheetSaved === false.

@@ -82,7 +82,7 @@ const advance = ler("components/vtt/TorAdvancePanel.tsx");
 assert.match(advance, /onUpdate: \(\) => void;/, "TorAdvancePanel: assinatura sem payload (rota envelopa { snapshot })");
 assert.doesNotMatch(advance, /onUpdate\([^)]/, "TorAdvancePanel: nenhum onUpdate com argumento");
 const advanceRoute = ler("app/api/room/[roomId]/tor-advance/route.ts");
-assert.match(advanceRoute, /return NextResponse\.json\(\{ snapshot: result\.snapshot \}\);/, "tor-advance: continua devolvendo envelope { snapshot }");
+assert.match(advanceRoute, /return NextResponse\.json\(\{ snapshot: viewerSnapshotResponse\(result\.snapshot, room, session\.user\) \}\);/, "tor-advance: continua devolvendo envelope { snapshot } (filtrado, P-17)");
 ok("TorAdvancePanel segue com onUpdate() (rota tor-advance devolve envelope)");
 
 // O cliente de patchTorSession desembrulha o snapshot, que e o que o TorEyePanel recebe.

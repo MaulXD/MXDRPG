@@ -29,3 +29,17 @@ export function safeMutationDeltaResponse(
     return snapshotForViewer(after, room, user);
   }
 }
+
+/**
+ * Sala inteira devolvida por uma mutação, já filtrada para quem pediu (PA e HP de
+ * monstro, névoa, desfazer do combate). As rotas do Um Anel devolviam o snapshot cru:
+ * o jogador recebia o que só o mestre vê, e desde o P-13/P-15 isso ia para a tela.
+ * Usa as configurações da sala DEPOIS da mutação.
+ */
+export function viewerSnapshotResponse(
+  snapshot: RoomSnapshot,
+  room: Pick<RoomState, "roomId" | "ownerId" | "memberIds" | "settings">,
+  user: SessionUser | null | undefined
+): RoomSnapshot {
+  return snapshotForViewer(snapshot, { ...room, settings: snapshot.settings ?? room.settings }, user);
+}

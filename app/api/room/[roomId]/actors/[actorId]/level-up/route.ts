@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { viewerSnapshotResponse } from "@/lib/room/mutation-response";
 import { actorForRoomAuth, canEditRoomActor } from "@/lib/auth/room-access";
 import { getSession } from "@/lib/auth/session";
 import { canLevelUp, validateLevelUpChoices, type LevelUpChoices } from "@/lib/character/level-up";
@@ -62,9 +63,11 @@ export async function POST(req: Request, { params }: Params) {
     text: `${actor.name} subiu para nível ${actor.identity.nivel}${actor.identity.subclasse ? ` · ${actor.identity.subclasse}` : ""}.`,
   });
 
+  // P-17: a cena vai filtrada (névoa, monstros) para quem pediu.
+  const visto = viewerSnapshotResponse(snapshot, room, session?.user);
   return NextResponse.json({
-    actor: snapshot.actors[actorId],
-    scene: snapshot.scene,
+    actor: visto.actors[actorId],
+    scene: visto.scene,
     revision: snapshot.revision,
   });
 }

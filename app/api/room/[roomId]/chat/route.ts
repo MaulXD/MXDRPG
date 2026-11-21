@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { viewerSnapshotResponse } from "@/lib/room/mutation-response";
 import { rollDice, formatRollMessage } from "@/lib/dice/roll";
 import { canChatInRoomSession } from "@/lib/auth/mesa-watch-session";
 import { getSession } from "@/lib/auth/session";
@@ -66,7 +67,7 @@ export async function POST(req: Request, { params }: Params) {
       if (!snapshot) {
         return NextResponse.json({ error: "Sala não encontrada" }, { status: 404 });
       }
-      return NextResponse.json(snapshot);
+      return NextResponse.json(viewerSnapshotResponse(snapshot, room, session?.user));
     } catch (e) {
       return NextResponse.json(
         { error: e instanceof Error ? e.message : "Rolagem inválida" },
@@ -109,8 +110,9 @@ export async function POST(req: Request, { params }: Params) {
      opcional está desligada, ou quando há combate em curso. */
   if (featDieValue != null) {
     const comOlho = await appendTorEyeFromFeatDie(roomId, featDieValue, author);
-    if (comOlho) return NextResponse.json(comOlho);
+    if (comOlho) return NextResponse.json(viewerSnapshotResponse(comOlho, room, session?.user));
   }
 
-  return NextResponse.json(snapshot);
+  // P-17: desde o P-12 a tela aplica esta resposta; vai filtrada para quem mandou.
+  return NextResponse.json(viewerSnapshotResponse(snapshot, room, session?.user));
 }
