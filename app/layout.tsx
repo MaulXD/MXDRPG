@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { SITE_NAME } from "@/lib/site-metadata";
-import { Cinzel, Lora, Source_Sans_3 } from "next/font/google";
+import localFont from "next/font/local";
 import { AuthProvider } from "@/components/auth/AuthProvider";
 import { FriendsChatProvider } from "@/components/friends/FriendsChatProvider";
 import { NotificationsProvider } from "@/components/notifications/NotificationsProvider";
@@ -23,24 +23,30 @@ import "@/components/home/home.css";
 import "@/components/vtt/eldarin-v4.css";
 import "@/components/backgrounds/animated-background-site.css";
 
-const lora = Lora({
-  subsets: ["latin"],
+// Fontes guardadas no projeto (app/fonts, variáveis, subconjunto latin do Google Fonts, licença OFL):
+// o build não depende mais de baixar do Google, que já derrubou um deploy (21/11/2026).
+const lora = localFont({
+  src: "./fonts/lora-latin.woff2",
   variable: "--font-body",
   display: "swap",
+  weight: "400 700",
+  fallback: ["Georgia", "serif"],
 });
 
-const sourceSans = Source_Sans_3({
-  subsets: ["latin"],
+const sourceSans = localFont({
+  src: "./fonts/source-sans-3-latin.woff2",
   variable: "--font-ui",
   display: "swap",
-  weight: ["400", "500", "600", "700"],
+  weight: "400 700",
+  fallback: ["system-ui", "sans-serif"],
 });
 
-const cinzel = Cinzel({
-  subsets: ["latin"],
+const cinzel = localFont({
+  src: "./fonts/cinzel-latin.woff2",
   variable: "--font-display",
   display: "swap",
-  weight: ["500", "600", "700"],
+  weight: "500 700",
+  fallback: ["Georgia", "serif"],
 });
 
 export const metadata: Metadata = {

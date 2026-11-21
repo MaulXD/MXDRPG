@@ -6880,3 +6880,12 @@ Contas temporárias de mestre e jogador e uma mesa, testadas no portal do Maestr
 - Ids sem acento para virar arquivo/URL: `CLA-clerigo` (o canonId do código, `CLA-clérigo`, fica no JSON) e `SUB-<id da trilha>`.
 - Gema na cor da classe (`CLASS_ICON_COLOR` de `lib/character/wizard-icons.ts`, lida pelo script), igual na classe e nas subclasses dela. `compor.mjs` ganhou a categoria `classes`, que usa o próprio lote como lista.
 - Com isso a lista de prompts está completa: 64 magias, 55 habilidades, 60 classes/subclasses (179 ícones). Geração segue travada no faturamento do Gemini.
+
+### 2026-11-21 (noite) — Fontes guardadas no projeto
+
+**Pedido:** guardar as fontes no projeto (o deploy de `da38ec1` caiu porque o `next/font/google` não conseguiu baixar as fontes no build; o rerun passou).
+
+- `app/fonts/`: Lora, Source Sans 3 e Cinzel em woff2 variável, subconjunto latin (o mesmo que já era usado), baixadas do Google Fonts; licença OFL anotada em `app/fonts/LEIA-ME.md`.
+- `app/layout.tsx` usa `next/font/local` com as mesmas variáveis CSS (`--font-body`, `--font-ui`, `--font-display`) e as mesmas faixas de peso. O build não acessa mais o Google.
+- Conferido: `tsc`, `next build` (3 woff2 próprios no preload), página /sistema numa build de produção local com Cinzel e Source Sans carregadas, `npm test` inteiro.
+- O `next build` no repositório quebrou o servidor de dev da porta 3000, que ainda estava vivo (respondia 500 e derrubou o verify-p01); ele foi parado.
