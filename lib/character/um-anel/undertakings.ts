@@ -9,6 +9,7 @@ import type { TorCallingId } from "./types";
  */
 export type TorUndertaking = {
   id: string;
+  /** Nome do livro (livros/um-anel/07-fases-de-companhia-jornada.md; BV-075). O id fica. */
   name: string;
   /** Só disponível numa Fase de Companhia de Yule (fim de ano). */
   yuleOnly?: boolean;
@@ -20,7 +21,7 @@ export type TorUndertaking = {
 export const TOR_UNDERTAKINGS: TorUndertaking[] = [
   {
     id: "reunir-boatos",
-    name: "Reunir Boatos",
+    name: "Reunir Rumores",
     freeForCallingId: "guardiao",
     description: "Escolha essa Empreitada pra receber um boato do Mestre — uma história sobre um indivíduo, lugar ou evento vindouro que a Companhia pode explorar, prevenir ou almejar.",
   },
@@ -38,7 +39,7 @@ export const TOR_UNDERTAKINGS: TorUndertaking[] = [
   },
   {
     id: "contemplar-mapas",
-    name: "Contemplar Mapas Ilustrados",
+    name: "Ponderar Mapas Historiados e Figurados",
     freeForCallingId: "erudito",
     description: "Estude mapas e pergaminhos de saber pra aprender sobre os perigos que a Companhia pode enfrentar numa jornada. Até a próxima Fase de Companhia, aplique +1 em todas as rolagens de Dado de Proeza pra determinar a natureza de eventos durante uma Jornada.",
   },
@@ -50,13 +51,13 @@ export const TOR_UNDERTAKINGS: TorUndertaking[] = [
   },
   {
     id: "recontar-historia",
-    name: "Recontar uma História",
+    name: "Contar uma História",
     yuleOnly: true,
     description: "Substitua um dos seus Traços Distintivos por um novo, escolhendo uma qualidade que você demonstrou no episódio narrado.",
   },
   {
     id: "fortalecer-companhia",
-    name: "Fortalecer a Companhia",
+    name: "Fortalecer o Companheirismo",
     freeForCallingId: "capitao",
     description: "Aumente o Nível de Companhia em +1 até a próxima Fase de Companhia.",
   },
