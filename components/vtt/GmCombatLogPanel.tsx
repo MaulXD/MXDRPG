@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import type { CombatLogEntry, RoomSnapshot } from "@/lib/room/types";
 import type { CombatLogKind } from "@/lib/room/combat-log";
 import type { BattleToken } from "@/lib/vtt/types";
+import { resolveGmLogPa } from "@/lib/combat/pa-display";
 
 type Props = {
   combatLog?: CombatLogEntry[];
@@ -100,7 +101,7 @@ export function GmCombatLogPanel({ combatLog = [], tokens, combat }: Props) {
               <li key={t.id} className={t.id === activeId ? "is-active" : undefined}>
                 <span className="vtt-gm-combat-log__pa-name">{t.name}</span>
                 <span className="vtt-gm-combat-log__pa-values">
-                  PA {t.pa ?? 0}
+                  PA {resolveGmLogPa(t)}
                   {(t.paSpentThisTurn ?? 0) > 0 ? ` · gastou ${t.paSpentThisTurn}` : ""}
                 </span>
               </li>
