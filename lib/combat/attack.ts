@@ -525,6 +525,12 @@ export function isProficient(actor: CharacterSheet, action: CombatActionOption):
   return p.includes("todas armas") || p.includes("armas simples") || p.includes("armas marciais");
 }
 
+/** Termo de soma para exibir: 0 some, 2 vira "+2", -1 vira "-1" (antes saía "+-1"). */
+function signedTerm(n: number | undefined): string {
+  if (!n) return "";
+  return n > 0 ? `+${n}` : `${n}`;
+}
+
 export function rollActionDamage(
   formula: string,
   attrMod: number,
@@ -971,7 +977,7 @@ export function resolveAttack(
         attackCount: opts?.attackCount ?? 1,
       })
     );
-    const summary = `${actor.name} cura ${defenderToken.name} com ${resolved.name}: +${healRoll.total} HP (${healRoll.rolls.join("+")}${healRoll.attributeMod ? `+${healRoll.attributeMod}` : ""} ${attr}) — ${hpBefore}→${hpAfter}`;
+    const summary = `${actor.name} cura ${defenderToken.name} com ${resolved.name}: +${healRoll.total} HP (${healRoll.rolls.join("+")}${signedTerm(healRoll.attributeMod)} ${attr}) — ${hpBefore}→${hpAfter}`;
 
     return {
       attackerTokenId: attackerToken.id,
@@ -1051,7 +1057,7 @@ export function resolveAttack(
   } else if (!hit) {
     summary = `${actor.name} ${verb}${modLabel} ${defenderToken.name} com ${resolved.name}${channelTag}: ${attackTotal} vs CA ${ac} — ERROU`;
   } else if (critical) {
-    summary = `${actor.name} CRÍTICO${modLabel} em ${defenderToken.name}! ${damage!.total} ${resolved.damageType} (${damage!.rolls.join("+")}${damage!.attributeMod ? `+${damage!.attributeMod}` : ""}${damage!.flatBonus ? `+${damage!.flatBonus}` : ""})`;
+    summary = `${actor.name} CRÍTICO${modLabel} em ${defenderToken.name}! ${damage!.total} ${resolved.damageType} (${damage!.rolls.join("+")}${signedTerm(damage!.attributeMod)}${damage!.flatBonus ? `+${damage!.flatBonus}` : ""})`;
   } else {
     summary = `${actor.name} acerta${modLabel} ${defenderToken.name}: ${attackTotal} vs CA ${ac} — ${damage!.total} ${resolved.damageType}`;
   }
@@ -1197,7 +1203,7 @@ export function formatAttackChatDetail(res: AttackResolution): string {
     const heal = res.summary.includes(" cura ");
     const dmgLabel = heal ? "Cura" : "Dano";
     parts.push(
-      `${dmgLabel} ${res.damage.rolls.join("+")}${res.damage.attributeMod ? `+${res.damage.attributeMod}` : ""}${res.damage.flatBonus ? `+${res.damage.flatBonus}` : ""} = ${res.damage.total}`
+      `${dmgLabel} ${res.damage.rolls.join("+")}${signedTerm(res.damage.attributeMod)}${res.damage.flatBonus ? `+${res.damage.flatBonus}` : ""} = ${res.damage.total}`
     );
     parts.push(`HP ${res.defenderHpBefore}→${res.defenderHpAfter}`);
   }
