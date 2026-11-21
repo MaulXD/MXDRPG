@@ -85,6 +85,9 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     <html
       lang="pt-BR"
       className={`${lora.variable} ${cinzel.variable} ${sourceSans.variable}`}
+      // BV-001: o globals.css usa scroll-behavior: smooth no html; o atributo diz ao
+      // Next para seguir desligando a rolagem suave nas trocas de rota (e cala o aviso).
+      data-scroll-behavior="smooth"
       suppressHydrationWarning
     >
       <head>
