@@ -12,12 +12,19 @@ import {
 import { getRoom, persistRoom, toSnapshot } from "../internal/registry";
 import type { RoomActor, RoomSnapshot, RoomState } from "../types";
 
+/**
+ * sheetSaved: false quando a sala foi gravada mas a ficha do personagem
+ * (persistActorToAdventureSheet) falhou. A sala continua gravada; o chamador
+ * deve avisar o jogador, porque a ficha antiga volta na proxima sincronizacao.
+ */
+export type UpdateRoomActorResult = RoomSnapshot & { sheetSaved: boolean };
+
 export async function updateRoomActor(
   roomId: string,
   actorId: string,
   patch: Partial<CharacterSheet> & { identityPatch?: IdentityPatch },
   opts?: { room?: RoomState }
-): Promise<RoomSnapshot | null> {
+): Promise<UpdateRoomActorResult | null> {
   const room = opts?.room ?? (await getRoom(roomId));
   if (!room) return null;
 
@@ -32,7 +39,7 @@ export async function updateRoomActor(
 
   const safe = await sanitizeActorPatch(patch);
   const hasIdentity = Boolean(patch.identityPatch);
-  if (!Object.keys(safe).length && !hasIdentity) return toSnapshot(room);
+  if (!Object.keys(safe).length && !hasIdentity) return { ...toSnapshot(room), sheetSaved: true };
 
   let next: RoomActor = {
     ...current,
@@ -72,10 +79,12 @@ export async function updateRoomActor(
     };
   }
 
+  let sheetSaved = true;
   await persistActorToAdventureSheet(next).catch((e) => {
+    sheetSaved = false;
     console.error("[updateRoomActor] persist sheet failed:", actorId, e);
   });
-  return toSnapshot(await persistRoom(roomId, room));
+  return { ...toSnapshot(await persistRoom(roomId, room)), sheetSaved };
 }
 
 export async function levelUpRoomActor(

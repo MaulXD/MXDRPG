@@ -36,6 +36,7 @@
     "test:consumables": "node scripts/verify-consumables.mjs",
     "test:inventory-requests": "node scripts/verify-inventory-requests.mjs",
     "test:culinary": "node scripts/verify-culinary.mjs",
+    "test:d09-sheet-saved": "node scripts/verify-d09-sheet-saved.mjs",
     "smoke:inventory-flow": "node scripts/smoke/inventory-request-flow.mjs",
     "smoke:p9-inventory": "node scripts/smoke/p9-inventory-five-steps.mjs",
     "smoke:level-up-pa": "node scripts/smoke/level-up-pa-sync.mjs",

@@ -52,5 +52,6 @@ export async function PATCH(req: Request, { params }: Params) {
     actor: snapshot.actors[actorId],
     scene: snapshot.scene,
     revision: snapshot.revision,
+    sheetSaved: snapshot.sheetSaved,
   });
 }

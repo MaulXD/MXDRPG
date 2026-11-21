@@ -46,6 +46,8 @@ export type RoomActorPatchResult = {
   actor: RoomActor;
   scene: import("@/lib/room/types").RoomSnapshot["scene"];
   revision: number;
+  /** false quando a imagem foi aplicada na mesa mas não gravada na ficha. */
+  sheetSaved?: boolean;
 };
 
 export function mergePortraitPatchIntoSnapshot(

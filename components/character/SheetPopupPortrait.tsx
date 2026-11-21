@@ -8,6 +8,7 @@ import { Portrait } from "@/components/vtt/Portrait";
 import { useImageNaturalSize } from "@/hooks/useImageNaturalSize";
 import { persistPortraitBundleToRoom } from "@/lib/character/portrait-persist-client";
 import type { RoomActorPatchResult } from "@/lib/character/portrait-persist-client";
+import { assertRoomPortraitSheetSaved } from "@/lib/character/portrait-sheet-saved";
 import { IMAGE_UPLOAD_HINT } from "@/lib/media/image-data-url";
 import {
   DEFAULT_PORTRAIT_FOCUS,
@@ -136,6 +137,7 @@ export function SheetPopupPortrait({
         if (!roomId) throw new Error("roomId ausente para salvar retrato na mesa");
         const result = await persistPortraitBundleToRoom(roomId, actorId, bundle);
         if (result) onRoomPortraitSaved?.(result);
+        assertRoomPortraitSheetSaved(result);
       }
       onSaved();
     },

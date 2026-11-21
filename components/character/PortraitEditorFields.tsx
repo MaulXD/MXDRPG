@@ -10,6 +10,10 @@ import {
   persistPortraitBundleToRoom,
   type RoomActorPatchResult,
 } from "@/lib/character/portrait-persist-client";
+import {
+  assertRoomPortraitSheetSaved,
+  SHEET_NOT_CLEARED_MESSAGE,
+} from "@/lib/character/portrait-sheet-saved";
 import { playerColorForActor } from "@/lib/vtt/token-colors";
 
 type BaseProps = {
@@ -67,6 +71,7 @@ export function PortraitEditorFields(props: Props) {
         if (mode === "room") {
           const result = await persistPortraitBundleToRoom(props.roomId, props.actorId, bundle);
           if (result) onRoomPortraitSaved?.(result);
+          assertRoomPortraitSheetSaved(result);
         } else {
           await persistPortraitBundleToCharacter(props.characterId, bundle);
         }
@@ -76,6 +81,7 @@ export function PortraitEditorFields(props: Props) {
         if (mode === "room") {
           const result = await clearPortraitOnRoom(props.roomId, props.actorId);
           if (result) onRoomPortraitSaved?.(result);
+          assertRoomPortraitSheetSaved(result, SHEET_NOT_CLEARED_MESSAGE);
         } else {
           await clearPortraitOnCharacter(props.characterId);
         }

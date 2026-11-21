@@ -584,6 +584,8 @@ export async function patchRoomActor(
     actor: RoomActor;
     scene: RoomSnapshot["scene"];
     revision: number;
+    /** false quando a sala gravou mas a ficha não (ver updateRoomActor). */
+    sheetSaved?: boolean;
   }>;
 }
 
