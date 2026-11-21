@@ -10,7 +10,9 @@ import {
 } from "@/lib/db/sql-types";
 import { normalizeDatabaseUrl } from "@/lib/db/normalize-url";
 
-let pool: Pool | null = null;
+// Pool guardado em globalThis (BV-047): em dev o Next reavalia este modulo e cada reavaliacao
+// criava um pool novo (ate 10 conexoes) sem fechar o antigo, ate estourar max_connections do MariaDB.
+const mariaPoolHolder = globalThis as typeof globalThis & { __mxdMariaPool?: Pool | null };
 
 function parseJsonColumns<T>(rows: T[]): T[] {
   const jsonKeys = new Set([
@@ -96,9 +98,10 @@ function createMariaSql(p: Pool): EldarinSql {
   };
 
   tag.end = async () => {
-    if (pool) {
-      await pool.end();
-      pool = null;
+    const current = mariaPoolHolder.__mxdMariaPool;
+    if (current) {
+      await current.end();
+      mariaPoolHolder.__mxdMariaPool = null;
     }
   };
 
@@ -147,8 +150,9 @@ export function getMariaSql(): EldarinSql | null {
   const url = mariadbPoolUrl(raw);
   if (!url) return null;
 
-  if (!pool) {
-    pool = mysql.createPool({
+  let current = mariaPoolHolder.__mxdMariaPool;
+  if (!current) {
+    current = mysql.createPool({
       uri: url,
       waitForConnections: true,
       connectionLimit: 10,
@@ -156,9 +160,10 @@ export function getMariaSql(): EldarinSql | null {
       enableKeepAlive: true,
       ssl: poolSslOption(url),
     });
+    mariaPoolHolder.__mxdMariaPool = current;
   }
 
-  return createMariaSql(pool);
+  return createMariaSql(current);
 }
 
 export async function mariaDbPing(): Promise<{ ok: boolean; error?: string }> {
