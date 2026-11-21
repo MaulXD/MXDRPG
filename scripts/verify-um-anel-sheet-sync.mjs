@@ -134,9 +134,9 @@ ok(
   ).test(CARD) && /setReloadKey\(\(k\) => k \+ 1\)/.test(CARD)
 );
 ok(
-  "BV-040 card: revisão da mesa dispara um refetch só por rajada (1,5 s), não um por revisão",
+  "BV-040 card: revisão da mesa dispara um refetch só por rajada (0,6 s), não um por revisão",
   /\}, \[adventureId, reloadKey\]\);/.test(CARD) &&
-    /window\.setTimeout\(\(\) => setReloadKey\(\(k\) => k \+ 1\), 1500\)/.test(CARD) &&
+    /window\.setTimeout\(\(\) => setReloadKey\(\(k\) => k \+ 1\), 600\)/.test(CARD) &&
     /\}, \[roomRevision\]\);/.test(CARD)
 );
 ok(
@@ -183,9 +183,9 @@ ok(
 );
 
 ok(
-  "BV-050 ficha aberta: recarrega pela revisão da sala, uma vez por rajada (1,5 s)",
+  "BV-050 ficha aberta: recarrega pela revisão da sala, uma vez por rajada (0,6 s)",
   /const roomRevision = useMesaRoomRevision\(roomId\);/.test(SHEET_POPUP) &&
-    /window\.setTimeout\(\(\) => void load\(characterId\), 1500\)/.test(SHEET_POPUP) &&
+    /window\.setTimeout\(\(\) => void load\(characterId\), 600\)/.test(SHEET_POPUP) &&
     /\}, \[roomRevision, characterId, load\]\);/.test(SHEET_POPUP)
 );
 

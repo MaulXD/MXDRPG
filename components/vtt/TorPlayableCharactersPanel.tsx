@@ -41,9 +41,9 @@ export function TorPlayableCharactersPanel({
 
   useEffect(() => {
     // Revisões chegam em rajada no combate (cada movimento de token conta). Junta tudo
-    // num refetch só, 1,5 s depois da última, em vez de uma requisição por revisão.
+    // num refetch só, 0,6 s depois da última, em vez de uma requisição por revisão.
     if (roomRevision == null) return;
-    const t = window.setTimeout(() => setReloadKey((k) => k + 1), 1500);
+    const t = window.setTimeout(() => setReloadKey((k) => k + 1), 600);
     return () => window.clearTimeout(t);
   }, [roomRevision]);
 
