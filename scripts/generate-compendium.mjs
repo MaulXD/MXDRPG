@@ -44,9 +44,14 @@ function parseMonsterLoreBook() {
     const num = chunks[i];
     const body = chunks[i + 1] ?? "";
     const title = body.split("\n")[0]?.trim() ?? "";
-    const loreMatch = body.match(/\*\*Lore:\*\*\s*\n([\s\S]*?)(?=\n\*\*Comportamento|\n\| Estatística|\n\*\*Habilidades)/);
+    // O livro tem dois formatos: "**Lore:**" com o texto na linha de baixo (001-059)
+    // ou na mesma linha (060-080). Os dois terminam na tabela ou no próximo campo.
+    const loreMatch = body.match(
+      /\*\*Lore:\*\*[ \t]*\n?([\s\S]*?)(?=\n\*\*Comportamento|\n\||\n\*\*Habilidades|\n\*\*Ingredientes|\n---|$)/
+    );
+    // 060-080 trazem o comportamento depois do "---", no fim da seção.
     const behaviorMatch = body.match(
-      /\*\*Comportamento na mesa:\*\*\s*\n([\s\S]*?)(?=\n\| Estatística|\n\*\*Habilidades|\n---)/
+      /\*\*Comportamento na mesa:\*\*\s*\n([\s\S]*?)(?=\n\| Estatística|\n\*\*Habilidades|\n---|\n\n\S|$)/
     );
     const lore = loreMatch?.[1]?.replace(/\s+/g, " ").trim() ?? "";
     const behaviorRaw = behaviorMatch?.[1] ?? "";

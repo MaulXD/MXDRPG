@@ -11159,7 +11159,7 @@
     "name": "Roper",
     "type": "npc",
     "system": {
-      "description": "<p><strong>ROPER (TENTÁCULO-PEDRA)</strong> (ameaça nv 5).</p><p><strong>Comportamento na mesa</strong></p><ul><li>Padrão: ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).</li><li>Moral: não foge; persegue o alvo mais próximo até 0 HP (mente ausente).</li></ul>",
+      "description": "<p><strong>ROPER (TENTÁCULO-PEDRA)</strong> (ameaça nv 5).</p><p>Parece uma estalactite até abrir o olho único e os tentáculos. Espera décadas pelo alvo certo.</p><p><strong>Comportamento na mesa</strong></p><ul><li>Padrão: ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).</li><li>Moral: não foge; persegue o alvo mais próximo até 0 HP (mente ausente).</li></ul>",
       "attributes": {
         "forca": {
           "value": 18,
@@ -11362,7 +11362,7 @@
     "name": "Aboleth",
     "type": "npc",
     "system": {
-      "description": "<p><strong>ABOLETH</strong> (ameaça nv 16).</p><p><strong>Comportamento na mesa</strong></p><ul><li>Padrão: ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).</li><li>Moral: não foge por HP; pode sacrificar lacaios.</li></ul>",
+      "description": "<p><strong>ABOLETH</strong> (ameaça nv 16).</p><p>Criaturas que existem há mais tempo que os deuses. Memória coletiva de todas as vidas que já consumiram. Escravizam psiquicamente.</p><p><strong>Comportamento na mesa</strong></p><ul><li>Padrão: ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).</li><li>Moral: não foge por HP; pode sacrificar lacaios.</li></ul>",
       "attributes": {
         "forca": {
           "value": 16,
@@ -11565,7 +11565,7 @@
     "name": "Pudim Negro",
     "type": "npc",
     "system": {
-      "description": "<p><strong>PUDIM NEGRO</strong> (ameaça nv 7).</p><p><strong>Comportamento na mesa</strong></p><ul><li>Padrão: ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).</li><li>Moral: não foge; persegue o alvo mais próximo até 0 HP (mente ausente).</li></ul>",
+      "description": "<p><strong>PUDIM NEGRO</strong> (ameaça nv 7).</p><p>Uma massa de protoplasma ácido negro que dissolve metais, pedra e carne com igual eficiência. Não tem intenção — apenas fome. Pode se dividir indefinidamente.</p><p><strong>Comportamento na mesa</strong></p><ul><li>Padrão: ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).</li><li>Moral: não foge; persegue o alvo mais próximo até 0 HP (mente ausente).</li></ul>",
       "attributes": {
         "forca": {
           "value": 14,
@@ -11768,7 +11768,7 @@
     "name": "Lagosta-Gigante Abissal",
     "type": "npc",
     "system": {
-      "description": "<p><strong>LAGOSTA-GIGANTE ABISSAL</strong> (ameaça nv 4).</p><p><strong>Comportamento na mesa</strong></p><ul><li>Padrão: ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).</li><li>Moral: não foge; persegue o alvo mais próximo até 0 HP (mente ausente).</li></ul>",
+      "description": "<p><strong>LAGOSTA-GIGANTE ABISSAL</strong> (ameaça nv 4).</p><p>Do tamanho de um pônei, habita o fundo do Mar de Prata Cega. Completamente inofensiva a distância — mas as garras são letais.</p><p><strong>Comportamento na mesa</strong></p><ul><li>Padrão: ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).</li><li>Moral: não foge; persegue o alvo mais próximo até 0 HP (mente ausente).</li></ul>",
       "attributes": {
         "forca": {
           "value": 16,
@@ -11971,7 +11971,7 @@
     "name": "Caranguejo-Eremita Colossal",
     "type": "npc",
     "system": {
-      "description": "<p><strong>Caranguejo-Eremita Colossal</strong> — criatura nv 7 das masmorras de Eldarin.</p>",
+      "description": "<p><strong>CARANGUEJO-EREMITA COLOSSAL</strong> (ameaça nv 7).</p><p>Usa cascos de galeões naufragados como concha. Os aventureiros frequentemente exploram o &quot;navio abandonado&quot; sem perceber que está se movendo.</p><p><strong>Comportamento na mesa</strong></p><ul><li>Padrão: ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).</li><li>Moral: não foge; persegue o alvo mais próximo até 0 HP (mente ausente).</li></ul>",
       "attributes": {
         "forca": {
           "value": 18,
@@ -12174,7 +12174,7 @@
     "name": "Aranha-Cavaleira",
     "type": "npc",
     "system": {
-      "description": "<p><strong>Aranha-Cavaleira</strong> — criatura nv 9 das masmorras de Eldarin.</p>",
+      "description": "<p><strong>ARANHA-CAVALEIRA (JINOBAKE)</strong> (ameaça nv 9).</p><p>Aranhas que evoluíram para montar outras criaturas — literalmente. Uma Aranha-Cavaleira controla sua montaria com enzimas injetadas no sistema nervoso. Monta desde lobos até pequenos drakes.</p><p><strong>Comportamento na mesa</strong></p><ul><li>Padrão: ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).</li><li>Moral: não foge; persegue o alvo mais próximo até 0 HP (mente ausente).</li></ul>",
       "attributes": {
         "forca": {
           "value": 14,
@@ -12265,7 +12265,7 @@
     "name": "Mosca-Carniça Colossal",
     "type": "npc",
     "system": {
-      "description": "<p><strong>Mosca-Carniça Colossal</strong> — criatura nv 2 das masmorras de Eldarin.</p>",
+      "description": "<p><strong>MOSCA-CARNIÇA COLOSSAL</strong> (ameaça nv 2).</p><p>Do tamanho de um gato gordo, a Mosca-Carniça é o sistema de limpeza da masmorra. Onde há mortos, há centenas delas em minutos. Inofensiva individualmente, aterrorizante em enxame.</p><p><strong>Comportamento na mesa</strong></p><ul><li>Padrão: ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).</li><li>Moral: não foge; persegue o alvo mais próximo até 0 HP (mente ausente).</li></ul>",
       "attributes": {
         "forca": {
           "value": 8,
@@ -12356,7 +12356,7 @@
     "name": "Besouro-Trovão",
     "type": "npc",
     "system": {
-      "description": "<p><strong>Besouro-Trovão</strong> — criatura nv 5 das masmorras de Eldarin.</p>",
+      "description": "<p><strong>BESOURO-TROVÃO</strong> (ameaça nv 5).</p><p>Absorve energia elétrica do Arquipélago Magnético e a libera em descargas de defesa. O zumbido dos seus élitros a 50 metros é aviso suficiente para recuar.</p><p><strong>Comportamento na mesa</strong></p><ul><li>Padrão: ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).</li><li>Moral: não foge; persegue o alvo mais próximo até 0 HP (mente ausente).</li></ul>",
       "attributes": {
         "forca": {
           "value": 14,
@@ -12447,7 +12447,7 @@
     "name": "Verme Gigante de Pedra",
     "type": "npc",
     "system": {
-      "description": "<p><strong>Verme Gigante de Pedra</strong> — criatura nv 10 das masmorras de Eldarin.</p>",
+      "description": "<p><strong>VERME GIGANTE DE PEDRA</strong> (ameaça nv 10).</p><p>20 metros de comprimento, escava por pedra como se fosse areia. As galerias que cria tornam-se os corredores da masmorra ao longo de décadas. A mandíbula tritura rocha e carne com igual facilidade.</p><p><strong>Comportamento na mesa</strong></p><ul><li>Padrão: ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).</li><li>Moral: não foge; persegue o alvo mais próximo até 0 HP (mente ausente).</li></ul>",
       "attributes": {
         "forca": {
           "value": 22,
@@ -12538,7 +12538,7 @@
     "name": "Salamandra Gigante",
     "type": "npc",
     "system": {
-      "description": "<p><strong>Salamandra Gigante</strong> — criatura nv 6 das masmorras de Eldarin.</p>",
+      "description": "<p><strong>SALAMANDRA GIGANTE</strong> (ameaça nv 6).</p><p>Não confundir com Salamandras de Magma elementais. Esta é uma criatura biológica adaptada ao calor — pele rugosa que suporta temperatura de 300°C, respiração de vapor. Habita as bordas de rios de magma onde temperaturas são &quot;apenas&quot; extremas.</p><p><strong>Comportamento na mesa</strong></p><ul><li>Padrão: ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).</li><li>Moral: não foge; persegue o alvo mais próximo até 0 HP (mente ausente).</li></ul>",
       "attributes": {
         "forca": {
           "value": 15,
@@ -12629,7 +12629,7 @@
     "name": "Behemoth de Pedra",
     "type": "npc",
     "system": {
-      "description": "<p><strong>Behemoth de Pedra</strong> — criatura nv 14 das masmorras de Eldarin.</p>",
+      "description": "<p><strong>BEHEMOTH DE PEDRA</strong> (ameaça nv 14).</p><p>Uma criatura de proporções absurdas — 15 metros de altura — que se move por andares inteiros como se fossem corredores normais. Herbívoro. O problema é que &quot;herbívoro&quot; em masmorras significa que come cogumelos gigantes e qualquer outra planta, mas esmagará qualquer coisa no caminho sem perceber.</p><p><strong>Comportamento na mesa</strong></p><ul><li>Padrão: ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).</li><li>Moral: não foge por HP; pode sacrificar lacaios.</li></ul>",
       "attributes": {
         "forca": {
           "value": 24,
@@ -12720,7 +12720,7 @@
     "name": "Fera da Sombra",
     "type": "npc",
     "system": {
-      "description": "<p><strong>Fera da Sombra</strong> — criatura nv 8 das masmorras de Eldarin.</p>",
+      "description": "<p><strong>FERA DA SOMBRA</strong> (ameaça nv 8).</p><p>Manifestação de escuridão acumulada nos cantos dos andares mais profundos onde a luz nunca chegou. Não tem forma definida mas prefere parecer um felino. Drena a luz ao redor como se respirasse.</p><p><strong>Comportamento na mesa</strong></p><ul><li>Padrão: ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).</li><li>Moral: não foge; persegue o alvo mais próximo até 0 HP (mente ausente).</li></ul>",
       "attributes": {
         "forca": {
           "value": 12,
@@ -12853,7 +12853,7 @@
     "name": "Medusa",
     "type": "npc",
     "system": {
-      "description": "<p><strong>Medusa</strong> — criatura nv 7 das masmorras de Eldarin.</p>",
+      "description": "<p><strong>MEDUSA</strong> (ameaça nv 7).</p><p>As Medusas das masmorras são descendentes de criaturas amaldiçoadas por deuses já esquecidos. Vivem em câmaras decoradas com estátuas — suas vítimas anteriores. Algumas chegam a um nível perturbador de conforto com as estátuas, tratando-as como companhia.</p><p><strong>Comportamento na mesa</strong></p><ul><li>Padrão: ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).</li><li>Moral: não foge; persegue o alvo mais próximo até 0 HP (mente ausente).</li></ul>",
       "attributes": {
         "forca": {
           "value": 14,
@@ -12944,7 +12944,7 @@
     "name": "Fênix de Caverna",
     "type": "npc",
     "system": {
-      "description": "<p><strong>Fênix de Caverna</strong> — criatura nv 13 das masmorras de Eldarin.</p>",
+      "description": "<p><strong>FÊNIX DE CAVERNA</strong> (ameaça nv 13).</p><p>Uma fênix adaptada à escuridão — plumagem negra com brasas internas que brilham através das penas. Morre e renasce dentro de seu ninho. A caça de uma Fênix exige destruir o ninho simultaneamente à criatura, senão ela renasce em 1d4 horas.</p><p><strong>Comportamento na mesa</strong></p><ul><li>Padrão: ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).</li><li>Moral: não foge por HP; pode sacrificar lacaios.</li></ul>",
       "attributes": {
         "forca": {
           "value": 16,
@@ -13035,7 +13035,7 @@
     "name": "Gigante de Pedra",
     "type": "npc",
     "system": {
-      "description": "<p><strong>Gigante de Pedra</strong> — criatura nv 12 das masmorras de Eldarin.</p>",
+      "description": "<p><strong>GIGANTE DE PEDRA</strong> (ameaça nv 12).</p><p>Escultores por natureza, os Gigantes de Pedra constroem impérios subterrâneos de arte que nenhum aventureiro sobreviveu para relatar completamente. Hostis a invasores de suas galerias, mas respeitam a força — um grupo que derrota um Gigante de Pedra em combaté honesto pode às vezes negociar com os sobreviventes.</p><p><strong>Comportamento na mesa</strong></p><ul><li>Padrão: ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).</li><li>Moral: não foge; persegue o alvo mais próximo até 0 HP (mente ausente).</li></ul>",
       "attributes": {
         "forca": {
           "value": 23,
@@ -13126,7 +13126,7 @@
     "name": "Bruxa da Masmorra",
     "type": "npc",
     "system": {
-      "description": "<p><strong>Bruxa da Masmorra</strong> — criatura nv 8 das masmorras de Eldarin.</p>",
+      "description": "<p><strong>BRUXA DA MASMORRA (HAG)</strong> (ameaça nv 8).</p><p>Bruxas são o que acontece com magas que passaram décadas dentro das masmorras, absorvendo energia. Não são criadas por maldição — são o produto de uma escolha. A corrupção é gradual: primeiro a pele endurece, depois os dentes escurecem, depois os olhos mudam de cor. Ao final, algo que ainda pensa como maga mas tem corpo de criatura. Elas negociam, mentem e raramente atacam diretamente — preferem usar outros.</p><p><strong>Comportamento na mesa</strong></p><ul><li>Padrão: ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).</li><li>Moral: não foge; persegue o alvo mais próximo até 0 HP (mente ausente).</li></ul>",
       "attributes": {
         "forca": {
           "value": 12,
@@ -13217,7 +13217,7 @@
     "name": "Fera Seminal",
     "type": "npc",
     "system": {
-      "description": "<p><strong>Fera Seminal</strong> — criatura nv 11 das masmorras de Eldarin.</p>",
+      "description": "<p><strong>FERA SEMINAL (DESTIVORE)</strong> (ameaça nv 11).</p><p>Uma criatura que se alimenta da própria essência do que os aventureiros comeram. Detecta mutações biomágicas ativas e ataca diretamente os órgãos que as produzem.</p><p><strong>Comportamento na mesa</strong></p><ul><li>Padrão: ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).</li><li>Moral: não foge; persegue o alvo mais próximo até 0 HP (mente ausente).</li></ul>",
       "attributes": {
         "forca": {
           "value": 16,
@@ -13308,7 +13308,7 @@
     "name": "Carniçal Alado",
     "type": "npc",
     "system": {
-      "description": "<p><strong>Carniçal Alado</strong> — criatura nv 9 das masmorras de Eldarin.</p>",
+      "description": "<p><strong>CARNIÇAL ALADO</strong> (ameaça nv 9).</p><p>Não é nativo da masmorra — veio de outro plano e ficou preso. Demônio com corpo de abutre humanoide, penas negras e cheiro de enxofre. Caótico e destrutivo por natureza, mas com inteligência suficiente para ser imprevisível.</p><p><strong>Comportamento na mesa</strong></p><ul><li>Padrão: ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).</li><li>Moral: não foge; persegue o alvo mais próximo até 0 HP (mente ausente).</li></ul>",
       "attributes": {
         "forca": {
           "value": 15,
@@ -13399,7 +13399,7 @@
     "name": "Arquidemônio Flamejante",
     "type": "npc",
     "system": {
-      "description": "<p><strong>Arquidemônio Flamejante</strong> — criatura nv 19 das masmorras de Eldarin.</p>",
+      "description": "<p><strong>ARQUIDEMÔNIO FLAMEJANTE</strong> (ameaça nv 19).</p><p>Os Arquidemônio Flamejantes são generais do Abismo — criaturas de poder colossal que raramente chegam ao plano material. Quando chegam à masmorra, é porque foram convocados por algo poderoso o suficiente para abrir uma fenda planar, e então abandonados. Um Arquidemônio Flamejante de masmorra é uma catástrofe ambulante de 6 metros de altura com asas flamejantes e uma espada que queima em vorpal.</p><p><strong>Comportamento na mesa</strong></p><ul><li>Padrão: ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).</li><li>Moral: não foge por HP; pode sacrificar lacaios.</li></ul>",
       "attributes": {
         "forca": {
           "value": 26,
@@ -13490,7 +13490,7 @@
     "name": "Enxame de Ratos-Cadáveres",
     "type": "npc",
     "system": {
-      "description": "<p><strong>Enxame de Ratos-Cadáveres</strong> — criatura nv 2 das masmorras de Eldarin.</p>",
+      "description": "<p><strong>ENXAME DE RATOS-CADÁVERES</strong> (ameaça nv 2).</p><p>Ratos normais que morreram em massa e foram animados coletivamente por energia necrótica — um único &quot;organismo&quot; de centenas de corpos. Movem-se em ondas, passam por qualquer abertura, corroem equipamentos com dentes e unhas.</p><p><strong>Comportamento na mesa</strong></p><ul><li>Padrão: ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).</li><li>Moral: não foge; persegue o alvo mais próximo até 0 HP (mente ausente).</li><li>Pós-morte: ver habilidades (levante/toxina) — 1 rodada de risco ao grupo.</li></ul>",
       "attributes": {
         "forca": {
           "value": 10,
@@ -13581,7 +13581,7 @@
     "name": "Elemental de Terra",
     "type": "npc",
     "system": {
-      "description": "<p><strong>Elemental de Terra</strong> — criatura nv 8 das masmorras de Eldarin.</p>",
+      "description": "<p><strong>ELEMENTAL DE TERRA</strong> (ameaça nv 8).</p><p>Manifestação do Plano da Terra no ambiente da masmorra, frequentemente confundido com Golems de Pedra. A diferença: Golems são criados, Elementais emergem. O Elemental de Terra é a própria rocha tornando-se consciente e irritada com os seres de carne que a perfuram.</p><p><strong>Comportamento na mesa</strong></p><ul><li>Padrão: ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).</li><li>Moral: não foge; persegue o alvo mais próximo até 0 HP (mente ausente).</li></ul>",
       "attributes": {
         "forca": {
           "value": 20,
@@ -13672,7 +13672,7 @@
     "name": "Banshee",
     "type": "npc",
     "system": {
-      "description": "<p><strong>Banshee</strong> — criatura nv 8 das masmorras de Eldarin.</p>",
+      "description": "<p><strong>BANSHEE</strong> (ameaça nv 8).</p><p>A Banshee é criada especificamente de mulheres de beleza extraordinária que morreram de amor não correspondido ou traição. O grito delas não é ataque — é um gemido de dor genuíno que simplesmente mata. Habitam ruínas de câmaras que pertenceram a elas em vida, ainda decoradas como eram.</p><p><strong>Comportamento na mesa</strong></p><ul><li>Padrão: ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).</li><li>Moral: não foge; persegue o alvo mais próximo até 0 HP (mente ausente).</li><li>Pós-morte: ver habilidades (levante/toxina) — 1 rodada de risco ao grupo.</li></ul>",
       "attributes": {
         "forca": {
           "value": 8,
@@ -13763,7 +13763,7 @@
     "name": "Morcego-Tirano",
     "type": "npc",
     "system": {
-      "description": "<p><strong>Morcego-Tirano</strong> — criatura nv 5 das masmorras de Eldarin.</p>",
+      "description": "<p><strong>MORCEGO-TIRANO</strong> (ameaça nv 5).</p><p>Do tamanho de um cavalo de batalha, com envergadura de 8 metros. Os Morcegos-Tirano dominam o Abismo Invertido, caçando em grupos de 3 a 6 e usando ecolocalização para mapear o ambiente com precisão de centímetros. A caverna tem mapa tridimensional perfeito na mente deles.</p><p><strong>Comportamento na mesa</strong></p><ul><li>Padrão: ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).</li><li>Moral: não foge; persegue o alvo mais próximo até 0 HP (mente ausente).</li></ul>",
       "attributes": {
         "forca": {
           "value": 16,
@@ -13854,7 +13854,7 @@
     "name": "Ooze Ocular",
     "type": "npc",
     "system": {
-      "description": "<p><strong>Ooze Ocular</strong> — criatura nv 6 das masmorras de Eldarin.</p>",
+      "description": "<p><strong>OOZE OCULAR (OLHO FLUTUANTE)</strong> (ameaça nv 6).</p><p>Uma massa gelatinosa central com dezenas de olhos em hastes que surgem de toda a superfície. Cada olho têm um poder mágico diferente. A criatura processa o mundo através de múltiplas perspectivas simultâneas — literalmente vê em todas as direções ao mesmo tempo.</p><p><strong>Comportamento na mesa</strong></p><ul><li>Padrão: ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).</li><li>Moral: não foge; persegue o alvo mais próximo até 0 HP (mente ausente).</li></ul>",
       "attributes": {
         "forca": {
           "value": 12,
@@ -13945,7 +13945,7 @@
     "name": "Devorador Ancião (Filhote)",
     "type": "npc",
     "system": {
-      "description": "<p><strong>Devorador Ancião (Filhote)</strong> — criatura nv 20 das masmorras de Eldarin.</p>",
+      "description": "<p><strong>DEVORADOR ANCIÃO (FILHOTE)</strong> (ameaça nv 20).</p><p>O Devorador Ancião adulto é uma calamidade civilizacional — invulnerável, regenerativo, devastador. O &quot;bebê&quot; que ocasionalmente aparece na Masmorra 11 tem &quot;apenas&quot; 8 metros de altura e é jovem demais para ter regeneração completa. Ainda assim, é o maior desafio concebível para qualquer grupo. Sua carne é a mais densamente mágica de qualquer ser vivo — mas isso é secundário quando você está tentando sobreviver ao encontro.</p><p><strong>Comportamento na mesa</strong></p><ul><li>Padrão: ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).</li><li>Moral: não foge por HP; pode sacrificar lacaios.</li><li>**Saque (Extração com sucesso):** ESP-01 · MIN-10 · TES-10 (280 po) — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 060).</li></ul>",
       "attributes": {
         "forca": {
           "value": 30,
