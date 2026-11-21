@@ -54,12 +54,15 @@ export function GmActorProgressPanel({ roomId, roomActors, onUpdated }: Props) {
               };
       const snapshot = await gmActorProgress(roomId, body);
       onUpdated(snapshot);
+      // BV-051: o servidor limita a vida ao máximo; a mensagem mostra o que foi gravado,
+      // não o que foi digitado (antes dizia "18/13").
+      const saved = snapshot.actors[selected.id];
       setMsg(
         action === "grant-xp"
           ? `+${xpAmount} XP para ${selected.name}.`
           : action === "set-level"
-            ? `${selected.name} agora é nível ${targetLevel}.`
-            : `Vida de ${selected.name} definida para ${hpValue}/${hpMax}.`
+            ? `${selected.name} agora é nível ${saved?.identity.nivel ?? targetLevel}.`
+            : `Vida de ${selected.name} definida para ${saved?.resources.vida.value ?? hpValue}/${saved?.resources.vida.max ?? hpMax}.`
       );
     } catch (e) {
       setMsg(e instanceof Error ? e.message : "Falha na operação");
