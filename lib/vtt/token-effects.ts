@@ -383,7 +383,7 @@ export function listTokenEffectChips(token: BattleToken): TokenEffectChip[] {
         token.bonusDamageFormula.trim(),
         "Cn",
         "flame",
-        `Próximo golpe causa dano extra (${token.bonusDamageFormula.trim()}). Duração: ${TOKEN_FIELD_BUFF_DURATIONS.bonusDamageFormula?.label ?? "1 turno"}.`,
+        `Próximo golpe causa dano extra${token.bonusDamageType ? ` ${token.bonusDamageType}` : ""} (${token.bonusDamageFormula.trim()}). Duração: ${TOKEN_FIELD_BUFF_DURATIONS.bonusDamageFormula?.label ?? "1 turno"}.`,
         { bg: "#6b3010", color: "#ffe8d0" },
         timedMeta(fx)
       )

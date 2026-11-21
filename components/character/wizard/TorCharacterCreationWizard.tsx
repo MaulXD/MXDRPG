@@ -150,7 +150,9 @@ export function TorCharacterCreationWizard({
         return null;
       case "Equipamento": {
         for (const prof of activeCombatProficiencies(draft)) {
-          if (!draft.weaponChoices[prof]) return "Escolha uma arma pra cada Proficiência de Combate";
+          if (!draft.weaponChoices[prof]) {
+            return `Falta escolher a arma de ${COMBAT_PROFICIENCY_LABEL[prof]} (Proficiência de Combate)`;
+          }
         }
         if (!draft.armourId) return "Escolha uma armadura inicial";
         return null;
@@ -277,7 +279,8 @@ export function TorCharacterCreationWizard({
         />
         {showValidation && invalidSteps.length > 0 ? (
           <p className="char-wizard-validation-banner" role="alert">
-            <strong>Pendente:</strong> {invalidSteps.map((i) => STEPS[i]).join(" · ")} — clique no passo
+            <strong>Pendente:</strong>{" "}
+            {invalidSteps.map((i) => `${STEPS[i]}: ${stepError(i) ?? ""}`).join(" · ")} — clique no passo
             para corrigir.
           </p>
         ) : null}
