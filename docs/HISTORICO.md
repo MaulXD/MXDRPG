@@ -6748,3 +6748,19 @@ Aproveitando o esclarecimento, atendido o pedido de melhorar de verdade a UX: at
 **Pendências:** D13 completo (morto-vivo e resistência ao radiante separada), golpe sagrado só corpo a corpo se o dono quiser, os itens que ficam com o dono acima. Nada desta sessão está em produção.
 
 ---
+
+### 2026-11-21 (madrugada) — Rodada 4: caça a bugs no site, varreduras contra o livro e correções
+
+**Pedido:** retomar tudo em loop; commitar tudo no perfil do dono, sem coautoria.
+
+**Correções (15):** D-09b avisos de ficha não salva em todos os caminhos (`a57d760`); BV-031/027/030 ficha do Um Anel no celular e textos ilegíveis (`2763c0c`); BV-033 aventura do Um Anel lista fichas e não mostra nome real (`0eee05c`); ALC-fix 21 alcances e 2 áreas do livro (`7880231`); BV-035 card do Um Anel abre a ficha (`2a21ab8`); BV-037 Jornada, Conselho e Companhia abrem (`1b1a3c4`); CUS-fix PA e CD do livro (`4ebfc2b`); BV-036/038 painel do mestre do Um Anel sem regras do Eldarin (`9a24fa9`); TOR-SAVE, BV-040, BV-039 (`0a23449`); NIT-15 (`073ba2e`); BV-028 arma em uso na hora (`8fc90e0`); BV-026 seed sem dono (`bb57cf9`); Sombra Etérea +1d6 necrótico (`ef93d9a`); D13b radiante resistido como radiante (`02516f5`); CANAL bônus de habilidade contado em dobro (`ed75c7d`).
+
+**Levantamentos do OpenCode (grátis):** alcances (26, 21 reais), custos e danos (10), bestiário (507 diferenças, virou D-20), Um Anel na mesa. Todos em `docs/fichario/propostas/`.
+
+**Caça a bugs (Farejador):** BV-024 a BV-040; BV-032 era outro agente usando o mesmo portal (cada agente tem portal próprio agora).
+
+**Como testar:** `npx tsc --noEmit`, `npm test` (passa inteiro), `npm run build` (passa).
+
+**Fila que sobrou:** BV-040b (mestre editando ficha do Um Anel não avisa a mesa), BV-024/025/029 (pequenos de wizard e ficha), decisões do dono D-01, D-02, D8 a D10, D-20 e as três magias com dano fora do livro. Parada por consumo: a janela de 5 h do Claude chegou perto do limite.
+
+---
