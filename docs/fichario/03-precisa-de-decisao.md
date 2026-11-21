@@ -105,3 +105,8 @@ Recomendação: (a), que segue a regra "o livro manda" do projeto, feita em lote
 ## Decidido em 21/11, 01:40 (maestro)
 - ALC-fix, Voto de Caça: o alcance fica 12 células (18 m), a distância em que a habilidade sente mortos-vivos. Não há alvo, mas é a única distância que o livro dá para ela.
 - Um Anel na mesa: sem sync automático da ficha; o jogador já põe a ficha pelo painel próprio. Entra na fila só o aviso quando a ficha do Um Anel não grava (TOR-SAVE).
+
+## Decidido em 21/11, 02:45 (maestro)
+- BV-029 residual: fichas já salvas com magia de classe sem acesso ficam como estão; o mestre remove pela ficha se quiser. Novas entradas já são recusadas no cliente e no servidor (be62ab6).
+- Parser do grimório (parseSpellLoreBook pega o título da magia seguinte, ex.: Terremoto com '--- ### NIVEL 9'): corrigir agora, regenerando com sync:data e conferindo o diff de todas as descrições.
+- BV-045b (inventário fora da mesa): quando a sala da aventura exige aprovação do mestre, a ficha aberta em /personagem também usa o pedido ao mestre, e o servidor recusa a edição direta do inventário por quem não é mestre nem admin. Fica para a próxima tarefa, com revisão cuidadosa (mexe em permissão).
