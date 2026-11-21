@@ -26,7 +26,14 @@ const CATEGORIAS = {
     // Chi ganha gema branco-azulada; as demais habilidades ficam só com a moldura.
     gema: (e) => (String(e.system?.catalogId ?? "").startsWith("CHI-") ? "#bfe3f2" : null),
   },
+  classes: {
+    // Sem compêndio: a lista é o próprio lote de prompts ({ id, gema } por entrada).
+    compendio: "docs/icones/prompts-classes.json",
+    gema: (e) => e.gema ?? null,
+  },
 };
+
+const idDe = (e) => e.system?.catalogId ?? e.id;
 
 function svg(buf) {
   return Buffer.from(buf);
@@ -73,7 +80,7 @@ async function main() {
   const cfg = CATEGORIAS[categoria];
   if (!cfg) throw new Error(`categoria desconhecida: ${categoria}`);
   const entradas = JSON.parse(readFileSync(join(ROOT, cfg.compendio), "utf8"));
-  const porId = new Map(entradas.map((e) => [e.system.catalogId, e]));
+  const porId = new Map(entradas.map((e) => [idDe(e), e]));
 
   if (flag === "--amostra") {
     const dir = join(ROOT, "assets-src", "icones", "_amostras");
@@ -83,7 +90,7 @@ async function main() {
       const gema = cfg.gema(e);
       if (vistas.has(gema)) continue;
       vistas.add(gema);
-      const out = join(dir, `${categoria}-${e.system.spell?.escola ?? (gema ? "gema" : "sem")}.webp`);
+      const out = join(dir, `${categoria}-${e.system?.spell?.escola ?? e.classe ?? (gema ? "gema" : "sem")}.webp`);
       await sharp(await comporIcone(await sharp(arteFalsa(gema ?? "#8B7BB8")).png().toBuffer(), gema)).toFile(out);
       console.log("amostra", out);
     }

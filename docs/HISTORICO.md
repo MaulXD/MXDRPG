@@ -6871,3 +6871,12 @@ Contas temporárias de mestre e jogador e uma mesa, testadas no portal do Maestr
 - `scripts/icones/gerar-gemini.mjs`: `--limite` passa a contar tentativas e o lote para na primeira "cota zero" (antes fazia as 64 chamadas).
 - Novo `scripts/icones/prompts-habilidades.mjs` gera `docs/icones/prompts-habilidades.{md,json}`: 55 entradas (50 habilidades + 5 de Chi), mesmo estilo das magias. `compor.mjs` ganhou a categoria `habilidades` (Chi com gema branco-azulada `#bfe3f2`, as demais só com a moldura).
 - Quando houver cota: `node --env-file-if-exists=.env.local scripts/icones/gerar-gemini.mjs magias` (e `habilidades`), depois `node scripts/icones/compor.mjs magias`.
+
+### 2026-11-21 (noite) — Ícones: prompts das classes e subclasses
+
+**Pedido:** fazer os prompts das classes e subclasses.
+
+- Novo `scripts/icones/prompts-classes.mjs` gera `docs/icones/prompts-classes.{md,json}`: 12 classes e 48 subclasses (as 48 de `subclass-tracks.json` batem com as listas de `lib/character/rules.ts`). Mesmo estilo das magias, figura só, sem borda.
+- Ids sem acento para virar arquivo/URL: `CLA-clerigo` (o canonId do código, `CLA-clérigo`, fica no JSON) e `SUB-<id da trilha>`.
+- Gema na cor da classe (`CLASS_ICON_COLOR` de `lib/character/wizard-icons.ts`, lida pelo script), igual na classe e nas subclasses dela. `compor.mjs` ganhou a categoria `classes`, que usa o próprio lote como lista.
+- Com isso a lista de prompts está completa: 64 magias, 55 habilidades, 60 classes/subclasses (179 ícones). Geração segue travada no faturamento do Gemini.
