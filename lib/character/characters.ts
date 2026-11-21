@@ -264,7 +264,9 @@ export async function createCharacterFromWizard(
       clerkId: opts?.clerkId,
     });
     if (inAdv >= MAX_CHARACTERS_PER_USER_PER_ADVENTURE) {
-      throw new Error("Você já tem um personagem nesta aventura");
+      throw new Error(
+        `Você já tem o máximo de ${MAX_CHARACTERS_PER_USER_PER_ADVENTURE} personagens nesta aventura`
+      );
     }
   }
 
