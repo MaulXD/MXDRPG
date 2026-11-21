@@ -664,9 +664,22 @@ export function Battlefield({
     [snapshot]
   );
 
+  /** Revisão menor que a da cena já aplicada (0 = sem revisão, nunca é velha). */
+  const isStaleSceneRevision = useCallback(
+    (revision: number) => revision > 0 && revision < appliedSceneRevisionRef.current,
+    []
+  );
+
   const applyCombatSnapshot = useCallback(
     (payload: RoomApiPayload) => {
       const snap = resolveRoomPayload(payload);
+      // D-13 (BV-018/019): a cena guardada durante a FX pode ser mais velha que uma
+      // resposta já aplicada (ex.: o movimento). Reaplicá-la com force voltava o token
+      // para a célula antiga e o PA ao valor anterior. Descarta e pede o estado atual.
+      if (isStaleSceneRevision(snap.revision)) {
+        refresh();
+        return;
+      }
       if (snap.revision >= appliedSceneRevisionRef.current) {
         appliedSceneRevisionRef.current = snap.revision;
       }
@@ -675,7 +688,7 @@ export function Battlefield({
       });
       onApplySnapshot?.(payload, { force: true });
     },
-    [onApplySnapshot, resolveRoomPayload]
+    [onApplySnapshot, resolveRoomPayload, isStaleSceneRevision, refresh]
   );
 
   const applyPendingCombatSnap = useCallback(
@@ -750,7 +763,14 @@ export function Battlefield({
       const deferScene = shouldDeferSceneSync();
 
       if (deferScene) {
-        pendingCombatSnapRef.current = snap;
+        // D-13: com revisão monotônica (MariaDB), uma cena mais velha que a aplicada já
+        // foi superada; repintar os tokens com ela durante a FX voltaria posição e PA.
+        if (isStaleSceneRevision(snap.revision)) return;
+        // D-13: uma resposta atrasada não pode tomar o lugar de uma cena pendente mais nova.
+        const pending = pendingCombatSnapRef.current;
+        if (!pending || snap.revision >= pending.revision) {
+          pendingCombatSnapRef.current = snap;
+        }
         if (onApplySnapshot) {
           onApplySnapshot(payload, {
             force: opts?.force ?? true,
@@ -796,6 +816,7 @@ export function Battlefield({
     },
     [
       collectProtectedTokenIds,
+      isStaleSceneRevision,
       onApplySnapshot,
       refresh,
       resolveRoomPayload,
@@ -1139,8 +1160,15 @@ export function Battlefield({
     const snap = pendingCombatSnapRef.current;
     if (!snap) return;
     pendingCombatSnapRef.current = null;
+    // D-13: mesma guarda de applyCombatSnapshot. Com banco a revisão só cresce; sem banco,
+    // um servidor reiniciado já exige recarregar a página (o efeito da prop descarta
+    // revisão menor desde antes desta correção).
+    if (isStaleSceneRevision(snap.revision)) {
+      refresh();
+      return;
+    }
     syncRoom(snap);
-  }, [syncRoom]);
+  }, [syncRoom, isStaleSceneRevision, refresh]);
 
   useEffect(() => {
     appliedSceneRevisionRef.current = 0;
