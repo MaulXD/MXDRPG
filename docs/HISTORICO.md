@@ -6796,3 +6796,15 @@ Aproveitando o esclarecimento, atendido o pedido de melhorar de verdade a UX: at
 **Ficou para o dono (página 03):** D-21 traços de classe na ficha (BV-056), D-22 nomes culinários do livro (Harmonização x Forrageio), D-23 escolha de truques no wizard e o kit do Bruxo (BV-072), itens do livro que faltam no compêndio (Brasa Espectral, Cajado, Bastão, Espada curta), BV-021 (clique de mover; testar com mouse real), BV-080 (sino só mostra pendências), além de D-01, D-02, D-20 e as magias com dano fora do livro.
 
 ---
+
+### 2026-11-21 — Etapa nova: ícones das magias (prompts refeitos)
+
+**Pedido:** ver se ainda existiam as descrições com os prompts dos ícones das magias e começar a etapa dos ícones.
+
+**O que se achou:** a lista antiga não existe mais. O artifact de 2026-07-09 (166 prompts) responde "não encontrado", e não há cópia no repositório, nas conversas guardadas nem nas pastas do usuário.
+
+**O que foi feito:** `docs/icones/prompts-magias.md` com um prompt por magia, as 64 de `data/compendiums/magias.json`, cada um preso ao `catalogId` da magia (o arquivo final do ícone se chama `<catalogId>.png`). O estilo é o registrado em 2026-07-09: borda dourada `#c4a44a`, brilho ametista `#8B7BB8`, fundo `#0e0d0b`, 1:1, sem texto. Agora a lista mora no git e não se perde de novo.
+
+**Observação:** o seletor de magias da mesa (`components/vtt/SpellPickerPanel.tsx`) ainda não mostra ícone nenhum; a integração das imagens é código novo, para quando os PNGs existirem.
+
+---
