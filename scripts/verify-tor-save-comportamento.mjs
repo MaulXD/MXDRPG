@@ -16,6 +16,9 @@
  * Math.random fica em 0.99 durante o ataque, para o dado dar acerto; o caso confere
  * que a ficha foi tentada (so acerto tenta gravar).
  *
+ * Esperanca: o atacante e um heroi que gasta Esperanca (hopeSpentSheetId); com o
+ * desconto da Esperanca na ficha falhando, o ataque tambem devolve sheetSaved: false.
+ *
  * node scripts/verify-tor-save-comportamento.mjs
  */
 import assert from "node:assert/strict";
@@ -215,8 +218,48 @@ async function semLogDeErro(fn) {
   }
 }
 
-function prepara({ falhaFicha }) {
-  globalThis.__torSheet = fichaHeroi();
+// Heroi com 1 ponto de Esperanca e uma arma no cinto, para gastar o ponto no ataque.
+function fichaComEsperanca() {
+  return { ...fichaHeroi(), hope: { value: 1, max: 3 }, warGear: [{ weaponId: "cacete" }] };
+}
+
+// Heroi ataca um adversario sem ficha: so a gravacao da Esperanca escreve na ficha.
+function salaEsperanca() {
+  const heroi = {
+    id: "h1",
+    name: "Heroi",
+    axial: { q: 0, r: 0 },
+    vida: 10,
+    vidaMax: 10,
+    torCombat: {
+      kind: "hero",
+      eliminated: false,
+      torCharacterId: "ficha-h1",
+      protectionDice: 0,
+      hate: 0,
+      wounded: false,
+    },
+  };
+  const orc = {
+    id: "adv1",
+    name: "Orc",
+    axial: { q: 1, r: 0 },
+    vida: 8,
+    vidaMax: 8,
+    torCombat: {
+      kind: "adversary",
+      eliminated: false,
+      might: 3,
+      hate: 1,
+      hateKind: "hate",
+      protectionDice: 0,
+    },
+  };
+  return { id: "r1", rpgSystemId: "um-anel", revision: 0, actors: {}, scene: { tokens: [heroi, orc] } };
+}
+
+function prepara({ falhaFicha, ficha = fichaHeroi() }) {
+  globalThis.__torSheet = ficha;
   globalThis.__torPatches = [];
   globalThis.__torSaveFail = falhaFicha;
 }
@@ -254,6 +297,21 @@ async function fontePerigo(falhaFicha) {
   return res;
 }
 
+async function ataqueComEsperanca(falhaFicha) {
+  prepara({ falhaFicha, ficha: fichaComEsperanca() });
+  const res = await semLogDeErro(() =>
+    executeRoomTorAttack("r1", "h1", "adv1", AUTOR, {
+      room: salaEsperanca(),
+      weaponId: "cacete",
+      spendHope: true,
+    })
+  );
+  // O ponto de Esperanca e descontado mesmo que o ataque erre: a gravacao precisa ter sido tentada.
+  assert.equal(globalThis.__torPatches.length, 1, "o gasto de Esperanca devia tentar gravar a ficha");
+  assert.equal(globalThis.__torPatches[0].patch.hopeValue, 0, "a gravacao devia descontar o ponto de Esperanca");
+  return res;
+}
+
 console.log("TOR-SAVE: executeRoomTorAttack e executeRoomTorHazard quando a ficha falha");
 
 await caso("ataque com gravacao da ficha falhando: ok true e sheetSaved false", async () => {
@@ -276,6 +334,18 @@ await caso("Fonte de Dano com gravacao da ficha falhando: ok true e sheetSaved f
 
 await caso("Fonte de Dano com gravacao da ficha funcionando: sheetSaved true", async () => {
   const res = await fontePerigo(false);
+  assert.equal(res.ok, true);
+  assert.equal(res.sheetSaved, true);
+});
+
+await caso("ataque gastando Esperanca com gravacao da ficha falhando: ok true e sheetSaved false", async () => {
+  const res = await ataqueComEsperanca(true);
+  assert.equal(res.ok, true);
+  assert.equal(res.sheetSaved, false);
+});
+
+await caso("ataque gastando Esperanca com gravacao da ficha funcionando: sheetSaved true", async () => {
+  const res = await ataqueComEsperanca(false);
   assert.equal(res.ok, true);
   assert.equal(res.sheetSaved, true);
 });
