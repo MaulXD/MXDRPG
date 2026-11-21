@@ -2,6 +2,7 @@
 
 
 
+import { ROOM_SHEET_NOT_SAVED_MESSAGE } from "@/lib/character/portrait-sheet-saved";
 import { useCallback, useMemo, useState } from "react";
 
 import type { BattleToken } from "@/lib/vtt/types";
@@ -347,9 +348,14 @@ export function usePerformAttack() {
 
     ) => {
 
-      await patchRoomActor(roomId, actorId, { combatLoadout: { packId, entryId } });
-
-      onUpdate();
+      // D-09b: avisa quando a ficha não grava (a sala grava normalmente).
+      try {
+        const res = await patchRoomActor(roomId, actorId, { combatLoadout: { packId, entryId } });
+        onUpdate();
+        if (res && res.sheetSaved === false) setErr(ROOM_SHEET_NOT_SAVED_MESSAGE);
+      } catch (e) {
+        setErr(e instanceof Error ? e.message : "Não foi possível trocar a ação.");
+      }
 
     },
 

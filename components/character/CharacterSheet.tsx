@@ -17,6 +17,7 @@ import { isConsumableEntry } from "@/lib/compendium/consumables";
 import { getEntry } from "@/lib/compendium/registry";
 import { useImageNaturalSize } from "@/hooks/useImageNaturalSize";
 import { patchRoomActor, useRoomSync, type RoomSyncBridge } from "@/hooks/useRoomSync";
+import { assertRoomSheetSaved } from "@/lib/character/portrait-sheet-saved";
 import type { UserRole } from "@/lib/auth/types";
 import {
   mergePortraitPatchIntoSnapshot,
@@ -306,8 +307,9 @@ function CharacterSheetLoaded({
       void (async () => {
         try {
           if (inRoom) {
-            await patchRoomActor(roomId!, character.id, { inventory: items });
+            const saved = await patchRoomActor(roomId!, character.id, { inventory: items });
             await liveRefresh();
+            assertRoomSheetSaved(saved);
             return;
           }
           const data = await persistInventoryToCharacter(character.id, items);
@@ -336,8 +338,9 @@ function CharacterSheetLoaded({
   const saveLoadoutPatch = useCallback(
     async (patch: LoadoutPatch) => {
       if (inRoom) {
-        await patchRoomActor(roomId!, character.id, patch);
+        const saved = await patchRoomActor(roomId!, character.id, patch);
         await liveRefresh();
+        assertRoomSheetSaved(saved);
         return;
       }
       const res = await fetch(`/api/characters/${character.id}`, {

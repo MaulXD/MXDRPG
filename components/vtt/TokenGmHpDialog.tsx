@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import type { BattleToken } from "@/lib/vtt/types";
 import { postGmCombatAction, type RoomApiPayload } from "@/hooks/useRoomSync";
+import { assertRoomSheetSaved } from "@/lib/character/portrait-sheet-saved";
 import { formatTokenHpLine } from "@/lib/vtt/token-hp-display";
 
 type Props = {
@@ -63,6 +64,7 @@ export function TokenGmHpDialog({ open, token, roomId, onClose, onApplied }: Pro
         temp: showTemp ? Number(tempValue) : 0,
       });
       onApplied(payload);
+      assertRoomSheetSaved(payload);
       onClose();
     } catch (e) {
       setErr(e instanceof Error ? e.message : "Falha ao aplicar vida");

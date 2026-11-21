@@ -51,7 +51,7 @@ export async function executeGmCombatAction(
   body: GmCombatAction,
   user: SessionUser | null | undefined,
   opts?: { room?: NonNullable<Awaited<ReturnType<typeof getRoom>>> }
-): Promise<{ ok: true; snapshot: RoomSnapshot } | { ok: false; error: string }> {
+): Promise<{ ok: true; snapshot: RoomSnapshot; sheetSaved: boolean } | { ok: false; error: string }> {
   const room = opts?.room ?? (await getRoom(roomId, { skipAutoPass: true }));
   if (!room) return { ok: false, error: "Sala não encontrada" };
 
@@ -66,6 +66,8 @@ export async function executeGmCombatAction(
 
   let persistOpts: PersistRoomOpts | undefined;
 
+  // false quando a sala grava mas a ficha de algum personagem nao grava (set-hp).
+  let sheetSaved = true;
   switch (body.action) {
     case "reset-pa": {
       const tokenId = body.tokenId?.trim();
@@ -352,12 +354,16 @@ export async function executeGmCombatAction(
         };
         room.actors[before.actorId] = nextActor;
         const { revision: _r, ...sheet } = nextActor;
-        void saveCharacter(sheet).catch((e) => {
-          console.error("[set-hp] saveCharacter failed:", e);
-        });
-        void persistActorToAdventureSheet(nextActor).catch((e) => {
-          console.error("[set-hp] persistActorToAdventureSheet failed:", e);
-        });
+        await Promise.all([
+          saveCharacter(sheet).catch((e) => {
+            sheetSaved = false;
+            console.error("[set-hp] saveCharacter failed:", e);
+          }),
+          persistActorToAdventureSheet(nextActor).catch((e) => {
+            sheetSaved = false;
+            console.error("[set-hp] persistActorToAdventureSheet failed:", e);
+          }),
+        ]);
       }
 
       syncCombatOrderWithTokens(room);
@@ -379,5 +385,5 @@ export async function executeGmCombatAction(
       return { ok: false, error: "Ação inválida" };
   }
 
-  return { ok: true, snapshot: toSnapshot(await persistRoom(roomId, room, persistOpts)) };
+  return { ok: true, snapshot: toSnapshot(await persistRoom(roomId, room, persistOpts)), sheetSaved };
 }

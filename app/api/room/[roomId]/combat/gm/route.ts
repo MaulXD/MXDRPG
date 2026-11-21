@@ -30,9 +30,10 @@ export async function POST(req: Request, { params }: Params) {
       return NextResponse.json({ error: result.error }, { status: 400 });
     }
 
-    return NextResponse.json(
-      safeMutationDeltaResponse(beforeSnap, result.snapshot, room, session?.user ?? null)
-    );
+    return NextResponse.json({
+      ...safeMutationDeltaResponse(beforeSnap, result.snapshot, room, session?.user ?? null),
+      sheetSaved: result.sheetSaved,
+    });
   } catch (e) {
     console.error("[combat/gm] erro interno:", e);
     return NextResponse.json(

@@ -16,6 +16,7 @@ import { formatXpProgress } from "@/lib/character/xp";
 import { getSubclassTrack } from "@/lib/character/subclass-tracks";
 import { ReligionPickGrid } from "@/components/character/ReligionPickGrid";
 import { patchRoomActor } from "@/hooks/useRoomSync";
+import { assertRoomSheetSaved } from "@/lib/character/portrait-sheet-saved";
 
 type Props = {
   actor: CharacterSheet;
@@ -80,13 +81,15 @@ export function CharacterIdentityEditor({
     setBusy(true);
     setMsg(null);
     try {
+      let savedRoom: { sheetSaved?: boolean } | null = null;
       if (onSaveIdentity) {
         await onSaveIdentity(patch);
       } else {
         if (!roomId) throw new Error("Sala ausente para salvar identidade");
-        await patchRoomActor(roomId, actor.id, { identityPatch: patch });
+        savedRoom = await patchRoomActor(roomId, actor.id, { identityPatch: patch });
       }
       await onSaved();
+      assertRoomSheetSaved(savedRoom);
       setMsg("Ficha atualizada.");
       setOpen(false);
     } catch (e) {

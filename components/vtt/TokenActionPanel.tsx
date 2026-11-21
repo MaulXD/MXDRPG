@@ -72,6 +72,10 @@ import {
 
 import { listSubclassCombatActions } from "@/lib/character/subclass-vtt";
 import { patchRoomActor, postRoomAttack, postRoomAbility, isRoomDelta, type RoomApiPayload } from "@/hooks/useRoomSync";
+import {
+  assertRoomSheetSaved,
+  ROOM_SHEET_NOT_SAVED_MESSAGE,
+} from "@/lib/character/portrait-sheet-saved";
 import { CombatActionDetail } from "@/components/vtt/CombatActionDetail";
 import { SpellChannelControl } from "@/components/vtt/SpellChannelControl";
 
@@ -292,10 +296,12 @@ export function TokenActionPanel({
   async function saveLoadout(packId: "armas" | "magias" | "habilidades", entryId: string) {
     if (!actor || !token.actorId) return;
     try {
-      await patchRoomActor(roomId, token.actorId, { combatLoadout: { packId, entryId } });
+      const saved = await patchRoomActor(roomId, token.actorId, { combatLoadout: { packId, entryId } });
       onRoomSync();
-    } catch {
-      /* loadout opcional — ataque envia actionEntryId na requisição */
+      assertRoomSheetSaved(saved);
+    } catch (e) {
+      /* loadout opcional — ataque envia actionEntryId na requisição; so o aviso da ficha aparece */
+      if (e instanceof Error && e.message === ROOM_SHEET_NOT_SAVED_MESSAGE) setErr(e.message);
     }
   }
 

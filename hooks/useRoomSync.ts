@@ -678,7 +678,8 @@ export async function postGmCombatAction(roomId: string, body: GmCombatAction) {
     },
     "Falha no controle do mestre"
   );
-  return res.json() as Promise<RoomApiPayload>;
+  /** sheetSaved: false quando a sala gravou mas a ficha do personagem nao (set-hp). */
+  return res.json() as Promise<RoomApiPayload & { sheetSaved?: boolean }>;
 }
 
 export type { RoomApiPayload };

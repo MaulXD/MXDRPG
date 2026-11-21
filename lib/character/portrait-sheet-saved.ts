@@ -21,3 +21,15 @@ export function assertRoomPortraitSheetSaved(
 ): void {
   if (result?.sheetSaved === false) throw new Error(message);
 }
+
+/** Aviso para inventario, ficha, equipamento, magias e vida do mestre (mesma regra do retrato). */
+export const ROOM_SHEET_NOT_SAVED_MESSAGE =
+  "A mudança foi aplicada na mesa, mas não foi salva na ficha. Tente de novo.";
+
+/** Mesmo sinal de assertRoomPortraitSheetSaved, com o aviso generico por padrao. */
+export function assertRoomSheetSaved(
+  result: { sheetSaved?: boolean } | null,
+  message: string = ROOM_SHEET_NOT_SAVED_MESSAGE
+): void {
+  assertRoomPortraitSheetSaved(result, message);
+}

@@ -20,6 +20,7 @@ import {
   spellListsForClass,
 } from "@/lib/character/spell-lists";
 import { patchRoomActor } from "@/hooks/useRoomSync";
+import { assertRoomSheetSaved } from "@/lib/character/portrait-sheet-saved";
 
 type Props = {
   actor: CharacterSheet;
@@ -91,7 +92,8 @@ export function SpellPrepPanel({
       if (onPersistLocal) {
         onPersistLocal(next);
       } else if (roomId) {
-        await patchRoomActor(roomId, actor.id, { preparedSpellIds: next });
+        const saved = await patchRoomActor(roomId, actor.id, { preparedSpellIds: next });
+        assertRoomSheetSaved(saved);
       }
       onSaved();
     } catch (e) {

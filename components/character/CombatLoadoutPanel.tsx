@@ -5,6 +5,7 @@ import type { CharacterSheet } from "@/lib/character/types";
 import { listCombatActions } from "@/lib/combat/attack";
 import type { CombatLoadout } from "@/lib/combat/types";
 import { patchRoomActor } from "@/hooks/useRoomSync";
+import { assertRoomSheetSaved } from "@/lib/character/portrait-sheet-saved";
 
 type Props = {
   actor: CharacterSheet;
@@ -41,7 +42,8 @@ export function CombatLoadoutPanel({
         await onSaveLoadout(loadout);
       } else {
         if (!roomId) throw new Error("Sala ausente para salvar loadout");
-        await patchRoomActor(roomId, actor.id, { combatLoadout: loadout });
+        const saved = await patchRoomActor(roomId, actor.id, { combatLoadout: loadout });
+        assertRoomSheetSaved(saved);
       }
       onSaved();
     } catch (e) {

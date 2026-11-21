@@ -55,6 +55,8 @@ import { formatCombatActionTooltip } from "@/lib/combat/action-tooltip";
 import { collectPlayerActorIds, primaryTokenRingColor } from "@/lib/vtt/token-colors";
 import { CombatActionDetail } from "@/components/vtt/CombatActionDetail";
 import { computeCursorDetailPlacement } from "@/lib/vtt/cursor-detail-placement";
+import { useVttToast } from "@/components/vtt/VttToast";
+import { ROOM_SHEET_NOT_SAVED_MESSAGE } from "@/lib/character/portrait-sheet-saved";
 import "./token-action-ring.css";
 
 type SlotTone =
@@ -210,6 +212,7 @@ export function TokenActionRing({
   const ringViewRef = useRef(ringView);
   const exitTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const introTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const toast = useVttToast();
   const [hoveredInfoSlotId, setHoveredInfoSlotId] = useState<string | null>(null);
   const [pinnedInfoSlotId, setPinnedInfoSlotId] = useState<string | null>(null);
   const [infoPointer, setInfoPointer] = useState<{ x: number; y: number } | null>(null);
@@ -281,13 +284,17 @@ export function TokenActionRing({
     async (packId: "armas" | "magias" | "habilidades", entryId: string) => {
       if (!actor || !token.actorId) return;
       try {
-        await patchRoomActor(roomId, token.actorId, { combatLoadout: { packId, entryId } });
+        const res = await patchRoomActor(roomId, token.actorId, {
+          combatLoadout: { packId, entryId },
+        });
         onRoomSync();
+        // D-09b: a escolha vale na mesa, mas a ficha não gravou; o jogador precisa saber.
+        if (res && res.sheetSaved === false) toast.push(ROOM_SHEET_NOT_SAVED_MESSAGE, "warn");
       } catch {
         /* loadout opcional — ataque envia actionEntryId na requisição */
       }
     },
-    [actor, token.actorId, roomId, onRoomSync]
+    [actor, token.actorId, roomId, onRoomSync, toast]
   );
 
   const pickCombatAction = useCallback(

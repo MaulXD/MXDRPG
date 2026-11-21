@@ -106,6 +106,10 @@ registerHooks({
 const { updateRoomActor } = await import(
   pathToFileURL(join(ROOT, "lib", "room", "handlers", "actors.ts")).href
 );
+const {
+  assertRoomSheetSaved,
+  ROOM_SHEET_NOT_SAVED_MESSAGE,
+} = await import(pathToFileURL(join(ROOT, "lib", "character", "portrait-sheet-saved.ts")).href);
 const { assertRoomPortraitSheetSaved, SHEET_NOT_SAVED_MESSAGE, SHEET_NOT_CLEARED_MESSAGE } = await import(
   pathToFileURL(join(ROOT, "lib", "character", "portrait-sheet-saved.ts")).href
 );
@@ -226,6 +230,91 @@ await caso("editor de retrato (remover) usa a mensagem de remocao", () => {
     "utf8"
   );
   assert.match(src, /assertRoomPortraitSheetSaved\(result, SHEET_NOT_CLEARED_MESSAGE\)/);
+});
+
+// D-09b: os outros caminhos que gravam a ficha a partir da mesa devolvem o mesmo sinal.
+const lerFonte = (...rel) => readFileSync(join(ROOT, ...rel), "utf8");
+
+await caso("aviso generico: assertRoomSheetSaved lanca a mensagem da ficha e nao lanca com sucesso", () => {
+  assert.throws(
+    () => assertRoomSheetSaved({ sheetSaved: false }),
+    (err) => err.message === ROOM_SHEET_NOT_SAVED_MESSAGE
+  );
+  assert.ok(!ROOM_SHEET_NOT_SAVED_MESSAGE.includes("imagem"));
+  assertRoomSheetSaved({ sheetSaved: true });
+  assertRoomSheetSaved(null);
+});
+
+await caso("set-hp do mestre: aguarda a ficha e devolve sheetSaved (sem void/catch que engole)", () => {
+  const src = lerFonte("lib", "room", "handlers", "combat-gm.ts");
+  assert.doesNotMatch(src, /void saveCharacter\(sheet\)/);
+  assert.doesNotMatch(src, /void persistActorToAdventureSheet\(nextActor\)/);
+  assert.match(src, /sheetSaved = false;/);
+  assert.match(src, /persistRoom\(roomId, room, persistOpts\)\), sheetSaved \};/);
+});
+
+await caso("rota do combate do mestre repassa sheetSaved no JSON", () => {
+  const src = lerFonte("app", "api", "room", "[roomId]", "combat", "gm", "route.ts");
+  assert.match(src, /sheetSaved: result\.sheetSaved/);
+});
+
+await caso("set-hp do mestre (diálogo de vida) avisa com assertRoomSheetSaved", () => {
+  const src = lerFonte("components", "vtt", "TokenGmHpDialog.tsx");
+  assert.match(src, /assertRoomSheetSaved\(payload\);/);
+});
+
+await caso("inventario do jogador avisa quando a ficha nao grava", () => {
+  const src = lerFonte("components", "character", "CharacterSheet.tsx");
+  assert.match(
+    src,
+    /const saved = await patchRoomActor\(roomId!, character\.id, \{ inventory: items \}\);[\s\S]*?assertRoomSheetSaved\(saved\);/
+  );
+});
+
+await caso("ficha/loadout do jogador (CharacterSheet) avisa quando a ficha nao grava", () => {
+  const src = lerFonte("components", "character", "CharacterSheet.tsx");
+  assert.match(
+    src,
+    /const saved = await patchRoomActor\(roomId!, character\.id, patch\);[\s\S]*?assertRoomSheetSaved\(saved\);/
+  );
+});
+
+await caso("loadout de combate (painel do personagem) avisa quando a ficha nao grava", () => {
+  const src = lerFonte("components", "character", "CombatLoadoutPanel.tsx");
+  assert.match(src, /assertRoomSheetSaved\(saved\);/);
+});
+
+await caso("loadout na mesa (TokenActionPanel) mostra o aviso no erro do painel", () => {
+  const src = lerFonte("components", "vtt", "TokenActionPanel.tsx");
+  assert.match(src, /assertRoomSheetSaved\(saved\);/);
+  assert.match(src, /e\.message === ROOM_SHEET_NOT_SAVED_MESSAGE\) setErr\(e\.message\)/);
+});
+
+await caso("ficha (editor de identidade) avisa quando a ficha nao grava, depois de atualizar", () => {
+  const src = lerFonte("components", "character", "CharacterIdentityEditor.tsx");
+  assert.match(src, /savedRoom = await patchRoomActor\(roomId, actor\.id, \{ identityPatch: patch \}\);/);
+  assert.match(src, /await onSaved\(\);\s*assertRoomSheetSaved\(savedRoom\);/);
+});
+
+await caso("magias preparadas (SpellPrepPanel) avisam quando a ficha nao grava", () => {
+  const src = lerFonte("components", "character", "SpellPrepPanel.tsx");
+  assert.match(
+    src,
+    /const saved = await patchRoomActor\(roomId, actor\.id, \{ preparedSpellIds: next \}\);\s*assertRoomSheetSaved\(saved\);/
+  );
+});
+
+await caso("loadout pelo anel de ações (TokenActionRing) avisa com toast quando a ficha nao grava", () => {
+  const src = lerFonte("components", "vtt", "TokenActionRing.tsx");
+  assert.match(src, /const res = await patchRoomActor\(roomId, token\.actorId, \{\s*combatLoadout/);
+  assert.match(src, /res\.sheetSaved === false\) toast\.push\(ROOM_SHEET_NOT_SAVED_MESSAGE, "warn"\)/);
+});
+
+await caso("loadout pela barra de combate (useCombatActions) avisa com setErr quando a ficha nao grava ou falha", () => {
+  const src = lerFonte("hooks", "useCombatActions.ts");
+  assert.match(src, /const res = await patchRoomActor\(roomId, actorId, \{ combatLoadout: \{ packId, entryId \} \}\);/);
+  assert.match(src, /res\.sheetSaved === false\) setErr\(ROOM_SHEET_NOT_SAVED_MESSAGE\)/);
+  assert.match(src, /catch \(e\) \{\s*setErr\(/);
 });
 
 console.log(`\n${pass} ok, ${fail} falha(s)`);
