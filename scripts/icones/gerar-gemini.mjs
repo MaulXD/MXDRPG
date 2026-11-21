@@ -41,11 +41,17 @@ async function gerarUma(prompt) {
       headers: { "content-type": "application/json", "x-goog-api-key": CHAVE },
       body: JSON.stringify(corpo),
     });
+    const json = await res.json().catch(() => ({}));
+    const msg = json?.error?.message ?? "";
+    // "limit: 0" = o plano não inclui imagem (falta faturamento); esperar não resolve.
+    if (res.status === 429 && /limit: 0\b/.test(msg)) {
+      throw new Error("cota zero: ative o faturamento no AI Studio (Billing)");
+    }
     if (res.status === 429 || res.status >= 500) {
+      if (tentativa === 4) throw new Error(`${res.status}: ${msg.split("\n")[0] || "sem detalhe"}`);
       await espera(5000 * tentativa);
       continue;
     }
-    const json = await res.json();
     if (!res.ok) throw new Error(`${res.status}: ${json?.error?.message ?? "erro"}`);
     const parte = json?.candidates?.[0]?.content?.parts?.find((p) => p.inlineData?.data);
     if (!parte) throw new Error(`sem imagem na resposta (${json?.candidates?.[0]?.finishReason ?? "?"})`);
