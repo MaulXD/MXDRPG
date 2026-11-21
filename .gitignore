@@ -44,3 +44,6 @@ preview-ficha.html
 # Rascunho das traduções do Um Anel — o tradutor escreve aqui e só é movido
 # para livros/ depois de passar na verificação de completude. Nunca versionar.
 .tmp-traducao/
+
+# Artes cruas dos ícones (geradas pelo Gemini); só o resultado em public/icons vai para o git
+assets-src/

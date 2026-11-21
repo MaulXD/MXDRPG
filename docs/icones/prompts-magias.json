@@ -1,0 +1,386 @@
+[
+  {
+    "id": "MAG-chama-de-fogareiro",
+    "nome": "Chama de Fogareiro",
+    "escola": "Evocação",
+    "prompt": "a small tame flame dancing above a cast-iron cooking pot, fantasy RPG spell icon artwork, one single centered subject, painterly digital painting, dramatic rim light, soft amethyst #8B7BB8 magical glow around the subject, plain very dark background #0e0d0b, subject fills about 70% of the image with empty dark margin on all sides, square 1:1, no border, no frame, no text, no letters, no watermark"
+  },
+  {
+    "id": "MAG-lamina-de-espirito",
+    "nome": "Lâmina de Espírito",
+    "escola": "Transmutação",
+    "prompt": "a translucent ghostly dagger of blue-white spirit energy hovering over a butcher's cutting board, fantasy RPG spell icon artwork, one single centered subject, painterly digital painting, dramatic rim light, soft amethyst #8B7BB8 magical glow around the subject, plain very dark background #0e0d0b, subject fills about 70% of the image with empty dark margin on all sides, square 1:1, no border, no frame, no text, no letters, no watermark"
+  },
+  {
+    "id": "MAG-detectar-veneno",
+    "nome": "Detectar Veneno",
+    "escola": "Adivinhação",
+    "prompt": "a glowing eye above a small vial with a green skull-shaped wisp rising from it, fantasy RPG spell icon artwork, one single centered subject, painterly digital painting, dramatic rim light, soft amethyst #8B7BB8 magical glow around the subject, plain very dark background #0e0d0b, subject fills about 70% of the image with empty dark margin on all sides, square 1:1, no border, no frame, no text, no letters, no watermark"
+  },
+  {
+    "id": "MAG-estabilizar",
+    "nome": "Estabilizar",
+    "escola": "Abjuração",
+    "prompt": "an open hand pressed over a faint heartbeat line, soft white light holding the line steady, fantasy RPG spell icon artwork, one single centered subject, painterly digital painting, dramatic rim light, soft amethyst #8B7BB8 magical glow around the subject, plain very dark background #0e0d0b, subject fills about 70% of the image with empty dark margin on all sides, square 1:1, no border, no frame, no text, no letters, no watermark"
+  },
+  {
+    "id": "MAG-maos-firmes",
+    "nome": "Mãos Firmes",
+    "escola": "Transmutação",
+    "prompt": "two steady hands gripping a carving knife, faint runic bands around the wrists, fantasy RPG spell icon artwork, one single centered subject, painterly digital painting, dramatic rim light, soft amethyst #8B7BB8 magical glow around the subject, plain very dark background #0e0d0b, subject fills about 70% of the image with empty dark margin on all sides, square 1:1, no border, no frame, no text, no letters, no watermark"
+  },
+  {
+    "id": "MAG-extracao-amplificada",
+    "nome": "Extração Amplificada",
+    "escola": "Biomancia",
+    "prompt": "a glowing monster organ splitting into two identical copies, green bio-runes around it, fantasy RPG spell icon artwork, one single centered subject, painterly digital painting, dramatic rim light, soft amethyst #8B7BB8 magical glow around the subject, plain very dark background #0e0d0b, subject fills about 70% of the image with empty dark margin on all sides, square 1:1, no border, no frame, no text, no letters, no watermark"
+  },
+  {
+    "id": "MAG-maos-gelidas",
+    "nome": "Mãos Gelidas",
+    "escola": "Evocação",
+    "prompt": "two open palms releasing a cone of frost shards, fantasy RPG spell icon artwork, one single centered subject, painterly digital painting, dramatic rim light, soft amethyst #8B7BB8 magical glow around the subject, plain very dark background #0e0d0b, subject fills about 70% of the image with empty dark margin on all sides, square 1:1, no border, no frame, no text, no letters, no watermark"
+  },
+  {
+    "id": "MAG-crescimento-acelerado",
+    "nome": "Crescimento Acelerado",
+    "escola": "Transmutação",
+    "prompt": "a seed bursting into a full sapling inside a spiral of green time-light, fantasy RPG spell icon artwork, one single centered subject, painterly digital painting, dramatic rim light, soft amethyst #8B7BB8 magical glow around the subject, plain very dark background #0e0d0b, subject fills about 70% of the image with empty dark margin on all sides, square 1:1, no border, no frame, no text, no letters, no watermark"
+  },
+  {
+    "id": "MAG-purificar-veneno",
+    "nome": "Purificar Veneno",
+    "escola": "Abjuração",
+    "prompt": "a toxic green drop turning into clear water inside a small ward circle, fantasy RPG spell icon artwork, one single centered subject, painterly digital painting, dramatic rim light, soft amethyst #8B7BB8 magical glow around the subject, plain very dark background #0e0d0b, subject fills about 70% of the image with empty dark margin on all sides, square 1:1, no border, no frame, no text, no letters, no watermark"
+  },
+  {
+    "id": "MAG-identificar-ingrediente",
+    "nome": "Identificar Ingrediente",
+    "escola": "Adivinhação",
+    "prompt": "a lens of light over a strange mushroom, revealing glowing runes inside it, fantasy RPG spell icon artwork, one single centered subject, painterly digital painting, dramatic rim light, soft amethyst #8B7BB8 magical glow around the subject, plain very dark background #0e0d0b, subject fills about 70% of the image with empty dark margin on all sides, square 1:1, no border, no frame, no text, no letters, no watermark"
+  },
+  {
+    "id": "MAG-armadura-arcana",
+    "nome": "Armadura Arcana",
+    "escola": "Abjuração",
+    "prompt": "a translucent breastplate made of hexagonal arcane light runes, fantasy RPG spell icon artwork, one single centered subject, painterly digital painting, dramatic rim light, soft amethyst #8B7BB8 magical glow around the subject, plain very dark background #0e0d0b, subject fills about 70% of the image with empty dark margin on all sides, square 1:1, no border, no frame, no text, no letters, no watermark"
+  },
+  {
+    "id": "MAG-onda-de-trovao",
+    "nome": "Onda de Trovão",
+    "escola": "Evocação",
+    "prompt": "a cube-shaped thunder shockwave with rippling rings of air, fantasy RPG spell icon artwork, one single centered subject, painterly digital painting, dramatic rim light, soft amethyst #8B7BB8 magical glow around the subject, plain very dark background #0e0d0b, subject fills about 70% of the image with empty dark margin on all sides, square 1:1, no border, no frame, no text, no letters, no watermark"
+  },
+  {
+    "id": "MAG-curar-ferimentos",
+    "nome": "Curar Ferimentos",
+    "escola": "Abjuração",
+    "prompt": "an open hand of warm golden light closing a wound, fantasy RPG spell icon artwork, one single centered subject, painterly digital painting, dramatic rim light, soft amethyst #8B7BB8 magical glow around the subject, plain very dark background #0e0d0b, subject fills about 70% of the image with empty dark margin on all sides, square 1:1, no border, no frame, no text, no letters, no watermark"
+  },
+  {
+    "id": "MAG-chama-de-vinha",
+    "nome": "Chama de Vinha",
+    "escola": "Evocação",
+    "prompt": "a fiery projectile shaped like a burning grapevine tendril, fantasy RPG spell icon artwork, one single centered subject, painterly digital painting, dramatic rim light, soft amethyst #8B7BB8 magical glow around the subject, plain very dark background #0e0d0b, subject fills about 70% of the image with empty dark margin on all sides, square 1:1, no border, no frame, no text, no letters, no watermark"
+  },
+  {
+    "id": "MAG-sussurro-de-masmorra",
+    "nome": "Sussurro de Masmorra",
+    "escola": "Adivinhação",
+    "prompt": "two silhouetted heads linked by a whispering violet thread under a stone dungeon arch, fantasy RPG spell icon artwork, one single centered subject, painterly digital painting, dramatic rim light, soft amethyst #8B7BB8 magical glow around the subject, plain very dark background #0e0d0b, subject fills about 70% of the image with empty dark margin on all sides, square 1:1, no border, no frame, no text, no letters, no watermark"
+  },
+  {
+    "id": "MAG-aprimoramento-biomagico",
+    "nome": "Aprimoramento Biomágico",
+    "escola": "Biomancia",
+    "prompt": "a steaming bowl of stew with a glowing rune rising from the steam, fantasy RPG spell icon artwork, one single centered subject, painterly digital painting, dramatic rim light, soft amethyst #8B7BB8 magical glow around the subject, plain very dark background #0e0d0b, subject fills about 70% of the image with empty dark margin on all sides, square 1:1, no border, no frame, no text, no letters, no watermark"
+  },
+  {
+    "id": "MAG-raios-de-enfraquecimento",
+    "nome": "Raios de Enfraquecimento",
+    "escola": "Necromancia",
+    "prompt": "three thin sickly grey-green rays fanning out from a skeletal hand, fantasy RPG spell icon artwork, one single centered subject, painterly digital painting, dramatic rim light, soft amethyst #8B7BB8 magical glow around the subject, plain very dark background #0e0d0b, subject fills about 70% of the image with empty dark margin on all sides, square 1:1, no border, no frame, no text, no letters, no watermark"
+  },
+  {
+    "id": "MAG-esfera-acida-de-monstro",
+    "nome": "Esfera Ácida de Monstro",
+    "escola": "Evocação",
+    "prompt": "a bubbling sphere of acid wrapped in a monster gland membrane, dripping droplets, fantasy RPG spell icon artwork, one single centered subject, painterly digital painting, dramatic rim light, soft amethyst #8B7BB8 magical glow around the subject, plain very dark background #0e0d0b, subject fills about 70% of the image with empty dark margin on all sides, square 1:1, no border, no frame, no text, no letters, no watermark"
+  },
+  {
+    "id": "MAG-transmutacao-de-carne",
+    "nome": "Transmutação de Carne",
+    "escola": "Transmutação",
+    "prompt": "a cut of meat morphing into a griffin feather along a spiral of light, fantasy RPG spell icon artwork, one single centered subject, painterly digital painting, dramatic rim light, soft amethyst #8B7BB8 magical glow around the subject, plain very dark background #0e0d0b, subject fills about 70% of the image with empty dark margin on all sides, square 1:1, no border, no frame, no text, no letters, no watermark"
+  },
+  {
+    "id": "MAG-inspiracao-culinaria",
+    "nome": "Inspiração Culinária",
+    "escola": "Encantamento",
+    "prompt": "a chef's ladle with sparkling ribbons of flavor rising from it, fantasy RPG spell icon artwork, one single centered subject, painterly digital painting, dramatic rim light, soft amethyst #8B7BB8 magical glow around the subject, plain very dark background #0e0d0b, subject fills about 70% of the image with empty dark margin on all sides, square 1:1, no border, no frame, no text, no letters, no watermark"
+  },
+  {
+    "id": "MAG-preservacao-perfeita",
+    "nome": "Preservação Perfeita",
+    "escola": "Transmutação",
+    "prompt": "an ingredient sealed inside a glowing crystal jar with a time sigil on the lid, fantasy RPG spell icon artwork, one single centered subject, painterly digital painting, dramatic rim light, soft amethyst #8B7BB8 magical glow around the subject, plain very dark background #0e0d0b, subject fills about 70% of the image with empty dark margin on all sides, square 1:1, no border, no frame, no text, no letters, no watermark"
+  },
+  {
+    "id": "MAG-forma-menor",
+    "nome": "Forma Menor",
+    "escola": "Transmutação",
+    "prompt": "a robed silhouette shrinking into a small fox along a transformation spiral, fantasy RPG spell icon artwork, one single centered subject, painterly digital painting, dramatic rim light, soft amethyst #8B7BB8 magical glow around the subject, plain very dark background #0e0d0b, subject fills about 70% of the image with empty dark margin on all sides, square 1:1, no border, no frame, no text, no letters, no watermark"
+  },
+  {
+    "id": "MAG-escudo-arcano",
+    "nome": "Escudo Arcano",
+    "escola": "Abjuração",
+    "prompt": "a round shield of shimmering violet light deflecting an incoming bolt, fantasy RPG spell icon artwork, one single centered subject, painterly digital painting, dramatic rim light, soft amethyst #8B7BB8 magical glow around the subject, plain very dark background #0e0d0b, subject fills about 70% of the image with empty dark margin on all sides, square 1:1, no border, no frame, no text, no letters, no watermark"
+  },
+  {
+    "id": "MAG-ilusao-menor",
+    "nome": "Ilusão Menor",
+    "escola": "Ilusão",
+    "prompt": "a floating mirage cube showing a translucent wavy image of a door, fantasy RPG spell icon artwork, one single centered subject, painterly digital painting, dramatic rim light, soft amethyst #8B7BB8 magical glow around the subject, plain very dark background #0e0d0b, subject fills about 70% of the image with empty dark margin on all sides, square 1:1, no border, no frame, no text, no letters, no watermark"
+  },
+  {
+    "id": "MAG-muralha-de-energia",
+    "nome": "Muralha de Energia",
+    "escola": "Abjuração",
+    "prompt": "a straight wall made of three luminous hexagonal panels, fantasy RPG spell icon artwork, one single centered subject, painterly digital painting, dramatic rim light, soft amethyst #8B7BB8 magical glow around the subject, plain very dark background #0e0d0b, subject fills about 70% of the image with empty dark margin on all sides, square 1:1, no border, no frame, no text, no letters, no watermark"
+  },
+  {
+    "id": "MAG-animacao-de-mortos",
+    "nome": "Animação de Mortos",
+    "escola": "Necromancia",
+    "prompt": "two skeletal hands rising from the earth wrapped in green necrotic wisps, fantasy RPG spell icon artwork, one single centered subject, painterly digital painting, dramatic rim light, soft amethyst #8B7BB8 magical glow around the subject, plain very dark background #0e0d0b, subject fills about 70% of the image with empty dark margin on all sides, square 1:1, no border, no frame, no text, no letters, no watermark"
+  },
+  {
+    "id": "MAG-injecao-biomagica",
+    "nome": "Injeção Biomágica",
+    "escola": "Biomancia",
+    "prompt": "a glass syringe filled with glowing monster essence, fantasy RPG spell icon artwork, one single centered subject, painterly digital painting, dramatic rim light, soft amethyst #8B7BB8 magical glow around the subject, plain very dark background #0e0d0b, subject fills about 70% of the image with empty dark margin on all sides, square 1:1, no border, no frame, no text, no letters, no watermark"
+  },
+  {
+    "id": "MAG-bola-de-fogo",
+    "nome": "Bola de Fogo",
+    "escola": "Evocação",
+    "prompt": "a roaring spherical fireball explosion, fantasy RPG spell icon artwork, one single centered subject, painterly digital painting, dramatic rim light, soft amethyst #8B7BB8 magical glow around the subject, plain very dark background #0e0d0b, subject fills about 70% of the image with empty dark margin on all sides, square 1:1, no border, no frame, no text, no letters, no watermark"
+  },
+  {
+    "id": "MAG-nova-arcana",
+    "nome": "Nova Arcana",
+    "escola": "Evocação",
+    "prompt": "a radial burst ring of violet and orange arcane fire, fantasy RPG spell icon artwork, one single centered subject, painterly digital painting, dramatic rim light, soft amethyst #8B7BB8 magical glow around the subject, plain very dark background #0e0d0b, subject fills about 70% of the image with empty dark margin on all sides, square 1:1, no border, no frame, no text, no letters, no watermark"
+  },
+  {
+    "id": "MAG-contagio-necrotico",
+    "nome": "Contágio Necrótico",
+    "escola": "Necromancia",
+    "prompt": "dark spores spreading from a touching hand, sickly green veins, fantasy RPG spell icon artwork, one single centered subject, painterly digital painting, dramatic rim light, soft amethyst #8B7BB8 magical glow around the subject, plain very dark background #0e0d0b, subject fills about 70% of the image with empty dark margin on all sides, square 1:1, no border, no frame, no text, no letters, no watermark"
+  },
+  {
+    "id": "MAG-ventania",
+    "nome": "Ventania",
+    "escola": "Evocação",
+    "prompt": "a swirling gust of wind blowing out a candle flame and scattering spores, fantasy RPG spell icon artwork, one single centered subject, painterly digital painting, dramatic rim light, soft amethyst #8B7BB8 magical glow around the subject, plain very dark background #0e0d0b, subject fills about 70% of the image with empty dark margin on all sides, square 1:1, no border, no frame, no text, no letters, no watermark"
+  },
+  {
+    "id": "MAG-ler-mentes",
+    "nome": "Ler Mentes",
+    "escola": "Adivinhação",
+    "prompt": "a head in profile with glowing thought lines and a third eye on the forehead, fantasy RPG spell icon artwork, one single centered subject, painterly digital painting, dramatic rim light, soft amethyst #8B7BB8 magical glow around the subject, plain very dark background #0e0d0b, subject fills about 70% of the image with empty dark margin on all sides, square 1:1, no border, no frame, no text, no letters, no watermark"
+  },
+  {
+    "id": "MAG-relampago",
+    "nome": "Relâmpago",
+    "escola": "Evocação",
+    "prompt": "a single jagged lightning bolt striking downward, fantasy RPG spell icon artwork, one single centered subject, painterly digital painting, dramatic rim light, soft amethyst #8B7BB8 magical glow around the subject, plain very dark background #0e0d0b, subject fills about 70% of the image with empty dark margin on all sides, square 1:1, no border, no frame, no text, no letters, no watermark"
+  },
+  {
+    "id": "MAG-sono",
+    "nome": "Sono",
+    "escola": "Encantamento",
+    "prompt": "a crescent moon with drifting closed eyes and soft mist, fantasy RPG spell icon artwork, one single centered subject, painterly digital painting, dramatic rim light, soft amethyst #8B7BB8 magical glow around the subject, plain very dark background #0e0d0b, subject fills about 70% of the image with empty dark margin on all sides, square 1:1, no border, no frame, no text, no letters, no watermark"
+  },
+  {
+    "id": "MAG-raio-do-limiar",
+    "nome": "Raio do Limiar",
+    "escola": "Necromancia",
+    "prompt": "a black-violet beam bursting out of a cracked stone doorway, fantasy RPG spell icon artwork, one single centered subject, painterly digital painting, dramatic rim light, soft amethyst #8B7BB8 magical glow around the subject, plain very dark background #0e0d0b, subject fills about 70% of the image with empty dark margin on all sides, square 1:1, no border, no frame, no text, no letters, no watermark"
+  },
+  {
+    "id": "MAG-visao-do-ecossistema",
+    "nome": "Visão do Ecossistema",
+    "escola": "Adivinhação",
+    "prompt": "an eye whose iris is a small forest with a hawk silhouette flying across it, fantasy RPG spell icon artwork, one single centered subject, painterly digital painting, dramatic rim light, soft amethyst #8B7BB8 magical glow around the subject, plain very dark background #0e0d0b, subject fills about 70% of the image with empty dark margin on all sides, square 1:1, no border, no frame, no text, no letters, no watermark"
+  },
+  {
+    "id": "MAG-murcha",
+    "nome": "Murcha",
+    "escola": "Necromancia",
+    "prompt": "a flower withering to dust while its life drains as light into a hand, fantasy RPG spell icon artwork, one single centered subject, painterly digital painting, dramatic rim light, soft amethyst #8B7BB8 magical glow around the subject, plain very dark background #0e0d0b, subject fills about 70% of the image with empty dark margin on all sides, square 1:1, no border, no frame, no text, no letters, no watermark"
+  },
+  {
+    "id": "MAG-mutacao-forcada",
+    "nome": "Mutação Forçada",
+    "escola": "Biomancia",
+    "prompt": "a twisted arm sprouting random scales and extra eyes, fantasy RPG spell icon artwork, one single centered subject, painterly digital painting, dramatic rim light, soft amethyst #8B7BB8 magical glow around the subject, plain very dark background #0e0d0b, subject fills about 70% of the image with empty dark margin on all sides, square 1:1, no border, no frame, no text, no letters, no watermark"
+  },
+  {
+    "id": "MAG-parede-de-fogo",
+    "nome": "Parede de Fogo",
+    "escola": "Evocação",
+    "prompt": "a tall wall of flames rising from cracked ground, fantasy RPG spell icon artwork, one single centered subject, painterly digital painting, dramatic rim light, soft amethyst #8B7BB8 magical glow around the subject, plain very dark background #0e0d0b, subject fills about 70% of the image with empty dark margin on all sides, square 1:1, no border, no frame, no text, no letters, no watermark"
+  },
+  {
+    "id": "MAG-preservacao-anual",
+    "nome": "Preservação Anual",
+    "escola": "Transmutação",
+    "prompt": "an ingredient trapped in amber, encircled by a ring of twelve small moons, fantasy RPG spell icon artwork, one single centered subject, painterly digital painting, dramatic rim light, soft amethyst #8B7BB8 magical glow around the subject, plain very dark background #0e0d0b, subject fills about 70% of the image with empty dark margin on all sides, square 1:1, no border, no frame, no text, no letters, no watermark"
+  },
+  {
+    "id": "MAG-cura-em-massa",
+    "nome": "Cura em Massa",
+    "escola": "Abjuração",
+    "prompt": "six small figures in a circle bathed by golden light from above, fantasy RPG spell icon artwork, one single centered subject, painterly digital painting, dramatic rim light, soft amethyst #8B7BB8 magical glow around the subject, plain very dark background #0e0d0b, subject fills about 70% of the image with empty dark margin on all sides, square 1:1, no border, no frame, no text, no letters, no watermark"
+  },
+  {
+    "id": "MAG-ressurreicao-incompleta",
+    "nome": "Ressurreição Incompleta",
+    "escola": "Necromancia",
+    "prompt": "a pale figure rising from a grave with a single faint glowing heart, fantasy RPG spell icon artwork, one single centered subject, painterly digital painting, dramatic rim light, soft amethyst #8B7BB8 magical glow around the subject, plain very dark background #0e0d0b, subject fills about 70% of the image with empty dark margin on all sides, square 1:1, no border, no frame, no text, no letters, no watermark"
+  },
+  {
+    "id": "MAG-grande-transmutacao-biomagica",
+    "nome": "Grande Transmutação Biomágica",
+    "escola": "Biomancia",
+    "prompt": "a huge monster heart on a stone altar radiating mutation runes, fantasy RPG spell icon artwork, one single centered subject, painterly digital painting, dramatic rim light, soft amethyst #8B7BB8 magical glow around the subject, plain very dark background #0e0d0b, subject fills about 70% of the image with empty dark margin on all sides, square 1:1, no border, no frame, no text, no letters, no watermark"
+  },
+  {
+    "id": "MAG-cone-de-frio",
+    "nome": "Cone de Frio",
+    "escola": "Evocação",
+    "prompt": "a wide cone of blizzard ice blasting from an outstretched hand, fantasy RPG spell icon artwork, one single centered subject, painterly digital painting, dramatic rim light, soft amethyst #8B7BB8 magical glow around the subject, plain very dark background #0e0d0b, subject fills about 70% of the image with empty dark margin on all sides, square 1:1, no border, no frame, no text, no letters, no watermark"
+  },
+  {
+    "id": "MAG-despertar",
+    "nome": "Despertar",
+    "escola": "Transmutação",
+    "prompt": "an old tree with a wise face opening its glowing eyes, fantasy RPG spell icon artwork, one single centered subject, painterly digital painting, dramatic rim light, soft amethyst #8B7BB8 magical glow around the subject, plain very dark background #0e0d0b, subject fills about 70% of the image with empty dark margin on all sides, square 1:1, no border, no frame, no text, no letters, no watermark"
+  },
+  {
+    "id": "MAG-salto-dimensional",
+    "nome": "Salto Dimensional",
+    "escola": "Conjuração",
+    "prompt": "a figure stepping between two linked violet portals, fantasy RPG spell icon artwork, one single centered subject, painterly digital painting, dramatic rim light, soft amethyst #8B7BB8 magical glow around the subject, plain very dark background #0e0d0b, subject fills about 70% of the image with empty dark margin on all sides, square 1:1, no border, no frame, no text, no letters, no watermark"
+  },
+  {
+    "id": "MAG-restaurar-vigor",
+    "nome": "Restaurar Vigor",
+    "escola": "Abjuração",
+    "prompt": "a tired figure straightening up as dark chains of fatigue break apart, fantasy RPG spell icon artwork, one single centered subject, painterly digital painting, dramatic rim light, soft amethyst #8B7BB8 magical glow around the subject, plain very dark background #0e0d0b, subject fills about 70% of the image with empty dark margin on all sides, square 1:1, no border, no frame, no text, no letters, no watermark"
+  },
+  {
+    "id": "MAG-causar-praga",
+    "nome": "Causar Praga",
+    "escola": "Necromancia",
+    "prompt": "a cloud of green-black flies swirling around a skull, fantasy RPG spell icon artwork, one single centered subject, painterly digital painting, dramatic rim light, soft amethyst #8B7BB8 magical glow around the subject, plain very dark background #0e0d0b, subject fills about 70% of the image with empty dark margin on all sides, square 1:1, no border, no frame, no text, no letters, no watermark"
+  },
+  {
+    "id": "MAG-desintegrar",
+    "nome": "Desintegrar",
+    "escola": "Transmutação",
+    "prompt": "a thin green ray turning a stone figure into floating dust particles, fantasy RPG spell icon artwork, one single centered subject, painterly digital painting, dramatic rim light, soft amethyst #8B7BB8 magical glow around the subject, plain very dark background #0e0d0b, subject fills about 70% of the image with empty dark margin on all sides, square 1:1, no border, no frame, no text, no letters, no watermark"
+  },
+  {
+    "id": "MAG-cadeia-de-relampago",
+    "nome": "Cadeia de Relâmpago",
+    "escola": "Evocação",
+    "prompt": "lightning arcing in a chain between four points, fantasy RPG spell icon artwork, one single centered subject, painterly digital painting, dramatic rim light, soft amethyst #8B7BB8 magical glow around the subject, plain very dark background #0e0d0b, subject fills about 70% of the image with empty dark margin on all sides, square 1:1, no border, no frame, no text, no letters, no watermark"
+  },
+  {
+    "id": "MAG-forma-de-monstro",
+    "nome": "Forma de Monstro",
+    "escola": "Biomancia",
+    "prompt": "a human silhouette transforming into a horned monster, fantasy RPG spell icon artwork, one single centered subject, painterly digital painting, dramatic rim light, soft amethyst #8B7BB8 magical glow around the subject, plain very dark background #0e0d0b, subject fills about 70% of the image with empty dark margin on all sides, square 1:1, no border, no frame, no text, no letters, no watermark"
+  },
+  {
+    "id": "MAG-prisao-de-gelo",
+    "nome": "Prisão de Gelo",
+    "escola": "Evocação",
+    "prompt": "a creature encased in a jagged block of ice, fantasy RPG spell icon artwork, one single centered subject, painterly digital painting, dramatic rim light, soft amethyst #8B7BB8 magical glow around the subject, plain very dark background #0e0d0b, subject fills about 70% of the image with empty dark margin on all sides, square 1:1, no border, no frame, no text, no letters, no watermark"
+  },
+  {
+    "id": "MAG-regeneracao-biomagica",
+    "nome": "Regeneração Biomágica",
+    "escola": "Biomancia",
+    "prompt": "flesh knitting together with green vines and pulsing light, fantasy RPG spell icon artwork, one single centered subject, painterly digital painting, dramatic rim light, soft amethyst #8B7BB8 magical glow around the subject, plain very dark background #0e0d0b, subject fills about 70% of the image with empty dark margin on all sides, square 1:1, no border, no frame, no text, no letters, no watermark"
+  },
+  {
+    "id": "MAG-invisibilidade-maior",
+    "nome": "Invisibilidade Maior",
+    "escola": "Ilusão",
+    "prompt": "a group of figures fading into translucent outlines, fantasy RPG spell icon artwork, one single centered subject, painterly digital painting, dramatic rim light, soft amethyst #8B7BB8 magical glow around the subject, plain very dark background #0e0d0b, subject fills about 70% of the image with empty dark margin on all sides, square 1:1, no border, no frame, no text, no letters, no watermark"
+  },
+  {
+    "id": "MAG-terremoto",
+    "nome": "Terremoto",
+    "escola": "Evocação",
+    "prompt": "cracked ground splitting apart with falling stones, fantasy RPG spell icon artwork, one single centered subject, painterly digital painting, dramatic rim light, soft amethyst #8B7BB8 magical glow around the subject, plain very dark background #0e0d0b, subject fills about 70% of the image with empty dark margin on all sides, square 1:1, no border, no frame, no text, no letters, no watermark"
+  },
+  {
+    "id": "MAG-biomancia-suprema-transcendencia",
+    "nome": "Biomancia Suprema — Transcendência",
+    "escola": "Biomancia",
+    "prompt": "a dragon eye, a kraken tentacle and a horned skull merging into a glowing double helix, fantasy RPG spell icon artwork, one single centered subject, painterly digital painting, dramatic rim light, soft amethyst #8B7BB8 magical glow around the subject, plain very dark background #0e0d0b, subject fills about 70% of the image with empty dark margin on all sides, square 1:1, no border, no frame, no text, no letters, no watermark"
+  },
+  {
+    "id": "MAG-desejo-de-morte",
+    "nome": "Desejo de Morte",
+    "escola": "Necromancia",
+    "prompt": "an hourglass with a skull inside, sealed by a wax contract seal, fantasy RPG spell icon artwork, one single centered subject, painterly digital painting, dramatic rim light, soft amethyst #8B7BB8 magical glow around the subject, plain very dark background #0e0d0b, subject fills about 70% of the image with empty dark margin on all sides, square 1:1, no border, no frame, no text, no letters, no watermark"
+  },
+  {
+    "id": "MAG-maos-ardentes",
+    "nome": "Mãos Ardentes",
+    "escola": "Evocação",
+    "prompt": "two hands wreathed in fire reaching forward, fantasy RPG spell icon artwork, one single centered subject, painterly digital painting, dramatic rim light, soft amethyst #8B7BB8 magical glow around the subject, plain very dark background #0e0d0b, subject fills about 70% of the image with empty dark margin on all sides, square 1:1, no border, no frame, no text, no letters, no watermark"
+  },
+  {
+    "id": "MAG-gelo-de-conservacao",
+    "nome": "Gelo de Conservação",
+    "escola": "Transmutação",
+    "prompt": "a fish inside a block of clear ice with a stasis clock rune, fantasy RPG spell icon artwork, one single centered subject, painterly digital painting, dramatic rim light, soft amethyst #8B7BB8 magical glow around the subject, plain very dark background #0e0d0b, subject fills about 70% of the image with empty dark margin on all sides, square 1:1, no border, no frame, no text, no letters, no watermark"
+  },
+  {
+    "id": "MAG-fermentacao-acelerada",
+    "nome": "Fermentação Acelerada",
+    "escola": "Transmutação",
+    "prompt": "a bubbling clay jar with a time spiral of rising bubbles, fantasy RPG spell icon artwork, one single centered subject, painterly digital painting, dramatic rim light, soft amethyst #8B7BB8 magical glow around the subject, plain very dark background #0e0d0b, subject fills about 70% of the image with empty dark margin on all sides, square 1:1, no border, no frame, no text, no letters, no watermark"
+  },
+  {
+    "id": "MAG-purificacao-abencoada",
+    "nome": "Purificação Abençoada",
+    "escola": "Abjuração",
+    "prompt": "a holy sigil burning away a black curse mark, fantasy RPG spell icon artwork, one single centered subject, painterly digital painting, dramatic rim light, soft amethyst #8B7BB8 magical glow around the subject, plain very dark background #0e0d0b, subject fills about 70% of the image with empty dark margin on all sides, square 1:1, no border, no frame, no text, no letters, no watermark"
+  },
+  {
+    "id": "MAG-esporos-necroticos",
+    "nome": "Esporos Necróticos",
+    "escola": "Necromancia",
+    "prompt": "a cloud of dark mushroom spores drifting outward, fantasy RPG spell icon artwork, one single centered subject, painterly digital painting, dramatic rim light, soft amethyst #8B7BB8 magical glow around the subject, plain very dark background #0e0d0b, subject fills about 70% of the image with empty dark margin on all sides, square 1:1, no border, no frame, no text, no letters, no watermark"
+  },
+  {
+    "id": "MAG-grande-decomposicao",
+    "nome": "Grande Decomposição",
+    "escola": "Transmutação",
+    "prompt": "a cube of organic matter dissolving into soil and small mushrooms, fantasy RPG spell icon artwork, one single centered subject, painterly digital painting, dramatic rim light, soft amethyst #8B7BB8 magical glow around the subject, plain very dark background #0e0d0b, subject fills about 70% of the image with empty dark margin on all sides, square 1:1, no border, no frame, no text, no letters, no watermark"
+  },
+  {
+    "id": "MAG-doce-confuso",
+    "nome": "Doce Confuso",
+    "escola": "Encantamento",
+    "prompt": "a wrapped candy with a frightening swirling face emerging from it, fantasy RPG spell icon artwork, one single centered subject, painterly digital painting, dramatic rim light, soft amethyst #8B7BB8 magical glow around the subject, plain very dark background #0e0d0b, subject fills about 70% of the image with empty dark margin on all sides, square 1:1, no border, no frame, no text, no letters, no watermark"
+  }
+]
