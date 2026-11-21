@@ -91,7 +91,7 @@ import type { IdentityPatch } from "@/lib/character/identity";
 import type { LevelUpChoices } from "@/lib/character/level-up";
 import type { CombatLoadout } from "@/lib/combat/types";
 import { sanitizePortraitFocus } from "@/lib/media/portrait-focus";
-import { isCasterClass } from "@/lib/character/spell-prep";
+import { compendiumEntryAllowedForClass } from "@/lib/character/spell-prep";
 import { isTypingTarget } from "@/lib/vtt/keyboard-guard";
 import type { FoundryWindowDragHandlers } from "@/hooks/vtt/useFoundryWindowDrag";
 import "./sheet.css";
@@ -554,7 +554,7 @@ function CharacterSheetLoaded({
 
   async function addFromCompendium(entry: CompendiumEntry) {
     // BV-029: só classes com lista de magias (livro, tabela 17.7) recebem magias; Guerreiro não.
-    if (entry.packId === "magias" && !isCasterClass(identity.classe)) {
+    if (!compendiumEntryAllowedForClass(identity.classe, entry.packId)) {
       setInventoryMsg(`${identity.classe} não tem lista de magias`);
       setPickerOpen(false);
       return;

@@ -55,14 +55,14 @@ ok(
 
 // BV-029: ficha importa o helper e recusa magia para não conjurador antes dos ramos.
 ok(
-  "BV-029 ficha: importa isCasterClass de spell-prep",
-  /import \{ isCasterClass \} from "@\/lib\/character\/spell-prep";/.test(sheetCode),
+  "BV-029 ficha: importa compendiumEntryAllowedForClass de spell-prep",
+  /import \{ compendiumEntryAllowedForClass \} from "@\/lib\/character\/spell-prep";/.test(sheetCode),
   "CharacterSheet.tsx sem o import"
 );
 
 const fnStart = sheetCode.indexOf("async function addFromCompendium(");
 const fnBody = fnStart >= 0 ? sheetCode.slice(fnStart, fnStart + 1400) : "";
-const guardIdx = fnBody.indexOf('entry.packId === "magias" && !isCasterClass(identity.classe)');
+const guardIdx = fnBody.indexOf("!compendiumEntryAllowedForClass(identity.classe, entry.packId)");
 const branchIdx = fnBody.indexOf("if (canRequestInventory)");
 ok(
   "BV-029 ficha: addFromCompendium recusa magia quando a classe não é conjuradora",

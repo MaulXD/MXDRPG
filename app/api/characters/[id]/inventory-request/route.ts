@@ -11,6 +11,7 @@ import { canManageAdventure } from "@/lib/auth/adventure-access";
 import { getSession } from "@/lib/auth/session";
 import type { CompendiumPackId } from "@/lib/compendium/types";
 import { getEntry } from "@/lib/compendium/registry";
+import { compendiumEntryAllowedForClass } from "@/lib/character/spell-prep";
 
 type Params = { params: Promise<{ id: string }> };
 
@@ -71,6 +72,13 @@ export async function POST(request: Request, { params }: Params) {
   const entry = getEntry(packId, entryId);
   if (!entry) {
     return NextResponse.json({ error: "Item não encontrado no compêndio" }, { status: 400 });
+  }
+  // BV-029: mesma regra da ficha (components/character/CharacterSheet.tsx addFromCompendium).
+  if (!compendiumEntryAllowedForClass(character.identity.classe, packId)) {
+    return NextResponse.json(
+      { error: `${character.identity.classe} não tem lista de magias` },
+      { status: 400 }
+    );
   }
 
   const adventureId =

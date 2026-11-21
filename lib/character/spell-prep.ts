@@ -69,6 +69,14 @@ export function isCasterClass(classe: string): boolean {
   return isCasterClassId(classe);
 }
 
+/**
+ * BV-029: magia do compêndio só entra em ficha de classe com lista de magias
+ * (livro, tabela 17.7). Usada pela ficha (cliente) e pela rota de pedido de inventário (servidor).
+ */
+export function compendiumEntryAllowedForClass(classe: string, packId: string): boolean {
+  return packId !== "magias" || isCasterClassId(classe);
+}
+
 /** Filtra magias do grimório às listas da classe (Cap. 17.7). */
 export function spellInClassList(classe: string, entryId: string): boolean {
   if (!isCasterClassId(classe)) return true;
