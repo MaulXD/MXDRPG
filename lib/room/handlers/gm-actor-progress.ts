@@ -1,5 +1,6 @@
 import { attributeMod, hpMaxFor, paMaxFor } from "@/lib/character/rules";
 import { normalizeCharacter } from "@/lib/character/normalize";
+import { paPoolMaxForSheet } from "@/lib/combat/pa-economy";
 import { saveCharacter } from "@/lib/character/characters";
 import { MAX_LEVEL, xpTotalForLevel } from "@/lib/character/xp";
 import { canManageRoom } from "@/lib/auth/room-access";
@@ -37,6 +38,11 @@ function applySetLevel(actor: RoomActor, level: number): RoomActor {
   const hpMax = hpMaxFor(actor.identity.classe, nivel, conMod);
   const paMax = paMaxFor(nivel, actor.resources.pontosAcao.max);
   const resetProgression = nivel <= 1;
+  const talentos = resetProgression ? [] : actor.identity.talentos;
+  const paPoolMax = paPoolMaxForSheet({
+    ...actor,
+    identity: { ...actor.identity, nivel, talentos },
+  });
   return {
     ...normalizeCharacter({
       ...actor,
@@ -45,7 +51,7 @@ function applySetLevel(actor: RoomActor, level: number): RoomActor {
         nivel,
         xpTotal: xpTotalForLevel(nivel),
         subclasse: resetProgression ? null : actor.identity.subclasse,
-        talentos: resetProgression ? [] : actor.identity.talentos,
+        talentos,
       },
       resources: {
         vida: {
@@ -54,7 +60,7 @@ function applySetLevel(actor: RoomActor, level: number): RoomActor {
         },
         pontosAcao: {
           max: paMax,
-          value: Math.min(actor.resources.pontosAcao.value, paMax),
+          value: Math.min(actor.resources.pontosAcao.value, paPoolMax),
         },
       },
     }),

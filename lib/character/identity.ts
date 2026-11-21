@@ -10,6 +10,7 @@ import {
   paMaxFor,
 } from "@/lib/character/rules";
 import { resolveActorDefesa } from "@/lib/character/armor-defense";
+import { paPoolMaxForSheet } from "@/lib/combat/pa-economy";
 import { normalizeCharacter } from "@/lib/character/normalize";
 import { religionDisplayName } from "@/lib/character/pantheon";
 import { parseCharacterTalents } from "@/lib/character/subclass-tracks";
@@ -68,6 +69,7 @@ export function applyIdentityPatch(actor: CharacterSheet, patch: IdentityPatch):
   const conMod = attributeMod(attributes.constituicao);
   const hpMax = hpMaxFor(identity.classe, identity.nivel, conMod);
   const paMax = paMaxFor(identity.nivel, actor.resources.pontosAcao.max);
+  const paPoolMax = paPoolMaxForSheet({ ...actor, identity, attributes });
   const desMod = attributeMod(attributes.destreza);
   const culinary = computeCulinary(identity.classe, identity.raca, identity.linhagem);
 
@@ -90,7 +92,7 @@ export function applyIdentityPatch(actor: CharacterSheet, patch: IdentityPatch):
       },
       pontosAcao: {
         max: paMax,
-        value: Math.min(actor.resources.pontosAcao.value, paMax),
+        value: Math.min(actor.resources.pontosAcao.value, paPoolMax),
       },
     },
     tactical: {

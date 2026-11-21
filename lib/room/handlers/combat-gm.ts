@@ -2,6 +2,7 @@ import { canManageRoom } from "@/lib/auth/room-access";
 import type { SessionUser } from "@/lib/auth/types";
 import { saveCharacter } from "@/lib/character/characters";
 import { normalizeCharacter } from "@/lib/character/normalize";
+import { paPoolMaxForSheet } from "@/lib/combat/pa-economy";
 import { attributeMod, hpMaxFor, paMaxFor } from "@/lib/character/rules";
 import { MAX_LEVEL, xpTotalForLevel } from "@/lib/character/xp";
 import { restoreRoundCheckpoint } from "@/lib/room/combat-round-checkpoint";
@@ -250,6 +251,10 @@ export async function executeGmCombatAction(
         const conMod = attributeMod(current.attributes.constituicao);
         const hpMax = hpMaxFor(current.identity.classe, nextLevel, conMod);
         const paMax = paMaxFor(nextLevel, current.resources.pontosAcao.max);
+        const paPoolMax = paPoolMaxForSheet({
+          ...current,
+          identity: { ...current.identity, nivel: nextLevel },
+        });
         const next = {
           ...normalizeCharacter({
             ...current,
@@ -265,7 +270,7 @@ export async function executeGmCombatAction(
               },
               pontosAcao: {
                 max: paMax,
-                value: Math.min(current.resources.pontosAcao.value, paMax),
+                value: Math.min(current.resources.pontosAcao.value, paPoolMax),
               },
             },
           }),

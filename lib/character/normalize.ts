@@ -3,7 +3,7 @@ import { normalizeReligionId } from "@/lib/character/pantheon";
 import type { CharacterAttributes, CharacterSheet, CharacterIdentity } from "@/lib/character/types";
 import { parseCharacterTalents } from "@/lib/character/subclass-tracks";
 import { computeCulinary, hpMaxFor, attributeMod } from "@/lib/character/rules";
-import { paMaxForActor } from "@/lib/combat/pa-economy";
+import { paMaxForActor, paPoolMaxForSheet } from "@/lib/combat/pa-economy";
 import { resolveActorDefesa } from "@/lib/character/armor-defense";
 import { xpTotalForLevel } from "@/lib/character/xp";
 import { syncCombatAbilitiesToInventory } from "@/lib/character/combat-inventory-sync";
@@ -101,6 +101,7 @@ export function normalizeCharacter(sheet: CharacterSheet): CharacterSheet {
   const conMod = attributeMod(attributes.constituicao);
   const hpMax = hpMaxFor(identity.classe, identity.nivel, conMod);
   const paMax = paMaxForActor({ ...sheet, identity, attributes });
+  const paPoolMax = paPoolMaxForSheet({ ...sheet, identity, attributes });
   const desMod = attributeMod(attributes.destreza);
   const culinary = sheet.culinary ?? computeCulinary(identity.classe, identity.raca, identity.linhagem);
 
@@ -121,7 +122,7 @@ export function normalizeCharacter(sheet: CharacterSheet): CharacterSheet {
       },
       pontosAcao: {
         max: paMax,
-        value: Math.min(sheet.resources?.pontosAcao?.value ?? paMax, paMax),
+        value: Math.min(sheet.resources?.pontosAcao?.value ?? paMax, paPoolMax),
       },
     },
     tactical: {

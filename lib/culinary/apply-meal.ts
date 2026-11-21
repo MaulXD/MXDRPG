@@ -93,7 +93,10 @@ export function applyStructuredMealToActor(
       },
       pontosAcao: {
         ...actor.resources.pontosAcao,
-        value: Math.min(actor.resources.pontosAcao.max, actor.resources.pontosAcao.value + paRestored),
+        value: Math.max(
+          actor.resources.pontosAcao.value,
+          Math.min(actor.resources.pontosAcao.max, actor.resources.pontosAcao.value + paRestored)
+        ),
       },
     },
     culinaryProgress: {
