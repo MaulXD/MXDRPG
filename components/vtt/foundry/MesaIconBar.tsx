@@ -22,6 +22,8 @@ type Props = {
   showInvite?: boolean;
   /** Ferramentas de Mestre do Um Anel (Jornada, Conselho) — só em mesa do sistema. */
   showTorGmTools?: boolean;
+  /** Mensagens do chat ainda não lidas; aparecem só no botão Chat. */
+  chatNaoLidas?: number;
 };
 
 function IconButton({
@@ -30,12 +32,14 @@ function IconButton({
   onOpenDock,
   onOpenPopup,
   gm,
+  naoLidas = 0,
 }: {
   icon: IconDef;
   active: boolean;
   onOpenDock: (id: MesaWindowId) => void;
   onOpenPopup: (id: MesaWindowId) => void;
   gm?: boolean;
+  naoLidas?: number;
 }) {
   return (
     <button
@@ -47,12 +51,17 @@ function IconButton({
         e.preventDefault();
         onOpenPopup(icon.id);
       }}
-      aria-label={`${icon.label} — clique: barra lateral · clique direito: janela flutuante`}
+      aria-label={`${icon.label}${naoLidas > 0 ? `, ${naoLidas} ${naoLidas === 1 ? "mensagem nova" : "mensagens novas"}` : ""} — clique: barra lateral · clique direito: janela flutuante`}
       aria-pressed={active}
     >
       <span className="foundry-icon-bar__icon-wrap" data-rail-icon={icon.icon} aria-hidden>
         <MesaRailIcon name={icon.icon} />
       </span>
+      {naoLidas > 0 ? (
+        <span className="mesa-chat-nao-lidas__badge" aria-hidden>
+          {naoLidas > 99 ? "99+" : naoLidas}
+        </span>
+      ) : null}
       <span className="foundry-icon-bar__label" aria-hidden>{icon.label}</span>
       <span className="foundry-icon-bar__tooltip" role="tooltip">
         <span className="foundry-icon-bar__tooltip-title">{icon.label}</span>
@@ -71,6 +80,7 @@ export function MesaIconBar({
   showGm = false,
   showInvite = false,
   showTorGmTools = false,
+  chatNaoLidas = 0,
 }: Props) {
   const icons: IconDef[] = [
     { id: "status", label: "Status", icon: "status", section: "play" },
@@ -102,6 +112,7 @@ export function MesaIconBar({
             active={isActive(icon.id)}
             onOpenDock={onOpenDock}
             onOpenPopup={onOpenPopup}
+            naoLidas={icon.id === "chat" ? chatNaoLidas : 0}
           />
         ))}
       </div>

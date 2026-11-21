@@ -11,6 +11,7 @@ type Props = {
   showGm?: boolean;
   showInvite?: boolean;
   showTorGmTools?: boolean;
+  chatNaoLidas?: number;
   dockOpen: boolean;
   children: ReactNode;
 };
@@ -22,6 +23,7 @@ export function MesaFoundrySidebar({
   showGm = false,
   showInvite = false,
   showTorGmTools = false,
+  chatNaoLidas = 0,
   dockOpen,
   children,
 }: Props) {
@@ -37,6 +39,7 @@ export function MesaFoundrySidebar({
         showGm={showGm}
         showInvite={showInvite}
         showTorGmTools={showTorGmTools}
+        chatNaoLidas={chatNaoLidas}
       />
       <div
         id="foundry-sidebar-dock"

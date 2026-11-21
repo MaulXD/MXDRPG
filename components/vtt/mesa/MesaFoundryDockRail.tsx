@@ -70,6 +70,8 @@ export type MesaFoundryDockRailProps = {
   /** Estado de sessão do Um Anel vindo do snapshot (Jornada, Conselho, Companhia). */
   torSession?: RoomSnapshot["torSession"];
   session: SessionUser | null;
+  /** Mensagens do chat não lidas, mostradas no botão Chat da barra lateral. */
+  chatNaoLidas?: number;
   inviteCode?: string | null;
   roomInviteCode: string | null;
   showInviteUi: boolean;
@@ -114,6 +116,7 @@ export function MesaFoundryDockRail({
   mesaActors,
   torSession,
   session,
+  chatNaoLidas = 0,
   roomInviteCode,
   showInviteUi,
   isRoomOwner,
@@ -151,6 +154,7 @@ export function MesaFoundryDockRail({
       showGm={effectiveCanControlCombat}
       showInvite={showInviteUi}
       showTorGmTools={rpgSystemId === "um-anel" && Boolean(effectiveIsGm)}
+      chatNaoLidas={chatNaoLidas}
       dockOpen={dockOpen}
     >
       {!isFloating("chat") ? (

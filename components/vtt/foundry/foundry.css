@@ -337,6 +337,27 @@
   color: var(--text-strong);
 }
 
+.mesa-chat-nao-lidas__badge {
+  position: absolute;
+  top: 0.15rem;
+  right: 0.15rem;
+  min-width: 1.6rem;
+  height: 1.6rem;
+  padding: 0 0.35rem;
+  border-radius: 999px;
+  background: var(--mesa-accent, #c9a14a);
+  color: #1a1410;
+  font-size: 0.85rem;
+  font-weight: 700;
+  line-height: 1.6rem;
+  text-align: center;
+  pointer-events: none;
+}
+
+.mesa-mobile-bar__icon--badge {
+  position: relative;
+}
+
 .foundry-icon-bar__label {
   font-size: 0.5rem;
   font-weight: 700;

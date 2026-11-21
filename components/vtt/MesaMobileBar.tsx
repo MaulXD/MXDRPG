@@ -12,6 +12,8 @@ type Props = {
   canRollDice: boolean;
   endTurnBusy?: boolean;
   combatActive: boolean;
+  /** Mensagens do chat ainda não lidas, mostradas no botão Chat. */
+  chatNaoLidas?: number;
 };
 
 export function MesaMobileBar({
@@ -23,12 +25,27 @@ export function MesaMobileBar({
   canRollDice,
   endTurnBusy = false,
   combatActive,
+  chatNaoLidas = 0,
 }: Props) {
   return (
     <nav className="mesa-mobile-bar" aria-label="Atalhos mobile da mesa">
-      <button type="button" className="mesa-mobile-bar__btn" onClick={onOpenChat}>
-        <span className="mesa-mobile-bar__icon" aria-hidden>
+      <button
+        type="button"
+        className="mesa-mobile-bar__btn"
+        onClick={onOpenChat}
+        aria-label={
+          chatNaoLidas > 0
+            ? `Chat, ${chatNaoLidas} ${chatNaoLidas === 1 ? "mensagem nova" : "mensagens novas"}`
+            : undefined
+        }
+      >
+        <span className="mesa-mobile-bar__icon mesa-mobile-bar__icon--badge" aria-hidden>
           <MesaRailIcon name="chat" />
+          {chatNaoLidas > 0 ? (
+            <span className="mesa-chat-nao-lidas__badge">
+              {chatNaoLidas > 99 ? "99+" : chatNaoLidas}
+            </span>
+          ) : null}
         </span>
         Chat
       </button>

@@ -27,6 +27,7 @@ import {
   useMesaMeta,
   useMesaSettings,
 } from "@/hooks/vtt/useMesaRoomSlice";
+import { useMesaChatNaoLidas } from "@/hooks/vtt/useMesaChatNaoLidas";
 import { getMesaRoomStore } from "@/hooks/vtt/mesa-room-store";
 import { MesaBattlefieldStage } from "@/components/vtt/mesa/MesaBattlefieldStage";
 import { MesaCombatChatRevealBridge } from "@/components/vtt/mesa/MesaCombatChatRevealBridge";
@@ -510,6 +511,13 @@ function MesaWorkspaceInner({
 
   const win = windows.get;
 
+  const chatLayout = win("chat");
+  const chatNaoLidas = useMesaChatNaoLidas(
+    roomId,
+    chatLayout.open && !chatLayout.minimized,
+    session?.id ?? null,
+  );
+
   const allowedDockPanels = useMemo(() => {
     const ids = new Set<MesaWindowId>([
       "ficha",
@@ -624,6 +632,7 @@ function MesaWorkspaceInner({
             mesaActors={mesaActors}
             torSession={snapshot?.torSession}
             session={session}
+            chatNaoLidas={chatNaoLidas}
             inviteCode={inviteCode}
             roomInviteCode={roomInviteCode}
             showInviteUi={showInviteUi}
@@ -800,6 +809,7 @@ function MesaWorkspaceInner({
 
           <MesaMobileBar
             onOpenChat={() => openMobilePanel("chat")}
+            chatNaoLidas={chatNaoLidas}
             onOpenInitiative={() => openMobilePanel("initiative")}
             onOpenDice={() => openMobilePanel("dice")}
             onEndTurn={() => void handleMobileEndTurn()}
