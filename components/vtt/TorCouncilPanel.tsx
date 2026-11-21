@@ -151,8 +151,9 @@ export function TorCouncilPanel({ roomId, canManage, council, onUpdate }: Props)
     <>
       <p className="tor-journey__remaining">
         {council.successes}/{council.resistance} sucessos ·{" "}
-        {Math.max(0, council.timeLimit - council.attemptsUsed)} tentativa
-        {council.timeLimit - council.attemptsUsed === 1 ? "" : "s"}
+        {/* BV-077: deixa claro que o número é o que sobra, não o total. */}
+        {Math.max(0, council.timeLimit - council.attemptsUsed)}{" "}
+        {council.timeLimit - council.attemptsUsed === 1 ? "tentativa restante" : "tentativas restantes"}
       </p>
       {council.disasterOnFailure ? (
         <p className="tor-journey__pending-hint">
