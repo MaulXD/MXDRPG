@@ -14,7 +14,8 @@ const ler = (rel) => readFileSync(join(__dirname, "..", rel), "utf8");
 
 const DISPLAY = ler("lib/combat/pa-display.ts");
 assert.ok(
-  /export function resolveGmLogPa\(token: BattleToken\): number \{[\s\S]*?materializeCombatPa\(token, recovery\)/.test(DISPLAY),
+  /export function resolveGmLogPa\(token: BattleToken\): number \{\s*return resolvePaHudDisplay\(token\)\.spendable;/.test(DISPLAY) &&
+    /export function resolvePaHudDisplay[\s\S]*?materializeCombatPa\(token, recovery\)/.test(DISPLAY),
   "resolveGmLogPa soma bankedPa via materializeCombatPa"
 );
 

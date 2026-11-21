@@ -12,9 +12,7 @@ export type PaHudDisplay = {
 
 /** PA mostrada no log do mestre: pool + bankedPa legado, igual aos mostradores de mesa. */
 export function resolveGmLogPa(token: BattleToken): number {
-  const recovery = Math.max(0, token.paMax ?? 0);
-  const materialized = materializeCombatPa(token, recovery);
-  return Math.max(0, Math.round(materialized.pa ?? 0));
+  return resolvePaHudDisplay(token).spendable;
 }
 
 /** PA estável para HUD — pool materializado, dots com capacidade fixa. */
