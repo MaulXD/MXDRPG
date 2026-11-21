@@ -301,5 +301,16 @@ ok(
   "os números têm de vir de um lugar só"
 );
 
+/* BV-075: os nomes das Empreitadas são os do livro (07-fases-de-companhia-jornada.md). */
+const LIVRO_07 = readFileSync(root("livros", "um-anel", "07-fases-de-companhia-jornada.md"), "utf8");
+for (const nome of [
+  "Reunir Rumores",
+  "Ponderar Mapas Historiados e Figurados",
+  "Contar uma História",
+  "Fortalecer o Companheirismo",
+]) {
+  ok(`Empreitada "${nome}" com o nome do livro`, UNDERTAKINGS.includes(`name: "${nome}"`) && LIVRO_07.includes(nome));
+}
+
 console.log(`\n  ${pass} ok, ${fail} falhas`);
 if (fail > 0) process.exit(1);
