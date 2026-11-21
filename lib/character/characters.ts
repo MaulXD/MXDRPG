@@ -46,12 +46,14 @@ async function ensureDbCharactersSeeded(): Promise<void> {
   try {
     const { upsertCharacter } = await import("@/lib/db/characters");
     for (const sheet of characterRegistry().values()) {
+      // Ficha demo sem dono não vai ao banco: owner_id não pode ir como undefined no bind.
+      if (!sheet.ownerId) continue;
       await upsertCharacter(sheet);
     }
     globalThis.__eldarinDbCharactersSeeded = true;
   } catch (e) {
     console.warn(
-      "[eldarin] seed de fichas demo no Postgres falhou — continuando sem seed:",
+      "[eldarin] seed de fichas demo no MariaDB falhou — continuando sem seed:",
       e instanceof Error ? e.message : e
     );
   }
@@ -66,7 +68,7 @@ export async function resolveCharacter(id: string): Promise<CharacterSheet | nul
       if (fromDb) return fromDb;
     } catch (e) {
       console.warn(
-        "[eldarin] Postgres fetchCharacter falhou — usando registry:",
+        "[eldarin] MariaDB fetchCharacter falhou — usando registry:",
         e instanceof Error ? e.message : e
       );
     }
@@ -219,7 +221,7 @@ export async function saveCharacter(sheet: CharacterSheet): Promise<CharacterShe
       await upsertCharacter(saved);
     } catch (e) {
       console.error(
-        "[eldarin] Postgres upsertCharacter falhou (ficha salva em registry local):",
+        "[eldarin] MariaDB upsertCharacter falhou (ficha salva em registry local):",
         e instanceof Error ? e.message : e
       );
       throw new Error("Não foi possível salvar a ficha agora. Tente de novo em instantes.");
