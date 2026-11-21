@@ -1548,6 +1548,24 @@
   color: var(--ddb-muted);
 }
 
+/* Cards do inventário: a ficha DDB é clara, então o card também é claro
+   (o padrão de sheet.css é escuro e deixava o nome --ddb-ink invisível). */
+.sheet-shell--ddb .inv-row,
+.sheet-shell--ddb .inv-row:hover {
+  background: var(--ddb-panel);
+  border-color: var(--ddb-panel-border);
+}
+
+/* Item selecionado: destaque dourado claro sobre o card claro (sheet.css usa
+   dourado sobre fundo escuro, que aqui sumiria). Vem depois das regras acima
+   e repete o :hover para não ser apagado por ele. */
+.sheet-shell--ddb .inv-row--selected,
+.sheet-shell--ddb .inv-row--selected:hover {
+  background: rgba(184, 146, 46, 0.14);
+  border-color: rgba(184, 146, 46, 0.6);
+  box-shadow: 0 0 0 1px rgba(184, 146, 46, 0.25);
+}
+
 .sheet-shell--ddb .inv-row h4,
 .sheet-shell--ddb .inv-row__tags {
   color: var(--ddb-ink);
@@ -1611,12 +1629,13 @@
   font-size: 0.72rem;
 }
 
-.sheet-popup-advanced--ddb > summary {
+.sheet-popup-advanced--ddb > summary,
+.sheet-shell--ddb .sheet-popup-advanced--ddb > summary {
   padding: 0.35rem 0.45rem;
   border-radius: 6px;
   background: var(--ddb-panel);
   border: 1px solid var(--ddb-panel-border);
-  color: var(--ddb-muted);
+  color: var(--ddb-ink);
   font-weight: 700;
   cursor: pointer;
 }

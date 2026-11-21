@@ -532,6 +532,17 @@
 }
 
 @media (max-width: 767px) {
+  /* Retrato + texto na primeira linha; ações (PDF) numa linha própria, sem
+     estourar a largura (width 100% numa linha flex sem quebra fazia o
+     cabeçalho passar de 375 px). */
+  .tor-sheet__masthead--with-portrait {
+    flex-wrap: wrap;
+  }
+
+  .tor-sheet__masthead-text {
+    flex: 1 1 0;
+  }
+
   .tor-sheet__masthead-actions {
     margin-left: 0;
     width: 100%;
