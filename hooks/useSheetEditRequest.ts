@@ -28,8 +28,7 @@ export function useSheetEditRequest(characterId: string | null, enabled = true) 
   useEffect(() => {
     void refresh();
     if (!characterId || !enabled) return;
-    const id = window.setInterval(() => void refresh(), POLL_MS);
-    return () => window.clearInterval(id);
+    return startVisiblePoll(() => void refresh(), POLL_MS);
   }, [characterId, enabled, refresh]);
 
   return { request, loading, refresh };

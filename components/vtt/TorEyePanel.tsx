@@ -16,6 +16,7 @@ import {
 } from "@/lib/combat/um-anel/eye";
 import { TOR_REGION_META, TOR_REGION_TYPES, type TorRegionType } from "@/lib/combat/um-anel/journey";
 import type { TorEyeState } from "@/lib/combat/um-anel/session-state";
+import type { RoomApiPayload } from "@/lib/room/room-delta";
 import { CULTURES } from "@/lib/character/um-anel/data";
 import type { TorCultureId } from "@/lib/character/um-anel/types";
 
@@ -25,7 +26,7 @@ type Props = {
   canManage: boolean;
   /** Ausente = a mesa nunca ligou esta regra, que é opcional no livro. */
   eye: TorEyeState | null;
-  onUpdate: () => void;
+  onUpdate: (payload?: RoomApiPayload) => void;
 };
 
 /** Uma linha do formulário de composição da Companhia. */
@@ -183,7 +184,7 @@ export function TorEyePanel({ roomId, canManage, eye, onUpdate }: Props) {
           disabled={busy}
           onClick={() =>
             void guard(async () => {
-              await patchTorSession(roomId, {
+              const snapshot = await patchTorSession(roomId, {
                 eye: {
                   value: breakdown.total,
                   initial: breakdown.total,
@@ -191,7 +192,7 @@ export function TorEyePanel({ roomId, canManage, eye, onUpdate }: Props) {
                   modifiers: [],
                 },
               });
-              onUpdate();
+              onUpdate(snapshot);
             })
           }
         >
@@ -208,8 +209,8 @@ export function TorEyePanel({ roomId, canManage, eye, onUpdate }: Props) {
 
   const patchEye = (patch: Partial<TorEyeState>) =>
     guard(async () => {
-      await patchTorSession(roomId, { eye: { ...eye, ...patch } });
-      onUpdate();
+      const snapshot = await patchTorSession(roomId, { eye: { ...eye, ...patch } });
+      onUpdate(snapshot);
     });
 
   return (
@@ -351,8 +352,8 @@ export function TorEyePanel({ roomId, canManage, eye, onUpdate }: Props) {
             disabled={busy}
             onClick={() =>
               void guard(async () => {
-                await patchTorSession(roomId, { eye: null });
-                onUpdate();
+                const snapshot = await patchTorSession(roomId, { eye: null });
+                onUpdate(snapshot);
               })
             }
           >

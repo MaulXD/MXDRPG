@@ -32,8 +32,7 @@ export function usePlayerInventoryRequests(characterId: string | null, enabled =
     void refresh();
     if (!characterId || !enabled) return;
     const interval = hasPending ? POLL_FAST_MS : POLL_MS;
-    const id = window.setInterval(() => void refresh(), interval);
-    return () => window.clearInterval(id);
+    return startVisiblePoll(() => void refresh(), interval);
   }, [characterId, enabled, refresh, hasPending]);
 
   return { requests, loading, refresh, hasPending };
