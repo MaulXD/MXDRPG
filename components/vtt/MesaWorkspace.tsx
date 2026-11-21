@@ -317,14 +317,23 @@ function MesaWorkspaceInner({
     }
   }, [playAsPlayer, closeWindow]);
 
+  // BV-060: no celular (até 767px, mesmo corte do CSS) o painel lateral vira uma
+  // folha que cobre a tela; a ficha aberta por ele ficava atrás. Fecha o painel.
+  const closeDockOnPhone = useCallback(() => {
+    if (typeof window === "undefined") return;
+    if (!window.matchMedia("(max-width: 767px)").matches) return;
+    windows.closePanels(FOUNDRY_DOCK_PANEL_IDS.filter((id) => !windows.isFloating(id)));
+  }, [windows]);
+
   const openSheet = useCallback(
     (actorId?: string) => {
       const id = actorId ?? defaultActorId;
       setSheetPopupActorId(id);
+      closeDockOnPhone();
       windows.openAsPopup("character");
       windows.focus("character");
     },
-    [defaultActorId, windows]
+    [defaultActorId, windows, closeDockOnPhone]
   );
 
   const closeSheet = useCallback(() => {
@@ -335,10 +344,11 @@ function MesaWorkspaceInner({
   const openTorSheet = useCallback(
     (characterId: string) => {
       setTorSheetId(characterId);
+      closeDockOnPhone();
       windows.openAsPopup("torFicha");
       windows.focus("torFicha");
     },
-    [windows]
+    [windows, closeDockOnPhone]
   );
 
   const closeTorSheet = useCallback(() => {

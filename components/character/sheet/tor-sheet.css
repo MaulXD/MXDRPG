@@ -423,6 +423,13 @@
   font-size: 0.85rem;
 }
 
+.tor-sheet__table-wrap {
+  /* BV-059: no celular a tabela de armas passava 18px da folha e os botões de
+     remover ficavam fora do papel. A tabela encolhe e, no limite, rola dentro da folha. */
+  max-width: 100%;
+  overflow-x: auto;
+}
+
 .tor-sheet__table {
   width: 100%;
   border-collapse: collapse;
@@ -466,6 +473,21 @@
 
 .tor-sheet__gear-remove:hover {
   background: var(--tor-red-soft);
+}
+
+@media (max-width: 480px) {
+  .tor-sheet__table {
+    font-size: 0.8rem;
+  }
+  .tor-sheet__table th,
+  .tor-sheet__table td {
+    padding: 0.3rem 0.25rem;
+    overflow-wrap: anywhere;
+  }
+  .tor-sheet__table th {
+    font-size: 0.7rem;
+    letter-spacing: 0;
+  }
 }
 
 .tor-sheet__gear-add {

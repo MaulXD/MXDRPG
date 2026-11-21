@@ -484,6 +484,7 @@ export function TorCharacterSheetView({
         {character.warGear.length === 0 ? (
           <p className="tor-sheet__empty">Nenhuma arma registrada ainda.</p>
         ) : (
+          <div className="tor-sheet__table-wrap">
           <table className="tor-sheet__table">
             <thead>
               <tr>
@@ -520,6 +521,7 @@ export function TorCharacterSheetView({
               })}
             </tbody>
           </table>
+          </div>
         )}
 
         {interactive && onResourceChange ? (
