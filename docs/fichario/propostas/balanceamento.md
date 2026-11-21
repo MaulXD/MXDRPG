@@ -302,9 +302,9 @@ Estas continuam a serie D1 a D7 da secao 2.5 e tambem entram em "06 Bugs ao vivo
 - D8. Guerreiro, PA por golpe no nivel 5. Livro Cap. 4 (linha 944) diz 1 PA por golpe; livro Cap. 3.1.1 (linha 267) diz 2 PA, igual ao codigo (`warriorFlatWeaponPaPerHit` retorna false, pa-cost-reduce.ts, linha 136). Ha contradicao dentro do livro. Efeito: se valer 1 PA, o Guerreiro da 5 golpes com 5 PA e 9 com 9 PA. O dano 5 PA passa de 5,3 para 13,25 no nivel 5 e de 3,65 para 9,1 no nivel 10.
 - D9. Guerreiro, "+1 PA max" no nivel 5. Tabela de progressao do Guerreiro (linha 939) promete +1 de PA maximo. Cap. 3.1.1 (linha 259) diz recuperacao fixa de 5 PA. Codigo: `paRecoveryPerTurn` ignora o nivel (pa-economy.ts, linhas 45 a 48). Esta secao usou 5 e 9 PA como pedido; se valer o +1, o turno comum passa a 6 PA.
 - D10. Vida por nivel. Livro (linha 92): dado medio vezes nivel, mais MOD CON vezes nivel. Codigo (`hpMaxFor`, rules.ts, linhas 521 a 526): dado maximo no nivel 1 e dado medio nos seguintes. Diferenca constante de maximo menos medio: 4 nas classes de d10, 3 nas de d8, 2 nas de d6 e 5 nas de d12. No nivel 10, Barbaro fica em 95 no codigo e 90 no livro; Mago, 62 e 60.
-- D11. Ladino, Golpe Oportunista. Livro (linha 994) escala de 1d6 para 10d6 no nivel 20; no nivel 5 sao 3d6 e no 10, 5d6, numeros repetidos em `classLevelFeatures` (rules.ts, linhas 590 a 595). No codigo, o dano extra de furtivo em `resolveAttack` (attack.ts, linha 848) so vale para monstro goblin (`isGoblinMonster`), nunca para jogador Ladino. Por isso a tabela nao inclui furtivo. O impacto depende de quantas vezes por turno o furtivo vale, regra que o codigo nao resolve para jogador.
+- D11. Ladino, Golpe Oportunista. Livro (linha 994) chama o recurso de Ataque Furtivo e escala de 1d6 para 10d6 no nivel 20; no nivel 5 sao 3d6 e no 10, 5d6, numeros repetidos em `classLevelFeatures` (rules.ts, linhas 590 a 595). No codigo, o unico furtivo implementado esta em `resolveMonsterAttack` (attack.ts, linhas 848 a 859) e so vale para monstro goblin (`isGoblinMonster`). O `resolveAttack` do jogador (attack.ts, linhas 1035 a 1047) nao aplica furtivo. Por isso a tabela nao inclui furtivo. O impacto depende de quantas vezes por turno o furtivo vale, regra que o codigo nao resolve para jogador.
 - D12. Espiritualista, Fluxo Marcial. `classLevelFeatures` (rules.ts, linha 608) anuncia no nivel 5 que a primeira tecnica de Chi custa 1 Chi a menos. O livro nao tem essa regra. `chi-economy.ts` mantem o teto de 2 Chi por turno (linha 8) e nao implementa desconto. A tabela por isso mantem 2 golpes de Chi no 5 e no 10. Se o desconto valesse, seriam 3 golpes (0 + 1 + 1 Chi) e o dano 5 PA subiria de 7,82 para 11,38 no nivel 5 e de 5,2 para 7,55 no nivel 10.
-- D13. Paladino, Golpe Sagrado. Livro (linhas 1199 a 1203) chama de Golpe Sagrado e da 2d8 no nivel 2, 3d8 no 5, 4d8 no 9. Codigo (`classLevelFeatures`, rules.ts, linhas 617 a 624) chama de Golpe do Juramento e usa os mesmos dados. Nenhum dos dois aplica esse dano extra na resolucao de ataque do codigo. A tabela considera so a Espada Longa. Nao ha numero seguro para o efeito, porque o livro nao diz se o extra vale uma vez por turno ou por golpe.
+- D13. Paladino, Golpe Sagrado. Livro (linhas 1199 a 1203) chama de Golpe Sagrado e da 2d8 no nivel 2, 3d8 no 5, 4d8 no 9. Codigo (`classLevelFeatures`, rules.ts, linhas 617 a 624) chama de Golpe do Juramento e usa os mesmos dados. A habilidade `habilidades-golpe-sagrado` existe e e concedida ao Paladino a partir do nivel 2 (class-vtt.ts, linha 12), mas resolve como buff de +2 no ataque (ability.ts, linhas 472 a 490), nao como +2d8 radiante. A tabela considera so a Espada Longa. O extra nao escala com o nivel e nao dobra contra morto-vivo.
 
 Nao e divergencia nesta etapa: Afinidade da primeira magia de 2+ PA (livro linha 268 e `CLASS_PA_FEATURES`, pa-modifiers.json, linhas 72 a 96, batem, inclusive o limite de uma vez por turno); teto de 2 Chi por turno (livro linha 1167 e chi-economy.ts, linha 8); limite de 2 truques iguais por turno (livro linha 269).
 
@@ -314,9 +314,128 @@ Nao e divergencia nesta etapa: Afinidade da primeira magia de 2+ PA (livro linha
 - Premissas que mexem nos numeros: CA 15 e 18,5; sem upgrade de arma ou armadura; sem talentos e sem subclasse; alvo com CON 0 no salvo do Feiticeiro; um alvo por magia de area; 2 PA por golpe do Guerreiro; furtivo e Golpe Sagrado fora da conta.
 - Opiniao: a queda das medianas e o desvio do Feiticeiro podem ser desenho para pagar area e controle, ou podem mostrar que a CA sobe rapido demais para quem ataca com arma. O calculo nao decide isso. Falta comparar com turnos contra bestiario real e com subclasses, que e o restante da Etapa 3.
 
+## 4. Plano para D11, D12 e D13
+
+So leitura de codigo e do livro. Nada foi mudado em `lib/`, `data/`, `livros/` nem em `scripts/`. Os numeros de linha abaixo foram conferidos em 20/11/2026. As entradas D11 e D13 da secao 3.6 foram ajustadas onde a localizacao estava errada: o furtivo do goblin fica em `resolveMonsterAttack`, e o Golpe Sagrado existe como habilidade, mas resolve como +2 no ataque em vez de dano.
+
+### 4.1 D11, Ataque Furtivo do Ladino
+
+**O que o livro manda.** `livros/LIVRO-DO-JOGADOR.md`, linha 994:
+
+> **Ataque Furtivo:** Causa dano bônus (1d6 no nivel 1, crescendo até 10d6 no nivel 20) ao atacar com Vantagem ou quando um aliado esta adjacente ao alvo.
+
+O nome no livro e Ataque Furtivo. O texto fixa 1d6 no nivel 1 e 10d6 no nivel 20, mas nao da a cadencia dos niveis do meio. A linha 2332 reforca que o furtivo escala normalmente e que talentos de subclasse podem mudar o tipo de dano. Fora isso, so aparece em detalhes de subclasse (linhas 2482 a 2520), todos fora da conta basica.
+
+**O que o codigo faz hoje.**
+
+- `lib/character/rules.ts`, linhas 590 a 595: `classLevelFeatures` devolve so o texto `Golpe Oportunista - X d6`, com `dice = min(10, 1 + floor((nivel - 1) / 2))`. A formula resulta em 1d6 no 1, 3d6 no 5, 5d6 no 10 e 10d6 no 20. O nome e diferente do livro e a cadencia de 2 em 2 niveis e inferencia do codigo.
+- `lib/combat/attack.ts`, linhas 848 a 859: unico calculo de furtivo implementado, dentro de `resolveMonsterAttack`, condicionado a `isGoblinMonster(attackerToken.monsterEntryId)`. Nao vale para token de jogador.
+- `lib/combat/attack.ts`, linhas 1035 a 1047: `resolveAttack` do jogador aplica so `action.damageFormula`, `bonusDamageFormula` do token e critico. Nao ha ramo de Ataque Furtivo.
+- `lib/room/handlers/combat-attack.ts`, linha 230: o servidor ja passa `room.scene.tokens` para `resolveTokenAttack`, que repassa a `resolveAttack` em `attack.ts`, linhas 1187 a 1190. O dado dos aliados esta disponivel, falta a regra.
+- `lib/combat/ability.ts`, linhas 181 a 251: `hasFlanking` acha um token na casa oposta, mas nao verifica se ele e aliado. Nao serve como atalho para a condicao "aliado adjacente".
+
+**Onde entraria no motor.**
+
+1. Novo helper `lib/combat/sneak-attack.ts`, com `sneakAttackDiceForLevel(level)` e `sneakAttackApplies(mode, attacker, defender, allTokens)`. A formula de dados sai de `rules.ts` e passa a ter uma fonte so. O teste de Vantagem reusa o `attackRollMode` de `lib/combat/conditions.ts`, linhas 125 a 176, que ja e chamado em `attack.ts`, linha 1016. O teste de aliado adjacente usa `axialDistance` ou `tokenAxialDistance`, ja importados em `attack.ts`, linhas 22 e 23, mais uma checagem de lado copiada de `isFriendlyTarget`, `attack.ts`, linhas 665 a 669.
+2. Chamar o helper dentro do bloco `if (hit)` de `resolveAttack`, em `attack.ts`, linhas 1035 a 1043, logo depois de `rollActionDamage` e antes de `resistedDamageAmount`. O extra entra no mesmo `DamageBreakdown` (formula, rolls e total), para resistencia, vida temporaria e chat continuarem batendo.
+3. Servidor sem mudanca estrutural. `combat-attack.ts` ja grava `defenderHpAfter` e o PA a partir do `AttackResolution` (linhas 245 a 254 e 321). Se o dano vier no `damage`, o handler aplica sem saber que e furtivo.
+4. Renomear o texto em `rules.ts` para Ataque Furtivo, mantendo a formula por enquanto.
+
+**Tamanho:** media. Um helper novo, uma insercao no bloco de acerto e um ajuste de texto. Nao mexe em schema de token.
+
+**Risco.**
+
+- Vantagem e aliado adjacente podem ocorrer no mesmo ataque. Sao condicoes alternativas, nao cumulativas. Somar os dois valores dobraria o furtivo.
+- Usar `hasFlanking` direto faria um inimigo na casa oposta liberar o furtivo, porque a funcao nao filtra lado.
+- Somar o extra depois de `resistedDamageAmount` pula resistencia e pode errar o calculo de vida temporaria.
+- `bonusDamageFormula` do token e consumido em `attack.ts`, linhas 620 e 1038 a 1042. E outro recurso, nao pode ser reaproveitado como furtivo ou o buff some depois do primeiro golpe.
+- `resolveMultiAttack` (`attack.ts`, linhas 1117 a 1139) chama `resolveAttack` uma vez por golpe. Se a regra valer por ataque, cada golpe qualificado recebe o extra. O livro nao limita usos por turno, entao isso fica como decisao explicita, nao como efeito colateral.
+- Chat e undo leem `damage.formula`, `damage.rolls` e `damage.total`. Atualizar so o total deixa o log inconsistente.
+
+**Como testar:** `scripts/verify-d11-ataque-furtivo.mjs`, usando o loader de transpilacao e o alias `@/` de `scripts/verify-feiticeiro-carisma.mjs`, linhas 19 a 62. Casos deterministas no helper: 1d6 no nv1, 3d6 no nv5, 5d6 no nv10, 10d6 no nv20 e nome Ataque Furtivo em `classLevelFeatures`. Casos de condicao com tokens montados na mao: sem Vantagem e sem aliado adjacente nao da extra; com Vantagem da `+3d6` no nv5; com aliado do mesmo lado adjacente da `+3d6`; com inimigo adjacente nao da; com as duas condicoes juntas da uma unica adicao. Caso de integracao: `resolveTokenAttack` com `allTokens` preenchido devolve `damage.total` entre base mais 3 e base mais 18 no nv5, e `damage.formula` contendo o dado extra.
+
+### 4.2 D12, Fluxo Marcial do Espiritualista
+
+**O que o livro manda.** `livros/LIVRO-DO-JOGADOR.md`, linha 1167:
+
+> **Chi:** Recurso próprio renovado a cada combate. **10 Chi** no início do combate; pode gastar no máximo **2 Chi por turno**.
+
+A linha 920 repete 10 por combate e limite de 2 por turno. A linha 1179 manda tecnicas usarem PA do compendio mais custo de Chi. A busca por "Fluxo Marcial" em `livros/` nao encontra nenhuma ocorrencia. O livro nao concede desconto de Chi no nivel 5. O que existe no nivel 5 em outras classificacoes e Afinidade de magia, nao Chi.
+
+**O que o codigo faz hoje.**
+
+- `lib/character/rules.ts`, linha 608: `classLevelFeatures` anuncia no nivel 5 `Fluxo Marcial - 1a tecnica de Chi do turno custa 1 Chi a menos`.
+- `lib/combat/chi-economy.ts`, linhas 5 a 8: pool 10 e teto `CHI_SPEND_CAP_PER_TURN = 2`. `canSpendChi` (linhas 39 a 43) e `spendChi` (linhas 45 a 51) so olham pool e gasto no turno, sem nivel e sem ordem de tecnica.
+- `lib/combat/ability.ts`, linhas 1050 a 1052: `canUseAbility` barra o uso com a mensagem `Chi insuficiente ou limite de 2 por turno`.
+- `lib/room/handlers/combat-ability.ts`, linhas 81 a 83: o servidor desconta o Chi de verdade.
+- `lib/combat/pa-chip.ts`, linhas 74 a 79: a chip mostra o Chi restante e quantas unidades ainda cabem no turno, usando a mesma constante 2.
+
+**Onde entraria no motor.** Nao entraria. O texto da linha 608 e a única parte que existe, e o motor nunca o implementou. A acao correta e apagar essa linha de `rules.ts`. Se alguém decidir implementar o desconto, a regra teria de entrar em `chi-economy.ts`, em `canSpendChi` e `spendChi`, com um campo novo em `BattleToken` para marcar a primeira tecnica do turno, mais ajuste na chip em `pa-chip.ts`. Isso mexeria em `lib/vtt/types.ts` e em `combat-turn.ts`, que hoje so zera `chiSpentThisTurn` (linhas 57 e 58 do handler de turno).
+
+**Tamanho:** pequena para remover o texto. Grande para implementar, porque cria estado novo no token e muda uma constante usada em tres lugares.
+
+**Risco.**
+
+- Manter o texto e custo zero de implementacao, mas continua enganando quem le a ficha. E o risco que já existe hoje.
+- Implementar o desconto quebra a invariante de 2 Chi por turno. `CHI_SPEND_CAP_PER_TURN` e usado por `canSpendChi` e pela chip. O limite passaria a depender de ordem de uso, e a chip diria "excede limite" justamente quando o desconto permitisse o gasto.
+- O campo de primeira tecnica teria de resetar no inicio de cada turno. Hoje `resetChiSpentThisTurn` (`chi-economy.ts`, linhas 27 a 29) faz so isso, e o handler de turno limpa os campos de Chi ao trocar de round (`combat-turn.ts`, linhas 57 e 58).
+- Contradiz o livro. Qualquer verify de regra vai falhar se o desconto existir.
+
+**Como testar:** `scripts/verify-d12-chi-sem-fluxo.mjs`, com o mesmo loader. Casos: o texto `Fluxo Marcial` nao aparece em nenhum arquivo de `livros/`; `classLevelFeatures("Espiritualista", 5)` nao contem `Fluxo Marcial`; `CHI_SPEND_CAP_PER_TURN === 2`; `canSpendChi({ chi: 10, chiSpentThisTurn: 2 }, 1) === false`; `spendChi` com esses valores devolve `null`; `classLevelFeatures` nos niveis 1, 5 e 10 nao muda a regra de Chi. Caso extra de regressao: `unifiedPaChipForAction` com uma tecnica de 1 Chi e 1 Chi ja gasto no turno mostra `turno 0 restante`.
+
+### 4.3 D13, Golpe Sagrado do Paladino
+
+**O que o livro manda.** `livros/LIVRO-DO-JOGADOR.md`, linha 1210:
+
+> - Golpe Sagrado (Nivel 2): Ao acertar ataque corpo a corpo com arma, gasta 1 PA extra para +2d8 radiante (escala nos niveis da tabela). Mortos-vivos sofrem dano dobrado.
+
+A tabela de progressao, linhas 1199 a 1203, da 2d8 no 2, 3d8 no 5, 4d8 no 9, 5d8 no 13 e 6d8 no 17. A linha 1221 classifica a acao como habilidade com PA extra. A linha 3044 diz que o talento Luz Penitente ignora resistencia radiante. A linha 3052 diz que a Ascensao do nivel 20 maximiza os dados. O livro nao diz se o extra vale uma vez por turno ou por golpe, e nao define como identificar morto-vivo no motor.
+
+**O que o codigo faz hoje.**
+
+- `lib/character/rules.ts`, linhas 617 a 624: texto `Golpe do Juramento` com a escala correta de dados. Nome errado e nenhum efeito mecanico.
+- `lib/character/class-vtt.ts`, linhas 9 a 13: concede `habilidades-golpe-sagrado` ao Paladino a partir do nivel 2.
+- `data/compendiums/habilidades.json`, linhas 578 a 600: entrada com descricao `Proximo ataque corpo a corpo +2d8 radiante (PA extra)`, alcance 1 e custo 1 PA.
+- `lib/combat/compendium-actions.ts`, linhas 88 a 91: mapeia para `melee_attack_bonus`, com `bonusDamageFormula: "2d8"` e `selfTarget: true`.
+- `lib/combat/ability.ts`, linhas 302 a 318 e 964 a 968: `resolveAbilityUse` manda `selfTarget` para `resolveAbilityBuff`. O ramo de `melee_attack_bonus` com `selfTarget`, linhas 472 a 490, devolve `nextAttackBonus: 2` e ignora completamente o `bonusDamageFormula`. O resultado e +2 no teste de ataque, nao +2d8 radiante.
+- `lib/combat/attack.ts`, linha 567, aplica o `nextAttackBonus` e, linha 620, consome o buff no primeiro ataque, sem exigir corpo a corpo com arma nem verificar o tipo de acao.
+- `lib/combat/ability.ts`, linhas 917 a 927: o `bonusDamageFormula` so e rolado no ramo de `resolveAbilityAttack`, que esta branco para esta habilidade por causa do `selfTarget`. Alem disso, esse ramo soma o extra depois de `resistedDamageAmount` (`attack.ts`, linha 1043), entao resistencia radiante nao incidiria sobre ele.
+- `lib/room/handlers/combat-ability.ts`, linhas 71 a 83 e 134: o servidor paga o PA de `resolved.paCost` e grava o HP vindo de `resolved.attack`. Nao ha codigo de morto-vivo em `lib/combat/`, nem campo de tipo de criatura em `BattleToken` (`lib/vtt/types.ts`, linhas 60 a 118).
+
+**Onde entraria no motor.**
+
+1. Separar esta habilidade do ramo generico. Ou trocar o `effect` em `compendium-actions.ts`, linhas 88 a 91, por um efeito proprio, ou criar um caso especifico em `ability.ts`, linhas 472 a 490, que devolva `bonusDamageFormula` em vez de `nextAttackBonus`. Nao alterar o ramo generico, porque ele atende outras habilidades.
+2. Escala por nivel em helper novo, por exemplo `lib/combat/paladin-divine-strike.ts`, com `golpeSagradoDiceForLevel(level)`, usando a tabela 2, 3, 4, 5, 6 a partir dos niveis 2, 5, 9, 13 e 17. O helper e chamado na construcao da acao ou em `resolveAbilityUse`, onde `actor.identity.nivel` ja esta disponivel.
+3. O dano extra precisa entrar no `DamageBreakdown` antes de `resistedDamageAmount`, em `attack.ts`, linha 1043. Hoje o unico ponto que soma `bonusDamageFormula` apos a resistencia e `ability.ts`, linhas 917 a 927. Mover esse ponto afeta as outras habilidades que usam o mesmo campo.
+4. Exigir ataque corpo a corpo com arma. O `nextAttackBonus` atual e consumo cego em `attack.ts`, linha 620. Se o dano ficar como buff no token, o consumo precisa checar `action.kind` e `rangeCells <= 1`.
+5. Dano dobrado contra morto-vivo exigiria classificar o alvo. Hoje nao ha campo para isso em `BattleToken`, entao a parte fica de fora ate alguém decidir de onde vem a informacao, se de `monsterEntryId`, de tag ou de dados do compendio.
+6. Renomear o texto de `rules.ts`, linhas 617 a 624, para Golpe Sagrado.
+7. Servidor sem mudanca. `combat-ability.ts` ja paga 1 PA e aplica o HP do ataque. O talento Julgamento Ardente, que isenta esse PA uma vez por turno (`habilidades.json`, linha 753), nao tem implementacao e ficaria para outra entrada.
+
+**Tamanho:** media para nome, escala e dano. Grande se entrarem morto-vivo e resistencia radiante, porque ai ha classificacao nova de token e mudanca na ordem em que o dano e calculado.
+
+**Risco.**
+
+- O ramo `melee_attack_bonus` com `selfTarget` tambem atende `habilidades-lamina-dos-sepulcros`, `habilidades-mordida-do-voto`, `habilidades-fera-interior` e `habilidades-pele-de-quimera` (`compendium-actions.ts`, linhas 148, 155, 159 e 164). Mexer nele globalmente troca o efeito de quatro habilidades de uma vez.
+- `bonusDamageFormula` ja e usado por varias habilidades e pelo token. Mudar o momento em que ele entra pode alterar numeros publicados da secao 3 e de outras verificacoes.
+- O buff atual dura 1 turno e e consumido por qualquer ataque (`buff-durations.ts`, linha 70, e `attack.ts`, linha 620). Manter esse comportamento com dano permitiria radiante em ataque a distancia, ao contrario do livro.
+- Resistencia radiante hoje nao incide sobre o extra por causa da ordem em `ability.ts`, linha 917. Corrigir a ordem muda o resultado contra monstros resistentes, inclusive fora do Paladino.
+- Sem classificacao de morto-vivo, qualquer atalho por nome de monstro quebraria quando o Mestre criar criatura propria (`gmCreatureStats`).
+- Se o PA extra deixar de ser 1, `resolved.paCost` em `combat-ability.ts`, linha 71, e o que o servidor cobra. Qualquer mudanca de custo tem de passar por `abilityFromEntry` e `paCostForToken`, nao direto no handler.
+
+**Como testar:** `scripts/verify-d13-golpe-sagrado.mjs`, com o mesmo loader. Casos de dados: 2 no nv2, 3 no nv5, 4 no nv9, 5 no nv13, 6 no nv17 e no nv20. Casos de contrato: `classLevelFeatures("Paladino", 5)` contem `Golpe Sagrado` e nao contem `Golpe do Juramento`; `classAbilityEntryIds` devolve `habilidades-golpe-sagrado` no nv2 mas nao no nv1; `abilityFromEntry` devolve custo 1 PA e formula com a escala do nivel. Caso de comportamento: `resolveAbilityUse` para o Paladino nv5 devolve `bonusDamageFormula: "3d8"`, sem `nextAttackBonus`, e o dano total do ataque cresce entre 3 e 24. Casos de regressao: as quatro habilidades que usam `melee_attack_bonus` com `selfTarget` continuam devolvendo `nextAttackBonus: 2`; resistencia radiante reduz o extra pela metade quando o talento Luz Penitente nao esta ativo; ataque a distancia nao consome o buff.
+
+### 4.4 Fato x opiniao
+
+- Fato verificado: citacoes do livro e numeros de linha, o estado atual do codigo em cada arquivo citado, a ausencia de `Fluxo Marcial` em `livros/`, o furtivo restrito a goblin, o Golpe Sagrado resolvendo como +2 no ataque e a escala de dados existindo so como texto.
+- Opiniao de prioridade: D12 e o mais barato e o unico que o livro pede explicitamente para sair. D11 e o que mais muda numeros de dano e o que tem mais risco de interpretação. D13 e o que exige decisao de modelagem, porque "morto-vivo" e "uma vez por turno ou por golpe" nao estao definidos no motor.
+- Opiniao de sequencia: resolver D12 primeiro, depois D11 com o helper isolado e testes de condicao, e deixar D13 para depois de decidir como o Mestre marca tipo de criatura. Esta ordem nao vem do livro.
+- Fora deste plano: D8, D9 e D10, subclasses, nivel maximo, turnos contra bestiario e propostas de ajuste de balanceamento.
+
 ## Andamento
 
 - [x] Etapa 1 - tabela-base nivel 1 (este arquivo, secao 1). Corrigida na Etapa 2 (secao 2.0).
 - [x] Etapa 2 - nivel 1 com atributos, acerto, magia e Chi (secao 2). Feiticeiro e Espiritualista calculados; Clerigo e Druida conferidos com o livro (2.4); divergencias D1 a D7 em 2.5.
 - [x] Etapa 3, parte 1 - niveis 5 e 10 (secao 3). Divergencias D8 a D13 em 3.6.
+- [x] Plano para D11, D12 e D13 (secao 4). So leitura; nada mudado em lib/, data/, livros/ ou scripts/.
 - [ ] Etapa 3, parte 2 - subclasses, nivel maximo, turnos contra bestiario e propostas de ajuste.
