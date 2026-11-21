@@ -263,3 +263,193 @@ Certo: não dá para dizer só pelo texto. Parece que o nome da Boca é o nome d
 **Resumo:** 19 itens. 14 contradições diretas (C1, C2, C3, C5, C6, C7, C8, C9, C10, C11, C12, C13, C14, C16), 4 tensões (C4, C17, C18, C19) e 1 referência sem registro (C15).
 
 As cinco mais graves: C1 (índice de monstros errado em onze fichas), C2 (bosses fora da faixa do próprio apêndice), C5 (Andar 4 com o mesmo número em dois livros), C3 (nome de Boca que não bate com o bioma) e C11 (deuses mortos sem dono).
+
+---
+
+## 3. Propostas de texto
+
+Texto pronto para colar. Nada aqui foi aplicado a `livros/`. Cada item diz onde entra, o que está lá hoje, o que substitui e o que a mudança resolve.
+
+### C1. Índice de monstros por nível
+
+**Arquivo e seção.** `livros/LIVRO-DO-MESTRE.md`, seção "ÍNDICE RÁPIDO" (todos os monstros por nível), linhas 3250 a 3272.
+
+**Texto atual.** A linha 3 diz "Necrófago, Dragonete de Magma, Aranha Tecerrochas, Cocatriz, Hobgoblin Guerreiro". A linha 6 diz "Fera da Sombra... (nível 7)". A ficha 023, na linha 1428, diz "**Nível:** 4". A ficha 067, na linha 2910, diz "**Nível:** 8".
+
+**Texto proposto.** Substituir a tabela inteira. Os números abaixo vêm das fichas 001 a 080.
+
+| Nível | Monstros |
+|-------|----------|
+| 1 | Zumbi de Masmorra, Goblin de Caverna |
+| 2 | Esqueleto Armado, Besouro-Diamante, Mosca-Carniça Colossal, Enxame de Ratos-Cadáveres, Slime Ácido |
+| 3 | Necrófago, Dragonete de Magma, Aranha Tecerrochas, Cocatriz, Hobgoblin Guerreiro, Mímico de Baú |
+| 4 | Espectro, Armadura Animada, Escorpião Gigante, Orc de Masmorra, Slime de Cristal, Harpia de Caverna, Lagosta-Gigante Abissal, Lobo do Inverno |
+| 5 | Assombração, Drake de Pedra, Minotauro, Centopeia Cáustica, Cogumelo-Rei, Roper, Planta Carnívora Gigante, Yeti das Profundezas, Besouro-Trovão, Tubarão-Cego, Morcego-Tirano |
+| 6 | Múmia, Basilisco, Sapo-Engolidor, Gárgula de Cristal, Troll de Pedra, Salamandra Gigante, Sereia das Profundezas, Ooze Ocular |
+| 7 | Cavaleiro Espectral, Grifo, Elemental de Fogo, Elemental de Gelo, Metamorfo Dúbio, Caranguejo-Eremita, Serpente-do-Abismo, Pudim Negro, Medusa |
+| 8 | Golem de Pedra, Manticora, Treant Podre, Basilisco de Magma, Banshee, Elemental de Terra, Fera da Sombra, Bruxa da Masmorra |
+| 9 | Wyvern, Hidra das Cavernas, Ciclope, Aranha-Cavaleira, Carniçal Alado |
+| 10 | Vampiro, Autômato de Gênio, Aberração Tentacular, Kraken Menor, Verme Gigante de Pedra |
+| 11 | Quimera, Fera Seminal |
+| 12 | Golem de Ferro Vulcânico, Gigante de Pedra |
+| 13 | Dragão Jovem de Gelo, Fênix de Caverna |
+| 14 | Anjo Caído, Behemoth de Pedra |
+| 15 | Lorde Vampiro, Wyvern-Rei |
+| 16 | Aboleth |
+| 17 a 18 | Necroarca |
+| 19 | Arquidemônio Flamejante |
+| 20 | Dragão Ancião de Fogo, Devorador Ancião Filhote |
+
+**Por que resolve.** O índice passa a ter um dono único para cada nível: a ficha. Desaparecem os dois valores na mesma espécime, o "nível 7" dentro da linha 6 e a linha 9 que punha o Dragão Jovem de Gelo entre os níveis 9. Entra o que faltava: Autômato de Gênio, Mímico de Baú, Serpente-do-Abismo, Tubarão-Cego, Medusa e Fera Seminal.
+
+### C2. Bosses de andar fora da faixa
+
+**Arquivo e seção.** `livros/LIVRO-DO-MESTRE.md`, seção "APÊNDICE" (monstros exclusivos de boss por masmorra), linhas 3280 a 3286.
+
+**Texto atual.** "Masmorra 1-2 (Níveis 1-4): Hobgoblin Capitão (Nível 5), Aranha Matriarca (Nível 8)". As linhas seguintes põem Hidra e Vampiro na faixa 5-8, e Dragão Jovem e Aboleth na faixa 9-12.
+
+**Texto proposto.** Substituir as seis linhas de sugestão.
+
+```
+**Sugestão de Bosses de Andar por Masmorra:**
+A faixa entre parênteses é a da masmorra, a que o Capítulo 21 define. O nível ao lado do nome é o da ficha no bestiário. Quando o boss passa da faixa, o Mestre oferece a luta como desafio opcional no Andar 5.
+
+- Masmorra 1-2 (Níveis 1-4): Goblin de Caverna (Nível 1), Aranha Tecerrochas (Nível 3)
+- Masmorra 3-4 (Níveis 5-8): Drake de Pedra (Nível 5), Cogumelo-Rei (Nível 6), Bruxa da Masmorra (Nível 8)
+- Masmorra 5-6 (Níveis 9-12): Hidra das Cavernas (Nível 9), Kraken Menor (Nível 11), Golem de Ferro Vulcânico (Nível 12)
+- Masmorra 7-8 (Níveis 13-16): Dragão Jovem de Gelo (Nível 13), Anjo Caído (Nível 14), Behemoth de Pedra (Nível 14), Aboleth (Nível 16)
+- Masmorra 9-10 (Níveis 17-19): Necroarca (Nível 18), Arquidemônio Flamejante (Nível 19), Dragão Ancião de Fogo (Nível 20)
+- Masmorra 11, Andar 4: Devorador Ancião Filhote ou Chefe Final do D6
+```
+
+**Por que resolve.** A faixa das masmorras fica intacta, então o apêndice deixa de brigar com o Capítulo 21. Todo nível citado agora bate com a ficha correspondente. Hobgoblin Capitão e Aranha Matriarca saem da tabela porque não têm ficha entre 001 e 080; a pergunta sobre eles fica para o dono, na seção 4.
+
+### C3. Nome da Boca e bioma dominante
+
+**Arquivo e seção.** `livros/LIVRO-DO-MESTRE.md`, Capítulo 21, abertura e títulos das Masmorras 1, 7 e 10 (linhas 216, 218, 270, 272, 297 e 299).
+
+**Texto atual.** "A BOCA VERMELHA (Fornalhas Sangrentas)", seguido de "Biomas Dominantes: Fornalhas Douradas". A Boca 7 tem "O Labirinto de Espelhos" sobre "Labirinto Prismático". A Boca 10 tem "O Jardim de Carne" sobre "Deserto de Carne e Tendões".
+
+**Texto proposto.** Acrescentar no começo do capítulo, antes da Masmorra 1:
+
+```
+O nome da Boca vem da cor. O texto entre parênteses nomeia o bioma que domina os primeiros andares. Um não explica o outro. A Boca Vermelha nasce nas Fornalhas Douradas porque o minério de Kravenholm queima vermelho. A Boca Púrpura recebe a cor do Labirinto Prismático, que devolve a luz roxa da areia de Mirraga. A Boca Rosada vem da carne, não do clima.
+```
+
+Depois, trocar três títulos:
+
+```
+### MASMORRA 1 — A BOCA VERMELHA (Fornalhas Douradas)
+### MASMORRA 7 — A BOCA PÚRPURA (Labirinto Prismático)
+### MASMORRA 10 — A BOCA ROSADA (Deserto de Carne e Tendões)
+```
+
+**Por que resolve.** A regra diz o que o parênteses faz. Os três títulos passam a repetir o bioma que o próprio campo "Biomas Dominantes" já lista, então o leitor deixa de procurar uma masmorra chamada Fornalhas Sangrentas ou Labirinto de Espelhos. Nenhuma linha de bioma muda.
+
+### C5. Dois Andares 4
+
+**Arquivo e seção.** `livros/LIVRO-DO-MESTRE.md`, Capítulo 21, abertura; apoio em `livros/MUNDO-DE-ELDARIN.md` linha 38 e `livros/LIVRO-DO-JOGADOR.md` linha 1977.
+
+**Texto atual.** "Andar 4 ainda sem teoria fechada" (Mundo, Vesper) e "as respostas para todos os segredos do submundo estão no Andar 4 da Masmorra 11" (Jogador, Convento do Olho Aberto). O apêndice, na linha 3286, repete "Andar 4" junto da Masmorra 11.
+
+**Texto proposto.** Acrescentar no começo do Capítulo 21:
+
+```
+Andares repetem número entre Bocas. O Andar 4 da Boca Dourada é o Arquivo Perdido que Vesper estuda há 300 anos. O Andar 4 da Boca Vazia é a Anomalia, onde vive o Coletivo Mimético quando o D6 cai em 4. São dois lugares.
+
+Ao citar um andar, diga a Boca antes do número. "Andar 4 da Dourada" e "Andar 4 da Vazia" não são a mesma frase.
+```
+
+**Por que resolve.** Mantém os dois fatos que o livro já conta e dá a regra de leitura que faltava. Vesper continua sem entender o próprio Andar 4, o Convento continua buscando o da Masmorra 11, e ninguém precisa mudar de ideia.
+
+### C11. Deuses mortos sem dono
+
+**Arquivo e seção.** `livros/LIVRO-DO-JOGADOR.md`, Capítulo 7, depois do primeiro parágrafo sobre o panteão (linhas 1906 a 1910).
+
+**Texto atual.** "Templo a deuses mortos reconvertido em linha de processamento de santos corrompidos" (Biomas, linha 418). "Heroi que desceu, devorou os deuses locais" (Mestre, linha 321). "Amaldiçoadas por deuses já esquecidos" (Mestre, linha 2930).
+
+**Texto proposto.**
+
+```
+Valdrun, Mira e Sorn seguem em pé e respondem. Os deuses locais são outra coisa. Cada Boca teve um, enquanto a masmorra era templo. O Rei Gourmet Caído comeu os da Boca Vazia. O templo do Abatedouro Celestial pertencia a um desses, e o nome se perdeu quando o lugar virou linha de processamento.
+
+Quando um deus local morre, o que fica é a função. O altar ainda aceita oferenda, ainda devolve resposta, e a resposta sai errada. Os deuses que amaldiçoaram as Medusas eram desse tipo. Ficam fora do panteão. São os donos antigos das masmorras, mortos antes do primeiro explorador descer.
+```
+
+**Por que resolve.** Separa os deuses vivos, que o Jogador já lista, dos mortos, que não tinham dono. Uma frase explica o Abatedouro Celestial, as Medusas e o Rei Gourmet Caído ao mesmo tempo. A lista do panteão não muda.
+
+### Lacuna 1. Titãs da Prisão Gélida
+
+**Arquivo e seção.** `livros/LIVRO-DO-MESTRE.md`, Capítulo 21, Masmorra 6 (Boca Branca), campo "Lore" (linha 268). Apoio em `livros/BIOMAS-APROFUNDADOS.md`, bioma 5, campo "Origem" (linha 110).
+
+**Texto atual.** "Titãs derrotados congelados na própria masmorra como advertência; o frio é maldição residual, não inverno natural."
+
+**Texto proposto.**
+
+```
+Lore: A Boca Branca é a prisão dos titãs vencidos antes de existir reino em Eldarin. Não foram enterrados. Foram congelados dentro da própria masmorra, com a maldição de sentirem qualquer calor que passe perto. O frio que chega a -60 graus nos andares fundos é o resto dessa maldição, não inverno de montanha.
+
+Skeldhaug chama o lugar de prisão. Os exploradores chamam de mina, porque o Fragmento Primordial de Gelo paga mais que a lenda. Nenhum titã morreu. Derreter a parede onde um está preso libera uma criatura com séculos de raiva e sem memória de quem a prendeu.
+```
+
+**Por que resolve.** Dá nome, causa e estado aos titãs sem tirar nada do bioma 5. Explica por que o calor de tocha acorda as bestas nas paredes, por que a Boca Branca tem -60 graus e por que Skeldhaug vive ali. O frio deixa de ser clima e passa a ser castigo, o que o texto original já dizia e não desenvolvia.
+
+**Gancho 1.** Uma expedição de Skeldhaug contrata o grupo para buscar Fragmento Primordial de Gelo. No Andar 3, uma tocha encostada na parede desperta um titã que reconhece o brasão do Sindicato dos Exploradores e exige de volta algo roubado da prisão há séculos.
+
+**Gancho 2.** Um titã congela o grupo sem matar e começa a falar. Ele sabe o nome de quem o prendeu e oferece a entrada de uma Veia em troca de ser deixado derreter.
+
+### Lacuna 2. Origem de anjos e demônios
+
+**Arquivo e seção.** `livros/LIVRO-DO-JOGADOR.md`, Capítulo 7, depois do parágrafo de abertura (linha 1906). Apoio em `livros/LIVRO-DO-MESTRE.md`, fichas 048 e 074 (linhas 2402 e 3040), e `livros/BIOMAS-APROFUNDADOS.md`, bioma 20 (linhas 416 a 420).
+
+**Texto atual.** "Criaturas angelicas e demoniacas aparecem literalmente nas profundezas" (Jogador). "Raramente chegam ao plano material" (Mestre, Arquidemônio). As duas frases cabem, mas nenhuma diz de onde vêm.
+
+**Texto proposto.**
+
+```
+Anjos e demônios não nascem nas masmorras. Vêm de planos acima e abaixo de Eldarin, e chegam de dois jeitos. Mira deixa cair os que ela expulsa do plano dela. Aterrissam na Boca Laranja com as asas ainda acesas e o corpo intacto. O contato com a energia necrótica do submundo corrói a mente em pouco tempo. O que sobra é o Anjo Caído: a forma continua bela, a fala já não é sua.
+
+Os demônios sobem por fenda. Alguém abre, convoca e abandona. O Arquidemônio Flamejante do Abatedouro Celestial chegou assim e não volta enquanto a fenda não fechar. Por isso aparecem pouco no plano material. Quase toda chegada é acidente de ritual, não invasão.
+
+O Abatedouro Celestial processa os dois. O templo que virou linha de processamento pega o anjo caído e o transforma em demônio portal. A água benta virou solvente porque os sacerdotes tentaram limpar a queda e acabaram apressando a corrupção.
+```
+
+**Por que resolve.** Dá uma origem separada para cada lado e uma explicação para o ciclo do bioma 20, que hoje lista "oferendas, quimeras sagradas, anjos caídos, demônios portais" sem dizer quem faz o serviço. Concilia as duas frases do texto atual: os anjos "aparecem nas profundezas" porque caem, os arquidemônios "raramente chegam" porque precisam de uma fenda aberta por alguém.
+
+**Gancho 1.** Um anjo cai na Boca Laranja com uma mensagem intacta para Mira. O grupo atravessa o Abatedouro Celestial antes que o solvente apague as palavras, e precisa escolher entre entregar o anjo a um altar que o transforma em demônio ou deixá-lo morrer com a mensagem por entregar.
+
+**Gancho 2.** Um demônio de fenda aparece em Salmour e reconhece um dos personagens pelo nome. Cobra uma dívida de um ritual que o grupo nunca fez. A fenda liga com a Boca Azul e só fecha quando alguém descobre quem abriu a convocação e saiu correndo.
+
+### Lacuna 3. Corsários de Cripta
+
+**Arquivo e seção.** `livros/LIVRO-DO-MESTRE.md`, ficha 002 (Esqueleto Armado), campo "Lore" (linha 582). Apoio em `livros/LIVRO-DO-JOGADOR.md` linhas 1004 e 2528 a 2540.
+
+**Texto atual.** "Os Corsários de Cripta os valorizam imensamente: a medula comprimida dentro de fêmures tão antigos tem propriedades únicas." O Jogador descreve a dieta e os talentos da subclasse, mas não diz quem são nem onde ficam.
+
+**Texto proposto.**
+
+```
+Lore: Os Corsários de Cripta vivem nas Bocas Negra e Dourada e não roubam ouro. Roubam os mortos. Um fêmur de 400 anos, polido pelo uso, rende mais em caldo de resistência que qualquer moeda. Eles cozinham o que o resto de Eldarin chama de impuro.
+
+A entrada no grupo tem um rito. O candidato passa a noite deitado entre esqueletos armados, sem se mover, até o amanhecer. Quem levanta antes é morto e vira parte da cripta. Quem fica ganha o Sussurro de Tumba e o direito de carregar um osso milenar no cinto.
+
+Os magos de batalha que criaram as legiões de esqueletos não deixaram herdeiros. Os Corsários dizem que são eles. Nenhum esqueleto confirmou.
+```
+
+**Por que resolve.** Transforma uma subclasse que só tinha regra num povo com lugar, rito e costume de mesa. Explica por que o Fêmur Milenar é o ingrediente predileto deles, por que fingir de morto é parte da dieta e por que os esqueletos de 400 anos ainda marcham: alguém continua comandando e alimentando essas legiões.
+
+**Gancho 1.** Um Corsário rouba o fêmur de um esqueleto que o grupo rastreava e deixa um recado escrito em pó de osso: o osso era do avô dele. Para entrar na cripta e recuperar a peça, o grupo precisa passar a noite imóvel entre os esqueletos sem disparar o alarme social.
+
+**Gancho 2.** Um esqueleto armado de 400 anos começa a obedecer a uma ordem nova. A ordem veio de um Corsário morto na semana passada e ainda comanda a legião por causa de um Sussurro de Tumba preso no osso do cinto dele.
+
+---
+
+## 4. Perguntas para o dono
+
+1. C1: as fichas 001 a 080 são a fonte do índice, ou existe outra fonte que deva vencer?
+2. C2: Hobgoblin Capitão e Aranha Matriarca ganham ficha nova no bestiário ou saem do apêndice para sempre?
+3. C3: o texto entre parênteses no título da Boca passa a ser sempre o bioma dominante? Confirma Fornalhas Douradas, Labirinto Prismático e Deserto de Carne e Tendões?
+4. C5: "Andar 4 da Dourada" e "Andar 4 da Vazia" são lugares diferentes, como a proposta diz?
+5. C11: os deuses locais entram só no lore das masmorras ou aparecem também na lista do Capítulo 7? Algum deles ainda responde a altar?
+6. Titãs: quem venceu os da Boca Branca, Valdrun ou outro nome? São quantos? A resposta muda o texto proposto da Lacuna 1.
+
