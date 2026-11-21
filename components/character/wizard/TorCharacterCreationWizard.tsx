@@ -149,11 +149,8 @@ export function TorCharacterCreationWizard({
         if (!draft.virtue) return "Escolha uma Virtude";
         return null;
       case "Equipamento": {
-        for (const prof of activeCombatProficiencies(draft)) {
-          if (!draft.weaponChoices[prof]) {
-            return `Falta escolher a arma de ${COMBAT_PROFICIENCY_LABEL[prof]} (Proficiência de Combate)`;
-          }
-        }
+        // Livro (03-aventureiros.md:809): o herói iniciante PODE escolher uma arma para cada
+        // Proficiência de Combate; não é obrigatório.
         if (!draft.armourId) return "Escolha uma armadura inicial";
         return null;
       }

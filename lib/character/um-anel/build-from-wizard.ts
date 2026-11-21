@@ -89,7 +89,10 @@ export function buildTorCharacterFromWizard(
     especializado ?? calling.traitId,
   ];
 
-  const warGear: TorWarGearItem[] = activeCombatProficiencies(draft).map((prof) => {
+  // Arma por proficiência é opcional no livro: só entram as escolhidas.
+  const warGear: TorWarGearItem[] = activeCombatProficiencies(draft)
+    .filter((prof) => Boolean(draft.weaponChoices[prof]))
+    .map((prof) => {
     const weaponId = draft.weaponChoices[prof]!;
     const weapon = WEAPON_BY_ID[weaponId];
     return {
