@@ -186,9 +186,137 @@ O que mudou em relacao a Etapa 1:
 - Premissas que mexem nos numeros: CA alvo 12 (faixa 10 a 14); alvo com mod CON 0 no salvo do Feiticeiro; base de 1d4 no Golpe de Chi (nao confirmada no codigo); cone do Feiticeiro contado como um alvo; critico (codigo dobra dados; livro diz dano dobrado).
 - Opiniao: que Barbaro, Feiticeiro, Espiritualista e Paladino "estao fortes demais" depende de quanto a mesa vale alcance, controle e area. O Feiticeiro pode ter area (cone) que este calculo nao conta. O Mago com limite de estribilho pode ser desenho e nao bug. Isso fica para a Etapa 3 e para a mesa decidir.
 
+## 3. Niveis 5 e 10
+
+Script: `scratchpad/balance/etapa3-calc.js`. Contagem e CA dos monstros: `etapa3-distribuicao-ca.js`. Nada aqui foi aplicado a `livros/`, `data/` ou `lib/`.
+
+### 3.1 Premissas (fato do livro e do codigo, salvo onde marcado)
+
+- Atributos: os mesmos da secao 2.1. O livro da talentos de subclasse nos niveis 4, 8, 12 e 16 (linha 2063), sem aumento de atributo. No codigo, so o Humano nv. 4 recebe +1 em dois atributos (level-up.ts, linhas 38 e 130). Sem aumento, os modificadores nao mudam entre os niveis 1, 5 e 10.
+- Bonus de proficiencia: +3 no nivel 5 e +4 no nivel 10. Tabela do livro (linhas 81 a 87) e `proficiencyBonus` (rules.ts, linhas 509 a 515) concordam.
+- CA alvo: mediana da CA dos monstros de ameca igual ao nivel em `data/compendiums/monstros.json`. Nivel 5: 15, de 11 monstros com CA entre 11 e 16. Nivel 10: 18,5, de 4 monstros (18, 18, 19, 20). Mesmo criterio da secao 2, que usou a mediana de ameca 1 e 2. A media aritmetica e 14,64 no nivel 5 e 18,75 no nivel 10. Sensibilidade em 3.5.
+- Ataque e critico: mesmas regras da secao 2. Arma custa 2 PA (`PA_DEFAULT_ACTION_COST`, pa-economy.ts, linha 19), 5 PA dao 2 golpes e 9 PA dao 4. Critico rola o dado de novo e soma o modificador uma vez (`rollActionDamage`, attack.ts, linhas 534 a 548).
+- Ataque Extra do Guerreiro: o codigo conta 2 golpes por acao no nivel 5 (`extraAttackCount`, rules.ts, linhas 647 a 653), mas `totalAttackPaCost` (pa-cost-reduce.ts, linhas 184 a 208) soma 2 PA por golpe, porque `CLASS_PA_FEATURES` nao tem economia marcial para o Guerreiro. Por isso o dano por PA nao muda. A divergencia com o livro esta em D8.
+- Vida: `hpMaxFor` (rules.ts, linhas 521 a 526), dado maximo + CON no nivel 1 e dado medio + CON em cada nivel seguinte. Arma e armadura continuam as do kit padrao, sem upgrade.
+- Defesa: mesma conta da secao 2 (armor-defense.ts). Nao muda com o nivel.
+- Mago: Lamina de Espirito, 1 PA, limite de 2 conjuracoes do mesmo truque por turno. 5 PA e 9 PA dao o mesmo dano.
+- Feiticeiro: primeira magia de 2+ PA por turno custa 1 PA a menos no nivel 5 (`CLASS_PA_FEATURES`, pa-modifiers.json, linhas 72 a 96). Canal de +1d6 por PA extra, ate 2 PA extra. Alvo com CON 0: CD 10 no nivel 5 e 11 no nivel 10 (8 + prof + INT -1, com INT -1 do point-buy). Dano esperado = fracao que falha no salvo vezes dano cheio, mais fracao que passa vezes metade. Cada PA extra vira 1d6, entao qualquer distribuicao entre conjuracoes da o mesmo total: 6d6 com 5 PA (21 de dano cheio) e 10d6 com 9 PA (35 de dano cheio).
+- Espiritualista: teto de 2 Chi por turno (`chi-economy.ts`, linha 8), sem desconto de Fluxo Marcial no codigo. 5 PA = 2 golpes de Chi e 1 desarmado. 9 PA = 2 golpes de Chi e 3 desarmados.
+- Fora da conta principal: Golpe Oportunista do Ladino, Golpe Sagrado do Paladino, Inspiracao do Bardo, talentos de subclasse e efeitos de comida. Dependem de situacao de mesa ou de escolha de subclasse, mesma premissa da secao 2.
+
+### 3.2 Tabela do nivel 5 (CA 15, prof +3)
+
+| Classe | Acao do kit | Acerto vs CA 15 | Dano por ataque | Dano 5 PA | Dano 9 PA | Dano/PA (9 PA) | Vida | Defesa |
+|---|---|---|---|---|---|---|---|---|
+| Guerreiro | Lamina de Vinha 1d6 | 45% | 2,65 | 5,3 | 10,6 | 1,18 | 44 | 13 |
+| Patrulheiro | Arco Curto de Cacador 1d6 | 55% | 3,20 | 6,4 | 12,8 | 1,42 | 44 | 13 |
+| Ladino | Rapieira 1d8 | 30% | 1,27 | 2,55 | 5,1 | 0,57 | 38 | 13 |
+| Mago | Lamina de Espirito 1d4, 1 PA | 55% | 2,60 | 5,2 | 5,2 | 0,58 | 32 | 12 |
+| Clerigo | Maca de Guerra 2d6 | 40% | 2,75 | 5,5 | 11,0 | 1,22 | 38 | 13 |
+| Barbaro | Machado Grande 1d12 | 55% | 5,00 | 10,0 | 20,0 | 2,22 | 50 | 13 |
+| Bardo | Rapieira 1d8 | 40% | 1,63 | 3,25 | 6,5 | 0,72 | 38 | 13 |
+| Druida | Cimitarra 1d6 + veneno 1d4 | 40% | 2,30 | 4,6 | 9,2 | 1,02 | 38 | 13 |
+| Feiticeiro | Maos Geladas, salvo CON (CD 10) | falha 45% | 21 cheio em 5 PA | 15,23 | 25,38 | 2,82 | 32 | 13 |
+| Espiritualista | Golpe de Chi + desarmado | 40% | 3,55 | 7,82 | 9,27 | 1,03 | 38 | 13 |
+| Paladino | Espada Longa 1d8 | 55% | 3,80 | 7,6 | 15,2 | 1,69 | 44 | 12 |
+| Bruxo | Adaga de Masmorra 1d4 | 40% | 0,72 | 1,45 | 2,9 | 0,32 | 38 | 13 |
+
+Como ler: os numeros de dano ja incluem acerto, falha e critico. Feiticeiro nao rola ataque, usa salvo, e o dano da coluna e o esperado com metade do dano quando o alvo passa. Espiritualista: 5 PA = 2 golpes de Chi e 1 desarmado; 9 PA = 2 golpes de Chi e 3 desarmados. Mago: limite de 2 truques iguais por turno, entao 5 PA e 9 PA dao o mesmo.
+
+### 3.3 Tabela do nivel 10 (CA 18,5, prof +4)
+
+| Classe | Acao do kit | Acerto vs CA 18,5 | Dano por ataque | Dano 5 PA | Dano 9 PA | Dano/PA (9 PA) | Vida | Defesa |
+|---|---|---|---|---|---|---|---|---|
+| Guerreiro | Lamina de Vinha 1d6 | 30% | 1,82 | 3,65 | 7,3 | 0,81 | 84 | 13 |
+| Patrulheiro | Arco Curto de Cacador 1d6 | 40% | 2,38 | 4,75 | 9,5 | 1,06 | 84 | 13 |
+| Ladino | Rapieira 1d8 | 15% | 0,75 | 1,5 | 3,0 | 0,33 | 73 | 13 |
+| Mago | Lamina de Espirito 1d4, 1 PA | 40% | 1,93 | 3,85 | 3,85 | 0,43 | 62 | 12 |
+| Clerigo | Maca de Guerra 2d6 | 25% | 1,85 | 3,7 | 7,4 | 0,82 | 73 | 13 |
+| Barbaro | Machado Grande 1d12 | 40% | 3,73 | 7,45 | 14,9 | 1,66 | 95 | 13 |
+| Bardo | Rapieira 1d8 | 25% | 1,10 | 2,2 | 4,4 | 0,49 | 73 | 13 |
+| Druida | Cimitarra 1d6 + veneno 1d4 | 25% | 1,55 | 3,1 | 6,2 | 0,69 | 73 | 13 |
+| Feiticeiro | Maos Geladas, salvo CON (CD 11) | falha 50% | 21 cheio em 5 PA | 15,75 | 26,25 | 2,92 | 62 | 13 |
+| Espiritualista | Golpe de Chi + desarmado | 25% | 2,35 | 5,2 | 6,2 | 0,69 | 73 | 13 |
+| Paladino | Espada Longa 1d8 | 40% | 2,83 | 5,65 | 11,3 | 1,26 | 84 | 12 |
+| Bruxo | Adaga de Masmorra 1d4 | 25% | 0,50 | 1,0 | 2,0 | 0,22 | 73 | 13 |
+
+### 3.4 Medianas e fora da curva
+
+Nivel 5:
+- Medianas: dano 5 PA = **5,4**; dano 9 PA = **9,94**; dano por PA = **1,11**; vida = **38**; defesa = **13**.
+- Limites de 25 por cento: dano 5 PA entre 4,05 e 6,75; dano 9 PA entre 7,45 e 12,42; dano por PA entre 0,83 e 1,38; vida entre 28,5 e 47,5.
+
+Fora da curva no dano com 5 PA:
+
+| Classe | Valor | Mediana | Desvio |
+|---|---|---|---|
+| Feiticeiro | 15,23 | 5,4 | +182% |
+| Barbaro | 10,0 | 5,4 | +85% |
+| Espiritualista | 7,82 | 5,4 | +45% |
+| Paladino | 7,6 | 5,4 | +41% |
+| Bruxo | 1,45 | 5,4 | -73% |
+| Ladino | 2,55 | 5,4 | -53% |
+| Bardo | 3,25 | 5,4 | -40% |
+
+No dano com 9 PA e no dano por PA, as mesmas classes entram ou saem da faixa conforme o valor. Patrulheiro entra acima (12,8 em 9 PA, +29%; 1,42 por PA, +29%). Mago entra abaixo (5,2 em 9 PA e 0,58 por PA, -48% nos dois), por causa do limite de 2 truques. Em vida, so o Barbaro sai (50, +32%). Em defesa, ninguem sai: 12 ou 13 em todas as classes.
+
+Nivel 10:
+- Medianas: dano 5 PA = **3,78**; dano 9 PA = **6,75**; dano por PA = **0,75**; vida = **73**; defesa = **13**.
+- Limites de 25 por cento: dano 5 PA entre 2,83 e 4,72; dano 9 PA entre 5,06 e 8,44; dano por PA entre 0,56 e 0,94; vida entre 54,75 e 91,25.
+
+Fora da curva no dano com 5 PA:
+
+| Classe | Valor | Mediana | Desvio |
+|---|---|---|---|
+| Feiticeiro | 15,75 | 3,78 | +317% |
+| Barbaro | 7,45 | 3,78 | +97% |
+| Paladino | 5,65 | 3,78 | +50% |
+| Espiritualista | 5,2 | 3,78 | +38% |
+| Patrulheiro | 4,75 | 3,78 | +26% |
+| Bruxo | 1,0 | 3,78 | -74% |
+| Ladino | 1,5 | 3,78 | -60% |
+| Bardo | 2,2 | 3,78 | -42% |
+
+No dano com 9 PA e no dano por PA, Patrulheiro sobe para +41% e entra tambem nessas duas colunas. Mago entra abaixo (3,85 em 9 PA e 0,43 por PA, -43%). Em vida, so o Barbaro sai (95, +30%). Em defesa, ninguem sai.
+
+### 3.5 O que mudou em relacao ao nivel 1
+
+- Medianas de dano caem. Dano 5 PA: 6,55 no nivel 1, 5,4 no 5, 3,78 no 10. Dano 9 PA: 12,06, 9,94 e 6,75. Dano por PA: 1,34, 1,11 e 0,75. Motivo: a CA dos monstros vai de 12 para 15 e 18,5, enquanto a proficiencia sobe so de +2 para +3 e +4. Sem upgrade de arma, o acerto cai mais do que o bonus sobe.
+- Vida sobe. Mediana: 10, 38 e 73. A conta do codigo da 4 HP a mais que a conta rapida do livro nas classes de d10, 3 nas de d8, 2 nas de d6 e 5 nas de d12 (D10).
+- Barbaro continua no topo de dano e de vida. Desvio de dano 5 PA: +79%, +85%, +97%. Desvio de vida: +40%, +32%, +30%, porque a mediana sobe junto.
+- Feiticeiro se afasta. Desvio de dano 5 PA: +87%, +182%, +317%. Dois motivos: a CD do salvo sobe de 9 para 10 e 11, e a primeira magia ganha desconto de 1 PA a partir do nivel 5.
+- Paladino sobe: +36%, +41%, +50%. A arma de 1d8 com FOR +2 sente menos a subida de CA do que as armas fracas.
+- Espiritualista continua fora, mas o desvio encolhe: +46%, +45%, +38%. O desarmado perde acerto mais rapido que o golpe de Chi.
+- Patrulheiro entra na faixa ruim no nivel 10: +15%, +19%, +26% no dano 5 PA. No dano 9 PA ja estava na borda no nivel 1 (+24%) e entra fora no 5 (+29%) e no 10 (+41%). O alcance 11 e a DES +2 mantem o acerto enquanto os corpos a corpo caem.
+- Mago fica dentro no dano 5 PA (-7%, -4%, +2%), mas continua fora no dano por PA (-49%, -48%, -43%) pelo limite de 2 truques por turno.
+- Ladino, Bardo e Bruxo pioram e continuam fora. Ladino: -50%, -53%, -60%. Bardo: -40%, -40%, -42%. Bruxo: -73%, -73%, -74%. Todos com FOR -1 e arma de d8 ou d4.
+- Clerigo, Druida e Guerreiro ficam dentro nos tres niveis. Clerigo: +2%, +2%, -2%. Druida: -15%, -15%, -18%. Guerreiro: -2%, -2%, -3%. O Ataque Extra do Guerreiro nao muda o dano por PA no codigo.
+- Defesa: 12 ou 13 em todas as classes nos tres niveis. Nenhuma fora da curva.
+
+Sensibilidade a CA (mesmo script, so troca a CA alvo): com CA 14,64 no nivel 5, a media aritmetica, nenhum numero muda, porque os limiares inteiros de acerto caem no mesmo lugar. Com CA 18 no nivel 10, que e a mediana de ameca 10 e 11 juntos, Patrulheiro volta para 5,3 em 5 PA (+23%, dentro), Mago e Clerigo ficam em 4,3 (0%), e o Barbaro sobe para 8,3 (+93%). Feiticeiro nao muda, porque o salvo usa CD e nao a CA. O conjunto de classes fora da curva so perde o Patrulheiro no dano 5 PA e mantem ele fora no dano 9 PA (+36%).
+
+### 3.6 Divergencias livro x codigo (D8 em diante)
+
+Estas continuam a serie D1 a D7 da secao 2.5 e tambem entram em "06 Bugs ao vivo" depois que a conta fechar.
+
+- D8. Guerreiro, PA por golpe no nivel 5. Livro Cap. 4 (linha 944) diz 1 PA por golpe; livro Cap. 3.1.1 (linha 267) diz 2 PA, igual ao codigo (`warriorFlatWeaponPaPerHit` retorna false, pa-cost-reduce.ts, linha 136). Ha contradicao dentro do livro. Efeito: se valer 1 PA, o Guerreiro da 5 golpes com 5 PA e 9 com 9 PA. O dano 5 PA passa de 5,3 para 13,25 no nivel 5 e de 3,65 para 9,1 no nivel 10.
+- D9. Guerreiro, "+1 PA max" no nivel 5. Tabela de progressao do Guerreiro (linha 939) promete +1 de PA maximo. Cap. 3.1.1 (linha 259) diz recuperacao fixa de 5 PA. Codigo: `paRecoveryPerTurn` ignora o nivel (pa-economy.ts, linhas 45 a 48). Esta secao usou 5 e 9 PA como pedido; se valer o +1, o turno comum passa a 6 PA.
+- D10. Vida por nivel. Livro (linha 92): dado medio vezes nivel, mais MOD CON vezes nivel. Codigo (`hpMaxFor`, rules.ts, linhas 521 a 526): dado maximo no nivel 1 e dado medio nos seguintes. Diferenca constante de maximo menos medio: 4 nas classes de d10, 3 nas de d8, 2 nas de d6 e 5 nas de d12. No nivel 10, Barbaro fica em 95 no codigo e 90 no livro; Mago, 62 e 60.
+- D11. Ladino, Golpe Oportunista. Livro (linha 994) escala de 1d6 para 10d6 no nivel 20; no nivel 5 sao 3d6 e no 10, 5d6, numeros repetidos em `classLevelFeatures` (rules.ts, linhas 590 a 595). No codigo, o dano extra de furtivo em `resolveAttack` (attack.ts, linha 848) so vale para monstro goblin (`isGoblinMonster`), nunca para jogador Ladino. Por isso a tabela nao inclui furtivo. O impacto depende de quantas vezes por turno o furtivo vale, regra que o codigo nao resolve para jogador.
+- D12. Espiritualista, Fluxo Marcial. `classLevelFeatures` (rules.ts, linha 608) anuncia no nivel 5 que a primeira tecnica de Chi custa 1 Chi a menos. O livro nao tem essa regra. `chi-economy.ts` mantem o teto de 2 Chi por turno (linha 8) e nao implementa desconto. A tabela por isso mantem 2 golpes de Chi no 5 e no 10. Se o desconto valesse, seriam 3 golpes (0 + 1 + 1 Chi) e o dano 5 PA subiria de 7,82 para 11,38 no nivel 5 e de 5,2 para 7,55 no nivel 10.
+- D13. Paladino, Golpe Sagrado. Livro (linhas 1199 a 1203) chama de Golpe Sagrado e da 2d8 no nivel 2, 3d8 no 5, 4d8 no 9. Codigo (`classLevelFeatures`, rules.ts, linhas 617 a 624) chama de Golpe do Juramento e usa os mesmos dados. Nenhum dos dois aplica esse dano extra na resolucao de ataque do codigo. A tabela considera so a Espada Longa. Nao ha numero seguro para o efeito, porque o livro nao diz se o extra vale uma vez por turno ou por golpe.
+
+Nao e divergencia nesta etapa: Afinidade da primeira magia de 2+ PA (livro linha 268 e `CLASS_PA_FEATURES`, pa-modifiers.json, linhas 72 a 96, batem, inclusive o limite de uma vez por turno); teto de 2 Chi por turno (livro linha 1167 e chi-economy.ts, linha 8); limite de 2 truques iguais por turno (livro linha 269).
+
+### 3.7 Fato x opiniao
+
+- Fato calculado: tabelas 3.2 e 3.3, medianas e limites de 3.4, comparacoes de 3.5, sensibilidade de 3.5 e as contas de D8 a D13.
+- Premissas que mexem nos numeros: CA 15 e 18,5; sem upgrade de arma ou armadura; sem talentos e sem subclasse; alvo com CON 0 no salvo do Feiticeiro; um alvo por magia de area; 2 PA por golpe do Guerreiro; furtivo e Golpe Sagrado fora da conta.
+- Opiniao: a queda das medianas e o desvio do Feiticeiro podem ser desenho para pagar area e controle, ou podem mostrar que a CA sobe rapido demais para quem ataca com arma. O calculo nao decide isso. Falta comparar com turnos contra bestiario real e com subclasses, que e o restante da Etapa 3.
+
 ## Andamento
 
 - [x] Etapa 1 - tabela-base nivel 1 (este arquivo, secao 1). Corrigida na Etapa 2 (secao 2.0).
 - [x] Etapa 2 - nivel 1 com atributos, acerto, magia e Chi (secao 2). Feiticeiro e Espiritualista calculados; Clerigo e Druida conferidos com o livro (2.4); divergencias D1 a D7 em 2.5.
-- [ ] Etapa 3 - o restante: subclasses, niveis 5, 10 e maximo, turnos contra bestiario, propostas de ajuste.
-- [ ] Etapa 3 - maximo, turnos contra bestiario, propostas de ajuste.
+- [x] Etapa 3, parte 1 - niveis 5 e 10 (secao 3). Divergencias D8 a D13 em 3.6.
+- [ ] Etapa 3, parte 2 - subclasses, nivel maximo, turnos contra bestiario e propostas de ajuste.
