@@ -3,12 +3,22 @@ import "server-only";
 import Link from "next/link";
 
 import { getUserById } from "@/lib/auth/user-store";
-import type { RoomActor } from "@/lib/room/types";
 
 import "./adventure-player-sheets.css";
 
+/** Ficha de jogador na lista da aventura. Vale para Eldarin (RoomActor) e Um Anel. */
+export type AdventurePlayerSheetItem = {
+  id: string;
+  name: string;
+  ownerId: string;
+  portraitUrl?: string | null;
+  tokenImageUrl?: string | null;
+  /** Texto curto ao lado do jogador, ex.: "nv 1 Guerreiro" ou "Capitão". */
+  meta: string;
+};
+
 type Props = {
-  characters: RoomActor[];
+  characters: AdventurePlayerSheetItem[];
 };
 
 async function resolveOwnerDisplayNames(ownerIds: string[]): Promise<Map<string, string>> {
@@ -16,14 +26,15 @@ async function resolveOwnerDisplayNames(ownerIds: string[]): Promise<Map<string,
   const entries = await Promise.all(
     unique.map(async (ownerId) => {
       const user = await getUserById(ownerId);
-      const displayName = user?.nickname?.trim() || user?.name?.trim() || "Jogador";
+      // Só apelido: o nome real da conta nunca aparece para outro usuário.
+      const displayName = user?.nickname?.trim() || "Jogador";
       return [ownerId, displayName] as const;
     })
   );
   return new Map(entries);
 }
 
-function CharacterToken({ actor }: { actor: RoomActor }) {
+function CharacterToken({ actor }: { actor: AdventurePlayerSheetItem }) {
   const imageUrl = actor.tokenImageUrl ?? actor.portraitUrl;
   const initial = actor.name.trim().slice(0, 1).toUpperCase() || "?";
 
@@ -46,9 +57,6 @@ export async function AdventurePlayerSheetsList({ characters }: Props) {
     <ul className="adventure-player-sheets">
       {characters.map((actor) => {
         const playerName = ownerNames.get(actor.ownerId) ?? "Jogador";
-        const level = actor.identity?.nivel ?? "?";
-        const className = actor.identity?.classe ?? "";
-
         return (
           <li key={actor.id} className="adventure-player-sheets__row">
             <CharacterToken actor={actor} />
@@ -58,9 +66,7 @@ export async function AdventurePlayerSheetsList({ characters }: Props) {
               </Link>
               <span className="adventure-player-sheets__meta">
                 <span className="adventure-player-sheets__player">{playerName}</span>
-                {" · nv "}
-                {level}
-                {className ? ` ${className}` : ""}
+                {actor.meta ? ` · ${actor.meta}` : ""}
               </span>
             </div>
           </li>

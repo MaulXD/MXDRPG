@@ -30,7 +30,18 @@ import { ensureAdventureMembership, getAdventure, joinAdventureByInvite } from "
 import { getRoom } from "@/lib/room/store";
 
 import type { RoomActor } from "@/lib/room/types";
-import { AdventurePlayerSheetsList } from "@/components/adventure/AdventurePlayerSheetsList";
+import type { CharacterSheet } from "@/lib/character/types";
+import type { TorCharacterSheet } from "@/lib/character/um-anel/types";
+import { CALLING_BY_ID } from "@/lib/character/um-anel/data";
+import {
+  listTorCharactersForAdventure,
+  listTorCharactersForSessionUserSafe,
+  MAX_TOR_CHARACTERS_PER_USER,
+} from "@/lib/character/um-anel/characters";
+import {
+  AdventurePlayerSheetsList,
+  type AdventurePlayerSheetItem,
+} from "@/components/adventure/AdventurePlayerSheetsList";
 import { MedievalFrame } from "@/components/ui/MedievalFrame";
 import { pageMetadata } from "@/lib/site-metadata";
 import { MESAS_HUB_PATH, RPG_SYSTEMS, rpgMesasPath } from "@/lib/rpg/systems";
@@ -72,6 +83,45 @@ function playerActors(actors: Record<string, RoomActor>): RoomActor[] {
 }
 
 
+
+function levelMeta(nivel: string | number | null | undefined, classe: string | null | undefined): string {
+  const cls = classe?.trim() ? ` ${classe.trim()}` : "";
+  return `nv ${nivel ?? "?"}${cls}`;
+}
+
+function charSheetToPlayerItem(c: CharacterSheet): AdventurePlayerSheetItem {
+  return {
+    id: c.id,
+    name: c.name,
+    ownerId: c.ownerId,
+    portraitUrl: c.portraitUrl,
+    tokenImageUrl: c.tokenImageUrl,
+    meta: levelMeta(c.identity?.nivel, c.identity?.classe),
+  };
+}
+
+function roomActorToPlayerItem(actor: RoomActor): AdventurePlayerSheetItem {
+  return {
+    id: actor.id,
+    name: actor.name,
+    ownerId: actor.ownerId,
+    portraitUrl: actor.portraitUrl,
+    tokenImageUrl: actor.tokenImageUrl,
+    meta: levelMeta(actor.identity?.nivel, actor.identity?.classe),
+  };
+}
+
+/** Ficha do Um Anel: não tem nível; a linha mostra a Vocação (Chamado). */
+function torSheetToPlayerItem(c: TorCharacterSheet): AdventurePlayerSheetItem {
+  return {
+    id: c.id,
+    name: c.name,
+    ownerId: c.ownerId,
+    portraitUrl: c.portraitUrl,
+    tokenImageUrl: c.tokenImageUrl,
+    meta: CALLING_BY_ID[c.calling]?.name ?? "",
+  };
+}
 
 export default async function AventuraHubPage({ params, searchParams }: Props) {
 
@@ -205,11 +255,19 @@ export default async function AventuraHubPage({ params, searchParams }: Props) {
     if (fresh) room = await getRoom(fresh.primaryRoomId);
   }
 
-  let myChars: Awaited<ReturnType<typeof listCharactersForSessionUserInAdventureSafe>> = [];
+  const isUmAnel = adventure.rpgSystemId === "um-anel";
+
+  let myChars: AdventurePlayerSheetItem[] = [];
 
   try {
 
-    myChars = await listCharactersForSessionUserInAdventureSafe(accountUser, adventureId);
+    if (isUmAnel) {
+      const mine = await listTorCharactersForSessionUserSafe(accountUser);
+      myChars = mine.filter((c) => c.adventureId === adventureId).map(torSheetToPlayerItem);
+    } else {
+      const mine = await listCharactersForSessionUserInAdventureSafe(accountUser, adventureId);
+      myChars = mine.map(charSheetToPlayerItem);
+    }
 
   } catch (e) {
 
@@ -219,9 +277,19 @@ export default async function AventuraHubPage({ params, searchParams }: Props) {
 
   const charCount = myChars.length;
 
-  const canCreateChar = charCount < MAX_CHARACTERS_PER_USER_PER_ADVENTURE;
+  // Um Anel não tem limite por aventura; o limite global de fichas fica no wizard.
+  const canCreateChar = isUmAnel || charCount < MAX_CHARACTERS_PER_USER_PER_ADVENTURE;
 
-  const allPlayerChars = room ? playerActors(room.actors) : [];
+  let allPlayerChars: AdventurePlayerSheetItem[] = [];
+  if (isUmAnel) {
+    try {
+      allPlayerChars = (await listTorCharactersForAdventure(adventureId)).map(torSheetToPlayerItem);
+    } catch (e) {
+      console.error("[aventura] falha ao listar fichas do Um Anel:", e);
+    }
+  } else {
+    allPlayerChars = room ? playerActors(room.actors).map(roomActorToPlayerItem) : [];
+  }
 
   const mesaId = mesaFromQuery ?? adventure.primaryRoomId;
 
@@ -449,7 +517,10 @@ export default async function AventuraHubPage({ params, searchParams }: Props) {
 
         <p style={{ color: "var(--text-muted)", fontSize: "0.9rem", margin: "0 0 1rem" }}>
 
-          Máx. {MAX_CHARACTERS_PER_USER_PER_ADVENTURE} por jogador nesta mesa — vinculado à conta{" "}
+          {isUmAnel
+            ? `Até ${MAX_TOR_CHARACTERS_PER_USER} fichas do Um Anel por conta`
+            : `Máx. ${MAX_CHARACTERS_PER_USER_PER_ADVENTURE} por jogador nesta mesa`}{" "}
+          — vinculado à conta{" "}
 
           <strong>{accountUser.nickname?.trim() || accountUser.name}</strong>. Crie na sala VTT ou aqui.
 
@@ -471,7 +542,7 @@ export default async function AventuraHubPage({ params, searchParams }: Props) {
 
                   {" "}
 
-                  · nv {c.identity?.nivel ?? "?"} {c.identity?.classe ?? ""}
+                  {c.meta ? `· ${c.meta}` : ""}
 
                 </span>
 
