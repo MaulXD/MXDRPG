@@ -6,6 +6,7 @@ import {
   useContext,
   useEffect,
   useMemo,
+  useRef,
   useState,
   type ReactNode,
 } from "react";
@@ -16,6 +17,8 @@ import "./friends.css";
 // P-01: um único pedido (/api/friends/pulse) a cada 15 s, só com a aba visível.
 // Com a mesa parada antes eram 27 pedidos/min por jogador (4 s + 10 s + 10 s).
 const PULSE_MS = 15_000;
+/** Leitura ao voltar para a aba: uma segunda chegando antes desse tempo (visibilitychange + focus) é ignorada. */
+const JANELA_LEITURA_VISIVEL_MS = 2_000;
 const fetchOpts = { credentials: "same-origin" as const, cache: "no-store" as const };
 
 type FriendsChatContextValue = {
@@ -139,6 +142,8 @@ export function FriendsChatProvider({ children, initialUserId = null }: Provider
     });
   }, []);
 
+  const ultimaLeituraVisivelRef = useRef(0);
+
   useEffect(() => {
     // Com initialUserId vindo do servidor (layout), não há o que buscar em /api/auth/me.
     if (initialUserId) {
@@ -170,7 +175,12 @@ export function FriendsChatProvider({ children, initialUserId = null }: Provider
         stop();
         return;
       }
-      void refreshUnread();
+      // visibilitychange e focus costumam disparar juntos ao voltar: a segunda vez não relê.
+      const agora = Date.now();
+      if (agora - ultimaLeituraVisivelRef.current >= JANELA_LEITURA_VISIVEL_MS) {
+        ultimaLeituraVisivelRef.current = agora;
+        void refreshUnread();
+      }
       start();
     };
     onVisibleOrFocus();
