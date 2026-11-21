@@ -1069,11 +1069,26 @@
 
 .char-wizard--mesa-embed .char-wizard-panel {
   padding: 1rem 1.05rem;
+  /* clip (nao hidden): sem criar caixa de rolagem, para o rodape sticky
+     do BV-046 prender no painel de rolagem da mesa. */
+  overflow-x: clip;
+  overflow-y: visible;
 }
 
 .char-wizard--mesa-embed .char-wizard-preview {
   position: static;
   padding: 0.85rem 0.95rem;
+}
+
+/* BV-046: na mesa, Voltar/Proximo fica sempre visivel no rodape do painel;
+   o conteudo rola acima dele (o scroll e o .mesa-char-wizard-scroll). */
+.char-wizard--mesa-embed .char-wizard-footer {
+  position: sticky;
+  bottom: 0;
+  z-index: 2;
+  margin-top: 0.75rem;
+  padding-bottom: 0.6rem;
+  background: rgba(30, 29, 26, 0.98);
 }
 
 .mesa-char-wizard-scroll {
