@@ -5,35 +5,35 @@ Só correções, uma por vez: Bigorna corrige, Lupa revisa, o maestro confere e 
 | Ordem | ID | Sev. | O quê | Estado |
 |---|---|---|---|---|
 | 1 (loop) | BV-018/019 | P2 | Movimento do token não aparece até recarregar (cena pendente mais velha reaplicada com force) | parado: D-13 |
-| 1 | BV-005 | P1 | Passar turno sem confirmação (contraria D27) | feito, 2266453 |
+| 1 | BV-005 | P1 | Passar turno sem confirmação (contraria D27) | feito, 424a869 |
 | 2 | B2 | P1 | Imagem de token não salva (ficha, token, reload) | parado: log de produção e decisão D-09 |
-| 3 | BV-004 | P2 | Atalho da barra lateral (Ficha, Invocar) não abre o painel | feito, 81d5c25 |
-| 4 | A-10b | P2 | Limite de fichas só recusa depois do wizard inteiro | feito, 4ffef26 |
-| 4b | BV-004b | P3 | openAsPopup e restore com setState aninhado | feito, 0c662d2 |
-| 5 | A-12a | P2 | Janela flutuante pode ficar fora da tela para sempre | feito, 0c662d2 |
-| 6 | A-12b | P2 | Rail no celular só com ícones, sem rótulo | feito, 71b8188 |
+| 3 | BV-004 | P2 | Atalho da barra lateral (Ficha, Invocar) não abre o painel | feito, af3a34d |
+| 4 | A-10b | P2 | Limite de fichas só recusa depois do wizard inteiro | feito, 7ab223f |
+| 4b | BV-004b | P3 | openAsPopup e restore com setState aninhado | feito, bdc86a8 |
+| 5 | A-12a | P2 | Janela flutuante pode ficar fora da tela para sempre | feito, bdc86a8 |
+| 6 | A-12b | P2 | Rail no celular só com ícones, sem rótulo | feito, 2a858bb |
 | 7 | R-02 | P3 | Auto-passe de 150 ms; o PRD aprovado diz cerca de 1,5 s | saiu da fila: espera decisão D-10 (página 03) |
-| 8 | A-22 | P3 | dangerouslySetInnerHTML sem sanitização no compêndio (feito, 90623a4) | em revisão |
-| 9 | A-12c | P3 | Atalhos (Alt+clique, Ctrl+clique) fora das dicas | feito, 9df7c1c |
-| 10 | A-23 | P3 | .btn-primary e .btn-primary-cta duplicados (feito, 7ede178) | em revisão |
-| 11 | A-10c | P2 | Limite global de 10 fichas sem guarda antes do wizard (feito, 519741f) | aprovada pela Lupa, sem commit |
+| 8 | A-22 | P3 | dangerouslySetInnerHTML sem sanitização no compêndio (feito, 1260bd6) | em revisão |
+| 9 | A-12c | P3 | Atalhos (Alt+clique, Ctrl+clique) fora das dicas | feito, bd20a83 |
+| 10 | A-23 | P3 | .btn-primary e .btn-primary-cta duplicados (feito, 7a06d8c) | em revisão |
+| 11 | A-10c | P2 | Limite global de 10 fichas sem guarda antes do wizard (feito, 677f5a5) | aprovada pela Lupa, sem commit |
 | 12 | BV-006 | P3 | Aviso de hidratação no MesaSyncIndicator (title diferente entre servidor e cliente) | diagnosticado, sem ação: NativeTitleBlockScript troca title por data-site-tip no load + 2 frames; em dev a hidratação às vezes chega depois e o React reclama. Não afeta o usuário. Conserto exigiria mudar o script do site todo. |
 
-| 13 | N-02 | P2 | Mensagem de erro com texto de mantenedor ('Rode npm run db:migrate...') chega ao usuário (lib/character/characters.ts:225) | feito, b3f055a |
-| 13b | N-02b | P3 | Texto técnico de MariaDB em /entrar, recuperação e cadastro | feito, bb8622e; API ainda aceita cadastro sem banco (D-14) |
-| 14 | BAL-D6 | P1 | Feiticeiro conjura com INT no código; o livro diz Carisma (propostas/balanceamento.md, seção 2) | feito, 4a46437 |
+| 13 | N-02 | P2 | Mensagem de erro com texto de mantenedor ('Rode npm run db:migrate...') chega ao usuário (lib/character/characters.ts:225) | feito, d8dae41 |
+| 13b | N-02b | P3 | Texto técnico de MariaDB em /entrar, recuperação e cadastro | feito, 7814cee; API ainda aceita cadastro sem banco (D-14) |
+| 14 | BAL-D6 | P1 | Feiticeiro conjura com INT no código; o livro diz Carisma (propostas/balanceamento.md, seção 2) | feito, f7d037a |
 | 14b | BAL-D6b | P2 | Magias conhecidas do Feiticeiro usam a tabela 2 + nível-1 (spell-prep.ts:55); o livro diz nível + CAR (LIVRO-DO-JOGADOR.md:3498) | aprovada pela Lupa, sem commit |
 | 14c | BAL-D6c | P3 | Salvaguardas proficientes do Feiticeiro = INT + CAR (sheet-skills.ts:182); conferir no livro | aprovada pela Lupa, sem commit; INT como salvaguarda segue em aberto (sem confirmação no livro) |
 | 15 | BAL-D1..D5 | P2 | Proficiência de arma: sem bônus para Guerreiro, Ladino e Mago; Clérigo com Maça de Guerra que o livro não dá | na fila |
-| 16 | A-09 | P3 | bankedPa sempre 0 e aparece em três telas | parcial, 803919d (só o log do mestre); mostradores compactos dependem do cálculo (D-15) |
-| 17 | A-18 | P3 | Sem robots nem sitemap; doc de cores diverge do código | feito, 4f04e3b (só as três páginas públicas; ressalva: verify não prova que abrem sem login) |
-| 18 | D-02 | P3 | CONTEXTO-SESSAO-ATUAL.md aponta branch e PR antigos | feito, 3c1b16c |
+| 16 | A-09 | P3 | bankedPa sempre 0 e aparece em três telas | parcial, 380bb9b (só o log do mestre); mostradores compactos dependem do cálculo (D-15) |
+| 17 | A-18 | P3 | Sem robots nem sitemap; doc de cores diverge do código | feito, 74d8388 (só as três páginas públicas; ressalva: verify não prova que abrem sem login) |
+| 18 | D-02 | P3 | CONTEXTO-SESSAO-ATUAL.md aponta branch e PR antigos | feito, 4065f0a |
 | 18b | BV-008 | P2 | Botão 'Colocar na mesa' do Invocar nunca habilita: a célula alvo só é registrada durante o arraste (trackGridHover em Battlefield.tsx:952 exige spawnDragActive), então o botão depende de um hover que não acontece. Arrastar continua funcionando com mouse de verdade. | feito (ver git log, BV-008) |
 | 20 | BV-014 | P2 | Ficha fora da mesa mostra PA 9/5 (atual acima do máximo); na mesa 9/9 | aprovada pela Lupa, sem commit |
 | 21 | BV-010 | P2 | Chips das Adagas +1/+2/+3 mostram 1d4 sem o +N de dano | decisão D-11 (página 03); Lupa reprovou como correção, aguarda escolha do dono
 | 22 | BV-013 | P2 | /compendios/monstros mostra Armas; bestiário fora do compêndio | feito: bestiário é só do mestre por desenho; a rota agora volta ao índice |
-| 23 | BV-012 | P3 | Agarrão: 5 células vs 9 m no texto | feito, 29cd6c0 |
-| 23b | BV-022 | P3 | Outros alcances de habilidades discordam do texto: Julgamento Ardente 9 m/9 cel., Mente Partida 18 m/6 cel., Puxão Abissal 9 m/5 cel., Carga do Juramento 12 m/6 cel. (ressalva da Lupa em BV-012) | feito, a840d6d; CATÁLOGO diz 5 para Puxão (D-16) |
+| 23 | BV-012 | P3 | Agarrão: 5 células vs 9 m no texto | feito, 6f1f6d5 |
+| 23b | BV-022 | P3 | Outros alcances de habilidades discordam do texto: Julgamento Ardente 9 m/9 cel., Mente Partida 18 m/6 cel., Puxão Abissal 9 m/5 cel., Carga do Juramento 12 m/6 cel. (ressalva da Lupa em BV-012) | feito, af856e8; CATÁLOGO diz 5 para Puxão (D-16) |
 | 23c | BV-023 | P3 | Correntes Infernais (3 cel. vs 3 m) e Manto de Bruma (3 cel. vs 6 m, talvez área) | na fila, conferir no livro |
 | 24 | BV-011 | P3 | Textos sem acento ou concordância em magias | na fila |
 | 25 | BV-015 | P3 | /termos dá 404 (é o A-03: texto jurídico depende do dono) | decisão |
@@ -44,20 +44,20 @@ Loop de 2 h (15:45 a 17:45 de 20/11): Bigorna e Lupa na fila, Farejador testando
 ## Rodada 3 (20/11, 22:40 em diante) — decisões tomadas, ver página 03
 | ID | O quê | Quem | Estado |
 |---|---|---|---|
-| D-13 | Movimento só aparece depois de recarregar (BV-018/019) | Claude Code + Lupa | feito, 87c2613 |
-| D-12 | PA guardado cortado para 5 ao salvar a ficha | Bigorna | feito, df56873 |
+| D-13 | Movimento só aparece depois de recarregar (BV-018/019) | Claude Code + Lupa | feito, d798002 |
+| D-12 | PA guardado cortado para 5 ao salvar a ficha | Bigorna | feito, 9aac402 |
 | D-11 | Dano do +N das armas aprimoradas | Bigorna | em andamento |
 | D-07 | Vida temporária na subida de nível | Bigorna | na fila |
 | D-09 | updateRoomActor engole erro de gravação (B2) | Bigorna | na fila |
 | D-14 | Cadastro sem banco aceito pela API | Bigorna | na fila |
 | D-15 | Log do mestre mostra pa + bankedPa | Bigorna | na fila |
 | D-16 + A-10a | Catálogo do Puxão Abissal; mensagem e docs do limite 3 por aventura | Bigorna | na fila |
-| D-05 + D-03 | npm test no CI; init MariaDB no docker-compose.local | Claude Code | feito, 369ab6f |
-| D-10 + D-04 | Docs do auto-passe; CLAUDE-PROJETO.md com a pilha real | OpenCode | feito, 6b23519 e 930eb68 |
+| D-05 + D-03 | npm test no CI; init MariaDB no docker-compose.local | Claude Code | feito, 38cb748 |
+| D-10 + D-04 | Docs do auto-passe; CLAUDE-PROJETO.md com a pilha real | OpenCode | feito, 7270fda e 5f204ba |
 
-Feitos fora da fila: B1 (31841ac), N-01 (3b37186), BV-002 e BV-003 loop da mesa (eb8a4bd), aviso de loop do store da mesa (eb25f17).
+Feitos fora da fila: B1 (50ce7a5), N-01 (fce9c0b), BV-002 e BV-003 loop da mesa (e98c223), aviso de loop do store da mesa (905daa9).
 Pausados até as correções andarem: caça-bugs no site, história, balanceamento. OpenCode grátis esgotou a cota.
 
 Fechamento do loop do Regente (16:55): npm test passou (exit 0) — cadeia completa de verify-*.mjs, npm run test:um-anel e npm run sync:data:check, sem falhas. Itens parados: BV-018/019 (D-13), teste de combate do item 2 (BV-019/BV-021), N-02b API (D-14), A-09 mostradores (D-15), BV-022 catálogo (D-16).
-Fechamento (16:57): merge fast-forward concluído — fix/login-google-e-responsivo-um-anel agora em 8a90e0c (sem force, sem push, sem mexer na main). `maestri dismiss` foi bloqueado neste terminal: This terminal is not the Maestro; agentes seguem conectados. Notificação de encerramento enviada com 14 commits desde 606a259.
+Fechamento (16:57): merge fast-forward concluído — fix/login-google-e-responsivo-um-anel agora em 9f0f882 (sem force, sem push, sem mexer na main). `maestri dismiss` foi bloqueado neste terminal: This terminal is not the Maestro; agentes seguem conectados. Notificação de encerramento enviada com 14 commits desde df3ed08.
 

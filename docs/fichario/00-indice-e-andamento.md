@@ -27,9 +27,9 @@ Aberto em 20/11/2026, sobre o branch `fix/login-google-e-responsivo-um-anel`. As
 
 ## Commits desta sessão (19)
 
-Correções: B1 dano e PA sumindo ao recarregar a mesa (31841ac), N-01 vida temporária (3b37186), BV-002/BV-003 loop de render que travava a mesa ao vivo (eb8a4bd), loop do store da mesa (eb25f17), BV-005 confirmação de passar turno (2266453), BV-004 atalho da barra lateral (81d5c25), A-10b e A-10c limites de fichas antes do wizard (4ffef26, 519741f), A-12a e BV-004b janelas flutuantes fora da tela (0c662d2), A-12b rótulos do rail no celular (71b8188), A-12c dicas de atalho (9df7c1c), A-22 sanitização do compêndio (90623a4), A-23 botão da ficha (7ede178).
+Correções: B1 dano e PA sumindo ao recarregar a mesa (50ce7a5), N-01 vida temporária (fce9c0b), BV-002/BV-003 loop de render que travava a mesa ao vivo (e98c223), loop do store da mesa (905daa9), BV-005 confirmação de passar turno (424a869), BV-004 atalho da barra lateral (af3a34d), A-10b e A-10c limites de fichas antes do wizard (7ab223f, 677f5a5), A-12a e BV-004b janelas flutuantes fora da tela (bdc86a8), A-12b rótulos do rail no celular (2a858bb), A-12c dicas de atalho (bd20a83), A-22 sanitização do compêndio (1260bd6), A-23 botão da ficha (7a06d8c).
 
-Limpeza: 11 componentes órfãos e preview da raiz (68a0ea2), 11 scripts de uso único e .pyc (73b8db8), links mortos nos docs (fbf11e9), .dockerignore (d97bacb), npm test sem lista duplicada (3b6cafb).
+Limpeza: 11 componentes órfãos e preview da raiz (a937366), 11 scripts de uso único e .pyc (a15a45c), links mortos nos docs (0b9969c), .dockerignore (f0c908e), npm test sem lista duplicada (c0aab91).
 
 ## O que ficou parado
 

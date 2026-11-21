@@ -2,7 +2,7 @@
 
 Somente leitura. Nenhum gerador, JSON ou livro foi alterado. Nenhum commit foi feito.
 
-Referencia: commit a840d6d corrigiu quatro habilidades (Julgamento Ardente 9 m = 6, Puxao Abissal 9 m = 6, Carga do Juramento 12 m = 8, Mente Partida 18 m = 12). Esta varredura procura o mesmo tipo de divergencia em todas as entradas.
+Referencia: commit af856e8 corrigiu quatro habilidades (Julgamento Ardente 9 m = 6, Puxao Abissal 9 m = 6, Carga do Juramento 12 m = 8, Mente Partida 18 m = 12). Esta varredura procura o mesmo tipo de divergencia em todas as entradas.
 
 Regra aplicada: 1 celula = 1,5 m (`METERS_PER_CELL` em `lib/vtt/movement.ts`). Celulas esperadas = `floor(metros / 1,5)`.
 
@@ -60,7 +60,7 @@ Monstros: as acoes de ataque (`Mordida`, `Garras`, `Investida`, `Ataque especial
 
 ## 4. Achados adicionais: o livro cita metros, mas o texto do gerador/JSON nao cita
 
-Estes casos ficam de fora da regra literal da tarefa, mas seguem o mesmo padrao do commit a840d6d (Mente Partida foi corrigido assim). Foram localizados cruzando os livros com o gerador.
+Estes casos ficam de fora da regra literal da tarefa, mas seguem o mesmo padrao do commit af856e8 (Mente Partida foi corrigido assim). Foram localizados cruzando os livros com o gerador.
 
 | id | nome | texto com metros | celulas no dado | celulas esperadas | tipo (alcance/area) | onde mudar |
 |---|---|---|---|---|---|---|
