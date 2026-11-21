@@ -9,8 +9,8 @@
  * 2. Um Anel: TorEyePanel aplica o snapshot devolvido por patchTorSession
  *    (PATCH /api/room/[id]/tor-session, que devolve { snapshot } e e desembrulhado
  *    pelo cliente). As rotas tor-advance, tor-recovery e tor-eye devolvem
- *    { snapshot } envelopado; por isso TorAdvancePanel e as gravacoes de
- *    postRoomTorEye continuam chamando onUpdate() sem payload (refresh antigo).
+ *    { snapshot } envelopado; o cliente desembrulha (P-15) e os paineis passam
+ *    o retorno para onUpdate(snapshot).
  *
  * Teste: leitura de codigo (React nao roda em node), mesmo padrao do P-13.
  *
@@ -72,18 +72,15 @@ const eyeSnapshotCalls = eye.match(/const snapshot = await patchTorSession\(/g) 
 assert.equal(eyePatchCalls.length, eyeSnapshotCalls.length, "TorEyePanel: todo patchTorSession guarda o retorno");
 ok("TorEyePanel aplica o snapshot de patchTorSession (3 pontos)");
 
-// O que devolve envelope { snapshot } fica como antes: onUpdate() sem payload.
-const eyeBare = eye.match(/onUpdate\(\);/g) ?? [];
-assert.ok(eyeBare.length >= 1, "TorEyePanel: gravacoes de postRoomTorEye seguem com onUpdate()");
-assert.doesNotMatch(eye, /onUpdate\(\{ snapshot/, "TorEyePanel: nao desembrulha envelope por conta propria");
-ok("TorEyePanel mantem onUpdate() onde a rota devolve envelope");
+// P-15: postRoomTorEye desembrulha { snapshot }; as gravacoes do Olho aplicam o retorno.
+assert.equal((eye.match(/onUpdate\(\);/g) ?? []).length, 0, "TorEyePanel: nenhum onUpdate() vazio");
+assert.equal((eye.match(/const snapshot = await postRoomTorEye\(/g) ?? []).length, 3, "TorEyePanel: as 3 gravacoes do Olho guardam o retorno");
+ok("TorEyePanel aplica o retorno de postRoomTorEye (P-15)");
 
 const advance = ler("components/vtt/TorAdvancePanel.tsx");
-assert.match(advance, /onUpdate: \(\) => void;/, "TorAdvancePanel: assinatura sem payload (rota envelopa { snapshot })");
-assert.doesNotMatch(advance, /onUpdate\([^)]/, "TorAdvancePanel: nenhum onUpdate com argumento");
-const advanceRoute = ler("app/api/room/[roomId]/tor-advance/route.ts");
-assert.match(advanceRoute, /return NextResponse\.json\(\{ snapshot: viewerSnapshotResponse\(result\.snapshot, room, session\.user\) \}\);/, "tor-advance: continua devolvendo envelope { snapshot } (filtrado, P-17)");
-ok("TorAdvancePanel segue com onUpdate() (rota tor-advance devolve envelope)");
+assert.match(advance, /onUpdate: \(payload\?: RoomApiPayload\) => void;/, "TorAdvancePanel: onUpdate aceita payload (P-15)");
+assert.equal((advance.match(/onUpdate\(\)/g) ?? []).length, 0, "TorAdvancePanel: nenhum onUpdate() vazio");
+ok("TorAdvancePanel passa o retorno para onUpdate (P-15)");
 
 // O cliente de patchTorSession desembrulha o snapshot, que e o que o TorEyePanel recebe.
 const hookSync = ler("hooks/useRoomSync.ts");

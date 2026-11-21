@@ -280,8 +280,12 @@ export function TorEyePanel({ roomId, canManage, eye, onUpdate }: Props) {
                 disabled={busy}
                 onClick={() =>
                   void guard(async () => {
-                    await postRoomTorEye(roomId, { action: "gain", source: "magia", points: p });
-                    onUpdate();
+                    const snapshot = await postRoomTorEye(roomId, {
+                      action: "gain",
+                      source: "magia",
+                      points: p,
+                    });
+                    onUpdate(snapshot);
                   })
                 }
               >
@@ -312,12 +316,12 @@ export function TorEyePanel({ roomId, canManage, eye, onUpdate }: Props) {
                 disabled={busy}
                 onClick={() =>
                   void guard(async () => {
-                    await postRoomTorEye(roomId, {
+                    const snapshot = await postRoomTorEye(roomId, {
                       action: "gain",
                       source: "olho-rolado",
                       points: p,
                     });
-                    onUpdate();
+                    onUpdate(snapshot);
                   })
                 }
               >
@@ -337,8 +341,8 @@ export function TorEyePanel({ roomId, canManage, eye, onUpdate }: Props) {
               disabled={busy}
               onClick={() =>
                 void guard(async () => {
-                  await postRoomTorEye(roomId, { action: "reveal" });
-                  onUpdate();
+                  const snapshot = await postRoomTorEye(roomId, { action: "reveal" });
+                  onUpdate(snapshot);
                 })
               }
             >

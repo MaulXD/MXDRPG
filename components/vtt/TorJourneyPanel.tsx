@@ -241,12 +241,12 @@ export function TorJourneyPanel({ roomId, canManage, progress, eye, onUpdate }: 
              recuperação de fim de jornada (montaria + rolagem de Viagem), que é
              o que o painel de recuperação faz depois. */
           if (progress.forcedMarch && length.forcedMarchFatigue > 0) {
-            await postRoomTorFatigue(roomId, {
+            const snapshot = await postRoomTorFatigue(roomId, {
               scope: "company",
               points: length.forcedMarchFatigue,
               source: "marcha-forcada",
             });
-            onUpdate();
+            onUpdate(snapshot);
           }
           return;
         }
@@ -343,12 +343,12 @@ export function TorJourneyPanel({ roomId, canManage, progress, eye, onUpdate }: 
            token, então quem sabe qual herói rolou é o Mestre — ele aplica pelo
            painel do token. */
         if (outcome.fatigueAll > 0) {
-          await postRoomTorFatigue(roomId, {
+          const snapshot = await postRoomTorFatigue(roomId, {
             scope: "company",
             points: outcome.fatigueAll,
             source: "evento",
           });
-          onUpdate();
+          onUpdate(snapshot);
         }
       }),
     [guard, commit, progress, roomId, onUpdate]

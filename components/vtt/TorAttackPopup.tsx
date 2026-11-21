@@ -228,7 +228,8 @@ export function TorAttackPopup({ token, allTokens, roomId, onClose, onRoomSync }
       const payload = await postRoomTorTask(roomId, token.id, task.id, {
         allyTokenId: task.needsAlly ? allyId : undefined,
       });
-      const messages = "chat" in payload ? payload.chat : (payload.chatAppend ?? []);
+      // A tarefa devolve a sala inteira (desembrulhada em postRoomTorTask, P-15).
+      const messages = payload.chat ?? [];
       setLastMessage(messages[messages.length - 1]?.text ?? null);
       onRoomSync(payload);
     } catch (e) {

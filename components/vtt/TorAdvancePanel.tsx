@@ -5,12 +5,14 @@ import { postRoomTorAdvance, postRoomTorRecovery } from "@/hooks/useRoomSync";
 import { COMBAT_PROFICIENCY_LABEL, SKILLS } from "@/lib/character/um-anel/data";
 import { TOR_XP_COST_BY_LEVEL } from "@/lib/combat/um-anel/progression";
 import type { TorCharacterSheet, TorCombatProficiencyId } from "@/lib/character/um-anel/types";
+import type { RoomApiPayload } from "@/lib/room/room-delta";
 
 type Props = {
   roomId: string;
   /** Fichas do Um Anel visíveis na mesa. */
   characterIds: string[];
-  onUpdate: () => void;
+  /** Recebe a sala que o servidor devolveu, para aplicar sem refazer o GET. */
+  onUpdate: (payload?: RoomApiPayload) => void;
 };
 
 const PROFICIENCIES: TorCombatProficiencyId[] = ["machados", "arcos", "lancas", "espadas"];
@@ -53,8 +55,8 @@ export function TorAdvancePanel({ roomId, characterIds, onUpdate }: Props) {
     setBusy(true);
     setErr(null);
     try {
-      await postRoomTorAdvance(roomId, characterId, what);
-      onUpdate();
+      const snapshot = await postRoomTorAdvance(roomId, characterId, what);
+      onUpdate(snapshot);
     } catch (e) {
       // "Máximo de 1 grau por Perícia em cada Fase", "Faltam N pontos" e
       // "Valor e Sabedoria não podem ambos subir" chegam por aqui.
@@ -69,8 +71,8 @@ export function TorAdvancePanel({ roomId, characterIds, onUpdate }: Props) {
     setBusy(true);
     setErr(null);
     try {
-      await postRoomTorRecovery(roomId, characterId, "spiritual");
-      onUpdate();
+      const snapshot = await postRoomTorRecovery(roomId, characterId, "spiritual");
+      onUpdate(snapshot);
     } catch (e) {
       setErr(e instanceof Error ? e.message : "Falha na recuperação");
     } finally {

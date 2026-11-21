@@ -17,9 +17,8 @@
  * Sem payload, cada wrapper cai no refresh antigo. Um evento de clique nunca tem
  * `revision` numerico, entao nao pode ser aplicado como sala por engano.
  *
- * Fora do escopo, de proposito: postRoomTorFatigue. A rota tor-fatigue devolve
- * { snapshot } e o cliente a tipa como RoomApiPayload; aplicar aquilo direto
- * gravaria o envelope como sala. Fica para corrigir o tipo antes.
+ * postRoomTorFatigue entrou depois (P-15): desembrulha { snapshot } e a Jornada
+ * aplica o retorno pelo onUpdate(snapshot).
  *
  * Teste: leitura de codigo nos pontos acima (React nao roda em node).
  *
@@ -64,16 +63,17 @@ assert.match(journey, /const snapshot = await patchTorSession\(roomId, \{ journe
 assert.match(journey, /const snapshot = await patchTorSession\(roomId, \{\s*journey: \{ \.\.\.progress, pending: \{ \.\.\.progress\.pending, terrain \} \},\s*\}\);\s*onUpdate\(snapshot\);/, "Jornada: terreno aplica o snapshot");
 ok("Jornada aplica o snapshot do PATCH (commit, terreno, encerrar)");
 
-// A fadiga fica como estava: a rota devolve { snapshot } e o cliente tipa como sala.
-assert.match(journey, /await postRoomTorFatigue\(roomId, \{[\s\S]*?\}\);\s*onUpdate\(\);/, "Fadiga continua com refresh (fora do escopo)");
-ok("Fadiga da jornada segue com refresh, como antes");
+// Fadiga: postRoomTorFatigue devolve a sala desembrulhada e a Jornada aplica.
+assert.match(journey, /const snapshot = await postRoomTorFatigue\(roomId, \{[\s\S]*?\}\);\s*onUpdate\(snapshot\);/, "Fadiga aplica o snapshot");
+assert.equal((journey.match(/const snapshot = await postRoomTorFatigue\(/g) ?? []).length, 2, "Jornada: as 2 fadigas guardam o retorno");
+ok("Fadiga aplica o snapshot");
 
-// Pedido da Lupa: nenhum onUpdate() sem argumento nem refresh() depois de PATCH.
-// Conselho e Companhia: zero. Jornada: só as 2 chamadas da fadiga.
+// Pedido da Lupa: nenhum onUpdate() sem argumento nem refresh() depois de gravar.
+// Conselho, Companhia e Jornada: zero.
 const semArg = (src) => (src.match(/onUpdate\(\)/g) ?? []).length;
 assert.equal(semArg(council), 0, "Conselho: onUpdate() sem payload voltou");
 assert.equal(semArg(fellowship), 0, "Companhia: onUpdate() sem payload voltou");
-assert.equal(semArg(journey), 2, "Jornada: onUpdate() sem payload só pode existir nas 2 chamadas da fadiga");
+assert.equal(semArg(journey), 0, "Jornada: onUpdate() sem payload voltou");
 for (const [nome, src] of [["Conselho", council], ["Companhia", fellowship], ["Jornada", journey]]) {
   assert.doesNotMatch(src, /\brefresh\(\)/, `${nome}: refresh() depois de gravar`);
 }

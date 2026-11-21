@@ -755,7 +755,9 @@ export async function postRoomTorStance(
     },
     "Falha ao trocar a postura"
   );
-  return res.json() as Promise<RoomApiPayload>;
+  // A rota devolve { snapshot } (P-15): aplicar o envelope como sala quebrava a mesa.
+  const data = (await res.json()) as { snapshot: RoomSnapshot };
+  return data.snapshot;
 }
 
 /**
@@ -777,7 +779,9 @@ export async function postRoomTorShadow(
     },
     "Falha ao registrar a Sombra"
   );
-  return res.json() as Promise<RoomApiPayload>;
+  // A rota devolve { snapshot } (P-15): aplicar o envelope como sala quebrava a mesa.
+  const data = (await res.json()) as { snapshot: RoomSnapshot };
+  return data.snapshot;
 }
 
 /**
@@ -804,7 +808,8 @@ export async function postRoomTorAdvance(
     },
     "Falha ao avançar"
   );
-  return res.json() as Promise<RoomApiPayload>;
+  const data = (await res.json()) as { snapshot: RoomSnapshot };
+  return data.snapshot;
 }
 
 /**
@@ -828,7 +833,8 @@ export async function postRoomTorRecovery(
     },
     "Falha na recuperação"
   );
-  return res.json() as Promise<RoomApiPayload>;
+  const data = (await res.json()) as { snapshot: RoomSnapshot };
+  return data.snapshot;
 }
 
 /**
@@ -858,7 +864,8 @@ export async function postRoomTorFatigue(
     },
     "Falha ao registrar a Fadiga"
   );
-  return res.json() as Promise<RoomApiPayload>;
+  const data = (await res.json()) as { snapshot: RoomSnapshot };
+  return data.snapshot;
 }
 
 /**
@@ -888,7 +895,9 @@ export async function postRoomTorHazard(
     "Falha ao aplicar a Fonte de Dano"
   );
   /** sheetSaved: false quando a mesa gravou mas a ficha do herói não (ver executeRoomTorHazard). */
-  return res.json() as Promise<RoomApiPayload & { sheetSaved?: boolean }>;
+  // A rota devolve { snapshot, sheetSaved } (P-15).
+  const data = (await res.json()) as { snapshot: RoomSnapshot; sheetSaved?: boolean };
+  return { ...data.snapshot, sheetSaved: data.sheetSaved };
 }
 
 /**
@@ -912,7 +921,8 @@ export async function postRoomTorEye(
     },
     "Falha ao registrar a Atenção do Olho"
   );
-  return res.json() as Promise<RoomApiPayload>;
+  const data = (await res.json()) as { snapshot: RoomSnapshot };
+  return data.snapshot;
 }
 
 /**
@@ -931,7 +941,9 @@ export async function postRoomTorHelm(roomId: string, tokenId: string) {
     },
     "Falha ao trocar o Elmo"
   );
-  return res.json() as Promise<RoomApiPayload>;
+  // A rota devolve { snapshot } (P-15): aplicar o envelope como sala quebrava a mesa.
+  const data = (await res.json()) as { snapshot: RoomSnapshot };
+  return data.snapshot;
 }
 
 /** Um Anel — o herói aceita ser empurrado e amortece metade do último golpe. */
@@ -946,7 +958,9 @@ export async function postRoomTorPush(roomId: string, tokenId: string) {
     },
     "Falha ao amortecer o golpe"
   );
-  return res.json() as Promise<RoomApiPayload>;
+  // A rota devolve { snapshot } (P-15): aplicar o envelope como sala quebrava a mesa.
+  const data = (await res.json()) as { snapshot: RoomSnapshot };
+  return data.snapshot;
 }
 
 /** Um Anel — executa a Tarefa de Combate ligada à postura do herói. */
@@ -966,7 +980,9 @@ export async function postRoomTorTask(
     },
     "Falha na Tarefa de Combate"
   );
-  return res.json() as Promise<RoomApiPayload>;
+  // A rota devolve { snapshot } (P-15): aplicar o envelope como sala quebrava a mesa.
+  const data = (await res.json()) as { snapshot: RoomSnapshot };
+  return data.snapshot;
 }
 
 export async function postRoomAbility(
