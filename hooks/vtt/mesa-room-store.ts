@@ -18,6 +18,8 @@ export type MesaMapSlice = {
   combatUndo?: RoomSnapshot["combatUndo"];
   combatLog?: RoomSnapshot["combatLog"];
   gmCreations?: RoomSnapshot["gmCreations"];
+  /** BV-073/074: sem isto os painéis do Um Anel (Jornada, Conselho) nunca viam a sessão. */
+  torSession?: RoomSnapshot["torSession"];
 };
 
 export type MesaMetaSlice = {
@@ -74,7 +76,8 @@ export class MesaRoomStore {
       cached.pings === s.pings &&
       cached.combatUndo === s.combatUndo &&
       cached.combatLog === s.combatLog &&
-      cached.gmCreations === s.gmCreations
+      cached.gmCreations === s.gmCreations &&
+      cached.torSession === s.torSession
     ) {
       return cached;
     }
@@ -89,6 +92,7 @@ export class MesaRoomStore {
       combatUndo: s.combatUndo,
       combatLog: s.combatLog,
       gmCreations: s.gmCreations,
+      torSession: s.torSession,
     };
     return this.mapCache;
   }
@@ -128,7 +132,8 @@ export class MesaRoomStore {
       cached.pings === map.pings &&
       cached.combatUndo === map.combatUndo &&
       cached.combatLog === map.combatLog &&
-      cached.gmCreations === map.gmCreations
+      cached.gmCreations === map.gmCreations &&
+      cached.torSession === map.torSession
     ) {
       return cached;
     }
@@ -144,6 +149,7 @@ export class MesaRoomStore {
       combatUndo: map.combatUndo,
       combatLog: map.combatLog,
       gmCreations: map.gmCreations,
+      torSession: map.torSession,
     };
     return this.mapSnapshotOut;
   }
@@ -185,7 +191,8 @@ export class MesaRoomStore {
       prev?.pings !== nextSnap?.pings ||
       prev?.combatUndo !== nextSnap?.combatUndo ||
       prev?.combatLog !== nextSnap?.combatLog ||
-      prev?.gmCreations !== nextSnap?.gmCreations;
+      prev?.gmCreations !== nextSnap?.gmCreations ||
+      prev?.torSession !== nextSnap?.torSession;
 
     if (mapDataChanged) {
       this.mapCache = null;

@@ -16,6 +16,8 @@ export type RoomDelta = {
   settings?: RoomSnapshot["settings"];
   chatAppend?: ChatMessage[];
   pings?: RoomSnapshot["pings"];
+  /** BV-073/074: sessão do Um Anel (jornada, conselho, Olho). null = foi apagada. */
+  torSession?: RoomSnapshot["torSession"] | null;
 };
 
 export type RoomApiPayload = RoomSnapshot | RoomDelta;
@@ -99,6 +101,9 @@ export function buildRoomDelta(before: RoomSnapshot, after: RoomSnapshot): RoomD
   if (!jsonEq(before.settings, after.settings)) delta.settings = after.settings;
   if (chatAppend?.length) delta.chatAppend = chatAppend;
   if (!jsonEq(before.pings ?? [], after.pings ?? [])) delta.pings = after.pings;
+  if (!jsonEq(before.torSession ?? null, after.torSession ?? null)) {
+    delta.torSession = after.torSession ?? null;
+  }
 
   return delta;
 }
@@ -126,6 +131,8 @@ export function mergeRoomDelta(base: RoomSnapshot, delta: RoomDelta): RoomSnapsh
   const combat = delta.combat ?? base.combat;
   const actors = delta.actors ? { ...base.actors, ...delta.actors } : base.actors;
   const pings = delta.pings ?? base.pings;
+  const torSession =
+    delta.torSession !== undefined ? (delta.torSession ?? undefined) : base.torSession;
   const revision = Math.max(base.revision, delta.revision);
 
   const changed =
@@ -134,7 +141,8 @@ export function mergeRoomDelta(base: RoomSnapshot, delta: RoomDelta): RoomSnapsh
     combat !== base.combat ||
     actors !== base.actors ||
     chat !== base.chat ||
-    pings !== base.pings;
+    pings !== base.pings ||
+    torSession !== base.torSession;
 
   if (!changed) {
     return revision === base.revision ? base : { ...base, revision };
@@ -148,6 +156,7 @@ export function mergeRoomDelta(base: RoomSnapshot, delta: RoomDelta): RoomSnapsh
     actors,
     chat,
     pings,
+    torSession,
     scene: sceneChanged ? { ...base.scene, tokens } : base.scene,
   };
 
@@ -158,6 +167,7 @@ export function mergeRoomDelta(base: RoomSnapshot, delta: RoomDelta): RoomSnapsh
     next.actors === base.actors &&
     next.chat === base.chat &&
     next.pings === base.pings &&
+    next.torSession === base.torSession &&
     next.scene === base.scene
   ) {
     return base;
