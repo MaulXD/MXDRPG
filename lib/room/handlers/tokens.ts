@@ -47,7 +47,9 @@ export async function updateRoomToken(
   const current = tokens[idx];
   let next: BattleToken = applyConditionPaRules({ ...current, ...safePatch, id: current.id });
 
-  if (next.linked && next.actorId) {
+  // Só espelha PA no ator quando o PA do token mudou (pelo patch ou pelas regras de
+  // condição); um patch só de aparência não regrava o PA do ator (ressalva da Lupa).
+  if (next.linked && next.actorId && next.pa !== current.pa) {
     const actor = room.actors[next.actorId];
     if (actor) {
       room.actors[next.actorId] = {

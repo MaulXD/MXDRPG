@@ -9,6 +9,9 @@ import { getRoom, removeRoomToken, updateRoomToken } from "@/lib/room/store";
 
 type Params = { params: Promise<{ roomId: string; tokenId: string }> };
 
+/** Campos que o dono do token muda sem o mestre: só aparência. */
+const PLAYER_TOKEN_PATCH_KEYS = new Set(["imageUrl", "imageFocus", "nameplateMode"]);
+
 export async function PATCH(req: Request, { params }: Params) {
   const session = await getSession();
   const { roomId, tokenId } = await params;
@@ -23,20 +26,35 @@ export async function PATCH(req: Request, { params }: Params) {
     return NextResponse.json({ error: "Token não encontrado" }, { status: 404 });
   }
 
-  const body = (await req.json()) as Partial<BattleToken>;
+  const body = (await req.json().catch(() => null)) as Partial<BattleToken> | null;
+  if (!body || typeof body !== "object" || Array.isArray(body)) {
+    return NextResponse.json({ error: "Corpo inválido" }, { status: 400 });
+  }
 
-  if (body.conditions !== undefined) {
-    if (!session || !canApplyTokenConditions(room, session.user)) {
+  // ROTA-TOKEN: antes, sem sessão nada era conferido (qualquer um mudava vida, PA ou
+  // posição do token) e o jogador podia mandar qualquer campo do próprio token.
+  // Movimento, ataque e PA têm rotas próprias que validam no servidor; aqui o único
+  // cliente é o painel de condições do mestre.
+  if (!session) {
+    return NextResponse.json({ error: "Faça login" }, { status: 401 });
+  }
+  const isGm = canApplyTokenConditions(room, session.user);
+  if (!isGm) {
+    if (body.conditions !== undefined || body.timedEffects !== undefined) {
       return NextResponse.json(
         { error: "Só o mestre pode aplicar condições de status" },
         { status: 403 }
       );
     }
-  }
-
-  if (session) {
     if (!canMoveToken(room, session.user, token)) {
       return NextResponse.json({ error: "Sem permissão" }, { status: 403 });
+    }
+    const blocked = Object.keys(body).filter((k) => !PLAYER_TOKEN_PATCH_KEYS.has(k));
+    if (blocked.length) {
+      return NextResponse.json(
+        { error: `Só o mestre altera isso no token: ${blocked.join(", ")}` },
+        { status: 403 }
+      );
     }
   }
 
