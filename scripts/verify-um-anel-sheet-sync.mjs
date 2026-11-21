@@ -14,10 +14,10 @@
  * (3) BV-039 — o botão ROLAR do painel Dados passava da borda: o input sem
  *     min-width: 0 não encolhia. Correção só de CSS.
  *
- * Teste estático: lê o código-fonte e confere as ligações. Ele NÃO executa os handlers
- * com a gravação da ficha falhando: o verify-d09-sheet-saved cobre só updateRoomActor
- * (retrato), não executeRoomTorAttack nem executeRoomTorHazard. Essa falha continua
- * sem teste de comportamento.
+ * Teste estático: lê o código-fonte e confere as ligações. O comportamento com a
+ * gravação da ficha falhando (sheetSaved false) é coberto por
+ * verify-tor-save-comportamento.mjs, que executa executeRoomTorAttack e
+ * executeRoomTorHazard com a gravação falhando e funcionando.
  *
  * node scripts/verify-um-anel-sheet-sync.mjs
  */
