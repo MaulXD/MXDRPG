@@ -13,7 +13,9 @@ import { FriendsMessengerDock } from "@/components/friends/FriendsMessengerDock"
 import type { FriendSummary } from "@/lib/friends/types";
 import "./friends.css";
 
-const INVITE_POLL_MS = 30_000;
+// BV-078: com 30 s o pedido de amizade levava de 20 a 40 s para aparecer no sino.
+// São duas consultas leves (countOnly); 10 s fica perto do 'na hora' sem pesar.
+const INVITE_POLL_MS = 10_000;
 const UNREAD_POLL_MS = 4_000;
 const fetchOpts = { credentials: "same-origin" as const, cache: "no-store" as const };
 
