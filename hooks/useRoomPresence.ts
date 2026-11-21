@@ -91,9 +91,20 @@ export function useRoomPresence({
       setLoading(false);
       return;
     }
+    /* Aba escondida nao pede a lista; ao voltar, le uma vez. */
+    const visivel = () => document.visibilityState !== "hidden";
+    const onVisibilityChange = () => {
+      if (visivel()) void refresh();
+    };
     void refresh();
-    const id = setInterval(() => void refresh(), PRESENCE_POLL_MS);
-    return () => clearInterval(id);
+    const id = setInterval(() => {
+      if (visivel()) void refresh();
+    }, PRESENCE_POLL_MS);
+    document.addEventListener("visibilitychange", onVisibilityChange);
+    return () => {
+      clearInterval(id);
+      document.removeEventListener("visibilitychange", onVisibilityChange);
+    };
   }, [enabled, refresh]);
 
   useEffect(() => {

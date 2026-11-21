@@ -6,7 +6,7 @@ import { parseAvatarFocus, resolveUserAvatarUrl } from "@/lib/db/user-avatar";
 import { getSql } from "@/lib/db/client";
 import { dbEnabled } from "@/lib/db/enabled";
 import { queryRowsByIds } from "@/lib/db/sql-helpers";
-import { fetchClerkIdForUser, fetchUserByClerkId, fetchUserById } from "@/lib/db/users";
+import { fetchUserByClerkId, fetchUserById } from "@/lib/db/users";
 import { dedupePresenceByUser } from "@/lib/room/presence-identity";
 import { resolveActorTokenImageUrl } from "@/lib/room/portrait-sync";
 import { listRoomPresence } from "@/lib/room/presence";
@@ -139,25 +139,76 @@ async function profileForUserId(
   return null;
 }
 
-async function isPresenceGmUser(
+/** Mesmo prazo do cache de clerk id de lib/db/users.ts (60 s). */
+const CLERK_ID_CACHE_MS = 60_000;
+const clerkIdCache = new Map<string, { value: string | null; at: number }>();
+
+/**
+ * Clerk id de todos os usuarios pedidos em uma consulta so (antes eram 2 consultas por membro a cada pedido).
+ * Mesmo resultado de fetchClerkIdForUser: sem linha ou com erro, o id fica null.
+ */
+async function fetchClerkIdsByUserId(userIds: string[]): Promise<Map<string, string | null>> {
+  const out = new Map<string, string | null>();
+  const now = Date.now();
+  const pendentes: string[] = [];
+  for (const id of new Set(userIds)) {
+    const hit = clerkIdCache.get(id);
+    if (hit && now - hit.at < CLERK_ID_CACHE_MS) out.set(id, hit.value);
+    else pendentes.push(id);
+  }
+  if (!pendentes.length) return out;
+
+  const sql = getSql();
+  if (!sql) return out;
+  let rows: { id: string; clerk_id: string | null }[];
+  try {
+    rows = await queryRowsByIds<{ id: string; clerk_id: string | null }>(
+      sql,
+      "eldarin_users",
+      "id, clerk_id",
+      pendentes
+    );
+  } catch {
+    return out;
+  }
+
+  const porId = new Map(rows.map((row) => [row.id, row.clerk_id ?? null]));
+  for (const id of pendentes) {
+    const value = porId.get(id) ?? null;
+    clerkIdCache.set(id, { value, at: now });
+    out.set(id, value);
+  }
+  return out;
+}
+
+/** Ids cujo clerk id o teste de GM precisa (dono e membros usr_). */
+function clerkLookupIds(userIds: string[], ownerId: string): string[] {
+  const ids = userIds.filter((id) => id.startsWith("usr_"));
+  if (ownerId.startsWith("usr_")) ids.push(ownerId);
+  return ids;
+}
+
+function isPresenceGmUser(
   userId: string,
   room: RoomState,
-  profileRole: string | null | undefined
-): Promise<boolean> {
+  profileRole: string | null | undefined,
+  clerkOf: Map<string, string | null>
+): boolean {
   if (userId === room.ownerId) return true;
   if (normalizeUserRole(profileRole) === "admin") return true;
+  const clerkDe = (id: string) => clerkOf.get(id) ?? null;
 
   if (userId.startsWith("usr_") && room.ownerId.startsWith("clerk-")) {
-    const clerk = await fetchClerkIdForUser(userId);
+    const clerk = clerkDe(userId);
     if (clerk && room.ownerId === `clerk-${clerk}`) return true;
   }
   if (userId.startsWith("clerk-") && room.ownerId.startsWith("usr_")) {
-    const ownerClerk = await fetchClerkIdForUser(room.ownerId);
+    const ownerClerk = clerkDe(room.ownerId);
     if (ownerClerk && userId === `clerk-${ownerClerk}`) return true;
   }
   if (userId.startsWith("usr_") && room.ownerId.startsWith("usr_")) {
-    const userClerk = await fetchClerkIdForUser(userId);
-    const ownerClerk = await fetchClerkIdForUser(room.ownerId);
+    const userClerk = clerkDe(userId);
+    const ownerClerk = clerkDe(room.ownerId);
     if (userClerk && ownerClerk && userClerk === ownerClerk) return true;
   }
   return false;
@@ -171,11 +222,18 @@ export async function buildEnrichedRoomPresence(room: RoomState): Promise<RoomPr
   const userIds = raw.map((e) => e.userId);
   const profiles = await fetchUserPresenceRows(userIds);
 
-  const members: RoomPresenceMember[] = [];
+  const resolvidos: { entry: (typeof raw)[number]; profile: UserPresenceRow | null; userId: string }[] = [];
   for (const entry of raw) {
     const profile = await profileForUserId(entry.userId, profiles);
-    const userId = profile?.id ?? entry.userId;
-    const isOwner = await isPresenceGmUser(userId, room, profile?.role);
+    resolvidos.push({ entry, profile, userId: profile?.id ?? entry.userId });
+  }
+  const clerkOf = await fetchClerkIdsByUserId(
+    clerkLookupIds(resolvidos.map((r) => r.userId), room.ownerId)
+  );
+
+  const members: RoomPresenceMember[] = [];
+  for (const { entry, profile, userId } of resolvidos) {
+    const isOwner = isPresenceGmUser(userId, room, profile?.role, clerkOf);
     const displayName = profile ? displayNameFromRow(profile) : entry.displayName;
     const character = characterForUser(userId, room);
     members.push({

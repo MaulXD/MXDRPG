@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { canTrackRoomPresence } from "@/lib/auth/presence-access";
-import { requireRoomView } from "@/lib/auth/authorize-room-view";
+import { requireRoomView, type RoomViewOk } from "@/lib/auth/authorize-room-view";
 import { touchRoomPresence, listRoomPresence } from "@/lib/room/presence";
 import { buildEnrichedRoomPresence } from "@/lib/room/presence-enrich";
 import type { RoomPresenceMember } from "@/lib/room/presence-enrich";
@@ -26,21 +26,13 @@ function basicPresenceFallback(
   }));
 }
 
+/** Recebe o acesso ja validado pelo GET/POST (sem nova consulta de sala nem de permissao). */
 async function presenceResponse(
   roomId: string,
-  invite: string | null,
+  auth: RoomViewOk,
   touch?: { userId: string; label: string }
 ) {
-  const auth = await requireRoomView(roomId, invite);
-  if ("error" in auth) {
-    return NextResponse.json({ error: auth.error }, { status: auth.status });
-  }
-
   if (touch) {
-    const user = auth.user;
-    if (!user || !(await canTrackRoomPresence(auth.room, user))) {
-      return NextResponse.json({ error: "Participantes logados apenas" }, { status: 403 });
-    }
     try {
       await touchRoomPresence(roomId, touch.userId, touch.label);
     } catch (err) {
@@ -75,7 +67,7 @@ export async function GET(req: Request, { params }: Params) {
       touch = { userId: user.id, label };
     }
 
-    return presenceResponse(roomId, invite, touch);
+    return presenceResponse(roomId, auth, touch);
   } catch (err) {
     console.error("[presence] GET failed:", err);
     return NextResponse.json({ error: "Presença indisponível" }, { status: 500 });
@@ -98,7 +90,7 @@ export async function POST(req: Request, { params }: Params) {
     }
 
     const label = user.nickname?.trim() || "Jogador";
-    return presenceResponse(roomId, invite, { userId: user.id, label });
+    return presenceResponse(roomId, auth, { userId: user.id, label });
   } catch (err) {
     console.error("[presence] POST failed:", err);
     return NextResponse.json({ error: "Presença indisponível" }, { status: 500 });
