@@ -1,5 +1,6 @@
 import type { CharacterSheet } from "@/lib/character/types";
 import type { AttributeKey } from "@/lib/character/rules";
+import { paPoolMaxForSheet } from "@/lib/combat/pa-economy";
 import { listFeatsForLevel, getFeat, type UniversalFeat } from "@/lib/character/feats";
 import {
   attributeMod,
@@ -298,7 +299,12 @@ export function applyLevelUp(actor: CharacterSheet, choices: LevelUpChoices = {}
         max: newMax,
         ...(actor.resources.vida.temp !== undefined ? { temp: actor.resources.vida.temp } : {}),
       },
-      pontosAcao: { value: paMax, max: paMax },
+      // BV-058: subir de nível não recarrega PA (o livro só recupera PA no início do
+      // turno, LIVRO-DO-JOGADOR.md:194-196). Mantém o atual, limitado ao teto do pool.
+      pontosAcao: {
+        value: Math.max(0, Math.min(actor.resources.pontosAcao.value, paPoolMaxForSheet(actor))),
+        max: paMax,
+      },
     },
     tactical: {
       defesa: actor.armorLoadout?.entryId
