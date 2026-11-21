@@ -36,7 +36,7 @@ import {
 } from "../combat-order";
 import { resetAllTokenMovement } from "../internal/token-reset";
 import { pushRoundCheckpoint } from "../combat-round-checkpoint";
-import { getRoom, persistRoom, toSnapshot } from "../internal/registry";
+import { getRoom, persistRoom, rooms, toSnapshot } from "../internal/registry";
 import { clearCombatLog, logCombatEvent } from "../combat-log";
 import type { RoomSnapshot, RoomState } from "../types";
 
@@ -262,6 +262,11 @@ export function executePendingAutoPassIfDue(
 
 /** Auto-passe vencido — chamado pelo SSE da mesa (não bloqueia mutações como ataque). */
 export async function tickRoomAutoPass(roomId: string): Promise<boolean> {
+  // P-19: o SSE chama isto a cada 5 s por sala. Sem combate na sala que já está na
+  // memória, não há passe a fazer: não vale o getRoom (que confere a revisão no banco).
+  // Sala fria (fora da memória) segue o caminho normal e entra na memória.
+  const naMemoria = rooms().get(roomId);
+  if (naMemoria && !naMemoria.combat?.order?.length) return false;
   const room = await getRoom(roomId, { skipAutoPass: true });
   if (!room?.combat?.order?.length) return false;
   if (!executePendingAutoPassIfDue(room)) return false;

@@ -12,6 +12,8 @@ type Params = { params: Promise<{ roomId: string }> };
 
 const HEARTBEAT_MS = 15_000;
 const TICK_MS = 5_000;
+// Checar se a sala sumiu ('gone') custa 1 SELECT; a cada 5 s por cliente era desperdicio.
+const GONE_CHECK_MS = 30_000;
 
 export async function GET(request: Request, { params }: Params) {
   const { roomId } = await params;
@@ -35,6 +37,7 @@ export async function GET(request: Request, { params }: Params) {
 
   let lastPresenceEventId = 0;
   const connectedAt = Date.now();
+  let lastGoneCheck = connectedAt;
 
   const stream = new ReadableStream({
     start(controller) {
@@ -82,6 +85,8 @@ export async function GET(request: Request, { params }: Params) {
       const tickInterval = setInterval(async () => {
         try {
           await tickRoomAutoPassThrottled(roomId);
+          if (Date.now() - lastGoneCheck < GONE_CHECK_MS) return;
+          lastGoneCheck = Date.now();
           const rev = await getRoomRevision(roomId);
           if (rev == null) {
             push({ type: "gone" });
