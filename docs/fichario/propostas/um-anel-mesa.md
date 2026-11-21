@@ -52,7 +52,7 @@ Conclusão: o jogador **consegue** colocar a ficha na mesa, mas por outro caminh
 
 ## 4. O problema B1 vale para o Um Anel?
 
-Não, no mecanismo. Com correção de identificador: **B1 é `31841ac`** ("fix(eldarin): dano, cura e PA de combate sumiam ao recarregar a mesa (B1)"). `d798002` é outro fix, de token voltando à célula antiga ao mover, não B1.
+Não, no mecanismo. Com correção de identificador: **B1 é `50ce7a5`** ("fix(eldarin): dano, cura e PA de combate sumiam ao recarregar a mesa (B1)"). `d798002` é outro fix, de token voltando à célula antiga ao mover, não B1.
 
 - O B1 vinha de `syncAdventureActorsForRoom` trocar `room.actors[id]` pela ficha do banco, e `syncLinkedTokens` reescrever a vida do token a partir do ator (`docs/fichario/02-bugs-e-decisoes.md:74-80`).
 - A correção é `keepRoomVitals` em `lib/room/actor-vitals.ts:21-37`, preservando `resources.vida` e `resources.pontosAcao` da sala, aplicada em `lib/room/adventure-actors.ts:203`.
