@@ -173,7 +173,7 @@
       "description": "<p>Cone 2d6 frio; save CON. Canalizável.</p><p><em>Evocação · nv 1</em></p>",
       "tactical": {
         "alcanceCells": {
-          "value": 2,
+          "value": 3,
           "min": 0
         },
         "custoPontosAcao": {
@@ -185,7 +185,7 @@
         "nivel": 1,
         "escola": "Evocação",
         "tempo": "1 ação",
-        "alcance": "2 célula",
+        "alcance": "3 célula",
         "save": {
           "attribute": "constituicao"
         },
@@ -341,7 +341,7 @@
         },
         "area": {
           "shape": "cube",
-          "radiusCells": 1
+          "radiusCells": 3
         },
         "channel": {
           "maxExtraPa": 2,
@@ -483,10 +483,10 @@
     "type": "magia",
     "system": {
       "catalogId": "MAG-raios-de-enfraquecimento",
-      "description": "<p>Tres raios: CON CD ou Desvantagem em ataques e FOR por 1 minuto.</p><p><em>Necromancia | Acao | 18m | Concentracao até 1 minuto (C) | Mago, Clérigo · nv 2 · 2 PA · 6 células</em></p>",
+      "description": "<p>Tres raios: CON CD ou Desvantagem em ataques e FOR por 1 minuto.</p><p><em>Necromancia | Acao | 18m | Concentracao até 1 minuto (C) | Mago, Clérigo · nv 2 · 2 PA · 12 células</em></p>",
       "tactical": {
         "alcanceCells": {
-          "value": 6,
+          "value": 12,
           "min": 0
         },
         "custoPontosAcao": {
@@ -498,7 +498,7 @@
         "nivel": 2,
         "escola": "Necromancia",
         "tempo": "1 ação",
-        "alcance": "6 célula",
+        "alcance": "12 célula",
         "save": {
           "attribute": "constituicao"
         }
@@ -515,7 +515,7 @@
       "description": "<p>4d6 ácido; save DES. Canalizável.</p><p><em>Evocação · nv 2</em></p>",
       "tactical": {
         "alcanceCells": {
-          "value": 6,
+          "value": 12,
           "min": 0
         },
         "custoPontosAcao": {
@@ -527,7 +527,7 @@
         "nivel": 2,
         "escola": "Evocação",
         "tempo": "1 ação",
-        "alcance": "6 célula",
+        "alcance": "12 célula",
         "save": {
           "attribute": "destreza"
         },
@@ -684,10 +684,10 @@
     "type": "magia",
     "system": {
       "catalogId": "MAG-ilusao-menor",
-      "description": "<p>Som ou imagem estática em cubo 1,5m; não causa dano. --- ### NIVEL 3</p><p><em>Ilusao | Acao | 18m | 1 minuto | Mago, Bardo · nv 2 · 1 PA · 6 células</em></p>",
+      "description": "<p>Som ou imagem estática em cubo 1,5m; não causa dano. --- ### NIVEL 3</p><p><em>Ilusao | Acao | 18m | 1 minuto | Mago, Bardo · nv 2 · 1 PA · 12 células</em></p>",
       "tactical": {
         "alcanceCells": {
-          "value": 6,
+          "value": 12,
           "min": 0
         },
         "custoPontosAcao": {
@@ -699,7 +699,7 @@
         "nivel": 2,
         "escola": "Ilusão",
         "tempo": "1 ação",
-        "alcance": "6 célula",
+        "alcance": "12 célula",
         "area": {
           "shape": "cube",
           "radiusCells": 1
@@ -744,10 +744,10 @@
     "type": "magia",
     "system": {
       "catalogId": "MAG-animacao-de-mortos",
-      "description": "<p>Anima até 2 cadaveres Medios ou menores; podem Extração com proficiencia = metade do nivel do conjurador. Em espaco de nivel 5: 4 Medios ou 2 Grandes.</p><p><em>Necromancia | 1 minuto | 3m | 24 horas | Mago, Clérigo · nv 3 · 2 PA · 3 células</em></p>",
+      "description": "<p>Anima até 2 cadaveres Medios ou menores; podem Extração com proficiencia = metade do nivel do conjurador. Em espaco de nivel 5: 4 Medios ou 2 Grandes.</p><p><em>Necromancia | 1 minuto | 3m | 24 horas | Mago, Clérigo · nv 3 · 2 PA · 2 células</em></p>",
       "tactical": {
         "alcanceCells": {
-          "value": 3,
+          "value": 2,
           "min": 0
         },
         "custoPontosAcao": {
@@ -759,7 +759,7 @@
         "nivel": 3,
         "escola": "Necromancia",
         "tempo": "1 minuto",
-        "alcance": "3 célula"
+        "alcance": "2 célula"
       },
       "bookRef": "_parte_x_magias_v4_revisada.md"
     }
@@ -796,10 +796,10 @@
     "type": "magia",
     "system": {
       "catalogId": "MAG-bola-de-fogo",
-      "description": "<p>Raio 6m: 8d6 fogo (DES CD ou metade). *Variante Piromante: Cap. 19.*</p><p><em>Evocacao | Acao | 45m | Instantanea | Mago · nv 3 · 3 PA · 10 células</em></p>",
+      "description": "<p>Raio 6m: 8d6 fogo (DES CD ou metade). *Variante Piromante: Cap. 19.*</p><p><em>Evocacao | Acao | 45m | Instantanea | Mago · nv 3 · 3 PA · 30 células</em></p>",
       "tactical": {
         "alcanceCells": {
-          "value": 10,
+          "value": 30,
           "min": 0
         },
         "custoPontosAcao": {
@@ -811,7 +811,7 @@
         "nivel": 3,
         "escola": "Evocação",
         "tempo": "1 ação",
-        "alcance": "10 célula",
+        "alcance": "30 célula",
         "save": {
           "attribute": "destreza"
         },
@@ -956,10 +956,10 @@
     "type": "magia",
     "system": {
       "catalogId": "MAG-ler-mentes",
-      "description": "<p>Pensamentos superficiais (SAB CD); INT 6+.</p><p><em>Adivinhacao | Acao | 9m | Concentracao até 1 minuto (C) | Mago, Bardo · nv 3 · 1 PA · 4 células</em></p>",
+      "description": "<p>Pensamentos superficiais (SAB CD); INT 6+.</p><p><em>Adivinhacao | Acao | 9m | Concentracao até 1 minuto (C) | Mago, Bardo · nv 3 · 1 PA · 6 células</em></p>",
       "tactical": {
         "alcanceCells": {
-          "value": 4,
+          "value": 6,
           "min": 0
         },
         "custoPontosAcao": {
@@ -971,7 +971,7 @@
         "nivel": 3,
         "escola": "Adivinhação",
         "tempo": "1 ação",
-        "alcance": "4 célula"
+        "alcance": "6 célula"
       },
       "bookRef": "_parte_x_magias_v4_revisada.md"
     }
@@ -982,10 +982,10 @@
     "type": "magia",
     "system": {
       "catalogId": "MAG-relampago",
-      "description": "<p>Um alvo: 4d8 relâmpago (DES CD ou metade). Em ingredientes aquaticos congelados: preserva 24h.</p><p><em>Evocacao | Acao | 36m | Instantanea | Mago, Druida · nv 3 · 3 PA · 8 células</em></p>",
+      "description": "<p>Um alvo: 4d8 relâmpago (DES CD ou metade). Em ingredientes aquaticos congelados: preserva 24h.</p><p><em>Evocacao | Acao | 36m | Instantanea | Mago, Druida · nv 3 · 3 PA · 24 células</em></p>",
       "tactical": {
         "alcanceCells": {
-          "value": 8,
+          "value": 24,
           "min": 0
         },
         "custoPontosAcao": {
@@ -997,7 +997,7 @@
         "nivel": 3,
         "escola": "Evocação",
         "tempo": "1 ação",
-        "alcance": "8 célula",
+        "alcance": "24 célula",
         "save": {
           "attribute": "destreza"
         },
@@ -1024,10 +1024,10 @@
     "type": "magia",
     "system": {
       "catalogId": "MAG-sono",
-      "description": "<p>Ate 5 criaturas com menos de 90 HP: SAB CD ou Inconsciente (dano acorda). --- ### NIVEL 4</p><p><em>Encantamento | Acao | 18m | 1 minuto | Mago, Bardo, Clérigo · nv 3 · 2 PA · 6 células</em></p>",
+      "description": "<p>Ate 5 criaturas com menos de 90 HP: SAB CD ou Inconsciente (dano acorda). --- ### NIVEL 4</p><p><em>Encantamento | Acao | 18m | 1 minuto | Mago, Bardo, Clérigo · nv 3 · 2 PA · 12 células</em></p>",
       "tactical": {
         "alcanceCells": {
-          "value": 6,
+          "value": 12,
           "min": 0
         },
         "custoPontosAcao": {
@@ -1039,7 +1039,7 @@
         "nivel": 3,
         "escola": "Encantamento",
         "tempo": "1 ação",
-        "alcance": "6 célula",
+        "alcance": "12 célula",
         "save": {
           "attribute": "sabedoria"
         },
@@ -1122,10 +1122,10 @@
     "type": "magia",
     "system": {
       "catalogId": "MAG-murcha",
-      "description": "<p>8d8 necrótico (CON CD ou metade); conjurador cura metade do dano.</p><p><em>Necromancia | Acao | 4,5m | Instantanea | Mago, Clérigo · nv 4 · 3 PA · 2 células</em></p>",
+      "description": "<p>8d8 necrótico (CON CD ou metade); conjurador cura metade do dano.</p><p><em>Necromancia | Acao | 4,5m | Instantanea | Mago, Clérigo · nv 4 · 3 PA · 3 células</em></p>",
       "tactical": {
         "alcanceCells": {
-          "value": 2,
+          "value": 3,
           "min": 0
         },
         "custoPontosAcao": {
@@ -1137,7 +1137,7 @@
         "nivel": 4,
         "escola": "Necromancia",
         "tempo": "1 ação",
-        "alcance": "2 célula",
+        "alcance": "3 célula",
         "save": {
           "attribute": "constituicao"
         },
@@ -1168,7 +1168,7 @@
       "description": "<p>Mutação negativa aleatória 1h.</p><p><em>Biomancia · nv 4</em></p>",
       "tactical": {
         "alcanceCells": {
-          "value": 6,
+          "value": 12,
           "min": 0
         },
         "custoPontosAcao": {
@@ -1180,7 +1180,7 @@
         "nivel": 4,
         "escola": "Biomancia",
         "tempo": "1 ação",
-        "alcance": "6 célula"
+        "alcance": "12 célula"
       },
       "bookRef": "_parte_x_magias_v4_revisada.md"
     }
@@ -1191,10 +1191,10 @@
     "type": "magia",
     "system": {
       "catalogId": "MAG-parede-de-fogo",
-      "description": "<p>Parede até 18m: 5d8 ao atravessar; 2d8 radiante a 3m por turno.</p><p><em>Evocacao | Acao | 36m | Concentracao até 1 minuto (C) | Mago, Druida · nv 4 · 3 PA · 8 células</em></p>",
+      "description": "<p>Parede até 18m: 5d8 ao atravessar; 2d8 radiante a 3m por turno.</p><p><em>Evocacao | Acao | 36m | Concentracao até 1 minuto (C) | Mago, Druida · nv 4 · 3 PA · 24 células</em></p>",
       "tactical": {
         "alcanceCells": {
-          "value": 8,
+          "value": 24,
           "min": 0
         },
         "custoPontosAcao": {
@@ -1206,7 +1206,7 @@
         "nivel": 4,
         "escola": "Evocação",
         "tempo": "1 ação",
-        "alcance": "8 célula",
+        "alcance": "24 célula",
         "area": {
           "shape": "wall",
           "cellCount": 12
@@ -1257,10 +1257,10 @@
     "type": "magia",
     "system": {
       "catalogId": "MAG-cura-em-massa",
-      "description": "<p>Ate 6 criaturas em raio de 3m: 3d8 + mod. de conjuracao. --- ### NIVEL 5</p><p><em>Abjuracao | Acao | 18m | Instantanea | Clérigo, Druida · nv 4 · 3 PA · 6 células</em></p>",
+      "description": "<p>Ate 6 criaturas em raio de 3m: 3d8 + mod. de conjuracao. --- ### NIVEL 5</p><p><em>Abjuracao | Acao | 18m | Instantanea | Clérigo, Druida · nv 4 · 3 PA · 12 células</em></p>",
       "tactical": {
         "alcanceCells": {
-          "value": 6,
+          "value": 12,
           "min": 0
         },
         "custoPontosAcao": {
@@ -1272,7 +1272,7 @@
         "nivel": 4,
         "escola": "Abjuração",
         "tempo": "1 ação",
-        "alcance": "6 célula",
+        "alcance": "12 célula",
         "recarga": "1/turno"
       },
       "bookRef": "_parte_x_magias_v4_revisada.md"
@@ -1411,10 +1411,10 @@
     "type": "magia",
     "system": {
       "catalogId": "MAG-salto-dimensional",
-      "description": "<p>Teletransporte até 18m para ponto visivel.</p><p><em>Conjuracao | Acao Bonus | Pessoal | Instantanea | Mago, Bardo, Feiticeiro · nv 5 · 2 PA · 6 células</em></p>",
+      "description": "<p>Teletransporte até 18m para ponto visivel.</p><p><em>Conjuracao | Acao Bonus | Pessoal | Instantanea | Mago, Bardo, Feiticeiro · nv 5 · 2 PA · 12 células</em></p>",
       "tactical": {
         "alcanceCells": {
-          "value": 6,
+          "value": 12,
           "min": 0
         },
         "custoPontosAcao": {
@@ -1426,7 +1426,7 @@
         "nivel": 5,
         "escola": "Conjuração",
         "tempo": "ação bônus",
-        "alcance": "6 célula",
+        "alcance": "12 célula",
         "recarga": "1/turno"
       },
       "bookRef": "_parte_x_magias_v4_revisada.md"
@@ -1465,10 +1465,10 @@
     "type": "magia",
     "system": {
       "catalogId": "MAG-causar-praga",
-      "description": "<p>CON CD ou 10d6 veneno/necrótico + Envenenado 1 minuto.</p><p><em>Necromancia | Acao | 18m | Concentracao até 1 minuto (C) | Clérigo, Mago · nv 6 · 3 PA · 6 células</em></p>",
+      "description": "<p>CON CD ou 10d6 veneno/necrótico + Envenenado 1 minuto.</p><p><em>Necromancia | Acao | 18m | Concentracao até 1 minuto (C) | Clérigo, Mago · nv 6 · 3 PA · 12 células</em></p>",
       "tactical": {
         "alcanceCells": {
-          "value": 6,
+          "value": 12,
           "min": 0
         },
         "custoPontosAcao": {
@@ -1480,7 +1480,7 @@
         "nivel": 6,
         "escola": "Necromancia",
         "tempo": "1 ação",
-        "alcance": "6 célula",
+        "alcance": "12 célula",
         "save": {
           "attribute": "constituicao"
         },
@@ -1543,10 +1543,10 @@
     "type": "magia",
     "system": {
       "catalogId": "MAG-cadeia-de-relampago",
-      "description": "<p>Primeiro alvo 10d8 relâmpago; salta até 3 alvos adicionais a 9m (metade do dano cada, DES CD). --- ### NIVEL 7</p><p><em>Evocacao | Acao | 45m | Instantanea | Mago, Druida · nv 6 · 3 PA · 10 células</em></p>",
+      "description": "<p>Primeiro alvo 10d8 relâmpago; salta até 3 alvos adicionais a 9m (metade do dano cada, DES CD). --- ### NIVEL 7</p><p><em>Evocacao | Acao | 45m | Instantanea | Mago, Druida · nv 6 · 3 PA · 30 células</em></p>",
       "tactical": {
         "alcanceCells": {
-          "value": 10,
+          "value": 30,
           "min": 0
         },
         "custoPontosAcao": {
@@ -1558,7 +1558,7 @@
         "nivel": 6,
         "escola": "Evocação",
         "tempo": "1 ação",
-        "alcance": "10 célula",
+        "alcance": "30 célula",
         "save": {
           "attribute": "destreza"
         },
@@ -1616,7 +1616,7 @@
       "description": "<p>Restringido + 5d6 frio/turno.</p><p><em>Evocação · nv 7</em></p>",
       "tactical": {
         "alcanceCells": {
-          "value": 6,
+          "value": 12,
           "min": 0
         },
         "custoPontosAcao": {
@@ -1628,7 +1628,7 @@
         "nivel": 7,
         "escola": "Evocação",
         "tempo": "1 ação",
-        "alcance": "6 célula",
+        "alcance": "12 célula",
         "recarga": "1/turno"
       },
       "weapon": {
@@ -1701,10 +1701,10 @@
     "type": "magia",
     "system": {
       "catalogId": "MAG-terremoto",
-      "description": "<p>Raio 30m: DES CD ou Prostrado; risco de colapso na masmorra. --- ### NIVEL 9</p><p><em>Evocacao | Acao | 150m | Concentracao até 1 minuto (C) | Druida, Clérigo · nv 8 · 3 PA · 20 células</em></p>",
+      "description": "<p>Raio 30m: DES CD ou Prostrado; risco de colapso na masmorra. --- ### NIVEL 9</p><p><em>Evocacao | Acao | 150m | Concentracao até 1 minuto (C) | Druida, Clérigo · nv 8 · 3 PA · 100 células</em></p>",
       "tactical": {
         "alcanceCells": {
-          "value": 20,
+          "value": 100,
           "min": 0
         },
         "custoPontosAcao": {
@@ -1716,13 +1716,13 @@
         "nivel": 8,
         "escola": "Evocação",
         "tempo": "1 ação",
-        "alcance": "20 célula",
+        "alcance": "100 célula",
         "save": {
           "attribute": "destreza"
         },
         "area": {
           "shape": "burst",
-          "radiusCells": 10
+          "radiusCells": 20
         }
       },
       "weapon": {

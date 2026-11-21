@@ -367,7 +367,7 @@ const SPELLS = [
   spell("Estabilizar", 0, "Abjuração", 1, 1, "Criatura a 0 HP para de falhar morte."),
   spell("Mãos Firmes", 0, "Transmutação", 1, 1, "+2 Trinchar por 1 hora."),
   spell("Extração Amplificada", 1, "Biomancia", 1, 1, "Dobra ingredientes; +4 Trinchar 1h.", { tempo: "1 minuto" }),
-  spell("Mãos Gelidas", 1, "Evocação", 2, 2, "Cone 2d6 frio; save CON. Canalizável.", {
+  spell("Mãos Gelidas", 1, "Evocação", 3, 2, "Cone 2d6 frio; save CON. Canalizável.", {
     dano: "2d6",
     tipo: "frio",
     save: "constituicao",
@@ -382,7 +382,7 @@ const SPELLS = [
     dano: "2d8",
     tipo: "trovão",
     save: "constituicao",
-    area: { shape: "cube", radiusCells: 1 },
+    area: { shape: "cube", radiusCells: 3 },
     channel: true,
   }),
   spell("Curar Ferimentos", 1, "Abjuração", 1, 1, "Cura 1d8 + mod conjuração."),
@@ -393,8 +393,8 @@ const SPELLS = [
   }),
   spell("Sussurro de Masmorra", 1, "Adivinhação", 10, 1, "Telepatia com aliado visível."),
   spell("Aprimoramento Biomágico", 2, "Biomancia", 1, 2, "+1 habilidade assimilacao na próxima refeição.", { tempo: "10 minutos" }),
-  spell("Raios de Enfraquecimento", 2, "Necromancia", 6, 2, "3 raios; save CON ou desvantagem.", { save: "constituicao" }),
-  spell("Esfera Ácida de Monstro", 2, "Evocação", 6, 3, "4d6 ácido; save DES. Canalizável.", {
+  spell("Raios de Enfraquecimento", 2, "Necromancia", 12, 2, "3 raios; save CON ou desvantagem.", { save: "constituicao" }),
+  spell("Esfera Ácida de Monstro", 2, "Evocação", 12, 3, "4d6 ácido; save DES. Canalizável.", {
     dano: "4d6",
     tipo: "ácido",
     save: "destreza",
@@ -405,13 +405,13 @@ const SPELLS = [
   spell("Preservação Perfeita", 2, "Transmutação", 1, 1, "Ingrediente preservado 30 dias."),
   spell("Forma Menor", 2, "Transmutação", 0, 1, "Polimorfo em besta pequena."),
   spell("Escudo Arcano", 2, "Abjuração", 0, 1, "Reação: +5 CA 1 rodada.", { tempo: "reação" }),
-  spell("Ilusão Menor", 2, "Ilusão", 6, 1, "Som ou imagem estática em cubo 1 célula.", {
+  spell("Ilusão Menor", 2, "Ilusão", 12, 1, "Som ou imagem estática em cubo 1 célula.", {
     area: { shape: "cube", radiusCells: 1 },
   }),
   spell("Muralha de Energia", 2, "Abjuração", 3, 2, "Barreira reta em 3 células.", { area: { shape: "wall", cellCount: 3 } }),
-  spell("Animação de Mortos", 3, "Necromancia", 3, 2, "Anima 2 cadáveres por 24h.", { tempo: "1 minuto" }),
+  spell("Animação de Mortos", 3, "Necromancia", 2, 2, "Anima 2 cadáveres por 24h.", { tempo: "1 minuto" }),
   spell("Injeção Biomágica", 3, "Biomancia", 1, 1, "Habilidade assimilacao 12h do ingrediente."),
-  spell("Bola de Fogo", 3, "Evocação", 10, 3, "Raio 6 m: 8d6 fogo; save DES. Canalizável.", {
+  spell("Bola de Fogo", 3, "Evocação", 30, 3, "Raio 6 m: 8d6 fogo; save DES. Canalizável.", {
     dano: "8d6",
     tipo: "fogo",
     save: "destreza",
@@ -434,14 +434,14 @@ const SPELLS = [
     save: "forca",
     area: { shape: "line", lengthCells: 12 },
   }),
-  spell("Ler Mentes", 3, "Adivinhação", 4, 1, "Lê pensamentos superficiais."),
-  spell("Relâmpago", 3, "Evocação", 8, 3, "Um alvo: 4d8 relâmpago; save DES. Canalizável.", {
+  spell("Ler Mentes", 3, "Adivinhação", 6, 1, "Lê pensamentos superficiais."),
+  spell("Relâmpago", 3, "Evocação", 24, 3, "Um alvo: 4d8 relâmpago; save DES. Canalizável.", {
     dano: "4d8",
     tipo: "relâmpago",
     save: "destreza",
     channel: true,
   }),
-  spell("Sono", 3, "Encantamento", 6, 2, "Até 5 alvos; save SAB.", { save: "sabedoria", recarga: "1/turno" }),
+  spell("Sono", 3, "Encantamento", 12, 2, "Até 5 alvos; save SAB.", { save: "sabedoria", recarga: "1/turno" }),
   spell("Raio do Limiar", 3, "Necromancia", 6, 3, "4d8 necrótico; save CON. Canalizável.", {
     dano: "4d8",
     tipo: "necrótico",
@@ -449,22 +449,22 @@ const SPELLS = [
     channel: true,
   }),
   spell("Visão do Ecossistema", 4, "Adivinhação", 0, 2, "Visão através de criatura do bioma.", { tempo: "10 minutos" }),
-  spell("Murcha", 4, "Necromancia", 2, 3, "8d8 necrótico; save CON. Canalizável.", {
+  spell("Murcha", 4, "Necromancia", 3, 3, "8d8 necrótico; save CON. Canalizável.", {
     dano: "8d8",
     tipo: "necrótico",
     save: "constituicao",
     channel: true,
     recarga: "1/turno",
   }),
-  spell("Mutação Forçada", 4, "Biomancia", 6, 1, "Mutação negativa aleatória 1h."),
-  spell("Parede de Fogo", 4, "Evocação", 8, 3, "Parede até 18 m: 5d8 fogo.", {
+  spell("Mutação Forçada", 4, "Biomancia", 12, 1, "Mutação negativa aleatória 1h."),
+  spell("Parede de Fogo", 4, "Evocação", 24, 3, "Parede até 18 m: 5d8 fogo.", {
     dano: "5d8",
     tipo: "fogo",
     area: { shape: "wall", cellCount: 12 },
     recarga: "1/turno",
   }),
   spell("Preservação Anual", 4, "Transmutação", 1, 1, "Preserva ingrediente 1 ano."),
-  spell("Cura em Massa", 4, "Abjuração", 6, 3, "Até 6 alvos: 3d8 + mod.", { recarga: "1/turno" }),
+  spell("Cura em Massa", 4, "Abjuração", 12, 3, "Até 6 alvos: 3d8 + mod.", { recarga: "1/turno" }),
   spell("Ressurreição Incompleta", 5, "Necromancia", 1, 3, "Aliado volta com 1 HP.", {
     tempo: "1 hora",
     recarga: "1/combate",
@@ -482,7 +482,7 @@ const SPELLS = [
     tempo: "8 horas",
     recarga: "1/combate",
   }),
-  spell("Salto Dimensional", 5, "Conjuração", 6, 2, "Teletransporte 6 célula.", {
+  spell("Salto Dimensional", 5, "Conjuração", 12, 2, "Teletransporte 6 célula.", {
     tempo: "ação bônus",
     recarga: "1/turno",
   }),
@@ -490,7 +490,7 @@ const SPELLS = [
     tempo: "1 hora",
     recarga: "1/turno",
   }),
-  spell("Causar Praga", 6, "Necromancia", 6, 3, "10d6 veneno; save CON.", {
+  spell("Causar Praga", 6, "Necromancia", 12, 3, "10d6 veneno; save CON.", {
     dano: "10d6",
     tipo: "veneno",
     save: "constituicao",
@@ -502,7 +502,7 @@ const SPELLS = [
     save: "destreza",
     recarga: "1/turno",
   }),
-  spell("Cadeia de Relâmpago", 6, "Evocação", 10, 3, "10d8 relâmpago em cadeia. Canalizável.", {
+  spell("Cadeia de Relâmpago", 6, "Evocação", 30, 3, "10d8 relâmpago em cadeia. Canalizável.", {
     dano: "10d8",
     tipo: "relâmpago",
     save: "destreza",
@@ -510,18 +510,18 @@ const SPELLS = [
     recarga: "1/turno",
   }),
   spell("Forma de Monstro", 7, "Biomancia", 1, 3, "Polimorfo em monstro do bestiário.", { recarga: "1/combate" }),
-  spell("Prisão de Gelo", 7, "Evocação", 6, 3, "Restringido + 5d6 frio/turno.", {
+  spell("Prisão de Gelo", 7, "Evocação", 12, 3, "Restringido + 5d6 frio/turno.", {
     dano: "5d6",
     tipo: "frio",
     recarga: "1/turno",
   }),
   spell("Regeneração Biomágica", 7, "Biomancia", 1, 2, "4d8+15 HP no início de cada turno."),
   spell("Invisibilidade Maior", 7, "Ilusão", 1, 1, "Até 6 aliados invisíveis."),
-  spell("Terremoto", 8, "Evocação", 20, 3, "Área 30 célula; save DES prostrado.", {
+  spell("Terremoto", 8, "Evocação", 100, 3, "Área 30 célula; save DES prostrado.", {
     dano: "6d6",
     tipo: "contundente",
     save: "destreza",
-    area: { shape: "burst", radiusCells: 10 },
+    area: { shape: "burst", radiusCells: 20 },
   }),
   spell("Biomancia Suprema — Transcendência", 9, "Biomancia", 0, 3, "Integra DNA de 3 bosses.", {
     tempo: "1 hora",
@@ -583,7 +583,7 @@ const ABILITY_CATALOG = [
   ["Julgamento Ardente", 6, 1, "ativa", "1/descanso curto", "Marca inimigo visível 9m; Golpe Sagrado contra ele não gasta PA extra 1×/turno."],
   ["Coroa de Fogo", 3, 2, "ativa", "1/combate", "Explosão solar 4,5m: 4d8 radiante (DES CD 15 metade); aliados imunes."],
   ["Lâmina dos Sepulcros", 1, 1, "ativa", "", "Próximo ataque vs morto-vivo +1d8 radiante ou necrótico."],
-  ["Voto de Caça", 9, 1, "ativa", "", "Marca tipo de morto-vivo declarado; +3 dano e vantagem em Percepção vs esse tipo."],
+  ["Voto de Caça", 12, 1, "ativa", "", "Marca tipo de morto-vivo declarado; +3 dano e vantagem em Percepção vs esse tipo."],
   ["Marca do Limiar", 6, 1, "ativa", "", "Marca liminar: próximo morto-vivo que atacar aliado marcado sofre 2d8 necrótico."],
   ["Processão Silenciosa", 2, 2, "ativa", "1/descanso longo", "Forma espectral 10 min: atravessa portas, +10 Furtividade vs mortos-vivos."],
   ["Mordida do Voto", 1, 1, "ativa", "", "Ação bônus: +2 FOR e +3m movimento por 1 minuto; oportunidades têm desvantagem."],
@@ -594,9 +594,9 @@ const ABILITY_CATALOG = [
   ["Agarrão do Pacto", 6, 2, "ativa", "1/combate", "Tentáculos 9m: até 2 alvos Restringidos (FOR CD 15)."],
   ["Mente Partida", 12, 2, "ativa", "1/descanso longo", "Confusão 1 min (INT CD 16); aberrações INT ≤ 8 falham automaticamente."],
   ["Sangue do Patrono", 0, 1, "ativa", "", "Sacrifica 1d8 HP para recuperar 1 slot de Pacto."],
-  ["Pacto de Ferro", 5, 2, "ativa", "1/combate", "Correntes 3d8 fogo + Restringir alvo (FOR CD 15)."],
+  ["Pacto de Ferro", 6, 2, "ativa", "1/combate", "Correntes 3d8 fogo + Restringir alvo (FOR CD 15)."],
   ["Correntes Infernais", 3, 3, "ativa", "1/turno", "Selo de sangue 3m: 3d6 fogo a quem entrar; fogo ignora resistência."],
-  ["Corrente Mental", 6, 1, "ativa", "1/descanso curto", "Eco mental: repete encantamento nv.1 sem slot."],
+  ["Corrente Mental", 12, 1, "ativa", "1/descanso curto", "Eco mental: repete encantamento nv.1 sem slot."],
   ["Manto de Bruma", 3, 2, "ativa", "", "Névoa 6m 1 min: aliados furtivos; inimigos −2 em ataques à distância."],
   ["Puxão Abissal", 6, 3, "ativa", "1/turno", "Puxa alvo 9m e 2d8 frio (FOR CD 15)."],
 ];

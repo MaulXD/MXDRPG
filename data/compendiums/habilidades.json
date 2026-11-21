@@ -825,7 +825,7 @@
       "description": "<p>Marca tipo de morto-vivo declarado; +3 dano e vantagem em Percepção vs esse tipo.</p>",
       "tactical": {
         "alcanceCells": {
-          "value": 9,
+          "value": 12,
           "min": 0
         },
         "custoPontosAcao": {
@@ -1089,7 +1089,7 @@
       "description": "<p>Correntes 3d8 fogo + Restringir alvo (FOR CD 15).</p>",
       "tactical": {
         "alcanceCells": {
-          "value": 5,
+          "value": 6,
           "min": 0
         },
         "custoPontosAcao": {
@@ -1137,7 +1137,7 @@
       "description": "<p>Eco mental: repete encantamento nv.1 sem slot.</p>",
       "tactical": {
         "alcanceCells": {
-          "value": 6,
+          "value": 12,
           "min": 0
         },
         "custoPontosAcao": {
