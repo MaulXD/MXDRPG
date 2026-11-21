@@ -174,6 +174,14 @@ ok(
   !/TOR_CHARACTER_CHANGED_EVENT/.test(POPUP) && !/TOR_CHARACTER_CHANGED_EVENT/.test(PANEL_HAZARD)
 );
 
+const NOTIFIER = stripComments(read("lib", "room", "notifier.ts"));
+ok(
+  "BV-048 aviso da sala: um emissor só no processo (globalThis), não um por cópia do módulo",
+  /globalThis\.__eldarinRoomNotifier = e;/.test(NOTIFIER) &&
+    !/^const emitter = new EventEmitter\(\)/m.test(NOTIFIER) &&
+    /emitter\(\)\.emit\(`room:\$\{roomId\}`, revision\);/.test(NOTIFIER)
+);
+
 /* ── 3. BV-039: botão ROLAR dentro do painel ───────────────────────────── */
 
 const CSS = read("components", "vtt", "vtt.css");
