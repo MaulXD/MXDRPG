@@ -89,6 +89,7 @@ export function applyIdentityPatch(actor: CharacterSheet, patch: IdentityPatch):
       vida: {
         max: hpMax,
         value: Math.min(actor.resources.vida.value, hpMax),
+        ...(actor.resources.vida.temp !== undefined ? { temp: actor.resources.vida.temp } : {}),
       },
       pontosAcao: {
         max: paMax,

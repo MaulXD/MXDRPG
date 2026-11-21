@@ -32,7 +32,7 @@ async function persistActor(actor: RoomActor): Promise<void> {
   await persistActorToAdventureSheet(actor);
 }
 
-function applySetLevel(actor: RoomActor, level: number): RoomActor {
+export function applySetLevel(actor: RoomActor, level: number): RoomActor {
   const nivel = Math.max(1, Math.min(MAX_LEVEL, Math.floor(level)));
   const conMod = attributeMod(actor.attributes.constituicao);
   const hpMax = hpMaxFor(actor.identity.classe, nivel, conMod);
@@ -57,6 +57,7 @@ function applySetLevel(actor: RoomActor, level: number): RoomActor {
         vida: {
           max: hpMax,
           value: Math.min(actor.resources.vida.value, hpMax),
+          ...(actor.resources.vida.temp !== undefined ? { temp: actor.resources.vida.temp } : {}),
         },
         pontosAcao: {
           max: paMax,
@@ -147,7 +148,11 @@ export async function executeGmActorProgress(
         ...current,
         resources: {
           ...current.resources,
-          vida: { max: hpMax, value: hpValue },
+          vida: {
+            max: hpMax,
+            value: hpValue,
+            ...(prev.temp !== undefined ? { temp: prev.temp } : {}),
+          },
         },
         revision: current.revision + 1,
       };

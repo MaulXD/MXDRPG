@@ -267,6 +267,9 @@ export async function executeGmCombatAction(
               vida: {
                 max: hpMax,
                 value: Math.min(current.resources.vida.value, hpMax),
+                ...(current.resources.vida.temp !== undefined
+                  ? { temp: current.resources.vida.temp }
+                  : {}),
               },
               pontosAcao: {
                 max: paMax,

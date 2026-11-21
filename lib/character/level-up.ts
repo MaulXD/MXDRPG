@@ -293,7 +293,11 @@ export function applyLevelUp(actor: CharacterSheet, choices: LevelUpChoices = {}
     attributes,
     culinary,
     resources: {
-      vida: { value: hpValueAfterLevelUp(actor, newMax), max: newMax },
+      vida: {
+        value: hpValueAfterLevelUp(actor, newMax),
+        max: newMax,
+        ...(actor.resources.vida.temp !== undefined ? { temp: actor.resources.vida.temp } : {}),
+      },
       pontosAcao: { value: paMax, max: paMax },
     },
     tactical: {

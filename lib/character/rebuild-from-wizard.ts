@@ -34,7 +34,11 @@ function recalcResourcesAtLevel(sheet: CharacterSheet, level: number): Character
     identity: { ...sheet.identity, nivel: level },
     culinary,
     resources: {
-      vida: { value: isCharacterDead(sheet) ? 0 : hpMax, max: hpMax },
+      vida: {
+        value: isCharacterDead(sheet) ? 0 : hpMax,
+        max: hpMax,
+        ...(sheet.resources.vida.temp !== undefined ? { temp: sheet.resources.vida.temp } : {}),
+      },
       pontosAcao: { value: paMax, max: paMax },
     },
     tactical: {
