@@ -15,6 +15,7 @@ export function appendRoomChatMessage(
     authorRole: message.authorRole,
     kind: message.kind,
     text: message.text,
+    ...(message.fromChatBox ? { fromChatBox: true as const } : {}),
     roll: message.roll,
     combat: message.combat,
   };

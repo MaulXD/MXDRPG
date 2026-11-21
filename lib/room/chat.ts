@@ -5,6 +5,11 @@ export type ChatMessage = {
   authorName: string;
   authorRole: "admin" | "mestre" | "jogador" | "guest";
   kind: "chat" | "roll" | "system" | "combat";
+  /**
+   * P-16: digitada ou rolada na caixa do chat (rota /chat). A mesa não recarrega as
+   * fichas por ela. Ausente = narração de uma gravação (avanço, Sombra...), que recarrega.
+   */
+  fromChatBox?: true;
   text: string;
   roll?: {
     formula: string;

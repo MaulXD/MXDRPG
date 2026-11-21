@@ -94,6 +94,19 @@ export function useMesaSnapshotFull(roomId: string): RoomSnapshot | null {
   );
 }
 
+/**
+ * Revisão de dados da sala (P-16): não sobe com mensagem só de chat. Painéis que recarregam
+ * fichas usam esta; a revisão bruta (useMesaRoomRevision) continua para o resto.
+ */
+export function useMesaRoomDataRevision(roomId: string): number {
+  const store = getMesaRoomStore(roomId);
+  return useSyncExternalStore(
+    (cb) => store.subscribe("data", cb),
+    () => store.getDataRevision(),
+    () => store.getDataRevision()
+  );
+}
+
 /** Revisão atual da sala; muda a cada gravação, mesmo sem mudança de cena (BV-048). */
 export function useMesaRoomRevision(roomId: string): number {
   const store = getMesaRoomStore(roomId);

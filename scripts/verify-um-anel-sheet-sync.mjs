@@ -142,8 +142,8 @@ ok(
 );
 ok(
   "BV-040/BV-048 card: lê a revisão da mesa pela fatia própria (SSE, sem polling)",
-  /import \{ useMesaRoomRevision \} from "@\/hooks\/vtt\/useMesaRoomSlice";/.test(CARD) &&
-    /const roomRevision = useMesaRoomRevision\(roomId \?\? ""\);/.test(CARD)
+  /import \{ useMesaRoomDataRevision \} from "@\/hooks\/vtt\/useMesaRoomSlice";/.test(CARD) &&
+    /const roomRevision = useMesaRoomDataRevision\(roomId \?\? ""\);/.test(CARD)
 );
 
 /* ── 2b. BV-048: revisão sozinha também avisa o card ───────────────────── */
@@ -185,7 +185,7 @@ ok(
 
 ok(
   "BV-050 ficha aberta: recarrega pela revisão da sala, uma vez por rajada (0,6 s)",
-  /const roomRevision = useMesaRoomRevision\(roomId\);/.test(SHEET_POPUP) &&
+  /const roomRevision = useMesaRoomDataRevision\(roomId\);/.test(SHEET_POPUP) &&
     /window\.setTimeout\(\(\) => void load\(characterId\), 600\)/.test(SHEET_POPUP) &&
     /\}, \[roomRevision, characterId, load\]\);/.test(SHEET_POPUP)
 );

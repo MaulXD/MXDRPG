@@ -125,7 +125,8 @@ ok(
 
 ok(
   "TorPlayableCharactersPanel recarrega quando a revisão da mesa muda",
-  /useMesaRoomRevision\(roomId \?\? ""\)/.test(PANEL) &&
+  // P-16: pela revisão de dados (não sobe com conversa pura do chat).
+  /useMesaRoomDataRevision\(roomId \?\? ""\)/.test(PANEL) &&
     /\}, \[roomRevision\]\);/.test(PANEL)
 );
 

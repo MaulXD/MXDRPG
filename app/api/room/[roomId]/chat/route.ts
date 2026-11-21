@@ -54,6 +54,7 @@ export async function POST(req: Request, { params }: Params) {
       const snapshot = await addRoomChatMessage(roomId, {
         ...author,
         kind: "roll",
+        fromChatBox: true,
         text: formatRollMessage(result),
         roll: {
           formula: result.formula,
@@ -89,6 +90,7 @@ export async function POST(req: Request, { params }: Params) {
   const snapshot = await addRoomChatMessage(roomId, {
     ...author,
     kind: "chat",
+    fromChatBox: true,
     text,
     ...(featDieValue != null
       ? { roll: { formula: "1d12", rolls: [featDieValue], total: featDieValue, system: room.rpgSystemId } }

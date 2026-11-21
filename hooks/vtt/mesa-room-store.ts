@@ -5,7 +5,7 @@ import type { RoomSyncStatus } from "@/hooks/useRoomSync";
 const EMPTY_CHAT: ChatMessage[] = [];
 const EMPTY_ACTORS: RoomSnapshot["actors"] = Object.freeze({}) as RoomSnapshot["actors"];
 
-export type MesaRoomSlice = "chat" | "map" | "combat" | "actors" | "settings" | "meta" | "revision";
+export type MesaRoomSlice = "chat" | "map" | "combat" | "actors" | "settings" | "meta" | "revision" | "data";
 
 export type MesaMapSlice = {
   revision: number;
@@ -39,6 +39,7 @@ export class MesaRoomStore {
   };
   private mapCache: MesaMapSlice | null = null;
   private mapSnapshotOut: RoomSnapshot | null = null;
+  private dataRevision = 0;
   private listeners = new Map<MesaRoomSlice, Set<SliceListener>>();
 
   subscribe(slice: MesaRoomSlice, onStoreChange: SliceListener): () => void {
@@ -206,10 +207,41 @@ export class MesaRoomStore {
     // BV-048: mudança só de revisão (ex.: ficha do Um Anel gravada fora da cena) não
     // toca nenhuma fatia acima, mas painéis que recarregam pela revisão precisam saber.
     if (prev?.revision !== nextSnap?.revision) this.emit("revision");
+
+    // P-16: revisão de dados. Sobe quando alguma fatia que não é chat mudou, ou quando a
+    // revisão mudou sem chat novo (ex.: ficha do Um Anel gravada fora da sala). Gravação
+    // só de chat não sobe, para os painéis de ficha não recarregarem a cada mensagem.
+    const chatChanged = prev?.chat !== nextSnap?.chat;
+    const revisionChanged = prev?.revision !== nextSnap?.revision;
+    // Gravações de ficha (XP, avanço, recuperação, fadiga, Sombra, Olho) narram no chat no
+    // MESMO sync, várias com kind "chat". Só o que veio da caixa do chat leva fromChatBox
+    // (rota /chat); qualquer outra mensagem nova recarrega as fichas. Padrão seguro:
+    // uma gravação nova que narre no chat recarrega sem precisar lembrar de marcar nada.
+    const prevIds = new Set((prev?.chat ?? EMPTY_CHAT).map((m) => m.id));
+    const novas = chatChanged
+      ? (nextSnap?.chat ?? EMPTY_CHAT).filter((m) => !prevIds.has(m.id))
+      : EMPTY_CHAT;
+    const chatTrazGravacao = novas.some((m) => !m.fromChatBox);
+    // Cada gravação sobe a revisão em 1. Se ela subiu mais do que as mensagens da caixa
+    // que chegaram, houve outra gravação junto (ex.: reconexão do SSE juntou uma mensagem
+    // e uma ficha gravada fora da sala): recarrega (Lupa, P-16 3a).
+    const revDelta = (nextSnap?.revision ?? 0) - (prev?.revision ?? 0);
+    const daCaixa = novas.filter((m) => m.fromChatBox).length;
+    const revisaoAlemDaCaixa = revDelta > daCaixa;
+    // Ping no mapa também recarrega (Lupa, P-16): a revisão de um ping é indistinguível
+    // da de uma ficha gravada fora da sala no mesmo sync, e ping é raro.
+    if (mapDataChanged || (revisionChanged && (chatTrazGravacao || revisaoAlemDaCaixa))) {
+      this.dataRevision += 1;
+      this.emit("data");
+    }
   }
 
   getRevision(): number {
     return this.snapshot?.revision ?? 0;
+  }
+
+  getDataRevision(): number {
+    return this.dataRevision;
   }
 
   reset(): void {
