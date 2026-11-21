@@ -210,3 +210,182 @@ Passo 5 (390x844, depois voltou a 1900x1191): compendio Armas e Habilidades sem 
 - Regente (16:33): conferir no LIVRO-DO-JOGADOR.md antes de corrigir; item 23b na pagina 11.
 - Sem edicao de codigo neste item.
 - URL: http://localhost:3000/compendios/habilidades
+
+ETAPA 4 em curso (Um Anel, conta Farejador, portal Site local em 1900x1183).
+Passo 1a (criar aventura): /rpg/um-anel, 'Aventura Teste Farejador Um Anel' criada e aberta em /aventura/aventura-teste-farejador-v44fo. OK.
+Passo 1b (wizard Um Anel): Conceito (nome Eldo Teste Farejador), Cultura (Hobbits do Condado, Perícia Favorecida Furtividade), Atributos (Conjunto 1), Chamado (Capitao, 2 perícias Batalha e Persuasao), Combate (Espadas principal, Machados adicional), Tracos (Honrado e Curioso), Dadivas (Grave e Confianca), Equipamento (Espada Curta, Camisa de Couro, Sem elmo, Sem escudo e Machado), Retrato pulado, Revisao, CRIAR PERSONAGEM. Criado: tor-mwpv6xvk-dtidfd. Sem erro de console na navegacao (so avisos abaixo).
+
+## BV-024 Alerta 'Pendente: Equipamento' nao diz o que falta (P3, a confirmar)
+- Severidade: P3; se a regra exigir uma arma de cada proficiencia, e so UX
+- Passos: wizard Um Anel, passo Equipamento: escolher Espada Curta, Camisa de Couro, Sem elmo e Sem escudo; ler o alerta.
+- Esperado: o alerta diz qual escolha falta (ex.: arma de Machados).
+- Obtido: alerta continua 'Pendente: Equipamento' sem detalhe; so some depois de escolher o Machado tambem.
+- Erro do console: nenhum.
+- URL: http://localhost:3000/aventura/aventura-teste-farejador-v44fo?personagem=criado
+
+## BV-025 Proficiencia adicional lista Espadas mesmo com Espadas como principal (P3, a confirmar com o livro)
+- Severidade: P3; se o livro proibir a mesma proficiencia nas duas, vira P2
+- Passos: wizard Um Anel, passo Combate: escolher Espadas em Proficiencia principal; olhar a lista de Proficiencia adicional.
+- Esperado: a adicional nao oferece a mesma proficiencia da principal (ou a regra explica).
+- Obtido: Espadas continua na lista adicional.
+- Erro do console: nenhum.
+- URL: http://localhost:3000/aventura/aventura-teste-farejador-v44fo
+
+## BV-026 Aviso de servidor: seed de fichas demo no Postgres falhou (P3, dev)
+- Severidade: P3 (aviso no console; o projeto usa MariaDB, confirmar de onde vem)
+- Passos: criar personagem Um Anel pelo wizard; ler o console.
+- Esperado: nenhum aviso de seed com erro de banco.
+- Obtido: [warn] [eldarin] seed de fichas demo no Postgres falhou, continuando sem seed: Bind parameters must not contain undefined. To pass SQL NULL specify JS null.
+- Erro do console: [warn] ... Bind parameters must not contain undefined.
+- URL: http://localhost:3000/aventura/aventura-teste-farejador-v44fo?personagem=criado&char=tor-mwpv6xvk-dtidfd
+
+Passo 1c (ficha Um Anel, /personagem/tor-mwpv6xvk-dtidfd, Eldo): cabecalho (Hobbits do Condado, Capitao, padrao comum), Resistencia 21/21, Esperanca 18/18, Sombra 0, Fadiga 0, Bloqueio 17, Carga 6; atributos e pericias batem com o wizard (Batalha e Persuasao, Furtividade favorecidas); proficiencias Espadas 2 e Machados 1; tracos Honrado, Curioso, Lideranca; dadivas Grave e Confianca; equipamento Espada Curta e Machado, Camisa de Couro, sem elmo e escudo. Nao achei aba nem controle de posturas na ficha (so aparece na mesa, a conferir). EXPORTAR PDF clicado: sem erro no console (download nao confirmado pelo portal). Console limpo na ficha, exceto o aviso de BV-026 na criacao.
+
+ETAPA 4 passo 2 em curso (ficha da Lira, /personagem/pc-mwp8u5ew): abas Inventario 5, Tesouro, Habilidades, Magias, Bestiario Pessoal; Em uso na mesa (Espada Longa e Cota de Malha). Inventario lido.
+
+## BV-027 Nome dos itens do inventario quase invisivel (texto escuro no fundo escuro) (P2)
+- Severidade: P2 (legibilidade; o nome so aparece no texto de descricao)
+- Passos: /personagem/pc-mwp8u5ew, rolar ate a aba Inventario (aberta por padrao); olhar o titulo de cada card de item (Espada Longa, Kit de Trinchar, Tocha de Masmorra, Corda de Seda de Aranha, Cota de Malha).
+- Esperado: nome do item legivel no card escuro.
+- Obtido: o titulo some (cor rgb(30,24,20) sobre fundo rgb(26,25,22)); a letra do icone tambem quase nao aparece. Visto no print: so a descricao fica legivel.
+- Erro do console: nenhum.
+- URL: http://localhost:3000/personagem/pc-mwp8u5ew
+
+Passo 2b (inventario da Lira): adicionar pelo + COMPENDIO (Adaga de Quelicera entrou, contador 6), remover (Tocha saiu, contador 5), Habilidades (Cancao de Cura entrou, aba 1), Magias (Bola de Fogo entrou, aba 1). Equipar: a troca do select Arma/acao em Em uso na mesa nao aparece na tela (BV-028).
+
+## BV-028 Trocar a arma em 'Em uso na mesa' nao atualiza o select na hora; so aparece depois de recarregar (P2, a confirmar)
+- Severidade: P2; se o valor salvo estiver errado no banco, vira P1 (arma errada na mesa)
+- Passos: /personagem/pc-mwp8u5ew, aba Inventario com Adaga de Quelicera no inventario; no select Arma / acao (Em uso na mesa) escolher Adaga de Quelicera; esperar 2 s e ler o valor do select.
+- Esperado: o select mostra Adaga de Quelicera na hora.
+- Obtido: o select continuou em Espada Longa (lido por DOM 2 s depois). Depois de recarregar a pagina, o select mostra Adaga de Quelicera (salvou no servidor). Repetido: troca ok so apos recarregar.
+- Erro do console: nenhum.
+## BV-029 Guerreiro recebe magia Bola de Fogo sem aviso (P3, a confirmar com o livro)
+- Severidade: P3; se o livro restringe magia a conjuradores, vira P2
+- Passos: /personagem/pc-mwp8u5ew (classe Guerreiro), aba Magias, + COMPENDIO, escolher Bola de Fogo.
+- Esperado: a regra da classe impede ou avisa, ou a magia e permitida pelo livro.
+- Obtido: Bola de Fogo entrou direto na aba Magias (contador 1), sem aviso.
+- Erro do console: nenhum.
+- URL: http://localhost:3000/personagem/pc-mwp8u5ew
+
+## BV-030 Texto 'Gestao do personagem' quase invisivel no fim da ficha (P3)
+- Severidade: P3 (visual)
+- Passos: /personagem/pc-mwp8u5ew, rolar ate o fim da ficha (depois das abas).
+- Esperado: texto do bloco legivel.
+- Obtido: o titulo do bloco 'Gestao do personagem' aparece em dourado claro sobre fundo bege, quase sem contraste (visto no print).
+- Erro do console: nenhum.
+- URL: http://localhost:3000/personagem/pc-mwp8u5ew
+
+Passo 2c (retrato da Lira): Adicionar retrato com eldarin-cover.png, Salvar retrato: imagem aparece na ficha, sem erro. OK.
+Passo 2 concluido (ficha Lira 1900x1183): inventario, habilidades, magias e retrato testados; PDF exportado no bloco da ficha sem erro no console. Tesouro e Bestiario Pessoal nao abertos. Aviso: o portal mostrou o overlay do Next.js com '2 Issues' (SyntaxError do proprio portal, selector vazio, nao do app).
+
+## BV-031 Ficha Um Anel em 390 px: botao EXPORTAR PDF estoura a largura e cria rolagem horizontal (P2)
+- Severidade: P2 (mobile; o cabecalho fica espremido e sobreposto)
+- Passos: resize 390x844; abrir /personagem/tor-mwpv6xvk-dtidfd; ler o cabecalho e a barra de rolagem.
+- Esperado: sem rolagem horizontal (margem de 16 px); botao Exportar PDF dentro da largura; titulo e dados legiveis.
+- Obtido: document.scrollWidth 442 para viewport 390 (clientWidth 375). O container tor-sheet__masthead-actions (botao EXPORTAR PDF) vai ate x=442 e fica sobre a coluna de texto 'Hobbits do Condado / Capitao / Padrao de vida'. Titulo quebra em 3 linhas e o retrato fica estreito.
+- Erro do console: nenhum.
+- URL: http://localhost:3000/personagem/tor-mwpv6xvk-dtidfd
+
+Passo 4 (390x844, Site local; no fim voltou para 1900x1191): ficha Um Anel tem rolagem horizontal (BV-031). Ficha da Lira em 390 sem rolagem horizontal; abas do inventario quebram em 3 linhas, sem estouro; inventario e retrato OK; nomes dos itens continuam ilegiveis (BV-027). O wizard Um Anel NAO foi refeito inteiro em 390 (so conferido a ficha); fica a conferir.
+
+Passo 3 (paineis, conta de teste): /mesas (Escolha seu RPG) OK; /rpg/um-anel lista a mesa Aventura Teste Farejador Um Anel com Abrir mesa, Copiar link e Excluir mesa; /conta: apelido, recuperacao de senha (CPF e nascimento) e foto (avatar ou personalizada) com botoes; /amigos: adicionar apelido inexistente responde 'Apelido nao encontrado' (ok); notificacoes: 'Nenhuma pendencia no momento'. Console sem erro nessas paginas. Nenhum bug novo nesta parte.
+- Erro do console: nenhum.
+
+ETAPA 5 em curso (Site local, 390x844 para o wizard; conta de teste).
+Item 1 (ficha da Lira, 1900x1183): aba Tesouro abre com Pecas de ouro 50 po, Especiarias, Minerios e Tesouros (Nenhum item) e + ADICIONAR em cada grupo; sem erro no console. Aba Bestiario Pessoal abre com Goblin 2, Dano causado: 14 HP (Goblin 2 tem 8 HP; conferir se e acumulado de varias lutas); sem erro no console.
+
+## BV-032 Wizard Um Anel em 390 sai sozinho e cai na ficha antiga (tor-mwpv6xvk-dtidfd); o nome novo some (interferencia do portal compartilhado, nao e bug)
+- Severidade: P1 (nao da para criar segundo personagem; a ficha criada nao e a que o jogador preencheu)
+- Passos: 390x844, /aventura/aventura-teste-farejador-v44fo, CRIAR PERSONAGEM. Conceito: nome Eldo Mobile Farejador. Cultura Hobbits do Condado + Furtividade. Atributos Conjunto 1. Chamado Capitao + Batalha + Persuasao. Proximo.
+- Esperado: passo Chamado seguir ate Revisao e CRIAR PERSONAGEM gerar personagem novo com o nome digitado.
+- Obtido: na 2a tentativa a pagina saiu do wizard sem clique em CRIAR PERSONAGEM e foi para /aventura/aventura-teste-farejador-v44fo?personagem=criado&char=tor-mwpv6xvk-dtidfd (ID da Eldo Teste Farejador da etapa 4); o nome Eldo Mobile nao aparece em lugar nenhum. Na 1a tentativa aconteceu o mesmo (ficha tor-mwpv6xvk-dtidfd, nome Eldo Teste Farejador).
+- Erro do console: nenhum (logs-start ativo).
+- URL: http://localhost:3000/aventura/aventura-teste-farejador-v44fo/personagem/novo
+Reproducao Farejador (portal proprio, 390x844, registro fetch): wizard seguiu do Conceito ao Passo 10 sem sair; URL conferida em cada etapa ficou /personagem/novo. Ultimo passo CRIAR PERSONAGEM: POST /api/tor-characters -> 200, depois URL /aventura/aventura-teste-farejador-v44fo?personagem=criado&char=tor-mwpw1h70-wwnw3k. Personagem novo 'Eldo Mobile Farejador' aparece na aventura. Nao houve redirect para a ficha tor-mwpv6xvk-dtidfd. Conclusao: nao reproduzido; a ficha antiga foi o portal compartilhado com a Bigorna.
+
+## BV-033 Aventura Um Anel nao lista o personagem criado: '0 fichas de jogadores' e 'Voce ainda nao tem personagem nesta mesa' (P2, a confirmar)
+- Severidade: P2 (a ficha abre, mas a mesa nao reconhece o personagem da conta)
+- Passos: abrir /aventura/aventura-teste-farejador-v44fo depois de criar a Eldo (ETAPA 4) e ler a area Fichas dos jogadores e Seu personagem (mestre).
+- Esperado: a ficha tor-mwpv6xvk-dtidfd aparece em Fichas dos jogadores e como personagem da conta nesta mesa.
+- Obtido: '0 fichas de jogadores'; 'Nenhuma ficha de jogador ainda'; 'Voce ainda nao tem personagem nesta mesa' com botao CRIAR PERSONAGEM. A ficha /personagem/tor-mwpv6xvk-dtidfd abre normal com Eldo Teste Farejador.
+- Erro do console: nenhum.
+- URL: http://localhost:3000/aventura/aventura-teste-farejador-v44fo
+
+## BV-034 Login com senha certa cai na ficha da Lira, nao em /mesas (P3, a confirmar)
+- Severidade: P3; se o desenho for voltar a ultima pagina, nao e bug
+- Passos: sair; abrir /entrar; e-mail farejador.teste01@example.com; senha certa; ENTRAR.
+- Esperado: /mesas (como na ETAPA 1), ou a pagina de origem se for o desenho.
+- Obtido: /personagem/pc-mwp8u5ew (ficha da Lira).
+- Erro do console: nenhum.
+- URL: http://localhost:3000/entrar
+
+ETAPA 5 resultado (parcial):
+- Item 1 (Lira, 1900): aba Tesouro e Bestiario Pessoal abrem; sem erro no console. Ver nota de Goblin 2 abaixo.
+- Item 2 (wizard Um Anel em 390): NAO concluido. Ver BV-032 e BV-033.
+- Item 3 (/compendios?sistema=um-anel em 390): 11 abas lidas, 4 a 5 entradas cada (Personagem, Equipamento, Combate e Posturas, Adversarios, Jornada, Conselho, Sombra e Miseria, Tesouro, Progressao e Companhia, Companhia & Mundo, Personagens Pre-Gerados). Sem erro no console. Pendente: a passagem em 1900.
+- Item 4 (/privacidade, /download, /mundo): sem rolagem horizontal em 390 (scrollWidth 375) nem em 1900. Sem erro no console.
+- Item 5 (sair, senha errada, entrar): senha errada mostra 'Credenciais invalidas' (ok); campos ficam limpos depois do erro. Senha certa entra (ver BV-034). Sair pela ficha (botao Sair) funcionou.
+- Obs. de portal: varias vezes o portal caiu sozinho em /personagem/pc-mwp8u5ew (ficha da Lira), inclusive no meio do wizard e ao clicar abas do compendio. Nao reproduzido de forma limpa; pode ser do portal. A investigar antes de virar bug.
+- Obs. a conferir: Bestiario Pessoal da Lira mostra Goblin 2 com 'Dano causado: 14 HP' (Goblin 2 tem 8 HP); pode ser acumulado de varias lutas.
+- Viewport voltou para 1900x1191.
+- URL: http://localhost:3000/personagem/pc-mwp8u5ew
+
+## BV-035 Mesa Um Anel: card do Eldo no painel Personagens Jogaveis abre Ficha vazia com 'Personagem nao encontrado.' (P1) [CONFIRMADO na Etapa 7: corrigido]
+- Severidade: P1 (a ficha do personagem nao abre dentro da mesa; sem ela nao da para ver nem mudar Resistencia, Esperanca, posturas)
+- Passos: conta de teste, /mesa/aventura-teste-farejador-v44fo (1900x1183); clicar no botao Ficha da barra lateral; clicar no card Eldo Teste Farejador (ou Eldo Mobile Farejador).
+- Esperado: a ficha do Eldo abre na mesa com Resistencia 21/21 e Esperanca 18/18 (os mesmos valores do card).
+- Obtido: abre a janela Ficha (960x820) sem conteudo; so aparece o texto 'Personagem nao encontrado.' no topo do mapa, e ele continua na tela depois de trocar de painel. Mesmo resultado com os dois Eldos.
+- Erro do console: nenhum.
+- URL: http://localhost:3000/mesa/aventura-teste-farejador-v44fo
+- Ligado a BV-033 (a mesa nao reconhece a ficha da conta).
+
+## BV-036 Painel do Mestre diz 'Nenhum personagem de jogador na sala' com dois Eldos na mesa (P2)
+- Severidade: P2
+- Passos: mesa /mesa/aventura-teste-farejador-v44fo; botao Mestre; aba JOGADORES (ou a area XP, vida e salvaguardas).
+- Esperado: os dois Eldos (Eldo Teste Farejador e Eldo Mobile Farejador) aparecem na lista de jogadores do mestre.
+- Obtido: 'Nenhum personagem de jogador na sala.' nas duas areas. Ao mesmo tempo, o painel Ficha lista os dois cards (Resistencia 21/21, Esperanca 18/18 e Resistencia 21/21, Esperanca 16/16).
+- Erro do console: nenhum.
+- URL: http://localhost:3000/mesa/aventura-teste-farejador-v44fo
+
+## BV-037 Jornada, Conselho e Companhia: o botao acende na barra mas o painel nao aparece (P2, a confirmar) [CONFIRMADO na Etapa 7: corrigido]
+- Severidade: P2 (sem painel, a Jornada e a Fase de Companhia nao podem ser usadas; a confirmar se e so a tela ou se o painel abre em outro lugar)
+- Passos: mesa /mesa/aventura-teste-farejador-v44fo; clicar em JORNADA, depois em CONSELHO e em COMPANHIA na barra lateral (uma de cada vez), esperar 2 s e tirar screenshot.
+- Esperado: o painel lateral abre com o conteudo (Jornada: dias, estacao, terreno, papeis e INICIAR JORNADA; Conselho e Companhia: seus conteudos).
+- Obtido: o botao fica destacado e a barra mostra a dica (Jornada / Conselho / Companhia), mas nenhum painel aparece. Os paineis Chat, Ficha, Dados, Mestre e Status abrem normal. Na Jornada, a snapshot lista os campos e o botao INICIAR JORNADA, mas nada aparece na tela. Repetido 3 vezes. Nao foi possivel testar INICIAR JORNADA.
+- Erro do console: nenhum.
+- URL: http://localhost:3000/mesa/aventura-teste-farejador-v44fo
+
+## BV-038 Mesa Um Anel mostra regras do Eldarin no painel Mestre > Sala: PA, auto-passe e XP por monstro (P2, a confirmar com o livro)
+- Severidade: P2; se o livro do Um Anel nao usa PA, a mesa mostra regra de outro sistema
+- Passos: mesa /mesa/aventura-teste-farejador-v44fo; botao Mestre; aba SALA; ler Configuracao da mesa > Combate.
+- Esperado: opcoes de combate do Um Anel (sem PA).
+- Obtido: 'Modo combate ativo (PA, turnos e iniciativa)', 'Auto-passe quando PA = 0 (ms)' com 150, 'XP automatico ao derrotar monstros' marcado. Busca em livros/um-anel por 'pontos de acao' e PA nao achou nada.
+- Erro do console: nenhum.
+- URL: http://localhost:3000/mesa/aventura-teste-farejador-v44fo
+
+## BV-039 Painel Dados: botao ROLAR cortado na borda do painel (P3, visual)
+- Severidade: P3
+- Passos: mesa /mesa/aventura-teste-farejador-v44fo; botao Dados; ler a linha da formula '1d12' e o botao ROLAR.
+- Esperado: botao ROLAR inteiro dentro do painel.
+- Obtido: o botao ROLAR passa da borda direita do painel (o texto aparece cortado em ROLAR). Rolagem 2d6 funcionou: resultado 4 [3, 1] foi para o Chat.
+- Erro do console: nenhum.
+- URL: http://localhost:3000/mesa/aventura-teste-farejador-v44fo
+
+Etapa 6 (parcial, 1900x1183): Painel Chat OK (mensagem de teste enviada e aparece). Painel Ficha: BV-035. Painel Mestre: BV-036 e BV-038. Jornada, Conselho e Companhia: BV-037. Mapa nao usado. Nao houve edicao de Resistencia, Esperanca ou Sombra (a ficha nao abre), entao a conferencia depois do recarregar fica para a proxima passada.
+Recarregado (1900x1191): Painel Ficha lista Eldo Teste (Resistencia 21/21, Esperanca 18/18) e Eldo Mobile (Resistencia 21/21, Esperanca 16/16): iguais, nada foi mudado. A ficha dentro da mesa segue sem abrir (BV-035).
+Passada 390x844: sem rolagem horizontal (scrollWidth 390). Barra de baixo com Chat, Ordem, Passar e Dados. Tocar no card do Eldo Teste nao mostra nada visivel (a janela nao aparece). Badge de dev do Next (N) cobre o rotulo Chat na barra de baixo (so no modo dev, a confirmar). Viewport voltou para 1900x1191. Sombra/Olho de Mordor, Fase de Companhia e Conselho nao foram vistos (paineis nao abrem).
+
+Etapa 7 (Site local, 1900x1183; leitura pelo DOM e snapshot):
+- BV-035 CONFIRMADO corrigido: na mesa /mesa/aventura-teste-farejador-v44fo, o card Eldo Teste Farejador no painel Ficha abre a ficha com conteudo (Resistencia e Esperanca, sem 'Personagem nao encontrado').
+- BV-037 CONFIRMADO corrigido: clique simples em Jornada, Conselho e Companhia abre o painel lateral. Jornada com ROTA, INICIAR JORNADA e OLHO DE MORDOR; Conselho com RESISTENCIA e INTRODUCAO; Companhia (Fase de Companhia) com Bonus do Patrono. Sem erro no console.
+- Edicao na ficha do Eldo: Resistencia 21/21 para 20/21 (botao Diminuir Resistencia). Depois de recarregar a pagina, a ficha e o card da barra lateral mostram 20/21: persistiu.
+- Mesa do Eldarin /mesa/aventura-teste-farejador-8sghq: os 10 paineis da barra lateral abriram com conteudo (Status, Turno, Ficha, Chat, Dados, Compendio, Convite, Mapa, Mestre, Invocar). Nenhum vazio ou que nao abriu. Compendio mostra 'Carregando...' por uns segundos e depois lista os itens (normal).
+- Painel Mestre do Eldarin, abas Sala, Jogadores, Culinaria, Criaturas e Combate: todas abrem, sem erro de console (so Fast Refresh).
+
+## BV-040 Card do Eldo na barra lateral mostra Resistencia antiga (21/21) depois de mudar na ficha, ate recarregar (P3, a confirmar)
+- Severidade: P3 a confirmar; se o card nunca atualiza sem recarregar, vira P2
+- Passos: mesa /mesa/aventura-teste-farejador-v44fo; botao Ficha; clicar no card Eldo Teste Farejador; na ficha, clicar Diminuir Resistencia (21 para 20); ler o texto do card Eldo na barra lateral.
+- Esperado: o card mostra Resistencia 20/21, igual a ficha.
+- Obtido: a ficha mostra 20/21, mas o texto do card continua 'Resistencia 21/21 · Esperanca 18/18'. Depois de recarregar a pagina, o card mostra 20/21 (persistiu no servidor).
+- Erro do console: nenhum (logs-start ativo).
+- URL: http://localhost:3000/mesa/aventura-teste-farejador-v44fo

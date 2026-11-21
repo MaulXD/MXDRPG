@@ -2,6 +2,219 @@
 
 Pareceres do Revisor: APROVADO ou REPROVADO, com achados.
 
+## D13b r1 — resistência radiante do Golpe Sagrado (Lupa)
+Parecer: APROVADO, com 1 achado pré-existente fora do escopo e 3 nits que não bloqueiam.
+- Causa conferida: o dano do Golpe Sagrado saiu do total da arma. attack.ts:1059-1065 separa golpeRadiante só quando bonusDamageType é "radiante". attack.ts:1104-1107 resiste a arma pelo tipo dela e o golpe como radiante. damage-resist.ts:31 divide por 2 só quando o defensor resiste.
+- Ciclo do campo conferido: ability.ts:494 grava o tipo. attack.ts:642-644 limpa junto no acerto. timed-effects.ts:397 expira junto. consumables.ts:216 e sync.ts:77 copiam. consumable-effects.ts:236 limpa no veneno da arma, que troca a fórmula.
+- Verificado aqui: node scripts/verify-d13-golpe-sagrado.mjs 10 ok, 0 falhas. npx tsc --noEmit exit 0. npm test exit 0 (cadeia completa, com sync:data:check). Nenhum arquivo do repo editado.
+- Pré-existente, fora do D13b (abrir item próprio): Canalizar Energia parece somar o bônus duas vezes. combat-ability.ts:241 injeta bonusDamageFormula no atacante. attack.ts:1061 soma. ability.ts:924-930 soma de novo. Pelo código lido; não reproduzi em teste. Canalizar também é radiante (compendium-actions.ts:47) e resiste como arma.
+- Nit (lib/combat/golpe-sagrado.ts:1-8): o cabeçalho do arquivo agora fica acima da constante, e não de golpeSagradoDiceForLevel. Mover a constante para depois do cabeçalho.
+- Nit (janela de deploy): buff de Golpe já preparado antes do deploy não tem bonusDamageType e resiste pela arma até o fim do turno (buff-durations.ts:71, 1 turno).
+- Nit (lib/vtt/token-effects.ts:386): o tooltip do buff não diz que o dano é radiante.
+- Lupa, revisão em 21/11/2026.
+
+## SOMBRA Sombra Etérea nv 2 (Lupa)
+Parecer: APROVADO, com 2 nits que não bloqueiam.
+- Causa conferida: livros/LIVRO-DO-JOGADOR.md:2482 diz "Dieta nv.2: Ataque Furtivo ganha +1d6 necrótico". O dado só entra quando o Furtivo se aplica: lib/combat/sneak-attack.ts:104-113 devolve undefined sem sneakFormula, e attack.ts:1079-1091 só roda dentro do bloco do Furtivo. Subclasse por migrateSubclassName (Degustador de Sombras vira Sombra Etérea) e nível mínimo 2 (sneak-attack.ts:100-102).
+- Crítico: attack.ts:1086-1087 rola o dado necrótico de novo, como o Furtivo. Confere com o livro, linha 421.
+- Resistência: attack.ts:1096-1099 separa o necrótico; o resto segue o tipo da arma. damage-resist.ts:31 só divide por 2 quando o defensor resiste; o necrótico cai pela metade só no dado de sombra.
+- Verificado aqui: node scripts/verify-d11-ataque-furtivo.mjs 39 ok, 0 falha; npx tsc --noEmit exit 0; verify-arma-aprimorada, verify-d12, verify-d13, verify-feiticeiro-carisma, verify-pa-guardado-ficha, verify-vida-temporaria-nivel e os verify-um-anel-* que importam attack/sneak/rules: todos exit 0. Não rodei o npm test completo (o relato diz exit 0).
+- Nit (attack.ts:1116): o resumo de acerto crítico soma o dado necrótico no total com o tipo da arma ("12 perfurante"). É o mesmo padrão do Furtivo e o detalhe do chat separa. Aceito.
+- Nit (attack.ts:1265 e :1116): o rótulo "Sombra necrótico" soa estranho em PT-BR. "Sombra Etérea necrótico" seria mais claro. Opcional.
+- Nenhum arquivo do repo editado. Sem commit.
+- Lupa, revisão em 21/11/2026.
+
+## TOR-SAVE, BV-040, BV-039 r2 (Lupa)
+Parecer: REPROVADO, com 1 achado bloqueante e 2 ressalvas.
+- Bloqueante, BV-040 ainda falha quando a ficha muda pelo Mestre: app/api/tor-characters/[id]/route.ts:30 chama patchTorCharacterResources, e lib/character/um-anel/characters.ts:116-119 deixa o Mestre ajustar a ficha de qualquer heroi da aventura. Esse PATCH nao mexe na sala, entao a revisao do mapa nao muda, e o card do jogador dono (components/vtt/TorPlayableCharactersPanel.tsx:68) nao recarrega. O evento local so vale na aba do Mestre. O que fazer: fazer o PATCH deixar um sinal que chegue pelo SSE (por exemplo, revisao da sala quando o heroi esta na mesa), ou outro sinal para o card, e cobrir no verify.
+- Ressalva: TorPlayableCharactersPanel.tsx:68 refaz GET /api/tor-characters a cada revisao do mapa, inclusive movimento de token de qualquer um. Em combate sao varias requisicoes por jogador, cada uma com checagem de permissao. O que fazer: filtrar (so quando um heroi mudou) ou medir e registrar.
+- Ressalva: TorPlayableCharactersPanel.tsx:40 usa useMesaMapSlice(roomId ?? ""), que cria store orfa com chave vazia quando nao ha sala. Nit: lib/character/portrait-sheet-saved.ts:30 segue com TOR_SHEET_NOT_SAVED_MESSAGE no modulo de retrato (pedido na r1). Nit: app/api/room/[roomId]/combat/attack/route.ts:160 mantem o check sheetSaved in result, redundante depois do if (!result.ok).
+- OK: ataque e Fonte de Dano agora chegam ao card pela revisao da mesa: persistRoom grava a revisao depois da sincronia da ficha (lib/room/internal/registry.ts:92). Aviso TOR-SAVE mantido em TorAttackPopup e TorHazardPanel, sem evento. Texto do retrato trocado no modulo e no verify-d09; nao sobrou o texto antigo no repo. verify-um-anel-sheet-sync: 22 ok. verify-d09-sheet-saved: exit 0. Comentario do verify corrigido.
+- Nao rodei tsc nem npm test (usei o relato de quem fez). Nenhum arquivo do repo editado.
+- Lupa, revisao r2 em 21/11/2026.
+
+## TOR-SAVE, BV-040, BV-039 r1 (Lupa)
+Parecer: REPROVADO, com 1 achado bloqueante e 2 ressalvas.
+- Bloqueante, BV-040 incompleto: components/vtt/TorPlayableCharactersPanel.tsx:36-41 recarrega so no evento da janela, e o evento so dispara na aba que fez a mudanca. Se o Mestre ataca ou aplica Fonte de Dano num heroi de outro jogador, a barra lateral desse jogador continua com a Resistencia antiga ate recarregar a pagina. Ataque e Fonte de Dano estao na lista de gatilhos, mas o efeito nao chega ao dono da ficha. O que fazer: o card tambem recarregar quando o snapshot da mesa muda (passar um valor que mude com a mesa por components/vtt/mesa/MesaFoundryDockRail.tsx:189 e components/vtt/mesa/MesaFoundryFloatingWindows.tsx:226, e usar como dependencia do efeito de :63), e o verify cobrir esse caminho.
+- Ressalva: scripts/verify-um-anel-sheet-sync.mjs:17-18 diz que a falha de gravacao da ficha e coberta pelo verify-d09-sheet-saved. Nao e verdade: o d09 cobre updateRoomActor (retrato), nao executeRoomTorAttack nem executeRoomTorHazard. O teste novo so confere texto por regex. O que fazer: corrigir o comentario, ou testar o handler com patch que falha.
+- Ressalva: lib/room/handlers/tor-combat-attack.ts:609 e :620 e tor-hazard.ts:145: sheetSaved false nao fica registrado nem tem nova tentativa. A mesa mantem o dano e a ficha o numero antigo, e o aviso nao diz o que o jogador faz. O que fazer: dizer na mensagem que a ficha precisa ser ajustada a mao, ou registrar o pendente. Decisao do Regente; nao bloqueia.
+- Nit: lib/character/portrait-sheet-saved.ts:30: TOR_SHEET_NOT_SAVED_MESSAGE mora no modulo de retrato. Mover para modulo neutro. Nit: app/api/room/[roomId]/combat/attack/route.ts:160: o check sheetSaved in result e redundante depois do if (!result.ok).
+- OK: TOR-SAVE: mensagem exata, sheetSaved propagado pelos dois handlers, rotas, TorAttackPopup.tsx (aviso apos onRoomSync) e TorHazardPanel.tsx. BV-039: .dice-custom input com min-width 0, e o ROLAR e o button.btn filho direto do form (components/vtt/DiceRoller.tsx:105), com flex 0 0 auto.
+- Verificado: node scripts/verify-um-anel-sheet-sync.mjs 22 ok, 0 falha. Nao rodei tsc nem npm test (usei o relato de quem fez). Nenhum arquivo do repo editado.
+- Lupa, revisao em 21/11/2026.
+
+## BV-036/BV-038 r2 pos-commit 9a24fa9 (Lupa)
+Parecer: APROVADO. Sem bloqueante.
+- Bloqueante da r1 resolvido: components/campaign/MesaSetupClient.tsx:47 repassa rpgSystemId ao RoomSettingsPanel. app/aventura/[adventureId]/configurar/page.tsx:85 passa room.rpgSystemId. Os dois usos diretos de RoomSettingsPanel (MesaSetupClient.tsx:43 e GmToolsPanel.tsx:114) recebem o sistema.
+- Teste da r1 resolvido: scripts/verify-um-anel-mesa-isolamento.mjs checks 3 e 4 cobrem configurar -> MesaSetupClient -> RoomSettingsPanel e o save sem campos do Eldarin. O nit de check 4 da r2 tambem saiu: o regex exige combatFields vazio no Um Anel.
+- Ressalva da r1 resolvida: RoomSettingsPanel.tsx:66-70 monta combatFields = {} no Um Anel.
+- Nit da r1 resolvido: bloco condicional indentado (RoomSettingsPanel.tsx:185-225).
+- Verificado: verify-um-anel-mesa-isolamento OK no commit. No pai (9a24fa9^) o mesmo script falha em 16 checks, ou seja, pega o bug. verify-mesa-barra-lateral OK. package.json valido. tsc --noEmit exit 0 na arvore de trabalho (inclui mudancas nao commitadas de outros).
+- Aberto, nao bloqueia: check 1 do script com regex nao ancorado no elemento (ja aceito na r2).
+- Nenhum arquivo do repo editado.
+- Lupa, revisao pos-commit em 21/11/2026.
+
+## BV-036/BV-038 r2 - menu do mestre e configuracao da aventura no Um Anel (Lupa)
+Parecer: APROVADO, com 2 nits que nao bloqueiam.
+- Caminho antes sem correcao, agora coberto: components/campaign/MesaSetupClient.tsx:47 repassa rpgSystemId ao RoomSettingsPanel (padrao eldarin em :28). app/aventura/[adventureId]/configurar/page.tsx:85 passa room.rpgSystemId; getRoom (lib/room/internal/registry.ts:161) retorna RoomState, que tem rpgSystemId (lib/room/types.ts:28).
+- Save: components/vtt/RoomSettingsPanel.tsx:67-73 monta combatFields vazio no Um Anel. Servidor confere: app/api/room/[roomId]/settings/route.ts:37-45 so altera campos presentes, e lib/room/handlers/settings.ts:33 e :49 mesclam com o estado atual. Sem os campos, nada muda.
+- Eldarin: todos os pontos tem padrao eldarin; o patch do Eldarin tem as mesmas chaves de antes.
+- Reindent (RoomSettingsPanel.tsx:185-225) feito. Sem mudanca de texto de UI, sem emoji.
+- Nit: scripts/verify-um-anel-mesa-isolamento.mjs (check 4): so confere que rpgSystemId === "um-anel" aparece antes do patch. Um guarda solto passaria. Trocar por regex que exige combatActive, autoPassDelayMs e xpFromMonstersEnabled fora do patch do Um Anel.
+- Nit: scripts/verify-um-anel-mesa-isolamento.mjs (check 1): o regex de RoomSettingsPanel em GmToolsPanel nao esta ancorado no elemento. Aceito pelo que cobre hoje.
+- Verificado aqui: node scripts/verify-um-anel-mesa-isolamento.mjs OK; npx tsc --noEmit exit 0. Nao rodei npm test inteiro (usei o relato de quem fez). Nenhum arquivo do repo editado.
+- Lupa, revisão em 21/11/2026.
+
+## BV-036/BV-038 r1 - menu do mestre no Um Anel (Lupa)
+Parecer: REPROVADO, com 1 achado bloqueante e 2 ressalvas.
+- Bloqueante, caminho sem correcao: components/campaign/MesaSetupClient.tsx:40 renderiza RoomSettingsPanel sem rpgSystemId, cai no padrao eldarin e mostra a secao Combate (PA, auto-passe, XP). Esse painel e usado em app/aventura/[adventureId]/configurar/page.tsx:79, alcancado por RoomInvitePanel.tsx:103, RoomInviteBar.tsx:71 e app/aventura/[adventureId]/page.tsx:494. Aventura do Um Anel chega la. O que fazer: passar room.rpgSystemId (RoomState em lib/room/types.ts:28; room ja existe na pagina) como prop nova de MesaSetupClient (padrao eldarin) e repassar ao RoomSettingsPanel.
+- Teste ausente: scripts/verify-um-anel-mesa-isolamento.mjs nao cobre esse caminho, por isso passa com o bug. O que fazer: checar que configurar/page.tsx passa rpgSystemId ao MesaSetupClient e que este repassa ao RoomSettingsPanel.
+- Ressalva: components/vtt/RoomSettingsPanel.tsx:66-76 (save) ainda envia combatActive, autoPassDelayMs e xpFromMonstersEnabled com a secao oculta. Hoje regrava o valor atual, mas no Um Anel a tela nao deveria gravar campos do Eldarin. O que fazer: montar o patch sem esses campos quando rpgSystemId === "um-anel".
+- Nit: components/vtt/RoomSettingsPanel.tsx:182-224: bloco condicional sem indentacao. Indentar.
+- Verificado aqui: node scripts/verify-um-anel-mesa-isolamento.mjs OK; node scripts/verify-mesa-barra-lateral.mjs OK. GmToolsPanel: isUmAnel, visibleTabs e fallback para Sala conferidos. Battlefield.tsx:293 ja tem rpgSystemId no escopo. Nao rodei tsc nem npm test (usei o relato de quem fez). Nenhum arquivo do repo editado.
+- Lupa, revisão em 21/11/2026.
+
+## CUS-fix r2 (gerador e JSON: PA, CD e texto) - Lupa
+Parecer: APROVADO, com 3 nits que não bloqueiam.
+- Correções da r1 conferidas: Mutação Forçada tem save constituicao no gerador (generate-compendium.mjs:459) e no JSON (magias.json:1167 bloco, CON CD, livro _parte_x_magias_v4_revisada.md:236). verify-custos-livro.mjs agora confere a Mutação na lista de CD (linha 61) e a descrição da Terremoto no JSON (linhas 105-111).
+- Verificado aqui: regenerei o gerador numa cópia (scratchpad): magias.json e habilidades.json saem idênticos. node scripts/verify-custos-livro.mjs 12 ok, 0 falha. verify-compendium-ids ok. verify-alcances-livro 24 ok. package.json válido; só a linha do test mudou. Dano de Ventania, Terremoto e Esporos inalterado. Lixo "--- ### NIVEL 9" está registrado na página 03 (linhas 89-90) como decisão.
+- Nit 1: scripts/generate-compendium.mjs:521: o texto novo da Terremoto é código morto, porque as linhas 650-661 sobrescrevem a descrição com o texto do livro. Reverter ou comentar, para não sugerir que a correção está em vigor.
+- Nit 2: scripts/verify-custos-livro.mjs:106-111 (check 6) passa também no HEAD, porque a descrição da Terremoto no JSON não mudou. Aceito como guarda de regressão, não como prova da correção.
+- Nit 3: scripts/verify-custos-livro.mjs:9-10: o cabeçalho diz CD ausente em 2 magias; agora são 3 e a lista inclui a Mutação. Atualizar.
+- Lupa, revisão r2 em 21/11/2026.
+
+## CUS-fix (gerador e JSON: PA, CD e texto) - Lupa
+Parecer: REPROVADO, com 4 achados.
+- scripts/generate-compendium.mjs:459 e data/compendiums/magias.json:1167: Mutação Forçada não tem CD. O livro (livros/_parte_x_magias_v4_revisada.md:236) diz CON CD ou mutação. Falta a 5ª CD (a doc fala em 4). O que fazer: save constituicao no gerador, sync, e cobrir no verify.
+- scripts/generate-compendium.mjs:521 e data/compendiums/magias.json:1710: a correção do texto da Terremoto não chega ao dado. O gerador sobrescreve a descrição com o texto do livro (generate-compendium.mjs:650-661), então a linha 521 não tem efeito. O JSON segue com o lixo "--- ### NIVEL 9" do parser. O que fazer: limpar o corte do livro na origem e confirmar no JSON.
+- scripts/verify-custos-livro.mjs:106 (check 6): testa só a string do gerador, não o JSON, por isso passa com o lixo acima. O que fazer: checar data/compendiums/magias.json e cobrir Mutação Forçada.
+- docs/fichario/propostas/custos-e-danos.md (linha 5): diz 4 CD e 1 texto corrigidos. Com a Mutação são 5 CD, e o texto não entrou no dado. Atualizar.
+- Nit: scripts/generate-compendium.mjs:459 falta espaço em 2,"Mutação".
+- Fora do escopo na árvore: components/vtt/MesaWorkspace.tsx e data/compendiums/monstros.json não são desta tarefa; ficam fora do commit.
+- Verificado aqui: node scripts/verify-custos-livro.mjs 11 ok, 0 falha. Gerador rodado em cópia (scratchpad): saída idêntica a magias.json e habilidades.json. Dano de Ventania 2d6, Terremoto 6d6 e Esporos 1d6 inalterado. PA 2 (Injeção, Mutação), CDs de Visão (SAB), Prisão (FOR), Correntes (DES 16) e Puxão (FOR 16) batem com o livro. Pacto de Ferro FOR CD 15 confere (LIVRO-DO-JOGADOR.md:3114).
+- Lupa, revisão em 21/11/2026.
+
+## ALC-fix (gerador e JSON, 21 alcances e 2 areas) - Lupa
+Parecer: REPROVADO por um achado. Revisados: diff de scripts/generate-compendium.mjs, data/compendiums/magias.json e habilidades.json, scripts/verify-alcances-livro.mjs (24 ok agora).
+- Conta floor(metros / 1,5): conferida nas 21 linhas. Todas batem com o livro (livros/_parte_x_magias_v4_revisada.md e LIVRO-DO-JOGADOR.md). Areas: Onda de Trovao cubo 4,5 m = radiusCells 3 e Terremoto raio 30 m = 20, coerentes com Ilusao Menor (cubo 1,5 m = radiusCells 1).
+- Terremoto e Salto Dimensional: alcance e descricao no JSON estao coerentes (150 m = 100 celulas; teleporte 18 m).
+- data/compendiums/habilidades.json, Voto de Caca: 12 celulas (18 m) vem de 'sentir mortos-vivos em 18m' (uso de descanso curto, sem alvo). O livro nao da alcance de efeito para esta habilidade. O que fazer: decidir o alcance pelo livro (provavelmente Pessoal, 0) e ajustar ABILITY_CATALOG no gerador, o JSON e a linha de Voto de Caca em scripts/verify-alcances-livro.mjs.
+- Ressalva fora do achado: o verify so checa o JSON, nao o gerador. Se o gerador divergir do JSON, o teste nao pega.
+- Sem commit. Arquivos da Bigorna (monstros.json, docs/fichario/propostas/um-anel-mesa.md) ignorados.
+
+## BV-033 r2 (fichas do Um Anel na aventura) - Lupa
+Parecer: APROVADO. Revisados so os 3 pontos da r1.
+- AdventurePlayerSheetsList.tsx (~linha 30): fallback de nome real removido; agora nickname ou 'Jogador'. Nome real nao aparece para outro usuario.
+- page.tsx:521: no Um Anel 'Ate 10 fichas do Um Anel por conta' (MAX_TOR_CHARACTERS_PER_USER); no Eldarin segue 'Max. 3 por jogador nesta mesa'. Conferido.
+- verify-aventura-um-anel-fichas.mjs: 8 checks ok, incluindo os 2 novos (privacidade e texto do limite).
+- npm test exit 0, zero FAIL. Arquivos da Bigorna (gerador de compendio) ignorados.
+
+## BV-033 (fichas do Um Anel na aventura) - Lupa
+Parecer: REPROVADO. Diff lido (page.tsx, AdventurePlayerSheetsList.tsx, package.json, scripts/verify-aventura-um-anel-fichas.mjs). npm test exit 0, zero FAIL, as 6 checks do script novo passam.
+- components/adventure/AdventurePlayerSheetsList.tsx (resolveOwnerDisplayNames, ~linha 29): o fallback user?.name mostra o nome real da conta a outro usuario quando nao ha apelido. Regra: so apelido. O que fazer: trocar por nickname ou 'Jogador'. Pre-existente no Eldarin, mas o Um Anel passa a exibir pelo mesmo caminho.
+- app/aventura/[adventureId]/page.tsx:519: o texto 'Max. 3 por jogador nesta mesa' continua aparecendo no Um Anel, contradizendo canCreateChar (sem limite por aventura). O que fazer: texto condicional, no Um Anel 'Max. 10 fichas por conta'.
+- scripts/verify-aventura-um-anel-fichas.mjs: so checa strings do fonte. Nao pega o nome real nem o texto de 519. O que fazer: acrescentar check de que o fallback de nome real saiu e do texto do Um Anel.
+- Conferido e OK: Eldarin mantem room.actors e o texto nv/classe (levelMeta gera o mesmo). Filtro por adventureId correto. Limite do Um Anel de 10 bate com MAX_TOR_CHARACTERS_PER_USER no servidor (characters.ts:183) e com o wizard (personagem/novo/page.tsx:74-78). Item expoe so id, nome, dono, imagens e nome da vocacao.
+
+## CSS-1 r2 (BV-027: item selecionado) - Lupa
+Parecer: APROVADO, com ressalva de medição. Confiro pela cascata, não pelo navegador.
+- components/character/sheet-ddb.css:1562-1567: .sheet-shell--ddb .inv-row--selected (0,2,0) vem depois de .sheet-shell--ddb .inv-row (0,2,0) e de .sheet-shell--ddb .inv-row:hover (0,3,0). O .inv-row--selected:hover (0,3,0), também depois, vence o :hover do card. Fundo e borda do selecionado ficam os da regra nova.
+- Conflito conferido: .sheet-popup-center .inv-row (sheet-popup.css:1723, 0,2,0) não se aplica à ficha DDB; esse seletor é de SheetPdfCapture.tsx:238.
+- Contraste do nome (--ddb-ink #1e1814) sobre 0,14 de dourado em #faf7f0: recalculei e dá cerca de 14,5:1 (o autor disse 14,6:1). Passa.
+- Ressalva: a medição no portal não foi repetida. Antes de fechar BV-027, repetir: fundo do selecionado e do não selecionado, borda, e o nome do selecionado.
+- Nenhum arquivo do repo editado; sem commit. As três causas estão corrigidas, mas a correção de BV-027 apaga o destaque do item selecionado.
+- components/character/sheet-ddb.css (regra .sheet-shell--ddb .inv-row, ~1553): com especificidade 0,2,0 ela sobrescreve background e border-color de .inv-row--selected (components/character/sheet.css:394, 0,1,0). Na ficha DDB o item selecionado perde o fundo dourado e a borda; sobra só o box-shadow de 1px. O que fazer: acrescentar .sheet-shell--ddb .inv-row--selected com fundo e borda próprios para tema claro (ex.: fundo dourado claro e borda mais escura), e medir o item selecionado contra o não selecionado.
+- BV-030 (sheet-ddb.css ~1622): o seletor .sheet-shell--ddb .sheet-popup-advanced--ddb > summary (0,2,1) vence sheet-popup.css:1779. Correto; o aviso de DDB dentro da shell está em SheetPopupDdbView.tsx:100.
+- BV-031 (tor-sheet.css ~535): flex-wrap só em .tor-sheet__masthead--with-portrait, no max-width 767px; a classe existe em TorCharacterSheetView.tsx:246. Correto.
+- Medidas do autor (390 px sem rolagem, PDF em x 322, contraste 16,4:1 e 16:1), tsc e npm test: aceitas pelo autor; não rodei de novo nesta revisão.
+- Nenhum arquivo do repo editado; sem commit.
+## D-09b r3 - revisão final do loadout (Lupa)
+Parecer: REPROVADO. Os dois bloqueantes da r2 estão corrigidos, mas o teste pedido na r2 não foi feito.
+- Pendente (scripts/verify-d09-sheet-saved.mjs): o caso que aprovava o defeito foi removido, mas nenhum caso novo cobre hooks/useCombatActions.ts nem components/vtt/TokenActionRing.tsx (grep sem resultado para os dois). Uma regressão em qualquer um deles passa no npm test. O que fazer: incluir um caso que exija setErr(ROOM_SHEET_NOT_SAVED_MESSAGE) e catch com setErr em useCombatActions.ts, e outro que exija res.sheetSaved === false com toast.push(ROOM_SHEET_NOT_SAVED_MESSAGE, 'warn') em TokenActionRing.tsx.
+- Corrigido e conferido: TokenActionRing.tsx (~287-292) lê sheetSaved e avisa com toast; a variante 'warn' existe em components/vtt/VttToast.tsx:15. useCombatActions.ts (~351-358) tem try/catch e setErr no aviso e no erro; CombatActionBar.tsx:252 mostra err. Sem regressão em PA, combate, sync, permissões ou privacidade.
+- Ressalva (pré-existente, fora deste diff): o catch vazio de saveLoadout em TokenActionRing.tsx segue silencioso para erro de rede.
+- Ressalva (pré-existente): lib/room/handlers/combat-gm.ts grava a ficha duas vezes em paralelo (nit da r2). Não bloqueia.
+- Verificado aqui: npm test exit 0 (log completo). Nenhum arquivo do repo editado; sem commit.
+- Addendum r3 (commit a57d760): os dois casos pedidos existem (verify-d09-sheet-saved.mjs:307-317) e casam com o código. node scripts/verify-d09-sheet-saved.mjs: 22 ok, 0 falha. Pendência fechada. Parecer da r3 passa a APROVADO para o código e o teste. Ressalvas pré-existentes seguem como estão.
+
+## D-09b r2 — set-hp, inventário, ficha, loadout e magias (Lupa)
+Parecer: REPROVADO. Os 2 bloqueantes da r1 seguem abertos; a r2 acrescentou o editor de identidade, que está certo.
+- Bloqueante (não corrigido): components/vtt/TokenActionRing.tsx:284-288 segue igual ao HEAD. O catch da linha 286 é vazio e a ficha que não grava passa sem aviso. Registrar como pendente não corrige. O que fazer: assertRoomSheetSaved(saved) e mostrar a mensagem no anel, como em components/vtt/TokenActionPanel.tsx:299-306.
+- Bloqueante (desfeito, não corrigido): hooks/useCombatActions.ts:351 voltou ao HEAD. saveLoadout não tem try, não chama setErr e não usa assertRoomSheetSaved. O chamador components/vtt/CombatActionBar.tsx:139-143 não trata a rejeição, então o aviso se perde. O que fazer: reaplicar o assert com try/catch que chame setErr(e.message).
+- Teste que aprova o defeito: scripts/verify-d09-sheet-saved.mjs (caso 'loadout pelo hook de acoes de combate nao lanca rejeicao sem tratamento') faz assert.doesNotMatch(src, /assertRoomSheetSaved/). Ele passa com o hook quebrado e codifica a ausência do tratamento. Trocar por um caso que exija o tratamento, e outro para TokenActionRing.tsx.
+- Ressalva (agora aceita no CharacterIdentityEditor): components/character/CharacterIdentityEditor.tsx:84-92 grava savedRoom e chama assertRoomSheetSaved depois de onSaved. O ramo onSaveIdentity (só fora da sala, CharacterSheet.tsx:1036) não tem sheetSaved e é correto não ter. Verify só casa regex, aceito.
+- Nit pré-existente segue: lib/room/handlers/combat-gm.ts:357-366 grava a ficha duas vezes em paralelo. Não bloqueia.
+- Verificado aqui: node scripts/verify-d09-sheet-saved.mjs 21 ok, 0 falha; node scripts/verify-vida-temporaria-nivel.mjs 8 ok; npx tsc --noEmit exit 0. Nenhum arquivo do repo editado; sem commit. npm test não rodei de novo (a r2 diz exit 0).
+- Lupa, revisão em 21/11/2026.
+
+## D-09b r1 — set-hp, inventário, ficha, loadout e magias (Lupa)
+Parecer: REPROVADO, com 2 achados bloqueantes e 2 ressalvas.
+- Bloqueante: components/vtt/TokenActionRing.tsx:284 grava o loadout de combate pelo anel sem ler sheetSaved, e o catch da linha 286 é vazio. Ficha que não grava passa sem aviso. O que fazer: assertRoomSheetSaved(saved) e mostrar a mensagem no anel, como em components/vtt/TokenActionPanel.tsx:299-306.
+- Bloqueante: hooks/useCombatActions.ts:351-352 lança o aviso, mas saveLoadout não tem try e não chama setErr. O chamador components/vtt/CombatActionBar.tsx:139-143 (onActionChange) não trata a rejeição, e o err da linha 252 nunca recebe o aviso. O que fazer: try/catch em saveLoadout com setErr(e.message).
+- Ressalva: components/character/CharacterIdentityEditor.tsx:87-91 (identityPatch) ignora sheetSaved e mostra 'Ficha atualizada.' mesmo com a ficha sem gravar. A ressalva 'identidade' da 03 D-09 segue aberta. Corrigir aqui ou abrir item próprio, dizendo qual.
+- Ressalva: scripts/verify-d09-sheet-saved.mjs:248-281 — os casos do set-hp e dos componentes são regex no texto. Passam com o texto certo mesmo se a lógica estiver errada, e nenhum simula saveCharacter falhando em executeGmCombatAction. O que fazer: um caso de comportamento, reaproveitando o harness de scripts/verify-vida-temporaria-nivel.mjs (linhas 86 e 203): saveCharacter rejeitando, set-hp com ficha ligada, esperar ok true e sheetSaved false.
+- Nit pré-existente: lib/room/handlers/combat-gm.ts:357-366 chama saveCharacter duas vezes em paralelo para ficha de jogador (direto, e pelo persistActorToAdventureSheet em lib/room/adventure-actors.ts:232). Antes eram dois void; agora o Promise.all espera os dois. Não bloqueia.
+- Conferido e correto: set-hp (combat-gm.ts:357-366 espera e marca sheetSaved; a rota repassa; components/vtt/TokenGmHpDialog.tsx:67 avisa). Inventário, ficha, loadout de personagem e magias avisam em CharacterSheet.tsx, CombatLoadoutPanel.tsx, SpellPrepPanel.tsx e TokenActionPanel.tsx.
+- Verificado aqui: node scripts/verify-d09-sheet-saved.mjs 20 ok, 0 falha; node scripts/verify-vida-temporaria-nivel.mjs 8 ok; npx tsc --noEmit exit 0. Nenhum arquivo do repo editado; sem commit.
+- Lupa, revisão em 21/11/2026.
+
+## D12b e D13 r1 — Golpe Sagrado e Corpo Transcendente (Lupa)
+Parecer: APROVADO, com 1 nit e pendências que mantêm o D13 aberto.
+- Escopo combinado conferido: nome Golpe Sagrado e escala 2d8/3d8/4d8/5d8/6d8 em lib/combat/golpe-sagrado.ts, iguais à tabela do livro (linhas 1199-1203). Buff radiante em lib/combat/ability.ts:473-494, no lugar do +2 de ataque. Lâmina dos Sepulcros segue com +2 (caso do verify-d13). Corpo Transcendente saiu sem correspondente no livro. Sem resto de Golpe do Juramento fora de docs e do verify.
+- Nit: lib/combat/ability.ts:475 usa actor?.identity.nivel ?? 2. Sem ficha, o Golpe sai como 2d8 em qualquer nível, sem aviso. Tratar ausência de ficha como erro ou usar o nível do token.
+- Pendência (o dono deixou fora): lib/combat/attack.ts:634 consome o buff em qualquer acerto, inclusive magia e à distância, e o resumo em ability.ts:489-491 diz corpo a corpo. Não é regressão (o +2 antigo também valia para qualquer ataque), mas o texto promete o que o código não faz.
+- Pendência (o dono deixou fora): attack.ts:1048-1051 soma o extra antes de resistedDamageAmount (attack.ts:1073), com o tipo da arma. O 2d8 radiante sofre resistência a cortante ou perfurante. Morto-vivo segue sem dano dobrado.
+- Docs: docs/fichario/propostas/balanceamento.md:307 e secao 4.3 ainda dizem Golpe do Juramento e +2 no ataque. Atualizar com nota de status, como no D12.
+- Verificado aqui: verify-d13 7 ok; verify-d12 5 ok; verify-d11 33 ok; verify-pa-bank, combat-dice-sync, combat-fx-live, combat-roll-display, turn-guard, end-turn-confirm, consumables, d15-gm-log-pa, arma-aprimorada OK; npx tsc --noEmit exit 0. Nenhum arquivo do repo editado.
+- Lupa, revisão em 20/11/2026.
+
+## D11 r5 — decisão do dono (D-19): limite só em combate com fila (Lupa)
+Parecer: APROVADO, com 2 nits.
+- Decisão D-19 (página 03, resolvido): o limite de uma vez por turno vale só em combat_turn. Confere no código: sneakAttackTurnWindow (lib/combat/sneak-attack.ts) usa combatPaPhaseFromFlags (lib/combat/combat-pa-phase.ts), e resolveCombatPaPhase delega à mesma regra. A flag só é gravada com turnWindow (attack.ts, sneakAttackUsed: (sneakApplied && sneakTurnWindow)).
+- A janela chega de verdade ao motor: executeRoomAttack monta o turn com combatTurnOptionsFromRoom (lib/room/combat-turn-context.ts:19), que passa combatHasOrder e combatActive. Se esse passo faltasse, o limite morreria em silêncio; ele está presente (combat-attack.ts:124 e :436).
+- Handler: a checagem duplicada foi removida. Agora só resolveAttack decide, e a flag chega ao attackerAfterAttack só quando vale. Confere.
+- Crítico: o dado rola de novo (attack.ts, sneakRolls); o caso 'critico no combate_turn' confirma que a flag é gravada.
+- Nit 1: o limite do ataque múltiplo ('primeiro acerto') não tem caso próprio. O caso de resolveMultiAttack usa Guerreiro e prova só o laço. Hoje o Ladino tem 1 ataque, então o caminho não é alcançado; vale um caso se a regra mudar.
+- Nit 2 (aceito): a marca de crítico na fórmula base não foi aplicada. O damage.formula vai para o metadado do chat e a formula é lida só pelo dado primário (combat-dice-model.ts formulaToDiceSides), então não há efeito visível. Aceito.
+- Conferido: verify-d11-ataque-furtivo 33 ok, 0 falha; npx tsc --noEmit exit 0. Não rodei o npm test inteiro. Sem commit, sem edição de código.
+- Lupa, revisão em 20/11/2026.
+
+## D11 r4 — janela do combate livre e correções de r3 (Lupa)
+Parecer: APROVADO, com 1 ressalva de decisão (D-19) e 1 nit.
+- Bloqueante da r3 fechado em forma: a janela do combate livre (zerada na entrada e no início de turno) está registrada como D-19 na página 03, com opções (a) por rodada, (b) por combate, (c) por ataque. Conferido: lib/room/combat.ts:166 só avança a rodada na fila, então a afirmação é verdadeira. Pela regra da página 03, a decisão cabe ao dono, e a janela atual é a opção (b) registrada.
+- Removido '(critico x2)': grep em lib/combat/attack.ts sem resultado.
+- Comentário em lib/room/handlers/combat-attack.ts (magia multi-alvo, ~linha 524) explica por que a flag não é passada: a seleção múltipla é só de magia (:416). Confere.
+- Verify ganhou casos: 1 ataque do Ladino, zeragem em startTurnPaFull, janela do combate livre. Os três passam.
+- Nit: o caso 'combate livre: a flag persiste' trava o comportamento atual. Quando o dono decidir D-19, esse caso precisa mudar junto. Marcar no nome do caso que depende de D-19.
+- Conferido: verify-d11-ataque-furtivo 28 ok; npx tsc --noEmit exit 0. Não rodei o npm test inteiro. Sem commit, sem edição de arquivo de código.
+- Lupa, revisão em 20/11/2026.
+
+## D11 r3 — Ataque Furtivo por turno, magia e crítico (Lupa)
+Parecer: REPROVADO, com 1 achado bloqueante e 2 nits.
+- Bloqueante, combate livre (lib/combat/sneak-attack.ts:67 com lib/combat/combat-pa-engine.ts:148-162): a flag sneakAttackUsedThisTurn só zera em clearPaDiscountUsed, e no combate livre (combat_free, sem fila) isso só acontece ao entrar no combate (onEnterCombatFree, :114). Não há turno nem renovação de PA por rodada nesse modo. Resultado: o Ladino ganha o furtivo uma vez por combate livre inteiro e depois nunca mais, sem aviso. A decisão D11 da página 03 fala de turno e não cobre o combate livre. O que fazer: definir a janela no combate livre (por exemplo, por rodada, se existir contagem de rodada) ou registrar na página 03 que o combate livre tem limite de uma vez por combate, e cobrir com verify.
+- Nit (lib/combat/attack.ts:1066): o sufixo '(critico x2)' entra só na formula do furtivo, e a formula base do crítico não recebe marca. A formula vai para o metadado do chat (combat-attack.ts:349). Aplicar a marca de forma igual ou remover.
+- Nit: o limite 'no ataque múltiplo, o primeiro acerto' (resolveMultiAttack, attack.ts:1146) está na decisão, mas nenhum caso do verify chama resolveMultiAttack. Hoje o Ladino tem 1 ataque, então não roda, mas a regra fica sem teste.
+- Conferido: verify-d11-ataque-furtivo 25 ok; npx tsc --noEmit exit 0. O segundo chamador de attackerAfterAttack (combat-attack.ts:524, magia de vários alvos) não passa a flag; é seguro porque a seleção múltipla é só de magia (combat-attack.ts:416), mas vale um comentário.
+- Lupa, revisão em 20/11/2026.
+
+## D11 r2 — Ataque Furtivo com crítico e D-17/D-18 (Lupa)
+Parecer: APROVADO, com 1 nit e 1 ressalva de decisão.
+- Crítico: sneakAttackFormula dobra o número de dados quando critical (lib/combat/sneak-attack.ts), e resolveAttack passa critical (attack.ts:1046-1055). Livro linha 421 confere. Dois casos novos (Ladino 5 com Vantagem = 6d6; outra classe sem furtivo no crítico) falhariam sem a correção.
+- Ressalva (decisão aberta, não é bug): D-17 e D-18 estão na página 03 com recomendação (a) e (b). O código hoje segue a recomendação de D-17 (a). Se você escolher (b) para D-17, será preciso estado por turno; isso é trabalho novo.
+- Nit (lib/combat/sneak-attack.ts, comentário do cabeçalho): 'o dado do furtivo dobra junto com o resto do dano' não é exato. O dano de atributo e o bônus fixo não dobram (rollActionDamage dobra só os dados base). Trocar por 'o dado do furtivo dobra, como os dados base do ataque'.
+- Conferido aqui: verify-d11-ataque-furtivo 18 ok; npx tsc --noEmit exit 0; verify-combat-dice-sync, verify-combat-roll-display, verify-arma-aprimorada, verify-combat-fx-live, verify-xp, verify-d12-chi-sem-fluxo e verify-d15-gm-log-pa exit 0. Não rodei o npm test inteiro. Nenhum arquivo do repo editado.
+- Lupa, revisão em 20/11/2026.
+
+## D11 — Ataque Furtivo do Ladino (Lupa)
+Parecer: REPROVADO, com 1 achado de regra e 2 decisões a registrar.
+- lib/combat/attack.ts:545-549 (rollActionDamage) e attack.ts:1046-1057: o furtivo não dobra no crítico. livros/LIVRO-DO-JOGADOR.md:421 diz "Natural 20: Acerto Crítico — dano dobrado", sem exceção. O parecer do Corretor diz "o livro não diz", e isso não é exato. O que fazer: dobrar o dado do furtivo no crítico, ou registrar a decisão em 03 Precisa de decisão citando a linha 421. Não há caso de teste para o crítico.
+- lib/combat/attack.ts:1151 (resolveMultiAttack) e lib/combat/area-spell.ts:235: cada ataque do ataque múltiplo e cada alvo de magia de área rolam o furtivo, sem limite por turno. O livro só diz "ao atacar". O que fazer: registrar a decisão (inclusive o efeito em área com vários alvos) em 03 antes de aprovar, ou limitar a um por turno.
+- lib/combat/sneak-attack.ts:11: o comentário diz "Servidor only", mas lib/character/rules.ts:3 importa o módulo, e rules.ts é usado por componentes de cliente (CharacterSheet.tsx:69). Não quebra, porque o módulo é puro. O que fazer: trocar a frase.
+- lib/combat/attack.ts:848-859 e lib/vtt/goblin-combat.ts:46: o furtivo do goblin monstro é outra implementação do mesmo conceito, com regra diferente (2d6 só com Vantagem). O que fazer: decidir se fica separado e documentar, ou unificar.
+- Conferido aqui: verify-d11-ataque-furtivo 16 ok; npx tsc --noEmit exit 0; verify-combat-dice-sync, verify-combat-roll-display, verify-arma-aprimorada, verify-combat-fx-live e verify-xp exit 0. Não rodei o npm test inteiro.
+- Fora do D11, para anotar: Sombra Etérea (subclasse do Ladino, livro) adiciona +1d6 necrótico a ataques furtivos. Não está implementado.
+- Lupa, revisão em 20/11/2026.
+
 ## BV-018 — guarda do flush da cena pendente (Lupa)
 Parecer: REPROVADO. A hipótese se sustenta e a guarda resolve o caso do flush, mas ela cobre só um caminho.
 - components/vtt/Battlefield.tsx:753 — syncRoom guarda pendingCombatSnapRef sem checar revisão e chama onApplySnapshot com force (755). hooks/useRoomSync.ts:146 só descarta com force falso, então um snap velho chega à página e fica se chegar depois da resposta do movimento. O que fazer: no topo de syncRoom, if (snap.revision < appliedSceneRevisionRef.current) return; antes de guardar, de setScene e de onApplySnapshot.
@@ -400,5 +613,87 @@ Parecer: APROVADO.
 - Verificado aqui: node scripts/verify-pa-guardado-ficha.mjs = 7 ok, exit 0; npm run test:pa = exit 0; npm run test:culinary = exit 0; npx tsc --noEmit = exit 0. Nenhum arquivo do repo editado.
 - Lupa, revisão em 20/11/2026.
 - Verificado aqui: npx tsc --noEmit exit 0. Navegador não testado. Nenhum arquivo do repo editado.
+- Lupa, revisão em 20/11/2026.
+
+## D-11 r1 — arma aprimorada +N no dano (Lupa)
+Parecer: REPROVADO, com 1 achado.
+- lib/combat/attack.ts:1051 e :1197 — o resumo do crítico e o detalhe do chat imprimem só os dados e o mod de atributo. Com Adaga +2 sai "Dano 3 = 5": o +2 entra no total, mas não aparece na conta. O que fazer: incluir o +N no DamageBreakdown (campo opcional flatBonus, preenchido em rollActionDamage, attack.ts:526) e mostrar "+N" nessas duas linhas.
+- scripts/verify-arma-aprimorada.mjs — os 9 casos cobrem actionFromEntry, rollActionDamage (crítico incluso) e o chip, e falhariam sem a correção. Nenhum cobre formatAttackChatDetail: incluir um caso que confira o +2 na linha de dano.
+- Confirmado: +N soma uma vez no normal e no crítico (attack.ts:526-546); não entra no ataque (só ataque.bonus); tooltip (action-tooltip.ts:94) e chip (format.ts:85) corretos. Magias não têm enchant (0 em magias.json).
+- Verificado aqui: verify-arma-aprimorada 9 ok; verify-compendium-ui 15 ok; npx tsc --noEmit exit 0. Nenhum arquivo do repo editado.
+- Lupa, revisão em 20/11/2026.
+
+## D-11 r2 — +N no chat e no resumo do crítico (Lupa)
+Parecer: APROVADO.
+- lib/combat/attack.ts:1051 e :1197 — o resumo do crítico e formatAttackChatDetail mostram +N (flatBonus). Chat: Dano 3+2 = 5.
+- rollActionDamage (attack.ts:526-546): +N entra uma vez no normal e no crítico; flatBonus fica no breakdown só para exibição.
+- scripts/verify-arma-aprimorada.mjs: 12 casos, incluindo a linha de dano do chat com +2 e sem +N na Adaga comum. Falhariam sem a correção.
+- Ressalva (nit, não bloqueia): o crítico mostra "(3+4+-1)" quando o mod de atributo é negativo. Esse formato já existia antes do D-11.
+- Verificado aqui: verify-arma-aprimorada 12 ok; verify-compendium-ui 15 ok; verify-pa-bank OK; npx tsc --noEmit exit 0. Nenhum arquivo do repo editado.
+- Lupa, revisão em 20/11/2026.
+
+## D-07 r1 — vida temporária ao subir de nível (Lupa)
+Parecer: REPROVADO.
+- lib/room/handlers/combat-gm.ts:267 — a ação level-up-all (GM sobe todos os personagens) remonta resources.vida só com max e value, e a vida temporária some. A causa do D-07 continua aberta aqui: é o quarto ponto do mesmo padrão, num caminho de subir de nível. O que fazer: no objeto vida, incluir ...(current.resources.vida.temp !== undefined ? { temp: current.resources.vida.temp } : {}), como em level-up.ts:299. O verify não cobre este handler.
+- lib/character/rebuild-from-wizard.ts:37 (recalcResourcesAtLevel) — vida: { value, max } sem temp. Vale para prepareCharacterForLastLevelReedit (linha 73), que refaz o último nível: a vida temporária some ao reeditar. O que fazer: o mesmo spread, e um caso no verify.
+- Ressalva, fora do D-07: lib/room/handlers/gm-actor-progress.ts:151 (set-hp) também grava vida sem temp. Não é subir de nível. Decidir se o GM ajustar a vida deve manter a temporária; se for bug, abrir item próprio.
+- Ressalva: docs/PRD-MESA-UM-ANEL.md aparece modificado no git status e não faz parte do D-07. Não entrar no commit deste item.
+- Verificado aqui: verify-vida-temporaria-nivel 5 ok; verify-vida-temporaria 2 ok; npm run test:pa OK; npx tsc --noEmit sem erros. Nenhum arquivo do repo editado.
+- Lupa, revisão em 20/11/2026.
+
+## D-07 r2 — vida temporária nos caminhos de nível e set-hp (Lupa)
+Parecer: APROVADO.
+- Os caminhos do D-07 copiam temp: identity.ts:92, level-up.ts:299, rebuild-from-wizard.ts:37, combat-gm.ts:270 (level-up-all), gm-actor-progress.ts:60 (applySetLevel) e :151 (set-hp). Conferido linha a linha.
+- verify-vida-temporaria-nivel.mjs: 8 casos chamam os handlers reais (executeGmCombatAction level-up-all, executeGmActorProgress set-hp, prepareCharacterForLastLevelReedit). Sem a correção, cada um falha no expect de temp 4.
+- Busca por outros remontes de resources.vida em lib e app: os restantes (combat-attack, combat-consume, apply-meal, keepRoomVitals) já usam spread ou temp explícito.
+- Ressalva (nit): a reconstrução completa da ficha (rebuild-from-wizard.ts:139, nível 1) também mantém temp. Confirmar que é o desejado.
+- Ressalva: git status mostra docs/fichario/02-bugs-e-decisoes.md modificado, fora da lista de exclusão do commit. Deve ficar fora do commit também.
+
+## D-09 r1 — ficha não gravada avisada no editor de retrato (Lupa)
+Parecer: REPROVADO, com 1 achado bloqueante e 3 ressalvas.
+- lib/character/portrait-sheet-saved.ts:7 — a mensagem "A imagem foi aplicada na mesa, mas não foi salva na ficha" também aparece ao remover a imagem (PortraitEditorFields.tsx:81, clearPortraitOnRoom). Ali o texto diz que algo foi aplicado quando foi removido. O que fazer: usar um texto que sirva aos dois casos, por exemplo "A mesa foi atualizada, mas a ficha não foi salva. Tente de novo.", e ajustar a string esperada em scripts/verify-d09-sheet-saved.mjs:180-184.
+- Confirmado: updateRoomActor (actors.ts:82-87) devolve sheetSaved false quando persistActorToAdventureSheet falha (adventure-actors.ts:229-233; lib/character/characters.ts:224-225 só lança com banco ligado). Sem a correção, o caso "ficha falha" do verify não passa. PortraitEditorPanel.tsx:126 mantém o rascunho quando onPersist lança, e SheetPopupPortrait.tsx:134-142 não fecha o popup. O fluxo de salvar está certo.
+- Ressalva (não bloqueia, escopo): sheetSaved só é lido pelo editor de retrato. Continuam engolindo a falha: inventário (CharacterSheet.tsx:309), ficha (CharacterSheet.tsx:339), loadout, magias, identidade e set-hp (combat-gm.ts:358). Se D-09 é só retrato, abrir item próprio para o resto.
+- Ressalva (pré-existente, mesmo arquivo): levelUpRoomActor (actors.ts:106-107) não tem catch. Se a ficha falhar, vira erro 500 com room.actors já trocado em memória e sem persistRoom. Não é D-09: abrir item próprio.
+- Teste (nit): os casos de UI (verify-d09-sheet-saved.mjs:205-210) só procuram o texto no código-fonte. Passariam se a chamada de remoção sumisse, porque a regex acha a outra.
+- Verificado aqui: npm run test:d09-sheet-saved 8 ok, 0 falha; npx tsc --noEmit exit 0. Nenhum arquivo do repo editado.
+- Lupa, revisão em 20/11/2026.
+
+## D-09 r2 — remoção com mensagem própria (Lupa)
+Parecer: APROVADO.
+- Achado r1 corrigido: lib/character/portrait-sheet-saved.ts:10-11 define SHEET_NOT_CLEARED_MESSAGE sem "aplicada". components/character/PortraitEditorFields.tsx:84 usa essa mensagem no onClear, via o 3o parametro de assertRoomPortraitSheetSaved (portrait-sheet-saved.ts:20). O salvar (PortraitEditorFields.tsx:74 e SheetPopupPortrait.tsx:140) segue com a mensagem padrão.
+- Ressalvas da r1 seguem em aberto e não bloqueiam: sheetSaved só é lido no editor de retrato (inventário, ficha, loadout, magias, identidade, set-hp em combat-gm.ts:358); levelUpRoomActor (actors.ts:107) sem catch. Abrir item próprio para os dois.
+- Verify: scripts/verify-d09-sheet-saved.mjs cobre a remoção com caso de comportamento (189-194) e regex de UI para os dois editores (213-228). A regex de remoção casa só a chamada com SHEET_NOT_CLEARED_MESSAGE, então a r1 de "a regex acha a outra" está resolvida.
+- Verificado aqui: npm run test:d09-sheet-saved 10 ok, 0 falha; npx tsc --noEmit exit 0. Nenhum arquivo do repo editado.
+- Lupa, revisão em 20/11/2026.
+- Verificado aqui: verify-vida-temporaria-nivel 8 ok; verify-vida-temporaria 2 ok; npm run test:pa OK; npx tsc --noEmit exit 0. Nenhum arquivo do repo editado.
+- Lupa, revisão em 20/11/2026.
+
+## D-14 e D-15 r1 — cadastro sem banco e PA do log do mestre (Lupa)
+Parecer: APROVADO, com 2 nits que não bloqueiam.
+- Causa D-14 conferida: app/api/auth/register/route.ts:9 usa getAuthCapabilities().persistentAccounts, a mesma fonte de app/entrar/page.tsx:70 e de dbSqlReady no user-store. A checagem vem antes de request.json e de registerUser.
+- Causa D-15 conferida: resolveGmLogPa (lib/combat/pa-display.ts:13) faz materializeCombatPa(token, paMax), a mesma conta de PaDotMeter.tsx:50 e de resolvePaHudDisplay. ActiveCharactersPanel e MapTokenList passam banked={t.bankedPa}. O log não mostra mais t.pa cru.
+- Frase preservada: authLoginLead gera o mesmo texto de antes. PT-BR, sem emoji.
+- Verificado aqui: verify-d14 OK; verify-d15 OK; npm run test:pa OK; npm run test:auth 12 passaram, 0 falharam; npx tsc --noEmit exit 0. Git: só os 5 arquivos pedidos e os 2 novos; sem commit.
+- Nit (lib/combat/pa-display.ts:13-17): resolveGmLogPa repete o início de resolvePaHudDisplay. Trocar o corpo por resolvePaHudDisplay(token).spendable; resultado idêntico.
+- Nit (scripts/verify-d15-gm-log-pa.mjs): confere só o texto do código, não o número. O padrão do repo é esse (58 de 66 verify usam readFileSync), então aceito. Sem a correção os dois verify falham, porque o texto esperado não existe no arquivo.
+- Lupa, revisão em 20/11/2026.
+
+## D12 r2 — verify de comportamento e npm test (Lupa)
+Parecer: APROVADO.
+- Teste de comportamento real: classLevelFeatures do rules.ts, sem regex. Antes da correção, os casos 1 e 2 falhariam (nivel 5 anunciava 'Fluxo Marcial ... Chi a menos').
+- Verificado aqui: node scripts/verify-d12-chi-sem-fluxo.mjs 3 ok; npx tsc --noEmit exit 0; npm test exit 0 (cadeia inclui o verify-d12 antes de test:um-anel).
+- Nit: scripts/verify-d12-chi-sem-fluxo.mjs:58 casa só o texto 'Chi a menos'; reescrever o anuncio sem essa frase passa sem erro. Aceito.
+- Nit: scripts/verify-d12-chi-sem-fluxo.mjs e nao rastreado (git status ??). Entrar no mesmo commit que rules.ts e package.json.
+- Lupa, revisão em 20/11/2026.
+
+## D12 r1 — Fluxo Marcial do Espiritualista (Lupa)
+Parecer: REPROVADO, com 1 achado bloqueante e 2 ressalvas.
+- Bloqueante (teste ausente): o plano em docs/fichario/propostas/balanceamento.md (secao 4.2) pede scripts/verify-d12-chi-sem-fluxo.mjs. O arquivo não existe e não está na cadeia de npm test (package.json:44). Nada trava a regressão. O que fazer: criar o verify chamando classLevelFeatures('Espiritualista', 5) e checando que não contém Fluxo Marcial (sem a correção, falha), e incluí-lo no npm test.
+- Correção conferida: lib/character/rules.ts:608 removido. git grep -i 'fluxo marcial' fora de docs sem resultado. chi-economy.ts:8 mantém CHI_SPEND_CAP_PER_TURN = 2 e canSpendChi não tem desconto, então o texto era promessa sem motor. Remover é a correção certa.
+- Livro confere: LIVRO-DO-JOGADOR.md:920 e :1167 dizem 10 Chi por combate, máximo 2 por turno, sem regra de nível 5. Livro não foi editado (git status só mostra rules.ts), e não precisa.
+- Ressalva (docs, não bloqueia): docs/fichario/propostas/balanceamento.md:306 e secao 4.2 ainda descrevem a linha 608 como existente. Atualizar ao fechar o item.
+- Ressalva (pré-existente, fora do D12): lib/character/rules.ts:611 'Corpo Transcendente, Chi máximo 12 neste combate' (nível 20) não aparece em livros/. Abrir item próprio.
+- Verificado aqui: npx tsc --noEmit exit 0; npm test exit 0. Nenhum arquivo do repo editado.
 - Lupa, revisão em 20/11/2026.
 
