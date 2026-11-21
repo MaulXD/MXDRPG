@@ -82,7 +82,8 @@ function parseSpellLoreBook() {
   const start = md.indexOf("## CAPÍTULO 18");
   const slice = start >= 0 ? md.slice(start) : md;
   const map = {};
-  const re = /\*\*([^*]+)\*\* — ([^\n]+)\n([\s\S]*?)(?=\n\*\*|\n## |\n---\s*$|$)/g;
+  // A descricao termina no proximo titulo de magia, no separador --- ou no titulo ### (ex.: NIVEL 9).
+  const re = /\*\*([^*]+)\*\* — ([^\n]+)\n([\s\S]*?)(?=\n\*\*|\n## |\n###|\n---|$)/g;
   let m;
   while ((m = re.exec(slice)) !== null) {
     const name = m[1].trim();

@@ -366,7 +366,7 @@
     "type": "magia",
     "system": {
       "catalogId": "MAG-curar-ferimentos",
-      "description": "<p>Cura 1d8 + mod. de atributo de conjuracao (SAB ou CAR). --- ### NIVEL 2</p><p><em>Abjuracao | Acao | Toque | Instantanea | Clérigo, Druida, Bardo · nv 1 · 1 PA · 1 células</em></p>",
+      "description": "<p>Cura 1d8 + mod. de atributo de conjuracao (SAB ou CAR).</p><p><em>Abjuracao | Acao | Toque | Instantanea | Clérigo, Druida, Bardo · nv 1 · 1 PA · 1 células</em></p>",
       "tactical": {
         "alcanceCells": {
           "value": 1,
@@ -684,7 +684,7 @@
     "type": "magia",
     "system": {
       "catalogId": "MAG-ilusao-menor",
-      "description": "<p>Som ou imagem estática em cubo 1,5m; não causa dano. --- ### NIVEL 3</p><p><em>Ilusao | Acao | 18m | 1 minuto | Mago, Bardo · nv 2 · 1 PA · 12 células</em></p>",
+      "description": "<p>Som ou imagem estática em cubo 1,5m; não causa dano.</p><p><em>Ilusao | Acao | 18m | 1 minuto | Mago, Bardo · nv 2 · 1 PA · 12 células</em></p>",
       "tactical": {
         "alcanceCells": {
           "value": 12,
@@ -1024,7 +1024,7 @@
     "type": "magia",
     "system": {
       "catalogId": "MAG-sono",
-      "description": "<p>Ate 5 criaturas com menos de 90 HP: SAB CD ou Inconsciente (dano acorda). --- ### NIVEL 4</p><p><em>Encantamento | Acao | 18m | 1 minuto | Mago, Bardo, Clérigo · nv 3 · 2 PA · 12 células</em></p>",
+      "description": "<p>Ate 5 criaturas com menos de 90 HP: SAB CD ou Inconsciente (dano acorda).</p><p><em>Encantamento | Acao | 18m | 1 minuto | Mago, Bardo, Clérigo · nv 3 · 2 PA · 12 células</em></p>",
       "tactical": {
         "alcanceCells": {
           "value": 12,
@@ -1263,7 +1263,7 @@
     "type": "magia",
     "system": {
       "catalogId": "MAG-cura-em-massa",
-      "description": "<p>Ate 6 criaturas em raio de 3m: 3d8 + mod. de conjuracao. --- ### NIVEL 5</p><p><em>Abjuracao | Acao | 18m | Instantanea | Clérigo, Druida · nv 4 · 3 PA · 12 células</em></p>",
+      "description": "<p>Ate 6 criaturas em raio de 3m: 3d8 + mod. de conjuracao.</p><p><em>Abjuracao | Acao | 18m | Instantanea | Clérigo, Druida · nv 4 · 3 PA · 12 células</em></p>",
       "tactical": {
         "alcanceCells": {
           "value": 12,
@@ -1444,7 +1444,7 @@
     "type": "magia",
     "system": {
       "catalogId": "MAG-restaurar-vigor",
-      "description": "<p>Remove 1 nivel de Exaustao e uma doenca ou maldicao leve. --- ### NIVEL 6</p><p><em>Abjuracao | 1 hora | Toque | Instantanea | Clérigo, Druida · nv 5 · 3 PA · 1 células</em></p>",
+      "description": "<p>Remove 1 nivel de Exaustao e uma doenca ou maldicao leve.</p><p><em>Abjuracao | 1 hora | Toque | Instantanea | Clérigo, Druida · nv 5 · 3 PA · 1 células</em></p>",
       "tactical": {
         "alcanceCells": {
           "value": 1,
@@ -1549,7 +1549,7 @@
     "type": "magia",
     "system": {
       "catalogId": "MAG-cadeia-de-relampago",
-      "description": "<p>Primeiro alvo 10d8 relâmpago; salta até 3 alvos adicionais a 9m (metade do dano cada, DES CD). --- ### NIVEL 7</p><p><em>Evocacao | Acao | 45m | Instantanea | Mago, Druida · nv 6 · 3 PA · 30 células</em></p>",
+      "description": "<p>Primeiro alvo 10d8 relâmpago; salta até 3 alvos adicionais a 9m (metade do dano cada, DES CD).</p><p><em>Evocacao | Acao | 45m | Instantanea | Mago, Druida · nv 6 · 3 PA · 30 células</em></p>",
       "tactical": {
         "alcanceCells": {
           "value": 30,
@@ -1684,7 +1684,7 @@
     "type": "magia",
     "system": {
       "catalogId": "MAG-invisibilidade-maior",
-      "description": "<p>Ate 6 aliados invisiveis; termina ao atacar ou conjurar ofensivamente. --- ### NIVEL 8</p><p><em>Ilusao | Acao | Toque | Concentracao até 1 hora (C) | Mago, Bardo · nv 7 · 1 PA · 1 células</em></p>",
+      "description": "<p>Ate 6 aliados invisiveis; termina ao atacar ou conjurar ofensivamente.</p><p><em>Ilusao | Acao | Toque | Concentracao até 1 hora (C) | Mago, Bardo · nv 7 · 1 PA · 1 células</em></p>",
       "tactical": {
         "alcanceCells": {
           "value": 1,
@@ -1710,7 +1710,7 @@
     "type": "magia",
     "system": {
       "catalogId": "MAG-terremoto",
-      "description": "<p>Raio 30m: DES CD ou Prostrado; risco de colapso na masmorra. --- ### NIVEL 9</p><p><em>Evocacao | Acao | 150m | Concentracao até 1 minuto (C) | Druida, Clérigo · nv 8 · 3 PA · 100 células</em></p>",
+      "description": "<p>Raio 30m: DES CD ou Prostrado; risco de colapso na masmorra.</p><p><em>Evocacao | Acao | 150m | Concentracao até 1 minuto (C) | Druida, Clérigo · nv 8 · 3 PA · 100 células</em></p>",
       "tactical": {
         "alcanceCells": {
           "value": 100,
@@ -1779,7 +1779,7 @@
     "type": "magia",
     "system": {
       "catalogId": "MAG-desejo-de-morte",
-      "description": "<p>Condicao irrevogavel mata alvo quando satisfeita; preço 4d10 necrótico por nivel do alvo. ---</p><p><em>Conjuracao / Necromancia | Acao | Pessoal | Especial | Clérigo do Limiar (Ascensao nv. 20) · nv 9 · 3 PA · 0 células</em></p>",
+      "description": "<p>Condicao irrevogavel mata alvo quando satisfeita; preço 4d10 necrótico por nivel do alvo.</p><p><em>Conjuracao / Necromancia | Acao | Pessoal | Especial | Clérigo do Limiar (Ascensao nv. 20) · nv 9 · 3 PA · 0 células</em></p>",
       "tactical": {
         "alcanceCells": {
           "value": 0,
