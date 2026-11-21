@@ -921,17 +921,9 @@ export function resolveAbilityAttack(
 
   const attackerUpdate: Partial<BattleToken> = {};
 
-  if (action.bonusDamageFormula && attack.hit && attack.damage) {
-
-    const extra = rollDice(action.bonusDamageFormula);
-
-    attack.damage.rolls.push(...extra.rolls);
-
-    attack.damage.total += extra.total;
-
-    attack.summary += ` +${extra.total} ${action.damageType || "radiante"}`;
-
-  }
+  // CANAL: o bônus da ação (ex.: Canalizar Energia) já entra no dano dentro de
+  // resolveAttack, porque o handler injeta bonusDamageFormula no atacante antes de
+  // resolver (combat-ability.ts). Somar de novo aqui dobrava o bônus.
 
 
 
