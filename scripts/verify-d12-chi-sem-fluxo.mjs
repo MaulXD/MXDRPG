@@ -87,6 +87,20 @@ caso("nenhum nivel 1 a 20 do Espiritualista anuncia desconto de Chi", () => {
   }
 });
 
+caso("nenhum nivel 1 a 20 do Espiritualista anuncia Corpo Transcendente (D12b)", () => {
+  for (let lv = 1; lv <= 20; lv++) {
+    const textos = classLevelFeatures("Espiritualista", lv);
+    assert.ok(!textos.some((t) => t.includes("Corpo Transcendente")), `nivel ${lv} anuncia: ${JSON.stringify(textos)}`);
+  }
+});
+
+caso("nenhum nivel do Espiritualista anuncia Chi maximo 12 (D12b)", () => {
+  for (let lv = 1; lv <= 20; lv++) {
+    const textos = classLevelFeatures("Espiritualista", lv);
+    assert.ok(!textos.some((t) => /Chi m[aá]ximo 12/.test(t)), `nivel ${lv} anuncia: ${JSON.stringify(textos)}`);
+  }
+});
+
 caso("o nivel 1 do Espiritualista continua com o teto de Chi do livro", () => {
   const nivel1 = classLevelFeatures("Espiritualista", 1);
   assert.ok(nivel1.some((t) => t.includes("10 Chi/combate") && t.includes("máx. 2 Chi/turno")), JSON.stringify(nivel1));

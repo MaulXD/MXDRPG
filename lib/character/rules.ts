@@ -608,21 +608,20 @@ export function classLevelFeatures(classId: string, level: number): string[] {
     if (level === 1) out.push("Chi de Combate — 10 Chi/combate, máx. 2 Chi/turno");
     if (level === 2) out.push("Caminho do Corpo — técnicas de Chi da subclasse");
     if (level === 11) out.push("Passo do Vácuo — +1 célula de movimento ao gastar Chi");
-    if (level === 20) out.push("Corpo Transcendente — Chi máximo 12 neste combate");
   }
   if (classId === "Paladino") {
     if (level === 1) {
       out.push("Toque Consagrado — cura 1d8+CAR ou 2d8 radiante vs morto-vivo");
       out.push("Aura de Devoção — aliados em 3m +2 em saves vs medo e encantamento");
     }
-    if (level === 2) out.push("Golpe do Juramento — +2d8 radiante (1 PA extra por golpe)");
+    if (level === 2) out.push("Golpe Sagrado — +2d8 radiante (1 PA extra por golpe)");
     if (level === 5) {
       out.push("Canto Divino — magias 2+ PA custam 1 PA a menos");
-      out.push("Golpe do Juramento — 3d8 radiante");
+      out.push("Golpe Sagrado — 3d8 radiante");
     }
-    if (level === 9) out.push("Golpe do Juramento — 4d8 radiante");
-    if (level === 13) out.push("Golpe do Juramento — 5d8 radiante");
-    if (level === 17) out.push("Golpe do Juramento — 6d8 radiante");
+    if (level === 9) out.push("Golpe Sagrado — 4d8 radiante");
+    if (level === 13) out.push("Golpe Sagrado — 5d8 radiante");
+    if (level === 17) out.push("Golpe Sagrado — 6d8 radiante");
     if (level === 20) out.push("Ascensão do Juramento — 1 resistência lendária/dia");
   }
   if (classId === "Bruxo") {

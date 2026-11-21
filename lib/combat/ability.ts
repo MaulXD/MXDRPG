@@ -16,6 +16,7 @@ import { getMonsterTemplate } from "@/lib/vtt/monsters";
 import { axialDistance, cellDirection, GRID_DIRECTIONS } from "@/lib/vtt/grid-math";
 
 import { abilityFromEntry } from "@/lib/combat/compendium-actions";
+import { golpeSagradoDiceForLevel } from "@/lib/combat/golpe-sagrado";
 
 import type { CombatActionOption, CombatTurnOptions } from "@/lib/combat/types";
 import { canActOnCombatTurn, TURN_WAIT_MSG } from "@/lib/combat/turn-guard";
@@ -470,6 +471,8 @@ export function resolveAbilityBuff(
 
 
   if (effect === "melee_attack_bonus" && action.selfTarget) {
+    const golpeSagrado = action.entryId === "habilidades-golpe-sagrado";
+    const dadoGolpe = golpeSagradoDiceForLevel(actor?.identity.nivel ?? 2);
 
     return {
 
@@ -483,9 +486,11 @@ export function resolveAbilityBuff(
 
       buffSource: action.name,
 
-      summary: `${name} prepara ${action.name} (+2 no próximo ataque corpo a corpo).`,
+      summary: golpeSagrado
+        ? `${name} prepara ${action.name} (+${dadoGolpe} radiante no próximo ataque corpo a corpo).`
+        : `${name} prepara ${action.name} (+2 no próximo ataque corpo a corpo).`,
 
-      attackerUpdate: { nextAttackBonus: 2 },
+      attackerUpdate: golpeSagrado ? { bonusDamageFormula: dadoGolpe } : { nextAttackBonus: 2 },
 
     };
 
