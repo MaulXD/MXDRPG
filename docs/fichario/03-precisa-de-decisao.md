@@ -90,4 +90,8 @@ Opções: (a) corrigir o catálogo para 6; (b) manter como está e aceitar a div
 | D-16 | Corrigir `livros/CATALOGO-HABILIDADES-TATICAS.md` para 6 células no Puxão Abissal | O livro principal diz 9 m |
 | A-10a | Limite por aventura fica 3 (está no código desde 08/06); mensagem e docs passam a dizer "até 3" | Baixar para 1 bloquearia quem já tem 2 ou 3 fichas |
 
+| D11 | Ataque Furtivo do Ladino: dobra no crítico como os dados da arma; só em ataque com arma; no máximo uma vez por turno (no ataque múltiplo, o primeiro acerto); o furtivo do goblin segue como regra de monstro | O livro diz "dano dobrado" no crítico sem exceção e só "ao atacar"; o limite por turno evita que o ataque múltiplo multiplique o furtivo |
+| D12, D12b | Textos de nível do Espiritualista sem regra no livro (Fluxo Marcial, Corpo Transcendente) saem do código | O livro manda |
+| D8, D9, D10 | Ficam com o dono: o livro se contradiz no PA por golpe e no +1 PA do Guerreiro, e mudar a fórmula de vida altera todo personagem já criado | Ver propostas/balanceamento.md, seção 3.6 |
+
 Ficam com o dono, porque mexem fora do código: D-01 (tornar o repositório privado ou tirar o texto dos livros de O Um Anel), D-02 (merge na `main`, que dispara deploy), Termos de Uso (texto jurídico), promessas da política de privacidade e servidor no Brasil.
