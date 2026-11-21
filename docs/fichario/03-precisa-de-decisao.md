@@ -101,3 +101,7 @@ Ficam com o dono, porque mexem fora do código: D-01 (tornar o repositório priv
 A varredura do bestiário (propostas/bestiario.md) achou 507 diferenças entre as 80 fichas do LIVRO-DO-MESTRE.md e o monstros.json: vida em 77, CA em 66, dano em 227 e mais. Não é erro solto: o gerador calcula vida, CA e dano por uma curva de balanceamento própria (scripts/monster-balance.mjs, defaultMonsterHp) em vez de copiar a ficha do livro. Exemplo: Espectro tem 48 de vida no VTT e 28 no livro; Assombração tem 28 no VTT e 45 no livro.
 Opções: (a) o livro manda: o gerador passa a ler a ficha do livro e a curva vira só reserva para monstro sem ficha; (b) a curva manda e o livro é atualizado com os números do VTT; (c) manter os dois como estão e anotar no livro que a mesa usa a curva.
 Recomendação: (a), que segue a regra "o livro manda" do projeto, feita em lote com teste de spawn (verify-monster-spawn) e uma rodada de jogo antes de ir para produção. Muda a dificuldade de todo combate, por isso fica com o dono. Nada foi alterado.
+
+## Decidido em 21/11, 01:40 (maestro)
+- ALC-fix, Voto de Caça: o alcance fica 12 células (18 m), a distância em que a habilidade sente mortos-vivos. Não há alvo, mas é a única distância que o livro dá para ela.
+- Um Anel na mesa: sem sync automático da ficha; o jogador já põe a ficha pelo painel próprio. Entra na fila só o aviso quando a ficha do Um Anel não grava (TOR-SAVE).
