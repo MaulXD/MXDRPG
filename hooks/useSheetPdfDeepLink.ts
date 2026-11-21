@@ -7,10 +7,11 @@ import {
   readSheetPdfDeepLinkFromLocation,
   type SheetPdfDeepLinkContext,
 } from "@/lib/character/sheet-pdf-deep-link";
+import type { RoomSnapshot } from "@/lib/room/types";
 
 type Props = SheetPdfDeepLinkContext & {
   openSheet: (characterId: string) => void;
-  onRolled?: () => void;
+  onRolled?: (payload?: RoomSnapshot) => void;
   enabled?: boolean;
 };
 

@@ -4,6 +4,7 @@ import { useCallback, useState } from "react";
 import { patchTorSession, postRoomChat } from "@/hooks/useRoomSync";
 import { rollTorCheck, featDieRollPayload } from "@/lib/character/um-anel/dice";
 import { SKILL_LABEL } from "@/lib/character/um-anel/data";
+import type { RoomApiPayload } from "@/lib/room/room-delta";
 import {
   TOR_COUNCIL_RESISTANCES,
   TOR_INTERACTION_SKILLS,
@@ -33,7 +34,8 @@ type Props = {
    * jogadores por SSE, então o placar do Conselho é público.
    */
   council: TorCouncilState | null;
-  onUpdate: () => void;
+  /** Com a sala da resposta, aplica sem refazer o GET; sem ela, refaz. */
+  onUpdate: (payload?: RoomApiPayload) => void;
 };
 
 const RANKS = [0, 1, 2, 3, 4, 5, 6] as const;
@@ -83,8 +85,8 @@ export function TorCouncilPanel({ roomId, canManage, council, onUpdate }: Props)
         text,
         torFeatDie: { sides: 12, value: featValue },
       });
-      await patchTorSession(roomId, { council: next });
-      onUpdate();
+      const snapshot = await patchTorSession(roomId, { council: next });
+      onUpdate(snapshot);
     },
     [roomId, onUpdate]
   );
@@ -140,8 +142,8 @@ export function TorCouncilPanel({ roomId, canManage, council, onUpdate }: Props)
   const end = useCallback(
     () =>
       guard(async () => {
-        await patchTorSession(roomId, { council: null });
-        onUpdate();
+        const snapshot = await patchTorSession(roomId, { council: null });
+        onUpdate(snapshot);
       }),
     [guard, roomId, onUpdate]
   );

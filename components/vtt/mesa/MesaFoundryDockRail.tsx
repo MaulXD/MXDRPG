@@ -5,6 +5,7 @@ import type { SessionUser } from "@/lib/auth/types";
 import type { BattleScene } from "@/lib/vtt/types";
 import type { Axial } from "@/lib/vtt/grid-math";
 import type { RoomSnapshot } from "@/lib/room/types";
+import type { RoomApiPayload } from "@/hooks/useRoomSync";
 import type { FoundryWindowLayout, MesaWindowId } from "@/hooks/vtt/useFoundryWindows";
 import { FoundryDockPanel } from "@/components/vtt/foundry/FoundryDockPanel";
 import { MesaFoundrySidebar } from "@/components/vtt/foundry/MesaFoundrySidebar";
@@ -98,7 +99,7 @@ export type MesaFoundryDockRailProps = {
   onOpenTorSheet?: (characterId: string) => void;
   onOpenMonsterSheet: (entryId: string) => void;
   onOpenCharacterWizard?: () => void;
-  onRefresh: () => Promise<void>;
+  onRefresh: (payload?: RoomApiPayload) => Promise<void>;
   onApplySnapshot: (snap: RoomSnapshot, opts?: { force?: boolean }) => void;
 };
 
@@ -316,7 +317,7 @@ export function MesaFoundryDockRail({
               canManage={Boolean(effectiveIsGm)}
               progress={torSession?.journey ?? null}
               eye={torSession?.eye ?? null}
-              onUpdate={() => void onRefresh()}
+              onUpdate={(payload) => void onRefresh(payload)}
             />
           </div>
         </FoundryDockPanel>
@@ -340,7 +341,7 @@ export function MesaFoundryDockRail({
               roomId={roomId}
               canManage={Boolean(effectiveIsGm)}
               council={torSession?.council ?? null}
-              onUpdate={() => void onRefresh()}
+              onUpdate={(payload) => void onRefresh(payload)}
             />
           </div>
         </FoundryDockPanel>
@@ -364,7 +365,7 @@ export function MesaFoundryDockRail({
               roomId={roomId}
               canManage={Boolean(effectiveIsGm)}
               fellowship={torSession?.fellowship ?? null}
-              onUpdate={() => void onRefresh()}
+              onUpdate={(payload) => void onRefresh(payload)}
             />
           </div>
         </FoundryDockPanel>

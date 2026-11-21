@@ -31,6 +31,7 @@ import {
   type TorTerrainType,
 } from "@/lib/combat/um-anel/journey";
 import type { TorEyeState, TorJourneyProgress } from "@/lib/combat/um-anel/session-state";
+import type { RoomApiPayload } from "@/lib/room/room-delta";
 import { TorEyePanel } from "./TorEyePanel";
 import "./tor-journey.css";
 
@@ -49,7 +50,8 @@ type Props = {
    * porque a Fase de Aventura é o recorte de tempo dos dois.
    */
   eye?: TorEyeState | null;
-  onUpdate: () => void;
+  /** Com a sala da resposta, aplica sem refazer o GET; sem ela, refaz. */
+  onUpdate: (payload?: RoomApiPayload) => void;
 };
 
 const SEASON_LABEL: Record<TorSeason, string> = {
@@ -126,8 +128,8 @@ export function TorJourneyPanel({ roomId, canManage, progress, eye, onUpdate }: 
         text,
         ...(featValue != null ? { torFeatDie: { sides: 12, value: featValue } } : {}),
       });
-      await patchTorSession(roomId, { journey: next });
-      onUpdate();
+      const snapshot = await patchTorSession(roomId, { journey: next });
+      onUpdate(snapshot);
     },
     [roomId, onUpdate]
   );
@@ -372,10 +374,10 @@ export function TorJourneyPanel({ roomId, canManage, progress, eye, onUpdate }: 
     (terrain: TorTerrainType) =>
       guard(async () => {
         if (!progress?.pending) return;
-        await patchTorSession(roomId, {
+        const snapshot = await patchTorSession(roomId, {
           journey: { ...progress, pending: { ...progress.pending, terrain } },
         });
-        onUpdate();
+        onUpdate(snapshot);
       }),
     [guard, progress, roomId, onUpdate]
   );
@@ -383,8 +385,8 @@ export function TorJourneyPanel({ roomId, canManage, progress, eye, onUpdate }: 
   const end = useCallback(
     () =>
       guard(async () => {
-        await patchTorSession(roomId, { journey: null });
-        onUpdate();
+        const snapshot = await patchTorSession(roomId, { journey: null });
+        onUpdate(snapshot);
       }),
     [guard, roomId, onUpdate]
   );

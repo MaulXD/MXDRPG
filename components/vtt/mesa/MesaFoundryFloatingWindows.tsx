@@ -5,6 +5,7 @@ import type { SessionUser } from "@/lib/auth/types";
 import type { BattleScene } from "@/lib/vtt/types";
 import type { Axial } from "@/lib/vtt/grid-math";
 import type { RoomSnapshot } from "@/lib/room/types";
+import type { RoomApiPayload } from "@/hooks/useRoomSync";
 import type { RpgSystemId } from "@/lib/rpg/systems";
 import type { FoundryWindowLayout, MesaWindowId } from "@/hooks/vtt/useFoundryWindows";
 import type { RoomSyncBridge } from "@/hooks/useRoomSync";
@@ -126,7 +127,7 @@ export type MesaFoundryFloatingWindowsProps = {
   onOpenCharacterWizard?: () => void;
   onCloseCharacterWizard: () => void;
   onCharacterCreated: (result: { characterId: string }) => void;
-  onRefresh: () => Promise<void>;
+  onRefresh: (payload?: RoomApiPayload) => Promise<void>;
   onApplySnapshot: (snap: RoomSnapshot, opts?: { force?: boolean }) => void;
   onRoomPortraitPatch: (result: RoomActorPatchResult) => void;
 };
@@ -288,7 +289,7 @@ export function MesaFoundryFloatingWindows(props: MesaFoundryFloatingWindowsProp
             canManage={Boolean(effectiveIsGm)}
             progress={torSession?.journey ?? null}
             eye={torSession?.eye ?? null}
-            onUpdate={() => void onRefresh()}
+            onUpdate={(payload) => void onRefresh(payload)}
           />
         </FoundryWindow>
       ) : null}
@@ -311,7 +312,7 @@ export function MesaFoundryFloatingWindows(props: MesaFoundryFloatingWindowsProp
             roomId={roomId}
             canManage={Boolean(effectiveIsGm)}
             council={torSession?.council ?? null}
-            onUpdate={() => void onRefresh()}
+            onUpdate={(payload) => void onRefresh(payload)}
           />
         </FoundryWindow>
       ) : null}
@@ -342,7 +343,7 @@ export function MesaFoundryFloatingWindows(props: MesaFoundryFloatingWindowsProp
                   .map((t) => t.torCombat!.torCharacterId!)
               )
             )}
-            onUpdate={() => void onRefresh()}
+            onUpdate={(payload) => void onRefresh(payload)}
           />
         </FoundryWindow>
       ) : null}

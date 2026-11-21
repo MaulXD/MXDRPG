@@ -7,6 +7,7 @@ import {
 import { resolveSheetSkillRoll, type SheetSkillId } from "@/lib/character/sheet-skills";
 import type { CharacterSheet } from "@/lib/character/types";
 import type { CombatTrack } from "@/lib/room/combat";
+import type { RoomSnapshot } from "@/lib/room/types";
 import { activeTokenId } from "@/lib/room/combat";
 import { canActOnCombatTurn } from "@/lib/combat/turn-guard";
 import type { BattleToken } from "@/lib/vtt/types";
@@ -27,19 +28,18 @@ export async function postSheetSkillRoll(
   roomId: string,
   actor: CharacterSheet,
   skillId: SheetSkillId
-): Promise<boolean> {
+): Promise<RoomSnapshot | null> {
   const skill = resolveSheetSkillRoll(actor, skillId);
-  if (!skill) return false;
+  if (!skill) return null;
 
   const label =
     skill.passive != null ? `${skill.def.label} (passiva ${skill.passive})` : skill.def.label;
 
-  await postRoomChat(roomId, {
+  return postRoomChat(roomId, {
     kind: "roll",
     formula: skill.rollFormula,
     text: `${actor.name} — ${label}`,
   });
-  return true;
 }
 
 export type SheetPdfDeepLinkContext = {
@@ -55,7 +55,8 @@ export async function handleSheetPdfDeepLink(
   ctx: SheetPdfDeepLinkContext,
   opts: {
     openSheet: (characterId: string) => void;
-    onRolled?: () => void;
+    /** Recebe a sala da resposta do chat quando a rolagem foi gravada. */
+    onRolled?: (payload?: RoomSnapshot) => void;
   }
 ): Promise<void> {
   opts.openSheet(params.characterId);
@@ -77,6 +78,6 @@ export async function handleSheetPdfDeepLink(
 
   if (!mayRoll) return;
 
-  await postSheetSkillRoll(ctx.roomId, actor, params.skill);
-  opts.onRolled?.();
+  const snapshot = await postSheetSkillRoll(ctx.roomId, actor, params.skill);
+  opts.onRolled?.(snapshot ?? undefined);
 }

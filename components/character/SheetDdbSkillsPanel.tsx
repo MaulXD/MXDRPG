@@ -12,11 +12,13 @@ import { skillQuickActionTip } from "@/lib/character/sheet-tooltips";
 import { ATTRIBUTE_LABELS } from "@/lib/character/rules";
 import type { CharacterSheet } from "@/lib/character/types";
 import { postRoomChat } from "@/hooks/useRoomSync";
+import type { RoomSnapshot } from "@/lib/room/types";
 
 type Props = {
   actor: CharacterSheet;
   roomId?: string;
-  onRoll?: () => void;
+  /** Com a sala da resposta do chat, aplica sem refazer o GET; sem ela, refaz. */
+  onRoll?: (payload?: RoomSnapshot) => void;
 };
 
 export function SheetDdbSkillsPanel({ actor, roomId, onRoll }: Props) {
@@ -35,12 +37,12 @@ export function SheetDdbSkillsPanel({ actor, roomId, onRoll }: Props) {
         skill.passive != null
           ? `${skill.def.label} (passiva ${skill.passive})`
           : skill.def.label;
-      await postRoomChat(roomId, {
+      const snapshot = await postRoomChat(roomId, {
         kind: "roll",
         formula: skill.rollFormula,
         text: `${actor.name} — ${label}`,
       });
-      onRoll?.();
+      onRoll?.(snapshot);
     } finally {
       setBusy(null);
     }

@@ -29,6 +29,7 @@ import {
 } from "@/lib/character/sheet-tooltips";
 import { SheetDdbShieldAc } from "@/components/character/SheetDdbShieldAc";
 import { SheetDdbSkillsPanel } from "@/components/character/SheetDdbSkillsPanel";
+import type { RoomSnapshot } from "@/lib/room/types";
 import type { FoundryWindowDragHandlers } from "@/hooks/vtt/useFoundryWindowDrag";
 import "./sheet-ddb.css";
 
@@ -50,7 +51,7 @@ type Props = {
   drawer: ReactNode;
   inRoom: boolean;
   roomId?: string;
-  onRoll?: () => void;
+  onRoll?: (payload?: RoomSnapshot) => void;
 };
 
 export function SheetPopupDdbView({

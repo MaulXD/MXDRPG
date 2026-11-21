@@ -3,6 +3,7 @@
 import { useCallback, useMemo, useState } from "react";
 import { patchTorSession, postRoomChat } from "@/hooks/useRoomSync";
 import { TOR_UNDERTAKINGS } from "@/lib/character/um-anel/undertakings";
+import type { RoomApiPayload } from "@/lib/room/room-delta";
 import { TorAdvancePanel } from "@/components/vtt/TorAdvancePanel";
 import {
   TOR_PHASES_PER_YEAR,
@@ -42,7 +43,8 @@ type Props = {
   attributeTnBase?: number;
   /** Fichas do Um Anel no mapa — quem pode gastar pontos nesta Fase. */
   characterIds?: string[];
-  onUpdate: () => void;
+  /** Com a sala da resposta, aplica sem refazer o GET; sem ela, refaz. */
+  onUpdate: (payload?: RoomApiPayload) => void;
 };
 
 const OUTCOME_LABEL: Record<TorPhaseOutcome, string> = {
@@ -99,8 +101,8 @@ export function TorFellowshipPanel({
     setBusy(true);
     setErr(null);
     try {
-      await patchTorSession(roomId, { fellowship: { ...state, ...patch } });
-      onUpdate();
+      const snapshot = await patchTorSession(roomId, { fellowship: { ...state, ...patch } });
+      onUpdate(snapshot);
     } catch (e) {
       setErr(e instanceof Error ? e.message : "Falha ao salvar a Companhia");
     } finally {
@@ -114,8 +116,8 @@ export function TorFellowshipPanel({
     try {
       // `null` apaga a opção e volta ao padrão do livro — gravar 20 deixaria a
       // mesa que desligou indistinguível da que nunca mexeu.
-      await patchTorSession(roomId, { attributeTnBase: usar18 ? 18 : null });
-      onUpdate();
+      const snapshot = await patchTorSession(roomId, { attributeTnBase: usar18 ? 18 : null });
+      onUpdate(snapshot);
     } catch (e) {
       setErr(e instanceof Error ? e.message : "Falha ao salvar a regra de campanha");
     } finally {
@@ -168,8 +170,8 @@ export function TorFellowshipPanel({
   const save = useCallback(
     (patch: Partial<TorFellowshipProgress>) =>
       guard(async () => {
-        await patchTorSession(roomId, { fellowship: { ...state, ...patch } });
-        onUpdate();
+        const snapshot = await patchTorSession(roomId, { fellowship: { ...state, ...patch } });
+        onUpdate(snapshot);
       }),
     [guard, roomId, state, onUpdate]
   );
@@ -212,7 +214,7 @@ export function TorFellowshipPanel({
         // que terminou entra na crônica — é o registro que sobrevive à mesa.
         // Guarda o ano/Fase ANTES de avançar: a linha da crônica descreve a Fase
         // que acabou, não a que começa.
-        await patchTorSession(roomId, {
+        const snapshot = await patchTorSession(roomId, {
           fellowship: {
             ...state,
             year: advanced.calendar.year,
@@ -228,7 +230,7 @@ export function TorFellowshipPanel({
             }),
           },
         });
-        onUpdate();
+        onUpdate(snapshot);
       }),
     [guard, validation.ok, state, undertakings, roomId, onUpdate]
   );

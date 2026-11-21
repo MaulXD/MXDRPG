@@ -177,6 +177,17 @@ function MesaWorkspaceInner({
   const mesaSettingsRaw = useMesaSettings(roomId);
   const { syncError, syncStatus } = useMesaMeta(roomId);
   const { refresh, applySnapshot, applyRoomResponse } = useMesaSyncActions();
+  /** Ações que devolvem a sala aplicam a resposta; sem ela, refazem o GET. */
+  const refreshOrApply = useCallback(
+    async (payload?: RoomApiPayload) => {
+      if (typeof payload?.revision === "number") {
+        applyRoomResponse(payload);
+        return;
+      }
+      await refresh();
+    },
+    [applyRoomResponse, refresh]
+  );
   const snapshot = mapSnapshot;
 
   const presenceUser =
@@ -516,7 +527,7 @@ function MesaWorkspaceInner({
     actors: mesaActors,
     bypassTurn: canBypassTurn,
     openSheet,
-    onRolled: refresh,
+    onRolled: refreshOrApply,
   });
 
   const win = windows.get;
@@ -668,7 +679,7 @@ function MesaWorkspaceInner({
             onOpenTorSheet={openTorSheet}
             onOpenMonsterSheet={openMonsterSheet}
             onOpenCharacterWizard={canCreateCharacter ? openCharacterWizard : undefined}
-            onRefresh={refresh}
+            onRefresh={refreshOrApply}
             onApplySnapshot={applySnapshot}
           />
 
@@ -809,7 +820,7 @@ function MesaWorkspaceInner({
                   onOpenCharacterWizard={canCreateCharacter ? openCharacterWizard : undefined}
                   onCloseCharacterWizard={closeCharacterWizard}
                   onCharacterCreated={(result) => void handleCharacterCreated(result)}
-                  onRefresh={refresh}
+                  onRefresh={refreshOrApply}
                   onApplySnapshot={applySnapshot}
                   onRoomPortraitPatch={handleRoomPortraitPatch}
                 />

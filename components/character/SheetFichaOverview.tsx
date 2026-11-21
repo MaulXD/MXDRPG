@@ -15,12 +15,13 @@ import {
 } from "@/lib/character/sheet-tooltips";
 import { SheetHoverTip } from "@/components/character/SheetHoverTip";
 import { SheetDdbSkillsPanel } from "@/components/character/SheetDdbSkillsPanel";
+import type { RoomSnapshot } from "@/lib/room/types";
 
 type Props = {
   character: CharacterSheet;
   inRoom: boolean;
   roomId?: string;
-  onRoll?: () => void;
+  onRoll?: (payload?: RoomSnapshot) => void;
 };
 
 /** Perícias, salvaguardas e traços — aba “Ficha” no layout V2. */

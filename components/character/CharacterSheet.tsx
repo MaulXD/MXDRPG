@@ -24,6 +24,7 @@ import {
   type RoomActorPatchResult,
 } from "@/lib/character/portrait-persist-client";
 import { firstPortraitDataUrl } from "@/lib/room/portrait-sync";
+import type { RoomSnapshot } from "@/lib/room/types";
 import { CharacterSheetCover } from "@/components/character/CharacterSheetCover";
 import { PortraitEditorFields } from "@/components/character/PortraitEditorFields";
 import {
@@ -218,6 +219,17 @@ function CharacterSheetLoaded({
   const showBestiaryTab = Boolean(adventureId);
 
   const { snapshot: liveSnapshot, refresh: liveRefresh, applySnapshot: liveApplySnapshot } = sync;
+  /** Chat e rolagem devolvem a sala inteira: aplica a resposta; sem ela, refaz o GET. */
+  const liveApplyOrRefresh = useCallback(
+    async (payload?: RoomSnapshot) => {
+      if (typeof payload?.revision === "number") {
+        liveApplySnapshot(payload, { immediate: true });
+        return;
+      }
+      await liveRefresh();
+    },
+    [liveApplySnapshot, liveRefresh]
+  );
   const sheetBase = localSheet ?? character;
   const roomActor = liveSnapshot?.actors[character.id];
   const live: CharacterSheetData = useMemo(() => {
@@ -687,7 +699,7 @@ function CharacterSheetLoaded({
     tokens: liveSnapshot?.scene.tokens,
     actors: liveSnapshot?.actors,
     openSheet: scrollToQuickBar,
-    onRolled: liveRefresh,
+    onRolled: liveApplyOrRefresh,
   });
 
   const tabTitles: Record<Tab, string> = {
@@ -1179,7 +1191,7 @@ function CharacterSheetLoaded({
           standalone={isStandalonePopup}
           inRoom={inRoom}
           roomId={roomId}
-          onRoll={liveRefresh}
+          onRoll={liveApplyOrRefresh}
           levelUp={levelUpControl}
           loadout={
             canEdit ? (
