@@ -21,6 +21,12 @@ export function useMesaChatNaoLidas(
 ): number {
   const store = getMesaRoomStore(roomId);
   const vistoAteRef = useRef<number | null>(null);
+  // Revisão da Lupa: trocar de sala sem desmontar zera o marco de leitura.
+  const salaRef = useRef(roomId);
+  if (salaRef.current !== roomId) {
+    salaRef.current = roomId;
+    vistoAteRef.current = null;
+  }
 
   const getCount = useCallback(() => {
     const messages = store.getChat();

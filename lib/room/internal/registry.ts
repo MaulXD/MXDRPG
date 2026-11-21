@@ -48,7 +48,7 @@ export function toSnapshot(state: RoomState): RoomSnapshot {
     },
     // BV-054: cópia rasa. Os handlers trocam ator no lugar (room.actors[id] = next);
     // com a mesma referência, o snapshot guardado no diário de revisões mudava junto e o
-    // delta para o cliente saía sem o ator (XP dado pelo mestre não chegava à ficha aberta).
+    // delta para o cliente podia sair sem o ator (achado ao investigar o BV-054).
     actors: { ...state.actors },
     combat: normalizeCombatTrack(state.combat, tokens),
     combatUndo: state.combatUndo,
