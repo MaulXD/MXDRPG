@@ -140,17 +140,22 @@ export function FriendsChatProvider({ children, initialUserId = null }: Provider
   }, []);
 
   useEffect(() => {
-    void (async () => {
-      try {
-        const res = await fetch("/api/auth/me", fetchOpts);
-        if (res.ok) {
-          const data = (await res.json()) as { user?: { id: string } };
-          setSelfUserId(data.user?.id ?? null);
+    // Com initialUserId vindo do servidor (layout), não há o que buscar em /api/auth/me.
+    if (initialUserId) {
+      setReady(true);
+    } else {
+      void (async () => {
+        try {
+          const res = await fetch("/api/auth/me", fetchOpts);
+          if (res.ok) {
+            const data = (await res.json()) as { user?: { id: string } };
+            setSelfUserId(data.user?.id ?? null);
+          }
+        } finally {
+          setReady(true);
         }
-      } finally {
-        setReady(true);
-      }
-    })();
+      })();
+    }
     // Polling só com a aba visível: pausa ao esconder e faz uma leitura ao voltar ou ao focar a janela.
     let timer: number | null = null;
     const stop = () => {
@@ -176,7 +181,7 @@ export function FriendsChatProvider({ children, initialUserId = null }: Provider
       document.removeEventListener("visibilitychange", onVisibleOrFocus);
       window.removeEventListener("focus", onVisibleOrFocus);
     };
-  }, [refreshUnread]);
+  }, [refreshUnread, initialUserId]);
 
   useEffect(() => {
     if (!selfUserId) return;

@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import type { InventoryItemRequest } from "@/lib/character/inventory-item-request";
+import { startVisiblePoll } from "@/hooks/usePollWhenVisible";
 
 const POLL_MS = 30_000;
 const POLL_FAST_MS = 5_000;
@@ -67,8 +68,7 @@ export function useGmInventoryRequests(
   useEffect(() => {
     void refresh();
     if (!adventureId || !enabled) return;
-    const id = window.setInterval(() => void refresh(), POLL_MS);
-    return () => window.clearInterval(id);
+    return startVisiblePoll(() => void refresh(), POLL_MS);
   }, [adventureId, roomId, enabled, refresh]);
 
   return { requests, loading, refresh, hasPending: requests.length > 0 };
@@ -101,8 +101,7 @@ export function usePlayerInventoryNotifications(adventureId: string | null, enab
     void refresh();
     if (!adventureId || !enabled) return;
     const interval = hasPending ? POLL_FAST_MS : POLL_MS;
-    const id = window.setInterval(() => void refresh(), interval);
-    return () => window.clearInterval(id);
+    return startVisiblePoll(() => void refresh(), interval);
   }, [adventureId, enabled, refresh, hasPending]);
 
   return {

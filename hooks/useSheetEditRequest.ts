@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import type { SheetEditRequest } from "@/lib/character/sheet-edit-request";
+import { startVisiblePoll } from "@/hooks/usePollWhenVisible";
 
 const POLL_MS = 30_000;
 
@@ -61,8 +62,7 @@ export function useGmEditRequests(adventureId: string | null, roomId?: string | 
   useEffect(() => {
     void refresh();
     if (!adventureId || !enabled) return;
-    const id = window.setInterval(() => void refresh(), POLL_MS);
-    return () => window.clearInterval(id);
+    return startVisiblePoll(() => void refresh(), POLL_MS);
   }, [adventureId, roomId, enabled, refresh]);
 
   return { requests, loading, refresh, hasPending: requests.length > 0 };
@@ -92,8 +92,7 @@ export function usePlayerEditRequests(adventureId: string | null, enabled = true
   useEffect(() => {
     void refresh();
     if (!adventureId || !enabled) return;
-    const id = window.setInterval(() => void refresh(), POLL_MS);
-    return () => window.clearInterval(id);
+    return startVisiblePoll(() => void refresh(), POLL_MS);
   }, [adventureId, enabled, refresh]);
 
   return {

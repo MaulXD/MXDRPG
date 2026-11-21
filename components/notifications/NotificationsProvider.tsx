@@ -10,6 +10,7 @@ import {
   type ReactNode,
 } from "react";
 import type { NotificationItem } from "@/lib/notifications/types";
+import { startVisiblePoll } from "@/hooks/usePollWhenVisible";
 import "./notifications.css";
 
 const POLL_MS = 30_000;
@@ -94,8 +95,7 @@ export function NotificationsProvider({ children, initialUserId = null }: Provid
   useEffect(() => {
     if (!selfUserId) return;
     void refresh();
-    const id = window.setInterval(() => void refresh(), POLL_MS);
-    return () => window.clearInterval(id);
+    return startVisiblePoll(() => void refresh(), POLL_MS);
   }, [selfUserId, refresh]);
 
   const value = useMemo(

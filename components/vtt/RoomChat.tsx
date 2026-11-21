@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import type { ChatMessage } from "@/lib/room/chat";
 import { postRoomChat } from "@/hooks/useRoomSync";
+import type { RoomApiPayload } from "@/lib/room/room-delta";
 import { diceRollSpecFromFormula } from "@/lib/vtt/combat-dice-model";
 import { CombatChatCard } from "@/components/vtt/CombatChatCard";
 import type { CombatChatRevealPhase } from "@/lib/combat/chat-display";
@@ -22,6 +23,8 @@ type Props = {
   tokens?: BattleToken[];
   combatReveal?: Record<string, CombatChatRevealPhase>;
   onUpdate: () => void;
+  /** Aplica o snapshot que o POST devolve, sem GET extra da sala. */
+  onApplyResponse?: (payload: RoomApiPayload) => void;
   readOnly?: boolean;
 };
 
@@ -31,6 +34,7 @@ export function RoomChat({
   tokens = [],
   combatReveal = {},
   onUpdate,
+  onApplyResponse,
   readOnly = false,
 }: Props) {
   const [text, setText] = useState("");
@@ -47,13 +51,17 @@ export function RoomChat({
     if (!msg || busy) return;
     setBusy(true);
     try {
-      await postRoomChat(roomId, { kind: "chat", text: msg });
+      const snap = await postRoomChat(roomId, { kind: "chat", text: msg });
       setText("");
-      onUpdate();
+      if (onApplyResponse && snap && typeof snap === "object" && "revision" in snap) {
+        onApplyResponse(snap);
+      } else {
+        onUpdate();
+      }
     } finally {
       setBusy(false);
     }
-  }, [text, busy, roomId, onUpdate]);
+  }, [text, busy, roomId, onUpdate, onApplyResponse]);
 
   return (
     <div className="room-chat room-chat--rail">

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { postRoomChat } from "@/hooks/useRoomSync";
+import { useMesaSyncActions } from "@/components/vtt/MesaSyncProvider";
 import { DiceBoxMini } from "@/components/vtt/DiceBoxMini";
 import { diceRollSpecFromFormula } from "@/lib/vtt/combat-dice-model";
 import type { RpgSystemId } from "@/lib/rpg/systems";
@@ -26,6 +27,7 @@ type Props = {
 };
 
 export function DiceRoller({ roomId, onUpdate, rpgSystemId = "eldarin" }: Props) {
+  const { applyRoomResponse } = useMesaSyncActions();
   const isUmAnel = rpgSystemId === "um-anel";
   const QUICK = isUmAnel ? QUICK_UM_ANEL : QUICK_ELDARIN;
   const [formula, setFormula] = useState(isUmAnel ? "1d12" : "1d20");
@@ -43,7 +45,11 @@ export function DiceRoller({ roomId, onUpdate, rpgSystemId = "eldarin" }: Props)
       const snapshot = await postRoomChat(roomId, { kind: "roll", formula: f });
       const lastRoll = [...(snapshot.chat ?? [])].reverse().find((m) => m.kind === "roll");
       if (lastRoll?.roll) setLastTotal(lastRoll.roll.total);
-      onUpdate();
+      if (snapshot && typeof snapshot === "object" && "revision" in snapshot) {
+        applyRoomResponse(snapshot);
+      } else {
+        onUpdate();
+      }
     } catch (e) {
       setErr(e instanceof Error ? e.message : "Erro");
     } finally {

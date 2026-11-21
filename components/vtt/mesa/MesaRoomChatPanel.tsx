@@ -16,7 +16,7 @@ type Props = {
 
 function MesaRoomChatPanelInner({ roomId, tokens, combatReveal, readOnly }: Props) {
   const messages = useMesaChat(roomId);
-  const { refresh } = useMesaSyncActions();
+  const { refresh, applyRoomResponse } = useMesaSyncActions();
 
   return (
     <RoomChat
@@ -25,6 +25,7 @@ function MesaRoomChatPanelInner({ roomId, tokens, combatReveal, readOnly }: Prop
       tokens={tokens}
       combatReveal={combatReveal}
       onUpdate={refresh}
+      onApplyResponse={applyRoomResponse}
       readOnly={readOnly}
     />
   );
