@@ -2,6 +2,7 @@ import "server-only";
 
 import { getAdventure } from "@/lib/adventure/store";
 import { memberIdsHasUser } from "@/lib/auth/member-ids";
+import type { SessionUser } from "@/lib/auth/types";
 import { validateNickname } from "@/lib/auth/nickname";
 import { roomInviteUrl } from "@/lib/auth/room-access";
 import {
@@ -22,7 +23,7 @@ import {
   resolveFriendRequest,
 } from "@/lib/db/friend-requests";
 import { dbEnabled } from "@/lib/db/enabled";
-import { fetchUserById, fetchUserByNickname } from "@/lib/db/users";
+import { fetchUserById, fetchUserByNickname, fetchUsersByIds } from "@/lib/db/users";
 import { resolveUserAvatarUrl } from "@/lib/db/user-avatar";
 import type {
   FriendRequestSummary,
@@ -67,17 +68,18 @@ async function createMutualFriendLinks(userA: string, userB: string): Promise<vo
   await insertFriendLink(userB, userA);
 }
 
-async function rowToFriendRequest(
+function rowToFriendRequest(
   row: {
     id: string;
     from_user_id: string;
     to_user_id: string;
     created_at: string | number;
   },
-  viewerId: string
-): Promise<FriendRequestSummary | null> {
-  const fromUser = await fetchUserById(row.from_user_id);
-  const toUser = await fetchUserById(row.to_user_id);
+  viewerId: string,
+  users: Map<string, SessionUser>
+): FriendRequestSummary | null {
+  const fromUser = users.get(row.from_user_id);
+  const toUser = users.get(row.to_user_id);
   if (!fromUser || !toUser) return null;
   return {
     id: row.id,
@@ -171,15 +173,19 @@ export async function listFriendRequests(userId: string): Promise<{
     listPendingFriendRequestsForUser(userId, "outgoing"),
   ]);
 
+  const users = await fetchUsersByIds(
+    [...incomingRows, ...outgoingRows].flatMap((row) => [row.from_user_id, row.to_user_id])
+  );
+
   const incoming: FriendRequestSummary[] = [];
   for (const row of incomingRows) {
-    const item = await rowToFriendRequest(row, userId);
+    const item = rowToFriendRequest(row, userId, users);
     if (item) incoming.push(item);
   }
 
   const outgoing: FriendRequestSummary[] = [];
   for (const row of outgoingRows) {
-    const item = await rowToFriendRequest(row, userId);
+    const item = rowToFriendRequest(row, userId, users);
     if (item) outgoing.push(item);
   }
 
@@ -219,14 +225,16 @@ async function requestFriendship(
   const id = `freq_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 8)}`;
   await insertFriendRequest({ id, fromUserId: userId, toUserId: targetId });
 
-  const request = await rowToFriendRequest(
+  const users = await fetchUsersByIds([userId, targetId]);
+  const request = rowToFriendRequest(
     {
       id,
       from_user_id: userId,
       to_user_id: targetId,
       created_at: Date.now(),
     },
-    userId
+    userId,
+    users
   );
   if (!request) return { ok: false, error: "Erro ao criar pedido" };
 
@@ -471,9 +479,19 @@ export async function listReceivedMesaInvites(userId: string): Promise<MesaInvit
   const rows = await listPendingMesaInvitesForUser(userId);
   const out: MesaInviteSummary[] = [];
 
+  // Um lote de usuarios e uma leitura por aventura distinta, em vez de duas por convite.
+  const users = await fetchUsersByIds(rows.map((row) => row.from_user_id));
+  const adventureIds = [...new Set(rows.map((row) => row.adventure_id))];
+  const adventures = new Map<string, Awaited<ReturnType<typeof getAdventure>>>();
+  await Promise.all(
+    adventureIds.map(async (id) => {
+      adventures.set(id, await getAdventure(id));
+    })
+  );
+
   for (const row of rows) {
-    const fromUser = await fetchUserById(row.from_user_id);
-    const adv = await getAdventure(row.adventure_id);
+    const fromUser = users.get(row.from_user_id) ?? null;
+    const adv = adventures.get(row.adventure_id) ?? null;
     if (!adv || adv.deletedAt) continue;
 
     const roomId = adv.primaryRoomId;

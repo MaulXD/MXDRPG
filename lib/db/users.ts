@@ -13,6 +13,7 @@ import { normalizeImageDataUrl } from "@/lib/media/image-normalize";
 import { sanitizePortraitFocus, type PortraitFocus } from "@/lib/media/portrait-focus";
 import { getSql } from "@/lib/db/client";
 import { safeDbRead } from "@/lib/db/safe-query";
+import { queryRowsByIds } from "@/lib/db/sql-helpers";
 import type { EldarinSql } from "@/lib/db/sql-types";
 import type { OAuthProviderId } from "@/lib/auth/oauth-config";
 
@@ -318,6 +319,20 @@ export async function fetchUserById(id: string): Promise<SessionUser | null> {
   return safeDbRead("fetchUserById", null, async () => {
     const r = await queryOneUserRow(sql, "id = ?", [id]);
     return r ? toSessionUser(r) : null;
+  });
+}
+
+/** Lote de fetchUserById: um SELECT para todos os ids. Ids sem usuario ficam fora do mapa. */
+export async function fetchUsersByIds(ids: string[]): Promise<Map<string, SessionUser>> {
+  const out = new Map<string, SessionUser>();
+  const unique = [...new Set(ids.filter(Boolean))];
+  if (unique.length === 0) return out;
+  const sql = getSql();
+  if (!sql) return out;
+  return safeDbRead("fetchUsersByIds", out, async () => {
+    const rows = await queryRowsByIds<UserRow>(sql, "eldarin_users", USER_SELECT, unique);
+    for (const r of rows) out.set(r.id, toSessionUser(r));
+    return out;
   });
 }
 

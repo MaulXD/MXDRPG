@@ -17,6 +17,8 @@ export async function getFriendsPulse(userId: string): Promise<FriendsPulse> {
   await ensureDbMigrations();
   const [unread, invites, requestsCount] = await Promise.all([
     countUnreadFriendMessages(userId),
+    // Conta pela lista (e não por COUNT direto) porque a lista descarta convite de
+    // aventura apagada ou vencida; com o lote do P-07 ela custa 2 consultas + 1 por aventura.
     listReceivedMesaInvites(userId),
     countIncomingFriendRequests(userId),
   ]);
