@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import type { RoomActor, RoomSnapshot } from "@/lib/room/types";
 import { formatXpProgress, MAX_LEVEL } from "@/lib/character/xp";
 import { gmActorProgress } from "@/hooks/useRoomSync";
@@ -28,13 +28,27 @@ export function GmActorProgressPanel({ roomId, roomActors, onUpdated }: Props) {
   const [busy, setBusy] = useState(false);
   const [msg, setMsg] = useState<string | null>(null);
 
+  // BV-085: true enquanto o mestre digita a vida e ainda nao aplicou; a sync da sala
+  // nao pode sobrescrever o campo nesse intervalo.
+  const vidaEditadaRef = useRef(false);
+
   const selected = players.find((a) => a.id === actorId) ?? players[0];
 
+  // Troca de ator: ressincroniza os campos e zera a edicao.
   useEffect(() => {
+    vidaEditadaRef.current = false;
     if (!selected) return;
     setHpValue(String(selected.resources.vida.value));
     setHpMax(String(selected.resources.vida.max));
-  }, [selected?.id, selected?.resources.vida.value, selected?.resources.vida.max]);
+  }, [selected?.id]);
+
+  // Vida salva mudou (sync da sala): so ressincroniza se o mestre nao editou o campo.
+  useEffect(() => {
+    if (!selected) return;
+    if (vidaEditadaRef.current) return;
+    setHpValue(String(selected.resources.vida.value));
+    setHpMax(String(selected.resources.vida.max));
+  }, [selected?.resources.vida.value, selected?.resources.vida.max]);
 
   async function run(action: "grant-xp" | "set-level" | "set-hp") {
     if (!selected || busy) return;
@@ -57,6 +71,13 @@ export function GmActorProgressPanel({ roomId, roomActors, onUpdated }: Props) {
       // BV-051: o servidor limita a vida ao máximo; a mensagem mostra o que foi gravado,
       // não o que foi digitado (antes dizia "18/13").
       const saved = snapshot.actors[selected.id];
+      if (action === "set-hp") {
+        vidaEditadaRef.current = false;
+        if (saved) {
+          setHpValue(String(saved.resources.vida.value));
+          setHpMax(String(saved.resources.vida.max));
+        }
+      }
       setMsg(
         action === "grant-xp"
           ? `+${xpAmount} XP para ${selected.name}.`
@@ -137,7 +158,10 @@ export function GmActorProgressPanel({ roomId, roomActors, onUpdated }: Props) {
             type="number"
             min={0}
             value={hpValue}
-            onChange={(e) => setHpValue(e.target.value)}
+            onChange={(e) => {
+              vidaEditadaRef.current = true;
+              setHpValue(e.target.value);
+            }}
             disabled={busy}
           />
         </label>
@@ -147,7 +171,10 @@ export function GmActorProgressPanel({ roomId, roomActors, onUpdated }: Props) {
             type="number"
             min={1}
             value={hpMax}
-            onChange={(e) => setHpMax(e.target.value)}
+            onChange={(e) => {
+              vidaEditadaRef.current = true;
+              setHpMax(e.target.value);
+            }}
             disabled={busy}
           />
         </label>
