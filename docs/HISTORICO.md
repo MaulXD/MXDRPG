@@ -6850,3 +6850,15 @@ Aproveitando o esclarecimento, atendido o pedido de melhorar de verdade a UX: at
 - main avançou em fast-forward `be69f6f -> 33f4299` e foi enviada; CI e o workflow de imagem passaram, e o oficial passou a responder `buildSha 33f4299` às 15:45.
 - O branch `fix/login-google-e-responsivo-um-anel` no GitHub continua com os commits antigos (com coautoria); trocar exige force push.
 - Teste no oficial com 2 contas temporárias (apagadas no fim, junto com a mesa): cadastro, criar mesa, entrar pelo código, chat e dado do jogador (resposta já com a revisão nova e filtrada), delta e 304 no GET, SSE avisando o mestre, presença e pulso de amigos. Tudo OK. Mesa recém-criada devolve a sala inteira no primeiro `since` (o diário de revisões não guarda a revisão de criação); da 1ª mudança em diante volta delta. Pré-existente e barato (~1 KB).
+
+### 2026-11-21 (17:10) — Teste da mesa no navegador, site oficial
+
+**Pedido:** testar a mesa no navegador pelo site oficial (main `6eb7b83`).
+
+Contas temporárias de mestre e jogador e uma mesa, testadas no portal do Maestri e apagadas no fim.
+- Abrir a mesa: 13 pedidos de API (mestre), 11 (jogador); página carregada em ~0,9-1,4 s.
+- Mesa parada: 21 pedidos/min (mestre) e 19 (jogador), contra 43 antes do loop.
+- Jogador manda mensagem e rola 2d6+1: aparece no chat do mestre (contador "2 mensagens novas"); o mestre busca só o delta.
+- Mestre e jogador mandando mensagem pela tela: só o POST do chat, nenhuma busca da sala nem sync-actors (3 de 3). A mensagem chega ao outro lado.
+- Tela do jogador sem ferramentas do mestre; console sem erros.
+- Correção da D-25: o oficial já serve HTTP/2 (ALPN h2). O "só HTTP/1.1" da medição de partida veio do curl desta máquina, que não tem HTTP/2. Resta só a distância.

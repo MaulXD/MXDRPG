@@ -108,7 +108,7 @@ O oficial roda be69f6f (main). As correções de sincronização ao vivo da mesa
 
 ## D-25 Servidor longe dos jogadores (loop de desempenho, 21/11)
 Medido daqui: RTT ~200 ms até www.mxdrpg.com.br; conexão nova (TCP+TLS) ~400 ms antes do primeiro byte; o servidor em si responde rápido (build de produção local: 4-40 ms). Cada pedido no oficial custa 0,6-1 s quase só de rede. Opções: (a) VPS em região no Brasil; (b) Cloudflare (ou outro CDN) na frente: TLS perto do jogador e cache dos arquivos fixos; (c) manter e só cortar pedidos (o que o loop já fez). Sugestão do maestro: (b) primeiro, é barato e não muda o servidor. Precisa do dono (DNS e conta).
-Achado extra (21/11 13:00): o oficial responde só HTTP/1.1. O navegador abre no máximo 6 conexões por site, uma fica presa ao SSE da mesa, e cada conexão nova custa ~400 ms (TCP+TLS daqui). Com ~30 scripts + 12 pedidos de API ao abrir a mesa, isso enfileira. HTTP/2 (uma conexão, tudo em paralelo) resolve: ligar http2 no proxy reverso do servidor (nginx/caddy) ou o Cloudflare da opção (b), que já serve HTTP/2 e HTTP/3.
+Correção (21/11 17:10): o oficial JÁ serve HTTP/2 (ALPN h2; o navegador da mesa usa h2). O 'só HTTP/1.1' anterior era limitação do curl desta máquina, que não tem HTTP/2. Fica só a distância (RTT ~200 ms): opções (a) e (b) acima continuam valendo; a parte de HTTP/2 não precisa de nada.
 
 ## Rodada 5 (21/11), decisões do maestro
 - BV-009/BV-020: o Regente tinha deixado 'sem ação'. Mudei: o erro de hidratação aparecia em todo console e atrapalhava a caça a bugs. Feito em 5a05b79.
