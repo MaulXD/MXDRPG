@@ -21,6 +21,11 @@ const CATEGORIAS = {
     compendio: "data/compendiums/magias.json",
     gema: (e) => GEMA_ESCOLA[e.system?.spell?.escola] ?? null,
   },
+  habilidades: {
+    compendio: "data/compendiums/habilidades.json",
+    // Chi ganha gema branco-azulada; as demais habilidades ficam só com a moldura.
+    gema: (e) => (String(e.system?.catalogId ?? "").startsWith("CHI-") ? "#bfe3f2" : null),
+  },
 };
 
 function svg(buf) {
@@ -78,7 +83,7 @@ async function main() {
       const gema = cfg.gema(e);
       if (vistas.has(gema)) continue;
       vistas.add(gema);
-      const out = join(dir, `${categoria}-${e.system.spell?.escola ?? "sem"}.webp`);
+      const out = join(dir, `${categoria}-${e.system.spell?.escola ?? (gema ? "gema" : "sem")}.webp`);
       await sharp(await comporIcone(await sharp(arteFalsa(gema ?? "#8B7BB8")).png().toBuffer(), gema)).toFile(out);
       console.log("amostra", out);
     }

@@ -6862,3 +6862,12 @@ Contas temporárias de mestre e jogador e uma mesa, testadas no portal do Maestr
 - Mestre e jogador mandando mensagem pela tela: só o POST do chat, nenhuma busca da sala nem sync-actors (3 de 3). A mensagem chega ao outro lado.
 - Tela do jogador sem ferramentas do mestre; console sem erros.
 - Correção da D-25: o oficial já serve HTTP/2 (ALPN h2). O "só HTTP/1.1" da medição de partida veio do curl desta máquina, que não tem HTTP/2. Resta só a distância.
+
+### 2026-11-21 (noite) — Ícones: prompts das habilidades
+
+**Pedido:** voltar aos ícones das magias.
+
+- Gemini continua sem cota de imagem: testados `gemini-2.5-flash-image`, `gemini-3.1-flash-image`, `gemini-3.1-flash-image-preview` e `gemini-3.1-flash-lite-image`, todos com "limit: 0" (falta ativar o faturamento no AI Studio).
+- `scripts/icones/gerar-gemini.mjs`: `--limite` passa a contar tentativas e o lote para na primeira "cota zero" (antes fazia as 64 chamadas).
+- Novo `scripts/icones/prompts-habilidades.mjs` gera `docs/icones/prompts-habilidades.{md,json}`: 55 entradas (50 habilidades + 5 de Chi), mesmo estilo das magias. `compor.mjs` ganhou a categoria `habilidades` (Chi com gema branco-azulada `#bfe3f2`, as demais só com a moldura).
+- Quando houver cota: `node --env-file-if-exists=.env.local scripts/icones/gerar-gemini.mjs magias` (e `habilidades`), depois `node scripts/icones/compor.mjs magias`.

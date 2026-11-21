@@ -1,0 +1,332 @@
+[
+  {
+    "id": "HAB-investida-em-linha",
+    "nome": "Investida em Linha",
+    "tipo": "Habilidade",
+    "prompt": "a lone warrior dashing forward in a straight line, motion streaks trailing behind, fantasy RPG combat ability icon artwork, one single centered subject, painterly digital painting, dramatic rim light, soft amethyst #8B7BB8 glow around the subject, plain very dark background #0e0d0b, subject fills about 70% of the image with empty dark margin on all sides, square 1:1, no border, no frame, no text, no letters, no watermark"
+  },
+  {
+    "id": "HAB-golpe-flanqueador",
+    "nome": "Golpe Flanqueador",
+    "tipo": "Habilidade",
+    "prompt": "two crossed blades closing in on a shadowy figure from both sides, fantasy RPG combat ability icon artwork, one single centered subject, painterly digital painting, dramatic rim light, soft amethyst #8B7BB8 glow around the subject, plain very dark background #0e0d0b, subject fills about 70% of the image with empty dark margin on all sides, square 1:1, no border, no frame, no text, no letters, no watermark"
+  },
+  {
+    "id": "HAB-postura-defensiva",
+    "nome": "Postura Defensiva",
+    "tipo": "Habilidade",
+    "prompt": "a kite shield braced low with a planted boot behind it, fantasy RPG combat ability icon artwork, one single centered subject, painterly digital painting, dramatic rim light, soft amethyst #8B7BB8 glow around the subject, plain very dark background #0e0d0b, subject fills about 70% of the image with empty dark margin on all sides, square 1:1, no border, no frame, no text, no letters, no watermark"
+  },
+  {
+    "id": "HAB-reflexos-de-masmorra",
+    "nome": "Reflexos de Masmorra",
+    "tipo": "Habilidade",
+    "prompt": "a figure sidestepping an incoming spear thrust in a stone corridor, afterimage blur, fantasy RPG combat ability icon artwork, one single centered subject, painterly digital painting, dramatic rim light, soft amethyst #8B7BB8 glow around the subject, plain very dark background #0e0d0b, subject fills about 70% of the image with empty dark margin on all sides, square 1:1, no border, no frame, no text, no letters, no watermark"
+  },
+  {
+    "id": "HAB-olhar-do-cacador",
+    "nome": "Olhar do Caçador",
+    "tipo": "Habilidade",
+    "prompt": "a hawk-like eye with a crosshair rune reflected in the pupil, fantasy RPG combat ability icon artwork, one single centered subject, painterly digital painting, dramatic rim light, soft amethyst #8B7BB8 glow around the subject, plain very dark background #0e0d0b, subject fills about 70% of the image with empty dark margin on all sides, square 1:1, no border, no frame, no text, no letters, no watermark"
+  },
+  {
+    "id": "HAB-investida-do-guerreiro",
+    "nome": "Investida do Guerreiro",
+    "tipo": "Habilidade",
+    "prompt": "an armored shoulder charging forward with a raised longsword and dust kicked up, fantasy RPG combat ability icon artwork, one single centered subject, painterly digital painting, dramatic rim light, soft amethyst #8B7BB8 glow around the subject, plain very dark background #0e0d0b, subject fills about 70% of the image with empty dark margin on all sides, square 1:1, no border, no frame, no text, no letters, no watermark"
+  },
+  {
+    "id": "HAB-golpe-devastador",
+    "nome": "Golpe Devastador",
+    "tipo": "Habilidade",
+    "prompt": "a heavy greatsword striking down with a shockwave crack on the ground, fantasy RPG combat ability icon artwork, one single centered subject, painterly digital painting, dramatic rim light, soft amethyst #8B7BB8 glow around the subject, plain very dark background #0e0d0b, subject fills about 70% of the image with empty dark margin on all sides, square 1:1, no border, no frame, no text, no letters, no watermark"
+  },
+  {
+    "id": "HAB-esquiva-tatica",
+    "nome": "Esquiva Tática",
+    "tipo": "Habilidade",
+    "prompt": "a cloaked silhouette rolling aside as an arrow passes through the cloak edge, fantasy RPG combat ability icon artwork, one single centered subject, painterly digital painting, dramatic rim light, soft amethyst #8B7BB8 glow around the subject, plain very dark background #0e0d0b, subject fills about 70% of the image with empty dark margin on all sides, square 1:1, no border, no frame, no text, no letters, no watermark"
+  },
+  {
+    "id": "HAB-tiro-certeiro",
+    "nome": "Tiro Certeiro",
+    "tipo": "Habilidade",
+    "prompt": "a single arrow flying dead center through a glowing ring target, fantasy RPG combat ability icon artwork, one single centered subject, painterly digital painting, dramatic rim light, soft amethyst #8B7BB8 glow around the subject, plain very dark background #0e0d0b, subject fills about 70% of the image with empty dark margin on all sides, square 1:1, no border, no frame, no text, no letters, no watermark"
+  },
+  {
+    "id": "HAB-emboscada",
+    "nome": "Emboscada",
+    "tipo": "Habilidade",
+    "prompt": "a dagger emerging from deep shadow behind a hooded figure's back, fantasy RPG combat ability icon artwork, one single centered subject, painterly digital painting, dramatic rim light, soft amethyst #8B7BB8 glow around the subject, plain very dark background #0e0d0b, subject fills about 70% of the image with empty dark margin on all sides, square 1:1, no border, no frame, no text, no letters, no watermark"
+  },
+  {
+    "id": "HAB-finta",
+    "nome": "Finta",
+    "tipo": "Habilidade",
+    "prompt": "a sword blade splitting into a false afterimage mid-swing, fantasy RPG combat ability icon artwork, one single centered subject, painterly digital painting, dramatic rim light, soft amethyst #8B7BB8 glow around the subject, plain very dark background #0e0d0b, subject fills about 70% of the image with empty dark margin on all sides, square 1:1, no border, no frame, no text, no letters, no watermark"
+  },
+  {
+    "id": "HAB-passo-das-sombras",
+    "nome": "Passo das Sombras",
+    "tipo": "Habilidade",
+    "prompt": "a figure stepping out of one pool of shadow and into another, fantasy RPG combat ability icon artwork, one single centered subject, painterly digital painting, dramatic rim light, soft amethyst #8B7BB8 glow around the subject, plain very dark background #0e0d0b, subject fills about 70% of the image with empty dark margin on all sides, square 1:1, no border, no frame, no text, no letters, no watermark"
+  },
+  {
+    "id": "HAB-raio-arcano",
+    "nome": "Raio Arcano",
+    "tipo": "Habilidade",
+    "prompt": "a crackling violet arcane bolt shooting from an outstretched finger, fantasy RPG combat ability icon artwork, one single centered subject, painterly digital painting, dramatic rim light, soft amethyst #8B7BB8 glow around the subject, plain very dark background #0e0d0b, subject fills about 70% of the image with empty dark margin on all sides, square 1:1, no border, no frame, no text, no letters, no watermark"
+  },
+  {
+    "id": "HAB-escudo-magico",
+    "nome": "Escudo Mágico",
+    "tipo": "Habilidade",
+    "prompt": "a hexagonal arcane barrier flaring in front of an open palm, fantasy RPG combat ability icon artwork, one single centered subject, painterly digital painting, dramatic rim light, soft amethyst #8B7BB8 glow around the subject, plain very dark background #0e0d0b, subject fills about 70% of the image with empty dark margin on all sides, square 1:1, no border, no frame, no text, no letters, no watermark"
+  },
+  {
+    "id": "HAB-canalizar-energia",
+    "nome": "Canalizar Energia",
+    "tipo": "Habilidade",
+    "prompt": "a mace wreathed in holy golden radiance, fantasy RPG combat ability icon artwork, one single centered subject, painterly digital painting, dramatic rim light, soft amethyst #8B7BB8 glow around the subject, plain very dark background #0e0d0b, subject fills about 70% of the image with empty dark margin on all sides, square 1:1, no border, no frame, no text, no letters, no watermark"
+  },
+  {
+    "id": "HAB-furia-controlada",
+    "nome": "Fúria Controlada",
+    "tipo": "Habilidade",
+    "prompt": "a clenched fist with red veins of rage held in check by an iron bracer, fantasy RPG combat ability icon artwork, one single centered subject, painterly digital painting, dramatic rim light, soft amethyst #8B7BB8 glow around the subject, plain very dark background #0e0d0b, subject fills about 70% of the image with empty dark margin on all sides, square 1:1, no border, no frame, no text, no letters, no watermark"
+  },
+  {
+    "id": "HAB-investida-barbara",
+    "nome": "Investida Bárbara",
+    "tipo": "Habilidade",
+    "prompt": "a fur-clad barbarian charging with a two-handed axe, ground cracking under each step, fantasy RPG combat ability icon artwork, one single centered subject, painterly digital painting, dramatic rim light, soft amethyst #8B7BB8 glow around the subject, plain very dark background #0e0d0b, subject fills about 70% of the image with empty dark margin on all sides, square 1:1, no border, no frame, no text, no letters, no watermark"
+  },
+  {
+    "id": "HAB-inspiracao-de-batalha",
+    "nome": "Inspiração de Batalha",
+    "tipo": "Habilidade",
+    "prompt": "a raised war horn with golden notes rising like sparks, fantasy RPG combat ability icon artwork, one single centered subject, painterly digital painting, dramatic rim light, soft amethyst #8B7BB8 glow around the subject, plain very dark background #0e0d0b, subject fills about 70% of the image with empty dark margin on all sides, square 1:1, no border, no frame, no text, no letters, no watermark"
+  },
+  {
+    "id": "HAB-cancao-de-cura",
+    "nome": "Canção de Cura",
+    "tipo": "Habilidade",
+    "prompt": "a lute whose strings release soft green healing light, fantasy RPG combat ability icon artwork, one single centered subject, painterly digital painting, dramatic rim light, soft amethyst #8B7BB8 glow around the subject, plain very dark background #0e0d0b, subject fills about 70% of the image with empty dark margin on all sides, square 1:1, no border, no frame, no text, no letters, no watermark"
+  },
+  {
+    "id": "HAB-forma-selvagem",
+    "nome": "Forma Selvagem",
+    "tipo": "Habilidade",
+    "prompt": "a human hand turning into a wolf paw along a swirl of leaves and green bio-light, fantasy RPG combat ability icon artwork, one single centered subject, painterly digital painting, dramatic rim light, soft amethyst #8B7BB8 glow around the subject, plain very dark background #0e0d0b, subject fills about 70% of the image with empty dark margin on all sides, square 1:1, no border, no frame, no text, no letters, no watermark"
+  },
+  {
+    "id": "HAB-raizes-prendentes",
+    "nome": "Raízes Prendentes",
+    "tipo": "Habilidade",
+    "prompt": "thick roots bursting from the ground and coiling around a boot, fantasy RPG combat ability icon artwork, one single centered subject, painterly digital painting, dramatic rim light, soft amethyst #8B7BB8 glow around the subject, plain very dark background #0e0d0b, subject fills about 70% of the image with empty dark margin on all sides, square 1:1, no border, no frame, no text, no letters, no watermark"
+  },
+  {
+    "id": "HAB-disparo-de-artilheiro",
+    "nome": "Disparo de Artilheiro",
+    "tipo": "Habilidade",
+    "prompt": "a brass hand cannon firing a concentrated glowing shot, fantasy RPG combat ability icon artwork, one single centered subject, painterly digital painting, dramatic rim light, soft amethyst #8B7BB8 glow around the subject, plain very dark background #0e0d0b, subject fills about 70% of the image with empty dark margin on all sides, square 1:1, no border, no frame, no text, no letters, no watermark"
+  },
+  {
+    "id": "HAB-barreira-de-cobre",
+    "nome": "Barreira de Cobre",
+    "tipo": "Habilidade",
+    "prompt": "a copper-plated round barrier deflecting a spark of magic, fantasy RPG combat ability icon artwork, one single centered subject, painterly digital painting, dramatic rim light, soft amethyst #8B7BB8 glow around the subject, plain very dark background #0e0d0b, subject fills about 70% of the image with empty dark margin on all sides, square 1:1, no border, no frame, no text, no letters, no watermark"
+  },
+  {
+    "id": "HAB-imposicao-de-maos",
+    "nome": "Imposição de Mãos",
+    "tipo": "Habilidade",
+    "prompt": "two hands laid on a chest, warm golden light spreading from the palms, fantasy RPG combat ability icon artwork, one single centered subject, painterly digital painting, dramatic rim light, soft amethyst #8B7BB8 glow around the subject, plain very dark background #0e0d0b, subject fills about 70% of the image with empty dark margin on all sides, square 1:1, no border, no frame, no text, no letters, no watermark"
+  },
+  {
+    "id": "HAB-golpe-sagrado",
+    "nome": "Golpe Sagrado",
+    "tipo": "Habilidade",
+    "prompt": "a sword blade blazing with radiant white-gold light on impact, fantasy RPG combat ability icon artwork, one single centered subject, painterly digital painting, dramatic rim light, soft amethyst #8B7BB8 glow around the subject, plain very dark background #0e0d0b, subject fills about 70% of the image with empty dark margin on all sides, square 1:1, no border, no frame, no text, no letters, no watermark"
+  },
+  {
+    "id": "HAB-raio-do-pacto",
+    "nome": "Raio do Pacto",
+    "tipo": "Habilidade",
+    "prompt": "an eldritch beam of dark violet energy with a patron sigil at its source, fantasy RPG combat ability icon artwork, one single centered subject, painterly digital painting, dramatic rim light, soft amethyst #8B7BB8 glow around the subject, plain very dark background #0e0d0b, subject fills about 70% of the image with empty dark margin on all sides, square 1:1, no border, no frame, no text, no letters, no watermark"
+  },
+  {
+    "id": "HAB-raio-do-pacto-psiquico",
+    "nome": "Raio do Pacto Psíquico",
+    "tipo": "Habilidade",
+    "prompt": "a pink-violet psychic beam with rippling mind waves pushing a target back, fantasy RPG combat ability icon artwork, one single centered subject, painterly digital painting, dramatic rim light, soft amethyst #8B7BB8 glow around the subject, plain very dark background #0e0d0b, subject fills about 70% of the image with empty dark margin on all sides, square 1:1, no border, no frame, no text, no letters, no watermark"
+  },
+  {
+    "id": "HAB-raio-do-pacto-ardente",
+    "nome": "Raio do Pacto Ardente",
+    "tipo": "Habilidade",
+    "prompt": "an eldritch beam of infernal fire leaving a blood-red mark, fantasy RPG combat ability icon artwork, one single centered subject, painterly digital painting, dramatic rim light, soft amethyst #8B7BB8 glow around the subject, plain very dark background #0e0d0b, subject fills about 70% of the image with empty dark margin on all sides, square 1:1, no border, no frame, no text, no letters, no watermark"
+  },
+  {
+    "id": "HAB-raio-do-pacto-salino",
+    "nome": "Raio do Pacto Salino",
+    "tipo": "Habilidade",
+    "prompt": "an eldritch beam of icy sea-green frost with salt crystals, fantasy RPG combat ability icon artwork, one single centered subject, painterly digital painting, dramatic rim light, soft amethyst #8B7BB8 glow around the subject, plain very dark background #0e0d0b, subject fills about 70% of the image with empty dark margin on all sides, square 1:1, no border, no frame, no text, no letters, no watermark"
+  },
+  {
+    "id": "HAB-luz-penitente",
+    "nome": "Luz Penitente",
+    "tipo": "Habilidade",
+    "prompt": "a radiant flash bursting from a holy symbol, burning away skeletal shadows, fantasy RPG combat ability icon artwork, one single centered subject, painterly digital painting, dramatic rim light, soft amethyst #8B7BB8 glow around the subject, plain very dark background #0e0d0b, subject fills about 70% of the image with empty dark margin on all sides, square 1:1, no border, no frame, no text, no letters, no watermark"
+  },
+  {
+    "id": "HAB-escudo-solar",
+    "nome": "Escudo Solar",
+    "tipo": "Habilidade",
+    "prompt": "a sun-emblazoned shield catching a blow meant for an ally, fantasy RPG combat ability icon artwork, one single centered subject, painterly digital painting, dramatic rim light, soft amethyst #8B7BB8 glow around the subject, plain very dark background #0e0d0b, subject fills about 70% of the image with empty dark margin on all sides, square 1:1, no border, no frame, no text, no letters, no watermark"
+  },
+  {
+    "id": "HAB-julgamento-ardente",
+    "nome": "Julgamento Ardente",
+    "tipo": "Habilidade",
+    "prompt": "a burning sigil branded in the air above a marked foe, fantasy RPG combat ability icon artwork, one single centered subject, painterly digital painting, dramatic rim light, soft amethyst #8B7BB8 glow around the subject, plain very dark background #0e0d0b, subject fills about 70% of the image with empty dark margin on all sides, square 1:1, no border, no frame, no text, no letters, no watermark"
+  },
+  {
+    "id": "HAB-coroa-de-fogo",
+    "nome": "Coroa de Fogo",
+    "tipo": "Habilidade",
+    "prompt": "a crown of solar flames erupting outward in a ring, fantasy RPG combat ability icon artwork, one single centered subject, painterly digital painting, dramatic rim light, soft amethyst #8B7BB8 glow around the subject, plain very dark background #0e0d0b, subject fills about 70% of the image with empty dark margin on all sides, square 1:1, no border, no frame, no text, no letters, no watermark"
+  },
+  {
+    "id": "HAB-lamina-dos-sepulcros",
+    "nome": "Lâmina dos Sepulcros",
+    "tipo": "Habilidade",
+    "prompt": "a sword half radiant and half necrotic, glowing over a tombstone, fantasy RPG combat ability icon artwork, one single centered subject, painterly digital painting, dramatic rim light, soft amethyst #8B7BB8 glow around the subject, plain very dark background #0e0d0b, subject fills about 70% of the image with empty dark margin on all sides, square 1:1, no border, no frame, no text, no letters, no watermark"
+  },
+  {
+    "id": "HAB-voto-de-caca",
+    "nome": "Voto de Caça",
+    "tipo": "Habilidade",
+    "prompt": "a hunter's oath ribbon tied around a stake, a skull silhouette in the distance, fantasy RPG combat ability icon artwork, one single centered subject, painterly digital painting, dramatic rim light, soft amethyst #8B7BB8 glow around the subject, plain very dark background #0e0d0b, subject fills about 70% of the image with empty dark margin on all sides, square 1:1, no border, no frame, no text, no letters, no watermark"
+  },
+  {
+    "id": "HAB-marca-do-limiar",
+    "nome": "Marca do Limiar",
+    "tipo": "Habilidade",
+    "prompt": "a glowing threshold rune painted on an ally's shoulder, dark tendrils recoiling from it, fantasy RPG combat ability icon artwork, one single centered subject, painterly digital painting, dramatic rim light, soft amethyst #8B7BB8 glow around the subject, plain very dark background #0e0d0b, subject fills about 70% of the image with empty dark margin on all sides, square 1:1, no border, no frame, no text, no letters, no watermark"
+  },
+  {
+    "id": "HAB-processao-silenciosa",
+    "nome": "Processão Silenciosa",
+    "tipo": "Habilidade",
+    "prompt": "a translucent spectral figure walking through a closed wooden door, fantasy RPG combat ability icon artwork, one single centered subject, painterly digital painting, dramatic rim light, soft amethyst #8B7BB8 glow around the subject, plain very dark background #0e0d0b, subject fills about 70% of the image with empty dark margin on all sides, square 1:1, no border, no frame, no text, no letters, no watermark"
+  },
+  {
+    "id": "HAB-mordida-do-voto",
+    "nome": "Mordida do Voto",
+    "tipo": "Habilidade",
+    "prompt": "a bared beast fang glowing with a vow rune, fantasy RPG combat ability icon artwork, one single centered subject, painterly digital painting, dramatic rim light, soft amethyst #8B7BB8 glow around the subject, plain very dark background #0e0d0b, subject fills about 70% of the image with empty dark margin on all sides, square 1:1, no border, no frame, no text, no letters, no watermark"
+  },
+  {
+    "id": "HAB-fera-interior",
+    "nome": "Fera Interior",
+    "tipo": "Habilidade",
+    "prompt": "a warrior's silhouette with the shadow of a roaring beast behind it, fantasy RPG combat ability icon artwork, one single centered subject, painterly digital painting, dramatic rim light, soft amethyst #8B7BB8 glow around the subject, plain very dark background #0e0d0b, subject fills about 70% of the image with empty dark margin on all sides, square 1:1, no border, no frame, no text, no letters, no watermark"
+  },
+  {
+    "id": "HAB-carga-do-juramento",
+    "nome": "Carga do Juramento",
+    "tipo": "Habilidade",
+    "prompt": "a knight charging with a lowered lance, oath banner streaming behind, fantasy RPG combat ability icon artwork, one single centered subject, painterly digital painting, dramatic rim light, soft amethyst #8B7BB8 glow around the subject, plain very dark background #0e0d0b, subject fills about 70% of the image with empty dark margin on all sides, square 1:1, no border, no frame, no text, no letters, no watermark"
+  },
+  {
+    "id": "HAB-pele-de-quimera",
+    "nome": "Pele de Quimera",
+    "tipo": "Habilidade",
+    "prompt": "a patchwork hide of lion fur, goat hair and serpent scales stitched together, fantasy RPG combat ability icon artwork, one single centered subject, painterly digital painting, dramatic rim light, soft amethyst #8B7BB8 glow around the subject, plain very dark background #0e0d0b, subject fills about 70% of the image with empty dark margin on all sides, square 1:1, no border, no frame, no text, no letters, no watermark"
+  },
+  {
+    "id": "HAB-olhar-entre-dimensoes",
+    "nome": "Olhar Entre Dimensões",
+    "tipo": "Habilidade",
+    "prompt": "an eye opening inside a rift between two overlapping realities, fantasy RPG combat ability icon artwork, one single centered subject, painterly digital painting, dramatic rim light, soft amethyst #8B7BB8 glow around the subject, plain very dark background #0e0d0b, subject fills about 70% of the image with empty dark margin on all sides, square 1:1, no border, no frame, no text, no letters, no watermark"
+  },
+  {
+    "id": "HAB-agarrao-do-pacto",
+    "nome": "Agarrão do Pacto",
+    "tipo": "Habilidade",
+    "prompt": "two dark tentacles rising from a portal and coiling around a target, fantasy RPG combat ability icon artwork, one single centered subject, painterly digital painting, dramatic rim light, soft amethyst #8B7BB8 glow around the subject, plain very dark background #0e0d0b, subject fills about 70% of the image with empty dark margin on all sides, square 1:1, no border, no frame, no text, no letters, no watermark"
+  },
+  {
+    "id": "HAB-mente-partida",
+    "nome": "Mente Partida",
+    "tipo": "Habilidade",
+    "prompt": "a head silhouette cracked like glass with swirling confused thoughts, fantasy RPG combat ability icon artwork, one single centered subject, painterly digital painting, dramatic rim light, soft amethyst #8B7BB8 glow around the subject, plain very dark background #0e0d0b, subject fills about 70% of the image with empty dark margin on all sides, square 1:1, no border, no frame, no text, no letters, no watermark"
+  },
+  {
+    "id": "HAB-sangue-do-patrono",
+    "nome": "Sangue do Patrono",
+    "tipo": "Habilidade",
+    "prompt": "a drop of blood falling onto a glowing pact sigil, fantasy RPG combat ability icon artwork, one single centered subject, painterly digital painting, dramatic rim light, soft amethyst #8B7BB8 glow around the subject, plain very dark background #0e0d0b, subject fills about 70% of the image with empty dark margin on all sides, square 1:1, no border, no frame, no text, no letters, no watermark"
+  },
+  {
+    "id": "HAB-pacto-de-ferro",
+    "nome": "Pacto de Ferro",
+    "tipo": "Habilidade",
+    "prompt": "burning iron chains wrapping around a struggling figure, fantasy RPG combat ability icon artwork, one single centered subject, painterly digital painting, dramatic rim light, soft amethyst #8B7BB8 glow around the subject, plain very dark background #0e0d0b, subject fills about 70% of the image with empty dark margin on all sides, square 1:1, no border, no frame, no text, no letters, no watermark"
+  },
+  {
+    "id": "HAB-correntes-infernais",
+    "nome": "Correntes Infernais",
+    "tipo": "Habilidade",
+    "prompt": "a blood seal circle on the ground with infernal chains rising from it, fantasy RPG combat ability icon artwork, one single centered subject, painterly digital painting, dramatic rim light, soft amethyst #8B7BB8 glow around the subject, plain very dark background #0e0d0b, subject fills about 70% of the image with empty dark margin on all sides, square 1:1, no border, no frame, no text, no letters, no watermark"
+  },
+  {
+    "id": "HAB-corrente-mental",
+    "nome": "Corrente Mental",
+    "tipo": "Habilidade",
+    "prompt": "a chain of glowing thought links echoing out from a head silhouette, fantasy RPG combat ability icon artwork, one single centered subject, painterly digital painting, dramatic rim light, soft amethyst #8B7BB8 glow around the subject, plain very dark background #0e0d0b, subject fills about 70% of the image with empty dark margin on all sides, square 1:1, no border, no frame, no text, no letters, no watermark"
+  },
+  {
+    "id": "HAB-manto-de-bruma",
+    "nome": "Manto de Bruma",
+    "tipo": "Habilidade",
+    "prompt": "a hooded cloak dissolving into thick swirling mist, fantasy RPG combat ability icon artwork, one single centered subject, painterly digital painting, dramatic rim light, soft amethyst #8B7BB8 glow around the subject, plain very dark background #0e0d0b, subject fills about 70% of the image with empty dark margin on all sides, square 1:1, no border, no frame, no text, no letters, no watermark"
+  },
+  {
+    "id": "HAB-puxao-abissal",
+    "nome": "Puxão Abissal",
+    "tipo": "Habilidade",
+    "prompt": "an icy abyssal hand pulling a figure forward from a dark rift, fantasy RPG combat ability icon artwork, one single centered subject, painterly digital painting, dramatic rim light, soft amethyst #8B7BB8 glow around the subject, plain very dark background #0e0d0b, subject fills about 70% of the image with empty dark margin on all sides, square 1:1, no border, no frame, no text, no letters, no watermark"
+  },
+  {
+    "id": "CHI-golpe-de-chi",
+    "nome": "Golpe de Chi",
+    "tipo": "Chi",
+    "prompt": "an open-palm strike releasing a burst of white-blue chi force, fantasy RPG combat ability icon artwork, one single centered subject, painterly digital painting, dramatic rim light, soft amethyst #8B7BB8 glow around the subject, plain very dark background #0e0d0b, subject fills about 70% of the image with empty dark margin on all sides, square 1:1, no border, no frame, no text, no letters, no watermark"
+  },
+  {
+    "id": "CHI-passo-do-vacuo",
+    "nome": "Passo do Vácuo",
+    "tipo": "Chi",
+    "prompt": "a monk's bare foot stepping across an empty void, afterimage trail, fantasy RPG combat ability icon artwork, one single centered subject, painterly digital painting, dramatic rim light, soft amethyst #8B7BB8 glow around the subject, plain very dark background #0e0d0b, subject fills about 70% of the image with empty dark margin on all sides, square 1:1, no border, no frame, no text, no letters, no watermark"
+  },
+  {
+    "id": "CHI-ferida-aberta",
+    "nome": "Ferida Aberta",
+    "tipo": "Chi",
+    "prompt": "two fingers pressing a vital pressure point with a glowing crack of light, fantasy RPG combat ability icon artwork, one single centered subject, painterly digital painting, dramatic rim light, soft amethyst #8B7BB8 glow around the subject, plain very dark background #0e0d0b, subject fills about 70% of the image with empty dark margin on all sides, square 1:1, no border, no frame, no text, no letters, no watermark"
+  },
+  {
+    "id": "CHI-golpe-do-vacuo",
+    "nome": "Golpe do Vácuo",
+    "tipo": "Chi",
+    "prompt": "a fist wrapped in a vortex of void chi energy, fantasy RPG combat ability icon artwork, one single centered subject, painterly digital painting, dramatic rim light, soft amethyst #8B7BB8 glow around the subject, plain very dark background #0e0d0b, subject fills about 70% of the image with empty dark margin on all sides, square 1:1, no border, no frame, no text, no letters, no watermark"
+  },
+  {
+    "id": "CHI-muro-de-chi",
+    "nome": "Muro de Chi",
+    "tipo": "Chi",
+    "prompt": "a meditating monk surrounded by a dome of flowing chi light, fantasy RPG combat ability icon artwork, one single centered subject, painterly digital painting, dramatic rim light, soft amethyst #8B7BB8 glow around the subject, plain very dark background #0e0d0b, subject fills about 70% of the image with empty dark margin on all sides, square 1:1, no border, no frame, no text, no letters, no watermark"
+  }
+]

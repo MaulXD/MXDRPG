@@ -71,12 +71,14 @@ async function main() {
   mkdirSync(dir, { recursive: true });
 
   let feitos = 0;
+  let tentativas = 0;
   const falhas = [];
   for (const item of lote) {
-    if (feitos >= limite) break;
+    if (tentativas >= limite) break;
     if (so && !so.has(item.id)) continue;
     const destino = join(dir, `${item.id}.png`);
     if (existsSync(destino)) continue;
+    tentativas++;
     try {
       writeFileSync(destino, await gerarUma(item.prompt));
       feitos++;
@@ -84,6 +86,8 @@ async function main() {
     } catch (err) {
       falhas.push(item.id);
       console.log(`falhou ${item.id}: ${err.message}`);
+      // Cota zero vale para o lote inteiro: parar já, sem gastar 64 chamadas.
+      if (/cota zero/.test(err.message)) break;
     }
     await espera(1500);
   }
