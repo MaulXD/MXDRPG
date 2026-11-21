@@ -92,6 +92,8 @@ export type MesaFoundryDockRailProps = {
   onMinimizePanel: (id: MesaWindowId) => void;
   onRestorePanel: (id: MesaWindowId) => void;
   onOpenSheet: (actorId?: string) => void;
+  /** Ficha do Um Anel (janela torFicha); o onOpenSheet é só do Eldarin (room.actors). */
+  onOpenTorSheet?: (characterId: string) => void;
   onOpenMonsterSheet: (entryId: string) => void;
   onOpenCharacterWizard?: () => void;
   onRefresh: () => Promise<void>;
@@ -133,6 +135,7 @@ export function MesaFoundryDockRail({
   onMinimizePanel,
   onRestorePanel,
   onOpenSheet,
+  onOpenTorSheet,
   onOpenMonsterSheet,
   onOpenCharacterWizard,
   onRefresh,
@@ -187,7 +190,7 @@ export function MesaFoundryDockRail({
                 adventureId={adventureId}
                 roomId={roomId}
                 spawnAxial={spawnAxial}
-                onOpenSheet={onOpenSheet}
+                onOpenSheet={(id) => onOpenTorSheet?.(id)}
                 onPlaced={onApplySnapshot}
                 canCreateCharacter={canCreateCharacter}
                 onCreateCharacter={canCreateCharacter ? onOpenCharacterWizard : undefined}

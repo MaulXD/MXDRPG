@@ -638,6 +638,7 @@ function MesaWorkspaceInner({
             onMinimizePanel={windows.minimize}
             onRestorePanel={windows.restore}
             onOpenSheet={openSheet}
+            onOpenTorSheet={openTorSheet}
             onOpenMonsterSheet={openMonsterSheet}
             onOpenCharacterWizard={canCreateCharacter ? openCharacterWizard : undefined}
             onRefresh={refresh}
