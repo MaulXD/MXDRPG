@@ -249,7 +249,13 @@ const FRASE_RECUPERAR = "Esta conta ainda não tem recuperação de senha. Fale 
 const AUTH_CAP = readFileSync(root("lib", "auth", "auth-capabilities.ts"), "utf8");
 const RECOVER = readFileSync(root("lib", "auth", "password-recover.ts"), "utf8");
 
-ok("/entrar mostra a frase nova para jogador", AUTH_CAP.includes(FRASE_ENTRAR));
+// D-14: a segunda frase virou a constante FRASE_CADASTRO_INDISPONIVEL (usada também pela rota de cadastro).
+ok(
+  "/entrar mostra a frase nova para jogador",
+  AUTH_CAP.includes(FRASE_ENTRAR) ||
+    (AUTH_CAP.includes('FRASE_CADASTRO_INDISPONIVEL = "Novos cadastros estão indisponíveis no momento."') &&
+      AUTH_CAP.includes("`E-mail e senha. ${FRASE_CADASTRO_INDISPONIVEL}`"))
+);
 ok("recuperação de senha mostra a frase nova para jogador", RECOVER.includes(FRASE_RECUPERAR));
 ok(
   "as duas frases novas não citam banco, comando nem variável",
