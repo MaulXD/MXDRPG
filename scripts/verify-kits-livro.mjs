@@ -96,6 +96,23 @@ function compendiumIds(pack) {
   }
   return idsCache[pack];
 }
+const entriesCache = {};
+function compendiumEntries(pack) {
+  if (!entriesCache[pack]) {
+    const text = readFileSync(join(root, "data/compendiums", `${PACK_FILE[pack]}.json`), "utf8");
+    entriesCache[pack] = JSON.parse(text);
+  }
+  return entriesCache[pack];
+}
+
+// Sem acento, minusculas, so letras, numeros e hifen. "Lança Curta +1" vira "lanca curta".
+const normaliza = (s) => s.normalize("NFD").replace(/\p{M}/gu, "").toLowerCase();
+const palavras = (s) => normaliza(s).split(/[^a-z0-9-]+/).filter(Boolean);
+const semMelhoria = (nome) => nome.replace(/\s\+\d+$/, "");
+function nomeDoItem(pack, entryId) {
+  const entry = compendiumEntries(pack).find((e) => e.id === entryId);
+  return entry ? palavras(semMelhoria(entry.name)).join(" ") : null;
+}
 
 const erros = [];
 const kitRe = /id: "([^"]+)"/g;
@@ -110,12 +127,17 @@ function classeDe(pos) {
 }
 
 const encontrados = {};
+const nomesPorKit = new Map();
 kits.forEach((k, i) => {
   const fim = i + 1 < kits.length ? kits[i + 1].pos : block.length;
   const trecho = block.slice(k.pos, fim);
   const classe = classeDe(k.pos);
   const itensTxt = trecho.slice(trecho.indexOf("items:"), trecho.indexOf("combatLoadout:"));
   const itens = [...itensTxt.matchAll(/packId: "(\w+)", entryId: "([^"]+)"/g)].map((m) => `${m[1]}:${m[2]}`);
+  nomesPorKit.set(
+    k.id,
+    new Set(itens.map((item) => { const [pack, entry] = item.split(":"); return nomeDoItem(pack, entry); }).filter(Boolean)),
+  );
   const combat = /combatLoadout: \{ packId: "(\w+)", entryId: "([^"]+)" \}/.exec(trecho);
   const armorTxt = /armorLoadout: (\{ packId: "(\w+)", entryId: "([^"]+)" \}|null)/.exec(trecho);
   (encontrados[classe] ??= []).push({
@@ -153,6 +175,54 @@ for (const classe of Object.keys(encontrados)) {
 // Parecer da Lupa: label e resumo so citam o que o kit entrega. Itens do livro que
 // ainda nao existem no compendio (Brasa Espectral, Cajado, Bastao, Espada curta)
 // nao podem aparecer no texto do kit.
+// KITS-TESTE (Lupa): todo nome de item citado no label ou no summary tem que ser item do
+// proprio kit. Vocabulario: armas e armaduras aceitam o nome completo ou o inicio dele
+// ("Besta" = Besta Leve, "Arco curto" = Arco Curto de Caçador); magias e habilidades so o nome completo.
+// Na frase vale a citacao mais longa, entao "Adaga" dentro de "Adaga de Masmorra" nao
+// conta como outro item. Basta um item do kit com aquele nome para a citacao passar.
+const vocabulario = new Map();
+for (const pack of ["armas", "equipamentos", "magias", "habilidades"]) {
+  for (const entry of compendiumEntries(pack)) {
+    if (pack === "equipamentos" && !entry.id.startsWith("equipamentos-arm-")) continue;
+    const nome = palavras(semMelhoria(entry.name));
+    if (!nome.length) continue;
+    const completo = nome.join(" ");
+    const formas = pack === "magias" || pack === "habilidades" ? [completo] : nome.map((_, i) => nome.slice(0, i + 1).join(" "));
+    for (const forma of formas) {
+      if (!vocabulario.has(forma)) vocabulario.set(forma, new Set());
+      vocabulario.get(forma).add(completo);
+    }
+  }
+}
+const maxPalavras = Math.max(...[...vocabulario.keys()].map((k) => k.split(" ").length));
+
+function citacoes(texto) {
+  const p = palavras(texto);
+  const achados = [];
+  for (let i = 0; i < p.length; ) {
+    let usado = 0;
+    for (let n = Math.min(maxPalavras, p.length - i); n >= 1; n--) {
+      if (vocabulario.has(p.slice(i, i + n).join(" "))) { usado = n; break; }
+    }
+    if (usado) {
+      const forma = p.slice(i, i + usado).join(" ");
+      achados.push({ forma, nomes: vocabulario.get(forma) });
+      i += usado;
+    } else i++;
+  }
+  return achados;
+}
+
+for (const m of block.matchAll(/id: "([^"]+)",\s*label: "([^"]*)",\s*summary: "([^"]*)"/g)) {
+  const doKit = nomesPorKit.get(m[1]) ?? new Set();
+  for (const texto of [m[2], m[3]]) {
+    for (const { forma, nomes } of citacoes(texto)) {
+      if (![...nomes].some((n) => doKit.has(n))) erros.push(`${m[1]}: texto cita '${forma}', que o kit nao entrega`);
+    }
+  }
+}
+
+// Lista fixa extra: itens do livro que ainda nao existem no compendio (pendencia da pagina 07).
 const AUSENTES = ["Brasa Espectral", "Cajado", "cajado", "Bastão", "bastão", "Espada curta", "espada curta"];
 for (const m of block.matchAll(/id: "([^"]+)",\s*label: "([^"]*)",\s*summary: "([^"]*)"/g)) {
   for (const nome of AUSENTES) {
