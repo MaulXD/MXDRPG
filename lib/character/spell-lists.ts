@@ -33,6 +33,18 @@ export function classSpellAccess(classe: string): ClassAccess | null {
   return data.classAccess[classe] ?? null;
 }
 
+/** Ids de truques (magias de nível 0) que a classe pode escolher. */
+export function cantripIdsForClass(classe: string): Set<string> {
+  const access = data.classAccess[classe];
+  const out = new Set<string>();
+  if (!access) return out;
+  const listIds = [...access.lists, ...(access.alsoCantripsFrom ?? [])];
+  for (const listId of listIds) {
+    for (const id of data.lists[listId]?.cantrips ?? []) out.add(id);
+  }
+  return out;
+}
+
 export function allSpellEntryIdsForClass(classe: string): Set<string> {
   const access = data.classAccess[classe];
   const out = new Set<string>();

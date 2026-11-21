@@ -72,6 +72,8 @@ import {
   validateStarterEquipment,
 } from "@/lib/character/starter-kits";
 import { listSubclassOptions } from "@/lib/character/level-up-ui";
+import { cantripIdsForClass } from "@/lib/character/spell-lists";
+import { getEntry } from "@/lib/compendium/registry";
 import {
   ATTRIBUTE_LABELS,
   CLASS_LIST,
@@ -1001,12 +1003,6 @@ export function CharacterCreationWizard({
                   ) : null}
                 </dd>
               </dl>
-              {subclassTracks.length ? (
-                <dl className="char-wizard-review-card" style={{ gridColumn: "1 / -1" }}>
-                  <dt>Caminhos (nv 2)</dt>
-                  <dd>{subclassTracks.map((t) => t.subclass).join(" · ")}</dd>
-                </dl>
-              ) : null}
               <dl
                 className={`char-wizard-review-card${showValidation && stepError(4) ? " char-wizard-review-card--invalid" : ""}`}
               >
@@ -1040,6 +1036,27 @@ export function CharacterCreationWizard({
                   ) : null}
                 </dd>
               </dl>
+              {draft.starterEquipment.spellEntryIds.length ? (
+                <dl className="char-wizard-review-card" style={{ gridColumn: "1 / -1" }}>
+                  <dt>Magias e truques</dt>
+                  <dd>
+                    {(() => {
+                      const cantrips = cantripIdsForClass(draft.classe);
+                      const ids = draft.starterEquipment.spellEntryIds;
+                      const nameOf = (id: string) => getEntry("magias", id)?.name ?? id;
+                      const truques = ids.filter((id) => cantrips.has(id)).map(nameOf);
+                      const magias = ids.filter((id) => !cantrips.has(id)).map(nameOf);
+                      return (
+                        <>
+                          {truques.length ? <span>Truques: {truques.join(" · ")}</span> : null}
+                          {truques.length && magias.length ? <br /> : null}
+                          {magias.length ? <span>Magias: {magias.join(" · ")}</span> : null}
+                        </>
+                      );
+                    })()}
+                  </dd>
+                </dl>
+              ) : null}
               <dl
                 className={`char-wizard-review-card${showValidation && stepError(6) ? " char-wizard-review-card--invalid" : ""}`}
               >

@@ -801,6 +801,8 @@ function refsFromEquipmentDraft(equipment: StarterEquipmentDraft): StarterItemRe
     refs.push({ packId: "equipamentos", entryId: equipment.armorEntryId });
   }
   for (const entryId of equipment.spellEntryIds) {
+    // Magia de combate já entrou como combatLoadout: não somar de novo (BV-042).
+    if (combat?.packId === "magias" && combat.entryId === entryId) continue;
     refs.push({ packId: "magias", entryId });
   }
   for (const entryId of equipment.extraEntryIds) {
@@ -877,6 +879,7 @@ export function describeStarterEquipment(equipment: StarterEquipmentDraft): stri
     parts.push("Sem armadura");
   }
   for (const spellId of equipment.spellEntryIds) {
+    if (equipment.combatLoadout?.packId === "magias" && equipment.combatLoadout.entryId === spellId) continue;
     const entry = getEntry("magias", spellId);
     if (entry) parts.push(entry.name);
   }
