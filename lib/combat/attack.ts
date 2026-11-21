@@ -87,6 +87,8 @@ export type DamageBreakdown = {
   formula: string;
   rolls: number[];
   attributeMod: number;
+  /** +N da arma aprimorada (soma uma vez, nao dobra no critico) */
+  flatBonus?: number;
   total: number;
   doubled: boolean;
 };
@@ -162,7 +164,7 @@ function parseHealFormulaFromDescription(description: string): string | null {
   return m?.[1] ?? null;
 }
 
-function actionFromEntry(
+export function actionFromEntry(
   entry: CompendiumEntry,
   packId: "armas" | "magias"
 ): CombatActionOption | null {
@@ -184,6 +186,8 @@ function actionFromEntry(
   const paCost = Math.max(PA_DEFAULT_ACTION_COST, rawPa);
   const damageFormula = weapon?.dano?.formula ?? "1d4";
   const damageType = weapon?.dano?.tipo ?? "contundente";
+  const enchant = entry.system.enchant;
+  const damageBonus = typeof enchant === "number" && enchant > 0 ? enchant : 0;
 
   return {
     packId,
@@ -193,6 +197,7 @@ function actionFromEntry(
     resolution: "attack",
     damageFormula,
     damageType,
+    damageBonus,
     attackBonus: weapon?.ataque?.bonus ?? 0,
     rangeCells,
     paCost,
@@ -520,18 +525,25 @@ export function isProficient(actor: CharacterSheet, action: CombatActionOption):
   return p.includes("todas armas") || p.includes("armas simples") || p.includes("armas marciais");
 }
 
-function rollActionDamage(formula: string, attrMod: number, critical: boolean): DamageBreakdown {
+export function rollActionDamage(
+  formula: string,
+  attrMod: number,
+  critical: boolean,
+  flatBonus = 0
+): DamageBreakdown {
   const base = rollDice(formula);
   let rolls = [...base.rolls];
   if (critical) {
     const extra = rollDice(formula);
     rolls = [...rolls, ...extra.rolls];
   }
-  const total = rolls.reduce((a, b) => a + b, 0) + attrMod;
+  // flatBonus (+N da arma aprimorada) entra uma vez, como o mod de atributo: não dobra no crítico.
+  const total = rolls.reduce((a, b) => a + b, 0) + attrMod + flatBonus;
   return {
     formula,
     rolls,
     attributeMod: attrMod,
+    flatBonus,
     total: Math.max(0, total),
     doubled: critical,
   };
@@ -1016,7 +1028,7 @@ export function resolveAttack(
 
   if (hit) {
     const dmgMod = resolved.kind === "spell" ? 0 : attrMod;
-    damage = rollActionDamage(resolved.damageFormula, dmgMod, critical);
+    damage = rollActionDamage(resolved.damageFormula, dmgMod, critical, resolved.damageBonus ?? 0);
     if (attackerToken.bonusDamageFormula) {
       const extra = rollDice(attackerToken.bonusDamageFormula);
       damage.rolls.push(...extra.rolls);
@@ -1039,7 +1051,7 @@ export function resolveAttack(
   } else if (!hit) {
     summary = `${actor.name} ${verb}${modLabel} ${defenderToken.name} com ${resolved.name}${channelTag}: ${attackTotal} vs CA ${ac} — ERROU`;
   } else if (critical) {
-    summary = `${actor.name} CRÍTICO${modLabel} em ${defenderToken.name}! ${damage!.total} ${resolved.damageType} (${damage!.rolls.join("+")}${damage!.attributeMod ? `+${damage!.attributeMod}` : ""})`;
+    summary = `${actor.name} CRÍTICO${modLabel} em ${defenderToken.name}! ${damage!.total} ${resolved.damageType} (${damage!.rolls.join("+")}${damage!.attributeMod ? `+${damage!.attributeMod}` : ""}${damage!.flatBonus ? `+${damage!.flatBonus}` : ""})`;
   } else {
     summary = `${actor.name} acerta${modLabel} ${defenderToken.name}: ${attackTotal} vs CA ${ac} — ${damage!.total} ${resolved.damageType}`;
   }
@@ -1185,7 +1197,7 @@ export function formatAttackChatDetail(res: AttackResolution): string {
     const heal = res.summary.includes(" cura ");
     const dmgLabel = heal ? "Cura" : "Dano";
     parts.push(
-      `${dmgLabel} ${res.damage.rolls.join("+")}${res.damage.attributeMod ? `+${res.damage.attributeMod}` : ""} = ${res.damage.total}`
+      `${dmgLabel} ${res.damage.rolls.join("+")}${res.damage.attributeMod ? `+${res.damage.attributeMod}` : ""}${res.damage.flatBonus ? `+${res.damage.flatBonus}` : ""} = ${res.damage.total}`
     );
     parts.push(`HP ${res.defenderHpBefore}→${res.defenderHpAfter}`);
   }

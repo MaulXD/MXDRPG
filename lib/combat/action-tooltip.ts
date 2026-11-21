@@ -91,6 +91,7 @@ function damageOrHealLine(action: CombatActionOption): string | null {
   if (!action.damageFormula || action.damageFormula === "0") return null;
 
   let formula = action.damageFormula;
+  if (action.damageBonus) formula += `+${action.damageBonus}`;
   if (action.bonusDamageFormula) formula += ` + ${action.bonusDamageFormula}`;
   if (action.damageAttribute) {
     formula += ` + mod. ${ATTRIBUTE_LABELS[action.damageAttribute]}`;

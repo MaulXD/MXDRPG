@@ -58,6 +58,8 @@ export type CombatActionOption = {
   damageAttribute?: AttributeKey;
   /** Dano extra na habilidade (Canalizar +2d6) */
   bonusDamageFormula?: string;
+  /** Arma aprimorada (+N): soma N ao dano uma vez, sem dobrar no crítico */
+  damageBonus?: number;
   /** Área da magia */
   areaShape?: SpellAreaShape;
   areaRadiusCells?: number;

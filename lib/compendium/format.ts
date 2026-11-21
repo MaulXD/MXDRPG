@@ -82,7 +82,8 @@ export function entrySummary(system: Record<string, unknown>, type: string): str
   const weapon = system.weapon as Weapon | undefined;
   if (weapon?.dano?.formula) {
     const tipo = weapon.dano.tipo ? ` ${weapon.dano.tipo}` : "";
-    lines.push(`Dano ${weapon.dano.formula}${tipo}`);
+    const enchant = typeof system.enchant === "number" && system.enchant > 0 ? `+${system.enchant}` : "";
+    lines.push(`Dano ${weapon.dano.formula}${enchant}${tipo}`);
   }
   if (weapon?.ataque?.bonus != null && weapon.ataque.bonus !== 0) {
     lines.push(`Ataque ${weapon.ataque.bonus >= 0 ? "+" : ""}${weapon.ataque.bonus}`);
