@@ -1,5 +1,7 @@
 # Product Requirements Document — Mesa do Um Anel (The One Ring 2e)
 
+Atualizado em 2026-11-20 contra o código
+
 ## Document Header
 
 | Field | Value |
@@ -23,7 +25,7 @@
 
 | # | Decisão |
 |---|---------|
-| D1 | Mesa do Um Anel **reaproveita** o mapa hex/grid, `RoomState` e sistema de janelas "Foundry" do Eldarin (`MesaFoundryDockRail`/`MesaFoundryFloatingWindows`) — mas **todo conteúdo de jogo é próprio** (`lib/character/um-anel/*`, `lib/combat/um-anel/*`) |
+| D1 | Mesa do Um Anel **reaproveita** o mapa em grid quadrado, `RoomState` e sistema de janelas "Foundry" do Eldarin (`MesaFoundryDockRail`/`MesaFoundryFloatingWindows`) — mas **todo conteúdo de jogo é próprio** (`lib/character/um-anel/*`, `lib/combat/um-anel/*`) |
 | D2 | **Sem economia de PA.** O Um Anel não usa Pontos de Ação — tokens do sistema recebem `pa`/`paMax` numa constante alta fixa (`TOR_TOKEN_PA`) só pra `checkCanSpendPa` (movimento genérico do Eldarin) não travar o token; **não é** uma mecânica visível ou jogável pro jogador |
 | D3 | Resolução de ataque usa a matemática do livro: **Dado de Proeza (d12) + Dados de Sucesso (d6, N = graduação da Proficiência)** — motor próprio em `lib/character/um-anel/dice.ts`, nunca o `d20 vs CA` do Eldarin |
 | D4 | Combate tático v1 é **"levemente posicional"**: qualquer token ataca qualquer outro dentro de alcance de arma, sem contagem formal de Engajamento (livro completo tem essa regra — deferida) |
@@ -42,7 +44,7 @@
 
 **One-liner:** A mesa do Um Anel é o segundo sistema jogável do hub MXDRPG — mesmo mapa/UI "Foundry" do Eldarin, motor de regras e conteúdo 100% próprios (Dado de Proeza + Sucesso, sem PA), com isolamento estrito entre sistemas.
 
-**Overview:** Depois de fichas, wizard de criação e mesa **narrada** (sem mapa) já estarem completos e em produção (Fases 1-3), a Fase 4 trouxe combate tático real no mapa hex — tokens, ataque com a matemática do livro, Golpe Perfurante, Feridas. Nesta sessão o foco se ampliou pra: (a) extração **completa** do livro pro compêndio (bestiário, tesouro, virtudes culturais, patronos, Coisas Sem Nome, Marcos, 7ª Cultura, pré-gerados), (b) paridade visual do compêndio com o Eldarin (navegação lateral por categorias), (c) upload de retrato/token, e (d) uma bateria de bugs de integração encontrados e corrigidos — a maioria da mesma classe (um painel/CSS/rota escrito só pensando no Eldarin, nunca dispatchado por sistema).
+**Overview:** Depois de fichas, wizard de criação e mesa **narrada** (sem mapa) já estarem completos e em produção (Fases 1-3), a Fase 4 trouxe combate tático real no mapa em grid quadrado — tokens, ataque com a matemática do livro, Golpe Perfurante, Feridas. Nesta sessão o foco se ampliou pra: (a) extração **completa** do livro pro compêndio (bestiário, tesouro, virtudes culturais, patronos, Coisas Sem Nome, Marcos, 7ª Cultura, pré-gerados), (b) paridade visual do compêndio com o Eldarin (navegação lateral por categorias), (c) upload de retrato/token, e (d) uma bateria de bugs de integração encontrados e corrigidos — a maioria da mesma classe (um painel/CSS/rota escrito só pensando no Eldarin, nunca dispatchado por sistema).
 
 **Posicionamento:** Não é um clone do Eldarin com skin trocada — é um sistema de regras genuinamente diferente (resolução, resource economy, sem classes/PA) rodando na mesma casca de produto.
 
@@ -76,8 +78,8 @@ O hub MXDRPG já resolve bem o Eldarin. Adicionar um segundo sistema de regras g
 | Retrato/token | **Completo** nesta sessão |
 | Painel "Personagens jogáveis" na mesa | **Corrigido** nesta sessão (mostrava o painel Eldarin, vazio, numa mesa de Um Anel) |
 | Dado no chat | **Corrigido** nesta sessão (ícone de d12 nunca aparecia nas rolagens) |
-| Posturas de combate, Dano Especial, Engajamento, Recuo | **Não implementado** (v1 "levemente posicional", deferido) |
-| Jornada (hex-crawl, Journey Log) | **Não implementado** |
+| Posturas de combate, Dano Especial, Engajamento, Recuo | **Entregue** — `lib/combat/um-anel/stances.ts`, `special-damage.ts`, `combat-tasks.ts`, `push.ts`, `round-effects.ts` |
+| Jornada (mapa de jornada em grid quadrado, Journey Log) | **Entregue no motor e no formulário** — `lib/combat/um-anel/journey.ts`, `components/vtt/TorJourneyPanel.tsx`. Falta só o mapa interativo clicável |
 | Marcos como conteúdo de aventura jogável na mesa | **Só referência de compêndio** — não é um fluxo estruturado de sessão |
 
 ### Impact
@@ -110,7 +112,7 @@ O Starter Set (pré-gerados, regras condensadas) torna o Um Anel o ponto de entr
 
 ### Non-Goals (v1)
 
-- Jornada/hex-crawl completo (Journey Log, mapa de Eriador jogável).
+- Jornada completa em grid quadrado (Journey Log, mapa de Eriador jogável).
 - Fellowship Phase (Empreitadas) como fluxo de UI mecanizado — hoje é só referência de compêndio.
 - Marcos como "módulo de aventura" carregável/jogável na mesa (hoje é texto de referência pro Mestre narrar).
 - Posturas de Combate, Dano Especial, Recuo, Engajamento por contagem — ver Epic 8 (backlog).
@@ -207,7 +209,7 @@ Mesmas personas do Eldarin (ver [PRD-ELDARIN-VTT.md](./PRD-ELDARIN-VTT.md)), com
 
 **US-6.3** — Virtudes Culturais (36+5), Empreitadas da Fase de Companhia (9), Patronos (7), Coisas Sem Nome (gerador completo — 8 tabelas), Marcos ("A Estrela na Bruma" + estrutura de 6 partes), 7ª Cultura jogável (Altos-Elfos de Valfenda), Personagens Pré-Gerados (8). ✅
 
-**US-6.4** — *(Fora de escopo, decisão deliberada)* Journey Log / mapa hex-crawl de Eriador — mecânica de campanha separada, não catálogo de sistema.
+**US-6.4** — *(Fora de escopo, decisão deliberada)* Journey Log / mapa de jornada em grid quadrado de Eriador — mecânica de campanha separada, não catálogo de sistema.
 
 ---
 
@@ -225,15 +227,15 @@ Mesmas personas do Eldarin (ver [PRD-ELDARIN-VTT.md](./PRD-ELDARIN-VTT.md)), com
 
 | # | Item | Nota |
 |---|------|------|
-| 8.1 | Posturas de Combate (Avançado/Aberto/Defensivo/Retaguarda) + Tarefas de Combate (Intimidar/Reanimar/Proteger/Preparar Tiro) | Livro completo tem essa camada tática; v1 ataca sem postura |
-| 8.2 | Dano Especial completo (Golpe Pesado, Aparar, Perfurar, Investida de Escudo) | Hoje só Golpe Perfurante (automático por Proeza 10/Runa) está mecanizado |
-| 8.3 | Recuo (Knockback) | Não implementado |
-| 8.4 | Engajamento por contagem | v1 é "levemente posicional" — qualquer token ataca qualquer outro no alcance |
-| 8.5 | Bestiário arrastável (drag-and-drop) tipo `MesaCompendiumPanel` do Eldarin | v1 usa painel de lista simples com botão "Invocar" |
+| 8.1 | Posturas de Combate (Avançado/Aberto/Defensivo/Retaguarda) + Tarefas de Combate (Intimidar/Reanimar/Proteger/Preparar Tiro) | **Entregue** — `lib/combat/um-anel/stances.ts`, `combat-tasks.ts`, rota `tor-stance` |
+| 8.2 | Dano Especial completo (Golpe Pesado, Aparar, Perfurar, Investida de Escudo) | **Entregue** — `lib/combat/um-anel/special-damage.ts` |
+| 8.3 | Recuo (Knockback) | **Entregue** — `lib/combat/um-anel/push.ts` |
+| 8.4 | Engajamento por contagem | **Entregue como efeito de rodada** — `lib/combat/um-anel/round-effects.ts`; decisão D26 (postura declarada, não derivada da posição) mantida |
+| 8.5 | Bestiário arrastável (drag-and-drop) tipo `MesaCompendiumPanel` do Eldarin | **Entregue** — `lib/vtt/tor-spawn-drag-ui.ts` |
 | 8.6 | Visual de Dados de Sucesso (d6×N) no chat, além do Dado de Proeza | Limitação atual do `DiceRollSpec` (1 dado só) |
-| 8.7 | Fellowship Phase (Empreitadas) como fluxo de UI mecanizado | Hoje só referência de compêndio — o Mestre aplica manualmente |
+| 8.7 | Fellowship Phase (Empreitadas) como fluxo de UI mecanizado | **Entregue** — `lib/combat/um-anel/progression.ts`, `session-state.ts`, `components/vtt/TorFellowshipPanel.tsx`, `TorAdvancePanel.tsx` |
 | 8.8 | Marcos como conteúdo de aventura carregável/jogável (não só texto de referência) | "A Estrela na Bruma" existe como dado estruturado (`lib/character/um-anel/landmarks.ts`) — falta UI de sessão pra guiar a exploração |
-| 8.9 | Jornada / hex-crawl (Journey Log, mapa de Eriador) | Não iniciado — mecânica de campanha inteira separada |
+| 8.9 | Jornada em grid quadrado (Journey Log, mapa de Eriador) | **Parcial** — motor e formulário entregues (`lib/combat/um-anel/journey.ts`, `components/vtt/TorJourneyPanel.tsx`); falta o mapa interativo clicável |
 | 8.10 | Miniatura de retrato nos cards de "Personagens jogáveis"/"Adversários" | Hoje só texto |
 
 ---
@@ -271,7 +273,7 @@ Mesmas personas do Eldarin (ver [PRD-ELDARIN-VTT.md](./PRD-ELDARIN-VTT.md)), com
 
 ### Out of scope explícito (v1)
 
-- Jornada/hex-crawl completo.
+- Jornada completa em grid quadrado.
 - Posturas de Combate, Dano Especial completo, Recuo, Engajamento por contagem (Epic 8).
 - Marcos como módulo de aventura jogável estruturado (hoje é referência).
 - Fellowship Phase mecanizada como fluxo de UI.
@@ -393,18 +395,18 @@ Levantamento do estado real antes das perguntas:
 | Item | Estado medido |
 |------|---------------|
 | Capítulos extraídos | 13 arquivos, ~7.900 linhas, em `livros/um-anel/` |
-| **Tradução** | **12 dos 13 ainda em inglês** (marcador `"Conteúdo original em inglês — aguardando tradução colaborativa"`). Só `00-glossario-termos.md` está em PT-BR |
+| **Tradução** | **Concluída** — 13/13 capítulos em PT-BR (`ce0436a`), verificado por `scripts/verify-um-anel-traducao-completa.mjs` no `npm test` |
 | Dados estruturados | 3.887 linhas em `lib/character/um-anel/` + `lib/combat/um-anel/` |
-| Navegável no site | `TorCompendiumPage.tsx` — 6 categorias (Personagem, Equipamento, Adversários, Tesouro, Companhia & Mundo, Pré-Gerados) |
-| **Pipeline** | **Nenhum script lê `livros/um-anel/`.** Transcrição manual para TS; markdown citado só em comentário de procedência |
+| Navegável no site | `components/compendium/TorCompendiumPage.tsx` — 11 categorias |
+| **Pipeline** | **Entregue** — `scripts/gen-um-anel.mjs` gera 7 packs em `data/compendiums/um-anel/` e entra em `sync:data`; dados de personagem e bestiário seguem transcritos em TS |
 | Capítulo `01-` | **Ausente** — numeração salta de `00` para `02`. Sem índice que explique |
-| Posturas de combate | **Não existem.** Confirmado: `resolve-attack.ts` não tem stance |
-| Jornada | **Não existe.** Sem `journey.ts`. "jornada" só aparece dentro de descrições de virtudes/patronos |
-| Conselho | **Não existe** |
-| Sombra / Fadiga / Miséria | `vitals.ts` com 41 linhas — sem Pontos de Sombra, Falhas, Miséria, Enlouquecimento |
+| Posturas de combate | **Entregue** — `lib/combat/um-anel/stances.ts` + rota `tor-stance` |
+| Jornada | **Entregue** — `lib/combat/um-anel/journey.ts` + `components/vtt/TorJourneyPanel.tsx` (motor e formulário; falta mapa interativo) |
+| Conselho | **Entregue** — `lib/combat/um-anel/council.ts` + `components/vtt/TorCouncilPanel.tsx` |
+| Sombra / Fadiga / Miséria | **Entregue** — `lib/combat/um-anel/shadow.ts`, `fatigue.ts`, `components/vtt/TorShadowPanel.tsx` |
 | Leitor de capítulos | **Não existe** (Eldarin tem `/biblioteca`; Um Anel não tem equivalente) |
 
-> **Nota de correção a D1 (v1.0):** D1 diz "mapa hex/grid". O projeto purgou hexágonos (`scripts/purge-hex-all.mjs`, `docs/GRID-MIGRATION.md`). Leia-se **grid quadrado de células**. Reafirmado na decisão D22 abaixo.
+> **Nota de correção a D1 (v1.0):** D1 passou a dizer "mapa em grid quadrado". O projeto purgou hexágonos (`scripts/purge-hex-all.mjs`, `docs/GRID-MIGRATION.md`). Leia-se **grid quadrado de células**. Reafirmado na decisão D22 abaixo.
 
 ## Registro de decisões v2.0
 
@@ -466,12 +468,12 @@ D16 é "tudo", mas o volume não cabe numa sessão. Ordem proposta, do que destr
 | Fase | Conteúdo | Por que nesta ordem |
 |------|----------|---------------------|
 | **A** ✅ | `scripts/gen-um-anel.mjs` + `data/compendiums/um-anel-*.json` + entrada no `sync:data:check` | D13 é infraestrutura de todo o resto. Sem o pipeline, tudo que vier depois nasce como transcrição manual — o problema que D13 existe para matar |
-| **B** | Tradução dos 13 capítulos para PT-BR | D14 é pré-requisito do script gerar conteúdo utilizável. Maior item isolado do projeto |
+| **B** ✅ | Tradução dos 13 capítulos para PT-BR | **Feito** — 13/13 em PT-BR (`ce0436a`), com verificação no `npm test` |
 | **C** ✅ | Posturas (D17) + Ferimentos (D18) | Corrige o que está **errado**, não só ausente. Prioridade sobre qualquer coisa nova |
 | **D** ✅ | Sombra / Fadiga / Miséria (D25, D27) | **Feito** — `lib/combat/um-anel/shadow.ts` + 54 testes. Fadiga pronta, então a Jornada está destravada |
-| **E** ✅ | Jornada (D21, D23, D24) | **Feito** — `lib/combat/um-anel/journey.ts` + 78 testes. Motor pronto; falta a UI de mapa/formulário |
-| **F** ✅ | Conselho (D28) | **Feito** — `lib/combat/um-anel/council.ts` + 40 testes. Motor pronto; falta o painel na mesa |
-| **G** ✅ | Progressão e Fase de Companhia (D29) | **Feito** — `lib/combat/um-anel/progression.ts` + 67 testes. Motor pronto; falta o fluxo guiado na UI |
+| **E** ✅ | Jornada (D21, D23, D24) | **Feito** — `lib/combat/um-anel/journey.ts` + 78 testes e `components/vtt/TorJourneyPanel.tsx` na mesa. Falta só o mapa interativo clicável |
+| **F** ✅ | Conselho (D28) | **Feito** — `lib/combat/um-anel/council.ts` + 40 testes e `components/vtt/TorCouncilPanel.tsx` na mesa |
+| **G** ✅ | Progressão e Fase de Companhia (D29) | **Feito** — `lib/combat/um-anel/progression.ts` + 67 testes, `TorFellowshipPanel.tsx` e `TorAdvancePanel.tsx` na mesa |
 | **H** ✅ | Compêndio: categorias novas (D30) | **Feito** — 5 packs gerados, 97 entradas, 11 categorias no compêndio (era 6) |
 | **I** | Ficha completa + export PDF (D32) | Depende de todos os campos existirem |
 | **J** | Adversários completos (D20) + Aventuras (D31) | Maior volume de conteúdo; D31 exige conversão 1e→2e |
