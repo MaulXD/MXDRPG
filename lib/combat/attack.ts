@@ -28,6 +28,7 @@ import { abilityFromEntry, abilityFromKnownId } from "@/lib/combat/compendium-ac
 import { attackRollMode, canTokenAct } from "@/lib/combat/conditions";
 import { clearTimedEffectsForFields } from "@/lib/combat/timed-effects";
 import { combineRollModes, formatD20Detail, formatRollMode, rollD20, type RollMode } from "@/lib/combat/d20";
+import { sneakAttackFormula, sneakAttackTurnWindow } from "@/lib/combat/sneak-attack";
 import { isAreaSpellAction, parseAreaShape } from "@/lib/combat/area-spell";
 import { buildMagiaCombatAction } from "@/lib/combat/spell-parse";
 import { isSpellCombatReady } from "@/lib/character/spell-prep";
@@ -89,6 +90,8 @@ export type DamageBreakdown = {
   attributeMod: number;
   /** +N da arma aprimorada (soma uma vez, nao dobra no critico) */
   flatBonus?: number;
+  /** Ataque Furtivo do Ladino (livro, linha 994): dado extra somado uma vez, antes da resistencia */
+  sneakAttack?: { formula: string; rolls: number[]; total: number };
   total: number;
   doubled: boolean;
 };
@@ -96,6 +99,8 @@ export type DamageBreakdown = {
 export type AttackResolution = {
   attackerTokenId: string;
   defenderTokenId: string;
+  /** Ataque Furtivo aplicado neste ataque (o atacante marca o turno: sneakAttackUsedThisTurn). */
+  sneakAttackUsed?: boolean;
   actionKind: CombatActionKind;
   weaponName: string;
   rangeCells: number;
@@ -614,9 +619,11 @@ export function attackerAfterAttack(
   action: CombatActionOption,
   consumeAttackerMark: boolean,
   _consumeDefenderFinta: boolean,
-  hit: boolean
+  hit: boolean,
+  sneakAttackUsed = false
 ): Partial<BattleToken> {
   const patch: Partial<BattleToken> = {};
+  if (sneakAttackUsed) patch.sneakAttackUsedThisTurn = true;
   if (attacker.nextAttackBonus) patch.nextAttackBonus = undefined;
   if (attacker.allyAttackAdvantage) patch.allyAttackAdvantage = undefined;
   if (attacker.rangedAttackAdvantage && action.rangeCells > 1) {
@@ -845,6 +852,7 @@ function resolveMonsterAttack(
       monsterDamageAttrMod(action, fixedMod),
       critical
     );
+    // Furtivo do goblin monstro (regra de monstro). O Ladino jogador usa lib/combat/sneak-attack.ts.
     const sneakFormula = isGoblinMonster(attackerToken.monsterEntryId)
       ? goblinSneakAttackExtra(rollMode)
       : undefined;
@@ -1031,6 +1039,8 @@ export function resolveAttack(
   let damage: DamageBreakdown | null = null;
   let hpAfter = hpBefore;
   let tempAfter = tempBefore;
+  let sneakApplied = false;
+  const sneakTurnWindow = sneakAttackTurnWindow(turn);
 
   if (hit) {
     const dmgMod = resolved.kind === "spell" ? 0 : attrMod;
@@ -1039,6 +1049,26 @@ export function resolveAttack(
       const extra = rollDice(attackerToken.bonusDamageFormula);
       damage.rolls.push(...extra.rolls);
       damage.total += extra.total;
+    }
+    const sneakFormula = sneakAttackFormula({
+      classe: actor.identity.classe,
+      nivel: actor.identity.nivel,
+      rollMode,
+      actionKind: resolved.kind,
+      attacker: attackerToken,
+      defender: defenderToken,
+      allTokens,
+      turnWindow: sneakTurnWindow,
+    });
+    if (sneakFormula) {
+      // No critico o furtivo rola de novo, como os dados base da arma (rollActionDamage).
+      const sneakRolls = rollDice(sneakFormula).rolls;
+      if (critical) sneakRolls.push(...rollDice(sneakFormula).rolls);
+      const sneakTotal = sneakRolls.reduce((a, b) => a + b, 0);
+      damage.formula = `${damage.formula}+${sneakFormula}`;
+      damage.sneakAttack = { formula: sneakFormula, rolls: sneakRolls, total: sneakTotal };
+      damage.total += sneakTotal;
+      sneakApplied = true;
     }
     const dmgTotal = resistedDamageAmount(damage.total, defenderToken, resolved.damageType);
     const damaged = applyDamageWithTempHp(hpBefore, tempBefore, dmgTotal);
@@ -1057,7 +1087,7 @@ export function resolveAttack(
   } else if (!hit) {
     summary = `${actor.name} ${verb}${modLabel} ${defenderToken.name} com ${resolved.name}${channelTag}: ${attackTotal} vs CA ${ac} — ERROU`;
   } else if (critical) {
-    summary = `${actor.name} CRÍTICO${modLabel} em ${defenderToken.name}! ${damage!.total} ${resolved.damageType} (${damage!.rolls.join("+")}${signedTerm(damage!.attributeMod)}${damage!.flatBonus ? `+${damage!.flatBonus}` : ""})`;
+    summary = `${actor.name} CRÍTICO${modLabel} em ${defenderToken.name}! ${damage!.total} ${resolved.damageType} (${damage!.rolls.join("+")}${signedTerm(damage!.attributeMod)}${damage!.flatBonus ? `+${damage!.flatBonus}` : ""}${damage!.sneakAttack ? `+Furtivo ${damage!.sneakAttack.rolls.join("+")}` : ""})`;
   } else {
     summary = `${actor.name} acerta${modLabel} ${defenderToken.name}: ${attackTotal} vs CA ${ac} — ${damage!.total} ${resolved.damageType}`;
   }
@@ -1077,6 +1107,8 @@ export function resolveAttack(
     attackerTokenId: attackerToken.id,
     defenderTokenId: defenderToken.id,
     actionKind: resolved.kind,
+    // So grava a flag na fase combat_turn; fora dela o limite nao existe (sneak-attack.ts).
+    sneakAttackUsed: (sneakApplied && sneakTurnWindow) || undefined,
     weaponName: resolved.name,
     rangeCells: resolved.rangeCells,
     paCost,
@@ -1152,7 +1184,8 @@ export function resolveMultiAttack(
       action,
       built.consumeAttackerMark,
       built.consumeDefenderFinta,
-      res.hit
+      res.hit,
+      res.sneakAttackUsed
     );
     attackerToken = { ...attackerToken, ...buffCleanup };
     if ((currentDefender.vida ?? 0) <= 0) break;
@@ -1203,7 +1236,7 @@ export function formatAttackChatDetail(res: AttackResolution): string {
     const heal = res.summary.includes(" cura ");
     const dmgLabel = heal ? "Cura" : "Dano";
     parts.push(
-      `${dmgLabel} ${res.damage.rolls.join("+")}${signedTerm(res.damage.attributeMod)}${res.damage.flatBonus ? `+${res.damage.flatBonus}` : ""} = ${res.damage.total}`
+      `${dmgLabel} ${res.damage.rolls.join("+")}${signedTerm(res.damage.attributeMod)}${res.damage.flatBonus ? `+${res.damage.flatBonus}` : ""}${res.damage.sneakAttack ? `+Furtivo ${res.damage.sneakAttack.rolls.join("+")}` : ""} = ${res.damage.total}`
     );
     parts.push(`HP ${res.defenderHpBefore}→${res.defenderHpAfter}`);
   }

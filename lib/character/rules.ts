@@ -1,5 +1,7 @@
 /** Regras Eldarin v4 — classes, raças, progressão (espelha Cap. 2–4) */
 
+import { sneakAttackDiceForLevel } from "@/lib/combat/sneak-attack";
+
 export type ClassId =
   | "Guerreiro"
   | "Patrulheiro"
@@ -588,9 +590,9 @@ export function classLevelFeatures(classId: string, level: number): string[] {
     if (level === 20) out.push("Campeão Implacável");
   }
   if (classId === "Ladino" && level >= 1) {
-    const dice = Math.min(10, 1 + Math.floor((level - 1) / 2));
+    const dice = sneakAttackDiceForLevel(level);
     if ([1, 3, 5, 7, 9, 11, 13, 15, 17, 19].includes(level) || level === 20) {
-      out.push(`Golpe Oportunista — ${dice}d6`);
+      out.push(`Ataque Furtivo — ${dice}d6`);
     }
   }
   if (classId === "Bárbaro" && level === 1) out.push("Fúria — 2 usos");

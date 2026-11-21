@@ -263,7 +263,9 @@ export async function executeRoomAttack(
     action,
     built.consumeAttackerMark,
     built.consumeDefenderFinta,
-    anyHit
+    anyHit,
+    // D11: resolveAttack só marca sneakAttackUsed na fase combat_turn (sneak-attack.ts).
+    attackResults.some((r) => r.sneakAttackUsed)
   );
 
   room.scene = {
@@ -520,6 +522,8 @@ async function executeRoomMultiTargetAttack(
     const lastDefender = defenders[defenders.length - 1]!;
     const built = buildAttackModifiers(attacker, lastDefender, action);
     const anyHit = attackResults.some((r) => r.hit);
+    // Magia (multi-alvo): sem Ataque Furtivo, que e so de ataque com arma. Por isso a flag
+    // sneakAttackUsed nao e passada aqui (ver sneak-attack.ts).
     const buffCleanup = attackerAfterAttack(
       attacker,
       action,

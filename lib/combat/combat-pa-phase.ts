@@ -9,13 +9,24 @@ import type { RoomSettings } from "@/lib/room/settings";
  */
 export type CombatPaPhase = "exploration" | "combat_free" | "combat_turn";
 
+/** Mesma regra de resolveCombatPaPhase, a partir de flags (ex.: CombatTurnOptions no ataque). */
+export function combatPaPhaseFromFlags(flags: {
+  combatActive?: boolean;
+  hasOrder?: boolean;
+}): CombatPaPhase {
+  if (!flags.combatActive) return "exploration";
+  if (!flags.hasOrder) return "combat_free";
+  return "combat_turn";
+}
+
 export function resolveCombatPaPhase(
   settings: Pick<RoomSettings, "combatActive">,
   combat?: CombatTrack | null
 ): CombatPaPhase {
-  if (!settings.combatActive) return "exploration";
-  if (!combat?.order?.length) return "combat_free";
-  return "combat_turn";
+  return combatPaPhaseFromFlags({
+    combatActive: settings.combatActive,
+    hasOrder: Boolean(combat?.order?.length),
+  });
 }
 
 export function phaseHasRealPaSpend(phase: CombatPaPhase): boolean {

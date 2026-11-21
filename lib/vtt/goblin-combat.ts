@@ -42,7 +42,11 @@ export function goblinMonsterAttackModifier(
   };
 }
 
-/** §032 Ataque Furtivo: +2d6 se o ataque tiver vantagem. */
+/**
+ * §032 Ataque Furtivo do goblin monstro: +2d6 se o ataque tiver vantagem (regra de monstro).
+ * O Ataque Furtivo do Ladino jogador e outra regra, com escala por nivel e aliado adjacente:
+ * ver lib/combat/sneak-attack.ts. Nao unificar sem decisao do dono.
+ */
 export function goblinSneakAttackExtra(rollMode: RollMode): string | undefined {
   return rollMode === "advantage" ? "2d6" : undefined;
 }

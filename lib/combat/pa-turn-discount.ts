@@ -25,6 +25,7 @@ export function clearPaDiscountUsed<T extends BattleToken>(token: T): T {
   delete next.paReduceSpellUsed;
   delete next.paReduceAbilityUsed;
   delete next.onKillPaGranted;
+  delete next.sneakAttackUsedThisTurn;
   return next;
 }
 
