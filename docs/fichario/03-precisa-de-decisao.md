@@ -20,10 +20,10 @@ Decidir: apagar o legado Postgres e as migrações mortas, ou manter como histó
 docs/CLAUDE-PROJETO.md (leitura obrigatória pelo AGENTS.md) ainda fala em Clerk, Postgres/Neon e não cita o Um Anel. O código usa OAuth manual + cookie assinado e MariaDB. Posso reescrever; preciso só do sim.
 
 ## D-06 Vida editada fora da mesa (consequência do B1, baixa prioridade)
-Com a correção do B1 (commit 50ce7a5), se o máximo de vida não muda, a mesa mantém a vida dela. Então reconstruir a ficha pelo wizard ou editar a vida atual fora da mesa, sem mudar o máximo, não muda a vida de quem já está na mesa. Recomendação: manter assim (a mesa manda durante a sessão) e, se o mestre precisar, ajustar a vida pela própria mesa.
+Com a correção do B1 (commit 31841ac), se o máximo de vida não muda, a mesa mantém a vida dela. Então reconstruir a ficha pelo wizard ou editar a vida atual fora da mesa, sem mudar o máximo, não muda a vida de quem já está na mesa. Recomendação: manter assim (a mesa manda durante a sessão) e, se o mestre precisar, ajustar a vida pela própria mesa.
 
 ## D-07 Vida temporária na subida de nível
-A ficha já não perde vida temporária ao normalizar (fce9c0b), mas identity.ts, level-up.ts e gm-actor-progress.ts ainda a descartam. O livro não diz se vida temporária sobrevive à subida de nível. Recomendação: sobrevive (é efeito de combate, não da ficha).
+A ficha já não perde vida temporária ao normalizar (3b37186), mas identity.ts, level-up.ts e gm-actor-progress.ts ainda a descartam. O livro não diz se vida temporária sobrevive à subida de nível. Recomendação: sobrevive (é efeito de combate, não da ficha).
 
 ## D-08 Balanceamento (Balança, etapa 2)
 No nível 1, com atributo e acerto: Bárbaro +79% e Feiticeiro +87% de dano acima da mediana; Bruxo -73%, Ladino -50%, Bardo -40%. Feiticeiro conjura com INT no código e o livro diz Carisma. Detalhes em docs/fichario/propostas/balanceamento.md. Nada muda no livro sem você.
@@ -66,47 +66,50 @@ Opções: (a) mostrar pa + bankedPa também no log do mestre; (b) zerar o campo 
 O gerador e o JSON já usam 6 células para Puxão Abissal (9 m), conforme o LIVRO-DO-JOGADOR.md, mas livros/CATALOGO-HABILIDADES-TATICAS.md:77 ainda diz 5. A Lupa não pode editar livros/.
 Opções: (a) corrigir o catálogo para 6; (b) manter como está e aceitar a divergência. Escolha conservadora: (a), mas livro é fora do escopo do Regente neste loop; nada foi alterado em livros/.
 
+## D11 (Ataque Furtivo do Ladino): decidido pelo dono, nao esta mais pendente
+Decisao: o furtivo vale so em ataque com arma (nunca magia de area, habilidade ou desarmado); no maximo uma vez por turno do Ladino (token.sneakAttackUsedThisTurn, zerado com o desconto de PA no inicio do turno); no ataque multiplo so o primeiro acerto do turno recebe; no critico o dado rola de novo (livro:421). O furtivo do goblin monstro continua separado (regra de monstro), com comentario apontando para lib/combat/sneak-attack.ts. Registro feito pelo Bigorna (D11 r3).
+
+## D-19 Ataque Furtivo no combate livre: qual e a janela do 'uma vez por turno' (D11)
+No combate livre (sem fila de turnos) nao ha turno nem rodada: o motor so zera o PA por turno (startTurnPaFull) e na entrada do combate (onEnterCombatFree). Por isso a flag sneakAttackUsedThisTurn do Ladino fica ate o combate acabar ou ate o token ter um inicio de turno. Hoje o Ladino ganha o furtivo uma vez por combate livre inteiro, nao uma vez por turno. A regra do D11 fala de turno e nao cobre esse modo.
+Opcoes: (a) por rodada: exige um contador de rodada no combate livre, que hoje nao existe (lib/room/combat.ts:166 so avanca a rodada na fila de turnos); (b) por combate livre inteiro (comportamento atual), registrado como regra; (c) por ataque, sem limite, igual ao texto literal do livro. Recomendacao: (a) se o combate livre ganhar rodada; ate la, (b) como decisao explicita. Nada alterado no motor; verify D11 cobre a janela atual.
+RESOLVIDO (decisao do dono, D11 r4): o limite de uma vez por turno so vale em combat_turn (com fila). Em combat_free e exploration nao ha turno: sem limite e sem gravar a flag. A checagem usa combatPaPhaseFromFlags (mesma regra de resolveCombatPaPhase, lib/combat/combat-pa-phase.ts) dentro de resolveAttack.
+
+BV-033 (Bigorna, risco alto, nao corrigido): o sync da mesa (lib/room/adventure-actors.ts, syncAdventureActorsForRoom) so puxa fichas Eldarin para room.actors. Fichas do Um Anel nunca viram ator da mesa: nao aparecem como token nem no Ordem de turno da mesa. A aventura agora lista as fichas do Um Anel (correcao pequena), mas a mesa continua sem elas. Decisao: estender o sync para o Um Anel (toRoomActor do Um Anel) ou manter a mesa so Eldarin por enquanto. Sync da mesa = risco alto, por isso nao mexi.
+
+## CUS-dano (Bigorna): dano que o dado tem e o livro nao tem
+Nada removido ainda. Trechos do livro:
+- Ventania (dado: 2d6 contundente). Livro, _parte_x_magias_v4_revisada.md:213-214: "STR CD ou empurrao 4,5m; apaga chamas e dispersa gases/esporos." Sem dano.
+- Terremoto (dado: 6d6 contundente). Livro, LIVRO-DO-JOGADOR.md:3773: "Raio 30m: DES CD ou Prostrado; risco de colapso na masmorra." Sem dano.
+- Esporos Necroticos (dado: 1d6 necrotico). Livro, LIVRO-DO-JOGADOR.md:3853: "Nuvem 1,5m: criaturas CON CD ou Envenenado 1 rodada." Sem dano.
+Opcoes: (a) tirar o dano do dado, como proposto em docs/fichario/propostas/custos-e-danos.md; muda o que essas magias fazem no VTT. (b) manter o dano e aceitar a divergencia do livro. Decisao do dono.
+Estado: gerador e JSON nao mudaram nesses tres. scripts/verify-custos-livro.mjs garante que o dano continua ate a decisao.
+Observacao (sem mudanca): Parede de Fogo. O 2d8 radiante ja esta no texto (lore do livro), mas o campo de dano estruturado so tem 5d8 fogo. Se o radiante deve ser um dano separado, precisa de campo novo no schema: decisao, nao corrigido.
+
+## CUS-lore (Bigorna): texto da Terremoto nao chega ao JSON
+Causa: scripts/generate-compendium.mjs (linhas 650-661) troca a descricao pelo texto do grimorio (SPELL_LORE) quando o nome bate. Por isso a descricao do gerador (agora Raio 30 m (20 celulas)) so vale para magias sem lore. O JSON de Terremoto ja traz Raio 30m do livro.
+BV-029 residual (Bigorna, 2026-11-21): a guarda que recusa magia para classe sem lista (CharacterSheet.tsx addFromCompendium) e so do cliente. Fichas de Guerreiro ja salvas com magia (ex.: Bola de Fogo na Lira) continuam com ela, e app/api/characters/[id]/inventory-request/route.ts nao confere a classe. Decidir: (a) limpar magias de classes sem lista nas fichas salvas (muda dado; precisa de script com aprovacao) e (b) validar classe no servidor (nao foi feito por ser mudanca de rota de API).
+
+Problema separado, pre-existente: o parser parseSpellLoreBook pega texto alem da entrada. magias.json, Terremoto, descricao: "... risco de colapso na masmorra. --- ### NIVEL 9 Evocacao | Acao | 150m ...". Corrigir muda todas as entradas com lore. Decisao: corrigir o parser agora ou depois.
+
+Correção (Lupa, 21/11): a aprovação do mestre no inventário é aplicada só na interface (CharacterSheetPopup.tsx:111); o PATCH de app/api/characters/[id]/route.ts aceita inventário do dono sem a regra. Decisão do maestro: corrigir no servidor também (próxima tarefa).
+
+## D-21 Traços de classe não aparecem na ficha (BV-056)
+A aba Habilidades só lista habilidades táticas do compêndio (as que vêm da trilha de subclasse). Traços de classe do livro, como Segundo Fôlego e Estilo de Combate do Guerreiro (LIVRO-DO-JOGADOR.md:937-938) e a Passiva de Assimilação do nível 2 (:954, :2062), não existem como dado no sistema, em nenhuma classe. Não é falha de gravação: é recurso que falta.
+Opções: (a) seção 'Traços de classe' só de leitura na aba Habilidades, gerada do livro por classe e nível (sync:data); (b) modelar cada traço com efeito na mesa (muito maior). Sugestão do maestro: (a) agora, (b) caso a caso. Precisa do dono porque mexe no gerador a partir dos livros.
+
+## D-22 Nomes dos atributos culinários no livro (BV-065, BV-071)
+O sistema tem 4 atributos culinários: Extração, Forrageio, Fabricação e Fortitude (lib/character/class-scales.ts:32-37). O livro mistura nomes: a maioria das classes usa Forrageio e Coccão (LIVRO-DO-JOGADOR.md:968, 1012, 1087), mas o Feiticeiro diz 'Harmonização +3, Fabricação +2' (:1137) e o Bruxo 'Harmonização +2' (:1162); a raça humana fala em Harmonização (:532). O código lê Harmonização como Forrageio e Coccão como Fabricação. Decidir: (a) o livro passa a usar só os 4 nomes do sistema; (b) Harmonização e Coccão viram atributos próprios (mexe em regra). Sugestão: (a). Enquanto isso, o wizard mostra os 4 nomes do sistema.
+
+## D-23 Escolha de truques no wizard (BV-072)
+O wizard não deixa escolher truques: a revisão só lista o que vem do kit (CharacterCreationWizard.tsx:1040-1058; starter-kits.ts). O cantripsKnown de data/.../spell-lists.json:186 (Bruxo = 2) não é lido por nenhum código. O livro dá 2 truques ao Bruxo no nível 1 (LIVRO-DO-JOGADOR.md:1248). Além disso, a tabela de kits do Bruxo (:2113) dá Raio do Limiar (nível 3 no pacto) e Sussurro de Masmorra (truque do nível 4, :3126). Decidir: (a) passo novo no wizard para escolher os truques pelo cantripsKnown de cada classe; (b) corrigir a tabela de kits do Bruxo no livro. Sugestão: (a) e (b). É recurso novo, por isso ficou para o dono.
+
+## Rodada 5 (21/11), decisões do maestro
+- BV-009/BV-020: o Regente tinha deixado 'sem ação'. Mudei: o erro de hidratação aparecia em todo console e atrapalhava a caça a bugs. Feito em 5a05b79.
+- BV-052: XP negativo continua recusado (XP só sobe). Os 400 XP da Lira de teste ficam; é conta de teste.
+- BV-057: subir um nível por vez fica (cada nível tem escolhas); com XP sobrando, o botão do próximo nível aparece em seguida.
+- BV-058: level-up não recarrega PA (livro: PA só voltam no início do turno). Corrigido em 2c88ef0.
+- SINGLETON: caches que só custam memória por cópia de módulo (packCache, clerkIdCache, ensured, inviteSyncCheckedAt, auto-pass-tick) ficam como estão.
+
+BV-045b (Bigorna, risco alto: regra de permissao de inventario, nao corrigido): a ficha aberta em /personagem/[id] passa so canEdit para CharacterSheet (app/personagem/[id]/page.tsx:52-71). Dono de ficha de aventura tem canEdit true, entao inventoryEditMode cai no default direct: o pedido ao mestre (+ COMPENDIO e + CONSUMIVEL como request) nao aparece, e o dono edita o inventario direto, sem a aprovacao do mestre que a mesa aplica (requiresInventoryGmApproval). Decidir: o dono de ficha de campanha deve pedir ao mestre tambem fora da mesa? Se sim, a pagina precisa calcular o modo de inventario com a mesma regra da mesa.
 
 
----
-
-## Decididas em 20/11/2026 às 22:40 (Claude, por delegação do dono: "tome as decisões que considerar melhor")
-
-| ID | Decisão | Por quê |
-|---|---|---|
-| D-03 | Manter as migrações antigas como histórico; trocar só o init do `docker-compose.local.yml` para o schema MariaDB | O schema Postgres montado no MariaDB é erro; as migrações não fazem mal |
-| D-04 | Reescrever `docs/CLAUDE-PROJETO.md` com a pilha real (OAuth próprio, cookie assinado, MariaDB, Contabo, Um Anel) | É o primeiro arquivo que todo agente lê, e hoje ensina a pilha errada |
-| D-05 | Ligar `npm test` no CI | 55 testes passam e nenhum roda no CI; lint fica fora porque o projeto não tem ESLint |
-| D-06 | A mesa manda na vida durante a sessão | Já é o comportamento desde o B1 |
-| D-07 | Vida temporária sobrevive à subida de nível | É efeito de combate, não da ficha |
-| D-08 | Nada de mudar classe agora | Balanceamento é decisão criativa do dono; as contas ficam em propostas/balanceamento.md |
-| D-09 | `updateRoomActor` passa a avisar quando a ficha não grava, em vez de engolir o erro | Falha silenciosa é a metade confirmada do B2 |
-| D-10 | Manter 150 ms (escolha de ritmo do dono em junho) e alinhar livro e docs ao código | O mestre pode mudar por sala |
-| D-11 | O motor soma o +N do aprimoramento ao dano da arma, e o chip mostra 1d4+N | O texto do catálogo, gerado do livro, promete "+1 ao dano" |
-| D-12 | Valor de PA guardado limitado pelo teto (9), máximo da ficha continua 5 | Menor passo; evita cortar PA guardado ao salvar |
-| D-13 | Corrigir o BV-018/019 com a guarda por revisão no flush e no pending da FX, e um refresh do servidor quando a cena for descartada | O refresh cobre o caso do servidor sem banco que reinicia a revisão |
-| D-14 | Travar `POST /api/auth/register` quando não há contas persistentes, com a mesma frase da tela | A interface já diz que o cadastro está indisponível |
-| D-15 | Log do mestre mostra pa + bankedPa, como os outros mostradores | Mesma conta em toda a tela, sem mexer na regra |
-| D-16 | Corrigir `livros/CATALOGO-HABILIDADES-TATICAS.md` para 6 células no Puxão Abissal | O livro principal diz 9 m |
-| A-10a | Limite por aventura fica 3 (está no código desde 08/06); mensagem e docs passam a dizer "até 3" | Baixar para 1 bloquearia quem já tem 2 ou 3 fichas |
-
-| D11 | Ataque Furtivo do Ladino: dobra no crítico como os dados da arma; só em ataque com arma; no máximo uma vez por turno (no ataque múltiplo, o primeiro acerto); o furtivo do goblin segue como regra de monstro | O livro diz "dano dobrado" no crítico sem exceção e só "ao atacar"; o limite por turno evita que o ataque múltiplo multiplique o furtivo |
-| D12, D12b | Textos de nível do Espiritualista sem regra no livro (Fluxo Marcial, Corpo Transcendente) saem do código | O livro manda |
-| D8, D9, D10 | Ficam com o dono: o livro se contradiz no PA por golpe e no +1 PA do Guerreiro, e mudar a fórmula de vida altera todo personagem já criado | Ver propostas/balanceamento.md, seção 3.6 |
-
-Ficam com o dono, porque mexem fora do código: D-01 (tornar o repositório privado ou tirar o texto dos livros de O Um Anel), D-02 (merge na `main`, que dispara deploy), Termos de Uso (texto jurídico), promessas da política de privacidade e servidor no Brasil.
-
-## D-20 Bestiário: livro ou curva de balanceamento do VTT? (21/11)
-
-A varredura do bestiário (propostas/bestiario.md) achou 507 diferenças entre as 80 fichas do LIVRO-DO-MESTRE.md e o monstros.json: vida em 77, CA em 66, dano em 227 e mais. Não é erro solto: o gerador calcula vida, CA e dano por uma curva de balanceamento própria (scripts/monster-balance.mjs, defaultMonsterHp) em vez de copiar a ficha do livro. Exemplo: Espectro tem 48 de vida no VTT e 28 no livro; Assombração tem 28 no VTT e 45 no livro.
-Opções: (a) o livro manda: o gerador passa a ler a ficha do livro e a curva vira só reserva para monstro sem ficha; (b) a curva manda e o livro é atualizado com os números do VTT; (c) manter os dois como estão e anotar no livro que a mesa usa a curva.
-Recomendação: (a), que segue a regra "o livro manda" do projeto, feita em lote com teste de spawn (verify-monster-spawn) e uma rodada de jogo antes de ir para produção. Muda a dificuldade de todo combate, por isso fica com o dono. Nada foi alterado.
-
-## Decidido em 21/11, 01:40 (maestro)
-- ALC-fix, Voto de Caça: o alcance fica 12 células (18 m), a distância em que a habilidade sente mortos-vivos. Não há alvo, mas é a única distância que o livro dá para ela.
-- Um Anel na mesa: sem sync automático da ficha; o jogador já põe a ficha pelo painel próprio. Entra na fila só o aviso quando a ficha do Um Anel não grava (TOR-SAVE).
-
-## Decidido em 21/11, 02:45 (maestro)
-- BV-029 residual: fichas já salvas com magia de classe sem acesso ficam como estão; o mestre remove pela ficha se quiser. Novas entradas já são recusadas no cliente e no servidor (be62ab6).
-- Parser do grimório (parseSpellLoreBook pega o título da magia seguinte, ex.: Terremoto com '--- ### NIVEL 9'): corrigir agora, regenerando com sync:data e conferindo o diff de todas as descrições.
-- BV-045b (inventário fora da mesa): quando a sala da aventura exige aprovação do mestre, a ficha aberta em /personagem também usa o pedido ao mestre, e o servidor recusa a edição direta do inventário por quem não é mestre nem admin. Fica para a próxima tarefa, com revisão cuidadosa (mexe em permissão).

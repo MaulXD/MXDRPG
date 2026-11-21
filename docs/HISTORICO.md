@@ -6764,3 +6764,35 @@ Aproveitando o esclarecimento, atendido o pedido de melhorar de verdade a UX: at
 **Fila que sobrou:** BV-040b (mestre editando ficha do Um Anel não avisa a mesa), BV-024/025/029 (pequenos de wizard e ficha), decisões do dono D-01, D-02, D8 a D10, D-20 e as três magias com dano fora do livro. Parada por consumo: a janela de 5 h do Claude chegou perto do limite.
 
 ---
+
+### 2026-11-21 (madrugada e manhã) — Rodada 5: mesa ao vivo, segurança da rota de token, wizard e kits pelo livro
+
+**Pedido:** seguir o loop de correções até as 08:00, decidir o que coubesse e commitar tudo no perfil do dono, sem coautoria e sem push.
+
+**Como foi feito:** Farejador (Haiku) caçou bugs no site local com duas contas (mestre e jogador), Bigorna (Haiku) corrigiu, Lupa (Haiku) revisou, Corvo (OpenCode) fez o levantamento de permissão das rotas e o rascunho desta entrada. O maestro conferiu cada item, rodou `npx tsc --noEmit` e `npm test` inteiro antes de cada commit e moveu o branch `fix/login-google-e-responsivo-um-anel`. Fichário salvo em `docs/fichario/` (páginas 03, 06, 07, 08 e 11).
+
+**Mesa ao vivo:**
+- O aviso de "a sala mudou" morava num emissor por cópia de módulo; a rota da ficha do Um Anel avisava um emissor que a conexão ao vivo não escutava. Agora fica em `globalThis` (`9d96a8d`, BV-048), assim como o cache de revisão (`e8edf50`). Provado no site: 0 ouvintes antes, evento chegando depois.
+- Card e ficha aberta do Um Anel acompanham a revisão da sala (`1adc9ba`, `5ec05fe`, `08b347b`; BV-048 a BV-050). Mestre editando a ficha avisa a mesa (`07cad10`, BV-040b).
+- Snapshot da sala guarda cópia do mapa de atores (`6502a92`).
+- Jornada e Conselho mostram a sessão em andamento: `torSession` não entrava no delta nem no store da mesa (`c78e0b9`, BV-073, BV-074).
+- Tirar a condição do token apaga o contador de rodadas (`31bf9d0`, BV-053).
+- Botão Chat mostra quantas mensagens novas chegaram com o chat fechado (`2d9a65e`, BV-055).
+
+**Segurança:** o PATCH de token aceitava pedido sem login e qualquer campo do jogador (vida, PA). Agora exige login, condições só o mestre, o jogador só muda a aparência do próprio token (`10fbb09`, `f2f7fba`), com teste que executa a rota (`401cddf`). Levantamento das 119 rotas em `docs/fichario/propostas/rotas-permissao.md` (heurístico; não achou outra falha).
+
+**Ficha, wizard e livro:**
+- Passivo de nível 1 e proficiências das 12 classes com o texto do livro (`6fcc498`, `55b601e`; BV-062, BV-064, BV-066, BV-068, BV-069).
+- 36 kits iniciais pela tabela do livro (`3400a60`, BV-070), com teste que confere itens e textos (`f8edd3d`).
+- Revisão do wizard mostra as magias e explica o nível 2 (`612d128`); Guerreiro sem magia (`d81a482`, `be62ab6`); subir de nível não recarrega PA (`2c88ef0`, BV-058); aviso do painel do mestre mostra a vida gravada (`0d3a153`); Empreitadas com os nomes do livro (`e50c8bf`, BV-075); placar do Conselho diz "tentativas restantes" (`e5d1b07`).
+- Um Anel: arma por proficiência opcional (`6db9d64`), pendência de equipamento diz o que falta (`0cde7be`).
+
+**Celular, console e amigos:** tabela de armas cabe e a ficha abre na frente do painel (`66a9969`, BV-059, BV-060); sem erro de hidratação (`5a05b79`, BV-009) e sem aviso de rolagem suave (`60b92d0`, BV-001); pedido de amizade em até 10 s e aceite sem recarregar (`a711718`, `e88210f`, BV-078, BV-079).
+
+**Outros:** inventário fora da mesa só com aprovação do mestre (`10c70ba`, `a41feb0`), pool do MariaDB não esgota no dev (`363d9d6`), wizard com botões visíveis na mesa (`dd429b4`), parser do grimório (`dfa51b0`), testes de comportamento do aviso de ficha não salva (`0c1df06`, `22b158e`), ajustes da revisão de regressão da Lupa (`d0020b1`).
+
+**Como testar:** `npx tsc --noEmit`, `npm test` (passa inteiro, com os testes novos desta rodada), `npm run build` (passa; a primeira tentativa falhou ao baixar fonte do Google, BV-007, e a segunda passou).
+
+**Ficou para o dono (página 03):** D-21 traços de classe na ficha (BV-056), D-22 nomes culinários do livro (Harmonização x Forrageio), D-23 escolha de truques no wizard e o kit do Bruxo (BV-072), itens do livro que faltam no compêndio (Brasa Espectral, Cajado, Bastão, Espada curta), BV-021 (clique de mover; testar com mouse real), BV-080 (sino só mostra pendências), além de D-01, D-02, D-20 e as magias com dano fora do livro.
+
+---

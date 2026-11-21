@@ -2,6 +2,148 @@
 
 Pareceres do Revisor: APROVADO ou REPROVADO, com achados.
 
+## Revisao da rodada 5
+Revisor: Lupa, 21/11/2026. Somente leitura: nenhum arquivo do repo editado, sem commit. Verify nao rodados nesta revisao (diff e codigo em volta lidos).
+1. lib/room/notifier.ts (9d96a8d): OK. Emissor em globalThis, mesmo padrao de rooms() e presence. O unsubscribe usa o mesmo emissor (e.off). Sem risco de conteudo.
+2. lib/room/revision-cache.ts (e8edf50): OK, com ressalva. O cache passa a ser compartilhado entre rotas. Ressalva: lib/room/revision.ts:13 grava no cache a revisao do banco quando o cache expirou; se o banco estiver atras da memoria, a rota SSE pode ler revisao menor por ate 800 ms. Isso ja existia dentro do mesmo processo; o singleton so iguala o comportamento entre rotas. Nao bloqueia.
+3. lib/room/internal/registry.ts:49 (6502a92): OK. Nenhum codigo escreve em snapshot.actors. As atribuicoes room.actors[id] = next sao no state; toSnapshot( so e lido e enviado (handlers e rotas combat/*, tokens/move). As comparacoes por identidade em lib/room/room-delta.ts:135 e :158 agora veem mapa novo; no pior caso devolvem objeto novo sem mudar conteudo. buildRoomDelta usa jsonEq (room-delta.ts:72-84). Ressalva: a copia e rasa; se um handler mutar o objeto do ator no lugar, o snapshot ainda muda junto. Busca por atribuicao de campo de ator em lib/room, lib/combat e lib/character nao achou caso. Nit: a mensagem do commit diz que BV-054 segue aberto, mas o comentario em registry.ts:49 diz que esta corrigido.
+4. app/api/room/[roomId]/tokens/[tokenId]/route.ts e lib/room/handlers/tokens.ts (10fbb09, f2f7fba): OK. O mestre continua com todos os campos. O espelho de PA roda quando next.pa muda, inclusive quando applyConditionPaRules muda o pa (tokens.ts:50). Ressalva: se token.pa e actor.pa ja estiverem dessincronizados, um PATCH que nao muda pa deixa de corrigir o ator. So vira problema com drift existente. Nit: imageFocus do jogador nao tem validacao de formato. Esta correcao fecha a ressalva 1 da nota ROTA-TOKEN acima.
+5. lib/character/level-up.ts:305 (2c88ef0): OK, com nit. Mantem o PA atual. O teto usa paPoolMaxForSheet(actor) com a ficha antes do nivel; se accumulationCap depender do nivel, o teto deveria sair da ficha nova. Hoje o Math.min quase nunca corta.
+6. hooks/vtt/useMesaChatNaoLidas.ts (2d9a65e): RISCO baixo. Sem loop: getSnapshot devolve numero (primitivo). Risco: vistoAteRef nao zera quando roomId muda com o mesmo componente montado. MesaWorkspace nao tem key por sala (components/vtt/MesaWorkspace.tsx:98-122; app/mesa/[roomId]/page.tsx:242). Cenario: navegar da mesa A para a mesa B sem desmontar; o vistoAte de A passa a valer para as mensagens de B (historico vira nao lido, ou some se for mais antigo). O que fazer: key={roomId} no MesaWorkspace, ou zerar a ref quando roomId mudar. Nits: getSnapshot altera a ref durante o render (idempotente, aceitavel); a funcao subscribe e recriada a cada render.
+7. components/vtt/MesaWorkspace.tsx closeDockOnPhone (66a9969): OK. closePanels e openAsPopup usam updater de setRegistry (hooks/vtt/useFoundryWindows.ts:225 e :347), entao a ordem fica certa. Breakpoint 767px igual ao CSS (foundry.css:2312, :2407). Painel flutuante nao e fechado, o que parece intencional.
+Resumo: 6 itens OK; 1 com RISCO baixo (item 6, key por sala). Nenhum bloqueio na rodada 5.
+
+## ROTA-TOKEN PATCH do token com permissão (Lupa)
+Parecer: APROVADO, com 2 ressalvas e 1 nit (nenhum bloqueia).
+- Conferido em app/api/room/[roomId]/tokens/[tokenId]/route.ts:35-56. Sem sessão: 401 (linha 35-37). Não mestre: 403 para conditions ou timedEffects; sem controle do token (canMoveToken) 403; qualquer campo fora de imageUrl, imageFocus, nameplateMode: 403 (linhas 49-55). Mestre: canApplyTokenConditions = canManageRoom, o mesmo critério de hasGmView (combat-turn-access.ts:28), então o mestre e o admin mantêm tudo; o canMoveToken que saiu do ramo do mestre era sempre verdadeiro para eles.
+- Clientes: patchRoomToken (hooks/useRoomSync.ts:499) tem um único chamador, TokenConditionsPanel, que só aparece para o mestre (TokenStatusBody canApplyConditions = isRoomGm = canManageRoom) e manda só conditions e timedEffects. Grep de patchRoomToken e de /tokens/ em components, hooks, app e lib: nenhum outro cliente manda campo por essa rota. DELETE (route.ts:69-97) não aparece no git diff.
+- Teste pega a regressão: copia em scratchpad com if (!session) trocado por if (false): verify-rota-token-permissao falha em sem sessão responde 401 e sai com exit 1. No working tree: 7 ok, exit 0.
+- Verificado aqui: node scripts/verify-rota-token-permissao.mjs exit 0; npx tsc --noEmit exit 0. Nenhum arquivo do repo editado; sem commit.
+- Ressalva 1 (PA, pré-existente, não piorou): lib/room/handlers/tokens.ts:57-65 grava actor.resources.pontosAcao.value = next.pa em todo patch de token vinculado. Um PATCH só cosmético do jogador (imageUrl) regrava o PA do ator com o PA do token; se os dois divergirem, o cosmético apaga o PA do ator. O que fazer: sincronizar o PA só quando o patch trazer pa.
+- Ressalva 2 (teste): o verify é regex sobre o texto do arquivo e não executa a rota. Pega a remoção do 401, mas não um erro de lógica (por exemplo, trocar canControlToken por true). O cabeçalho diz conferido no site local, mas não há verify de comportamento que reproduza isso. Sugestão: casos com sessão falsa, como no verify-tor-save-comportamento.
+- Nit: body JSON null ou array faz Object.keys e body.conditions lançarem TypeError e virar 500 (route.ts:40 e :49). 404 de sala e de token vem antes do 401, então anônimo descobre se o token existe. Ambos pré-existentes.
+- Lupa, revisão em 21/11/2026.
+
+## TOR-SAVE teste de comportamento (Lupa)
+Parecer: APROVADO, com 1 nit (não bloqueia).
+- Conferido: lib/room/handlers/tor-combat-attack.ts:596-620 e tor-hazard.ts:136-146 devolvem sheetSaved false no catch da gravação da ficha. O verify novo executa as duas funções reais, com stubs só nos imports de banco e sessão, e confere ok true + sheetSaved nos dois casos de falha e de sucesso.
+- Teste pega a regressão: copia em scratchpad com o código do working tree. Original: 4 passaram, 0 falharam. Sem os sheetSaved = false (os 3 catch): 2 falharam (ataque e Fonte de Dano com gravação falhando). Fecha com a mutação do autor.
+- Nit (cobertura): o catch da Esperança (tor-combat-attack.ts:619-620) não tem caso. Nenhum caso de Esperança gasta com a ficha falhando. Sugestão: um caso com hopeSpentSheetId definido e __torSaveFail true.
+- Fora deste escopo, mas no mesmo working tree: components/vtt/TokenConditionsPanel.tsx tem um diff não commitado (BV-053, timedEffects ?? []). Não entra neste commit; quem commitar precisa excluí-lo.
+- Verificado aqui: node scripts/verify-tor-save-comportamento.mjs exit 0 (4 ok). package.json: o verify novo está na cadeia do test, antes de npm run test:um-anel. Não rodei tsc nem npm test completo (o autor reporta ok).
+- Nenhum arquivo do repo editado; sem commit.
+- Lupa, revisão em 21/11/2026.
+
+## SINGLETON servidor: revision-cache em globalThis (Lupa)
+Parecer: APROVADO, com 1 nit (não bloqueia).
+- Causa atacada: lib/room/revision-cache.ts guardava o Map no módulo. Agora fica em globalThis.__eldarinRevisionCache, mesmo padrão do notifier (lib/room/notifier.ts:15). Atacou a causa: getRoom e writeCachedRevision (lib/room/internal/registry.ts:129, 167-187) rodam em rotas diferentes e a rota SSE lia outra cópia.
+- Teste pega a regressão: scripts/verify-singleton-servidor.mjs passa no working tree. Com o revision-cache.ts do HEAD (cópia em scratchpad, mesmo loader) falha com null !== 7 na instância 2.
+- Nit (teste): o verify cobre duas instâncias do módulo, não as rotas SSE e PATCH. Aceito: a causa está coberta. Cobrir a rota fica para depois.
+- Verificado aqui: npx tsc --noEmit exit 0; node scripts/verify-singleton-servidor.mjs exit 0. Não rodei o npm test completo: o verify novo está na cadeia do test, antes de npm run test:um-anel (package.json, linha test).
+- Nenhum arquivo do repo editado; sem commit.
+- Lupa, revisão em 21/11/2026.
+
+## NITS-D13, BV-024 e BV-025 (Lupa)
+Parecer: APROVADO, com 3 nits que não bloqueiam.
+- NIT-D13 conferido: lib/combat/golpe-sagrado.ts:1-9. A constante GOLPE_SAGRADO_TIPO_DANO ganhou o próprio cabeçalho, e o bloco D13 fica colado em golpeSagradoDiceForLevel. Diff só nas linhas do ajuste.
+- BV-024 conferido: components/character/wizard/TorCharacterCreationWizard.tsx:154 e :282-284. A mensagem diz qual arma falta, e o banner usa o mesmo stepError do passo. invalidSteps filtra os passos sem erro, então não sai "Passo: " vazio.
+- Nit (TorCharacterCreationWizard.tsx:154): a regra de uma arma por Proficiência já existia. Mas livros/um-anel/03-aventureiros.md:809 diz "podem escolher", e a mensagem "Falta escolher" reforça uma obrigação que o livro não faz. Pré-existente e fora desta correção. O que fazer: registrar na página 03 se o dono quiser a regra opcional.
+- BV-025 conferido, sem código: a tabela de Cultura (03-aventureiros.md:189-196) não exclui a principal da adicional. lib/character/um-anel/build-from-wizard.ts:52-63 usa Math.max, e o comentário explica o motivo. Decisão correta. O que fazer: fechar o BV-025 na página 06 com essa citação, porque ele ainda diz "a confirmar".
+- Nit (sem teste): nenhum teste novo cobre a mensagem do banner nem o tooltip de lib/vtt/token-effects.ts:386. Nenhum verify falharia sem a correção. Risco baixo (P3); aceito.
+- Verificado aqui: npx tsc --noEmit exit 0. npm test exit 0 (verify-d13-golpe-sagrado 10 ok, 0 falhas; demais verify sem falha). Nenhum arquivo do repo editado; sem commit.
+- Lupa, revisão em 21/11/2026.
+
+## BV-047 — pool MariaDB em globalThis (Lupa)
+Parecer: APROVADO, com 2 ressalvas (nao bloqueiam).
+- Causa atacada: lib/db/client-mariadb.ts:15 guarda o pool em globalThis.__mxdMariaPool; getMariaSql (linhas 153-164) so cria pool se ele nao existe. E o unico ponto que cria pool no runtime do app. scripts/db/mysql-pool.mjs e so de scripts.
+- tag.end (linhas 100-106) agora fecha o pool compartilhado. Grep: nenhum caller de runtime chama end() no pool. Sem efeito pratico hoje.
+- Teste pega a regressao: verify-bv047 passa no working tree; com o client do HEAD (copia em scratchpad) falha com criados=2, esperado 1.
+- Verificado aqui: npx tsc --noEmit exit 0; verify-sem-texto-dev 30 ok; npm test exit 0 com o verify-bv047 na cadeia (log linha 499). Nenhum arquivo do repo editado.
+- Ressalva 1 (nit): package.json, a linha test ficou '&&npm run test:um-anel' sem espaco. A shell aceita, mas trocar para '&& npm' para manter o padrao da linha e nao poluir o diff.
+- Ressalva 2 (teste): tag.end nao e exercitado. Sugestao: assert de que sql.end() zera globalThis.__mxdMariaPool e que um getMariaSql depois cria pool novo.
+- Nao reproduzi a medicao de 151 conexoes (PID 39036); nao tenho acesso ao processo. A causa no codigo fica confirmada pelo teste.
+- Lupa, revisão em 21/11/2026.
+
+## BV-045b r5 — permissão de inventário (Lupa)
+Parecer: APROVADO, com 1 ressalva (não bloqueia).
+- Conferido: a comparação por packId:entryId soma quantidade e conta instâncias. Como cada entrada só pode ter contagem e quantidade iguais ou menores, o estoque total não sobe sem passar pela guarda. Juntar instâncias mantendo o total fica livre. Trocar instanceId sem trocar a entrada fica livre. Trocar de entrada conta como adição. Loadout fora do inventário bloqueia o dono; loadout já no inventário fica livre. Ficha legada com loadout sem item passa no patch de nome (lib/character/inventory-add-guard.ts:21-50; verify linha 234).
+- Ressalva: a exceção de recurso de classe (inventory-add-guard.ts:41, prev.count === 0 e chave em classResourceKeysFor) ignora quantidade e número de cópias. O dono pode mandar várias cópias ou quantidade maior de uma habilidade que a classe sincroniza. Efeito pequeno, porque a classe já dá a habilidade. Sugestão: exigir count 1 e quantidade 1 na exceção, e incluir caso no verify.
+- Verify: 34 ok, 0 falha. Casos renomeados sem instanceId.
+- Verificado aqui: npx tsc --noEmit exit 0; npm test exit 0 (22 ok no bloco de verify; sync:data:check OK). Nenhum arquivo do repo editado.
+- Lupa, revisão em 21/11/2026.
+
+## BV-045b r4 — permissão de inventário (Lupa)
+Parecer: REPROVADO, com 1 bloqueante estreito (falso positivo em ficha legada).
+- Fechado: identityPatch entra na checagem (merged/withIdentity normalizados); a guarda roda sempre nas duas rotas; a ordem é igual à do updateRoomActor (mergeIdentityPatch antes do normalizeCharacter). Mestre e admin livres (requiresInventoryGmApproval). Edit-save sem mudança. Remoção e diminuição livres. Loadout e classe de Paladino bloqueados para o dono.
+- Bloqueante: falso positivo de id. ensureLoadoutItemsInInventory (lib/character/inventory-loadout-sync.ts) cria instanceId novo a cada normalize quando o item do loadout falta no inventário. A checagem compara normalizeCharacter(existing) com merged, que são duas chamadas e dois ids. Ficha legada com combatLoadout e inventário sem o item: patch só de nome fica bloqueado para o dono. resolveCharacter (lib/character/characters.ts:62) devolve a linha crua sem normalizar, então esse estado pode existir. Conferido com script fora do repo: ids inv-...-5hio4 e inv-...-kc1rm, inventoryPatchAddsItems true. O que fazer: fazer o merge a partir de normalizeCharacter(existing) (um só normalize, ids preservados) ou comparar por packId+entryId. Incluir caso de ficha legada no verify.
+- Verify: 28 ok. Caso de Paladino é função. A asserção de que a guarda não depende de chaves é regex de ausência de if. Nome do caso "rota ... checa so quando o patch traz inventario" ficou desatualizado. Nenhum caso de patch simples (nome ou retrato) para o dono.
+- Verificado aqui: npx tsc --noEmit exit 0; npm test exit 0 (22 ok no bloco de verify; sync:data:check OK). Nenhum arquivo do repo editado.
+- Lupa, revisão em 21/11/2026.
+
+## BV-045b r3 — permissão de inventário (Lupa)
+Parecer: REPROVADO, com 1 bloqueante aberto (mesmo mecanismo da r2).
+- Fechado: loadout de item fora do inventário bloqueia o dono; loadout de item já no inventário fica livre (addItem devolve o mesmo inventário). Remover e diminuir seguem livres. Mestre e admin livres. edit-save compara normalizeCharacter(existing) com normalizeCharacter(finalized).
+- Bloqueante: identityPatch com classe ou subclasse adiciona itens de habilidade sem checagem. normalizeCharacter chama syncCombatAbilitiesToInventory (lib/character/normalize.ts:144), que chama syncClassAbilitiesToInventory (lib/character/class-vtt.ts:55-73) e syncSubclassTalentsToInventory (lib/character/subclass-vtt.ts:104). A condição do check em app/api/characters/[id]/route.ts (inventory, combatLoadout ou armorLoadout) não inclui identityPatch, e a de app/api/room/[roomId]/actors/[actorId]/route.ts também não. O que fazer: rodar o check para o dono sempre que a rota for chamada por ele, sem depender das chaves do patch. Incluir caso no verify. Conferido por leitura de código, sem script.
+- Verify: 27 ok. Casos de loadout e de papel cobrem a função, não a rota. Edit-save continua sem caso de comportamento.
+- Verificado aqui: npx tsc --noEmit exit 0; npm test exit 0 (22 ok no bloco de verify; sync:data:check OK). Nenhum arquivo do repo editado.
+- Lupa, revisão em 21/11/2026.
+
+## BV-045b r2 — permissão de inventário (Lupa)
+Parecer: REPROVADO, com 1 bloqueante aberto.
+- Bloqueante (ainda vale): o dono adiciona item pelo combatLoadout ou armorLoadout sem o inventory. A guarda olha o inventário cru e normalizeCharacter depois cria o item: lib/character/normalize.ts:144 chama ensureLoadoutItemsInInventory. Em app/api/characters/[id]/route.ts o check só roda com safe.inventory definido, então o PATCH só com combatLoadout passa. Em edit-save/route.ts (last_level) a checagem vê finalized.inventory antes do saveCharacter, que normaliza depois. Confirmado aqui: ensureLoadoutItemsInInventory com inventário vazio e combatLoadout armas-arc-l01 cria o item. O que fazer: checar o inventário já normalizado (normalizeCharacter do estado final) nas três rotas, ou recusar loadout de item que não está no inventário para quem não é mestre/admin. Incluir caso no verify.
+- Bloqueante da r1 fechado: no modo request o dono remove e usa Delete (canRemoveInventory em CharacterSheet.tsx, sem canEditInventory restante). Adicionar continua pedido. Mesa e /personagem usam o mesmo CharacterSheet.
+- Verify: 25 ok. Casos de papel são de função (dono, mestre, admin). O caso de edit-save é só ordem de texto, sem comportamento. Nenhum caso cobre loadout.
+- Verificado aqui: npx tsc --noEmit exit 0; npm test exit 0 (22 ok no bloco de verify; sync:data:check ok). Nenhum arquivo do repo editado.
+- Lupa, revisão em 21/11/2026.
+
+## BV-045b — permissão de inventário (Lupa)
+Parecer: REPROVADO, com 2 achados bloqueantes e 1 ressalva.
+- Bloqueante (servidor, escrita sem regra): app/api/characters/[id]/edit-save/route.ts:72-74. Em scope last_level o corpo traz preparedCharacter inteiro do cliente e vai para saveCharacter sem checar inventário. Dono com pedido de edição aprovado adiciona item sem pedido ao mestre, e o sync leva para a mesa. O que fazer: aplicar ownerInventoryAdditionBlocked (ou forçar inventory = existing.inventory antes do finalizeLastLevelReedit) e cobrir no verify.
+- Bloqueante (UI, regressão em /personagem): components/character/CharacterSheet.tsx:203 (canEditInventory só no modo "direct") com app/personagem/[id]/page.tsx:62. No modo "request" o dono não remove item: removeItem (615), tecla Delete (633) e InventoryRow canEdit ficam bloqueados. Antes, /personagem dava modo direct ao dono. O pedido diz que remover e diminuir quantidade são livres, e hoje só o servidor libera. O que fazer: separar permissão de remover (liberada ao dono) de adicionar (pedido). Arquivo fora da lista; a mesa (components/vtt/CharacterSheetPopup.tsx:112) já tem a mesma limitação antes desta mudança.
+- Ressalva (teste): scripts/verify-bv045b-inventario.mjs só testa inventoryPatchAddsItems e regex de ligação. Não cobre ownerInventoryAdditionBlocked (dono/GM/admin) nem edit-save. Confiro aqui com script fora do repo: dono adiciona true; dono diminui e remove false; GM false; admin false; outro membro false; inventário undefined false (8 de 8). Sugestão: incluir esses casos no verify.
+- Verificado aqui: node scripts/verify-bv045b-inventario.mjs 15 ok, 0 falha. Não rodei tsc nem npm test completo (o autor reporta ok). Nenhum arquivo do repo editado.
+- Lupa, revisão em 21/11/2026.
+
+## BV-029/044 r2 — ficha e linha EQUIPAMENTO (Lupa)
+Parecer: APROVADO. Achados da r1 corrigidos.
+- Efeito colateral da r1 corrigido: describeStarterEquipment (lib/character/starter-kits.ts:865) ganhou opts { omitSpells }. Sem a opção, a função mantém as magias: wizard-preview.ts:88 e WizardEquipmentStep.tsx:360 não pedem a opção e continuam mostrando as magias. Único chamador com omitSpells: CharacterCreationWizard.tsx:1029-1031 (Revisão).
+- Dedupe BV-042 preservado: starter-kits.ts:893-895 mantém o pulo da magia de combate no laço de magias.
+- Citação de capítulo removida da UI: CharacterSheet.tsx:558 agora diz só "não tem lista de magias". Comentário em CharacterSheet.tsx:556 cita a tabela 17.7.
+- Verify BV-029/044 cobre as asserções novas (opção existe, laço protegido, uma chamada com omitSpells, prévia e Resumo sem a opção). Sem a correção, falha.
+- verify-bv041-043-revisao-wizard.mjs voltou ao texto original (git diff vazio); o pulo de combate ainda está lá, então passa.
+- Verificado aqui: node scripts/verify-bv029-044.mjs 11 ok, 0 falha; node scripts/verify-bv041-043-revisao-wizard.mjs 8 ok, 0 falha; package.json:test inclui verify-bv029-044. Não rodei tsc nem npm test completo (o autor reporta tsc e npm test OK). Nenhum arquivo do repo editado.
+- Lupa, revisao em 21/11/2026.
+
+## BV-029/044 — ficha e linha EQUIPAMENTO (Lupa)
+Parecer: REPROVADO, com 1 achado bloqueante e 2 ressalvas.
+- Bloqueante (efeito colateral): describeStarterEquipment (lib/character/starter-kits.ts:865) mudou para todos os chamadores, nao so a Revisao. Chamam a funcao: CharacterCreationWizard.tsx:1029-1030 (alvo do BV-044), WizardEquipmentStep.tsx:360 (Resumo da etapa de equipamento) e lib/character/wizard-preview.ts:88 (linha Equipamento da previa). Em montagem personalizada com magia, a previa e o Resumo deixam de mostrar a magia, e wizard-preview.ts nao tem outra linha de magia. O que fazer: parametro opcional em describeStarterEquipment (ex.: { omitSpells: true }) usado so em CharacterCreationWizard.tsx:1029-1030. Depois ajustar as asserções: scripts/verify-bv041-043-revisao-wizard.mjs:65 e o check BV-044 de scripts/verify-bv029-044.mjs (hoje exigem ausencia de getEntry("magias") no corpo inteiro, o que quebra com o parametro).
+- Correcao BV-029 conferida: CharacterSheet.tsx:557-561 recusa antes do ramo canRequestInventory (linha 562). Ponto de entrada unico: os dois usos do picker (linhas 1208 e 1237) chamam addFromCompendium. identity esta no escopo (linha 648). Sem a guarda, o verify BV-029 falha.
+- Ressalva (texto de UI e comentarios): a mensagem "(livro 17.1)" em CharacterSheet.tsx:558 e o cabecalho de verify-bv029-044.mjs citam o capitulo errado. 17.1 lista so Mago, Clerigo, Bardo, Druida e Feiticeiro. Bruxo e Paladino sao conjuradores pela tabela 17.7 (livros/LIVRO-DO-JOGADOR.md:3538-3550) e por :920. O codigo esta certo, pois usa classAccess de data/character/spell-lists.json, que tem os 7. Trocar a citacao para 17.7.
+- Ressalva (residual, nao bloqueia): a guarda e so do cliente; nao conferi se a rota de inventario valida classe. Fichas de Guerreiro ja salvas com magia continuam com ela; nada limpa isso. Abrir item proprio ou decidir se entra aqui.
+- Verificado aqui: node scripts/verify-bv029-044.mjs 8 ok, 0 falha; node scripts/verify-bv041-043-revisao-wizard.mjs 8 ok, 0 falha. Nao rodei tsc nem npm test completo. Nenhum arquivo do repo editado.
+- Lupa, revisao em 21/11/2026.
+
+## BV-041/042/043 — revisão do wizard (Lupa)
+Parecer: APROVADO. Nits abaixo não bloqueiam.
+- Causa BV-042 conferida: starter-kits.ts:805 pula a magia de combate em refsFromEquipmentDraft, e starter-kits.ts:882 faz o mesmo em describeStarterEquipment. O kit do Mago (starter-kits.ts:166-172) põe a Lâmina de Espírito em items, combatLoadout e spellEntryIds, e loadoutDraftFromKit (starter-kits.ts:545-572) junta tudo. mergeStarterItems (starter-kits.ts:749-767) agora recebe uma referência só.
+- Causa BV-041 conferida: wizard-preview.ts:59 mostra 'Escolhido no nível 2'. O cartão Caminhos saiu da Revisão. Livro: LIVRO-DO-JOGADOR.md:918 e :2062 dizem escolha no nível 2.
+- BV-043 conferida: CharacterCreationWizard.tsx:1039-1060 separa Truques e Magias por cantripIdsForClass (spell-lists.ts:37). Ternários e && sem render de 0.
+- Verificado aqui: node scripts/verify-bv041-043-revisao-wizard.mjs 8 ok, 0 falha. verify-wizard-refresh 10 ok. npx tsc --noEmit exit 0. Nenhum arquivo do repo editado, sem commit. Não rodei npm test completo.
+- Nit (scripts/verify-bv041-043-revisao-wizard.mjs:40-103): o verify é só regex sobre o texto, como o resto do repo. Não prova que o Mago fica com a Lâmina de Espírito na quantidade 1. Se quiser prova de comportamento, testar buildStarterInventory para o Mago.
+- Nit (verify-bv041-043-revisao-wizard.mjs:38): o cabeçalho diz 'Mago e Ladino', mas nenhum check cobre o Ladino.
+- Nit (CharacterCreationWizard.tsx:1046): nameOf cai no id bruto (magias-...) se a magia não existir no compêndio.
+- Observação (decisão do Regente, não bloqueia): o passo 2 (CharacterCreationWizard.tsx:738-744) ainda mostra 'Caminhos disponíveis no nível 2' com os cards. Bate com o livro e não é o cartão da Revisão.
+- Lupa, revisão em 21/11/2026.
+
+## BV-040b — ficha do Um Anel sobe a revisão da sala (Lupa)
+- Parecer: APROVADO. Nits abaixo não bloqueiam.
+- Causa conferida: a rota PATCH só gravava a ficha. TorPlayableCharactersPanel.tsx:40-48 refaz o fetch só quando a revisão muda, e :61 busca /api/tor-characters. Com a revisão parada, o card seguia velho.
+- Correção conferida: route.ts:16-23 (helper) chama persistRoom, que faz bumpRoom com revision+1 (registry.ts:81-96 e :109-131). route.ts:46-51 chama o helper depois de gravar, com try/catch que só faz console.error. Permissão já vem de patchTorCharacterResources, antes da subida.
+- Verificado aqui: node scripts/verify-bv040b-sala-revisao.mjs, 16 ok, 0 falha. npx tsc --noEmit exit 0. Nenhum arquivo do repo editado, sem commit.
+- Nit (route.ts:16-23): o helper de sala fica dentro da rota. Mover para lib/room (ao lado de push-character-to-rooms.ts) deixa a rota fina, como pede docs/CLAUDE-CODIGO-SEGURO.md.
+- Nit (package.json, script test): ficou "&&npm run test:um-anel" sem espaço. Funciona, mas quebra o padrão do resto da linha.
+- Observação (não bloqueia): o PATCH agora passa por persistRoom, que também executa auto-passe vencido em combate (registry.ts:114-120). Qualquer escrita de sala já faz isso; o verify é estático, como o próprio cabeçalho diz.
+
 ## D13b r1 — resistência radiante do Golpe Sagrado (Lupa)
 Parecer: APROVADO, com 1 achado pré-existente fora do escopo e 3 nits que não bloqueiam.
 - Causa conferida: o dano do Golpe Sagrado saiu do total da arma. attack.ts:1059-1065 separa golpeRadiante só quando bonusDamageType é "radiante". attack.ts:1104-1107 resiste a arma pelo tipo dela e o golpe como radiante. damage-resist.ts:31 divide por 2 só quando o defensor resiste.
@@ -177,6 +319,16 @@ Parecer: APROVADO, com 2 nits.
 - Nit 1: o limite do ataque múltiplo ('primeiro acerto') não tem caso próprio. O caso de resolveMultiAttack usa Guerreiro e prova só o laço. Hoje o Ladino tem 1 ataque, então o caminho não é alcançado; vale um caso se a regra mudar.
 - Nit 2 (aceito): a marca de crítico na fórmula base não foi aplicada. O damage.formula vai para o metadado do chat e a formula é lida só pelo dado primário (combat-dice-model.ts formulaToDiceSides), então não há efeito visível. Aceito.
 - Conferido: verify-d11-ataque-furtivo 33 ok, 0 falha; npx tsc --noEmit exit 0. Não rodei o npm test inteiro. Sem commit, sem edição de código.
+
+## BV-046 (rodapé sticky do wizard na mesa) - Lupa
+Parecer: APROVADO. Sem commit (o maestro commita).
+- components/character/wizard/wizard.css:1070-1092: seletores só dentro de .char-wizard--mesa-embed. A classe só existe com variant="mesa" (CharacterCreationWizard.tsx:482, TorCharacterCreationWizard.tsx:260; uso em MesaCharacterWizardPopup.tsx:50-66). Fora da mesa nada muda.
+- O rodapé (CharacterCreationWizard.tsx:1128-1156; Tor:776) está dentro de .char-wizard-panel. O scroller é .mesa-panel-scroll, overflow auto (vtt.css:3046). overflow-x clip mantém overflow-y visible, então o painel não vira caixa de rolagem e o sticky funciona.
+- 390x844: só muda o grid (media 1023px); o sticky não depende de largura.
+- Não reproduzi no Portal Bigorna; o relato do Corretor sobre as coordenadas não foi conferido por mim.
+- Nits, não bloqueiam: clip não existe em Safari < 16 (volta a hidden e o sticky some); o fundo do rodapé não cobre o padding lateral do painel (1.05rem), então o conteúdo aparece nessa faixa ao rolar.
+- Verify: npx tsc --noEmit exit 0; npm test exit 0 (22 ok, 0 falha; sync:data:check OK).
+- Lupa, revisão em 21/11/2026.
 - Lupa, revisão em 20/11/2026.
 
 ## D11 r4 — janela do combate livre e correções de r3 (Lupa)
@@ -696,4 +848,111 @@ Parecer: REPROVADO, com 1 achado bloqueante e 2 ressalvas.
 - Ressalva (pré-existente, fora do D12): lib/character/rules.ts:611 'Corpo Transcendente, Chi máximo 12 neste combate' (nível 20) não aparece em livros/. Abrir item próprio.
 - Verificado aqui: npx tsc --noEmit exit 0; npm test exit 0. Nenhum arquivo do repo editado.
 - Lupa, revisão em 20/11/2026.
+
+## BV-029b e BV-045 (Lupa)
+Parecer: APROVADO para BV-029b, sem correção de código. BV-045 segue como decisão, mas a frase da 03 precisa de correção antes de fechar.
+- Correção BV-029b: a regra passa a valer no servidor. lib/character/spell-prep.ts:77 (helper), app/api/characters/[id]/inventory-request/route.ts:77 (400 antes de createInventoryItemRequest), components/character/CharacterSheet.tsx:556 (mesmo helper). Ataca a causa: a regra só existia no cliente.
+- Mensagem da rota igual à da ficha. Fichas antigas não são tocadas (checagem só no POST).
+- Verificado aqui: verify-bv029b 8 ok; verify-bv029-044 11 ok; npx tsc --noEmit exit 0; npm test exit 0 (com verify-bv029b na cadeia).
+- Nit: os dois verify casam texto do código por regex e não exercitam a rota. Aceito pelo padrão do repo.
+- BV-045: a frase da 03 diz que a aprovação do mestre é aplicada pela mesa. No servidor não é: requiresInventoryGmApproval só é usada em components/vtt/CharacterSheetPopup.tsx:111, e app/api/characters/[id]/route.ts aceita o campo inventory do dono no PATCH (canEditCharacterWithGrant, linha 96) sem essa regra. Na mesa o bloqueio é só de UI. Corrigir a nota: a lacuna é de servidor, risco alto.
+- /personagem: confere. A página não passa inventoryEditMode (app/personagem/[id]/page.tsx:52-71) e o default vira direct para canEdit (CharacterSheet.tsx:201-202).
+- Pendente com o Raul: decidir se a lacuna de servidor do BV-045 entra como correção.
+
+## PARSER grimório: gerador e magias.json (Lupa)
+Parecer: REPROVADO, com 1 achado bloqueante e 2 ressalvas.
+- Bloqueante: package.json:45, "&& nodescripts/verify-um-anel-mesa-isolamento.mjs" sem espaço. A shell não acha o comando (exit 127), a cadeia do npm test para ali e não roda o resto, inclusive sync:data:check. Conferido aqui. O que fazer: trocar por "&& node scripts/verify-um-anel-mesa-isolamento.mjs", rodar npm test de ponta a ponta e colar a saída final. O exit 0 reportado não bate com isso.
+- Ressalva (teste): scripts/verify-parser-grimorio.mjs lê só o magias.json gerado e não executa parseSpellLoreBook (scripts/generate-compendium.mjs:85-86). Se a regex voltar ao texto antigo sem regenerar o JSON, o teste segue verde. O que fazer: exportar a função ou extrair a regex para um módulo e testar com fixture que tenha "--- ### NIVEL 9".
+- Ressalva (escopo): data/compendiums/monstros.json aparece como M no git status, mas o diff é só fim de linha (CRLF). Não faz parte desta correção; conferir antes de qualquer commit.
+- Verificado aqui: verify-parser-grimorio 129 ok, 0 falha. Rodei a regex nova sobre livros/_parte_x_magias_v4_revisada.md: nenhuma descrição sobra com "---" ou "### NIVEL"; as 9 mudanças em magias.json são só o sufixo cortado. Não rodei tsc nem npm test completo. Nenhum arquivo do repo editado.
+
+## BV-009 — title nativo vira data-site-tip (Lupa)
+Parecer: REPROVADO, com 1 achado bloqueante e 2 ressalvas.
+- Bloqueante (acessibilidade): os 3 sinos (components/vtt/MesaEditRequestsBell.tsx:109, MesaPlayerEditRequestsBell.tsx:63, MesaPlayerInventoryRequestsBell.tsx:65) e os botões Turno anterior e Próximo turno (components/vtt/TurnOrderPanel.tsx:347 e :362) perderam o único nome acessível. Os botões de turno têm só SVG aria-hidden, então ficam sem nome. Os sinos têm só ícone e badge numérico, então o nome vira só o número. O que fazer: aria-label com o mesmo texto do data-site-tip nesses 5 elementos.
+- Ressalva: components/vtt/PlayableCharactersPanel.tsx:198-199, span só com ícone (estrela ou olho) perdeu o texto de estado. Adicionar aria-label.
+- Ressalva (nit): aria-label em span sem role (TurnOrderPanel.tsx:757 e o ponto de PlayerSpawnPanel) é ignorado pelo ARIA; aria-label em elemento aria-hidden (FriendsMessengerDock.tsx:204) não faz sentido. Tirar, ou dar role.
+- Nit: scripts/verify-bv009-sem-title-nativo.mjs está fora do git (??). Entrar no commit junto com package.json.
+- Correção conferida: ataca a causa. Nenhum title restante em tag minúscula (grep em components/ e app/; os que sobram são props de componente). data-site-tip é lido pelo tooltip delegado. node scripts/verify-bv009-sem-title-nativo.mjs: ok.
+- Não rodei aqui: tsc, npm test completo e o teste da dica em Portal Bigorna. O verify não checa aria-label, então passar nele não cobre o achado acima.
+- Lupa, revisão em 21/11/2026.
+
+## BV-009 — 2a rodada (Lupa)
+Parecer: APROVADO.
+- Achado bloqueante anterior: retirado. Confirmado: TurnOrderPanel.tsx:347 e :362 têm <span>Anterior</span> e <span>Próximo</span>, então têm nome visível. Errei ao dizer que estavam sem nome.
+- Correções conferidas: aria-label nos 3 sinos (MesaEditRequestsBell.tsx:110, MesaPlayerEditRequestsBell.tsx:64, MesaPlayerInventoryRequestsBell.tsx:66); PlayableCharactersPanel.tsx:200 (estado do ícone); GmCreationsPanel.tsx:325 (glifo); FriendsMessengerDock.tsx sem aria-label no handle aria-hidden.
+- Verificado aqui: node scripts/verify-bv009-sem-title-nativo.mjs: ok (exit 0). Não rodei tsc nem npm test nesta rodada; o relato do autor diz que passaram.
+- Nit (não bloqueia): span sem role com aria-label (TurnOrderPanel.tsx:757 'Alvo válido'; ponto de PlayerSpawnPanel). ARIA ignora o nome nesses casos. Trocar por texto oculto ou role.
+- Nit: scripts/verify-bv009-sem-title-nativo.mjs continua fora do git (??). Entrar no commit com package.json.
+- Escopo do commit: o working tree tem mudanças que não são BV-009: components/vtt/TorCharacterSheetPopup.tsx (BV-050, hook useMesaRoomRevision) e scripts/verify-um-anel-sheet-sync.mjs (BV-050). Não revisei o BV-050. Separar em commit próprio antes de fechar o BV-009.
+- Lupa, revisão em 21/11/2026.
+- Lupa, revisão em 21/11/2026.
+
+## TOR-SAVE-ESPERANCA: scripts/verify-tor-save-comportamento.mjs (Lupa)
+Parecer: APROVADO, com 1 nit.
+- Mudança: só o teste. Dois casos novos (ataque gastando Esperança, com e sem falha na gravação da ficha). Nenhum arquivo de lib/ foi alterado.
+- Código conferido: lib/room/handlers/tor-combat-attack.ts:616-622 já tem o catch que põe sheetSaved = false no desconto de Esperança. O teste cobre esse ramo, e os asserts batem com o código: o desconto é tentado mesmo se o ataque erra.
+- Mutação: tirei sheetSaved = false desse catch numa cópia em scratch (repo intacto). O caso gastando Esperança com gravação falhando ficou vermelho (exit 1). Sem a correção, o teste pega a regressão.
+- Verificado aqui: node scripts/verify-tor-save-comportamento.mjs: 6 passaram, 0 falharam, exit 0.
+- Não rodei npm test completo nem tsc: a mudança é só em .mjs, sem TypeScript.
+- Nit: o cabeçalho do arquivo (linhas 1-22) descreve só a causa original e não menciona os casos de Esperança. Acrescentar uma linha.
+
+## BV-055 — contador de não lidas no botão Chat (Lupa)
+Parecer: REPROVADO, com 1 achado bloqueante e 2 ressalvas.
+- Bloqueante: lib/room/chat-nao-lidas.ts:14-15 conta toda mensagem de outro id. Mensagens automáticas usam authorId "xp" (lib/room/combat-xp.ts:158) e "system" (lib/room/chat.ts:66). Quem derruba um monstro com o chat fechado vê +1 pela própria ação, porque a mensagem de XP sai com authorId "xp". O que fazer: excluir "xp" e "system" na função pura e acrescentar esse caso em scripts/verify-bv055-chat-nao-lidas.mjs:42-47. O teste atual não cobre isso.
+- Ressalva (relógio): hooks/vtt/useMesaChatNaoLidas.ts:30 e :33 usam Date.now() do cliente como ponto de partida, mas o campo "at" vem do servidor (lib/room/handlers/chat.ts:12). Se o chat chegar vazio ao montar e o relógio do cliente estiver atrás, o histórico conta como não lido. O que fazer: começar com null e, na primeira vez que houver mensagens, usar o maior "at", sem Date.now().
+- Ressalva (desempenho): components/vtt/MesaWorkspace.tsx:515 assina o store do chat no componente inteiro. Cada mensagem, inclusive rolagens em combate, re-renderiza MesaWorkspaceInner. O que fazer: levar o contador para um componente folha ou usar selector.
+- Não verificado: visual do badge no desktop e no mobile (foundry.css:340-357; no mobile o badge de 1.6rem fica sobre ícone de 1.35rem). Precisa de smoke em /mesa/[roomId].
+- Verificado aqui: tsc --noEmit exit 0; verify-bv055-chat-nao-lidas OK; verify-mesa-barra-lateral OK; verify-bv009-sem-title-nativo OK. Não rodei npm test completo.
+- Lupa, revisão em 21/11/2026.
+
+## ROTA-TOKEN-TESTE: scripts/verify-rota-token-comportamento.mjs + package.json (Claude Code)
+Parecer: APROVADO, com 2 nits. Nada a corrigir antes do commit.
+- Escopo: teste novo (untracked) e uma linha em package.json, entre verify-rota-token-permissao e verify-bv058-levelup-pa. Nenhum arquivo de app/ ou lib/ mudou nesta tarefa.
+- Stubs só em auth/session, room/store e next/server. authorize-room, room-access e combat-turn-access rodam reais. O Request é real.
+- Verificado aqui: node scripts/verify-rota-token-comportamento.mjs: 7 passaram, exit 0. npx tsc --noEmit: sem erro. npm test: exit 0.
+- Mutações em cópia de scratch (repo intacto): if (!session) para if (false) derruba só o caso 1. Sem canMoveToken derruba o 7. Sem filtro de campos derruba o 2.
+- Nit 1: tirar só a trava de conditions/timedEffects (route.ts:43) não é pega. O filtro de campos responde 403 do mesmo jeito. Defesa redundante, não bug. Se quiser travar essa camada, o caso 4 deve checar a mensagem de erro.
+- Nit 2 (fora do escopo, já existia): a rota não valida o valor de nameplateMode; o caso 3 usa "x". Vale validar em tarefa própria.
+
+## CLASSES-TEXTO: lib/character/rules.ts + scripts/verify-classes-texto-livro.mjs + package.json (Lupa)
+Parecer: APROVADO, com 2 ressalvas. Nada a corrigir antes do commit.
+- Conferido: os 12 passivos (dietBonus) e as 12 linhas de proficiencias de CLASS_LIST batem com livros/LIVRO-DO-JOGADOR.md (secoes GUERREIRO a BRUXO, linhas 924 a 1260). Só houve encurtamento de referencia ("(Cap. 7)" no Paladino, "(Cap. 4 subclasse)" no Bruxo), sem mudar o sentido.
+- Numeros intactos: hpDieMax, hpDieAvg, primary, culinary e subclasses nao aparecem no diff de lib/character/rules.ts.
+- Efeito colateral checado: proficiencies entra em sheet-skills.ts:61 (mentionsSkill por substring). Nenhum texto novo contem rotulo de pericia, entao nenhuma pericia muda de treinada. dietBonus so aparece na exibicao (CharacterCreationWizard.tsx:720 e :1001; identity.ts:115).
+- Verificado aqui: node scripts/verify-classes-texto-livro.mjs: OK, 12 passivos. Contra o rules.ts do HEAD: FALHA em 7 classes (Guerreiro, Patrulheiro, Ladino, Mago, Clerigo, Bardo, Druida), exit 1. O teste pega a correcao dos passivos. JSON do package.json valido. Nao rodei tsc; transpile de rules.ts sem erro de sintaxe. Nao rodei npm test completo.
+- Ressalva 1: o teste compara so o nome do passivo (antes do travessao). As 8 proficiencias editadas (Guerreiro, Patrulheiro, Ladino, Clerigo, Barbaro, Bardo, Druida, Paladino) e o resto do texto dos passivos nao tem teste; regressao ali passa. Sugestao: comparar tambem a linha "Proficiencias:" do livro com proficiencies do codigo, em tarefa propria.
+- Ressalva 2: scripts/verify-classes-texto-livro.mjs ainda esta fora do git (??). Entrar no commit junto com package.json.
+- Confirmar: o pedido fala em 11 classes; livro e CLASS_LIST tem 12 (Guerreiro a Bruxo). Revisei as 12.
+- Lupa, revisão em 21/11/2026.
+- Lupa, revisão em 21/11/2026.
+
+## KITS-LIVRO (BV-070): lib/character/starter-kits.ts + scripts/verify-kits-livro.mjs + package.json (Lupa)
+Parecer: REPROVADO, com 1 achado bloqueante e 2 correções de texto antes do commit.
+- Bloqueante, combatLoadout (starter-kits.ts:170, 194, 354, 365, 376, 397, 408): 7 kits trocaram o combate padrão de magia ou habilidade para arma. O livro não diz isso, e o próprio arquivo (linha 35) trata magia como foco de combate, com a adaga como arma extra. O que fazer: manter o combatLoadout original sempre que o item ainda está no kit (Lâmina de Espírito, Onda de Trovão, Chama de Vinha; no Espiritualista, habilidades chi-passo-do-vacuo e chi-ferida-aberta, já com o id certo). Só o Feiticeiro 1 muda: Mãos Gélidas sai, então o combate vira Lâmina de Espírito, que já está no kit. Atualizar ESPERADO em scripts/verify-kits-livro.mjs.
+- Label ou resumo cita item que o kit não dá (o jogador lê isso no wizard; o teste não cobre texto): starter-kits.ts:164 (Brasa Espectral; o kit dá Chama de Fogareiro); :468-469 (Cajado e Brasa Espectral; o kit dá Machado de Batalha e Chama de Fogareiro); :391 (Bastão; o kit dá Lança Curta); :402 (Espada curta; o kit dá Lâmina de Vinha). O que fazer: enquanto BV-072 e a criação dos itens não forem decididos, label e resumo citam só o que o kit entrega. Acrescentar ao verify a checagem de que o nome citado no label ou resumo está no kit.
+- Ressalva: o Sussurro de Masmorra do Bruxo 1 fica como está até BV-072. O verify fixa esse item, então quando a decisão sair o teste muda junto.
+- Nit: a linha em branco antes de RACE_STARTER foi removida (starter-kits.ts, perto da linha 477). Cosmético.
+Verificado aqui: node scripts/verify-kits-livro.mjs: ok, 36 kits. Contra o HEAD: 32 falhas, exit 1 (o teste pega a correção). Todos os entryIds existem nos JSON de armas, equipamentos, magias e habilidades. arm-09 = Brigandina, arm-10 = Gibão de Placas. verify-bv029-044, verify-bv041-043-revisao-wizard e verify-classes-texto-livro: exit 0. npx tsc --noEmit: exit 0. Não rodei npm test completo.
+Lupa, revisão em 21/11/2026.
+
+## KITS-LIVRO 2a rodada (BV-070): lib/character/starter-kits.ts + scripts/verify-kits-livro.mjs (Lupa)
+Parecer: APROVADO, com 1 ressalva e 2 nits. Nada bloqueia o commit.
+- Bloqueante da 1a rodada resolvido. Contra o HEAD, combatLoadout mudou em 4 kits, todos justificados: feiticeiro-centelha (Mãos Gélidas saiu, o combate vira Lâmina de Espírito, que continua no kit) e os 3 espiritualistas, que trocaram habilidades-* por chi-*. Os ids habilidades-* antigos não existem em data/compendiums/habilidades.json (0 ocorrências), então a troca corrige id quebrado. Os 7 combates de arma da 1a rodada voltaram ao original.
+- Labels e resumos: os 36 kits casam pelo regex de texto. Conferi cada nome citado contra os itens do kit e contra o compêndio: todos estão no kit. Brasa Espectral, Cajado, Bastão e Espada curta saíram.
+- Verify: ok, 36 kits. Mutações em cópia de scratchpad: 'Cajado' no label falha (bruxo-cajado); 'Brasa Espectral' no resumo falha (mago-arcano); 'Bastão' no label falha (espiritualista-bastao); combatLoadout de volta para Mãos Gélidas falha em mago-adaga e feiticeiro-centelha.
+- Ressalva: a 1a rodada pediu checar que o nome citado no label ou resumo está no kit. O que entrou é uma lista fixa de 7 nomes proibidos. Hoje o texto está certo, mas um label novo citando item que o kit não tem passa no verify. Sugestão: checar cada nome do compêndio citado contra os items do kit, agora ou como pendência registrada.
+- Nit 1: o comentário 'Esperado segundo o livro' em scripts/verify-kits-livro.mjs:23 não vale para mago-adaga, bruxo-cajado, espiritualista-bastao e espiritualista-lamina. Eles fixam substitutos (Chama de Fogareiro, Machado de Batalha, Lança Curta, Lâmina de Vinha). Vale escrever isso no comentário para o BV-072 não ser esquecido.
+- Nit 2: a linha em branco antes de RACE_STARTER continua removida (cosmético). O label 'Lâmina leve' de guerreiro-lamina é o termo do livro; o item do kit se chama Lâmina de Vinha.
+Verificado aqui: node scripts/verify-kits-livro.mjs: ok, 36 kits. npx tsc --noEmit: exit 0. Não rodei npm test completo.
+Lupa, revisão em 21/11/2026.
+
+## KITS-TESTE (Lupa): scripts/verify-kits-livro.mjs (sem commit)
+Parecer: APROVADO, com 1 ressalva. Nada bloqueia o commit.
+- Escopo entregue: vocabulário de armas, equipamentos arm-* e magias, citação pela forma mais longa, nome completo para magia. As 3 mutações do pedido falham (Besta no guerreiro-lamina, Curar Ferimentos no guerreiro-espada, arco curto no guerreiro-arco). Extra: couro de troll no barbaro-maca também falha. O arquivo atual passa (36 kits).
+- Ressalva (importante): habilidades ficam fora do vocabulário. Os textos do Espiritualista (Golpe de Chi, Passo do Vácuo, Ferida Aberta) não são checados. Trocar 'Golpe de Chi' por 'Ferida Aberta' no summary de espiritualista-punhos passa. Sugestão: incluir 'habilidades' no vocabulário com a regra de nome completo, como magias. Ou registrar como pendência.
+- Limite aceito: nome curto de arma ou armadura ('couro', 'besta', 'adaga') aceita qualquer item do kit que comece igual. Vem do desenho do pedido; não bloqueia.
+- Nit: nomes de uma palavra no vocabulário (ex.: sono, despertar, terremoto) batem com palavras comuns do português. Nenhum texto atual cai nisso, mas pode dar falso FAIL no futuro.
+- Git: lib/character/starter-kits.ts já está no HEAD (3400a60, de outra mão). Só scripts/verify-kits-livro.mjs aparece modificado.
+Verificado aqui: node scripts/verify-kits-livro.mjs: ok, 36 kits. Mutações numa cópia: t1, t2, t3 e t5 falham; t4 (habilidade) passa. Não rodei npm test nem tsc.
+Lupa, revisão em 21/11/2026.
 

@@ -87,6 +87,65 @@ Loop de 2 h (15:45 a 17:45 de 20/11): Bigorna e Lupa na fila, Farejador testando
 | BV-026 | Aviso de seed Postgres no console (projeto usa MariaDB) | Bigorna | na fila |
 | BV-024/025/029 | Equipamento pendente sem dizer o quê; proficiência repetida; Guerreiro com Bola de Fogo (conferir livro) | Bigorna | na fila |
 
+## Rodada 5 (21/11, 02:20 até 08:00)
+| ID | O quê | Quem | Estado |
+|---|---|---|---|
+| BV-040b | Mestre edita ficha do Um Anel (PATCH /api/tor-characters/[id]) e a mesa não é avisada | Bigorna | feito, 07cad10 |
+| BV-024/025/029 | Equipamento pendente sem dizer o quê; proficiência repetida; Guerreiro com Bola de Fogo | Bigorna + maestro | feito: 0cde7be (BV-024), d81a482 e be62ab6 (BV-029); BV-025 fechado na página 06 |
+| BV-041/043/042 | Revisão do wizard: caminhos de nível 2 sem escolha; Mago sem magias na revisão; Lâmina de Espírito duplicada | Bigorna | feito, 612d128 |
+| BV-029 | Guerreiro ganha Bola de Fogo no nível 2 (conferir no livro) | Bigorna | feito, d81a482 e be62ab6 |
+| BV-044 | Paladino com magias (Curar Ferimentos, Raio do Limiar) listadas em EQUIPAMENTO na revisão | Bigorna | feito, d81a482 |
+| BV-045 | Fluxo de pedir item ao mestre não aparece na ficha nem no painel do mestre (o sistema existe: inventário com aprovação) | Bigorna | não é bug na mesa; fora da mesa virou BV-045b |
+| BV-045b | Inventário fora da mesa exige pedido ao mestre | Bigorna | feito, 10c70ba e a41feb0; testado com 2 contas: pedido, aprovação e item entrando OK |
+| BV-046 | Wizard dentro da mesa: botão PRÓXIMO do passo Raça fica fora do painel | Bigorna | feito, dd429b4 |
+| BV-047 | 'Too many connections': pool do MariaDB recriado a cada recarga do servidor de desenvolvimento | Bigorna | feito, 363d9d6; confirmado pelo Farejador |
+| OBS-FICHA | Jogador vê a ficha de outro jogador só para leitura | maestro | decidido: intencional (o grupo vê as fichas uns dos outros, sem editar) |
+| NITS-D13 | Cabeçalho do golpe-sagrado.ts; dica do buff sem 'radiante' | Bigorna | feito, 0cde7be |
+| ACENTO | Varredura de textos de interface sem acento ou com erro de português (BV-011 e afins), só em app/ e components/ | Corvo + maestro | feito: 2 achados, corrigidos em 2ce299c |
+| CAÇA-8 | Level-up, inventário com pedido ao mestre, wizard Eldarin de cada classe | Farejador | feito: BV-041 a BV-045 |
+| CAÇA-10 | Um Anel com duas contas: convite, wizard, card | Farejador | feito: BV-047 e BV-048 |
+| BV-048 | Mestre muda a Resistência pela ficha e o card do jogador só atualiza ao recarregar | maestro | feito, 1adc9ba (revisão sozinha não avisava a mesa); reconferência na ETAPA 11 |
+| BV-009/020 | Erro de hidratação: title nativo trocado por data-site-tip antes do React | Bigorna | feito, 5a05b79 (107 elementos; Lupa aprovou na 2a rodada) |
+| BV-048 (2) | O aviso da sala vindo da rota da ficha não chegava ao SSE: emissor por cópia de módulo | maestro | feito, 9d96a8d (provado no site local: 0 ouvintes antes, evento chega depois) |
+| BV-050 | Ficha do Um Anel aberta no popup não acompanhava o que outra pessoa grava | maestro | feito, 5ec05fe |
+| CAÇA-12 | Reconferir BV-048/049/050 com duas contas | Farejador | feito: tudo chega ao vivo em 3,5 a 5 s |
+| BV-049/050b | Espera de agrupamento do card e da ficha de 1,5 s para 0,6 s | maestro | feito, 08b347b |
+| SINGLETON | Outros estados de módulo que quebram entre rotas: revision-cache | Bigorna | feito, e8edf50 (5 caches e o lado cliente só listados) |
+| BV-001 | Aviso do Next sobre scroll-behavior | maestro | feito, 60b92d0 |
+| CAÇA-13 | Mesa Eldarin ao vivo com duas contas | Farejador | parcial: chat ao vivo em até 1 s; XP em ~5 s; BV-051 e BV-052 não reproduzidos (portal); falta condição em token |
+| BV-051 | Aviso de vida mostrava o digitado, não o gravado | maestro | feito, 0d3a153 |
+| CAÇA-13b | Vida ao vivo e condição em token | Farejador | feito: vida chega em até 1 s; BV-053 |
+| BV-053 | Tirar a condição deixava o contador 2R no token (timedEffects sumia do JSON) | maestro | feito (ver git log); verify entra no npm test junto com o TOR-SAVE-TESTE |
+| TOR-SAVE-TESTE | Teste de comportamento do aviso de ficha não salva (ataque e Fonte de Dano) | Bigorna | feito, 0c1df06; caso da Esperança em 22b158e |
+| ROTA-TOKEN | PATCH de token aceitava pedido sem login e qualquer campo do jogador | maestro + Lupa | feito, 10fbb09 |
+| ROTAS | Levantamento de permissão das 119 rotas | Corvo | feito: propostas/rotas-permissao.md (heurística; só o bugs/report público como alerta) |
+| SNAPSHOT-ATORES | Snapshot da sala compartilhava o mapa de atores com a sala viva | maestro | feito, 6502a92 |
+| CAÇA-14 | BV-053 na tela, Brann, XP, chat fechado | Farejador | feito: BV-053 ok; BV-054 (XP não chega à ficha aberta), BV-055 (sem aviso de chat novo, UX) |
+| CAÇA-15 | Reproduzir BV-054 com o caminho exato de abertura da ficha | Farejador | feito: não reproduzido depois de 6502a92 (XP chega em 2 a 3 s pelos dois caminhos); obs.: janela da ficha fechou sozinha uma vez |
+| CAÇA-16 | Level-up do Brann pelo jogador na mesa | Farejador | feito: vida, Extração e nível ao vivo batem com o livro; BV-056 (D-21), BV-057 (desenho), BV-058 |
+| BV-055 | Contador de mensagens novas no botão Chat | Bigorna + maestro | feito, 2d9a65e |
+| BV-058 | Level-up recarregava PA | maestro | feito, 2c88ef0 |
+| CAÇA-17 | Celular: mesa, ficha, páginas | Farejador | feito: quase tudo cabe; BV-059, BV-060, BV-061 (desenho) |
+| BV-059/060 | Tabela de armas do Um Anel e ficha atrás do painel no celular | maestro | feito, 66a9969 |
+| ROTA-TOKEN-TESTE | Teste que executa o PATCH de token | Bigorna + Lupa | feito, 401cddf; nameplateMode validado em f2f7fba |
+| CAÇA-18 | Wizard das 12 classes até a revisão | Farejador | feito: BV-062 a BV-072 |
+| BV-062 | Passivo do Bárbaro com nome errado | maestro | feito, 6fcc498 |
+| CLASSES-TEXTO | Passivo e proficiências das 12 classes pelo livro | Bigorna + Lupa | feito, 55b601e |
+| KITS-LIVRO | 36 kits iniciais pela tabela do livro (BV-070) | Bigorna + maestro + Lupa | feito, 3400a60 |
+| BV-072 | Bruxo sem truques: o wizard não tem escolha de truque | Bigorna | diagnóstico feito; decisão D-23 na página 03 |
+| KITS-TESTE | Teste confere que label e resumo citam só itens do kit | Bigorna + maestro + Lupa | feito, f8edd3d |
+| REVISAO-RODADA5 | Revisão de regressão das 7 mudanças de risco | Lupa | feito: tudo OK; 2 ressalvas aplicadas em d0020b1 |
+| BV-073/074 | Jornada e Conselho não mostravam a sessão (torSession fora do delta e do store) | maestro | feito, c78e0b9 |
+| BV-075 | 4 nomes de Empreitadas | maestro | feito, e50c8bf |
+| CAÇA-19 | Painéis do mestre do Um Anel (Jornada, Conselho, Companhia, Olho) | Farejador | parcial: BV-073 a BV-075 |
+| CAÇA-19b | Reconferir Jornada e Conselho; Olho; encerrar o que foi aberto | Farejador | feito: BV-073 e BV-074 confirmados corrigidos ao vivo; BV-076 (não é bug), BV-077 (texto, e5d1b07) |
+| CAÇA-20 | Social: amizade, mensagens, sino, nome real | Farejador | feito: nome real e e-mail não aparecem; BV-078, BV-079, BV-080 |
+| BV-078/079 | Pedido de amizade em até 10 s; aceite aparece sem recarregar | maestro | feito, a711718 e e88210f; reconferido: ~10 s e ~2 s |
+| BV-080 | Sino só mostra pendências | dono | recurso novo, fica para a próxima rodada |
+
+Fechamento da rodada 5 (21/11, 06:35): build, fichário salvo em docs/fichario, HISTORICO.md atualizado.
+| CAÇA-11 | Reconferir BV-048; Esperança, condições e ficha do jogador chegando ao mestre | Farejador | em andamento |
+
 Feitos fora da fila: B1 (31841ac), N-01 (3b37186), BV-002 e BV-003 loop da mesa (eb8a4bd), aviso de loop do store da mesa (eb25f17).
 Pausados até as correções andarem: caça-bugs no site, história, balanceamento. OpenCode grátis esgotou a cota.
 

@@ -61,9 +61,11 @@ Contagens e hashes conferidos com `git log --format='%h %ad %s' --date=short` e 
 - Principais correções: D-09b avisos de ficha não salva em mais caminhos (`a57d760`); BV-031/BV-027/BV-030 ficha do Um Anel no celular e textos legíveis (`2763c0c`); BV-033 aventura do Um Anel lista fichas e oculta nome real (`0eee05c`); ALC-fix alcances de magias/habilidades conforme livro (`7880231`); BV-035 card do personagem abre ficha do Um Anel (`2a21ab8`); BV-037 Jornada, Conselho e Fase de Companhia na barra lateral (`1b1a3c4`); CUS-fix custo em PA e CD conforme livro (`4ebfc2b`); BV-036/BV-038 painel do mestre do Um Anel sem ferramentas do Eldarin (`9a24fa9`); TOR-SAVE/BV-040/BV-039 avisos de gravação, card e botão de rolar (`0a23449`); NIT-15 refatoração de PA no log (`073ba2e`); BV-028 troca de arma em uso atualiza seletor (`8fc90e0`); BV-026 seed de fichas demo sem dono (`bb57cf9`); SOMBRA Sombra Etérea soma +1d6 necrótico ao Ataque Furtivo (`ef93d9a`); D13b dano radiante resiste como radiante (`02516f5`); CANAL bônus de habilidade contado uma vez só (`ed75c7d`).
 - Levantamentos/docs em `docs/fichario/propostas/`: alcances (`98d39de`, `2a0c354`), custos e danos (`212d234`), bestiário e D-20 (`a830163`), ficha do Um Anel na mesa (`bd3828d`), decisões Voto de Caça e Um Anel na mesa (`f1150a7`), hashes do fichário/histórico atualizados (`b059354`, `d262f9a`), histórico e fichário da rodada (`f393c3a`, `73a6dcc`).
 
-### Rodada 5 (21/11/2026) - ajustes finais após a rodada 4
-- Commits: 3 (`07cad10`, `612d128`, `2ce299c`).
-- Principais correções: BV-040b mestre editar ficha do herói avisa a mesa e atualiza card do dono (`07cad10`); BV-041/BV-042/BV-043 revisão do wizard mostra magias, não duplica Lâmina de Espírito e explica caminho do nível 2 (`612d128`); textos de interface: "Cocção" com acento no painel de culinária (`2ce299c`).
+### Rodada 5 (21/11/2026, 02:20 a 06:40) - mesa ao vivo, rota de token, wizard e kits pelo livro
+- Commits: cerca de 50, de `07cad10` ao fechamento (lista completa em `docs/HISTORICO.md`, entrada da rodada 5).
+- Principais correções: emissor de avisos da sala em `globalThis` e card/ficha do Um Anel ao vivo (`9d96a8d`, `1adc9ba`, `5ec05fe`; BV-048 a BV-050); Jornada e Conselho mostram a sessão (`c78e0b9`, BV-073/074); PATCH de token exige login e limita campos do jogador (`10fbb09`); passivos, proficiências e 36 kits pelo livro (`55b601e`, `3400a60`); contador do chat (`2d9a65e`); celular (`66a9969`); sem erro de hidratação (`5a05b79`).
+- Levantamento: permissão das 119 rotas em `propostas/rotas-permissao.md`.
+- Decisões novas para o dono: D-21 (traços de classe), D-22 (nomes culinários do livro), D-23 (escolha de truques no wizard).
 
 ## O que depende do dono
 
@@ -72,6 +74,7 @@ Lista copiada/alinhada à página [03 Precisa de decisão](03-precisa-de-decisao
 - **D-01** - Texto de livro comercial em repositório público (urgente): `livros/um-anel/` com texto corrido em repositório público. Decisão: tornar privado, remover/reescrever histórico, manter só material próprio, ou deixar como está. Recomendação em 03: tornar privado agora.
 - **D-02** - Branch com commits fora da `main` e fora de produção: abrir PR, separar correções do Eldarin, ou esperar teste em mesa real. Merge na `main` dispara deploy.
 - **D8, D9, D10** (balanceamento, propostas/balanceamento.md seção 3.6) - livro se contradiz no PA por golpe e no +1 PA do Guerreiro, e mudar fórmula de vida altera todo personagem já criado. Ficam com o dono.
+- **D-21, D-22, D-23** (rodada 5) - traços de classe na ficha (BV-056); nomes culinários do livro (Harmonização x Forrageio); escolha de truques no wizard e kit do Bruxo (BV-072). Ver página 03.
 - **D-20** - Bestiário: livro ou curva de balanceamento do VTT? Varredura em `propostas/bestiario.md` achou 507 diferenças; decisão entre (a) livro manda, (b) curva manda, (c) manter como está.
 - **Magias com dano fora do livro** - pendência registrada no histórico/fila (rodada 4: três magias com dano fora do livro; ver também `propostas/custos-e-danos.md` e itens de fila relacionados). Decisão/correção depende de conferência com o dono/livro.
 - **Termos de Uso** - texto jurídico; depende do dono (fora do código).

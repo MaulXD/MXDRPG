@@ -3,6 +3,7 @@
 Bugs achados navegando no site local. Um bloco por bug, ID BV-001 em diante.
 
 Conta de teste (dados ficticios): e-mail farejador.teste01@example.com | senha Teste12345 | apelido farejador_teste01 | nome Farejador Teste | CPF 12345 | nascimento 1995-05-10.
+Conta jogador (dados ficticios, ETAPA 9): e-mail jogador.teste02@example.com | senha Teste12345 | apelido jogador_teste02 | nome Jogador Teste Dois | CPF 12345 | nascimento 1996-07-22.
 
 Andamento:
 - ETAPA 1 em curso: cadastro ok (vai para /mesas); sair e entrar ok; /painel redirecionaria para /mesas (rota legada por desenho, nao e bug); aventura criada pelo lobby de /rpg/eldarin (aventura-teste-farejador-8sghq) ok; wizard de personagem concluido (Lira Teste Farejador: Humano, Guerreiro, Explorador, Espada e cota, Sem Deus, sem retrato); ao criar, redireciona para /mesa/aventura-teste-farejador-8sghq com tour '1 / 5' (Pular/Anterior/Proximo); ficha aberta em /personagem/pc-mwp8u5ew sem erro no console (Vida 13 = d10 + CON; salvaguardas e pericias batem com os atributos).
@@ -56,6 +57,7 @@ ETAPA 2 em curso (mesa, conta de teste ja logada, aventura aventura-teste-fareja
 - Passos: como mestre, na janela Ferramentas do mestre, digitar 7 em Vida atual e clicar APLICAR VIDA. Olhar o card de Lira na janela Personagens jogaveis por 4 s. Depois digitar uma mensagem no Chat e clicar ENVIAR.
 - Esperado: card mostra 7/13 na hora; mensagem aparece na lista do chat na hora.
 - Obtido: card continua 13/13 depois de aplicar 7; depois de aplicar 9 continua 7/13. Cada valor so aparece no card depois de recarregar (7/13, depois 9/13). Mensagem some do campo mas nao aparece na lista. Depois de recarregar, aparecem as duas mensagens, a rolagem de salvaguarda (1d20=20+5=25) e a vida 9/13. Os dados foram gravados; so a tela nao atualiza.
+Status ETAPA 13: PARCIAL. Chat corrigido ao vivo: mensagem do mestre e do jogador aparece no outro lado em ate 1 s, com o chat aberto nos dois. Vida: nao testavel ao vivo, porque o APLICAR VIDA nao gravou (ver BV-051).
 - Erro do console: nenhum proprio (ver BV-002).
 - URL: http://localhost:3000/mesa/aventura-teste-farejador-8sghq
 
@@ -196,11 +198,13 @@ Passo 5 (390x844, depois voltou a 1900x1191): compendio Armas e Habilidades sem 
 - URL: http://localhost:3000/mesa/aventura-teste-farejador-8sghq
 
 ## BV-021 Previa de movimento valida, mas o clique nao confirma (P2, a confirmar)
+DECISAO maestro (21/11): fica para teste com mouse de verdade (do dono). Hover e clique usam o mesmo canMoveToken; a suspeita e a celula do clique (useBattlefieldPointer.ts:1035) ou o clique sintetico do portal. Nao mexer sem reproduzir.
 - Severidade: P2 a confirmar; bloqueia o teste de combate do item 2 da fila
 - Passos: mesa /mesa/aventura-teste-farejador-8sghq; anel da Lira em (782,596) aberto com clique direito; escolher Mover; passar o mouse na celula vizinha (782,540) e clicar.
 - Esperado: a Lira anda 1 celula e o PA do HUD muda.
 - Obtido: o hover mostra Este passo 1 cel., Rota 1 passos, Apos mover 0/4 celulas; o clique normal devolve Sem rota — celula bloqueada ou fora do alcance e o dispatch de pointerdown + pointerup + click no canvas devolve Mesma celula. A Lira fica em (782,596) com 6 PA. Pode ser gesto do portal, nao confirmado como bug do app.
 - Regente (16:26): reproduzido no portal Site local. Sem edicao de codigo.
+VEREDITO Bigorna (21/11): (c) nao da para dizer so pelo codigo. Nao testei no Bigorna. O calculo e o mesmo no hover e no clique: ambos chamam canMoveToken com as mesmas entradas (components/vtt/Battlefield.tsx:1885 no clique; hooks/vtt/useBattlefieldHighlights.ts:314 no hover; displayScene = scene, Battlefield.tsx:360). Entao 'Sem rota' no clique so pode vir de outra celula: o clique usa axialAtScreen no pointerup (hooks/vtt/useBattlefieldPointer.ts:1035) e o hover usa outro caminho (useBattlefieldPointer.ts:667/734). Hipotese a confirmar: o clique sintetico do portal manda coordenadas erradas (o mesmo teste deu 'Mesma celula'). Para testar: hover e clique com o mouse real no Portal Bigorna; se 'Sem rota' persistir, logar axial do clique e do hover em useBattlefieldPointer.ts:1035 e useBattlefieldHighlights.ts:313.
 - URL: http://localhost:3000/mesa/aventura-teste-farejador-8sghq
 
 ## BV-022 Outros alcances de habilidades podem estar errados (P3, a confirmar)
@@ -223,7 +227,7 @@ Passo 1b (wizard Um Anel): Conceito (nome Eldo Teste Farejador), Cultura (Hobbit
 - Erro do console: nenhum.
 - URL: http://localhost:3000/aventura/aventura-teste-farejador-v44fo?personagem=criado
 
-## BV-025 Proficiencia adicional lista Espadas mesmo com Espadas como principal (P3, a confirmar com o livro)
+## BV-025 (fechado: não é bug — a tabela de Cultura, livros/um-anel/03-aventureiros.md:189-196, não exclui a principal da adicional) Proficiencia adicional lista Espadas mesmo com Espadas como principal (P3, a confirmar com o livro)
 - Severidade: P3; se o livro proibir a mesma proficiencia nas duas, vira P2
 - Passos: wizard Um Anel, passo Combate: escolher Espadas em Proficiencia principal; olhar a lista de Proficiencia adicional.
 - Esperado: a adicional nao oferece a mesma proficiencia da principal (ou a regra explica).
@@ -259,7 +263,7 @@ Passo 2b (inventario da Lira): adicionar pelo + COMPENDIO (Adaga de Quelicera en
 - Esperado: o select mostra Adaga de Quelicera na hora.
 - Obtido: o select continuou em Espada Longa (lido por DOM 2 s depois). Depois de recarregar a pagina, o select mostra Adaga de Quelicera (salvou no servidor). Repetido: troca ok so apos recarregar.
 - Erro do console: nenhum.
-## BV-029 Guerreiro recebe magia Bola de Fogo sem aviso (P3, a confirmar com o livro)
+## BV-029 Guerreiro recebe magia Bola de Fogo sem aviso (P3, BUG CONFIRMADO pelo livro 17.7; corrigido pela Bigorna, aprovado pela Lupa, sem commit)
 - Severidade: P3; se o livro restringe magia a conjuradores, vira P2
 - Passos: /personagem/pc-mwp8u5ew (classe Guerreiro), aba Magias, + COMPENDIO, escolher Bola de Fogo.
 - Esperado: a regra da classe impede ou avisa, ou a magia e permitida pelo livro.
@@ -316,6 +320,7 @@ Reproducao Farejador (portal proprio, 390x844, registro fetch): wizard seguiu do
 - Passos: sair; abrir /entrar; e-mail farejador.teste01@example.com; senha certa; ENTRAR.
 - Esperado: /mesas (como na ETAPA 1), ou a pagina de origem se for o desenho.
 - Obtido: /personagem/pc-mwp8u5ew (ficha da Lira).
+VEREDITO Bigorna (21/11): (b) desenho, nao bug. Teste no Portal Bigorna: saiu, abriu /entrar direto (URL limpa) e entrou com farejador.teste01: foi para /mesas. Codigo: app/entrar/page.tsx:30 e app/api/auth/login/route.ts:33 usam redirect vazio, que cai em DEFAULT_POST_AUTH_PATH (/mesas, lib/auth/post-auth-redirect.ts:10). Vai para a ficha so quando a URL tem ?redirect=/personagem/...: app/personagem/[id]/page.tsx:38 manda para /entrar?redirect= quando nao ha sessao. Prova: ficha deslogada foi para /entrar?redirect=%2Fpersonagem%2Fpc-mwp8u5ew e, ao entrar, voltou para /personagem/pc-mwp8u5ew. Sair pelo menu (HeaderUserMenu.tsx:107) vai para /entrar sem parametro. Falta: a URL exata usada antes; se a aba veio com ?redirect, e o comportamento esperado.
 - Erro do console: nenhum.
 - URL: http://localhost:3000/entrar
 
@@ -387,5 +392,441 @@ Etapa 7 (Site local, 1900x1183; leitura pelo DOM e snapshot):
 - Passos: mesa /mesa/aventura-teste-farejador-v44fo; botao Ficha; clicar no card Eldo Teste Farejador; na ficha, clicar Diminuir Resistencia (21 para 20); ler o texto do card Eldo na barra lateral.
 - Esperado: o card mostra Resistencia 20/21, igual a ficha.
 - Obtido: a ficha mostra 20/21, mas o texto do card continua 'Resistencia 21/21 · Esperanca 18/18'. Depois de recarregar a pagina, o card mostra 20/21 (persistiu no servidor).
+
+ETAPA 8 parcial (Site local, 1900x1183, conta de teste). Feito: wizard do Eldarin ate a Revisao para Ladino e para Mago (sem criar nenhum, para nao gastar vaga). Nao feito: Paladino e Espiritualista, level-up pela ficha e inventario, por limite de consumo do agente.
+
+## BV-041 Revisao do wizard lista 4 (Ladino) ou 5 (Mago) caminhos de nivel 2 como se todos fossem da ficha (P2, a confirmar)
+- Severidade: P2 a confirmar; se a escolha de caminho existe no wizard e so a Revisao mostra as opcoes, vira P3
+- Passos: /aventura/aventura-teste-farejador-8sghq/personagem/novo; Conceito com nome; Classe Ladino; PROXIMO ate PASSO 9 DE 9 Revisao.
+- Esperado: a Revisao mostra o caminho escolhido (ou o wizard pede a escolha antes de criar). O texto da etapa Classe diz 'Nivel 2: escolha um Caminho de Assimilacao'.
+- Obtido: linha CAMINHOS (NV 2) e SUBCLASSE (NV 2) com 'Sombra Etérea · Forma Amorfa · Assassino Venenoso · Corsário de Cripta' (Ladino). Com Mago: 'Piromante das Brasas · Criomante do Gelo · Mago Alquimico · Alquimista Acido · Mago dos Encantos'. Nao aparece nenhum campo de escolha na Revisao.
 - Erro do console: nenhum (logs-start ativo).
+- URL: http://localhost:3000/aventura/aventura-teste-farejador-8sghq/personagem/novo
+
+## BV-042 Revisao do Mago lista 'Lamina de Espirito' duas vezes em EQUIPAMENTO (P3)
+- Severidade: P3
+- Passos: wizard Eldarin, Classe Mago, PROXIMO ate a Revisao; ler a linha EQUIPAMENTO.
+- Esperado: cada item uma vez.
+- Obtido: 'Adaga e truques — Lamina de Espirito · Adaga de Masmorra · Sem armadura · Chama de Fogareiro · Lamina de Espirito'.
+- Erro do console: nenhum.
+- URL: http://localhost:3000/aventura/aventura-teste-farejador-8sghq/personagem/novo
+
+VEREDITO maestro (21/11 06:10): BUG, corrigido em c78e0b9. A sessao do Um Anel (torSession) nao entrava no delta nem na fatia do mapa do store; o painel recebia sempre undefined. Conferido: depois de recarregar, a Jornada mostra '10 de 10 trechos restantes'.
+## BV-073 (P1) Jornada: INICIAR JORNADA grava no chat, mas o painel continua no formulario
+- Severidade: P1 (o mestre nao ve a jornada em andamento; cada clique grava outra entrada no chat)
+- Status (etapa 19b, 21/11 06:20): CORRIGIDO. Painel mostra '10 de 10 trechos restantes' sem recarregar; avancar 3d mudou para '6 de 10' na hora; Encerrar volta ao formulario INICIAR JORNADA, e recarregar mantem.
+- Passos: Teste maestro, mesa /mesa/aventura-teste-farejador-v44fo, 1900x1175. Abrir JORNADA. Guia: "Heroi Um". Batedor, Olheiro e Caçador: "Heroi Dois", "Heroi Tres", "Heroi Quatro". Clicar INICIAR JORNADA. Esperar 3 s. Recarregar a pagina.
+- Esperado: o painel mostra a jornada em curso (dia, passo, avancar) e o botao Iniciar nao volta. Depois de recarregar, a jornada continua ativa.
+- Obtido: o chat recebe "Jornada iniciada — 10 trechos por Terras Selvagens, Verão. Previsão: 12 dias...". O painel segue no formulario com INICIAR JORNADA. Depois de recarregar, o formulario volta vazio. Nesta rodada, 4 cliques geraram 4 mensagens "Jornada iniciada" no chat.
+- Erro do console: nenhum. Erro na tela: nenhum.
+- Codigo (para a correcao, sem edicao minha): components/vtt/TorJourneyPanel.tsx:93 (started = progress != null) e start() perto da linha 151.
+- URL: http://localhost:3000/mesa/aventura-teste-farejador-v44fo
+
+VEREDITO maestro (21/11 06:10): mesma causa do BV-073, corrigido em c78e0b9; o Conselho mostra '0/6 sucessos · 8 tentativas'.
+## BV-074 (P1) Conselho: a rolagem grava no chat, mas o painel nao mostra o conselho em andamento
+- Severidade: P1 (mesmo padrao do BV-073)
+- Status (etapa 19b, 21/11 06:20): CORRIGIDO. Com o conselho aberto, 3d mudou o placar na hora de '0/6 sucessos · 8 tentativas' para '3/6 sucessos · 7 tentativas', sem recarregar. Encerrar conselho volta ao formulario RESISTENCIA; recarregar mantem.
+- Passos: Teste maestro, mesa v44fo. Abrir CONSELHO. Clicar em 3d (Graduacao do porta-voz), uma vez pelo clique e outra pelo DOM.
+- Esperado: o painel mostra o placar do conselho (tentativas, Interagir, encerrar).
+- Obtido: o painel segue no formulario "Graduacao do porta-voz" (0d a 6d). O chat recebe duas mensagens "Conselho — Pedido ousado (Resistência 6). ... limite de tempo 7 tentativas" e depois 8.
+- Erro do console: nenhum.
+- URL: http://localhost:3000/mesa/aventura-teste-farejador-v44fo
+
+VEREDITO maestro (21/11 06:15): BUG, corrigido em e50c8bf (4 nomes do livro; os ids ficaram).
+## BV-075 (P1) Fase de Companhia: 4 nomes de Empreitadas diferem do livro
+- Severidade: P1 (a regra e os custos batem; so o nome muda. Pela rubrica, "contraria o livro" pode subir para P0: decidir)
+- Obtido (app -> livro): "Reunir Boatos" -> "Reunir Rumores" (livros/um-anel/07-fases-de-companhia-jornada.md:226). "Contemplar Mapas Ilustrados" -> "Ponderar Mapas Historiados e Figurados" (:287). "Recontar uma História" -> "Contar uma História (Yule)" (:321). "Fortalecer a Companhia" -> "Fortalecer o Companheirismo" (:337).
+- Codigo: lib/character/um-anel/undertakings.ts:23, :41, :59.
+- Bate com o livro: Encontrar Patrono, Estudar Itens Mágicos, Compor uma Canção; marcas (Yule) em Curar Cicatrizes, Criar um Herdeiro e Recontar uma História.
+- Esperado: nomes iguais aos do livro.
+- Erro do console: nenhum.
+- URL: http://localhost:3000/mesa/aventura-teste-farejador-v44fo (painel Companhia)
+
+## Checado sem bug: NA "derivados de 18" (painel Companhia)
+- O texto bate com livros/um-anel/02-resolucao-de-acoes.md:122-126 e livros/um-anel/11-personagens-exemplo.md:42 (NA = 18 − Atributo como regra opcional).
+
+## Etapa 19 (parcial, Farejador): nao feitos: Olho/Vigilancia (passo 4) e desfazer (passo 5). Motivo: parei no limite de consumo.
+
+## BV-043 Revisao do Mago nao mostra magias nem truques da classe (P2, a confirmar)
+- Severidade: P2 a confirmar; sem essa linha nao da para conferir no wizard se as magias do Mago estao certas nem se entra magia de outra classe (caso BV-029)
+- Passos: wizard Eldarin, Classe Mago, PROXIMO ate a Revisao; buscar no texto da Revisao a palavra Magia, Feiticos ou Truques.
+- Esperado: a Revisao lista os truques e magias iniciais do Mago (ou diz que so aparecem na ficha).
+- Obtido: nenhuma linha de magia na Revisao; so 'Chama de Fogareiro' em EQUIPAMENTO. Nao confirmado se a ficha depois da criacao mostra magias.
+- Erro do console: nenhum.
+- URL: http://localhost:3000/aventura/aventura-teste-farejador-8sghq/personagem/novo
+
+Checagem de vida (ok): Ladino d8 com CON 16 (+3) mostra Vida 11; Mago d6 mostra Vida 9; Guerreiro d10 mostra 13. Bate com a formula d + CON.
+- Erro do console: nenhum (logs-start ativo).
+- URL: http://localhost:3000/mesa/aventura-teste-farejador-v44fo
+
+ETAPA 8b (Site local, 1900x1183, conta de teste). Wizard do Eldarin ate a Revisao para Paladino e Espiritualista, sem criar nenhum (CRIAR PERSONAGEM nao clicado).
+- Paladino: Revisao lista CAMINHOS (NV 2) 'Jurado do Sol · Cavaleiro do Limiar · Guardiao da Gorge', sem escolha. Mesmo padrao de BV-041. Vida 13 (d10 + CON 16) ok. Habilidade 'Voto Alimentar' e de Paladino, nenhuma linha de outra classe.
+- Espiritualista: Revisao lista CAMINHOS (NV 2) 'Punho do Limiar · Tecelao do Vacuo · Asceta da Dor · Guardiao da Respiracao', tambem sem escolha. Mesmo padrao de BV-041. Vida 11 (d8 + CON 16) ok. Iniciativa +3 (DES 16) ok. Habilidade 'Respiracao de Combate' e so do Espiritualista.
+- Console: so o erro de hidratacao ja registrado (BV-009/BV-020) ao abrir o wizard.
+
+## BV-044 Revisao do Paladino mostra 'Curar Ferimentos' e 'Raio do Limiar' dentro de EQUIPAMENTO (P3, corrigido pela Bigorna, aprovado pela Lupa, sem commit)
+- Severidade: P3 a confirmar; se essas duas sao magias ou habilidades, nao equipamento, vira P2 (magia que nao vai para a lista de magias)
+- Passos: /aventura/aventura-teste-farejador-8sghq/personagem/novo; Conceito com nome; Classe Paladino; PROXIMO ate PASSO 9 DE 9 Revisao; ler a linha EQUIPAMENTO.
+- Esperado: EQUIPAMENTO so com espada, cota e itens; magias e habilidades aparecem em outra linha.
+- Obtido: 'Espada e cota — Espada Longa · Cota de Malha · Curar Ferimentos · Raio do Limiar'. Nao aparece nenhuma linha de magia.
+- Erro do console: nenhum novo.
+- URL: http://localhost:3000/aventura/aventura-teste-farejador-8sghq/personagem/novo
+
+ETAPA 8b, parte 2 (Site local, 1900x1183; mesa /mesa/aventura-teste-farejador-8sghq como mestre).
+- Level-up: Mestre > Sala > Dar XP 300 para a Lira (APLICAR XP) aceitou ('+300 XP para Lira Teste Farejador.'). Ficha > Subir para nivel 2 > Caçador de Feras > APLICAR NIVEL 2: a Lira ficou Nv 2 · Guerreiro · Caçador de Feras (titulo, lista da barra e ficha).
+- Conferido no nv 2: Vida 22/22 (13 + 9 do dado medio + CON, ok); Proficiencia +2; salvaguardas FOR +5 e CON +5; Atletismo +3; Percepcao 11. Pontos de acao 6/9 sem mudanca no nv 2 (nao sei se o certo e mudar).
+- Habilidades: 1, 'Canção de Cura' (Alcance 1 cel, PA 1, aliado recupera 1d6). Nao apareceu nenhuma habilidade nova da subclasse Caçador de Feras. Nao sei se a Canção veio do nv 2 ou ja estava na ficha (nao conferi antes do level-up). Origem a confirmar.
+- Magias: 1, 'Bola de Fogo' (3º circulo) para o Guerreiro. BV-029 confirmado de novo, agora no nv 2.
+- Observacoes a confirmar: (a) antes do level-up a barra de XP mostrava '300/100 — Pronto para subir ao nv. 2' com a Lira em nivel 1; o rotulo mistura total e limite. (b) Na primeira tentativa o dialogo de subir de nivel fechou sozinho ao clicar numa ref antiga; o log tinha muitos 'Fast Refresh rebuilding'; nas tentativas seguintes subiu sem erro. (c) Uma vez apareceu no console 'Uncaught SyntaxError: Failed to execute querySelector ... selector is empty' (mesa:33), logo depois de um clique com ref antiga; nao consegui repetir.
+
+## BV-045 Nao achei fluxo de pedir item ao mestre na ficha nem no painel Mestre (P3, a confirmar)
+- Severidade: P3 a confirmar; se o projeto preve pedido de item ao mestre, vira P2 (jogador nao tem como pedir item)
+- Passos: mesa /mesa/aventura-teste-farejador-8sghq; botao Ficha; card Lira; ABRIR FICHA; aba Inventario; ler os botoes. Depois botao Mestre; abas SALA e JOGADORES.
+- Esperado: um jeito de o jogador pedir item ao mestre (botao, aprovacao ou mensagem), ou o mestre ver o pedido.
+- Obtido: Inventario so tem '+ CONSUMIVEL', '+ COMPENDIO' (abre seletor de Armas, Habilidades, Magias, Equipamentos e Consumiveis) e 'Remover' por item. Painel Mestre (SALA e JOGADORES) sem texto de item, pedido ou entrega. Nao testei entrega pelo mestre porque nao achei o fluxo.
+VEREDITO Bigorna: NAO E BUG na mesa; o fluxo existe. Aparece quando: a ficha e aberta pela mesa (popup), o usuario e jogador participante da sala (nao mestre, nao admin), a ficha e dele, e e de aventura pertencente a esta sala (requiresInventoryGmApproval, lib/auth/room-access.ts:246). Nesse caso '+ COMPENDIO' e '+ CONSUMIVEL' viram pedido ao mestre (inventoryEditMode request, components/vtt/CharacterSheetPopup.tsx:112). Fora disso (ficha em /personagem/[id]) o botao nao aparece: la o dono edita direto. Isso e decisao, registrada na pagina 03 (BV-045b). Nao verificado nesta rodada: a tela do mestre que recebe o pedido.
+- Erro do console: nenhum nessa parte.
+- URL: http://localhost:3000/mesa/aventura-teste-farejador-8sghq
+
+## ETAPA 9 (fluxo de jogador, duas contas): resultado
+Conta jogador criada (ver topo). Entrou pelo convite 8KKRJU8ACX. Criou Brann Teste Dois pelo wizard (Humano, Guerreiro, Explorador, Espada e cota, Valdrun) sem erro no console. Ficha em /personagem/pc-mwq22nw1.
+
+## BV-046 Wizard de personagem: botao PROXIMO do passo Raca fica fora da area visivel do painel; clique cai no canvas e nao avanca (P2, a confirmar barra de rolagem)
+- Severidade: P2 (tem contorno: rolar o painel antes de clicar)
+- Passos: logada como jogador, mesa /mesa/aventura-teste-farejador-8sghq?invite=8KKRJU8ACX, botao Ficha, CRIAR NOVO PERSONAGEM; no passo 1 Conceito preencher nome e PROXIMO; no passo 2 Raca escolher Humano e clicar PROXIMO.
+- Esperado: PROXIMO visivel dentro do painel Novo personagem e avanca para Classe.
+- Obtido: o painel tem 720 px e o grupo do passo Raca tem ~890 px; o botao fica em y 839, abaixo da borda do painel (798). Clique pela ref nao avanca (elementFromPoint devolve CANVAS). Depois de scrollIntoView no botao, ele avanca.
+- Erro do console: nenhum.
+- URL: http://localhost:3000/mesa/aventura-teste-farejador-8sghq
+
+## Fluxo de item (ETAPA 9, passos 3 a 6): OK
+- Remover item na ficha /personagem/pc-mwq22nw1 (Tocha de Masmorra): sumiu da lista, sem erro.
+- + COMPENDIO > Equipamentos > Agulha de Zarabatana (10): aparece "Solicitacao enviada ao mestre" e "Aguardando aprovacao do mestre". Nao entra direto na lista.
+- Mestre (Teste maestro): o sino de solicitacoes (botao com badge 1, no topo da mesa) mostra Brann Teste Dois, Inventario, Agulha de Zarabatana (10) com APROVAR e RECUSAR. Obs: o sino de Notificacoes diz "Nenhuma pendencia"; isso e outro painel, nao e bug.
+- APROVAR: a API de pedidos volta vazia e o painel fecha.
+- Jogador (reload): sem "Aguardando aprovacao"; Agulha aparece na lista de equipamento com Remover. Console sem erro.
+- Observacao: a lista Personagens jogaveis da mesa mostra a Lira (de outra conta) para o jogador. Provavelmente e de proposito (grupo); a confirmar.
+
+ETAPA 10 (Um Anel, duas contas) - parcial, parada no passo 2 por causa do BV-047.
+- Passo 1 OK: codigo de convite da mesa aventura-teste-farejador-v44fo = YU7MKGE3KN (painel Convite, Teste maestro).
+- Passo 2 BLOQUEADO: a conta jogador entrou pelo codigo na mesa (ok, vinculado), mas o wizard de personagem nao abre (BV-047). Passos 3 e 4 dependem de heroi novo: nao testados.
+- Passo 5 OK: a conta jogador abre a ficha do Eldo Teste Farejador (tor-mwpv6xvk-dtidfd, da outra conta). Sem botoes de edicao; clicar numa bolinha de pericia (Vigilancia) so mostra a dica e nao muda o valor. Obs.: a ficha inteira fica visivel para o jogador (mesmo padrao da Lira); a confirmar se e de proposito.
+
+## BV-047 Wizard de personagem nao abre: erro de servidor "Too many connections" (P1)
+- Severidade: P1 (impede criar personagem pelo wizard; as outras paginas carregam)
+- Passos: entrar com a conta jogador (jogador_teste02), abrir a aventura do Um Anel aventura-teste-farejador-v44fo e clicar CRIAR PERSONAGEM (ou abrir direto a URL abaixo). Mesmo erro na aventura Eldarin: /aventura/aventura-teste-farejador-8sghq/personagem/novo.
+- Esperado: o wizard abre no passo Raca.
+- Obtido: overlay de erro do Next.js com o titulo "Server Too many connections", vindo de lib\db\client-ma..., com pilha em queryOneUserRow, fetchUserByIdStrict, resolveSessionUser, materializeSessionUser, ensureSessionAdventureAccess e AventuraNovoPersonagemPage. Recarregar e navegar de novo mantem o erro. /mesas, /aventura/... (sem /personagem/novo) e /mesa/... carregam normalmente.
+- Erro do console: Server Too many connections (lib\db\client-ma...). Status: corrigido em 363d9d6, confirmado (ETAPA 10b: o wizard abre e cria personagem). Hipotese original: pool de conexoes do banco esgotado (outros agentes usando o mesmo banco ao mesmo tempo); a confirmar no servidor.
+- URL: http://localhost:3000/aventura/aventura-teste-farejador-v44fo/personagem/novo
+
+ETAPA 10b (Site local = conta jogador_teste02; Teste maestro = mestre; 1900x1175). Resultado: BV-047 confirmado corrigido. Heroi criado: Hobbit Teste Anel (Hobbits do Condado, Capitao, Resistencia 21/21, Esperanca 18/18). Card na mesa conferido pelo jogador. Mestre diminuiu a Resistencia pela ficha para 20/21: o card do mestre atualizou na hora, o card do jogador nao atualizou (ver BV-048).
+
+## BV-048 Mudanca de Resistencia feita pelo mestre na ficha nao chega ao card do jogador na mesa; so aparece depois de recarregar (P2; mesma familia de BV-003 e BV-040)
+- Severidade: P2. Nao trava a sessao. Se a sincronizacao ao vivo da mesa for exigida pelo livro ou pelo projeto, sobe para P1 junto com BV-003.
+- Passos: (1) jogador_teste02 abre /mesa/aventura-teste-farejador-v44fo e fica com a barra lateral Personagens jogaveis visivel; (2) mestre (Teste maestro) abre /mesa/aventura-teste-farejador-v44fo, clica Ficha na barra lateral e clica Hobbit Teste Anel; na janela da ficha rola o conteudo ate os botoes Diminuir Resistencia (ficam abaixo da borda visivel) e clica Diminuir (21/21 para 20/21); (3) jogador confere o card Hobbit Teste Anel sem recarregar.
+- Esperado: o card do jogador mostra 20/21 logo depois do clique do mestre.
+- Obtido: card do mestre 20/21 na hora. Card do jogador continuou 21/21 por pelo menos 14 s. Depois de recarregar a mesa do jogador, o card mostra 20/21 (gravou no servidor). Ou seja: so o recarregar atualiza.
+- Observacao: na janela da ficha os botoes Diminuir/Aumentar Resistencia ficam em y 978 com a janela terminando em y 718. Os primeiros cliques pela ref cairam no canvas, sem efeito (Eldo nao foi alterado). So funcionou depois de rolar o conteudo da janela.
+- Erro do console: nenhum novo (so o erro de hidratacao ja registrado).
+- URL: http://localhost:3000/mesa/aventura-teste-farejador-v44fo
+- Status ETAPA 11 (portais recarregados, 04:28 a 04:31): NAO corrigido. Mestre diminuiu Resistencia de 20 para 19 e depois aumentou de volta para 20, pela ficha. Card do jogador continuou 20/21 e depois 19/21 por mais de 16 s (esperado: ate uns 3 s). So atualizou ao recarregar a pagina do jogador.
+
+Status ETAPA 12 (portais recarregados; Site local = jogador_teste02, Teste maestro = mestre): CORRIGIDO NESTA RODADA, dentro do esperado. Mestre diminuiu Resistencia pela ficha (20 para 19): o card do jogador mostrou 19/21 cerca de 3,5 s apos o clique, sem recarregar. Mestre voltou para 20: jogador em cerca de 3,9 s. Observacao: o card do proprio mestre ainda mostrava 19/21 por alguns segundos depois do aumento; nao confirmado se e so atraso de tela.
+
+## BV-049 Esperanca, Fadiga e Ferido mudados pelo mestre na ficha nao chegam ao card e a ficha do jogador ao vivo; so aparecem depois de recarregar (P2; mesma familia de BV-048)
+- Severidade: P2. Nao trava a sessao.
+- Passos: (1) jogador_teste02 abre /mesa/aventura-teste-farejador-v44fo com Personagens jogaveis aberta e a ficha do Hobbit Teste Anel aberta; (2) mestre (Teste maestro) abre Ficha e Hobbit Teste Anel, rola ate Esperanca e clica Diminuir (18 para 17); (3) mestre clica Aumentar Fadiga e depois Marcar Ferido; (4) jogador confere card e ficha sem recarregar.
+- Esperado: card e ficha do jogador acompanham em ate uns 3 s.
+- Obtido: no mestre os valores mudam na hora. No jogador, Esperanca ficou 18/18 por mais de 13 s; Fadiga ficou 0 por mais de 10 s; o status Ferido nao apareceu (o jogador ainda via o botao Marcar Ferido). Depois de recarregar, o jogador ve Esperanca 17, Fadiga 1 e status Ferido: o servidor gravou.
+- Erro do console: nenhum (so Fast Refresh).
+- URL: http://localhost:3000/mesa/aventura-teste-farejador-v44fo
+- Restaurado depois do teste: mestre voltou Esperanca, Fadiga e Ferido; jogador voltou Esperanca para 18. Recarregando o jogador: Resistencia 20/21, Esperanca 18/18, Sombra 0, Fadiga 0, sem Ferido.
+
+Status ETAPA 12: CORRIGIDO EM PARTE. Esperanca 18 para 17 (mestre, pela ficha) chegou ao card e a ficha do jogador em cerca de 3,5 s, sem recarregar; o botao Marcar Ferido sumiu do jogador no mesmo intervalo. Fadiga 0 para 1 chegou em cerca de 4,5 s. Tudo restaurado e conferido nos dois portais (Esperanca 18/18, Fadiga 0, sem Ferido). Severidade segue P2.
+
+## BV-050 Esperanca mudada pelo jogador na propria ficha nao chega ao card e a ficha do mestre ao vivo (P2; mesma familia de BV-048)
+- Severidade: P2. Nao trava a sessao.
+- Passos: (1) jogador_teste02 abre a ficha do Hobbit Teste Anel e clica Diminuir Esperanca (18 para 17); (2) mestre (Teste maestro) com o card Hobbit Teste Anel visivel na lista Personagens jogaveis e a ficha do Hobbit aberta confere sem recarregar.
+- Esperado: card e ficha do mestre mostram 17/18 em ate uns 3 s.
+- Obtido: jogador mostrou 17/18 na hora. Mestre continuou 18/18 por mais de 12 s, no card e na ficha.
+
+Status ETAPA 12: NAO CORRIGIDO NO PRAZO, mas chega ao vivo. Jogador baixou Esperanca 18 para 17 pela propria ficha: a ficha aberta do mestre chegou a 17/18 em cerca de 4,8 s e o card da lista em cerca de 5,0 s apos o clique, acima dos 3 s esperados. Restaurado: mestre viu 18/18 em cerca de 3,5 s. Severidade segue P2.
+- Erro do console: nenhum.
+- URL: http://localhost:3000/mesa/aventura-teste-farejador-v44fo
+
+## BV-051 Mestre: APLICAR VIDA nao grava (Lira segue 22/22 no jogador e no mestre) (P1, a confirmar)
+VEREDITO maestro (21/11 05:00): NAO REPRODUZIDO, e do portal. A rota grava (chamada direta: 22/22 -> 15/22 com aviso no chat). Pela interface, rolando ate o botao e preenchendo com evento de input, grava e avisa. O botao fica em y 1190 com a tela em 1192, dentro de vtt-gm-tools__body (overflow auto): clique por ref sem rolar cai fora. Nenhuma tentativa do Farejador chegou ao servidor (nenhuma linha 'ajustou a vida' no chat). Achado real menor: o aviso dizia o valor digitado (18/13) e nao o gravado (13/13); corrigido em 0d3a153. Lira voltou a 22/22.
+- Severidade: P1 (mesa nao muda vida do personagem; se o clique for limitacao do portal, vira P2)
+- Passos: (1) mestre (Teste maestro) em /mesa/aventura-teste-farejador-8sghq, Ferramentas do mestre, select Lira Teste Farejador nv 2; (2) Vida atual 15; (3) APLICAR VIDA. Repetido 4 vezes (preenchendo por fill e por digitacao, clicando por ref e por DOM). Depois recarregar as duas paginas.
+- Esperado: card da Lira no jogador mostra 15/22 em poucos segundos; campo Vida atual do mestre fica 15 apos recarregar.
+- Obtido: jogador seguiu 22/22 por 10 s e depois de recarregar. Mestre, apos recarregar e selecionar Lira, mostra Vida atual 22. Nenhum erro no console.
+- Ressalva: o portal deu 'setSelectionRange' em input type=number ao limpar o campo (erro do portal, nao do site). Numa tentativa o campo estava com 2215 (erro meu ao digitar) e o APLICAR VIDA foi clicado com esse valor; a vida segue 22/22, sem efeito visivel.
+- Erro do console: nenhum no mestre.
+- URL: http://localhost:3000/mesa/aventura-teste-farejador-8sghq
+
+## BV-052 Dar XP com valor negativo nao reverte: Lira ficou com 400 XP (era 300) (P2, a confirmar)
+VEREDITO maestro (21/11 05:00): NAO E BUG. Pela interface, -100 mostra 'Informe um valor de XP positivo' e nao grava; XP so sobe, por desenho. Os 400 XP da Lira ficam (conta de teste; decisao na pagina 03).
+- Severidade: P2; se o desenho nao aceita XP negativo, e so decisao de regra (confirmar)
+- Passos: mestre, select Lira, campo Dar XP -100, APLICAR XP.
+- Esperado: Lira volta a 300 XP, ou o campo recusa valor negativo com aviso.
+- Obtido: campo aceitou -100 e o clique nao mudou nada, sem aviso e sem entrada no feed do jogador. Efeito colateral: o +100 de teste (300 para 400) ficou gravado. Reverter pendente, precisa decisao do Raul.
+- Observacao (nao e bug novo): o feed do jogador mostrou '+100 XP' em cerca de 5 s apos o APLICAR XP.
+- URL: http://localhost:3000/mesa/aventura-teste-farejador-8sghq
+
+ETAPA 13 (mesa Eldarin, duas contas, mesa aventura-teste-farejador-8sghq) em curso: (1) jogador_teste02 ja e membro, entrou sem convite; (2) APLICAR VIDA: ver BV-051; (3) chat: mestre->jogador e jogador->mestre em ate 1 s com chat aberto nos dois lados (chat fechado so mostra ao abrir); (4) XP: feed do jogador em cerca de 5 s; (5) condicao em token: nao feito por limite de tempo. Ajuste de XP: ver BV-052.
+
+ETAPA 13b (21/11, 04:53 a 04:58; Site local = jogador_teste02, Teste maestro = mestre):
+(1) Vida ao vivo: OK. Mestre, Lira nv 2, Vida atual 15, APLICAR VIDA as 04:54:46 (botao rolado antes, fill normal). Card da Lira no jogador: 15/22 na primeira leitura, em ate 1 s, sem recarregar. Mestre voltou para 22 as 04:55:18: jogador 22/22 em ate 1 s. Chat do jogador mostrou "ajustou a vida" nos dois sentidos.
+(2) Condicao no token: mestre aplicou CEGO na Lira (aba Status da Lira, duracao Sug. = 2R) as 04:56:23. Jogador ve um selo 2R sobre o token L no mapa. A palavra Cego nao aparece em nenhum lugar da tela, so o selo. Tempo exato nao medido (a leitura por DOM nao pegou o selo; vi no print cerca de 20 s depois). Mestre tirou a condicao por CEGO, mas o selo continuou (ver BV-053).
+(3) Jogador muda a ficha pela mesa: NAO TESTADO, sem caminho. A janela Ver ficha da Lira (pelo card) e so leitura: Pontos de vida 22/22 aparece como texto, sem campo nem botao de editar; clicar no HP fecha a janela. A pagina /personagem/pc-mwp8u5ew tambem nao tem controle de vida ou arma. Nada a verificar do lado do mestre.
+Status BV-003 (ETAPA 13b): vida AO VIVO OK (1 s, nos dois sentidos); chat OK (ETAPA 13); condicao visivel no jogador (so selo); ficha pela mesa nao testavel.
+
+VEREDITO maestro (21/11 05:15) para o BV-053 abaixo: BUG CONFIRMADO no servidor (token da Lira com conditions [] e dois timedEffects 'cego' presos). Causa: ao tirar a ultima condicao o painel mandava timedEffects undefined, que some do JSON; o servidor mantinha o antigo. Corrigido em 31bf9d0; token da Lira limpo.
+## BV-053 Selo de condicao 2R continua no token da Lira depois de o mestre tirar a condicao (P2, a confirmar)
+- Severidade: P2. Nao trava. Se a condicao continuar gravada para o jogador, sobe para P1.
+- Passos: (1) mestre (Teste maestro), Ferramentas do mestre, Lira no mapa, aba Status da Lira, CEGO, duracao Sug.; (2) jogador (Site local) ve selo 2R sobre o token L; (3) mestre clica CEGO de novo para tirar; (4) jogador ve o token: o selo continua; depois de recarregar a pagina do jogador, continuam 2 selos 2R sobre o token L.
+- Esperado: sem selo depois de tirar a condicao.
+- Obtido: 2 selos 2R sobre o token L no jogador (print 04:57 e print ao recarregar, cerca de 04:58). No mestre, o botao CEGO voltou para sem destaque (tirado).
+- Erro do console: nenhum lido.
+- Nao confirmei no lado do mestre se a condicao ainda esta gravada no servidor (nao reli a aba Status depois de tirar).
+- URL: http://localhost:3000/mesa/aventura-teste-farejador-8sghq
+
+ETAPA 14 (21/11, por volta de 05:00 a 05:07; Site local = jogador_teste02, Teste maestro = mestre; mesa aventura-teste-farejador-8sghq; paginas recarregadas no inicio).
+(1) BV-053 retestado: mestre aplicou CEGO com duracao 2R na Lira (aba Status, clique no CEGO e depois no 2R). Jogador: a lista NO MAPA mostra Lira com 2R e o token L mostra o selo. Mestre tirou o CEGO: no jogador a lista NO MAPA voltou a mostrar so Lira, Goblin 1 e Goblin 2, sem 2R, sem recarregar. Depois de recarregar as duas paginas: token L sem selo (print), mestre sem status ativo e sem CEGO ligado.
+(2) Brann Teste Dois e da conta jogador_teste02: sim (na lista de personagens do jogador aparecem ABRIR FICHA, TRANSFERIR e EXCLUIR). Jogador abriu a ficha do Brann pela mesa e trocou "Arma / acao" de Espada Longa para "- automatico -" (05:03:23). Mestre (VER FICHA do Brann): nao aparece nenhum indicador de arma em uso, nem o select; so a lista de inventario com Espada Longa. Ou seja, o mestre nao ve a troca em lugar nenhum da ficha. Volta feita: depois de recarregar, o select do jogador esta em Espada Longa (valor gravado armas:armas-wpn-s02). Nao consegui confirmar se o "automatico" chegou a gravar no servidor antes da volta.
+(3) XP: mestre aplicou +50 no Brann (APLICAR XP, 05:04:59; no mestre: "+50 XP para Brann Teste Dois" e 50/100). Jogador, com a ficha do Brann aberta: XP continuou 0/100 em 05:05:10 e em 05:05:28. Depois de recarregar e reabrir a ficha: 50/100. O chat do jogador tem a linha "Mestre concedeu +50 XP a Brann Teste Dois (0 -> 50)". Ver BV-054.
+(4) Chat fechado no jogador: mestre enviou "Teste farejador etapa 14..." as 05:06:06 e a mensagem chegou no chat do jogador (vista ao abrir). O botao CHAT do jogador nao mostrou nenhum aviso (sem badge, contador ou destaque), checado em 05:06:15. Anotado como BV-055 (P3 UX), nao como bug.
+Status BV-053 (ETAPA 14): CORRIGIDO na tela. O selo some no jogador (ao vivo e depois de recarregar) e no mestre o CEGO fica desligado. Nao li o campo conditions no servidor (so pela tela).
+Chat do jogador fechado de novo ao fim do teste.
+
+## BV-054 XP dado pelo mestre nao atualiza a ficha aberta do jogador; so aparece depois de recarregar e reabrir (P2; mesma familia de BV-048 e BV-049)
+- Severidade: P2. Nao trava. O dado e gravado e chega ao feed do chat; so o campo XP da ficha nao atualiza ao vivo.
+- Passos: (1) jogador (Site local) abre a ficha do Brann pela mesa (ABRIR FICHA) e fica olhando o campo XP (0/100); (2) mestre (Teste maestro), Mestre > JOGADORES, Brann selecionado, Dar XP 50, APLICAR XP; (3) olhar o XP na ficha do jogador por cerca de 40 s, sem recarregar.
+- Esperado: 50/100 em poucos segundos, como a vida (BV-003 corrigido).
+- Obtido: continuou 0/100 ate recarregar a pagina; depois de recarregar e reabrir a ficha: 50/100. O feed do chat recebeu "Mestre concedeu +50 XP a Brann Teste Dois (0 -> 50)".
+- Erro do console: nenhum lido.
+- URL: http://localhost:3000/mesa/aventura-teste-farejador-8sghq
+
+## BV-055 Chat fechado no jogador: mensagem nova do mestre nao acende aviso no botao CHAT (P3 UX, nao e bug)
+- Severidade: P3 UX. Anotado a pedido, para decisao de design.
+- Passos: (1) jogador (Site local) com o chat fechado; (2) mestre (Teste maestro) envia uma mensagem no chat as 05:06:06; (3) ler o botao CHAT do jogador em 05:06:15.
+- Esperado (UX): algum sinal de mensagem nova no botao CHAT (ponto, contador ou destaque).
+- Obtido: botao CHAT sem badge, contador ou destaque. A mensagem aparece ao abrir o chat.
+- Erro do console: nenhum lido.
+- URL: http://localhost:3000/mesa/aventura-teste-farejador-8sghq
+
+Status BV-054 (ETAPA 15, 2026-11-21): NAO reproduzido nesta rodada. XP atualiza ao vivo nos dois caminhos, em 2 a 3 s, sem recarregar.
+- Caminho B (clique direito na barra FICHA do jogador; janela flutuante): leitura 250/100 em 05:17:05; apos APLICAR XP (mestre, clique em 05:17:05) virou 300/100 em 05:17:08 e ficou ate 05:17:16.
+- Caminho A (clique esquerdo na barra FICHA abre o painel PERSONAGENS JOGAVEIS na barra lateral; ABRIR FICHA abre janela flutuante sobre o mapa): aberta em 05:17:29 com 300/100; APLICAR XP em 05:17:53 virou 350/100 em 05:17:55 (2 s); reaplicado em 05:19:20 com a ficha aberta desde 05:18:19: virou 400/100 em 05:19:23 (3 s) e ficou ate 05:19:34.
+- Texto do XP na ficha: a palavra XP nao existe no DOM. O valor fica ao lado do circulo de nivel e acima do botao SUBIR NV 2, no formato 200/100. O card do Brann na barra lateral nao mostra XP (so 13/13, 15 e 0/9).
+- Ressalva 1: a primeira aplicacao desta etapa nao foi cronometrada; a leitura de 05:16:21 ja mostrava 250/100 (a ficha abriu em 200/100).
+- Ressalva 2: em 05:17:53 a janela da ficha do jogador fechou sozinha entre 05:17:59 e 05:18:02, sem clique do jogador. No APLICAR XP seguinte (05:19:20) nao fechou. Causa nao identificada; o console do jogador nao registrou nada. Vale repetir para ver se e reproduzivel.
+- Ressalva 3: um clique de 05:17:32 caiu no cabecalho da secao XP do mestre (nao no botao), sem efeito.
+
+VEREDITO maestro (21/11 05:35) para o BV-056 abaixo: nao e falha de gravacao. Tracos de classe do livro (Segundo Folego, Estilo de Combate, Passiva de Assimilacao) nao existem como dado no sistema, em nenhuma classe; a aba Habilidades so lista habilidades taticas do compendio. Virou a decisao D-21 na pagina 03 (precisa do dono). Rebaixado de P0 para P2 (recurso que falta, nao quebra a sessao).
+## BV-056 Habilidades do Brann ficam vazias: nem as de nv 1 nem a de nv 2 aparecem (P0 pelo criterio do papel: contraria o livro)
+- Severidade: P0 pelo criterio do papel (contraria o livro). Nao trava a sessao.
+- Passos: (1) jogador (Site local) abre a ficha do Brann (Humano, Guerreiro, nv 1) e vai na aba HABILIDADES; (2) SUBIR NV 2, escolhe Caminho Cacador de Feras, APLICAR NIVEL 2; (3) volta na aba HABILIDADES.
+- Esperado: livro/LIVRO-DO-JOGADOR.md:937-938 lista nv 1 Segundo Folego e Estilo de Combate, e nv 2 Subclasse e Bonus Passivo de Assimilacao; LIVRO-DO-JOGADOR.md:2062 manda anotar a Passiva de Assimilacao; LIVRO-DO-JOGADOR.md:954 descreve a passiva do Cacador de Feras.
+- Obtido: aba diz 'Nenhuma habilidade - use + Compendio ou suba de nivel na trilha de subclasse' antes e depois do nv 2. O assistente de nv 2 so mostrou 'Caminho de Assimilacao: Feras e Bestiais', sem as passivas nem o Estilo de Combate.
+- Erro do console: nenhum lido.
+- Nao testei se o Estilo de Combate foi escolhido na criacao do personagem.
+- URL: http://localhost:3000/mesa/aventura-teste-farejador-8sghq
+
+VEREDITO maestro (21/11 05:35) para o BV-057 abaixo: DESENHO, fica. O sistema sobe um nivel por vez porque cada nivel tem escolhas (subclasse, talento, atributo); com XP sobrando, o botao SUBIR NV 3 aparece logo em seguida. Registrado na pagina 03.
+## BV-057 Brann com 400 XP acumulado aparece como nv 1 e so sobe para nv 2; a tabela manda estar no nv 3 (P2, decisao de regra)
+- Severidade: P2. Decisao de regra a confirmar, nao bug certo.
+- Passos: ficha do Brann com XP 400/100 em nv 1; SUBIR NV 2; APLICAR NIVEL 2.
+- Esperado: LIVRO-DO-JOGADOR.md:137-140 diz que nv 3 comeca em 300 XP acumulado; LIVRO-DO-JOGADOR.md:182 diz que o personagem sobe quando o XP acumulado atinge a linha do proximo nivel. Pela tabela, 400 XP ja e nv 3.
+- Obtido: nv 1 com 400/100 e 'Pronto para subir ao nv. 2'. Depois de aplicar, nv 2 com 300/200 e botao SUBIR NV 3. O numero da barra nao e rotulado (o formato parece XP acima do nivel atual sobre o custo do proximo) e passa do limite sem travar.
+- Erro do console: nenhum lido.
+- URL: http://localhost:3000/mesa/aventura-teste-farejador-8sghq
+
+VEREDITO maestro (21/11 05:35) para o BV-058 abaixo: BUG, corrigido em 2c88ef0 (o level-up gravava PA = 5; agora mantem o atual, limitado ao teto).
+## BV-058 PA da ficha foram de 0/9 para 5/9 ao subir de nivel, sem combate (P2, a confirmar)
+- Severidade: P2. Nao confirmei se e reset do pool fora de combate.
+- Passos: ficha do Brann nv 1 com PA 0/9 fora de combate; SUBIR NV 2; APLICAR NIVEL 2.
+- Esperado: LIVRO-DO-JOGADOR.md:182 diz que PA nao aumentam por nivel (teto 9 continua); LIVRO-DO-JOGADOR.md:194 e :196 dizem que a recuperacao acontece no inicio de cada turno.
+- Obtido: PA 5/9 logo depois de aplicar o nv 2, sem turno e sem combate.
+- Erro do console: nenhum lido.
+- URL: http://localhost:3000/mesa/aventura-teste-farejador-8sghq
+
+Status ETAPA 16 (2026-11-21): level-up feito pela ficha do jogador. HP 13/13 para 22/22 (+9 = 6 do dado fixo da tabela + 3 de CON, LIVRO-DO-JOGADOR.md:938 e :926). Extracao +3 para +4 (progressao +1 Extracao). Proficiencia +2 mantida. Mestre (Teste maestro) mostra 'Brann Teste Dois nv 2' na lista de personagens. A janela da ficha nao fechou durante o level-up; nao vi a janela fechar sozinha nesta etapa.
+
+VEREDITO maestro (21/11): BUG, corrigido em 66a9969 (tabela encolhe e rola dentro da folha; conferido em 390x844: tabela 55-325 numa janela de 369).
+## BV-059 Ficha do Hobbit (mesa Um Anel) no celular: tabela de Equipamento de Guerra passa da folha (P2)
+- Severidade: P2 (layout no celular; os botoes de remover arma ficam fora do papel)
+- Passos: celular 390x844 como jogador (jogador_teste02), mesa aventura-teste-farejador-v44fo, fechar o painel Personagens jogaveis se aberto, clicar no card Hobbit Teste Anel, rolar ate Equipamento de Guerra.
+- Esperado: tabela e botoes de remover arma cabem dentro da folha da ficha, sem passar da largura da janela.
+- Obtido: a tabela termina em x=397 e a janela da ficha em x=379 (scrollWidth da janela 369 = clientWidth, mas o conteudo fica cortado). Os X vermelhos de remover arma ficam para fora do papel, na faixa escura da direita. A ficha da Brann (pagina propria, /personagem/pc-mwq22nw1) nao estoura.
+- Erro do console: nenhum.
+- URL: http://localhost:3000/mesa/aventura-teste-farejador-v44fo
+
+VEREDITO maestro (21/11): BUG, corrigido em 66a9969 (no celular, abrir ficha fecha o painel lateral; conferido em 390x844).
+## BV-060 Ficha do personagem abre atras do painel Personagens jogaveis no celular (P2)
+- Severidade: P2 (no celular o jogador clica no card e nao ve a ficha)
+- Passos: celular 390x844, mesa aventura-teste-farejador-v44fo, painel Personagens jogaveis aberto (padrao), clicar no card Hobbit Teste Anel.
+- Esperado: a ficha abre na frente, ou o painel fecha ao abrir a ficha.
+- Obtido: a janela Hobbit Teste Anel abre em [10,164] atras do painel Personagens jogaveis, que continua aberto e cobre a tela. So aparece depois de clicar em Fechar painel.
+- Erro do console: nenhum.
+- URL: http://localhost:3000/mesa/aventura-teste-farejador-v44fo
+
+VEREDITO maestro (21/11): DESENHO. MesaMobileBar.tsx:56 mostra 'Ordem' fora de combate e 'Turno' em combate; no primeiro carregamento a sala ainda nao chegou e aparece 'Ordem'. Sem acao.
+## BV-061 Rotulo do botao da barra mobile muda entre Ordem e Turno (P3, a confirmar)
+- Severidade: P3; a confirmar com o livro qual nome vale para iniciativa.
+- Passos: celular 390x844, mesa aventura-teste-farejador-8sghq como jogador; ler a barra de baixo logo apos carregar e depois de o mapa terminar de carregar.
+- Esperado: um unico nome para o botao de ordem de turno (o painel de cima diz Turno; a pagina pedia Iniciativa).
+- Obtido: no primeiro carregamento o botao aparece como Ordem; depois de carregar, como Turno. Na mesa do Um Anel tambem aparece Ordem.
+- Erro do console: nenhum.
+- URL: http://localhost:3000/mesa/aventura-teste-farejador-8sghq
+
+VEREDITO maestro (21/11): BUG, corrigido em 6fcc498 (Sede de Sangue, texto do livro :1065).
+## BV-062 Wizard, Barbaro: nome e texto do bonus passivo diferem do livro (P2)
+- Severidade: P2 (contraria o livro: o nome e a descricao do bonus de nivel 1 do Barbaro).
+- Passos: Site local 1900x1175, conta jogador_teste02, aventura aventura-teste-farejador-8sghq, CRIAR PERSONAGEM; nome qualquer, PROXIMO; Humano; PROXIMO; classe Barbaro; PROXIMO; SUGESTAO PARA BARBARO; PROXIMO; antecedente Explorador; PROXIMO; PROXIMO; PROXIMO (Revisao). Nao criei.
+- Esperado: LIVRO-DO-JOGADOR.md:1065 diz Sede de Sangue: consumir carne crua ou coracao de monstro recem-abatido (acao rapida 1 PA) cura 1d8+CON em HP e estende a duracao da Furia em 2 turnos.
+- Obtido: Revisao mostra BONUS PASSIVO (NV 1) Sede de Batalha, assimilacao vital cura 1d8+CON e estende Furia.
+- Erro do console: nenhum (so Fast Refresh).
+- URL: http://localhost:3000/aventura/aventura-teste-farejador-8sghq/personagem/novo
+
+VEREDITO maestro (21/11): NAO E BUG. Fortitude 6 = +4 da classe (livro :1062) + bonus culinario da raca (computeCulinary soma classe e raca, lib/character/rules.ts:537-559).
+## BV-063 Wizard, Barbaro: culinaria inicial da Revisao difere do livro (P3, a confirmar)
+- Severidade: P3; nao confirmei a origem do bonus extra.
+- Passos: mesmos de BV-062, ler o bloco CULINARIA INICIAL na Revisao.
+- Esperado: LIVRO-DO-JOGADOR.md:1062 diz Fortitude +4, Extracao +2.
+- Obtido: Extracao 2 · Fortitude 6 na Revisao. Pode ser soma de antecedente ou raca; a conferir.
+- Erro do console: nenhum.
+- URL: http://localhost:3000/aventura/aventura-teste-farejador-8sghq/personagem/novo
+
+## BV-064 Wizard, Bardo: passivo com nome e texto diferentes do livro (P0)
+- Severidade: P0 (contraria o livro).
+- Passos: Novo personagem, Classe = Bardo, ir ate Revisao (passo 9), ler BONUS PASSIVO (NV 1).
+- Esperado: Harmonia de Sabores, quando o Bardo come junto do grupo, a duracao dos bonus de comida de todos os membros se estende em 50%. LIVRO-DO-JOGADOR.md:1088-1090.
+- Obtido: Inspiracao de Grupo, bonus de suporte do grupo duram +50%. Nome inexistente no livro (grep sem resultado).
+- Erro do console: nenhum.
+- URL: http://localhost:3000/aventura/aventura-teste-farejador-8sghq/personagem/novo
+
+## BV-065 Wizard, Bardo: culinaria inicial diferente do livro (P0)
+- Severidade: P0 (contraria o livro).
+- Passos: mesmos de BV-064, ler CULINARIA INICIAL.
+- Esperado: Forrageio +5, Coccao +2 (LIVRO-DO-JOGADOR.md:1085).
+- Obtido: Forrageio 5, Fabricacao 2, Fortitude 2. Coccao foi trocada por Fabricacao. Fortitude fica pela regra do veredito de BV-063.
+- Erro do console: nenhum.
+
+## BV-066 Wizard, Bardo: proficiencias incompletas (P0)
+- Severidade: P0 (contraria o livro).
+- Passos: mesmos de BV-064, ler PROFICIENCIAS.
+- Esperado: Armaduras leves, armas simples, algumas marciais, todos os instrumentos musicais (LIVRO-DO-JOGADOR.md:1083).
+- Obtido: Armaduras leves, armas simples, instrumentos. Faltam algumas marciais.
+- Erro do console: nenhum.
+
+## BV-067 Wizard, Bardo: magia aparece no campo EQUIPAMENTO (P1)
+- Severidade: P1.
+- Passos: mesmos de BV-064, ler EQUIPAMENTO na Revisao.
+- Esperado: so itens no EQUIPAMENTO; a magia Inspiracao Culinaria fica em MAGIAS E TRUQUES.
+- Obtido: Rapieira e inspiracao, Rapieira, Couro Curtido. O texto inspiracao e a magia dentro do equipamento.
+- Obs.: o kit do livro cita a magia (LIVRO-DO-JOGADOR.md:2108). Nao achei a definicao de Inspiracao Culinaria em livros/_parte_x_magias_v4_revisada.md; a conferir.
+- Erro do console: nenhum.
+
+## BV-068 Wizard, Druida: passivo com nome e texto diferentes do livro (P0)
+- Severidade: P0 (contraria o livro).
+- Passos: Classe = Druida, ir ate Revisao, ler BONUS PASSIVO (NV 1).
+- Esperado: Ciclo da Vida, pode se alimentar de qualquer planta, raiz ou fungo venenoso da masmorra, convertendo o veneno em nutricao sem dano (LIVRO-DO-JOGADOR.md:1113-1114).
+- Obtido: Ciclo da Masmorra, toxinas naturais viram resistencia.
+- Erro do console: nenhum.
+
+## BV-069 Wizard, Druida: proficiencias sem a restricao nao metalica (P0)
+- Severidade: P0 (contraria o livro).
+- Passos: Classe = Druida, ler PROFICIENCIAS na Revisao.
+- Esperado: Armaduras leves e medias (nao metalicas), escudos nao metalicos, armas simples nao metalicas (LIVRO-DO-JOGADOR.md:1110).
+- Obtido: Armaduras leves/medias (nao metalicas), escudos, armas simples. Falta nao metalicos em escudos e armas.
+- Erro do console: nenhum.
+
+VEREDITO maestro (21/11): BUG, os kits do Feiticeiro nao batem com a tabela do livro (:2110): kit 1 traz Maos Gelidas a mais, kit 2 Chama de Fogareiro a mais, kit 3 e funda+brigandina em vez de maca+Chama de Vinha. Vai para a Bigorna (KITS-LIVRO, todas as classes).
+## BV-070 Wizard, Feiticeiro: magia extra no kit e em EQUIPAMENTO (P0)
+- Severidade: P0 (contraria o livro e a regra de magia fora do equipamento).
+- Passos: Classe = Feiticeiro, ir ate Revisao, ler EQUIPAMENTO e MAGIAS E TRUQUES.
+- Esperado: kit Adaga e Lamina de Espirito (LIVRO-DO-JOGADOR.md:2110). Sem Mãos Gelidas no kit; equipamento so com itens.
+- Obtido: Truques Lamina de Espirito (certo), mais Magias Maos Gelidas. EQUIPAMENTO: Adaga e centelha, Mãos Gelidas, Adaga de Masmorra, Couro Curtido. Mãos Gelidas aparece no equipamento.
+- Obs.: Mãos Gelidas existe no livro (LIVRO-DO-JOGADOR.md:294) mas nao no kit.
+- Erro do console: nenhum.
+
+VEREDITO maestro (21/11): nao e bug de codigo. O livro chama de Harmonizacao o que o sistema chama de Forrageio (decisao D-22 na pagina 03). Fortitude 2 vem da raca (ver BV-063).
+## BV-071 Wizard, Feiticeiro: culinaria inicial diferente do livro (P0)
+- Severidade: P0 (contraria o livro).
+- Passos: mesmos de BV-070, ler CULINARIA INICIAL.
+- Esperado: Harmonizacao +3, Fabricacao +2 (LIVRO-DO-JOGADOR.md:1148).
+- Obtido: Forrageio 3, Fabricacao 2, Fortitude 2. Harmonizacao virou Forrageio.
+- Erro do console: nenhum.
+
+## BV-072 Wizard, Bruxo: nivel 1 sem truques e com Sussurro de Masmorra (P0)
+- Severidade: P0 (contraria o livro). Pode vir do kit do Bruxo (Bigorna): confirmar.
+- Passos: Site local 1900x1175, conta jogador_teste02, aventura aventura-teste-farejador-8sghq, CRIAR PERSONAGEM; nome Teste Bruxo, PROXIMO; Humano; PROXIMO; classe Bruxo; PROXIMO; PROXIMO; antecedente Explorador; PROXIMO; PROXIMO; religiao Valdrun; PROXIMO; PROXIMO; ler MAGIAS E TRUQUES na Revisao.
+- Esperado: nivel 1 do Bruxo tem Pacto Arcano com 2 truques e 2 magias de nivel 1 (LIVRO-DO-JOGADOR.md:1248). Sussurro de Masmorra e truque extra do nivel 4 da subclasse Voz das Profundezas (LIVRO-DO-JOGADOR.md:3126), nao do nivel 1.
+- Obtido: MAGIAS E TRUQUES mostra so "Magias: Raio do Limiar · Sussurro de Masmorra"; nenhuma linha de Truques.
+DIAGNOSTICO Bigorna (21/11, 06:10): causa confirmada. Correcao maior, NAO editada, sem commit.
+- Causa 1: o wizard nao tem escolha de truques. A revisao (components/character/wizard/CharacterCreationWizard.tsx:1040-1058) so lista o que esta em draft.starterEquipment.spellEntryIds, e essa lista vem so dos kits (lib/character/starter-kits.ts:575-610). Truque so aparece se o kit trouxer.
+- Causa 2: os kits do Bruxo (lib/character/starter-kits.ts:452-490) trazem 0 truque (Adaga e Cajado) ou 1 (Besta: Lamina de Espirito). Com o kit Adaga, a linha Truques nao aparece.
+- Causa 3: o numero 2 existe em data/character/spell-lists.json:186 (cantripsKnown do Bruxo) mas nenhum codigo le esse campo (lib/character/spell-lists.ts:13 so declara). Mago e Feiticeiro mostram truque so porque o kit traz.
+- Nao e lib/character/spell-prep.ts:59: 'Bruxo' la e o limite de magias preparadas (nivel + CAR, min. 2), nao truques.
+PROPOSTA (decisao para o maestro):
+- (a) Passo novo de truques no wizard, lendo cantripsKnown; para o Bruxo, escolher 2 entre os truques do pacto (Lamina de Espirito e Detectar Veneno, data/character/spell-lists.json:133). Como a lista tem so 2, a escolha e fixa. Mexe em estado do wizard e na ficha: risco medio/alto.
+- (b) Conflito de livro a decidir: LIVRO-DO-JOGADOR.md:2113 lista Raio do Limiar e Sussurro de Masmorra no kit do Bruxo, mas Raio do Limiar e nivel 3 na lista do pacto (spell-lists.json:137) e Sussurro e truque do nivel 4 (LIVRO-DO-JOGADOR.md:3126). Ilusao Menor (kit Besta) nao esta na lista do pacto. Isso fica com KITS-LIVRO.
+- Teste: nao escrito (nao houve edicao). npm test e tsc nao rodados.
+- Erro do console: nenhum.
+- URL: http://localhost:3000/aventura/aventura-teste-farejador-8sghq/personagem/novo
+
+VEREDITO maestro (21/11 06:25): NAO E BUG. VALOR e campo do rascunho da tabela de herois do Olho (estado local do TorEyePanel); so grava ao aplicar o calculo. Recarregar descarta o rascunho.
+## BV-076 (P2) Olho de Mordor: VALOR volta ao valor antigo depois de recarregar
+- Severidade: P2 (opcional, Olho desligado; o mestre perde o numero que digitou)
+- Passos: Teste maestro, mesa /mesa/aventura-teste-farejador-v44fo, 1900x1175. Abrir JORNADA. Na secao OLHO DE MORDOR (sem ligar o Olho), digitar 2 e depois 3 no campo VALOR. Esperar 3 s. Recarregar a pagina. Abrir JORNADA de novo.
+- Esperado: o campo VALOR mostra 3 depois de recarregar.
+- Obtido: depois de recarregar, VALOR volta a 1. Nao testei com o Olho ligado (LIGAR O OLHO DE MORDOR nao foi clicado).
+- Erro do console: nenhum capturado.
+- URL: http://localhost:3000/mesa/aventura-teste-farejador-v44fo
+
+VEREDITO maestro (21/11 06:25): ajustado, o placar diz 'tentativas restantes' (ver git log).
+## BV-077 (P3) Conselho: 'tentativas' sem dizer se e o total ou o que resta
+- Severidade: P3 (rotulo)
+- Passos: Teste maestro, mesa /mesa/aventura-teste-farejador-v44fo. Abrir CONSELHO e ler o placar. Clicar 3d em Graduacao de quem esta falando.
+- Esperado: o rotulo deixa claro se o numero e o limite ou o que resta.
+- Obtido: de '0/6 sucessos · 8 tentativas' para '3/6 sucessos · 7 tentativas' em uma rolagem. O numero cai e o texto nao diz 'restantes'. Decidir o rotulo.
+- Erro do console: nenhum capturado.
+
+ETAPA 20 (social, 21/11 06:22 a 06:25; Site local = jogador_teste02, Teste maestro = farejador_teste01, 1900x1175, /amigos). Resultado: pedido por apelido, aceite e mensagem funcionam; falham o tempo real (BV-078, BV-079) e o sino (BV-080). Passo 4: nome real e e-mail do outro nao aparecem em /amigos nem no painel Mensagens dos dois lados (DOM, title, data-site-tip, aria-label e perfil lateral): so o apelido.
+
+VEREDITO maestro (21/11 06:30): consulta de pedidos e convites a cada 30 s (FriendsChatProvider.tsx:16). Baixado para 10 s (ver git log).
+## BV-078 Pedido de amizade demora para chegar ao destinatario (P2, a confirmar)
+- Severidade: P2; cai para P3 se o combinado for ate 1 min
+- Passos: Teste maestro em /amigos, ADICIONAR com o apelido jogador_teste02 (enviado antes de 06:22:26). Site local ja aberto em /amigos, sem recarregar; ler o sino Notificacoes e a aba RECEBIDOS a cada poucos segundos.
+- Esperado: o pedido aparece no sino e em RECEBIDOS em ate uns 3 s, sem recarregar.
+- Obtido: em 06:22:34 e 06:22:42 o sino dizia Nenhuma pendencia no momento e RECEBIDOS Nenhum pedido recebido. Em 06:23:04 o sino mostrou Pedido de amizade: farejador_teste01 quer ser seu amigo. Atraso de cerca de 20 a 40 s.
+- Erro do console: nenhum (logs-start ativo nas duas contas).
+- URL: http://localhost:3000/amigos
+
+VEREDITO maestro (21/11 06:35): a lista de amigos do remetente so recarregava ao abrir. Agora, com pedido enviado em aberto, a pagina /amigos consulta de novo a cada 10 s (ver git log). Falta conferir no site.
+- Status ETAPA 20b (21/11 06:28 a 06:29): CORRIGIDO. Farejador removeu a amizade (REMOVER AMIGO, 06:28:41) e mandou pedido de novo pelo apelido (06:28:47). O pedido apareceu no sino do jogador_teste02 em cerca de 10 s (06:28:48 para 06:28:58; sino '1 notificacoes', RECEBIDOS 1). Ressalva: a pagina do jogador foi carregada em /amigos as 06:28:54, entre o envio e a leitura, entao o tempo mede o aparecimento depois da carga, nao com a aba aberta antes do envio.
+## BV-079 Aceite do pedido nao chega ao vivo para quem enviou (P2)
+- Severidade: P2 (o remetente fica com o pedido aguardando resposta e sem amigo ate recarregar)
+- Passos: (1) Site local, /amigos, aba RECEBIDOS, ACEITAR no pedido de farejador_teste01 (06:23:11). (2) Teste maestro, mesma pagina, sem recarregar; ler ENVIADOS e AMIGOS.
+- Esperado: o remetente ve a amizade em AMIGOS e o pedido sai de ENVIADOS em ate uns 3 s.
+- Obtido: em 06:23:26 ENVIADOS ainda mostra @jogador_teste02 aguardando resposta. Em 06:23:43 AMIGOS mostra Nenhum amigo ainda. Depois de recarregar /amigos (06:23:54), AMIGOS mostra @jogador_teste02. No destinatario, Amizade aceita. aparece e o amigo entra na lista.
+- Status ETAPA 20b (21/11 06:29): CORRIGIDO na tela. Farejador manteve /amigos aberto na aba AMIGOS, sem recarregar. jogador_teste02 aceitou em 06:29:08; o amigo apareceu na lista AMIGOS do farejador em cerca de 2 s (06:29:10), sem recarregar.
+- Erro do console: nenhum.
+- URL: http://localhost:3000/amigos
+
+VEREDITO maestro (21/11 06:30): o sino so lista pendencias por desenho; mostrar amizade aceita e mensagem nova e recurso novo. Fica para o dono (pagina 03 nao precisa: e UX simples, entra na proxima rodada se o dono quiser).
+## BV-080 Sino so lista pedidos pendentes: amizade aceita e mensagem nova nao aparecem (P2, a confirmar)
+- Severidade: P2 a confirmar com o desenho do sino
+- Passos: com as duas contas ja amigas, Teste maestro envia mensagem a jogador_teste02 (06:24:07). Site local: abrir o sino Notificacoes (06:24:35).
+- Esperado: o sino avisa a mensagem nova ou a amizade aceita (a confirmar).
+- Obtido: Nenhuma pendencia no momento. O aviso so aparece no botao Mensagens (1 mensagem nao lida, OK). Com o pedido pendente o sino mostrava o pedido (OK), mas depois de aceito nada aparece no sino.
+- Erro do console: nenhum.
+- URL: http://localhost:3000/amigos
+
+OK (nao e bug):
+- Mensagens: chega ao destinatario ao vivo; contador Mensagens, 1 mensagem nao lida em ate 4 s (06:24:07 a 06:24:11); some ao abrir a conversa (06:24:23).
+- Observacao (nao e bug): a pagina traz o e-mail da propria conta no codigo (so visivel na fonte); a conversa abre com ?com= e o id interno usr_..., sem dado pessoal.
+- Nao feito por limite de consumo: REMOVER AMIGO (desfazer) e refazer.
 - URL: http://localhost:3000/mesa/aventura-teste-farejador-v44fo
