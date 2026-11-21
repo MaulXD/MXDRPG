@@ -14,6 +14,8 @@ import { normalizeRoomSettings, type RoomSettings } from "@/lib/room/settings";
 import { memberIdsHasUser } from "@/lib/auth/member-ids";
 import { isHomologPublicRoom } from "@/lib/env/homolog";
 import type { RoomState } from "@/lib/room/types";
+import { inventoryPatchAddsItems } from "@/lib/character/inventory-add-guard";
+import type { InventoryItem } from "@/lib/character/types";
 
 export function normalizeInviteCode(code: string): string {
   return code.trim().toUpperCase();
@@ -255,6 +257,24 @@ export function requiresInventoryGmApproval(
   if (authActor.ownerId !== user.id) return false;
   if (!isAdventureBoundCharacter(authActor)) return false;
   return characterBelongsToRoom(room, authActor);
+}
+
+/**
+ * BV-045b: o dono (não mestre/admin) não adiciona item à ficha de aventura sem
+ * pedido aprovado. Remover ou diminuir quantidade continua livre.
+ * `nextInventory` deve vir já sanitizado (sanitizeActorPatch).
+ */
+export function ownerInventoryAdditionBlocked(
+  room: RoomAuthContext,
+  actor: Pick<CharacterSheet, "id" | "ownerId" | "adventureId" | "campaignRoomId">,
+  user: SessionUser | null | undefined,
+  currentInventory: readonly InventoryItem[],
+  nextInventory: readonly InventoryItem[] | undefined,
+  classResourceKeys: ReadonlySet<string> = new Set()
+): boolean {
+  if (nextInventory === undefined) return false;
+  if (!requiresInventoryGmApproval(room, actor, user)) return false;
+  return inventoryPatchAddsItems(currentInventory, nextInventory, classResourceKeys);
 }
 
 /** Loadout de combate/armadura na mesa — dono da ficha ou mestre/admin. */

@@ -14,6 +14,10 @@ import {
 } from "@/lib/character/sheet-edit-request-store";
 import { canStructuralSheetEditWithGrant } from "@/lib/character/edit-access";
 import { getSession } from "@/lib/auth/session";
+import { ownerInventoryAdditionBlocked } from "@/lib/auth/room-access";
+import { normalizeCharacter } from "@/lib/character/normalize";
+import { inventoryApprovalRoomFor } from "@/lib/character/inventory-approval-room";
+import { classResourceKeysFor } from "@/lib/character/class-resource-keys";
 import { syncAdventureActorsForRoom } from "@/lib/room/adventure-actors";
 import { getAdventure } from "@/lib/adventure/store";
 
@@ -70,9 +74,23 @@ export async function POST(request: Request, { params }: Params) {
       );
     } else {
       const prepared = body.preparedCharacter ?? prepareCharacterForLastLevelReedit(existing);
-      saved = await saveCharacter(
-        finalizeLastLevelReedit(prepared, body.levelUpChoices ?? {})
-      );
+      const finalized = finalizeLastLevelReedit(prepared, body.levelUpChoices ?? {});
+      // BV-045b: dono (nao mestre/admin) nao adiciona item por aqui; remover segue livre.
+      const approvalRoom = await inventoryApprovalRoomFor(existing);
+      if (
+        approvalRoom &&
+        ownerInventoryAdditionBlocked(
+          approvalRoom,
+          existing,
+          session.user,
+          normalizeCharacter(existing).inventory,
+          normalizeCharacter(finalized).inventory,
+          classResourceKeysFor(finalized)
+        )
+      ) {
+        return NextResponse.json({ error: "Peça o item ao mestre da aventura." }, { status: 403 });
+      }
+      saved = await saveCharacter(finalized);
     }
   } catch (e) {
     return NextResponse.json(

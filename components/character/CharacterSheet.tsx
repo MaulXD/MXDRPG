@@ -200,9 +200,10 @@ function CharacterSheetLoaded({
   const canEditPortrait = canEditPortraitProp ?? canEdit;
   const inventoryEditMode =
     inventoryEditModeProp ?? (canEdit ? "direct" : "readonly");
-  const canEditInventory = inventoryEditMode === "direct";
   const canRequestInventory = inventoryEditMode === "request";
-  const canPickCompendium = canEditInventory || canRequestInventory;
+  const canPickCompendium = inventoryEditMode === "direct" || canRequestInventory;
+  // BV-045b: remover (Delete e botao) e livre no modo 'request'; so adicionar vira pedido.
+  const canRemoveInventory = inventoryEditMode !== "readonly";
   const router = useRouter();
   const [tab, setTab] = useState<Tab>("inventário");
   const [v2Tab, setV2Tab] = useState<SheetV2TabId>("ficha");
@@ -630,7 +631,7 @@ function CharacterSheetLoaded({
   useEffect(() => {
     function onKey(e: KeyboardEvent) {
       if (e.key !== "Delete" && e.key !== "Backspace") return;
-      if (!canEditInventory || tab === "tesouro" || tab === "bestiário" || pickerOpen) return;
+      if (!canRemoveInventory || tab === "tesouro" || tab === "bestiário" || pickerOpen) return;
       if (isTypingTarget(e.target)) return;
       if (!selectedInvId) return;
       const row = filtered.find((r) => r.ref.instanceId === selectedInvId);
@@ -642,7 +643,7 @@ function CharacterSheetLoaded({
 
     window.addEventListener("keydown", onKey, true);
     return () => window.removeEventListener("keydown", onKey, true);
-  }, [canEditInventory, tab, pickerOpen, selectedInvId, filtered, inventory]);
+  }, [canRemoveInventory, tab, pickerOpen, selectedInvId, filtered, inventory]);
 
   const tabStripRef = useRef<HTMLDivElement>(null);
   const { identity, resources, movement, tactical } = live;
@@ -883,7 +884,7 @@ function CharacterSheetLoaded({
         />
       ) : (
         <>
-          {canEditInventory && filtered.length > 0 ? (
+          {canRemoveInventory && filtered.length > 0 ? (
             <p className="inv-hint">
               Clique em um item e pressione <strong>Delete</strong> para remover.
             </p>
@@ -906,7 +907,7 @@ function CharacterSheetLoaded({
                         key={ref.instanceId}
                         entry={entry}
                         quantity={ref.quantity}
-                        canEdit={canEditInventory}
+                        canEdit={canRemoveInventory}
                         selected={selectedInvId === ref.instanceId}
                         showDetail
                         onSelect={() => setSelectedInvId(ref.instanceId)}
@@ -924,7 +925,7 @@ function CharacterSheetLoaded({
                   key={ref.instanceId}
                   entry={entry}
                   quantity={ref.quantity}
-                  canEdit={canEditInventory}
+                  canEdit={canRemoveInventory}
                   selected={selectedInvId === ref.instanceId}
                   showDetail
                   onSelect={() => setSelectedInvId(ref.instanceId)}

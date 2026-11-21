@@ -11,6 +11,9 @@ import {
   getSheetEditRequest,
 } from "@/lib/character/sheet-edit-request-store";
 import { isPortraitOnlyPatch } from "@/lib/auth/portrait-access";
+import { ownerInventoryAdditionBlocked } from "@/lib/auth/room-access";
+import { inventoryApprovalRoomFor } from "@/lib/character/inventory-approval-room";
+import { classResourceKeysFor } from "@/lib/character/class-resource-keys";
 import { canEditCharacterPortrait } from "@/lib/auth/portrait-access-server";
 import { getSession } from "@/lib/auth/session";
 import { validateDisplayName } from "@/lib/moderation/display-name";
@@ -126,6 +129,23 @@ export async function PATCH(request: Request, { params }: Params) {
 
   if (patch.identityPatch) {
     merged = normalizeCharacter(mergeIdentityPatch(merged, patch.identityPatch));
+  }
+
+  // BV-045b: compara a ficha resultante (normalizada) com a atual. Roda sempre:
+  // loadout, armadura e identityPatch (classe/subclasse) criam itens em normalizeCharacter.
+  const approvalRoom = await inventoryApprovalRoomFor(existing);
+  if (
+    approvalRoom &&
+    ownerInventoryAdditionBlocked(
+      approvalRoom,
+      existing,
+      session.user,
+      normalizeCharacter(existing).inventory,
+      merged.inventory,
+      classResourceKeysFor(merged)
+    )
+  ) {
+    return NextResponse.json({ error: "Peça o item ao mestre da aventura." }, { status: 403 });
   }
 
   const saved = await saveCharacter(merged);

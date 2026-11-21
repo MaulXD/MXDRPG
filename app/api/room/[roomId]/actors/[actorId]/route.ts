@@ -1,9 +1,22 @@
 import { NextResponse } from "next/server";
-import { actorForRoomAuth, canEditRoomActor, canPatchRoomActorLoadout } from "@/lib/auth/room-access";
+import {
+  actorForRoomAuth,
+  canEditRoomActor,
+  canPatchRoomActorLoadout,
+  ownerInventoryAdditionBlocked,
+} from "@/lib/auth/room-access";
 import { canEditRoomActorPortrait, isPortraitOnlyPatch } from "@/lib/auth/portrait-access";
 import { getSession } from "@/lib/auth/session";
 import { resolveCharacter } from "@/lib/character/characters";
-import { isLoadoutOnlyPatch } from "@/lib/room/internal/actor-patch";
+import {
+  isLoadoutOnlyPatch,
+  mergeIdentityPatch,
+  sanitizeActorPatch,
+} from "@/lib/room/internal/actor-patch";
+import { normalizeCharacter } from "@/lib/character/normalize";
+import { classResourceKeysFor } from "@/lib/character/class-resource-keys";
+import type { CharacterSheet } from "@/lib/character/types";
+import type { IdentityPatch } from "@/lib/character/identity";
 import { getRoom, getRoomActor, updateRoomActor } from "@/lib/room/store";
 
 type Params = { params: Promise<{ roomId: string; actorId: string }> };
@@ -42,6 +55,25 @@ export async function PATCH(req: Request, { params }: Params) {
     isPortraitOnlyPatch(body) && canEditRoomActorPortrait(room, actorForAuth, user);
   if (!canEdit && !canPortrait && !canLoadout) {
     return NextResponse.json({ error: "Sem permissão para editar esta ficha" }, { status: 403 });
+  }
+  // BV-045b: compara a ficha resultante (patch aplicado e normalizado, como updateRoomActor)
+  // com a atual. Roda sempre: loadout, armadura e identityPatch criam itens em normalizeCharacter.
+  const current = { ...seed, ...live } as CharacterSheet;
+  const safe = await sanitizeActorPatch(body as Parameters<typeof sanitizeActorPatch>[0]);
+  const withIdentity = body.identityPatch
+    ? mergeIdentityPatch({ ...current, ...safe } as CharacterSheet, body.identityPatch as IdentityPatch)
+    : ({ ...current, ...safe } as CharacterSheet);
+  if (
+    ownerInventoryAdditionBlocked(
+      room,
+      actorForAuth,
+      user,
+      normalizeCharacter(current).inventory,
+      normalizeCharacter(withIdentity).inventory,
+      classResourceKeysFor(withIdentity)
+    )
+  ) {
+    return NextResponse.json({ error: "Peça o item ao mestre da aventura." }, { status: 403 });
   }
   const snapshot = await updateRoomActor(roomId, actorId, body, { room });
   if (!snapshot) {

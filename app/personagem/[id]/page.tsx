@@ -5,6 +5,8 @@ import { TorCharacterSheetView } from "@/components/character/sheet/TorCharacter
 import { canEditCharacterWithGrant, resolveCharacter } from "@/lib/character/characters";
 import { resolveTorCharacter } from "@/lib/character/um-anel/characters";
 import { isAdventureBoundCharacter } from "@/lib/character/adventure-bind";
+import { inventoryApprovalRoomFor } from "@/lib/character/inventory-approval-room";
+import { requiresInventoryGmApproval } from "@/lib/auth/room-access";
 import { canEditCharacterPortrait } from "@/lib/auth/portrait-access-server";
 import { signInPath } from "@/lib/auth/post-auth-redirect";
 import { getSession } from "@/lib/auth/session";
@@ -53,6 +55,11 @@ export default async function PersonagemPage({ params }: Props) {
   const canEditPortrait = canEdit || (await canEditCharacterPortrait(character, session.user));
   const isOwner = character.ownerId === session.user.id;
   const showEditRequest = isOwner && isAdventureBoundCharacter(character) && !canEdit;
+  const approvalRoom = await inventoryApprovalRoomFor(character);
+  const inventoryNeedsApproval = approvalRoom
+    ? requiresInventoryGmApproval(approvalRoom, character, session.user)
+    : false;
+  const inventoryEditMode = inventoryNeedsApproval ? "request" : canEdit ? "direct" : "readonly";
 
   const compendium = Object.fromEntries(
     PLAYER_PACKS.map((p) => [p, getPackEntries(p, { role: session.user.role })])
@@ -69,6 +76,7 @@ export default async function PersonagemPage({ params }: Props) {
         variant="popup"
         standalonePage
         showEditRequest={showEditRequest}
+        inventoryEditMode={inventoryEditMode}
       />
     </div>
   );
