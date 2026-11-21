@@ -7,6 +7,7 @@ import { RoomSettingsPanel } from "@/components/vtt/RoomSettingsPanel";
 import type { RoomSettings } from "@/lib/room/settings";
 import type { BattleScene } from "@/lib/vtt/types";
 import type { RoomSnapshot } from "@/lib/room/types";
+import type { RpgSystemId } from "@/lib/rpg/systems";
 import "@/components/vtt/vtt.css";
 
 type Props = {
@@ -15,6 +16,7 @@ type Props = {
   inviteCode: string;
   settings: RoomSettings;
   scene: BattleScene;
+  rpgSystemId?: RpgSystemId;
 };
 
 export function MesaSetupClient({
@@ -23,6 +25,7 @@ export function MesaSetupClient({
   inviteCode,
   settings: initialSettings,
   scene: initialScene,
+  rpgSystemId = "eldarin",
 }: Props) {
   const router = useRouter();
   const [settings, setSettings] = useState(initialSettings);
@@ -41,6 +44,7 @@ export function MesaSetupClient({
         roomId={roomId}
         roomName={name}
         settings={settings}
+        rpgSystemId={rpgSystemId}
         coverVariant="hub"
         onUpdated={(snap) => {
           setName(snap.scene.name);

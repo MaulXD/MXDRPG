@@ -12,6 +12,7 @@ import { GmCreationsPanel } from "@/components/vtt/GmCreationsPanel";
 import { GmSavingThrowPanel } from "@/components/vtt/GmSavingThrowPanel";
 import { CulinaryMealPanel } from "@/components/vtt/CulinaryMealPanel";
 import { RoomSettingsPanel } from "@/components/vtt/RoomSettingsPanel";
+import type { RpgSystemId } from "@/lib/rpg/systems";
 import type { CombatUndoEntry } from "@/lib/room/types";
 import {
   IconHome,
@@ -37,6 +38,8 @@ type Props = {
   combatLog?: RoomSnapshot["combatLog"];
   onSceneUpdated: (payload: RoomApiPayload) => void;
   onRefresh?: () => void;
+  /** Sistema da mesa. No Um Anel o menu mostra so a aba Sala, sem regras do Eldarin. */
+  rpgSystemId?: RpgSystemId;
 };
 
 const TABS: { id: GmTab; label: string; hint: string; icon: ReactNode }[] = [
@@ -46,6 +49,9 @@ const TABS: { id: GmTab; label: string; hint: string; icon: ReactNode }[] = [
   { id: "criaturas", label: "Criaturas", hint: "Templates do mestre", icon: <IconSkull size={17} /> },
   { id: "combate", label: "Combate", hint: "Histórico de PA e desfazer ações", icon: <IconSword size={17} /> },
 ];
+
+/** Abas que o Um Anel nao mostra: sao do Eldarin (XP, vida e salvaguardas, culinaria, PA dos monstros e historico de PA). */
+const UM_ANEL_HIDDEN_TABS: ReadonlySet<GmTab> = new Set<GmTab>(["jogadores", "culinaria", "criaturas", "combate"]);
 
 /** Ferramentas do mestre — menu em abas. */
 export function GmToolsPanel({
@@ -60,9 +66,13 @@ export function GmToolsPanel({
   combatLog = [],
   onSceneUpdated,
   onRefresh,
+  rpgSystemId = "eldarin",
 }: Props) {
-  const [tab, setTab] = useState<GmTab>("jogadores");
-  const active = TABS.find((t) => t.id === tab) ?? TABS[0];
+  const isUmAnel = rpgSystemId === "um-anel";
+  const visibleTabs = isUmAnel ? TABS.filter((t) => !UM_ANEL_HIDDEN_TABS.has(t.id)) : TABS;
+  const [requestedTab, setTab] = useState<GmTab>("jogadores");
+  const tab = visibleTabs.some((t) => t.id === requestedTab) ? requestedTab : visibleTabs[0].id;
+  const active = visibleTabs.find((t) => t.id === tab) ?? visibleTabs[0];
 
   return (
     <aside className="vtt-sidebar vtt-sidebar--gm vtt-gm-tools">
@@ -76,7 +86,7 @@ export function GmToolsPanel({
       </header>
 
       <nav className="vtt-gm-tools__nav" aria-label="Seções do mestre">
-        {TABS.map((t) => (
+        {visibleTabs.map((t) => (
           <button
             key={t.id}
             type="button"
@@ -105,6 +115,7 @@ export function GmToolsPanel({
               roomId={roomId}
               roomName={scene.name}
               settings={snapshot.settings}
+              rpgSystemId={rpgSystemId}
               onUpdated={onSceneUpdated}
             />
           </>

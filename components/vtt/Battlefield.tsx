@@ -2464,6 +2464,7 @@ export function Battlefield({
         inviteCode={inviteCode}
         roomActors={roomActors}
         spawnAxial={hoverAxial}
+        rpgSystemId={rpgSystemId}
         combatUndo={snapshot.combatUndo}
         combatLog={snapshot.combatLog}
         onSceneUpdated={(snap) => syncRoom(snap)}

@@ -82,6 +82,7 @@ export default async function ConfigurarAventuraPage({ params }: Props) {
           inviteCode={adventure.inviteCode}
           settings={settings}
           scene={room.scene}
+          rpgSystemId={room.rpgSystemId}
         />
       </div>
 

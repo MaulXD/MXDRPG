@@ -10,7 +10,7 @@ import {
   portraitFocusToImgStyle,
   sanitizePortraitFocus,
 } from "@/lib/media/portrait-focus";
-import { resolveMesaCoverSrc } from "@/lib/rpg/systems";
+import { resolveMesaCoverSrc, type RpgSystemId } from "@/lib/rpg/systems";
 
 type Props = {
   roomId: string;
@@ -19,6 +19,8 @@ type Props = {
   /** hub = página de gerenciamento; vtt = painel lateral na sala */
   coverVariant?: "hub" | "vtt";
   onUpdated: (snapshot: RoomSnapshot) => void;
+  /** Sistema da mesa. No Um Anel a secao Combate (PA, auto-passe, XP) some. */
+  rpgSystemId?: RpgSystemId;
 };
 
 export function RoomSettingsPanel({
@@ -27,6 +29,7 @@ export function RoomSettingsPanel({
   settings,
   coverVariant = "vtt",
   onUpdated,
+  rpgSystemId = "eldarin",
 }: Props) {
   const [name, setName] = useState(roomName);
   const [showMonsterHp, setShowMonsterHp] = useState(settings.showMonsterHpToPlayers);
@@ -60,11 +63,14 @@ export function RoomSettingsPanel({
     setBusy(true);
     setMsg(null);
     try {
+      // No Um Anel a secao Combate some: nao grava campos do Eldarin (PA, auto-passe, XP).
+      const combatFields =
+        rpgSystemId === "um-anel"
+          ? {}
+          : { combatActive, autoPassDelayMs, xpFromMonstersEnabled: xpFromMonsters };
       const snapshot = await patchRoomSettings(roomId, {
         name: name.trim() || roomName,
-        combatActive,
-        autoPassDelayMs,
-        xpFromMonstersEnabled: xpFromMonsters,
+        ...combatFields,
         showMonsterHpToPlayers: showMonsterHp,
         showMonsterHpInChat: showMonsterHpChat,
         allowPlayerPing: allowPing,
@@ -176,47 +182,49 @@ export function RoomSettingsPanel({
         </label>
       </fieldset>
 
-      <fieldset className="vtt-settings-fieldset">
-        <legend className="vtt-eyebrow">Combate</legend>
-        <label className="vtt-check">
-          <input
-            type="checkbox"
-            checked={combatActive}
-            onChange={(e) => setCombatActive(e.target.checked)}
-          />
-          Modo combate ativo (PA, turnos e iniciativa)
-        </label>
-        <p className="vtt-combat-hint" style={{ margin: "0.25rem 0 0" }}>
-          Desligado = exploração: movimento livre e magias sem PA. Rolar iniciativa liga o combate
-          automaticamente.
-        </p>
-        <p className="vtt-combat-hint" style={{ margin: "0.25rem 0 0" }}>
-          Atalho no topo do mapa: <strong>Aventura</strong> / <strong>Combate</strong>, ao lado da
-          visão mestre/jogador.
-        </p>
-        <label className="vtt-field" style={{ marginTop: "0.75rem" }}>
-          <span>Auto-passe quando PA = 0 (ms)</span>
-          <input
-            type="number"
-            min={0}
-            max={10000}
-            step={100}
-            value={autoPassDelayMs}
-            onChange={(e) => setAutoPassDelayMs(Number(e.target.value) || 0)}
-          />
-        </label>
-        <label className="vtt-check" style={{ marginTop: "0.5rem" }}>
-          <input
-            type="checkbox"
-            checked={xpFromMonsters}
-            onChange={(e) => setXpFromMonsters(e.target.checked)}
-          />
-          XP automático ao derrotar monstros
-        </label>
-        <p className="vtt-combat-hint" style={{ margin: "0.25rem 0 0" }}>
-          Mover, atacar e usar magia só na vez de cada token quando o combate está ativo.
-        </p>
-      </fieldset>
+      {rpgSystemId !== "um-anel" ? (
+        <fieldset className="vtt-settings-fieldset">
+          <legend className="vtt-eyebrow">Combate</legend>
+          <label className="vtt-check">
+            <input
+              type="checkbox"
+              checked={combatActive}
+              onChange={(e) => setCombatActive(e.target.checked)}
+            />
+            Modo combate ativo (PA, turnos e iniciativa)
+          </label>
+          <p className="vtt-combat-hint" style={{ margin: "0.25rem 0 0" }}>
+            Desligado = exploração: movimento livre e magias sem PA. Rolar iniciativa liga o combate
+            automaticamente.
+          </p>
+          <p className="vtt-combat-hint" style={{ margin: "0.25rem 0 0" }}>
+            Atalho no topo do mapa: <strong>Aventura</strong> / <strong>Combate</strong>, ao lado da
+            visão mestre/jogador.
+          </p>
+          <label className="vtt-field" style={{ marginTop: "0.75rem" }}>
+            <span>Auto-passe quando PA = 0 (ms)</span>
+            <input
+              type="number"
+              min={0}
+              max={10000}
+              step={100}
+              value={autoPassDelayMs}
+              onChange={(e) => setAutoPassDelayMs(Number(e.target.value) || 0)}
+            />
+          </label>
+          <label className="vtt-check" style={{ marginTop: "0.5rem" }}>
+            <input
+              type="checkbox"
+              checked={xpFromMonsters}
+              onChange={(e) => setXpFromMonsters(e.target.checked)}
+            />
+            XP automático ao derrotar monstros
+          </label>
+          <p className="vtt-combat-hint" style={{ margin: "0.25rem 0 0" }}>
+            Mover, atacar e usar magia só na vez de cada token quando o combate está ativo.
+          </p>
+        </fieldset>
+      ) : null}
 
       <fieldset className="vtt-settings-fieldset">
         <legend className="vtt-eyebrow">Tokens no mapa</legend>
