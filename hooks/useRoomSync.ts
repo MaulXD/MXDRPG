@@ -73,6 +73,10 @@ const SSE_RECONNECT_BASE_MS = 2000;
 const SSE_RECONNECT_MAX_MS = 30_000;
 /** P-20: mutações de sala (roomFetch) em voo. Enquanto houver, o refresh vindo do SSE espera a resposta delas. */
 let mutacoesRoomEmVoo = 0;
+/** Para teste (verify-p20): quantas mutações de sala ainda não tiveram a resposta lida. */
+export function mutacoesRoomEmVooAgora(): number {
+  return mutacoesRoomEmVoo;
+}
 const REFRESH_ESPERA_MUTACAO_MS = 100;
 const REFRESH_ESPERA_MUTACAO_MAX_MS = 2000;
 
@@ -327,10 +331,7 @@ export function useRoomSync(roomId: string, opts: SyncOpts = {}) {
         return;
       }
       // Mutação em voo: espera a resposta dela, no máximo ~2 s; depois busca de qualquer jeito.
-      if (
-        mutacoesRoomEmVoo > 0 &&
-        Date.now() - inicio < REFRESH_ESPERA_MUTACAO_MAX_MS
-      ) {
+      if (mutacoesRoomEmVoo > 0 && Date.now() - inicio < REFRESH_ESPERA_MUTACAO_MAX_MS) {
         refreshDebounceRef.current = setTimeout(dispara, REFRESH_ESPERA_MUTACAO_MS);
         return;
       }
@@ -568,12 +569,34 @@ async function roomFetch(
 ): Promise<Response> {
   const ac = new AbortController();
   const timer = setTimeout(() => ac.abort(), MUTATION_TIMEOUT_MS);
+  // P-20b (Lupa): a mutação só deixa de estar "em voo" quando o corpo da resposta foi
+  // lido. O chamador aplica logo na continuação do res.json(), sem macrotarefa no meio,
+  // então o refresh do SSE (setTimeout) não consegue cair entre ler e aplicar.
   mutacoesRoomEmVoo += 1;
+  let liberado = false;
+  const liberar = () => {
+    if (liberado) return;
+    liberado = true;
+    mutacoesRoomEmVoo -= 1;
+  };
+  // Segurança: quem não ler o corpo libera sozinho no teto de espera do refresh.
+  const seguranca = setTimeout(liberar, REFRESH_ESPERA_MUTACAO_MAX_MS);
   try {
     const res = await fetch(url, { ...init, signal: ac.signal });
     if (!res.ok) await throwRoomApiError(res, fallback);
+    const lerJson = res.json.bind(res);
+    res.json = async () => {
+      try {
+        return await lerJson();
+      } finally {
+        clearTimeout(seguranca);
+        liberar();
+      }
+    };
     return res;
   } catch (e) {
+    clearTimeout(seguranca);
+    liberar();
     if (e instanceof RoomApiHttpError) throw e;
     if (e instanceof Error && e.name === "AbortError") {
       throw new RoomApiHttpError(`${fallback} — servidor demorou demais`, 504);
@@ -581,7 +604,6 @@ async function roomFetch(
     throw e;
   } finally {
     clearTimeout(timer);
-    mutacoesRoomEmVoo -= 1;
   }
 }
 

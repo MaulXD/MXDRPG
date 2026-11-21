@@ -23,10 +23,12 @@ const corpoRoomFetch = src.slice(iRoomFetch, src.indexOf("\n}\n", iRoomFetch));
 const iIncremento = corpoRoomFetch.indexOf("mutacoesRoomEmVoo += 1;");
 const iTry = corpoRoomFetch.indexOf("try {");
 exige(iIncremento >= 0 && iIncremento < iTry, "roomFetch nao incrementa o contador antes do try/fetch");
-const iFinally = corpoRoomFetch.indexOf("finally {");
+// P-20b: o contador cai em liberar(), chamado ao terminar de ler o corpo (res.json),
+// no erro e pela segurança de 2 s; o comportamento está no item (6).
 exige(
-  iFinally >= 0 && corpoRoomFetch.indexOf("mutacoesRoomEmVoo -= 1;", iFinally) > iFinally,
-  "roomFetch nao decrementa o contador no finally"
+  /const liberar = \(\) => \{[\s\S]*?mutacoesRoomEmVoo -= 1;/.test(corpoRoomFetch) &&
+    /setTimeout\(liberar, REFRESH_ESPERA_MUTACAO_MAX_MS\)/.test(corpoRoomFetch),
+  "roomFetch nao libera o contador por liberar() com seguranca de 2 s"
 );
 
 // (2) scheduleRefresh recebe a revisao alvo, pula o GET quando ela ja chegou,
@@ -127,6 +129,50 @@ exige(
   exige(/decidirAplicacao\(\s*snapshotRef\.current,\s*revisionRef\.current,\s*payload,\s*opts\?\.doGet \? "get" : "mutacao"\s*\)/.test(src), "applyRoomResponse não usa decidirAplicacao");
   exige(/applyRoomResponse\(data, \{ doGet: true \}\);/.test(src), "o refresh (GET) não marca doGet: true");
   exige(/if \(buscarDeNovo\) void refreshImplRef\.current\?\.\(\);/.test(src), "o salto não pede GET");
+}
+
+// (6) P-20b (Lupa): a mutação só sai de "em voo" depois que o corpo da resposta foi LIDO
+// (o chat devolve a sala inteira; ler o JSON demora). Comportamento real do roomFetch,
+// via postRoomChat transpilado, com fetch stubado cujo corpo chega devagar.
+{
+  const { createRequire } = await import("node:module");
+  const requireCjs = createRequire(import.meta.url);
+  const tsCjs = requireCjs("typescript");
+  const stub = new Proxy(function () {}, {
+    get: (_t, k) => (k === "__esModule" ? true : stub),
+    apply: () => stub,
+    construct: () => stub,
+  });
+  const js = tsCjs.transpileModule(src, {
+    compilerOptions: { module: tsCjs.ModuleKind.CommonJS, target: tsCjs.ScriptTarget.ES2020, jsx: tsCjs.JsxEmit.ReactJSX, esModuleInterop: true },
+  }).outputText;
+  const mod = { exports: {} };
+  const req = (n) => (n.startsWith(".") || n.startsWith("@/") || n === "react" ? stub : requireCjs(n));
+  new Function("require", "module", "exports", js)(req, mod, mod.exports);
+  const api = mod.exports;
+
+  let soltarCorpo;
+  const corpoPronto = new Promise((r) => (soltarCorpo = r));
+  globalThis.fetch = async () => {
+    const res = new Response("{}", { status: 200, headers: { "content-type": "application/json" } });
+    res.json = async () => {
+      await corpoPronto;
+      return { roomId: "s1", revision: 7, chat: [] };
+    };
+    return res;
+  };
+  const envio = api.postRoomChat("s1", { kind: "chat", text: "oi" });
+  await new Promise((r) => setTimeout(r, 20)); // headers chegaram; corpo ainda não
+  exige(api.mutacoesRoomEmVooAgora() === 1, "com o corpo ainda chegando, a mutação já saiu de 'em voo' (o GET volta)");
+  soltarCorpo();
+  const sala = await envio;
+  exige(sala?.revision === 7, "postRoomChat não devolveu a sala");
+  exige(api.mutacoesRoomEmVooAgora() === 0, "depois de ler o corpo, a mutação continua 'em voo'");
+
+  // Erro HTTP também libera.
+  globalThis.fetch = async () => new Response(JSON.stringify({ error: "x" }), { status: 400, headers: { "content-type": "application/json" } });
+  await api.postRoomChat("s1", { kind: "chat", text: "oi" }).catch(() => null);
+  exige(api.mutacoesRoomEmVooAgora() === 0, "erro na mutação não liberou o contador");
 }
 
 if (falhas.length > 0) {
