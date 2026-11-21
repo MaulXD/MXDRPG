@@ -199,7 +199,9 @@ export const CLASS_LIST: ClassDef[] = [
     primary: "Força e Constituição",
     proficiencies: "Armaduras leves/médias, escudos, todas armas",
     culinary: { estomagoDeFerro: 4, trinchar: 2 },
-    dietBonus: "Sede de Batalha — assimilação vital cura 1d8+CON e estende Fúria",
+    // BV-062: nome e texto do livro (LIVRO-DO-JOGADOR.md:1065); antes dizia "Sede de Batalha".
+    dietBonus:
+      "Sede de Sangue — consumir carne crua ou o coração de um monstro recém-abatido (ação rápida, 1 PA) cura 1d8+CON em HP e estende a Fúria em 2 turnos",
     subclasses: [
       "Devorador de Essência",
       "Mandíbula de Ferro",
