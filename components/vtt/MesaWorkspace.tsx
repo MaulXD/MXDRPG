@@ -266,7 +266,7 @@ function MesaWorkspaceInner({
           if (
             !cancelled &&
             data?.revision != null &&
-            data.revision > (snapshot?.revision ?? 0)
+            data.revision > getMesaRoomStore(roomId).getRevision()
           ) {
             void refresh();
           }
@@ -295,7 +295,7 @@ function MesaWorkspaceInner({
         clearTimeout(idleId as ReturnType<typeof setTimeout>);
       }
     };
-  }, [roomId, inviteCode, watchOnly, session?.id, refresh, snapshot?.revision]);
+  }, [roomId, inviteCode, watchOnly, session?.id, refresh]);
 
   const { passTurn: passMobileTurn, busy: mobileEndTurnBusy } = usePassTurn(
     roomId,
