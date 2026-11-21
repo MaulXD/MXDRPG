@@ -17,6 +17,7 @@ import type { DungeonObject } from "@/lib/vtt/types";
 import {
   applyRoomApiPayload,
   deltaAffectsBattlefield,
+  decidirAplicacao,
   isRoomDelta,
   type RoomApiPayload,
 } from "@/lib/room/room-delta";
@@ -70,6 +71,10 @@ const SSE_BACKUP_POLL_COMBAT_MS = 6000;
 /** Reconexão SSE após queda (ms) — backoff até SSE_RECONNECT_MAX_MS. */
 const SSE_RECONNECT_BASE_MS = 2000;
 const SSE_RECONNECT_MAX_MS = 30_000;
+/** P-20: mutações de sala (roomFetch) em voo. Enquanto houver, o refresh vindo do SSE espera a resposta delas. */
+let mutacoesRoomEmVoo = 0;
+const REFRESH_ESPERA_MUTACAO_MS = 100;
+const REFRESH_ESPERA_MUTACAO_MAX_MS = 2000;
 
 export type RoomSyncStatus = "loading" | "live" | "polling" | "error";
 
@@ -160,18 +165,31 @@ export function useRoomSync(roomId: string, opts: SyncOpts = {}) {
   );
 
   const applyRoomResponse = useCallback(
-    (payload: RoomApiPayload, opts?: { force?: boolean; immediate?: boolean }) => {
-      const merged = applyRoomApiPayload(snapshotRef.current, payload);
+    (
+      payload: RoomApiPayload,
+      opts?: { force?: boolean; immediate?: boolean; doGet?: boolean }
+    ) => {
       const immediate =
         opts?.immediate ??
         (isRoomDelta(payload) ? deltaAffectsBattlefield(payload) : true);
-      applySnapshot(merged, { force: opts?.force, immediate });
+      // P-20 (Lupa): resposta de mutação com salto de revisão segura a revisão e busca o
+      // que faltou; a resposta do próprio GET (doGet) já é contígua e entra inteira.
+      const { snapshot, buscarDeNovo } = decidirAplicacao(
+        snapshotRef.current,
+        revisionRef.current,
+        payload,
+        opts?.doGet ? "get" : "mutacao"
+      );
+      applySnapshot(snapshot, { force: opts?.force, immediate });
+      if (buscarDeNovo) void refreshImplRef.current?.();
     },
     [applySnapshot]
   );
 
   const refreshImplRef = useRef<(() => Promise<void>) | null>(null);
   const refreshDebounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  /** P-20: maior revisão anunciada pelo SSE e ainda não buscada/confirmada. */
+  const refreshAlvoRef = useRef(0);
   const refreshInFlightRef = useRef(false);
   const refreshQueuedRef = useRef(false);
   const syncFailStreakRef = useRef(0);
@@ -266,7 +284,7 @@ export function useRoomSync(roomId: string, opts: SyncOpts = {}) {
       }
       const data = (await res.json()) as RoomApiPayload;
       noteSyncSuccess();
-      applyRoomResponse(data);
+      applyRoomResponse(data, { doGet: true });
       setSyncStatus(resolveSyncStatus(sseLiveRef.current, Boolean(snapshotRef.current)));
       sseReadyRef.current = true;
     } catch (e) {
@@ -295,14 +313,31 @@ export function useRoomSync(roomId: string, opts: SyncOpts = {}) {
 
   refreshImplRef.current = refresh;
 
-  const scheduleRefresh = useCallback(() => {
+  const scheduleRefresh = useCallback((revisaoAlvo: number) => {
     const inCombat = snapshotRef.current?.settings?.combatActive === true;
     const debounceMs = inCombat ? REFRESH_DEBOUNCE_COMBAT_MS : REFRESH_DEBOUNCE_MS;
+    refreshAlvoRef.current = Math.max(refreshAlvoRef.current, revisaoAlvo);
     if (refreshDebounceRef.current) return;
-    refreshDebounceRef.current = setTimeout(() => {
+    const inicio = Date.now();
+    const dispara = () => {
       refreshDebounceRef.current = null;
+      // Resposta da mutação que gerou esta revisão já aplicada: não precisa de GET.
+      if (revisionRef.current >= refreshAlvoRef.current) {
+        refreshAlvoRef.current = 0;
+        return;
+      }
+      // Mutação em voo: espera a resposta dela, no máximo ~2 s; depois busca de qualquer jeito.
+      if (
+        mutacoesRoomEmVoo > 0 &&
+        Date.now() - inicio < REFRESH_ESPERA_MUTACAO_MAX_MS
+      ) {
+        refreshDebounceRef.current = setTimeout(dispara, REFRESH_ESPERA_MUTACAO_MS);
+        return;
+      }
+      refreshAlvoRef.current = 0;
       void refreshImplRef.current?.();
-    }, debounceMs);
+    };
+    refreshDebounceRef.current = setTimeout(dispara, debounceMs);
   }, [refresh]);
 
   const initialSnapshotRef = useRef(initialSnapshot);
@@ -408,7 +443,7 @@ export function useRoomSync(roomId: string, opts: SyncOpts = {}) {
             setSyncStatus("live");
             stopFallbackPoll();
             if (data.revision > revisionRef.current) {
-              scheduleRefresh();
+              scheduleRefresh(data.revision);
             }
           }
           if (data.type === "connected" && typeof data.revision === "number") {
@@ -417,7 +452,7 @@ export function useRoomSync(roomId: string, opts: SyncOpts = {}) {
             setSyncStatus("live");
             stopFallbackPoll();
             if (data.revision > revisionRef.current) {
-              scheduleRefresh();
+              scheduleRefresh(data.revision);
             }
           }
           if (
@@ -533,6 +568,7 @@ async function roomFetch(
 ): Promise<Response> {
   const ac = new AbortController();
   const timer = setTimeout(() => ac.abort(), MUTATION_TIMEOUT_MS);
+  mutacoesRoomEmVoo += 1;
   try {
     const res = await fetch(url, { ...init, signal: ac.signal });
     if (!res.ok) await throwRoomApiError(res, fallback);
@@ -545,6 +581,7 @@ async function roomFetch(
     throw e;
   } finally {
     clearTimeout(timer);
+    mutacoesRoomEmVoo -= 1;
   }
 }
 

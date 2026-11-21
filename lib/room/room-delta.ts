@@ -176,6 +176,34 @@ export function mergeRoomDelta(base: RoomSnapshot, delta: RoomDelta): RoomSnapsh
   return next;
 }
 
+/**
+ * P-20: o delta de uma mutação traz só o que ELA mudou. Se a revisão dele pula mais de 1
+ * sobre a que o cliente tem, houve outra gravação no meio (de outro jogador) que este
+ * delta não traz: o cliente precisa buscar o que faltou. Sala completa não tem buraco.
+ */
+export function deltaPulaRevisao(revisaoAtual: number, payload: RoomApiPayload): boolean {
+  return isRoomDelta(payload) && payload.revision > revisaoAtual + 1;
+}
+
+/**
+ * P-20: como aplicar uma resposta da API no cliente. Resposta de MUTAÇÃO com salto de
+ * revisão: mostra a mudança, segura a revisão e pede GET. Resposta do próprio GET
+ * (since=X) já é contígua: aplica inteira, sem novo GET (senão vira laço).
+ */
+export function decidirAplicacao(
+  base: RoomSnapshot | null,
+  revisaoCliente: number,
+  payload: RoomApiPayload,
+  origem: "mutacao" | "get"
+): { snapshot: RoomSnapshot; buscarDeNovo: boolean } {
+  const merged = applyRoomApiPayload(base, payload);
+  const atual = Math.max(base?.revision ?? 0, revisaoCliente);
+  if (origem === "mutacao" && base && deltaPulaRevisao(atual, payload)) {
+    return { snapshot: { ...merged, revision: atual }, buscarDeNovo: true };
+  }
+  return { snapshot: merged, buscarDeNovo: false };
+}
+
 export function applyRoomApiPayload(
   base: RoomSnapshot | null,
   payload: RoomApiPayload
