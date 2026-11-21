@@ -176,10 +176,16 @@ await caso("(2) jogador dono mandando vida responde 403 e não grava", async () 
 });
 
 await caso("(3) jogador dono mandando nameplateMode passa e grava", async () => {
-  const r = await chamarPatch({ nameplateMode: "x" }, JOGADOR);
+  const r = await chamarPatch({ nameplateMode: "always" }, JOGADOR);
   assert.equal(r.status, 200);
   assert.equal(r.chamadas.length, 1);
-  assert.equal(r.chamadas[0].patch.nameplateMode, "x");
+  assert.equal(r.chamadas[0].patch.nameplateMode, "always");
+});
+
+await caso("(3b) nameplateMode fora de hover/always responde 400 e não grava", async () => {
+  const r = await chamarPatch({ nameplateMode: "x" }, JOGADOR);
+  assert.equal(r.status, 400);
+  assert.equal(r.chamadas.length, 0);
 });
 
 await caso("(4) jogador dono mandando timedEffects responde 403 e não grava", async () => {
@@ -201,7 +207,7 @@ await caso("(6) corpo 'null' responde 400", async () => {
 });
 
 await caso("(7) jogador de outra conta, sem ser dono, responde 403 e não grava", async () => {
-  const r = await chamarPatch({ nameplateMode: "x" }, ESTRANHO);
+  const r = await chamarPatch({ nameplateMode: "always" }, ESTRANHO);
   assert.equal(r.status, 403);
   assert.equal(r.chamadas.length, 0);
 });

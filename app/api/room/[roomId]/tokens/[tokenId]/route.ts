@@ -38,6 +38,13 @@ export async function PATCH(req: Request, { params }: Params) {
   if (!session) {
     return NextResponse.json({ error: "Faça login" }, { status: 401 });
   }
+  if (
+    body.nameplateMode !== undefined &&
+    body.nameplateMode !== "hover" &&
+    body.nameplateMode !== "always"
+  ) {
+    return NextResponse.json({ error: "nameplateMode inválido" }, { status: 400 });
+  }
   const isGm = canApplyTokenConditions(room, session.user);
   if (!isGm) {
     if (body.conditions !== undefined || body.timedEffects !== undefined) {
