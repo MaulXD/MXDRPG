@@ -1,9 +1,10 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { FoundryWindow } from "@/components/vtt/foundry/FoundryWindow";
 import { TorCharacterSheetView } from "@/components/character/sheet/TorCharacterSheetView";
 import { postRoomChat } from "@/hooks/useRoomSync";
+import { useMesaRoomRevision } from "@/hooks/vtt/useMesaRoomSlice";
 import type { FoundryWindowLayout } from "@/hooks/vtt/useFoundryWindows";
 import type { TorFeatDieRollPayload } from "@/lib/character/um-anel/dice";
 import type { TorCharacterSheet, TorResourcePatch } from "@/lib/character/um-anel/types";
@@ -47,6 +48,20 @@ export function TorCharacterSheetPopup({
     if (characterId) void load(characterId);
     else setCharacter(null);
   }, [characterId, load]);
+
+  // BV-050: outra pessoa (mestre ou dono) grava a ficha pela rota PATCH, que sobe a
+  // revisão da sala. A ficha aberta recarrega uma vez por rajada (1,5 s), como o card.
+  const roomRevision = useMesaRoomRevision(roomId);
+  const firstRevisionRef = useRef(true);
+  useEffect(() => {
+    if (firstRevisionRef.current) {
+      firstRevisionRef.current = false;
+      return;
+    }
+    if (!characterId) return;
+    const t = window.setTimeout(() => void load(characterId), 1500);
+    return () => window.clearTimeout(t);
+  }, [roomRevision, characterId, load]);
 
   async function handleResourceChange(patch: TorResourcePatch) {
     if (!character) return;

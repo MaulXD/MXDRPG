@@ -182,6 +182,13 @@ ok(
     /emitter\(\)\.emit\(`room:\$\{roomId\}`, revision\);/.test(NOTIFIER)
 );
 
+ok(
+  "BV-050 ficha aberta: recarrega pela revisão da sala, uma vez por rajada (1,5 s)",
+  /const roomRevision = useMesaRoomRevision\(roomId\);/.test(SHEET_POPUP) &&
+    /window\.setTimeout\(\(\) => void load\(characterId\), 1500\)/.test(SHEET_POPUP) &&
+    /\}, \[roomRevision, characterId, load\]\);/.test(SHEET_POPUP)
+);
+
 /* ── 3. BV-039: botão ROLAR dentro do painel ───────────────────────────── */
 
 const CSS = read("components", "vtt", "vtt.css");
