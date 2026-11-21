@@ -39,6 +39,9 @@ export function getAuthCapabilities(): AuthCapabilities {
   };
 }
 
+/** Frase mostrada quando não há contas persistentes (tela /entrar e rota de cadastro). */
+export const FRASE_CADASTRO_INDISPONIVEL = "Novos cadastros estão indisponíveis no momento.";
+
 /** Texto curto para /entrar conforme o que o servidor oferece. */
 export function authLoginLead(cap: AuthCapabilities): string {
   if (cap.oauthProviders.length > 0) {
@@ -51,7 +54,7 @@ export function authLoginLead(cap: AuthCapabilities): string {
     return `Entre com ${social} em um clique — ou use e-mail e senha abaixo.`;
   }
   if (!cap.persistentAccounts) {
-    return "E-mail e senha. Novos cadastros estão indisponíveis no momento.";
+    return `E-mail e senha. ${FRASE_CADASTRO_INDISPONIVEL}`;
   }
   return "Entre com e-mail e senha — uma conta para mesas, fichas e convites.";
 }

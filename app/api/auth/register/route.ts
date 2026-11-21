@@ -3,7 +3,12 @@ import { saveRecoveryIdentityForUser } from "@/lib/auth/password-recover";
 import { registerUser } from "@/lib/auth/user-store";
 import { postAuthRedirect } from "@/lib/auth/post-auth-redirect";
 import { createSession } from "@/lib/auth/session";
+import { FRASE_CADASTRO_INDISPONIVEL, getAuthCapabilities } from "@/lib/auth/auth-capabilities";
 export async function POST(request: Request) {
+  // Sem contas persistentes (sem banco SQL pronto) a tela /entrar esconde o cadastro: a API responde o mesmo.
+  if (!getAuthCapabilities().persistentAccounts) {
+    return NextResponse.json({ error: FRASE_CADASTRO_INDISPONIVEL }, { status: 503 });
+  }
   const body = await request.json();
   const email = String(body.email ?? "").trim();
   const name = String(body.name ?? "").trim();
