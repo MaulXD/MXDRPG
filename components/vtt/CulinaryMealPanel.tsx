@@ -117,7 +117,7 @@ export function CulinaryMealPanel({ roomId, roomActors, onUpdated }: Props) {
         <select className="input" value={cookActorId} onChange={(e) => setCookActorId(e.target.value)}>
           {players.map((p) => (
             <option key={p.id} value={p.id}>
-              {p.name} (Coccao +{p.culinary?.coccao ?? 0})
+              {p.name} (Cocção +{p.culinary?.coccao ?? 0})
             </option>
           ))}
         </select>
@@ -125,7 +125,7 @@ export function CulinaryMealPanel({ roomId, roomActors, onUpdated }: Props) {
 
       <div className="vtt-gm-culinary__row">
         <label className="vtt-field">
-          <span>Teste Coccao (total)</span>
+          <span>Teste Cocção (total)</span>
           <input
             className="input"
             type="number"
