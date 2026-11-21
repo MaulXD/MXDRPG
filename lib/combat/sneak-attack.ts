@@ -1,3 +1,4 @@
+import { migrateSubclassName } from "@/lib/character/legacy-names";
 import { combatPaPhaseFromFlags } from "@/lib/combat/combat-pa-phase";
 import type { RollMode } from "@/lib/combat/d20";
 import type { CombatActionKind, CombatTurnOptions } from "@/lib/combat/types";
@@ -88,4 +89,27 @@ export function sneakAttackFormula(args: {
     hasAdjacentAlly(args.attacker, args.defender, args.allTokens);
   if (!applies) return undefined;
   return `${sneakAttackDiceForLevel(args.nivel)}d6`;
+}
+
+/**
+ * Sombra Etérea do Ladino (livros/LIVRO-DO-JOGADOR.md, linha 2482, "Dieta nv.2"):
+ * "Ataque Furtivo ganha +1d6 necrótico". O dado extra so existe quando o Ataque Furtivo
+ * se aplica (sneakAttackFormula devolveu formula), nunca sozinho. Tipo: necrótico, com
+ * resistencia propria (resolveAttack resiste o dado necrótico separado do dano da arma).
+ */
+export const SOMBRA_ETEREA_SUBCLASSE = "Sombra Etérea";
+export const SOMBRA_ETEREA_NIVEL_MINIMO = 2;
+export const SOMBRA_ETEREA_TIPO_DANO = "necrótico";
+
+export function sneakAttackShadowFormula(args: {
+  classe: string;
+  subclasse: string | null | undefined;
+  nivel: number;
+  sneakFormula: string | undefined;
+}): string | undefined {
+  if (!args.sneakFormula) return undefined;
+  if (args.classe !== SNEAK_ATTACK_CLASS) return undefined;
+  if (migrateSubclassName(args.subclasse) !== SOMBRA_ETEREA_SUBCLASSE) return undefined;
+  if (Math.floor(args.nivel) < SOMBRA_ETEREA_NIVEL_MINIMO) return undefined;
+  return "1d6";
 }

@@ -28,7 +28,12 @@ import { abilityFromEntry, abilityFromKnownId } from "@/lib/combat/compendium-ac
 import { attackRollMode, canTokenAct } from "@/lib/combat/conditions";
 import { clearTimedEffectsForFields } from "@/lib/combat/timed-effects";
 import { combineRollModes, formatD20Detail, formatRollMode, rollD20, type RollMode } from "@/lib/combat/d20";
-import { sneakAttackFormula, sneakAttackTurnWindow } from "@/lib/combat/sneak-attack";
+import {
+  SOMBRA_ETEREA_TIPO_DANO,
+  sneakAttackFormula,
+  sneakAttackShadowFormula,
+  sneakAttackTurnWindow,
+} from "@/lib/combat/sneak-attack";
 import { isAreaSpellAction, parseAreaShape } from "@/lib/combat/area-spell";
 import { buildMagiaCombatAction } from "@/lib/combat/spell-parse";
 import { isSpellCombatReady } from "@/lib/character/spell-prep";
@@ -92,6 +97,8 @@ export type DamageBreakdown = {
   flatBonus?: number;
   /** Ataque Furtivo do Ladino (livro, linha 994): dado extra somado uma vez, antes da resistencia */
   sneakAttack?: { formula: string; rolls: number[]; total: number };
+  /** Sombra Etérea do Ladino: +1d6 necrótico junto do Ataque Furtivo; resiste como necrótico (sneak-attack.ts). */
+  sombraNecrotico?: { formula: string; rolls: number[]; total: number };
   total: number;
   doubled: boolean;
 };
@@ -1069,8 +1076,27 @@ export function resolveAttack(
       damage.sneakAttack = { formula: sneakFormula, rolls: sneakRolls, total: sneakTotal };
       damage.total += sneakTotal;
       sneakApplied = true;
+      const shadowFormula = sneakAttackShadowFormula({
+        classe: actor.identity.classe,
+        subclasse: actor.identity.subclasse,
+        nivel: actor.identity.nivel,
+        sneakFormula,
+      });
+      if (shadowFormula) {
+        // Sombra Etérea: o dado necrótico dobra no critico, como o Furtivo.
+        const shadowRolls = rollDice(shadowFormula).rolls;
+        if (critical) shadowRolls.push(...rollDice(shadowFormula).rolls);
+        const shadowTotal = shadowRolls.reduce((a, b) => a + b, 0);
+        damage.formula = `${damage.formula}+${shadowFormula}`;
+        damage.sombraNecrotico = { formula: shadowFormula, rolls: shadowRolls, total: shadowTotal };
+        damage.total += shadowTotal;
+      }
     }
-    const dmgTotal = resistedDamageAmount(damage.total, defenderToken, resolved.damageType);
+    // Sombra Etérea: o dado necrótico resiste como necrótico; o resto, pelo tipo da arma.
+    const necroTotal = damage.sombraNecrotico?.total ?? 0;
+    const dmgTotal =
+      resistedDamageAmount(damage.total - necroTotal, defenderToken, resolved.damageType) +
+      (necroTotal > 0 ? resistedDamageAmount(necroTotal, defenderToken, SOMBRA_ETEREA_TIPO_DANO) : 0);
     const damaged = applyDamageWithTempHp(hpBefore, tempBefore, dmgTotal);
     hpAfter = damaged.hp;
     tempAfter = damaged.tempHp;
@@ -1087,7 +1113,7 @@ export function resolveAttack(
   } else if (!hit) {
     summary = `${actor.name} ${verb}${modLabel} ${defenderToken.name} com ${resolved.name}${channelTag}: ${attackTotal} vs CA ${ac} — ERROU`;
   } else if (critical) {
-    summary = `${actor.name} CRÍTICO${modLabel} em ${defenderToken.name}! ${damage!.total} ${resolved.damageType} (${damage!.rolls.join("+")}${signedTerm(damage!.attributeMod)}${damage!.flatBonus ? `+${damage!.flatBonus}` : ""}${damage!.sneakAttack ? `+Furtivo ${damage!.sneakAttack.rolls.join("+")}` : ""})`;
+    summary = `${actor.name} CRÍTICO${modLabel} em ${defenderToken.name}! ${damage!.total} ${resolved.damageType} (${damage!.rolls.join("+")}${signedTerm(damage!.attributeMod)}${damage!.flatBonus ? `+${damage!.flatBonus}` : ""}${damage!.sneakAttack ? `+Furtivo ${damage!.sneakAttack.rolls.join("+")}` : ""}${damage!.sombraNecrotico ? `+Sombra necrótico ${damage!.sombraNecrotico.rolls.join("+")}` : ""})`;
   } else {
     summary = `${actor.name} acerta${modLabel} ${defenderToken.name}: ${attackTotal} vs CA ${ac} — ${damage!.total} ${resolved.damageType}`;
   }
@@ -1236,7 +1262,7 @@ export function formatAttackChatDetail(res: AttackResolution): string {
     const heal = res.summary.includes(" cura ");
     const dmgLabel = heal ? "Cura" : "Dano";
     parts.push(
-      `${dmgLabel} ${res.damage.rolls.join("+")}${signedTerm(res.damage.attributeMod)}${res.damage.flatBonus ? `+${res.damage.flatBonus}` : ""}${res.damage.sneakAttack ? `+Furtivo ${res.damage.sneakAttack.rolls.join("+")}` : ""} = ${res.damage.total}`
+      `${dmgLabel} ${res.damage.rolls.join("+")}${signedTerm(res.damage.attributeMod)}${res.damage.flatBonus ? `+${res.damage.flatBonus}` : ""}${res.damage.sneakAttack ? `+Furtivo ${res.damage.sneakAttack.rolls.join("+")}` : ""}${res.damage.sombraNecrotico ? `+Sombra necrótico ${res.damage.sombraNecrotico.rolls.join("+")}` : ""} = ${res.damage.total}`
     );
     parts.push(`HP ${res.defenderHpBefore}→${res.defenderHpAfter}`);
   }

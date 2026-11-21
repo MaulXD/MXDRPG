@@ -443,5 +443,59 @@ caso("texto: formatAttackChatDetail mostra +Furtivo no detalhe de dano", () => {
   assert.match(texto, /\+Furtivo \d+(\+\d+){2}/, texto);
 });
 
+// SOMBRA: Sombra Etérea do Ladino (livros/LIVRO-DO-JOGADOR.md, linha 2482, "Dieta nv.2"):
+// o Ataque Furtivo ganha +1d6 necrótico, a partir do nv 2, com resistencia propria a necrótico.
+const { sneakAttackShadowFormula } = await import(
+  pathToFileURL(join(ROOT, "lib", "combat", "sneak-attack.ts")).href
+);
+const SOMBRA = "Sombra Etérea";
+function fichaSub(classe, nivel, subclasse) {
+  return { ...ficha(classe, nivel), identity: { classe, nivel, subclasse } };
+}
+const alvoNecro = { ...alvo, id: "alvo-necro", damageResist: ["necrótico"] };
+
+caso("SOMBRA nv 2: o Furtivo ganha +1d6 necrótico, mostrado no chat", () => {
+  const actor = fichaSub("Ladino", 2, SOMBRA);
+  const res = golpe(atacanteBase, actor, [atacanteBase, alvo], acao, VANTAGEM);
+  assert.equal(res.damage.sneakAttack.rolls.length, 1);
+  assert.equal(res.damage.sombraNecrotico.rolls.length, 1);
+  assert.match(res.damage.formula, /\+1d6$/);
+  assert.match(formatAttackChatDetail(res), /\+Sombra necrótico \d+/);
+});
+
+caso("SOMBRA: a formula de sombra so existe com Ladino, Sombra Etérea e nv 2 ou mais", () => {
+  assert.equal(sneakAttackShadowFormula({ classe: "Ladino", subclasse: SOMBRA, nivel: 2, sneakFormula: "1d6" }), "1d6");
+  assert.equal(sneakAttackShadowFormula({ classe: "Ladino", subclasse: SOMBRA, nivel: 1, sneakFormula: "1d6" }), undefined);
+  assert.equal(sneakAttackShadowFormula({ classe: "Ladino", subclasse: "Forma Amorfa", nivel: 5, sneakFormula: "1d6" }), undefined);
+  assert.equal(sneakAttackShadowFormula({ classe: "Mago", subclasse: SOMBRA, nivel: 5, sneakFormula: "1d6" }), undefined);
+  assert.equal(sneakAttackShadowFormula({ classe: "Ladino", subclasse: SOMBRA, nivel: 5, sneakFormula: undefined }), undefined);
+  assert.equal(sneakAttackShadowFormula({ classe: "Ladino", subclasse: "Degustador de Sombras", nivel: 2, sneakFormula: "1d6" }), "1d6");
+});
+
+caso("SOMBRA: sem Ataque Furtivo (sem Vantagem e sem aliado), o dado necrótico nao aparece", () => {
+  const res = golpe(atacanteBase, fichaSub("Ladino", 2, SOMBRA), [atacanteBase, alvo]);
+  assert.equal(res.damage.sneakAttack, undefined);
+  assert.equal(res.damage.sombraNecrotico, undefined);
+});
+
+caso("SOMBRA: outra subclasse do Ladino (Forma Amorfa) nao ganha o dado necrótico", () => {
+  const res = golpe(atacanteBase, fichaSub("Ladino", 2, "Forma Amorfa"), [atacanteBase, alvo], acao, VANTAGEM);
+  assert.equal(res.damage.sneakAttack.rolls.length, 1);
+  assert.equal(res.damage.sombraNecrotico, undefined);
+});
+
+caso("SOMBRA critico no combate_turn: o dado necrótico rola de novo, a flag e gravada", () => {
+  const res = golpeCritico(fichaSub("Ladino", 2, SOMBRA), [atacanteBase, alvo], VANTAGEM, TURNO);
+  assert.equal(res.damage.sombraNecrotico.rolls.length, 2);
+  assert.equal(res.sneakAttackUsed, true);
+});
+
+caso("SOMBRA resistencia: o dado necrótico cai pela metade; o resto segue o tipo da arma", () => {
+  const res = golpe(atacanteBase, fichaSub("Ladino", 2, SOMBRA), [atacanteBase, alvoNecro], acao, VANTAGEM, alvoNecro);
+  const necro = res.damage.sombraNecrotico.total;
+  const arma = res.damage.total - necro;
+  assert.equal(res.defenderHpBefore - res.defenderHpAfter, arma + Math.floor(necro / 2));
+});
+
 console.log(`\nverify-d11-ataque-furtivo: ${pass} ok, ${fail} falha(s)`);
 if (fail > 0) process.exit(1);
