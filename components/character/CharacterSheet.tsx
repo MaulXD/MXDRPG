@@ -339,6 +339,9 @@ function CharacterSheetLoaded({
     async (patch: LoadoutPatch) => {
       if (inRoom) {
         const saved = await patchRoomActor(roomId!, character.id, patch);
+        // BV-028: aplica a resposta na hora; o refresh sozinho podia não trazer a
+        // revisão nova a tempo e o seletor 'Em uso' ficava com a arma antiga.
+        if (liveSnapshot) liveApplySnapshot(mergePortraitPatchIntoSnapshot(liveSnapshot, saved));
         await liveRefresh();
         assertRoomSheetSaved(saved);
         return;
@@ -355,7 +358,7 @@ function CharacterSheetLoaded({
       const data = (await res.json()) as { character?: CharacterSheetData };
       if (data.character) setLocalSheet(data.character);
     },
-    [character.id, inRoom, roomId, liveRefresh]
+    [character.id, inRoom, roomId, liveRefresh, liveSnapshot, liveApplySnapshot]
   );
 
   const applyCharacterResponse = useCallback((data: { character?: CharacterSheetData }) => {
