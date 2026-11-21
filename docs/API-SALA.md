@@ -1,8 +1,8 @@
 # API da sala
 
-> Estado: memória por padrão; com `DATABASE_URL`, salas persistem em Postgres — ver [POSTGRES.md](POSTGRES.md).
+> Estado: memória por padrão; com `DATABASE_URL` MariaDB, salas persistem no banco — ver [PERSISTENCIA.md](PERSISTENCIA.md).
 
-Estado: `globalThis.__eldarinRooms` — reinicia a cada deploy/serverless cold start.
+Estado: `globalThis.__eldarinRooms` — reinicia a cada restart do servidor/container (deploy em Docker na Contabo).
 
 ## Snapshot
 

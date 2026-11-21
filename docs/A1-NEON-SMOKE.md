@@ -1,5 +1,7 @@
 # A1 — Neon prod + persistência (gate)
 
+Obsoleto: o projeto usa MariaDB. Veja docs/HOMOLOG.md e docs/PERSISTENCIA.md.
+
 > **Objetivo:** salas e fichas **não se perdem** após restart/redeploy. Automatizado com `npm run smoke:a1`.
 
 ## Checklist A1

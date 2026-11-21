@@ -26,4 +26,4 @@ RPG/                          ← raiz = app Next.js (deploy Docker / Contabo)
 - **Mestre** — dono da sala, convite, spawn
 - **Jogador** — ficha + mesa
 
-Auth atual: Clerk + demo (`lib/auth/`). Persistência: Postgres (`docs/POSTGRES.md`).
+Auth atual: própria, cookie `vinite_session` assinado com HMAC, OAuth manual Google/Discord e senha com `bcryptjs` (`lib/auth/`). Persistência: MariaDB via `mysql2` (`docs/PERSISTENCIA.md`).

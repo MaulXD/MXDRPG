@@ -1,5 +1,7 @@
 # P0 — Neon + Postgres (gate PRD)
 
+Obsoleto: o projeto usa MariaDB. Veja docs/HOMOLOG.md e docs/PERSISTENCIA.md.
+
 > **Objetivo:** produção com `GET /api/health` → `{ "db": true, "persistence": "mariadb" }`.  
 > Depois: **P1** Clerk, **P9** beta — [PRD-ELDARIN-VTT.md](./PRD-ELDARIN-VTT.md).
 

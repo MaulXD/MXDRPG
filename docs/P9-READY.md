@@ -1,6 +1,6 @@
 # Pré-beta (P9) — gate técnico
 
-Use depois de features P1–P8 no ar. **Neon/postgres** pode entrar antes do beta ou na mesma semana — ver [P0-NEON-SETUP.md](./P0-NEON-SETUP.md) quando for prioridade.
+Use depois de features P1–P8 no ar. **MariaDB** já está na pilha atual; setup em [PERSISTENCIA.md](./PERSISTENCIA.md) e ambiente local em [HOMOLOG.md](./HOMOLOG.md).
 
 ## Smoke automático
 
@@ -21,11 +21,11 @@ Esperado com `DATABASE_URL` no servidor: `"db": true`, `"persistence": "mariadb"
 
 | Variável | Obrigatório beta |
 |----------|------------------|
-| `DATABASE_URL` | Sim (Neon pooler) |
-| `SESSION_SECRET` | Sim |
-| `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` | Sim (login real) |
-| `CLERK_SECRET_KEY` | Sim |
-| `CLERK_WEBHOOK_SIGNING_SECRET` | Sim (apelido/sync) |
+| `DATABASE_URL` | Sim (URL `mysql://` ou `mariadb://`) |
+| `SESSION_SECRET` | Sim (HMAC do cookie, mínimo 16 caracteres) |
+| `AUTH_URL` ou `NEXT_PUBLIC_APP_URL` | Sim (origem dos callbacks OAuth) |
+| `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET` | Sim para login com Google |
+| `DISCORD_CLIENT_ID`, `DISCORD_CLIENT_SECRET` | Sim para login com Discord |
 
 ## Roteiro humano
 

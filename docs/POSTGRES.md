@@ -1,5 +1,7 @@
 # MariaDB — Eldarin VTT
 
+Obsoleto: o projeto usa MariaDB. Veja docs/HOMOLOG.md e docs/PERSISTENCIA.md.
+
 Persistência exclusiva em **MariaDB** (`mysql2`). Postgres/Neon **não** são suportados.
 
 Setup rápido: [PERSISTENCIA.md](./PERSISTENCIA.md).

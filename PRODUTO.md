@@ -20,9 +20,9 @@ Não é módulo Foundry. Não exige instalar Foundry VTT.
 ## Stack
 
 - **Frontend:** Next.js 15, React 19, CSS (VTT canvas + UI)
-- **Backend hoje:** API Routes + salas em memória; **Postgres opcional** com `DATABASE_URL` ([docs/POSTGRES.md](docs/POSTGRES.md), [docs/PERSISTENCIA.md](docs/PERSISTENCIA.md))
+- **Backend hoje:** API Routes com persistência em **MariaDB** via `mysql2` quando há `DATABASE_URL` ([docs/PERSISTENCIA.md](docs/PERSISTENCIA.md), [docs/HOMOLOG.md](docs/HOMOLOG.md))
 - **Backend depois:** sync em tempo real (WebSocket / SSE)
-- **Auth:** demo cookie hoje → produção quando priorizar
+- **Auth:** própria, cookie `vinite_session` assinado com HMAC-SHA256, OAuth manual Google/Discord e e-mail/senha com `bcryptjs` ([docs/P2-OAUTH-MANUAL.md](docs/P2-OAUTH-MANUAL.md))
 - **Deploy:** Docker + GHCR → Contabo ([DEPLOY.md](DEPLOY.md))
 
 ## Mesa

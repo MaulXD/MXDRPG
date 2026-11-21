@@ -22,7 +22,7 @@
 | D2 | Superar **Roll20 e Foundry** — melhor experiência para **Eldarin v4** |
 | D3 | Foundry = **só referência** (paridade visual/UX, não runtime) |
 | D4 | Regras: **livro manda**; código e VTT corrigem para bater com livro |
-| D5 | Neon Postgres **do zero** em produção |
+| D5 | **MariaDB** via `mysql2` em produção |
 | D6 | Auth: **Google + e-mail + Discord**; login também por **nickname**; recuperar senha **sim** |
 | D7 | Visitante pode **só visualizar** sala; demo gera **usuários padrão** |
 | D8 | Convite: **código + link** |
@@ -36,8 +36,8 @@
 | D16 | Equipe: **Raul + IA**, ~**30 h/semana**; medo #1: **regras erradas** e **mal funcionamento** |
 | D17 | LGPD: rascunho em [PRIVACIDADE-LGPD.md](./PRIVACIDADE-LGPD.md) |
 | D18 | UX referência: **Foundry**; ficha em **popup** no site; **FX** de combate legais |
-| D19 | Analytics: **desejável** se viável (Vercel Analytics / Plausible) |
-| D20 | **Auth: Clerk** (recomendação aceita §I11) + nickname em Postgres |
+| D19 | Analytics: **desejável** se viável (Plausible) |
+| D20 | **Auth própria** (cookie HMAC + OAuth Google/Discord + senha) + nickname em `eldarin_users` (MariaDB) |
 | D21 | Delegação de token: **dono da ficha ou mestre** da sala |
 | D22 | Visitante: **só visualizar** — **sem chat** |
 | D23 | **10 fichas por usuário** (não global) |
@@ -62,7 +62,7 @@
 
 **One-liner:** Eldarin RPG é o VTT gratuito no browser feito para jogar **Eldarin v4** com regras fiéis ao livro, mesa célula interativa e UX mais simples que Roll20/Foundry.
 
-**Overview:** O produto parte de presencial como hábito do público e abre jornada **online-first** (2–8 jogadores). Já existe motor forte (PA, combate, compêndios, Postgres opcional). A visão v2 exige **lançamento público** com persistência Neon, sync confiável, auth social, criação de personagem completa, combate 100% do livro, bestiário integral e **mobile completo** — escopo ambicioso para um desenvolvedor solo; o roadmap abaixo **sequencia** entregas para reduzir risco de regras erradas e instabilidade.
+**Overview:** O produto parte de presencial como hábito do público e abre jornada **online-first** (2–8 jogadores). Já existe motor forte (PA, combate, compêndios, persistência MariaDB). A visão v2 exige **lançamento público** com persistência em MariaDB, sync confiável, auth social, criação de personagem completa, combate 100% do livro, bestiário integral e **mobile completo** — escopo ambicioso para um desenvolvedor solo; o roadmap abaixo **sequencia** entregas para reduzir risco de regras erradas e instabilidade.
 
 **Posicionamento:** Não competir como VTT genérico — competir como **o melhor lugar para jogar Eldarin**, depois expandir reputação de qualidade de mesa.
 
@@ -89,7 +89,7 @@ Jogadores de Eldarin que migram do **presencial** para online não encontram fer
 | Canal | Situação |
 |-------|----------|
 | Presencial | Referência principal do público |
-| Eldarin RPG web | Demo técnica forte; Postgres não em prod; poll ~2s |
+| Eldarin RPG web | Demo técnica forte; MariaDB em produção; poll ~2s |
 | Foundry (`vinite/`) | Referência UX/paridade — não produto |
 | Planilha + Discord | Funciona, sem autoridade de regras na mesa |
 
@@ -169,7 +169,7 @@ Experiência de RPG virtual **mais interativa, simples e eficaz** — capturar g
 
 **US-1.6** — Demo: visitantes podem virar **usuário padrão** rápido (conta leve) além de login completo.
 
-*Recomendação técnica:* [Vercel + Clerk](https://vercel.com/marketplace/clerk) ou Auth.js v5 — OAuth Google/Discord + credentials + campo `nickname` único no Postgres.
+*Implementação técnica atual:* auth própria em `lib/auth/`, cookie `vinite_session` assinado com HMAC-SHA256, OAuth manual Google/Discord e senha com `bcryptjs`; campo `nickname` único em `eldarin_users` (MariaDB).
 
 ---
 
@@ -181,7 +181,7 @@ Experiência de RPG virtual **mais interativa, simples e eficaz** — capturar g
 
 **US-2.3** — Até **10 fichas** por usuário.
 
-**US-2.4** — Persistência Neon; retrato em Blob ou base64 otimizado (decisão impl.).
+**US-2.4** — Persistência em MariaDB; retrato em base64/WebP otimizado no browser (decisão impl.).
 
 **US-2.5** — Level-up; PA máx e acúmulo refletidos no token após sync.
 
@@ -231,7 +231,7 @@ Experiência de RPG virtual **mais interativa, simples e eficaz** — capturar g
 
 **US-5.1** — Criar sala; **invite code + link mágico**.
 
-**US-5.2** — Neon: salas + campanhas sobrevivem restart.
+**US-5.2** — MariaDB: salas + campanhas sobrevivem restart.
 
 **US-5.3** — Sync **&lt; 1 s ou sem travar** — ver recomendação SSE abaixo.
 
@@ -384,7 +384,7 @@ Ordem sugerida após Epic 1–7 estáveis:
 | Quantitativo formal | **Não medir** no lançamento |
 | Qualitativo | Beta ≥ 1 grupo aprova “regras batem” e “não trava” |
 | Bugs PA / regras P0 | **Zero** na divulgação pública |
-| Analytics | Opcional: Vercel Web Analytics ou Plausible + consentimento LGPD |
+| Analytics | Opcional: Plausible + consentimento LGPD |
 
 ---
 
@@ -394,7 +394,7 @@ Ordem sugerida após Epic 1–7 estáveis:
 
 Todos obrigatórios antes de marketing amplo:
 
-- [ ] Neon prod (salas + fichas + users)
+- [ ] MariaDB em prod (salas + fichas + users)
 - [ ] Auth prod (Google, Discord, e-mail, nickname, reset senha)
 - [ ] Sync tempo real (sem travar)
 - [ ] Convite código + link na UI mestre
@@ -419,36 +419,26 @@ Todos obrigatórios antes de marketing amplo:
 
 ### Stack (mantém)
 
-Next.js 15, React 19, Vercel, Neon Postgres, `lib/` motor de regras.
+Next.js 15, React 19, MariaDB via `mysql2`, Docker + GHCR na Contabo, `lib/` motor de regras.
 
 ### Recomendações viáveis (solo 30 h/sem + IA)
 
 | Área | Opção recomendada | Por quê |
 |------|-------------------|---------|
-| **Auth** | **Clerk** (decisão v2.1 §I11) | Google + Discord + e-mail em dias, não semanas; UI login pronta; sync `userId` → Neon; ver abaixo |
-| **Nickname** | Campo `nickname` UNIQUE no Postgres + login custom (Clerk webhook ou página pós-login) | Clerk não substitui nickname nativo — gravar em `eldarin_users` |
-| **Sync** | **SSE** `GET /api/room/[id]/events` + `revision` | Funciona bem em Vercel Fluid Compute; mais simples que WS |
+| **Auth** | **Própria**: cookie `vinite_session` HMAC, OAuth manual Google/Discord e senha (`lib/auth/`) | Já implementada; sync `userId` → `eldarin_users` (MariaDB) |
+| **Nickname** | Campo `nickname` UNIQUE em `eldarin_users` (MariaDB) | Gravado no banco próprio, sem provedor terceiro |
+| **Sync** | **SSE** `GET /api/room/[id]/events` + `revision` | Já implementado; mais simples que WS |
 | **WS alternativo** | Ably/Pusher se SSE insuficiente | Custo $; só se SSE falhar em teste beta |
-| **Imagens ficha** | **Vercel Blob** | Retrato + crop metadata; URL no token |
+| **Imagens ficha** | **base64/WebP no browser** | Retrato + crop metadata; URL no token |
 | **Crop UI** | `react-image-crop` ou cropper leve | Wizard ficha |
-| **Analytics** | Vercel Web Analytics | Baixo esforço; banner LGPD |
-| **Neon** | Criar projeto novo → `DATABASE_URL` → `npm run db:migrate` | Do zero conforme D14 |
+| **Analytics** | Plausible | Baixo esforço; banner LGPD |
+| **MariaDB** | `DATABASE_URL` com `mysql://` ou `mariadb://` → `npm run db:migrate` | `scripts/db/schema.mariadb.sql`; ambiente local em `docs/HOMOLOG.md` |
 | **Delegação token** | `token.controllerUserId`; quem pode setar: **owner do actor** ou **mestre** | §I7 |
 | **Combate jogo** | `lib/combat/preview-attack.ts` (novo, puro) + hooks em `Battlefield` | Reutiliza `buildAttackModifiers`, `canAttackTarget` |
 
-#### Auth — por que Clerk (e não Auth.js puro)
+#### Auth — implementação atual
 
-| Critério | Clerk | Auth.js v5 |
-|----------|-------|------------|
-| Google + Discord | Marketplace Vercel, minutos | Config manual OAuth apps |
-| Tempo solo 30 h/sem | **Menor** | Maior (middleware, adapters, UI) |
-| Custo | Free tier ~10k MAU; depois $ | Grátis |
-| Nickname login | Custom: tabela Postgres + `signIn` alternativo ou username plugin | Total controle, mais código |
-| LGPD | DPA Clerk + sua política | Menos terceiros |
-
-**Implementação sugerida:** Clerk para identidade + sessão; tabela `eldarin_users` com `clerk_id`, `nickname`, `email`; rota `/api/auth/nickname-login` para quem prefere apelido+senha se mantiver credentials.
-
-**Auth.js** só se quiser **zero** vendor auth ou custo Clerk inaceitável — adia v1 público ~2–4 semanas.
+A autenticação é própria, em `lib/auth/`: cookie `vinite_session` com JSON em base64url e assinatura HMAC-SHA256 (`SESSION_SECRET` ou `OAUTH_STATE_SECRET`, mínimo 16 caracteres), OAuth manual Google e Discord (`GOOGLE_CLIENT_ID`/`GOOGLE_CLIENT_SECRET`, `DISCORD_CLIENT_ID`/`DISCORD_CLIENT_SECRET`, `AUTH_URL`) e e-mail/senha com `bcryptjs`. O campo `nickname` fica em `eldarin_users`, no MariaDB. Não há dependência de provedor de auth terceirizado.
 
 ### Arquitetura (5 camadas)
 
@@ -488,11 +478,11 @@ Estimativa **relativa** (não compromisso de calendário):
 
 | Fase | Entrega | Horas ordem |
 |------|---------|-------------|
-| **P0** | Neon prod + migrate + health `db:true` | 1 |
-| **P1** | Auth Clerk/Auth.js + nickname + reset + LGPD páginas | 2 |
+| **P0** | MariaDB prod + migrate + health `db:true` | 1 |
+| **P1** | Auth própria (cookie HMAC + OAuth + senha) + nickname + reset + LGPD páginas | 2 |
 | **P2** | SSE sync + convite UI + visitante read-only | 3 |
 | **P3** | PA acúmulo/teto/stun no código + testes zero bug PA | 4 |
-| **P4** | Wizard ficha + crop + Blob + 10 fichas | 5 |
+| **P4** | Wizard ficha + crop + retrato base64/WebP + 10 fichas | 5 |
 | **P5** | Combate fechado + **Epic 9 modo jogo** + classes + saves 100% | 6 |
 | **P6** | Bestiário 100% validado spawn | 7 |
 | **P7** | Mobile completo + matrix navegadores | 8 |
@@ -506,7 +496,7 @@ Estimativa **relativa** (não compromisso de calendário):
 
 ## Fase P9 — Beta fechado (o que combinamos)
 
-P9 **não é** desenvolvimento de feature nova. É **prova** de que tudo que o PRD v2.1 promete para v1 público funciona com **pelo menos um grupo real** (2–8 jogadores + 1 mestre), em **Vercel + Neon**, antes de divulgar Eldarin RPG para o mundo.
+P9 **não é** desenvolvimento de feature nova. É **prova** de que tudo que o PRD v2.1 promete para v1 público funciona com **pelo menos um grupo real** (2–8 jogadores + 1 mestre), em **Docker/GHCR na Contabo com MariaDB**, antes de divulgar Eldarin RPG para o mundo.
 
 ### Pré-requisitos (P0–P8 concluídos)
 
@@ -514,8 +504,8 @@ Nenhum teste de beta substitui gate de implementação. Antes de convidar o grup
 
 | Fase | Gate resumido |
 |------|----------------|
-| P0 | Neon prod, `db:migrate`, `/api/health` → `db: true` |
-| P1 | Clerk (Google, Discord, e-mail), nickname, reset senha, `/privacidade` + aceite |
+| P0 | MariaDB prod, `db:migrate`, `/api/health` → `db: true` |
+| P1 | Auth própria (Google, Discord, e-mail), nickname, reset senha, `/privacidade` + aceite |
 | P2 | SSE (ou fallback acordado), convite código + link, visitante só leitura **sem chat** |
 | P3 | PA pool máx. 9, +5/turno, stun zera banco — livro = motor — ver [PRD-COMBATE-MESA-REFACTOR.md](./PRD-COMBATE-MESA-REFACTOR.md) |
 | P4 | Wizard ficha completo, crop retrato→token, até **10 fichas/usuário** |
@@ -591,16 +581,16 @@ Arquivo `docs/BETA-P9-CHECKLIST.md` (criar na impl.): data, participantes, `room
 |-------|-----------|
 | Escopo v1 gigante para 1 dev | P0–P8 implementam; **P9 valida**; não anunciar até P9 aprovado |
 | Regras erradas | Livro primeiro; casos de teste PA; zero P0 |
-| Custo Neon/Vercel | Free tier + monitor; Blob só imagens |
-| SSE limites serverless | Fluid Compute; fallback poll |
-| OAuth complexidade | Clerk marketplace |
+| Custo infra (Contabo) | Monitor; imagens em base64/WebP no browser |
+| SSE em Docker | Fallback poll |
+| OAuth complexidade | OAuth manual Google/Discord em `lib/auth/oauth/` |
 | LGPD incompleto | Não go-live sem `/privacidade` + exclusão |
 
 ---
 
 ## Dependencies & Assumptions
 
-- Vercel + Neon (novo projeto).
+- Docker + GHCR na Contabo, com MariaDB ([DEPLOY.md](./DEPLOY.md), [PERSISTENCIA.md](./PERSISTENCIA.md)).
 - Titular único aprova conteúdo.
 - Beta ≥ 1 grupo disponível.
 - Público BR PT-BR.
@@ -612,7 +602,7 @@ Arquivo `docs/BETA-P9-CHECKLIST.md` (criar na impl.): data, participantes, `room
 
 | # | Questão |
 |---|---------|
-| 1 | Blob vs Postgres bytea para retrato |
+| 1 | Retrato em base64/WebP no browser vs arquivo estático |
 | 2 | SSE vs Ably se beta reportar lag &gt; 1s |
 | 3 | % acerto no preview de ataque — regra Eldarin define fórmula? |
 
@@ -632,7 +622,7 @@ Arquivo `docs/BETA-P9-CHECKLIST.md` (criar na impl.): data, participantes, `room
 | I8 | ✅ Visitante **só ver**, sem chat |
 | I9 | ✅ **10 fichas por usuário** |
 | I10 | ✅ Eldarin diferenciais após P9 |
-| I11 | ✅ **Clerk** recomendado (ver tabela Auth acima) |
+| I11 | ✅ **Auth própria** implementada (ver seção Auth acima) |
 | I12 | ✅ **Epic 9** — combate jogo + **PA movimento/habilidades** + **áreas livro/JSON/mapa** (detalhe em [VTT-ACOES-PA-AREAS.md](./VTT-ACOES-PA-AREAS.md)) |
 | I13 | N/A — pergunta era “algo **a mais** no escopo ou **irreal**?”; titular não tinha corte extra → escopo v1 mantido com fases |
 
@@ -652,7 +642,7 @@ Arquivo `docs/BETA-P9-CHECKLIST.md` (criar na impl.): data, participantes, `room
 | Doc | Uso |
 |-----|-----|
 | [ELDARIN-SITE-JOGAVEL.md](./ELDARIN-SITE-JOGAVEL.md) | Camadas técnicas |
-| [POSTGRES.md](./POSTGRES.md) | Neon setup |
+| [PERSISTENCIA.md](./PERSISTENCIA.md) | MariaDB e persistência |
 | [PRIVACIDADE-LGPD.md](./PRIVACIDADE-LGPD.md) | LGPD |
 | [LIVRO-DO-JOGADOR.md](../livros/LIVRO-DO-JOGADOR.md) | Regras PA |
 | [API-SALA.md](./API-SALA.md) | Endpoints |
