@@ -67,3 +67,27 @@ O gerador e o JSON já usam 6 células para Puxão Abissal (9 m), conforme o LIV
 Opções: (a) corrigir o catálogo para 6; (b) manter como está e aceitar a divergência. Escolha conservadora: (a), mas livro é fora do escopo do Regente neste loop; nada foi alterado em livros/.
 
 
+
+---
+
+## Decididas em 20/11/2026 às 22:40 (Claude, por delegação do dono: "tome as decisões que considerar melhor")
+
+| ID | Decisão | Por quê |
+|---|---|---|
+| D-03 | Manter as migrações antigas como histórico; trocar só o init do `docker-compose.local.yml` para o schema MariaDB | O schema Postgres montado no MariaDB é erro; as migrações não fazem mal |
+| D-04 | Reescrever `docs/CLAUDE-PROJETO.md` com a pilha real (OAuth próprio, cookie assinado, MariaDB, Contabo, Um Anel) | É o primeiro arquivo que todo agente lê, e hoje ensina a pilha errada |
+| D-05 | Ligar `npm test` no CI | 55 testes passam e nenhum roda no CI; lint fica fora porque o projeto não tem ESLint |
+| D-06 | A mesa manda na vida durante a sessão | Já é o comportamento desde o B1 |
+| D-07 | Vida temporária sobrevive à subida de nível | É efeito de combate, não da ficha |
+| D-08 | Nada de mudar classe agora | Balanceamento é decisão criativa do dono; as contas ficam em propostas/balanceamento.md |
+| D-09 | `updateRoomActor` passa a avisar quando a ficha não grava, em vez de engolir o erro | Falha silenciosa é a metade confirmada do B2 |
+| D-10 | Manter 150 ms (escolha de ritmo do dono em junho) e alinhar livro e docs ao código | O mestre pode mudar por sala |
+| D-11 | O motor soma o +N do aprimoramento ao dano da arma, e o chip mostra 1d4+N | O texto do catálogo, gerado do livro, promete "+1 ao dano" |
+| D-12 | Valor de PA guardado limitado pelo teto (9), máximo da ficha continua 5 | Menor passo; evita cortar PA guardado ao salvar |
+| D-13 | Corrigir o BV-018/019 com a guarda por revisão no flush e no pending da FX, e um refresh do servidor quando a cena for descartada | O refresh cobre o caso do servidor sem banco que reinicia a revisão |
+| D-14 | Travar `POST /api/auth/register` quando não há contas persistentes, com a mesma frase da tela | A interface já diz que o cadastro está indisponível |
+| D-15 | Log do mestre mostra pa + bankedPa, como os outros mostradores | Mesma conta em toda a tela, sem mexer na regra |
+| D-16 | Corrigir `livros/CATALOGO-HABILIDADES-TATICAS.md` para 6 células no Puxão Abissal | O livro principal diz 9 m |
+| A-10a | Limite por aventura fica 3 (está no código desde 08/06); mensagem e docs passam a dizer "até 3" | Baixar para 1 bloquearia quem já tem 2 ou 3 fichas |
+
+Ficam com o dono, porque mexem fora do código: D-01 (tornar o repositório privado ou tirar o texto dos livros de O Um Anel), D-02 (merge na `main`, que dispara deploy), Termos de Uso (texto jurídico), promessas da política de privacidade e servidor no Brasil.
