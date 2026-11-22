@@ -2110,7 +2110,7 @@ No **criador de personagem** (passo *Equipamento*), escolha **um kit** entre as 
 | **Feiticeiro** | Adaga e *Lâmina de Espírito* · Besta e *Onda de Trovão* · Maça e *Chama de Vinha* |
 | **Espiritualista** | Punhos (sem arma) + *Golpe de Chi* · Bastão + *Passo do Vácuo* · Espada curta + *Ferida Aberta* |
 | **Paladino** | Espada longa + cota + *Curar Ferimentos* e *Raio do Limiar* · Maça + meia-armadura + cura e *Escudo Arcano* · Gladius + brigandina + *Purificar Veneno* |
-| **Bruxo** | Adaga + couro + *Raio do Limiar* e *Sussurro de Masmorra* · Cajado + couro acolchoado + *Brasa Espectral* · Besta + *Lâmina de Espírito* e *Ilusão Menor* |
+| **Bruxo** | Adaga + couro + *Mãos Ardentes* · Cajado + couro acolchoado + *Chama de Vinha* · Besta + *Lâmina de Espírito* e *Armadura Arcana* |
 
 Na mesa virtual, troque arma ou armadura pelo painel **Em uso** na ficha; a CA é recalculada automaticamente ao equipar.
 

@@ -22,8 +22,8 @@ const block = src.slice(start, end);
 
 // Esperado segundo o livro (pack:entryId). armor null = kit sem armadura.
 // Excecao: mago-adaga, bruxo-cajado, espiritualista-bastao e espiritualista-lamina fixam
-// substitutos porque Brasa Espectral, Cajado, Bastao e Espada curta ainda nao existem no
-// compendio (pendencia na pagina 07; truques do Bruxo na decisao D-23).
+// substitutos porque Brasa Espectral (Mago), Cajado, Bastao e Espada curta ainda nao existem
+// no compendio (pendencia na pagina 07). Kits do Bruxo so com a lista Pacto ate o nivel 1 (D-23b).
 const ESPERADO = {
   Guerreiro: [
     ["guerreiro-lamina", ["armas:armas-wpn-s01", "equipamentos:equipamentos-arm-01"], "armas:armas-wpn-s01", "equipamentos:equipamentos-arm-01"],
@@ -81,9 +81,9 @@ const ESPERADO = {
     ["paladino-gladius", ["armas:armas-wpn-s08", "equipamentos:equipamentos-arm-09", "magias:magias-purificar-veneno"], "armas:armas-wpn-s08", "equipamentos:equipamentos-arm-09"],
   ],
   Bruxo: [
-    ["bruxo-adaga", ["armas:armas-wpn-o01", "equipamentos:equipamentos-arm-01", "magias:magias-raio-do-limiar", "magias:magias-sussurro-de-masmorra"], "armas:armas-wpn-o01", "equipamentos:equipamentos-arm-01"],
-    ["bruxo-cajado", ["armas:armas-wpn-o03", "equipamentos:equipamentos-arm-02", "magias:magias-chama-de-fogareiro"], "armas:armas-wpn-o03", "equipamentos:equipamentos-arm-02"],
-    ["bruxo-bestia", ["armas:armas-bst-01", "magias:magias-lamina-de-espirito", "magias:magias-ilusao-menor"], "armas:armas-bst-01", null],
+    ["bruxo-adaga", ["armas:armas-wpn-o01", "equipamentos:equipamentos-arm-01", "magias:magias-maos-ardentes"], "armas:armas-wpn-o01", "equipamentos:equipamentos-arm-01"],
+    ["bruxo-cajado", ["armas:armas-wpn-o03", "equipamentos:equipamentos-arm-02", "magias:magias-chama-de-vinha"], "armas:armas-wpn-o03", "equipamentos:equipamentos-arm-02"],
+    ["bruxo-bestia", ["armas:armas-bst-01", "magias:magias-lamina-de-espirito", "magias:magias-armadura-arcana"], "armas:armas-bst-01", null],
   ],
 };
 

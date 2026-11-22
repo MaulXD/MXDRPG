@@ -6910,3 +6910,13 @@ Contas temporárias de mestre e jogador e uma mesa, testadas no portal do Maestr
 - Conferido no navegador (dev local, jogador): Mago mostra 2/2, desmarcar libera as outras opções, trocar chega à Revisão ("Truques: Chama de Fogareiro · Mãos Firmes").
 - Não feito: D-23 (b), corrigir a tabela de kits do Bruxo no livro (Raio do Limiar é nível 3 e Sussurro de Masmorra é truque de nível 4). Observação nova: o kit do Mago dá Lâmina de Espírito, que não está nas listas do Mago.
 - Teste novo `scripts/verify-truques-wizard.mjs` (no `npm test`).
+
+### 2026-11-21 (noite) — Kits do Bruxo corrigidos no livro (D-23b)
+
+**Pedido:** "pode corrigir o kit do Bruxo no livro".
+
+- A tabela "Kits por classe" (`livros/LIVRO-DO-JOGADOR.md`) dava ao Bruxo Raio do Limiar (nível 3), Sussurro de Masmorra e Ilusão Menor (fora da lista Pacto) e Brasa Espectral (não existe no compêndio).
+- Agora, só com a lista Pacto do cap. 17.7 até o nível 1: Adaga + couro + *Mãos Ardentes* · Cajado + couro acolchoado + *Chama de Vinha* · Besta + *Lâmina de Espírito* e *Armadura Arcana*. Os 2 truques (Lâmina de Espírito e Detectar Veneno) entram sozinhos pelo passo de truques.
+- `lib/character/starter-kits.ts` e `scripts/verify-kits-livro.mjs` acompanham o livro; `verify-truques-wizard.mjs` ganhou a checagem de que kit e tabela do Bruxo só usam a lista Pacto até o nível 1.
+- Conferido no criador (dev local): Bruxo mostra os truques travados e o preset Adaga com Mãos Ardentes. `npm test` inteiro ok.
+- Segue igual: o Cajado do kit 2 continua como Machado de Batalha no código até o item existir no compêndio.

@@ -454,12 +454,11 @@ const CLASS_STARTER_KITS: Record<ClassId, StarterKitOption[]> = {
     {
       id: "bruxo-adaga",
       label: "Adaga e couro",
-      summary: "Pacto arcano: adaga, couro, Raio do Limiar e Sussurro de Masmorra.",
+      summary: "Pacto arcano: adaga, couro e Mãos Ardentes.",
       items: [
         { packId: "armas", entryId: "armas-wpn-o01" },
         { packId: "equipamentos", entryId: "equipamentos-arm-01" },
-        { packId: "magias", entryId: "magias-raio-do-limiar" },
-        { packId: "magias", entryId: "magias-sussurro-de-masmorra" },
+        { packId: "magias", entryId: "magias-maos-ardentes" },
       ],
       combatLoadout: { packId: "armas", entryId: "armas-wpn-o01" },
       armorLoadout: { packId: "equipamentos", entryId: "equipamentos-arm-01" },
@@ -467,11 +466,11 @@ const CLASS_STARTER_KITS: Record<ClassId, StarterKitOption[]> = {
     {
       id: "bruxo-cajado",
       label: "Machado de batalha e couro acolchoado",
-      summary: "Canal do patrono: machado de batalha, couro acolchoado e Chama de Fogareiro.",
+      summary: "Canal do patrono: machado de batalha, couro acolchoado e Chama de Vinha.",
       items: [
         { packId: "armas", entryId: "armas-wpn-o03" },
         { packId: "equipamentos", entryId: "equipamentos-arm-02" },
-        { packId: "magias", entryId: "magias-chama-de-fogareiro" },
+        { packId: "magias", entryId: "magias-chama-de-vinha" },
       ],
       combatLoadout: { packId: "armas", entryId: "armas-wpn-o03" },
       armorLoadout: { packId: "equipamentos", entryId: "equipamentos-arm-02" },
@@ -479,11 +478,11 @@ const CLASS_STARTER_KITS: Record<ClassId, StarterKitOption[]> = {
     {
       id: "bruxo-bestia",
       label: "Besta e Lâmina de Espírito",
-      summary: "Pacto à distância: besta, Lâmina de Espírito e Ilusão Menor.",
+      summary: "Pacto à distância: besta, Lâmina de Espírito e Armadura Arcana.",
       items: [
         { packId: "armas", entryId: "armas-bst-01" },
         { packId: "magias", entryId: "magias-lamina-de-espirito" },
-        { packId: "magias", entryId: "magias-ilusao-menor" },
+        { packId: "magias", entryId: "magias-armadura-arcana" },
       ],
       combatLoadout: { packId: "armas", entryId: "armas-bst-01" },
       armorLoadout: null,

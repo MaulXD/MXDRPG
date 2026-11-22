@@ -108,7 +108,24 @@ assert.equal(truquesDe("Mago", kits.sanitizeStarterEquipmentForClass("Mago", vaz
 assert.equal(truquesDe("Mago", kits.sanitizeStarterEquipmentForClass("Mago", tres).spellEntryIds).length, 2);
 ok("rascunho antigo sem truques ganha os da classe; excesso é cortado");
 
-// 6. A tela mostra o bloco de truques separado das magias.
+// 6. D-23 (b): os kits do Bruxo só dão magia da lista Pacto até o nível 1 (o livro corrigido).
+const magias = JSON.parse(readFileSync(join(root, "data", "compendiums", "magias.json"), "utf8"));
+const nivelDe = new Map(magias.map((e) => [`magias-${e.system?.catalogId ?? ""}`.replace(/^magias-magias-/, "magias-"), e.system?.spell?.nivel]));
+for (const e of magias) nivelDe.set(e.id, e.system?.spell?.nivel);
+for (const kit of kits.getStarterOptionsForClass("Bruxo")) {
+  for (const id of kits.loadoutDraftFromKit(kit).spellEntryIds) {
+    assert.ok(listas.isSpellAllowedForClass("Bruxo", id), `${kit.id}: ${id} fora da lista Pacto`);
+    assert.ok((nivelDe.get(id) ?? 99) <= 1, `${kit.id}: ${id} acima do nível 1 (${nivelDe.get(id)})`);
+  }
+}
+const livro = readFileSync(join(root, "livros", "LIVRO-DO-JOGADOR.md"), "utf8");
+const linhaBruxo = livro.split(String.fromCharCode(10)).map((l) => l.trimEnd()).find((l) => l.startsWith("| **Bruxo** |") && l.includes("Besta"));
+for (const fora of ["Raio do Limiar", "Sussurro de Masmorra", "Brasa Espectral", "Ilusão Menor"]) {
+  assert.ok(!linhaBruxo.includes(fora), `tabela de kits do Bruxo ainda cita ${fora}`);
+}
+ok("kits do Bruxo (código e tabela do livro) só com a lista Pacto até o nível 1");
+
+// 7. A tela mostra o bloco de truques separado das magias.
 const tela = readFileSync(join(root, "components", "character", "wizard", "WizardEquipmentStep.tsx"), "utf8");
 assert.match(tela, /cantripChoiceForClass\(classe\)/);
 assert.match(tela, /Truques: escolha \$\{cantripChoice\.count\}/);
