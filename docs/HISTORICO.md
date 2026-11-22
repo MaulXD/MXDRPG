@@ -6920,3 +6920,11 @@ Contas temporárias de mestre e jogador e uma mesa, testadas no portal do Maestr
 - `lib/character/starter-kits.ts` e `scripts/verify-kits-livro.mjs` acompanham o livro; `verify-truques-wizard.mjs` ganhou a checagem de que kit e tabela do Bruxo só usam a lista Pacto até o nível 1.
 - Conferido no criador (dev local): Bruxo mostra os truques travados e o preset Adaga com Mãos Ardentes. `npm test` inteiro ok.
 - Segue igual: o Cajado do kit 2 continua como Machado de Batalha no código até o item existir no compêndio.
+
+### 2026-11-22 (madrugada) — Cajado no compêndio e no kit do Bruxo
+
+**Pedido:** "pode criar o cajado no compêndio" (início do loop de 3 h, 00:04).
+
+- `scripts/equipment_catalog_data.py`: `WPN-O07 Cajado`, 1d6 contundente, alcance 1, como a tabela 14.2 do livro (o versátil 1d8 não é modelado, igual à Lança). `npm run sync:data` gerou `armas-wpn-o07` e os aprimorados +1 a +3 em `data/compendiums/armas.json` e a linha na `TABELA-IDS-ELDARIN.md`; o catálogo de armas do livro ganhou a linha WPN-O07.
+- Kit `bruxo-cajado`: sai o Machado de Batalha (substituto), entra o Cajado (arma principal). Bruxo tem armas simples, então tem proficiência.
+- `verify-kits-livro.mjs`: o kit espera `armas-wpn-o07` e "Cajado" deixou de ser item ausente.

@@ -465,14 +465,14 @@ const CLASS_STARTER_KITS: Record<ClassId, StarterKitOption[]> = {
     },
     {
       id: "bruxo-cajado",
-      label: "Machado de batalha e couro acolchoado",
-      summary: "Canal do patrono: machado de batalha, couro acolchoado e Chama de Vinha.",
+      label: "Cajado e couro acolchoado",
+      summary: "Canal do patrono: cajado, couro acolchoado e Chama de Vinha.",
       items: [
-        { packId: "armas", entryId: "armas-wpn-o03" },
+        { packId: "armas", entryId: "armas-wpn-o07" },
         { packId: "equipamentos", entryId: "equipamentos-arm-02" },
         { packId: "magias", entryId: "magias-chama-de-vinha" },
       ],
-      combatLoadout: { packId: "armas", entryId: "armas-wpn-o03" },
+      combatLoadout: { packId: "armas", entryId: "armas-wpn-o07" },
       armorLoadout: { packId: "equipamentos", entryId: "equipamentos-arm-02" },
     },
     {

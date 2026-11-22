@@ -172,7 +172,7 @@ LANCAS = [
     ("WPN-P10", "Lança de Valdrun", "1d10", 2, "perfurante"),
 ]
 
-# Outras clássicas (6) — machado, maça, adaga, clava
+# Outras clássicas (7) — machado, maça, adaga, martelo, cajado
 OUTRAS_MELEE = [
     ("WPN-O01", "Adaga de Masmorra", "1d4", 1, "perfurante"),
     ("WPN-O02", "Adagas Gêmeas", "2d4", 1, "perfurante"),
@@ -180,6 +180,8 @@ OUTRAS_MELEE = [
     ("WPN-O04", "Machado Grande", "1d12", 1, "cortante"),
     ("WPN-O05", "Maça de Guerra", "2d6", 1, "contundente"),
     ("WPN-O06", "Martelo de Guerra", "2d6", 1, "contundente"),
+    # Livro 14.2: Cajado 1d6 contundente, versátil (1d8). Kit do Bruxo (Cap. 4).
+    ("WPN-O07", "Cajado", "1d6", 1, "contundente"),
 ]
 
 MELEE = ESPADAS + LANCAS + OUTRAS_MELEE

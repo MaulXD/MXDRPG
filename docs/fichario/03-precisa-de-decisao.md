@@ -5,7 +5,7 @@ Itens que dependem do dono.
 ## Situação em 21/11/2026 (noite)
 Conferido no git e no código: as seções abaixo guardam o texto original da decisão, mas boa parte já foi feita.
 - Feitas: D-02 (merge na main e deploy), D-03 (ad8925f), D-04 (4c777b9, 30a2fc6), D-05 (ad8925f, npm test no CI), D-07 (e18c339), D-09 (8a75397, 9bb2ef1), D-10 (a83967e, 150 ms no livro), D-11 (9d9ec2f), D-12 (7ad1c07), D-13 (786c5e0), D-14 (dbaade2), D-15 (dfef886), D-16 (a83967e), D-24, BV-029b (91be485), BV-045b (0981ce5), parser do grimório (verify-parser-grimorio), aprovação de inventário no servidor.
-- D-23: feita. (a) truques no passo Equipamento; (b) tabela de kits do Bruxo no livro e no código só com a lista Pacto até o nível 1: Mãos Ardentes · Chama de Vinha · Lâmina de Espírito e Armadura Arcana (verify-truques-wizard, verify-kits-livro). O Cajado do kit 2 segue com o Machado de Batalha até o item existir no compêndio.
+- D-23: feita. (a) truques no passo Equipamento; (b) tabela de kits do Bruxo no livro e no código só com a lista Pacto até o nível 1: Mãos Ardentes · Chama de Vinha · Lâmina de Espírito e Armadura Arcana (verify-truques-wizard, verify-kits-livro). Cajado criado no compêndio (WPN-O07, 22/11) e já no kit 2.
 - Seguem com o dono: D-01, D-06 (recomendação: manter), D-08, D-20, D-21, D-22, D-25, CUS-dano, BV-033 (Um Anel na mesa).
 
 ## D-01 Texto de livro comercial em repositório público (urgente)

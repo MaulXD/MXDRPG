@@ -486,7 +486,7 @@
 
 ---
 
-## Compêndio VTT — Armas (224)
+## Compêndio VTT — Armas (228)
 
 | entryId | Nome | tipo |
 | --- | --- | --- |
@@ -706,6 +706,10 @@
 | armas-wpn-o06-mais-1 | Martelo de Guerra +1 | arma |
 | armas-wpn-o06-mais-2 | Martelo de Guerra +2 | arma |
 | armas-wpn-o06-mais-3 | Martelo de Guerra +3 | arma |
+| armas-wpn-o07 | Cajado | arma |
+| armas-wpn-o07-mais-1 | Cajado +1 | arma |
+| armas-wpn-o07-mais-2 | Cajado +2 | arma |
+| armas-wpn-o07-mais-3 | Cajado +3 | arma |
 | armas-org-01 | Lâmina de Dente de Wyvern | arma |
 | armas-org-02 | Maça de Fêmur Milenar | arma |
 | armas-org-03 | Adaga de Quelícera | arma |

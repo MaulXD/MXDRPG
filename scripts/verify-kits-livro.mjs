@@ -21,8 +21,8 @@ if (start < 0 || end < 0) {
 const block = src.slice(start, end);
 
 // Esperado segundo o livro (pack:entryId). armor null = kit sem armadura.
-// Excecao: mago-adaga, bruxo-cajado, espiritualista-bastao e espiritualista-lamina fixam
-// substitutos porque Brasa Espectral (Mago), Cajado, Bastao e Espada curta ainda nao existem
+// Excecao: mago-adaga, espiritualista-bastao e espiritualista-lamina fixam
+// substitutos porque Brasa Espectral (Mago), Bastao e Espada curta ainda nao existem
 // no compendio (pendencia na pagina 07). Kits do Bruxo so com a lista Pacto ate o nivel 1 (D-23b).
 const ESPERADO = {
   Guerreiro: [
@@ -82,7 +82,7 @@ const ESPERADO = {
   ],
   Bruxo: [
     ["bruxo-adaga", ["armas:armas-wpn-o01", "equipamentos:equipamentos-arm-01", "magias:magias-maos-ardentes"], "armas:armas-wpn-o01", "equipamentos:equipamentos-arm-01"],
-    ["bruxo-cajado", ["armas:armas-wpn-o03", "equipamentos:equipamentos-arm-02", "magias:magias-chama-de-vinha"], "armas:armas-wpn-o03", "equipamentos:equipamentos-arm-02"],
+    ["bruxo-cajado", ["armas:armas-wpn-o07", "equipamentos:equipamentos-arm-02", "magias:magias-chama-de-vinha"], "armas:armas-wpn-o07", "equipamentos:equipamentos-arm-02"],
     ["bruxo-bestia", ["armas:armas-bst-01", "magias:magias-lamina-de-espirito", "magias:magias-armadura-arcana"], "armas:armas-bst-01", null],
   ],
 };
@@ -173,7 +173,7 @@ for (const classe of Object.keys(encontrados)) {
 }
 
 // Parecer da Lupa: label e resumo so citam o que o kit entrega. Itens do livro que
-// ainda nao existem no compendio (Brasa Espectral, Cajado, Bastao, Espada curta)
+// ainda nao existem no compendio (Brasa Espectral, Bastao, Espada curta)
 // nao podem aparecer no texto do kit.
 // KITS-TESTE (Lupa): todo nome de item citado no label ou no summary tem que ser item do
 // proprio kit. Vocabulario: armas e armaduras aceitam o nome completo ou o inicio dele
@@ -223,7 +223,7 @@ for (const m of block.matchAll(/id: "([^"]+)",\s*label: "([^"]*)",\s*summary: "(
 }
 
 // Lista fixa extra: itens do livro que ainda nao existem no compendio (pendencia da pagina 07).
-const AUSENTES = ["Brasa Espectral", "Cajado", "cajado", "Bastão", "bastão", "Espada curta", "espada curta"];
+const AUSENTES = ["Brasa Espectral", "Bastão", "bastão", "Espada curta", "espada curta"];
 for (const m of block.matchAll(/id: "([^"]+)",\s*label: "([^"]*)",\s*summary: "([^"]*)"/g)) {
   for (const nome of AUSENTES) {
     if (m[2].includes(nome) || m[3].includes(nome)) erros.push(`${m[1]}: texto cita '${nome}', que o kit nao entrega`);

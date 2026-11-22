@@ -128,9 +128,13 @@ Cada linha em **+0 a +3** (40 entradas VTT).
 
 ---
 
-## Outras clássicas (6) — WPN-O01 a WPN-O06
+## Outras clássicas (7) — WPN-O01 a WPN-O07
 
-Adaga, adagas gêmeas, machados, maça, martelo — IDs **WPN-O**; +0 a +3 (24 VTT).
+Adaga, adagas gêmeas, machados, maça, martelo e cajado — IDs **WPN-O**; +0 a +3 (28 VTT).
+
+| ID | Nome | Dano | Alcance (cél.) |
+|----|------|------|-------------|
+| WPN-O07 | Cajado | 1d6 cont. | 1 |
 
 ---
 
