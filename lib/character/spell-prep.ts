@@ -59,7 +59,9 @@ export function maxPreparedSpells(actor: CharacterSheet): number {
     case "Bruxo":
       return Math.max(2, nivel + cha);
     case "Paladino":
-      return Math.max(1, Math.floor(nivel / 2) + wis);
+      // Paladino conjura com Carisma (atributo primário Força e Carisma no Cap. 4, e
+      // spellcastingAttribute). Antes somava Sabedoria, atributo que a classe não usa.
+      return Math.max(1, Math.floor(nivel / 2) + cha);
     default:
       return 99;
   }

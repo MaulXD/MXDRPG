@@ -6963,3 +6963,8 @@ Contas temporárias de mestre e jogador e uma mesa, testadas no portal do Maestr
 - Novo `weaponProficiencyCovers` em `lib/combat/attack.ts`: "todas as armas", "armas marciais" e "armas simples" cobrem tudo (simples x marcial segue sem separar, BAL-D4 do dono); lista fechada casa pelo nome da arma (Adaga de Masmorra, Besta Leve, Cajado...).
 - `verify-proficiencia-magia.mjs` ganhou 3 checagens (falha no código antigo: "Guerreiro sem proficiência com Machado Grande").
 - Efeito na Balança (D-08): Guerreiro e Bárbaro sobem +2 no acerto com arma no nível 1; conta a refazer junto com a do Bruxo.
+
+### 2026-11-22 (madrugada) — Paladino prepara magias pelo Carisma (loop 3 h)
+
+- `maxPreparedSpells` (`lib/character/spell-prep.ts`) somava a Sabedoria no limite do Paladino, mas a classe conjura com Carisma (atributos primários Força e Carisma no Cap. 4; `spellcastingAttribute` já usava Carisma). Agora: metade do nível + mod. CAR (mín. 1). O livro não traz a fórmula de preparadas do Paladino; a mudança só alinha o atributo.
+- Caso novo em `verify-feiticeiro-carisma.mjs` (falha no código antigo).

@@ -136,5 +136,10 @@ caso("Feiticeiro nv1 CAR 8 (mod -1) respeita o minimo de 2", () => {
   assert.equal(maxPreparedSpells(fichaComCar("Feiticeiro", 1, 8)), 2);
 });
 
+// 22/11: o Paladino tambem conjura com Carisma; o limite de preparadas usava Sabedoria.
+caso("Paladino nv4 CAR 16 (SAB 10) prepara 2 + 3 = 5 magias, pelo Carisma", () => {
+  assert.equal(maxPreparedSpells(fichaComCar("Paladino", 4, 16)), 5);
+});
+
 console.log(`\n${pass} ok, ${fail} falha(s)`);
 if (fail > 0) process.exit(1);
