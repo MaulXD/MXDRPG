@@ -33,6 +33,7 @@ Com a correção do B1 (commit 31841ac), se o máximo de vida não muda, a mesa 
 A ficha já não perde vida temporária ao normalizar (3b37186), mas identity.ts, level-up.ts e gm-actor-progress.ts ainda a descartam. O livro não diz se vida temporária sobrevive à subida de nível. Recomendação: sobrevive (é efeito de combate, não da ficha).
 
 ## D-08 Balanceamento (Balança, etapa 2)
+Nota 22/11: Bruxo e Paladino rolavam ataque de magia sem proficiência (lista fixa antiga em isProficient); corrigido. A conta da Balança precisa ser refeita para o Bruxo.
 No nível 1, com atributo e acerto: Bárbaro +79% e Feiticeiro +87% de dano acima da mediana; Bruxo -73%, Ladino -50%, Bardo -40%. Feiticeiro conjura com INT no código e o livro diz Carisma. Detalhes em docs/fichario/propostas/balanceamento.md. Nada muda no livro sem você.
 
 ## D-10 Tempo do auto-passe de turno (R-02)

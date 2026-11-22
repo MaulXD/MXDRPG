@@ -6945,3 +6945,9 @@ Contas temporárias de mestre e jogador e uma mesa, testadas no portal do Maestr
   - Paladino: sai Raio do Limiar (nível 3); Escudo Arcano (nível 2) vira *Purificar Veneno*.
 - `verify-truques-wizard.mjs` agora confere os kits de toda classe conjuradora, não só o Bruxo. Brasa Espectral deixa de ser pendência: saiu do livro.
 - Observação para o dono: pela tabela do Paladino ele não conjura no nível 1, mas os kits do livro sempre deram magia; mantido.
+
+### 2026-11-22 (madrugada) — Bruxo e Paladino somam proficiência no ataque de magia (loop 3 h)
+
+- `isProficient` (`lib/combat/attack.ts`) tinha uma lista fixa de conjuradores (Mago, Clérigo, Bardo, Druida, Feiticeiro), escrita antes de Bruxo e Paladino entrarem. Os dois rolavam ataque de magia sem o bônus de proficiência, contra o livro (linha 418: 1d20 + atributo + proficiência se proficiente) e a tabela 17.7, que os lista como conjuradores.
+- Agora usa `isCasterClassId` (as classes de `spell-lists.json`, espelho do 17.7). Parte do "Bruxo −73%" da Balança (D-08) vinha daqui.
+- Teste novo `scripts/verify-proficiencia-magia.mjs` (no `npm test`): falha no código antigo ("Bruxo sem proficiência em magia"), passa no novo.

@@ -38,6 +38,7 @@ import { GOLPE_SAGRADO_TIPO_DANO } from "@/lib/combat/golpe-sagrado";
 import { isAreaSpellAction, parseAreaShape } from "@/lib/combat/area-spell";
 import { buildMagiaCombatAction } from "@/lib/combat/spell-parse";
 import { isSpellCombatReady } from "@/lib/character/spell-prep";
+import { isCasterClassId } from "@/lib/character/spell-lists";
 import { listSubclassCombatActions } from "@/lib/character/subclass-vtt";
 import {
   appendHealToSummary,
@@ -529,8 +530,9 @@ function attributeLabel(key: AttributeKey): string {
 export function isProficient(actor: CharacterSheet, action: CombatActionOption): boolean {
   if (action.kind === "unarmed") return true;
   if (action.kind === "spell") {
-    const casters = ["Mago", "Clérigo", "Bardo", "Druida", "Feiticeiro"];
-    return casters.includes(actor.identity.classe);
+    // Conjuradoras = classes da tabela 17.7 do livro (spell-lists.json), Bruxo e Paladino inclusos.
+    // A lista fixa antiga deixava os dois sem proficiência no ataque de magia.
+    return isCasterClassId(actor.identity.classe);
   }
   const cls = getClass(actor.identity.classe);
   if (!cls) return false;
