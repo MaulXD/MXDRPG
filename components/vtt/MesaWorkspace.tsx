@@ -837,7 +837,6 @@ function MesaWorkspaceInner({
             canEndTurn={canEndTurn || effectiveCanControlCombat}
             canRollDice={canChat}
             endTurnBusy={mobileEndTurnBusy}
-            combatActive={roomSettings.combatActive}
           />
           <EndTurnConfirmDialog {...mobileEndTurnDialog} />
         </div>

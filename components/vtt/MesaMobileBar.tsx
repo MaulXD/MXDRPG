@@ -11,7 +11,6 @@ type Props = {
   canEndTurn: boolean;
   canRollDice: boolean;
   endTurnBusy?: boolean;
-  combatActive: boolean;
   /** Mensagens do chat ainda não lidas, mostradas no botão Chat. */
   chatNaoLidas?: number;
 };
@@ -24,7 +23,6 @@ export function MesaMobileBar({
   canEndTurn,
   canRollDice,
   endTurnBusy = false,
-  combatActive,
   chatNaoLidas = 0,
 }: Props) {
   return (
@@ -53,7 +51,7 @@ export function MesaMobileBar({
         <span className="mesa-mobile-bar__icon" aria-hidden>
           <MesaRailIcon name="initiative" />
         </span>
-        {combatActive ? "Turno" : "Ordem"}
+        Turno
       </button>
       {canEndTurn ? (
         <button

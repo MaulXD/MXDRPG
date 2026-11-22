@@ -682,6 +682,8 @@ VEREDITO maestro (21/11): DESENHO. MesaMobileBar.tsx:56 mostra 'Ordem' fora de c
 - URL: http://localhost:3000/mesa/aventura-teste-farejador-8sghq
 
 VEREDITO maestro (21/11): BUG, corrigido em 6fcc498 (Sede de Sangue, texto do livro :1065).
+VEREDITO maestro (22/11): o botao da barra do celular passa a dizer sempre Turno, como a barra da mesa no computador (MesaIconBar); o rotulo nao depende mais de haver combate.
+
 ## BV-062 Wizard, Barbaro: nome e texto do bonus passivo diferem do livro (P2)
 - Severidade: P2 (contraria o livro: o nome e a descricao do bonus de nivel 1 do Barbaro).
 - Passos: Site local 1900x1175, conta jogador_teste02, aventura aventura-teste-farejador-8sghq, CRIAR PERSONAGEM; nome qualquer, PROXIMO; Humano; PROXIMO; classe Barbaro; PROXIMO; SUGESTAO PARA BARBARO; PROXIMO; antecedente Explorador; PROXIMO; PROXIMO; PROXIMO (Revisao). Nao criei.
@@ -698,6 +700,8 @@ VEREDITO maestro (21/11): NAO E BUG. Fortitude 6 = +4 da classe (livro :1062) + 
 - Obtido: Extracao 2 · Fortitude 6 na Revisao. Pode ser soma de antecedente ou raca; a conferir.
 - Erro do console: nenhum.
 - URL: http://localhost:3000/aventura/aventura-teste-farejador-8sghq/personagem/novo
+
+VEREDITO maestro (22/11): NAO E BUG. Fortitude 6 = Barbaro +4 (livro :1062) + Humano +2 (Resistencia Mundana, livro :534); computeCulinary soma classe e raca. A Revisao agora diz "Culinaria inicial (classe + raca)".
 
 ## BV-064 Wizard, Bardo: passivo com nome e texto diferentes do livro (P0)
 - Severidade: P0 (contraria o livro).

@@ -52,7 +52,7 @@ export function buildWizardPreview(draft: CharacterWizardDraft): WizardPreviewLi
     ]
       .filter(Boolean)
       .join(" · ");
-    if (culinaryLine) lines.push({ label: "Culinária inicial", value: culinaryLine });
+    if (culinaryLine) lines.push({ label: "Culinária inicial (classe + raça)", value: culinaryLine });
     lines.push({
       label: "Subclasse (nv 2)",
       // O Caminho de Assimilação é escolhido no nível 2 (Livro do Jogador, Cap. 4), não na criação.
