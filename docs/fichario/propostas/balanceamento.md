@@ -444,6 +444,57 @@ A tabela de progressao, linhas 1199 a 1203, da 2d8 no 2, 3d8 no 5, 4d8 no 9, 5d8
 - Opiniao de sequencia: resolver D12 primeiro, depois D11 com o helper isolado e testes de condicao, e deixar D13 para depois de decidir como o Mestre marca tipo de criatura. Esta ordem nao vem do livro.
 - Fora deste plano: D8, D9 e D10, subclasses, nivel maximo, turnos contra bestiario e propostas de ajuste de balanceamento.
 
+## 5. Recalculo de 22/11/2026 (codigo depois das correcoes do loop)
+
+Script: `scratchpad/balance/etapa4-2211.js` (mesmo metodo das secoes 2 e 3; so mudam as entradas). Kits, atributos e proficiencia conferidos no codigo de hoje por `scratchpad/balance/fatos-2211.mjs` (`getStarterOptionsForClass`, `suggestedPointBuyForClass`, `isProficient`, `spellcastingAttribute`). Nada foi mudado em `lib/`, `data/` ou `livros/` nesta conta.
+
+### 5.1 O que mudou nas entradas
+
+- Guerreiro: agora proficiente com arma (BAL-D1, 9953e0a). Acerto +2 para +4.
+- Ladino: proficiente com a Rapieira (o texto de proficiencias ja seguia o livro; D2 resolvido). Acerto -1 para +1.
+- Mago: o kit 1 mudou (d5889d4). Acao padrao = *Maos Gelidas* (2d6 frio, 2 PA, cone 3, salvo CON, canal +1d6 por PA ate 2) com INT +2: CD 12 no nivel 1. Antes era Lamina de Espirito.
+- Feiticeiro: o kit 1 do codigo tem *Lamina de Espirito* como acao padrao (1d4, 1 PA, ate 2 por turno), com CAR +2 (D6 resolvido: conjura com Carisma). A conta antiga usava Maos Gelidas com INT -1; essa leitura vai para a referencia 5.3.
+- Bruxo: proficiencia em magia corrigida (a73c2b4), mas a acao padrao do kit 1 continua a Adaga (1d4, FOR -1). Por isso a linha principal nao muda. O Raio do Pacto entra como referencia (5.3).
+- Paladino, Clerigo, Barbaro, Bardo, Druida, Patrulheiro, Espiritualista: entradas iguais as das secoes 2 e 3.
+- Correcao do script antigo: ele dava o desconto da Afinidade (1a magia de 2+ PA custa 1 a menos) ja no nivel 1. A Afinidade so vale do nivel 5 (`pa-modifiers.json`, minLevel 5). No nivel 1, 5 PA rendem 5d6 de Maos Gelidas (2 + 3 PA) e 9 PA rendem 9d6; do nivel 5 em diante, 6d6 e 10d6.
+
+### 5.2 Desvio da mediana, dano com 5 PA (CA 12 / 15 / 18,5)
+
+| Classe | Acao padrao | Nivel 1 | Nivel 5 | Nivel 10 | Antes (nv 1, secao 2.3) |
+|---|---|---|---|---|---|
+| Guerreiro | Lamina de Vinha 1d6 | 7,5 (+6%) | 6,4 (+8%) | 4,75 (+10%) | 6,4 (-2%) |
+| Patrulheiro | Arco Curto 1d6 | 7,5 (+6%) | 6,4 (+8%) | 4,75 (+10%) | 7,5 (+15%) |
+| Ladino | Rapieira 1d8 | 3,95 (-44%) | 3,25 (-45%) | 2,2 (-49%) | 3,25 (-50%) |
+| Mago | Maos Gelidas (salvo) | 13,56 (+91%) | 16,8 (+182%) | 17,32 (+303%) | 6,1 (-7%) |
+| Clerigo | Maca de Guerra 2d6 | 6,7 (-6%) | 5,5 (-8%) | 3,7 (-14%) | 6,7 (+2%) |
+| Barbaro | Machado Grande 1d12 | 11,7 (+65%) | 10,0 (+68%) | 7,45 (+73%) | 11,7 (+79%) |
+| Bardo | Rapieira 1d8 | 3,95 (-44%) | 3,25 (-45%) | 2,2 (-49%) | 3,95 (-40%) |
+| Druida | Cimitarra 1d6 + veneno | 5,6 (-21%) | 4,6 (-23%) | 3,1 (-28%) | 5,6 (-15%) |
+| Feiticeiro | Lamina de Espirito 1d4 | 6,1 (-14%) | 5,2 (-13%) | 3,85 (-10%) | 12,25 (+87%) |
+| Espiritualista | Golpe de Chi + desarmado | 9,57 (+35%) | 7,82 (+31%) | 5,2 (+21%) | 9,57 (+46%) |
+| Paladino | Espada Longa 1d8 | 8,9 (+25%) | 7,6 (+28%) | 5,65 (+31%) | 8,9 (+36%) |
+| Bruxo | Adaga 1d4 | 1,75 (-75%) | 1,45 (-76%) | 1,0 (-77%) | 1,75 (-73%) |
+
+Medianas do dano com 5 PA: 7,1 / 5,95 / 4,3 (antes 6,55 / 5,4 / 3,78). Faixa de 25 por cento no nivel 1: 5,32 a 8,88. Vida e defesa nao mudaram (medianas 10 / 38 / 73 e 13; so o Barbaro sai em vida, +40% / +32% / +30%).
+
+Fora da curva no nivel 1 agora: acima, Mago (+91%), Barbaro (+65%) e Espiritualista (+35%); Paladino fica no limite (+25%). Abaixo, Bruxo (-75%), Ladino e Bardo (-44%). Saiu da lista: Feiticeiro (agora -14%, dentro). Guerreiro e Ladino melhoraram, mas o Ladino continua fora.
+
+### 5.3 Referencias (fora das medianas)
+
+| Acao | Nivel 1 | Nivel 5 | Nivel 10 | Nota |
+|---|---|---|---|---|
+| Bruxo, Raio do Pacto (1d10 + CAR, 1 PA, 6 celulas, ataque com DES +2) | 25,75 (+263%) | 22,0 (+270%) | 16,38 (+281%) | 5 raios com 5 PA |
+| Feiticeiro, Maos Gelidas com CAR +2 (kit 3 do livro nao tem; vem do grimorio) | 13,56 (+91%) | 16,8 (+182%) | 17,32 (+303%) | igual ao Mago |
+
+### 5.4 Achado novo
+
+- D14. Raio do Pacto sem limite de truque. O livro chama o Raio do Pacto de truque (Cap. 4, Bruxo, "Raio do Pacto (Nivel 1): Truque"), e truque segue o limite de 2 iguais por turno (livro, linha 269). No codigo ele e habilidade (`habilidades-raio-do-pacto`, `compendium-actions.ts`, efeito `spell_strike`, 1 PA), e o limite de estribilho (`lib/combat/estribilho.ts`) so olha magia de nivel 0. Resultado: 5 raios por turno com 5 PA, +263% sobre a mediana no nivel 1. Se valer o limite do livro, sao 2 raios (10,3 em 5 PA, +45%), e o Bruxo deixa de ser o pior da tabela e fica perto de Paladino e Espiritualista. Nao corrigido: decisao do dono (contar como truque ou como habilidade).
+
+### 5.5 Leitura (fato x opiniao)
+
+- Fato: com o codigo de hoje, quem mais sai da curva no nivel 1 e o Mago (Maos Gelidas no kit), o Barbaro e o Bruxo (para baixo com a adaga, muito para cima se usar o Raio do Pacto sem limite). Ladino e Bardo seguem 44% abaixo. Feiticeiro e Guerreiro entraram na faixa.
+- Opiniao: o Bruxo depende quase todo da decisao D14; o Ladino depende do Ataque Furtivo (D11, ja no codigo para jogador, fora desta conta por ser situacional); o Mago e o Feiticeiro dependem de quanto a mesa vale a area de Maos Gelidas. Nenhum numero do livro foi mexido.
+
 ## Andamento
 
 - [x] Etapa 1 - tabela-base nivel 1 (este arquivo, secao 1). Corrigida na Etapa 2 (secao 2.0).

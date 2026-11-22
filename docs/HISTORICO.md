@@ -6981,3 +6981,12 @@ Contas temporárias de mestre e jogador e uma mesa, testadas no portal do Maestr
 - A refeição grava `expiresAt` (24 h, `lib/culinary/apply-meal.ts`), mas nada conferia: as assimilações se acumulavam para sempre na ficha.
 - `unexpiredAssimilations` (`lib/culinary/types.ts`) e uso em `normalizeCharacter` (ler e gravar a ficha) e na lista da ficha (`SheetPopupDdbView`). `expiresAt` nulo segue valendo até o mestre tirar (descanso longo).
 - Teste novo `scripts/verify-assimilacao-expira.mjs`. Pendente da auditoria: monstros sem resistência estruturada (item 14) e débito de PA por reação sem chamador (item 15, decisão do dono).
+
+### 2026-11-22 — Balança refeita com o código de hoje (D-08)
+
+**Pedido:** "pode refazer a conta da balança" (20 min).
+
+- Mesmo método das seções 2 e 3 de `docs/fichario/propostas/balanceamento.md`, com as entradas conferidas no código atual (kits, atributos, proficiência, atributo de conjuração). Seção 5 nova na proposta.
+- Nível 1, dano com 5 PA vs mediana (7,1): Mago +91% (Mãos Gelidas no kit 1), Bárbaro +65%, Espiritualista +35%, Paladino +25% (limite); Bruxo -75% (adaga), Ladino e Bardo -44%. Feiticeiro (-14%) e Guerreiro (+6%) entraram na faixa.
+- Achado D14: o Raio do Pacto (truque no livro) é habilidade no código e escapa do limite de 2 truques iguais por turno; com 5 PA são 5 raios (+263%). Com o limite seriam 2 (+45%). Decisão do dono.
+- Corrigido no script: o desconto da Afinidade não vale no nível 1.

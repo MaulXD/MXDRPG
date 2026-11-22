@@ -34,7 +34,7 @@ Com a correção do B1 (commit 31841ac), se o máximo de vida não muda, a mesa 
 A ficha já não perde vida temporária ao normalizar (3b37186), mas identity.ts, level-up.ts e gm-actor-progress.ts ainda a descartam. O livro não diz se vida temporária sobrevive à subida de nível. Recomendação: sobrevive (é efeito de combate, não da ficha).
 
 ## D-08 Balanceamento (Balança, etapa 2)
-Nota 22/11: Bruxo e Paladino rolavam ataque de magia sem proficiência (lista fixa antiga em isProficient); corrigido. A conta da Balança precisa ser refeita para o Bruxo.
+Recalculado em 22/11 (propostas/balanceamento.md, seção 5). Nível 1, dano com 5 PA contra a mediana: Mago +91% (Mãos Gelidas no kit), Bárbaro +65%, Espiritualista +35%; Bruxo -75% com a adaga, Ladino e Bardo -44%. Feiticeiro e Guerreiro entraram na faixa. Decisão nova D14: o Raio do Pacto é truque no livro, mas no código é habilidade sem o limite de 2 por turno (5 raios com 5 PA, +263%).
 No nível 1, com atributo e acerto: Bárbaro +79% e Feiticeiro +87% de dano acima da mediana; Bruxo -73%, Ladino -50%, Bardo -40%. Feiticeiro conjura com INT no código e o livro diz Carisma. Detalhes em docs/fichario/propostas/balanceamento.md. Nada muda no livro sem você.
 
 ## D-10 Tempo do auto-passe de turno (R-02)
