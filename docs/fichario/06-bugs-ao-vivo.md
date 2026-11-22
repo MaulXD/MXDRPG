@@ -733,6 +733,8 @@ VEREDITO maestro (22/11): NAO E BUG. Fortitude 6 = Barbaro +4 (livro :1062) + Hu
 - Obs.: o kit do livro cita a magia (LIVRO-DO-JOGADOR.md:2108). Nao achei a definicao de Inspiracao Culinaria em livros/_parte_x_magias_v4_revisada.md; a conferir.
 - Erro do console: nenhum.
 
+VEREDITO maestro (22/11): JA CORRIGIDO pelo BV-044 (describeStarterEquipment com omitSpells na Revisao; magias vao para o cartao Magias e truques). Inspiracao Culinaria saiu do kit do Bardo em 22/11 (nivel 2).
+
 ## BV-068 Wizard, Druida: passivo com nome e texto diferentes do livro (P0)
 - Severidade: P0 (contraria o livro).
 - Passos: Classe = Druida, ir ate Revisao, ler BONUS PASSIVO (NV 1).
