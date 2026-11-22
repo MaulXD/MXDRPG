@@ -80,6 +80,7 @@ import { inventoryRequestLabel } from "@/lib/character/inventory-item-request";
 import { useSheetPdfDeepLink } from "@/hooks/useSheetPdfDeepLink";
 import { OrnamentCard } from "@/components/ui/OrnamentCard";
 import { SectionDivider } from "@/components/ui/SectionDivider";
+import { ClassTraitsSection } from "@/components/character/ClassTraitsSection";
 import { Portrait } from "@/components/vtt/Portrait";
 import type { PortraitBundle } from "@/lib/media/image-upload-client";
 import {
@@ -845,6 +846,10 @@ function CharacterSheetLoaded({
             ))}
           </ul>
         </div>
+      ) : null}
+
+      {tab === "habilidades" ? (
+        <ClassTraitsSection classe={live.identity.classe} nivel={live.identity.nivel} />
       ) : null}
 
       {tab === "tesouro" ? (

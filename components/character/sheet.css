@@ -1886,3 +1886,81 @@
   color: #e07a7a;
 }
 
+
+/* D-21 (BV-056): traços de classe do livro na aba Habilidades, só leitura.
+   Mesmas cores dos cards do inventário (.inv-row) em cada tema da ficha. */
+.class-traits {
+  margin-bottom: 1rem;
+}
+
+.class-traits__hint {
+  margin: 0.25rem 0 0.6rem;
+  font-size: 0.74rem;
+  line-height: 1.4;
+  color: var(--text-muted, #a89878);
+}
+
+.class-traits__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.5rem;
+}
+
+.class-traits__item {
+  padding: 0.6rem 0.85rem;
+  border-radius: 10px;
+  background: var(--chrome-surface, #1e1d1a);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.class-traits__name {
+  margin: 0;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem;
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--text-strong, #e8e0d0);
+}
+
+.class-traits__level {
+  flex: none;
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: var(--text-muted, #a89878);
+}
+
+.class-traits__text {
+  margin: 0.25rem 0 0;
+  font-size: 0.8rem;
+  line-height: 1.5;
+  color: var(--text-muted, #a89878);
+}
+
+.sheet-shell--popup:not(.sheet-shell--ddb) .class-traits__name {
+  color: var(--sheet-text, #f0ece4);
+}
+
+.sheet-shell--popup:not(.sheet-shell--ddb) .class-traits__text,
+.sheet-shell--popup:not(.sheet-shell--ddb) .class-traits__hint {
+  color: rgba(232, 226, 214, 0.86);
+}
+
+/* Ficha clara (DDB): card claro e tinta escura, como os cards do inventário. */
+.sheet-shell--ddb .class-traits__item {
+  background: var(--ddb-panel);
+  border-color: var(--ddb-panel-border);
+}
+
+.sheet-shell--ddb .class-traits__name,
+.sheet-shell--ddb .class-traits__text {
+  color: var(--ddb-ink);
+}
+
+.sheet-shell--ddb .class-traits__hint,
+.sheet-shell--ddb .class-traits__level {
+  color: var(--ddb-muted);
+}

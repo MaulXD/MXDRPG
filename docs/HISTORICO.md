@@ -6968,3 +6968,10 @@ Contas temporárias de mestre e jogador e uma mesa, testadas no portal do Maestr
 
 - `maxPreparedSpells` (`lib/character/spell-prep.ts`) somava a Sabedoria no limite do Paladino, mas a classe conjura com Carisma (atributos primários Força e Carisma no Cap. 4; `spellcastingAttribute` já usava Carisma). Agora: metade do nível + mod. CAR (mín. 1). O livro não traz a fórmula de preparadas do Paladino; a mudança só alinha o atributo.
 - Caso novo em `verify-feiticeiro-carisma.mjs` (falha no código antigo).
+
+### 2026-11-22 (madrugada) — Traços de classe do livro na aba Habilidades (D-21a, BV-056; loop 3 h)
+
+- `scripts/generate-class-traits.mjs` (agora no fim do `sync:data`) lê o Cap. 4 do livro: a lista "Habilidades Base" (nome, nível, texto) e os parágrafos em negrito da classe (Ataque Furtivo, Fúria, Inspiração de Bardo, Forma Selvagem, Magia Inata, Chi) como traços do nível 1. Ficam fora o bônus passivo (já mostrado), a tabela, as notas de PA e as subclasses. Saída: `data/character/class-traits.json` (18 traços; Patrulheiro, Mago e Clérigo não têm traço além do bônus passivo no livro).
+- `lib/character/class-traits.ts` (`classTraitsForLevel`) e `components/character/ClassTraitsSection.tsx`: seção "Traços de classe" só leitura no topo da aba Habilidades da ficha, só com o que o nível já dá. Cores seguem os cards do inventário em cada tema (escuro, popup e ficha clara).
+- CI: o JSON novo entra no filtro e na conferência de dados gerados.
+- Conferido no navegador (dev local, Bruxo nível 1: Pacto Arcano e Raio do Pacto). Teste novo `scripts/verify-tracos-classe.mjs`.

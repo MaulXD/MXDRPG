@@ -7,7 +7,8 @@ Conferido no git e no código: as seções abaixo guardam o texto original da de
 - Feitas: D-02 (merge na main e deploy), D-03 (ad8925f), D-04 (4c777b9, 30a2fc6), D-05 (ad8925f, npm test no CI), D-07 (e18c339), D-09 (8a75397, 9bb2ef1), D-10 (a83967e, 150 ms no livro), D-11 (9d9ec2f), D-12 (7ad1c07), D-13 (786c5e0), D-14 (dbaade2), D-15 (dfef886), D-16 (a83967e), D-24, BV-029b (91be485), BV-045b (0981ce5), parser do grimório (verify-parser-grimorio), aprovação de inventário no servidor.
 - D-23: feita. (a) truques no passo Equipamento; (b) tabela de kits do Bruxo no livro e no código só com a lista Pacto até o nível 1: Mãos Ardentes · Chama de Vinha · Lâmina de Espírito e Armadura Arcana (verify-truques-wizard, verify-kits-livro). Cajado criado no compêndio (WPN-O07, 22/11) e já no kit 2.
 - Itens do livro que faltavam no compêndio (07, KITS-LIVRO): Cajado (WPN-O07) e Espada Curta (WPN-S13) criados em 22/11; Bastão do Espiritualista virou Cajado no livro. Brasa Espectral saiu do livro (kit 1 do Mago corrigido junto com Bardo, Druida e Paladino: magia só da lista da classe até o nível 1).
-- Seguem com o dono: D-01, D-06 (recomendação: manter), D-08, D-20, D-21, D-22, D-25, CUS-dano, BV-033 (Um Anel na mesa).
+- D-21 (a) feita em 22/11 (traços de classe na aba Habilidades).
+- Seguem com o dono: D-01, D-06 (recomendação: manter), D-08, D-20, D-22, D-25, CUS-dano, BV-033 (Um Anel na mesa).
 
 ## D-01 Texto de livro comercial em repositório público (urgente)
 O repositório MaulXD/MXDRPG é público. livros/um-anel/ está versionado com texto corrido dos livros de O Um Anel: 12 capítulos em inglês na main e cerca de 30 arquivos (uns 19.300 linhas) em PT-BR no branch fix/login-google-e-responsivo-um-anel, já enviado ao GitHub, incluindo as aventuras de Wilderland e Mirkwood traduzidas por terceiro. Os PDFs e .tmp-traducao/ não estão no git.
@@ -102,6 +103,7 @@ Problema separado, pre-existente: o parser parseSpellLoreBook pega texto alem da
 Correção (Lupa, 21/11): a aprovação do mestre no inventário é aplicada só na interface (CharacterSheetPopup.tsx:111); o PATCH de app/api/characters/[id]/route.ts aceita inventário do dono sem a regra. Decisão do maestro: corrigir no servidor também (próxima tarefa).
 
 ## D-21 Traços de classe não aparecem na ficha (BV-056)
+FEITO (a) em 22/11: data/character/class-traits.json gerado do Cap. 4 (scripts/generate-class-traits.mjs, no sync:data) e seção "Traços de classe" só leitura na aba Habilidades, filtrada pelo nível. Efeito na mesa (b) segue caso a caso.
 A aba Habilidades só lista habilidades táticas do compêndio (as que vêm da trilha de subclasse). Traços de classe do livro, como Segundo Fôlego e Estilo de Combate do Guerreiro (LIVRO-DO-JOGADOR.md:937-938) e a Passiva de Assimilação do nível 2 (:954, :2062), não existem como dado no sistema, em nenhuma classe. Não é falha de gravação: é recurso que falta.
 Opções: (a) seção 'Traços de classe' só de leitura na aba Habilidades, gerada do livro por classe e nível (sync:data); (b) modelar cada traço com efeito na mesa (muito maior). Sugestão do maestro: (a) agora, (b) caso a caso. Precisa do dono porque mexe no gerador a partir dos livros.
 

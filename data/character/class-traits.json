@@ -1,0 +1,116 @@
+{
+  "fonte": "livros/LIVRO-DO-JOGADOR.md, Cap. 4 (gerado por scripts/generate-class-traits.mjs)",
+  "classes": {
+    "Guerreiro": [
+      {
+        "nome": "Segundo Folego",
+        "nivel": 1,
+        "texto": "Como acao rapida (1 PA), recupera 1d10 + Nivel do Guerreiro em HP. 1× por combate (VTT)."
+      },
+      {
+        "nome": "Estilo de Combaté",
+        "nivel": 1,
+        "texto": "Escolha um: Duelo (+2 dano com arma de uma mao), Grande Arma (rolar dano minimo duas vezes, usar maior), Protecao (reacao: impoe Desvantagem a ataques contra aliado adjacente), Arqueria (+2 em ataques a distancia)."
+      },
+      {
+        "nome": "Golpe de Veterano",
+        "nivel": 14,
+        "texto": "Acertos críticos em 19 ou 20."
+      },
+      {
+        "nome": "Campeao Implacável",
+        "nivel": 20,
+        "texto": "Uma vez por dia, pode declarar falha como sucesso num teste de resistência."
+      }
+    ],
+    "Patrulheiro": [],
+    "Ladino": [
+      {
+        "nome": "Ataque Furtivo",
+        "nivel": 1,
+        "texto": "Causa dano bônus (1d6 no nivel 1, crescendo até 10d6 no nivel 20) ao atacar com Vantagem ou quando um aliado esta adjacente ao alvo."
+      }
+    ],
+    "Mago": [],
+    "Clérigo": [],
+    "Bárbaro": [
+      {
+        "nome": "Furia",
+        "nivel": 1,
+        "texto": "Como ação rápida (1 PA), entra em Furia por 1 minuto. Durante a Furia: +2 dano em ataques de Forca, Vantagem em testes de Força e CON, resistência a dano contundente/cortante/perfurante. Usos: 2 no Nivel 1, crescendo com o nivel."
+      }
+    ],
+    "Bardo": [
+      {
+        "nome": "Inspiracao de Bardo",
+        "nivel": 1,
+        "texto": "Como ação rápida (1 PA), concede 1d6 de Inspiracao a um aliado. O aliado pode adicionar esse dado a qualquer teste. Evolui de 1d6 para 1d12 conforme o nivel."
+      }
+    ],
+    "Druida": [
+      {
+        "nome": "Forma Selvagem",
+        "nivel": 1,
+        "texto": "Como acao, transforma-se em qualquer besta que ja tenha encontrado (HP máximo do animal, mantém INT e SAB). Usos e limites evoluem com o nivel."
+      }
+    ],
+    "Feiticeiro": [
+      {
+        "nome": "Magia Inata",
+        "nivel": 1,
+        "texto": "Você não estuda grimórios — a magia nasce no sangue, na linhagem ou no pacto com forças primordiais. Conhece truques e magias da lista Arcano (inato) (Cap. 17.7); magias conhecidas = nível + CAR (mín. 2). Slots seguem a tabela do Cap. 17.1."
+      }
+    ],
+    "Espiritualista": [
+      {
+        "nome": "Chi",
+        "nivel": 1,
+        "texto": "Recurso próprio renovado a cada combate. 10 Chi no início do combate; pode gastar no máximo 2 Chi por turno. Técnicas corporais (habilidades) convertem Chi em dano contundente, mobilidade ou autopunição brutal — nenhuma vertente é pacifista, mas Asceta da Dor é a mais violenta (gasta PV para ganhar Chi ou inflige dano extremo)."
+      }
+    ],
+    "Paladino": [
+      {
+        "nome": "Imposição de Mãos",
+        "nivel": 1,
+        "texto": "Toque cura 1d8 + CAR em HP ou causa 2d8 radiante a morto-vivo (ação, 1 PA). Usos: CAR (min. 1) por descanso longo."
+      },
+      {
+        "nome": "Aura de Devoção",
+        "nivel": 1,
+        "texto": "Aliados a 3m ganham +2 em saves contra medo e encantamento enquanto você estiver consciente."
+      },
+      {
+        "nome": "Estilo de Juramento",
+        "nivel": 1,
+        "texto": "Escolha um: Proteção (reação: aliado adjacente +2 CA vs 1 ataque), Duelo (+2 dano com arma de uma mão), Devotão (+1 em Imposição de Mãos e magias divinas)."
+      },
+      {
+        "nome": "Golpe Sagrado",
+        "nivel": 2,
+        "texto": "Ao acertar ataque corpo a corpo com arma, gasta 1 PA extra para +2d8 radiante (escala nos niveis da tabela). Mortos-vivos sofrem dano dobrado."
+      },
+      {
+        "nome": "Conjuração Divina",
+        "nivel": 2,
+        "texto": "Prepara magias de paladino (lista limitada — Cap. 19). Slots = metade do nivel (arredonda baixo), minimo 1."
+      }
+    ],
+    "Bruxo": [
+      {
+        "nome": "Pacto Arcano",
+        "nivel": 1,
+        "texto": "Conhece 2 truques e tem 2 slots de magia de nivel 1. Slots recarregam em descanso curto. Magias conhecidas = nivel + CAR (min. 2)."
+      },
+      {
+        "nome": "Raio do Pacto",
+        "nivel": 1,
+        "texto": "Truque — raio de energia do patrono (tipo conforme subclasse), 1d10 + CAR."
+      },
+      {
+        "nome": "Invocação do Pacto",
+        "nivel": 2,
+        "texto": "Escolhe 1 invocação (Cap. 19.4). Ganha outra em nv. 7, 13 e 19."
+      }
+    ]
+  }
+}

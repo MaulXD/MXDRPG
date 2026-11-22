@@ -26,6 +26,7 @@ jobs:
               - "scripts/verify-monster-*.mjs"
               - "data/compendiums/**"
               - "data/character/subclass-tracks.json"
+              - "data/character/class-traits.json"
               - "lib/character/loot-catalog.ts"
 
   data-sync:
@@ -56,7 +57,7 @@ jobs:
 
       - name: Data matches committed files
         run: |
-          git diff --exit-code data/compendiums/ data/character/subclass-tracks.json lib/character/loot-catalog.ts livros/TABELA-IDS-ELDARIN.md || (
+          git diff --exit-code data/compendiums/ data/character/subclass-tracks.json data/character/class-traits.json lib/character/loot-catalog.ts livros/TABELA-IDS-ELDARIN.md || (
             echo "Run npm run sync:data locally and commit generated files."
             exit 1
           )
