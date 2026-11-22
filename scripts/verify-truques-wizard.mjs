@@ -112,10 +112,13 @@ ok("rascunho antigo sem truques ganha os da classe; excesso é cortado");
 const magias = JSON.parse(readFileSync(join(root, "data", "compendiums", "magias.json"), "utf8"));
 const nivelDe = new Map(magias.map((e) => [`magias-${e.system?.catalogId ?? ""}`.replace(/^magias-magias-/, "magias-"), e.system?.spell?.nivel]));
 for (const e of magias) nivelDe.set(e.id, e.system?.spell?.nivel);
-for (const kit of kits.getStarterOptionsForClass("Bruxo")) {
-  for (const id of kits.loadoutDraftFromKit(kit).spellEntryIds) {
-    assert.ok(listas.isSpellAllowedForClass("Bruxo", id), `${kit.id}: ${id} fora da lista Pacto`);
-    assert.ok((nivelDe.get(id) ?? 99) <= 1, `${kit.id}: ${id} acima do nível 1 (${nivelDe.get(id)})`);
+// 22/11: vale para toda classe conjuradora (Mago, Bardo, Druida e Paladino tinham o mesmo erro).
+for (const classe of Object.keys(dados.classAccess)) {
+  for (const kit of kits.getStarterOptionsForClass(classe)) {
+    for (const id of kits.loadoutDraftFromKit(kit).spellEntryIds) {
+      assert.ok(listas.isSpellAllowedForClass(classe, id), `${kit.id}: ${id} fora da lista de ${classe}`);
+      assert.ok((nivelDe.get(id) ?? 99) <= 1, `${kit.id}: ${id} acima do nível 1 (${nivelDe.get(id)})`);
+    }
   }
 }
 const livro = readFileSync(join(root, "livros", "LIVRO-DO-JOGADOR.md"), "utf8");
@@ -123,7 +126,7 @@ const linhaBruxo = livro.split(String.fromCharCode(10)).map((l) => l.trimEnd()).
 for (const fora of ["Raio do Limiar", "Sussurro de Masmorra", "Brasa Espectral", "Ilusão Menor"]) {
   assert.ok(!linhaBruxo.includes(fora), `tabela de kits do Bruxo ainda cita ${fora}`);
 }
-ok("kits do Bruxo (código e tabela do livro) só com a lista Pacto até o nível 1");
+ok("kits de toda classe conjuradora só com magia da lista da classe até o nível 1; tabela do Bruxo no livro sem as magias erradas");
 
 // 7. A tela mostra o bloco de truques separado das magias.
 const tela = readFileSync(join(root, "components", "character", "wizard", "WizardEquipmentStep.tsx"), "utf8");

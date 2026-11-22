@@ -6935,3 +6935,13 @@ Contas temporárias de mestre e jogador e uma mesa, testadas no portal do Maestr
 - Kit `espiritualista-lamina`: sai a Lâmina de Vinha (substituta), entra a Espada Curta. Espiritualista tem proficiência em espadas curtas.
 - Kit `espiritualista-bastao`: o livro citava "Bastão", que não existe em nenhuma tabela de armas (14.2 a 14.5). A tabela de kits passou a dizer Cajado (a arma de haste simples do livro) e o kit dá o Cajado (WPN-O07) no lugar da Lança Curta. O id do kit ficou igual para não quebrar fichas salvas.
 - `verify-kits-livro.mjs` atualizado; só Brasa Espectral (kit 1 do Mago) segue como item do livro ausente no compêndio.
+
+### 2026-11-22 (madrugada) — Kits do Mago, Bardo, Druida e Paladino só com magia da lista até o nível 1 (loop 3 h)
+
+- Varredura dos 36 kits contra `spell-lists.json` e o nível das magias achou o mesmo erro do Bruxo em mais quatro classes. Corrigido na tabela "Kits por classe" do livro, em `starter-kits.ts` e no `verify-kits-livro.mjs`:
+  - Mago: Lâmina de Espírito (fora da lista) e Brasa Espectral (não existe) viram *Mãos Gelidas* e *Chama de Vinha*; Raio do Limiar (nível 3) vira *Sussurro de Masmorra*; Escudo Arcano (nível 2) vira *Armadura Arcana*.
+  - Bardo: Inspiração Culinária e Ilusão Menor (nível 2) viram *Curar Ferimentos* e *Chama de Vinha*.
+  - Druida: Estabilizar (fora da lista Primal) vira *Chama de Vinha*.
+  - Paladino: sai Raio do Limiar (nível 3); Escudo Arcano (nível 2) vira *Purificar Veneno*.
+- `verify-truques-wizard.mjs` agora confere os kits de toda classe conjuradora, não só o Bruxo. Brasa Espectral deixa de ser pendência: saiu do livro.
+- Observação para o dono: pela tabela do Paladino ele não conjura no nível 1, mas os kits do livro sempre deram magia; mantido.

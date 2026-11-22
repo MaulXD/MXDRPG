@@ -2102,14 +2102,14 @@ No **criador de personagem** (passo *Equipamento*), escolha **um kit** entre as 
 | **Guerreiro** | Lâmina leve + couro curtido · Espada longa + cota de malha · Arco longo + couro acolchoado |
 | **Patrulheiro** | Arco curto + couro · Gladius + gibão de peles · Rapieira + meia-armadura |
 | **Ladino** | Rapieira + couro · Adagas gêmeas + couro acolchoado · Arco curto (sem armadura pesada) |
-| **Mago** | Adaga + *Lâmina de Espírito* e *Brasa Espectral* · Besta leve + couro (*Raio do Limiar* no grimório) · Adaga + *Onda de Trovão* e *Escudo Arcano* |
+| **Mago** | Adaga + *Mãos Gelidas* e *Chama de Vinha* · Besta leve + couro (*Sussurro de Masmorra* no grimório) · Adaga + *Onda de Trovão* e *Armadura Arcana* |
 | **Clérigo** | Maça + meia-armadura + cura · Besta + couro + *Curar Ferimentos* · Azagaia + brigandina |
 | **Bárbaro** | Machado grande + gibão · Gladius + couro batido · Maça + couro curtido |
-| **Bardo** | Rapieira + couro + *Inspiração Culinária* · Adaga + couro acolchoado + *Sussurro de Masmorra* · Arco curto + *Ilusão Menor* |
-| **Druida** | Cimitarra + gibão + *Crescimento Acelerado* · Azagaia + escamas de dragonete + *Purificar Veneno* · Adaga + couro de troll + *Estabilizar* |
+| **Bardo** | Rapieira + couro + *Curar Ferimentos* · Adaga + couro acolchoado + *Sussurro de Masmorra* · Arco curto + *Chama de Vinha* |
+| **Druida** | Cimitarra + gibão + *Crescimento Acelerado* · Azagaia + escamas de dragonete + *Purificar Veneno* · Adaga + couro de troll + *Chama de Vinha* |
 | **Feiticeiro** | Adaga e *Lâmina de Espírito* · Besta e *Onda de Trovão* · Maça e *Chama de Vinha* |
 | **Espiritualista** | Punhos (sem arma) + *Golpe de Chi* · Cajado + *Passo do Vácuo* · Espada curta + *Ferida Aberta* |
-| **Paladino** | Espada longa + cota + *Curar Ferimentos* e *Raio do Limiar* · Maça + meia-armadura + cura e *Escudo Arcano* · Gladius + brigandina + *Purificar Veneno* |
+| **Paladino** | Espada longa + cota + *Curar Ferimentos* · Maça + meia-armadura + *Curar Ferimentos* e *Purificar Veneno* · Gladius + brigandina + *Purificar Veneno* |
 | **Bruxo** | Adaga + couro + *Mãos Ardentes* · Cajado + couro acolchoado + *Chama de Vinha* · Besta + *Lâmina de Espírito* e *Armadura Arcana* |
 
 Na mesa virtual, troque arma ou armadura pelo painel **Em uso** na ficha; a CA é recalculada automaticamente ao equipar.

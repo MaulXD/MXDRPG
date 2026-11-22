@@ -21,8 +21,8 @@ if (start < 0 || end < 0) {
 const block = src.slice(start, end);
 
 // Esperado segundo o livro (pack:entryId). armor null = kit sem armadura.
-// Excecao: mago-adaga fixa substituto porque Brasa Espectral ainda nao existe no
-// compendio (pendencia na pagina 07). Cajado (WPN-O07) e Espada Curta (WPN-S13) existem
+// Brasa Espectral (kit 1 do Mago) saiu do livro em 22/11: as magias dos kits seguem a
+// lista da classe ate o nivel 1 (verify-truques-wizard). Cajado (WPN-O07) e Espada Curta (WPN-S13) existem
 // desde 22/11; o Bastao do Espiritualista virou Cajado no livro (nao ha Bastao na tabela 14). Kits do Bruxo so com a lista Pacto ate o nivel 1 (D-23b).
 const ESPERADO = {
   Guerreiro: [
@@ -41,9 +41,9 @@ const ESPERADO = {
     ["ladino-arco", ["armas:armas-arc-c01"], "armas:armas-arc-c01", null],
   ],
   Mago: [
-    ["mago-adaga", ["armas:armas-wpn-o01", "magias:magias-lamina-de-espirito", "magias:magias-chama-de-fogareiro"], "magias:magias-lamina-de-espirito", null],
-    ["mago-bestia", ["armas:armas-bst-01", "equipamentos:equipamentos-arm-01", "magias:magias-raio-do-limiar"], "armas:armas-bst-01", "equipamentos:equipamentos-arm-01"],
-    ["mago-arcano", ["armas:armas-wpn-o01", "magias:magias-onda-de-trovao", "magias:magias-escudo-arcano"], "magias:magias-onda-de-trovao", null],
+    ["mago-adaga", ["armas:armas-wpn-o01", "magias:magias-maos-gelidas", "magias:magias-chama-de-vinha"], "magias:magias-maos-gelidas", null],
+    ["mago-bestia", ["armas:armas-bst-01", "equipamentos:equipamentos-arm-01", "magias:magias-sussurro-de-masmorra"], "armas:armas-bst-01", "equipamentos:equipamentos-arm-01"],
+    ["mago-arcano", ["armas:armas-wpn-o01", "magias:magias-onda-de-trovao", "magias:magias-armadura-arcana"], "magias:magias-onda-de-trovao", null],
   ],
   Clérigo: [
     ["clerigo-maca", ["armas:armas-wpn-o05", "equipamentos:equipamentos-arm-07", "magias:magias-curar-ferimentos"], "armas:armas-wpn-o05", "equipamentos:equipamentos-arm-07"],
@@ -56,14 +56,14 @@ const ESPERADO = {
     ["barbaro-maca", ["armas:armas-wpn-o05", "equipamentos:equipamentos-arm-01"], "armas:armas-wpn-o05", "equipamentos:equipamentos-arm-01"],
   ],
   Bardo: [
-    ["bardo-rapieira", ["armas:armas-wpn-s05", "equipamentos:equipamentos-arm-01", "magias:magias-inspiracao-culinaria"], "armas:armas-wpn-s05", "equipamentos:equipamentos-arm-01"],
+    ["bardo-rapieira", ["armas:armas-wpn-s05", "equipamentos:equipamentos-arm-01", "magias:magias-curar-ferimentos"], "armas:armas-wpn-s05", "equipamentos:equipamentos-arm-01"],
     ["bardo-adaga", ["armas:armas-wpn-o01", "equipamentos:equipamentos-arm-02", "magias:magias-sussurro-de-masmorra"], "armas:armas-wpn-o01", "equipamentos:equipamentos-arm-02"],
-    ["bardo-arco", ["armas:armas-arc-c01", "magias:magias-ilusao-menor"], "armas:armas-arc-c01", null],
+    ["bardo-arco", ["armas:armas-arc-c01", "magias:magias-chama-de-vinha"], "armas:armas-arc-c01", null],
   ],
   Druida: [
     ["druida-cimitarra", ["armas:armas-wpn-s07", "equipamentos:equipamentos-arm-03", "magias:magias-crescimento-acelerado"], "armas:armas-wpn-s07", "equipamentos:equipamentos-arm-03"],
     ["druida-organica", ["armas:armas-wpn-p04", "equipamentos:equipamentos-arm-14", "magias:magias-purificar-veneno"], "armas:armas-wpn-p04", "equipamentos:equipamentos-arm-14"],
-    ["druida-adaga", ["armas:armas-wpn-o01", "equipamentos:equipamentos-arm-15", "magias:magias-estabilizar"], "armas:armas-wpn-o01", "equipamentos:equipamentos-arm-15"],
+    ["druida-adaga", ["armas:armas-wpn-o01", "equipamentos:equipamentos-arm-15", "magias:magias-chama-de-vinha"], "armas:armas-wpn-o01", "equipamentos:equipamentos-arm-15"],
   ],
   Feiticeiro: [
     ["feiticeiro-centelha", ["armas:armas-wpn-o01", "magias:magias-lamina-de-espirito"], "magias:magias-lamina-de-espirito", null],
@@ -76,8 +76,8 @@ const ESPERADO = {
     ["espiritualista-lamina", ["armas:armas-wpn-s13", "habilidades:chi-ferida-aberta"], "habilidades:chi-ferida-aberta", null],
   ],
   Paladino: [
-    ["paladino-espada", ["armas:armas-wpn-s02", "equipamentos:equipamentos-arm-05", "magias:magias-curar-ferimentos", "magias:magias-raio-do-limiar"], "armas:armas-wpn-s02", "equipamentos:equipamentos-arm-05"],
-    ["paladino-maca", ["armas:armas-wpn-o05", "equipamentos:equipamentos-arm-07", "magias:magias-curar-ferimentos", "magias:magias-escudo-arcano"], "armas:armas-wpn-o05", "equipamentos:equipamentos-arm-07"],
+    ["paladino-espada", ["armas:armas-wpn-s02", "equipamentos:equipamentos-arm-05", "magias:magias-curar-ferimentos"], "armas:armas-wpn-s02", "equipamentos:equipamentos-arm-05"],
+    ["paladino-maca", ["armas:armas-wpn-o05", "equipamentos:equipamentos-arm-07", "magias:magias-curar-ferimentos", "magias:magias-purificar-veneno"], "armas:armas-wpn-o05", "equipamentos:equipamentos-arm-07"],
     ["paladino-gladius", ["armas:armas-wpn-s08", "equipamentos:equipamentos-arm-09", "magias:magias-purificar-veneno"], "armas:armas-wpn-s08", "equipamentos:equipamentos-arm-09"],
   ],
   Bruxo: [

@@ -161,24 +161,24 @@ const CLASS_STARTER_KITS: Record<ClassId, StarterKitOption[]> = {
   Mago: [
     {
       id: "mago-adaga",
-      label: "Adaga e Lâmina de Espírito",
-      summary: "Conjurador: adaga, Lâmina de Espírito e Chama de Fogareiro.",
+      label: "Adaga e Mãos Gelidas",
+      summary: "Conjurador: adaga, Mãos Gelidas e Chama de Vinha.",
       items: [
         { packId: "armas", entryId: "armas-wpn-o01" },
-        { packId: "magias", entryId: "magias-lamina-de-espirito" },
-        { packId: "magias", entryId: "magias-chama-de-fogareiro" },
+        { packId: "magias", entryId: "magias-maos-gelidas" },
+        { packId: "magias", entryId: "magias-chama-de-vinha" },
       ],
-      combatLoadout: { packId: "magias", entryId: "magias-lamina-de-espirito" },
+      combatLoadout: { packId: "magias", entryId: "magias-maos-gelidas" },
       armorLoadout: null,
     },
     {
       id: "mago-bestia",
       label: "Besta leve e couro",
-      summary: "À distância: besta leve e couro, com Raio do Limiar no grimório.",
+      summary: "À distância: besta leve e couro, com Sussurro de Masmorra no grimório.",
       items: [
         { packId: "armas", entryId: "armas-bst-01" },
         { packId: "equipamentos", entryId: "equipamentos-arm-01" },
-        { packId: "magias", entryId: "magias-raio-do-limiar" },
+        { packId: "magias", entryId: "magias-sussurro-de-masmorra" },
       ],
       combatLoadout: { packId: "armas", entryId: "armas-bst-01" },
       armorLoadout: { packId: "equipamentos", entryId: "equipamentos-arm-01" },
@@ -186,11 +186,11 @@ const CLASS_STARTER_KITS: Record<ClassId, StarterKitOption[]> = {
     {
       id: "mago-arcano",
       label: "Adaga e Onda de Trovão",
-      summary: "Sem armadura: adaga, Onda de Trovão e Escudo Arcano.",
+      summary: "Sem armadura: adaga, Onda de Trovão e Armadura Arcana.",
       items: [
         { packId: "armas", entryId: "armas-wpn-o01" },
         { packId: "magias", entryId: "magias-onda-de-trovao" },
-        { packId: "magias", entryId: "magias-escudo-arcano" },
+        { packId: "magias", entryId: "magias-armadura-arcana" },
       ],
       combatLoadout: { packId: "magias", entryId: "magias-onda-de-trovao" },
       armorLoadout: null,
@@ -271,12 +271,12 @@ const CLASS_STARTER_KITS: Record<ClassId, StarterKitOption[]> = {
   Bardo: [
     {
       id: "bardo-rapieira",
-      label: "Rapieira, couro e Inspiração Culinária",
-      summary: "Duelista: rapieira, couro e Inspiração Culinária.",
+      label: "Rapieira, couro e Curar Ferimentos",
+      summary: "Duelista: rapieira, couro e Curar Ferimentos.",
       items: [
         { packId: "armas", entryId: "armas-wpn-s05" },
         { packId: "equipamentos", entryId: "equipamentos-arm-01" },
-        { packId: "magias", entryId: "magias-inspiracao-culinaria" },
+        { packId: "magias", entryId: "magias-curar-ferimentos" },
       ],
       combatLoadout: { packId: "armas", entryId: "armas-wpn-s05" },
       armorLoadout: { packId: "equipamentos", entryId: "equipamentos-arm-01" },
@@ -295,11 +295,11 @@ const CLASS_STARTER_KITS: Record<ClassId, StarterKitOption[]> = {
     },
     {
       id: "bardo-arco",
-      label: "Arco curto e Ilusão Menor",
-      summary: "À distância: arco curto e Ilusão Menor.",
+      label: "Arco curto e Chama de Vinha",
+      summary: "À distância: arco curto e Chama de Vinha.",
       items: [
         { packId: "armas", entryId: "armas-arc-c01" },
-        { packId: "magias", entryId: "magias-ilusao-menor" },
+        { packId: "magias", entryId: "magias-chama-de-vinha" },
       ],
       combatLoadout: { packId: "armas", entryId: "armas-arc-c01" },
       armorLoadout: null,
@@ -332,12 +332,12 @@ const CLASS_STARTER_KITS: Record<ClassId, StarterKitOption[]> = {
     },
     {
       id: "druida-adaga",
-      label: "Adaga, couro de troll e Estabilizar",
-      summary: "Místico: adaga, couro de troll e Estabilizar.",
+      label: "Adaga, couro de troll e Chama de Vinha",
+      summary: "Místico: adaga, couro de troll e Chama de Vinha.",
       items: [
         { packId: "armas", entryId: "armas-wpn-o01" },
         { packId: "equipamentos", entryId: "equipamentos-arm-15" },
-        { packId: "magias", entryId: "magias-estabilizar" },
+        { packId: "magias", entryId: "magias-chama-de-vinha" },
       ],
       combatLoadout: { packId: "armas", entryId: "armas-wpn-o01" },
       armorLoadout: { packId: "equipamentos", entryId: "equipamentos-arm-15" },
@@ -414,12 +414,11 @@ const CLASS_STARTER_KITS: Record<ClassId, StarterKitOption[]> = {
     {
       id: "paladino-espada",
       label: "Espada longa e cota de malha",
-      summary: "Cavaleiro sagrado: espada longa, cota de malha, Curar Ferimentos e Raio do Limiar.",
+      summary: "Cavaleiro sagrado: espada longa, cota de malha e Curar Ferimentos.",
       items: [
         { packId: "armas", entryId: "armas-wpn-s02" },
         { packId: "equipamentos", entryId: "equipamentos-arm-05" },
         { packId: "magias", entryId: "magias-curar-ferimentos" },
-        { packId: "magias", entryId: "magias-raio-do-limiar" },
       ],
       combatLoadout: { packId: "armas", entryId: "armas-wpn-s02" },
       armorLoadout: { packId: "equipamentos", entryId: "equipamentos-arm-05" },
@@ -427,12 +426,12 @@ const CLASS_STARTER_KITS: Record<ClassId, StarterKitOption[]> = {
     {
       id: "paladino-maca",
       label: "Maça e meia-armadura",
-      summary: "Templo guerreiro: maça, meia-armadura, cura e Escudo Arcano.",
+      summary: "Templo guerreiro: maça, meia-armadura, Curar Ferimentos e Purificar Veneno.",
       items: [
         { packId: "armas", entryId: "armas-wpn-o05" },
         { packId: "equipamentos", entryId: "equipamentos-arm-07" },
         { packId: "magias", entryId: "magias-curar-ferimentos" },
-        { packId: "magias", entryId: "magias-escudo-arcano" },
+        { packId: "magias", entryId: "magias-purificar-veneno" },
       ],
       combatLoadout: { packId: "armas", entryId: "armas-wpn-o05" },
       armorLoadout: { packId: "equipamentos", entryId: "equipamentos-arm-07" },
