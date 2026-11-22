@@ -16,6 +16,7 @@ import {
   type StarterKitOption,
 } from "@/lib/character/starter-kits";
 import type { CharacterAttributes } from "@/lib/character/types";
+import { cantripChoiceForClass } from "@/lib/character/spell-lists";
 import { attributeMod } from "@/lib/character/rules";
 import { entryTooltipText } from "@/lib/compendium/format";
 import { getEntry } from "@/lib/compendium/registry";
@@ -96,6 +97,11 @@ export function WizardEquipmentStep({
 }: Props) {
   const options = getStarterOptionsForClass(classe);
   const pools = useMemo(() => getStarterEquipmentPools(classe), [classe]);
+  const cantripChoice = useMemo(() => cantripChoiceForClass(classe), [classe]);
+  const cantripOptions = useMemo(() => new Set(cantripChoice?.options ?? []), [cantripChoice]);
+  const grimoireSpellIds = pools.spellEntryIds.filter((id) => !cantripOptions.has(id));
+  const chosenCantrips = equipment.spellEntryIds.filter((id) => cantripOptions.has(id)).length;
+  const cantripsFixed = cantripChoice ? cantripChoice.count >= cantripChoice.options.length : false;
   const desMod = attributeMod(attributes.destreza);
   const ca = previewEquipmentDefesa(attributes, equipment);
   const matchedKitId = findMatchingStarterKitId(classe, equipment);
@@ -283,11 +289,56 @@ export function WizardEquipmentStep({
         </div>
       </div>
 
-      {pools.spellEntryIds.length > 0 ? (
+      {cantripChoice ? (
+        <div className="char-wizard-equip-block">
+          <p className="char-wizard-equip-block__label">
+            {cantripsFixed
+              ? "Truques da classe"
+              : `Truques: escolha ${cantripChoice.count} (${chosenCantrips}/${cantripChoice.count})`}
+          </p>
+          <div className="char-wizard-equip-check-grid">
+            {cantripChoice.options.map((entryId) => {
+              const isPrimary =
+                equipment.combatLoadout?.packId === "magias" &&
+                equipment.combatLoadout.entryId === entryId;
+              const checked = equipment.spellEntryIds.includes(entryId);
+              const full = !checked && chosenCantrips >= cantripChoice.count;
+              return (
+                <label key={entryId} className="char-wizard-equip-check">
+                  <input
+                    type="checkbox"
+                    checked={checked}
+                    disabled={cantripsFixed || isPrimary || full}
+                    onChange={(e) => {
+                      const next: StarterEquipmentDraft = {
+                        ...equipment,
+                        spellEntryIds: toggleId(
+                          equipment.spellEntryIds,
+                          entryId,
+                          e.target.checked
+                        ),
+                      };
+                      applyEquipment(classe, next, onChange);
+                    }}
+                  />
+                  <WizardHoverTip text={entryTooltip("magias", entryId)}>
+                    <span>
+                      {entryLabel("magias", entryId)}
+                      {isPrimary ? " (principal)" : null}
+                    </span>
+                  </WizardHoverTip>
+                </label>
+              );
+            })}
+          </div>
+        </div>
+      ) : null}
+
+      {grimoireSpellIds.length > 0 ? (
         <div className="char-wizard-equip-block">
           <p className="char-wizard-equip-block__label">Magias no grimório</p>
           <div className="char-wizard-equip-check-grid">
-            {pools.spellEntryIds.map((entryId) => {
+            {grimoireSpellIds.map((entryId) => {
               const isPrimary =
                 equipment.combatLoadout?.packId === "magias" &&
                 equipment.combatLoadout.entryId === entryId;

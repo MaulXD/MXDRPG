@@ -45,6 +45,18 @@ export function cantripIdsForClass(classe: string): Set<string> {
   return out;
 }
 
+/**
+ * Truques que a classe escolhe no nível 1 (D-23, BV-072): opções da lista da classe e quantos
+ * escolher (cantripsKnown, limitado ao que existe). null quando a classe não escolhe truques.
+ */
+export function cantripChoiceForClass(classe: string): { options: string[]; count: number } | null {
+  const access = data.classAccess[classe];
+  if (!access?.cantripsKnown) return null;
+  const options = [...cantripIdsForClass(classe)];
+  const count = Math.min(access.cantripsKnown, options.length);
+  return count > 0 ? { options, count } : null;
+}
+
 export function allSpellEntryIdsForClass(classe: string): Set<string> {
   const access = data.classAccess[classe];
   const out = new Set<string>();

@@ -1,5 +1,6 @@
 import { computeDefesaFromArmor } from "@/lib/character/armor-defense";
 import { isCasterClass } from "@/lib/character/spell-prep";
+import { cantripChoiceForClass } from "@/lib/character/spell-lists";
 import { newInstanceId } from "@/lib/character/inventory-storage";
 import { attributeMod, type ClassId } from "@/lib/character/rules";
 import type {
@@ -525,6 +526,40 @@ function sortedUnique(ids: string[]): string[] {
   return [...new Set(ids)].sort();
 }
 
+function classOfKit(kit: StarterKitOption): string | null {
+  for (const [classe, kits] of Object.entries(CLASS_STARTER_KITS)) {
+    if (kits.some((k) => k.id === kit.id)) return classe;
+  }
+  return null;
+}
+
+/**
+ * Truques do nível 1 (D-23, BV-072): deixa exatamente a quantidade da classe (cantripsKnown).
+ * Mantém os que já estão (a magia principal primeiro), corta o excesso e completa com as
+ * opções da lista na ordem do livro. Classes sem escolha de truque passam direto.
+ */
+export function fillStarterCantrips(
+  classe: string,
+  spellEntryIds: string[],
+  combatLoadout: CombatLoadout | null
+): string[] {
+  const choice = cantripChoiceForClass(classe);
+  if (!choice) return spellEntryIds;
+  const options = new Set(choice.options);
+  const primary =
+    combatLoadout?.packId === "magias" && options.has(combatLoadout.entryId)
+      ? combatLoadout.entryId
+      : null;
+  const chosen = spellEntryIds.filter((id) => options.has(id));
+  const ordered = primary ? [primary, ...chosen.filter((id) => id !== primary)] : chosen;
+  const keep = new Set(ordered.slice(0, choice.count));
+  for (const id of choice.options) {
+    if (keep.size >= choice.count) break;
+    keep.add(id);
+  }
+  return sortedUnique([...spellEntryIds.filter((id) => !options.has(id)), ...keep]);
+}
+
 export function loadoutDraftFromKit(kit: StarterKitOption): StarterEquipmentDraft {
   const spellEntryIds: string[] = [];
   const extraEntryIds: string[] = [];
@@ -549,11 +584,14 @@ export function loadoutDraftFromKit(kit: StarterKitOption): StarterEquipmentDraf
     }
   }
 
+  const classe = classOfKit(kit);
   return {
     combatLoadout: kit.combatLoadout,
     sideWeaponEntryId,
     armorEntryId: kit.armorLoadout?.entryId ?? null,
-    spellEntryIds: sortedUnique(spellEntryIds),
+    spellEntryIds: classe
+      ? fillStarterCantrips(classe, sortedUnique(spellEntryIds), kit.combatLoadout)
+      : sortedUnique(spellEntryIds),
     extraEntryIds: sortedUnique(extraEntryIds),
   };
 }
@@ -603,6 +641,8 @@ export function getStarterEquipmentPools(classe: string): StarterEquipmentPools 
       }
     }
   }
+
+  for (const id of cantripChoiceForClass(classe)?.options ?? []) spellEntryIds.add(id);
 
   return {
     combatOptions: [...combatMap.values()],
@@ -677,7 +717,7 @@ export function sanitizeStarterEquipmentForClass(
     combatLoadout,
     sideWeaponEntryId,
     armorEntryId,
-    spellEntryIds: sortedUnique(spellEntryIds),
+    spellEntryIds: fillStarterCantrips(classe, sortedUnique(spellEntryIds), combatLoadout),
     extraEntryIds: sortedUnique(extraEntryIds),
   };
 }
@@ -708,6 +748,14 @@ export function validateStarterEquipment(
   const spellSet = new Set(pools.spellEntryIds);
   if (equipment.spellEntryIds.some((id) => !spellSet.has(id))) {
     return "Magia inicial inválida para esta classe";
+  }
+  const cantrips = cantripChoiceForClass(classe);
+  if (cantrips) {
+    const options = new Set(cantrips.options);
+    const chosen = new Set(equipment.spellEntryIds.filter((id) => options.has(id))).size;
+    if (chosen !== cantrips.count) {
+      return cantrips.count === 1 ? "Escolha 1 truque" : `Escolha ${cantrips.count} truques`;
+    }
   }
   const extraSet = new Set(pools.extraEntryIds);
   if (equipment.extraEntryIds.some((id) => !extraSet.has(id))) {
