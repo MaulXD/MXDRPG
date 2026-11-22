@@ -6956,3 +6956,10 @@ Contas temporárias de mestre e jogador e uma mesa, testadas no portal do Maestr
 
 - BV-061: o botão da barra do celular dizia "Ordem" fora de combate e "Turno" em combate; o computador sempre diz "Turno". Agora é sempre "Turno" (`MesaMobileBar.tsx`; a prop `combatActive` saiu porque só servia ao rótulo).
 - BV-063: não era bug. A Fortitude 6 do Bárbaro humano é +4 da classe (livro :1062) + 2 da Resistência Mundana do Humano (livro :534). A Revisão do criador agora diz "Culinária inicial (classe + raça)".
+
+### 2026-11-22 (madrugada) — Proficiência com arma pelo texto do livro (BAL-D1, BAL-D3; loop 3 h)
+
+- `isProficient` procurava "todas armas", mas o livro (e `rules.ts`) diz "todas as armas": Guerreiro e Bárbaro rolavam todo ataque com arma sem proficiência. Mago e Feiticeiro, que têm lista fechada (adagas, dardos, fundas, cajados, bestas leves), nunca eram proficientes nem com a adaga.
+- Novo `weaponProficiencyCovers` em `lib/combat/attack.ts`: "todas as armas", "armas marciais" e "armas simples" cobrem tudo (simples x marcial segue sem separar, BAL-D4 do dono); lista fechada casa pelo nome da arma (Adaga de Masmorra, Besta Leve, Cajado...).
+- `verify-proficiencia-magia.mjs` ganhou 3 checagens (falha no código antigo: "Guerreiro sem proficiência com Machado Grande").
+- Efeito na Balança (D-08): Guerreiro e Bárbaro sobem +2 no acerto com arma no nível 1; conta a refazer junto com a do Bruxo.

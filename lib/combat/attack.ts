@@ -536,8 +536,44 @@ export function isProficient(actor: CharacterSheet, action: CombatActionOption):
   }
   const cls = getClass(actor.identity.classe);
   if (!cls) return false;
-  const p = cls.proficiencies.toLowerCase();
-  return p.includes("todas armas") || p.includes("armas simples") || p.includes("armas marciais");
+  return weaponProficiencyCovers(cls.proficiencies, action.name);
+}
+
+function semAcento(texto: string): string {
+  return texto.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+}
+
+/** Plural do livro (lista de proficiências) para o nome da arma no compêndio. */
+const ARMA_PELO_PLURAL: Record<string, string> = {
+  adagas: "adaga",
+  dardos: "dardo",
+  fundas: "funda",
+  cajados: "cajado",
+  "bestas leves": "besta leve",
+  "espadas curtas": "espada curta",
+  "bestas de mao": "besta de mao",
+  rapiers: "rapieira",
+};
+
+/**
+ * BAL-D1/D3: proficiência com arma pelo texto de proficiências do livro (Cap. 4).
+ * "todas as armas" e "armas marciais" cobrem tudo; "armas simples" segue cobrindo tudo porque o
+ * compêndio ainda não separa simples de marcial (BAL-D4, decisão do dono). Classes com lista
+ * fechada (Mago, Feiticeiro) só são proficientes nas armas citadas, casadas pelo nome.
+ */
+export function weaponProficiencyCovers(proficiencies: string, weaponName: string): boolean {
+  const p = semAcento(proficiencies);
+  if (/todas (as )?armas\b/.test(p) || p.includes("armas marciais") || p.includes("armas simples")) {
+    return true;
+  }
+  const arma = semAcento(weaponName);
+  return p
+    .split(/[,;]/)
+    .map((t) => t.trim())
+    .some((termo) => {
+      const nome = ARMA_PELO_PLURAL[termo];
+      return Boolean(nome && arma.includes(nome));
+    });
 }
 
 /** Termo de soma para exibir: 0 some, 2 vira "+2", -1 vira "-1" (antes saía "+-1"). */

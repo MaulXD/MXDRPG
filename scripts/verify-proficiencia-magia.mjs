@@ -1,6 +1,7 @@
 // Ataque de magia soma proficiência para toda classe conjuradora (tabela 17.7 do livro,
 // data/character/spell-lists.json), Bruxo e Paladino inclusos. Livro, linha 418:
 // "1d20 + Modificador de Atributo + Bonus de Proficiencia (se proficiente)".
+// Também a proficiência com arma (BAL-D1, BAL-D3): "todas as armas" e a lista fechada do Mago e do Feiticeiro.
 import assert from "node:assert/strict";
 import { readFileSync, existsSync, statSync } from "node:fs";
 import { registerHooks } from "node:module";
@@ -61,5 +62,38 @@ for (const classe of ["Guerreiro", "Bárbaro", "Ladino", "Patrulheiro", "Espirit
   assert.equal(isProficient(ator(classe), magia), false, `${classe} não deveria ter proficiência em magia`);
 }
 ok("Guerreiro, Bárbaro, Ladino, Patrulheiro e Espiritualista seguem sem proficiência em magia");
+
+// 3. BAL-D1: "todas as armas" (Guerreiro, Bárbaro) vale; antes o código procurava "todas armas".
+const arma = (name) => ({ kind: "weapon", name });
+for (const classe of ["Guerreiro", "Bárbaro"]) {
+  for (const nome of ["Machado Grande", "Lâmina de Vinha", "Arco Longo de Vinha", "Montante +2"]) {
+    assert.equal(isProficient(ator(classe), arma(nome)), true, `${classe} sem proficiência com ${nome}`);
+  }
+}
+ok("Guerreiro e Bárbaro proficientes com qualquer arma (livro: 'todas as armas')");
+
+// 4. BAL-D3: Mago e Feiticeiro só nas armas da lista do livro (Cap. 4), casadas pelo nome.
+const casos = [
+  ["Mago", "Adaga de Masmorra", true],
+  ["Mago", "Adaga de Masmorra +1", true],
+  ["Mago", "Besta Leve", true],
+  ["Mago", "Cajado", true],
+  ["Mago", "Espada Longa", false],
+  ["Mago", "Besta Pesada", false],
+  ["Feiticeiro", "Adagas Gêmeas", true],
+  ["Feiticeiro", "Besta Leve", true],
+  ["Feiticeiro", "Cajado", false],
+  ["Feiticeiro", "Machado de Batalha", false],
+];
+for (const [classe, nome, esperado] of casos) {
+  assert.equal(isProficient(ator(classe), arma(nome)), esperado, `${classe} com ${nome}: esperado ${esperado}`);
+}
+ok("Mago: adaga, besta leve e cajado sim, espada longa não; Feiticeiro: adagas e besta leve sim, cajado não");
+
+// 5. Armas simples e marciais seguem como antes (simples x marcial ainda não separado: BAL-D4, dono).
+for (const [classe, nome] of [["Clérigo", "Maça de Guerra"], ["Ladino", "Rapieira"], ["Paladino", "Espada Longa"], ["Bruxo", "Cajado"]]) {
+  assert.equal(isProficient(ator(classe), arma(nome)), true, `${classe} com ${nome}`);
+}
+ok("Clérigo, Ladino, Paladino e Bruxo seguem proficientes como antes");
 
 console.log(`verify-proficiencia-magia: ${n} ok`);

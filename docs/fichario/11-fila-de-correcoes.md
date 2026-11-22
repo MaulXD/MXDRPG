@@ -24,7 +24,7 @@ Só correções, uma por vez: Bigorna corrige, Lupa revisa, o maestro confere e 
 | 14 | BAL-D6 | P1 | Feiticeiro conjura com INT no código; o livro diz Carisma (propostas/balanceamento.md, seção 2) | feito, 4a46437 |
 | 14b | BAL-D6b | P2 | Magias conhecidas do Feiticeiro usam a tabela 2 + nível-1 (spell-prep.ts:55); o livro diz nível + CAR (LIVRO-DO-JOGADOR.md:3498) | aprovada pela Lupa, sem commit |
 | 14c | BAL-D6c | P3 | Salvaguardas proficientes do Feiticeiro = INT + CAR (sheet-skills.ts:182); conferir no livro | aprovada pela Lupa, sem commit; INT como salvaguarda segue em aberto (sem confirmação no livro) |
-| 15 | BAL-D1..D5 | P2 | Proficiência de arma: sem bônus para Guerreiro, Ladino e Mago; Clérigo com Maça de Guerra que o livro não dá | na fila |
+| 15 | BAL-D1..D5 | P2 | Proficiência de arma: sem bônus para Guerreiro, Ladino e Mago; Clérigo com Maça de Guerra que o livro não dá | D1 e D3 feitos 22/11 (weaponProficiencyCovers); D2 já resolvido pelo texto do livro; D4 (simples x marcial) e D5 (Maça do Clérigo) seguem com o dono |
 | 16 | A-09 | P3 | bankedPa sempre 0 e aparece em três telas | parcial, 803919d (só o log do mestre); mostradores compactos dependem do cálculo (D-15) |
 | 17 | A-18 | P3 | Sem robots nem sitemap; doc de cores diverge do código | feito, 4f04e3b (só as três páginas públicas; ressalva: verify não prova que abrem sem login) |
 | 18 | D-02 | P3 | CONTEXTO-SESSAO-ATUAL.md aponta branch e PR antigos | feito, 3c1b16c |
