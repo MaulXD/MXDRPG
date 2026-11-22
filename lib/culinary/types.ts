@@ -25,6 +25,17 @@ export const EMPTY_CULINARY_PROGRESS: CharacterCulinaryProgress = {
   daysWithoutMeal: 0,
 };
 
+/**
+ * Auditoria 08/2026, item 8: a refeição grava expiresAt (24 h, apply-meal.ts) e nada conferia.
+ * Mantém só as assimilações ainda valendo; expiresAt null = até descanso longo (tira o mestre).
+ */
+export function unexpiredAssimilations(
+  list: AssimilatedAbility[],
+  now: number = Date.now()
+): AssimilatedAbility[] {
+  return list.filter((a) => a.expiresAt == null || a.expiresAt > now);
+}
+
 export type StructuredMealInput = {
   monsterEntryId: string;
   participantActorIds: string[];

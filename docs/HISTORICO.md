@@ -6975,3 +6975,9 @@ Contas temporárias de mestre e jogador e uma mesa, testadas no portal do Maestr
 - `lib/character/class-traits.ts` (`classTraitsForLevel`) e `components/character/ClassTraitsSection.tsx`: seção "Traços de classe" só leitura no topo da aba Habilidades da ficha, só com o que o nível já dá. Cores seguem os cards do inventário em cada tema (escuro, popup e ficha clara).
 - CI: o JSON novo entra no filtro e na conferência de dados gerados.
 - Conferido no navegador (dev local, Bruxo nível 1: Pacto Arcano e Raio do Pacto). Teste novo `scripts/verify-tracos-classe.mjs`.
+
+### 2026-11-22 (madrugada) — Assimilações culinárias expiram (auditoria 08/2026, item 8; loop 3 h)
+
+- A refeição grava `expiresAt` (24 h, `lib/culinary/apply-meal.ts`), mas nada conferia: as assimilações se acumulavam para sempre na ficha.
+- `unexpiredAssimilations` (`lib/culinary/types.ts`) e uso em `normalizeCharacter` (ler e gravar a ficha) e na lista da ficha (`SheetPopupDdbView`). `expiresAt` nulo segue valendo até o mestre tirar (descanso longo).
+- Teste novo `scripts/verify-assimilacao-expira.mjs`. Pendente da auditoria: monstros sem resistência estruturada (item 14) e débito de PA por reação sem chamador (item 15, decisão do dono).

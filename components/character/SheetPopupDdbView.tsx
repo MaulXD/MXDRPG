@@ -31,6 +31,7 @@ import { SheetDdbShieldAc } from "@/components/character/SheetDdbShieldAc";
 import { SheetDdbSkillsPanel } from "@/components/character/SheetDdbSkillsPanel";
 import type { RoomSnapshot } from "@/lib/room/types";
 import type { FoundryWindowDragHandlers } from "@/hooks/vtt/useFoundryWindowDrag";
+import { unexpiredAssimilations } from "@/lib/culinary/types";
 import "./sheet-ddb.css";
 
 type Props = {
@@ -378,9 +379,9 @@ export function SheetPopupDdbView({
                 </SheetHoverTip>
               ))}
             </div>
-            {character.culinaryProgress?.activeAssimilations?.length ? (
+            {unexpiredAssimilations(character.culinaryProgress?.activeAssimilations ?? []).length ? (
               <ul className="sheet-ddb-assim-list">
-                {character.culinaryProgress.activeAssimilations.map((a) => (
+                {unexpiredAssimilations(character.culinaryProgress?.activeAssimilations ?? []).map((a) => (
                   <li key={`${a.entryId}-${a.acquiredAt}`}>
                     <strong>{a.name}</strong>
                     <span>{a.effectLabel}</span>
