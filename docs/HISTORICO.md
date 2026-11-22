@@ -6900,3 +6900,13 @@ Contas temporárias de mestre e jogador e uma mesa, testadas no portal do Maestr
 - Conferido de ponta a ponta com arte provisória (o glifo atual) passando pelo `compor.mjs` real e por uma build de produção: 12 de 12 imagens no cartão, cache de 1 dia. Arte provisória, `public/icons/classes` e manifesto desfeitos depois.
 - Teste novo `scripts/verify-icones-cartoes.mjs` (no `npm test`).
 - Para ligar quando houver arte: `gerar-gemini.mjs classes`, `compor.mjs classes` e commitar `public/icons/classes` + `lib/icons/icones-gerados.json`.
+
+### 2026-11-21 (noite) — Truques no criador de personagem (D-23a) e fichário 03 em dia
+
+**Pedido:** "mete bala" (seguir sozinho; Gemini continua sem cota para os ícones).
+
+- A página 03 do fichário listava como pendentes decisões já resolvidas em commits (D-03, D-04, D-05, D-07, D-09, D-10, D-11, D-12, D-13, D-14, D-15, D-16, BV-029b, BV-045b, parser do grimório). Ganhou um quadro no topo com o que está feito e o que segue em aberto.
+- D-23 (a): o passo Equipamento tem o bloco "Truques: escolha N (x/N)" com a lista da classe (`cantripsKnown` de `data/character/spell-lists.json`, lido agora por `cantripChoiceForClass`). Só o Mago escolhe de verdade (2 entre 4); Bruxo, Bardo e Feiticeiro têm exatamente 2 opções e elas entram travadas. Presets já saem com os truques completos (`fillStarterCantrips`), o sanitize do servidor completa rascunho antigo e corta excesso, e a validação pede "Escolha 2 truques" com 1 ou 3.
+- Conferido no navegador (dev local, jogador): Mago mostra 2/2, desmarcar libera as outras opções, trocar chega à Revisão ("Truques: Chama de Fogareiro · Mãos Firmes").
+- Não feito: D-23 (b), corrigir a tabela de kits do Bruxo no livro (Raio do Limiar é nível 3 e Sussurro de Masmorra é truque de nível 4). Observação nova: o kit do Mago dá Lâmina de Espírito, que não está nas listas do Mago.
+- Teste novo `scripts/verify-truques-wizard.mjs` (no `npm test`).
