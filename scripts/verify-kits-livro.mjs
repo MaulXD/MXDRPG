@@ -21,9 +21,9 @@ if (start < 0 || end < 0) {
 const block = src.slice(start, end);
 
 // Esperado segundo o livro (pack:entryId). armor null = kit sem armadura.
-// Excecao: mago-adaga, espiritualista-bastao e espiritualista-lamina fixam
-// substitutos porque Brasa Espectral (Mago), Bastao e Espada curta ainda nao existem
-// no compendio (pendencia na pagina 07). Kits do Bruxo so com a lista Pacto ate o nivel 1 (D-23b).
+// Excecao: mago-adaga fixa substituto porque Brasa Espectral ainda nao existe no
+// compendio (pendencia na pagina 07). Cajado (WPN-O07) e Espada Curta (WPN-S13) existem
+// desde 22/11; o Bastao do Espiritualista virou Cajado no livro (nao ha Bastao na tabela 14). Kits do Bruxo so com a lista Pacto ate o nivel 1 (D-23b).
 const ESPERADO = {
   Guerreiro: [
     ["guerreiro-lamina", ["armas:armas-wpn-s01", "equipamentos:equipamentos-arm-01"], "armas:armas-wpn-s01", "equipamentos:equipamentos-arm-01"],
@@ -72,8 +72,8 @@ const ESPERADO = {
   ],
   Espiritualista: [
     ["espiritualista-punhos", ["habilidades:chi-golpe-de-chi"], "habilidades:chi-golpe-de-chi", null],
-    ["espiritualista-bastao", ["armas:armas-wpn-p01", "habilidades:chi-passo-do-vacuo"], "habilidades:chi-passo-do-vacuo", null],
-    ["espiritualista-lamina", ["armas:armas-wpn-s01", "habilidades:chi-ferida-aberta"], "habilidades:chi-ferida-aberta", null],
+    ["espiritualista-bastao", ["armas:armas-wpn-o07", "habilidades:chi-passo-do-vacuo"], "habilidades:chi-passo-do-vacuo", null],
+    ["espiritualista-lamina", ["armas:armas-wpn-s13", "habilidades:chi-ferida-aberta"], "habilidades:chi-ferida-aberta", null],
   ],
   Paladino: [
     ["paladino-espada", ["armas:armas-wpn-s02", "equipamentos:equipamentos-arm-05", "magias:magias-curar-ferimentos", "magias:magias-raio-do-limiar"], "armas:armas-wpn-s02", "equipamentos:equipamentos-arm-05"],
@@ -173,7 +173,7 @@ for (const classe of Object.keys(encontrados)) {
 }
 
 // Parecer da Lupa: label e resumo so citam o que o kit entrega. Itens do livro que
-// ainda nao existem no compendio (Brasa Espectral, Bastao, Espada curta)
+// ainda nao existem no compendio (Brasa Espectral)
 // nao podem aparecer no texto do kit.
 // KITS-TESTE (Lupa): todo nome de item citado no label ou no summary tem que ser item do
 // proprio kit. Vocabulario: armas e armaduras aceitam o nome completo ou o inicio dele
@@ -223,7 +223,7 @@ for (const m of block.matchAll(/id: "([^"]+)",\s*label: "([^"]*)",\s*summary: "(
 }
 
 // Lista fixa extra: itens do livro que ainda nao existem no compendio (pendencia da pagina 07).
-const AUSENTES = ["Brasa Espectral", "Bastão", "bastão", "Espada curta", "espada curta"];
+const AUSENTES = ["Brasa Espectral", "Bastão", "bastão"];
 for (const m of block.matchAll(/id: "([^"]+)",\s*label: "([^"]*)",\s*summary: "([^"]*)"/g)) {
   for (const nome of AUSENTES) {
     if (m[2].includes(nome) || m[3].includes(nome)) erros.push(`${m[1]}: texto cita '${nome}', que o kit nao entrega`);

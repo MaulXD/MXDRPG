@@ -142,7 +142,7 @@ FORJAS = [
     ("FORJA-05", "Forja Portátil do Artífice", "CD+0, só +1"),
 ]
 
-# Espadas clássicas (12) — WPN-S01 … WPN-S12
+# Espadas clássicas (13) — WPN-S01 … WPN-S13
 ESPADAS = [
     ("WPN-S01", "Lâmina de Vinha", "1d6", 1, "perfurante"),
     ("WPN-S02", "Espada Longa", "1d8", 1, "cortante"),
@@ -156,6 +156,8 @@ ESPADAS = [
     ("WPN-S10", "Espada de Cripta", "1d8", 1, "perfurante"),
     ("WPN-S11", "Lâmina de Teixo", "1d8", 1, "cortante"),
     ("WPN-S12", "Espada de Prata", "1d8", 1, "perfurante"),
+    # Livro 14.4: Espada Curta 1d6 perfurante, leve. Kit do Espiritualista (Cap. 4).
+    ("WPN-S13", "Espada Curta", "1d6", 1, "perfurante"),
 ]
 
 # Lanças e variações (10) — WPN-P01 … WPN-P10

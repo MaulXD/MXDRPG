@@ -88,7 +88,7 @@ Cada linha em **+0 a +3** (32 entradas VTT).
 
 ---
 
-## Espadas clássicas (12) — WPN-S01 a WPN-S12
+## Espadas clássicas (13) — WPN-S01 a WPN-S13
 
 | ID | Nome | Dano | Alcance (cél.) |
 |----|------|------|-------------|
@@ -104,8 +104,9 @@ Cada linha em **+0 a +3** (32 entradas VTT).
 | WPN-S10 | Espada de Cripta | 1d8 perf. | 1 |
 | WPN-S11 | Lâmina de Teixo | 1d8 cort. | 1 |
 | WPN-S12 | Espada de Prata | 1d8 perf. | 1 |
+| WPN-S13 | Espada Curta | 1d6 perf. | 1 |
 
-Cada linha em **+0 a +3** (48 entradas VTT).
+Cada linha em **+0 a +3** (52 entradas VTT).
 
 ---
 

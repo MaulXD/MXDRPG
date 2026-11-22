@@ -389,10 +389,10 @@ const CLASS_STARTER_KITS: Record<ClassId, StarterKitOption[]> = {
     },
     {
       id: "espiritualista-bastao",
-      label: "Lança curta e Passo do Vácuo",
-      summary: "Mobilidade: lança curta e Passo do Vácuo.",
+      label: "Cajado e Passo do Vácuo",
+      summary: "Mobilidade: cajado e Passo do Vácuo.",
       items: [
-        { packId: "armas", entryId: "armas-wpn-p01" },
+        { packId: "armas", entryId: "armas-wpn-o07" },
         { packId: "habilidades", entryId: "chi-passo-do-vacuo" },
       ],
       combatLoadout: { packId: "habilidades", entryId: "chi-passo-do-vacuo" },
@@ -400,10 +400,10 @@ const CLASS_STARTER_KITS: Record<ClassId, StarterKitOption[]> = {
     },
     {
       id: "espiritualista-lamina",
-      label: "Lâmina de Vinha e Ferida Aberta",
-      summary: "Asceta da Dor: lâmina de vinha e Ferida Aberta.",
+      label: "Espada curta e Ferida Aberta",
+      summary: "Asceta da Dor: espada curta e Ferida Aberta.",
       items: [
-        { packId: "armas", entryId: "armas-wpn-s01" },
+        { packId: "armas", entryId: "armas-wpn-s13" },
         { packId: "habilidades", entryId: "chi-ferida-aberta" },
       ],
       combatLoadout: { packId: "habilidades", entryId: "chi-ferida-aberta" },

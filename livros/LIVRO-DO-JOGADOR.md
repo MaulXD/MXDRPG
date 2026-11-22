@@ -2108,7 +2108,7 @@ No **criador de personagem** (passo *Equipamento*), escolha **um kit** entre as 
 | **Bardo** | Rapieira + couro + *Inspiração Culinária* · Adaga + couro acolchoado + *Sussurro de Masmorra* · Arco curto + *Ilusão Menor* |
 | **Druida** | Cimitarra + gibão + *Crescimento Acelerado* · Azagaia + escamas de dragonete + *Purificar Veneno* · Adaga + couro de troll + *Estabilizar* |
 | **Feiticeiro** | Adaga e *Lâmina de Espírito* · Besta e *Onda de Trovão* · Maça e *Chama de Vinha* |
-| **Espiritualista** | Punhos (sem arma) + *Golpe de Chi* · Bastão + *Passo do Vácuo* · Espada curta + *Ferida Aberta* |
+| **Espiritualista** | Punhos (sem arma) + *Golpe de Chi* · Cajado + *Passo do Vácuo* · Espada curta + *Ferida Aberta* |
 | **Paladino** | Espada longa + cota + *Curar Ferimentos* e *Raio do Limiar* · Maça + meia-armadura + cura e *Escudo Arcano* · Gladius + brigandina + *Purificar Veneno* |
 | **Bruxo** | Adaga + couro + *Mãos Ardentes* · Cajado + couro acolchoado + *Chama de Vinha* · Besta + *Lâmina de Espírito* e *Armadura Arcana* |
 

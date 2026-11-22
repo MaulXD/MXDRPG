@@ -486,7 +486,7 @@
 
 ---
 
-## Compêndio VTT — Armas (228)
+## Compêndio VTT — Armas (232)
 
 | entryId | Nome | tipo |
 | --- | --- | --- |
@@ -642,6 +642,10 @@
 | armas-wpn-s12-mais-1 | Espada de Prata +1 | arma |
 | armas-wpn-s12-mais-2 | Espada de Prata +2 | arma |
 | armas-wpn-s12-mais-3 | Espada de Prata +3 | arma |
+| armas-wpn-s13 | Espada Curta | arma |
+| armas-wpn-s13-mais-1 | Espada Curta +1 | arma |
+| armas-wpn-s13-mais-2 | Espada Curta +2 | arma |
+| armas-wpn-s13-mais-3 | Espada Curta +3 | arma |
 | armas-wpn-p01 | Lança Curta | arma |
 | armas-wpn-p01-mais-1 | Lança Curta +1 | arma |
 | armas-wpn-p01-mais-2 | Lança Curta +2 | arma |

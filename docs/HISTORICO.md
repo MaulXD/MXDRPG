@@ -6928,3 +6928,10 @@ Contas temporárias de mestre e jogador e uma mesa, testadas no portal do Maestr
 - `scripts/equipment_catalog_data.py`: `WPN-O07 Cajado`, 1d6 contundente, alcance 1, como a tabela 14.2 do livro (o versátil 1d8 não é modelado, igual à Lança). `npm run sync:data` gerou `armas-wpn-o07` e os aprimorados +1 a +3 em `data/compendiums/armas.json` e a linha na `TABELA-IDS-ELDARIN.md`; o catálogo de armas do livro ganhou a linha WPN-O07.
 - Kit `bruxo-cajado`: sai o Machado de Batalha (substituto), entra o Cajado (arma principal). Bruxo tem armas simples, então tem proficiência.
 - `verify-kits-livro.mjs`: o kit espera `armas-wpn-o07` e "Cajado" deixou de ser item ausente.
+
+### 2026-11-22 (madrugada) — Espada Curta no compêndio e kits do Espiritualista (loop 3 h)
+
+- `WPN-S13 Espada Curta` (1d6 perfurante, tabela 14.4 do livro) no `equipment_catalog_data.py`, gerada por `sync:data` com +1 a +3; linha nova no catálogo de armas do livro e na tabela de IDs.
+- Kit `espiritualista-lamina`: sai a Lâmina de Vinha (substituta), entra a Espada Curta. Espiritualista tem proficiência em espadas curtas.
+- Kit `espiritualista-bastao`: o livro citava "Bastão", que não existe em nenhuma tabela de armas (14.2 a 14.5). A tabela de kits passou a dizer Cajado (a arma de haste simples do livro) e o kit dá o Cajado (WPN-O07) no lugar da Lança Curta. O id do kit ficou igual para não quebrar fichas salvas.
+- `verify-kits-livro.mjs` atualizado; só Brasa Espectral (kit 1 do Mago) segue como item do livro ausente no compêndio.
